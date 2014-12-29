@@ -21,7 +21,9 @@ It's distributed in 2 forms:
 
 If you want to test it locally, you can download the self contained war and run (java 7 or greater required):
 
->java -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profile.active=dev -jar lavagna-jetty-console.war --headless
+```
+java -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profile.active=dev -jar lavagna-jetty-console.war --headless
+```
 
 Go to http://localhost:8080 and login with "user" (password "user").
 
@@ -68,18 +70,24 @@ Use UTF-8 encoding.
 
 launch web server:
 
-> mvn jetty:run
+```
+mvn jetty:run
+```
 
 for launching web server + db manager (hsqldb only)
 
-> mvn jetty:run -DstartDBManager
+```
+mvn jetty:run -DstartDBManager
+```
 
 for launching web server with the mysql database (use mysql profile):
 
-> mvn jetty:run -Pdev-mysql
-
-> mvn jetty:run -Pdev-pgsql
-
+```
+mvn jetty:run -Pdev-mysql
+```
+```
+mvn jetty:run -Pdev-pgsql
+```
 - go to http://localhost:8080
   if you have a 403 error, you must configure the application,
   go to http://localhost:8080/setup, select demo + insert user "user".
@@ -90,23 +98,31 @@ for launching web server with the mysql database (use mysql profile):
 
 For debugging
 
-> mvnDebug jetty:run
+```
+mvnDebug jetty:run
+```
 
 For running the test cases
 
-> mvn test
+```
+mvn test
+```
 
 For running the test cases with mysql or pgsql
 
-> mvn test -Ddatasource.dialect=MYSQL
-
-> mvn test -Ddatasource.dialect=PGSQL
-
+```
+mvn test -Ddatasource.dialect=MYSQL
+```
+```
+mvn test -Ddatasource.dialect=PGSQL
+```
 
 For running with jetty-runner:
 
-> mvn clean install
-> java -Ddatasource.dialect=HSQLDB -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
+```
+mvn clean install
+java -Ddatasource.dialect=HSQLDB -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
+```
 
 ### VAGRANT ###
 
@@ -116,7 +132,9 @@ Make sure that you have installed Vagrant and VirtualBox.
 
 Fetch the submodules before:
 
-> git submodule update --init
+```
+git submodule update --init
+```
 
 If you are under windows you need to ensure that the pgsql submodule is not in a broken state, 
 ensure that the file puppet\modules\postgresql\files\validate_postgresql_connection.sh is using the
@@ -124,11 +142,15 @@ unix end of line (run dos2unix).
 
 To run the tests with Vagrant boot the VMs with
 
-> vagrant up [optionally use pgsql / mysql to boot only one VM]
+```
+vagrant up [optionally use pgsql / mysql to boot only one VM]
+```
 
 Once that the VM is up and running run the tests:
 
-> mvn test -Ddatasource.dialect=PGSQL / MYSQL
+```
+mvn test -Ddatasource.dialect=PGSQL / MYSQL
+```
 
 
 #### Connecting manually: ####
@@ -173,7 +195,9 @@ Thanks to Hilverd Reker for his GitHub repo: https://github.com/hilverd/vagrant-
 
 Jacoco plugin is used.
 
-> mvn install site
+```
+mvn install site
+```
 
 -> open target/site/jacoco/index.html with your browser
 
@@ -191,5 +215,9 @@ Note:
 - tomcat-jdbc will not be updated to version 8.0.9 due to a strange 
   class loader interaction with log4j when launching with mvn jetty:run
 
-> mvn versions:display-dependency-updates
-> mvn versions:display-plugin-updates 
+```
+mvn versions:display-dependency-updates
+```
+```
+mvn versions:display-plugin-updates 
+```
