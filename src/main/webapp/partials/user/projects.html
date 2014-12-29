@@ -1,0 +1,13 @@
+<lvg-navbar data-navbar-type="user">{{userNameProfile}} <span data-translate>partials.user.title.profile</span></lvg-navbar>
+<div class="container auto-margin lavagna-container-top-margin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="lavagna-panel lvg-user-projects" data-ng-repeat="ab in profile.activeProjects">
+				<div class="body">
+					<span><a data-ng-href="#/{{ab.project.shortName}}/" data-ng-bind="ab.project.shortName +' - ' + ab.project.name"></a></span>
+					<div data-ng-bind="ab.project.description"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

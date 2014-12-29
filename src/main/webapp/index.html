@@ -1,0 +1,30 @@
+<!doctype html>
+<html data-ng-app="lavagna">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-ng-bind="pageTitle" data-translate>index.lavagna</title>
+<base href="{{contextPath}}">
+<!--  see ResourceController -->
+<link rel="stylesheet" href="css/all.css" type="text/css">
+<script src="resource/app.js"></script>
+<!--  -->
+</head>
+<body>
+	<div class="lavagna-header lvg-inverted" data-ng-controller="TopBarCtrl">
+		<div class="header">
+			<a href class="lvg-navbar-brand" data-toggle="sidebar"><i class="fa fa-bars"></i></a>
+		</div>
+		<lvg-search data-lvg-has-permission="SEARCH"></lvg-search>
+		<ul class="lvg-header-right hidden-xs">
+			<li data-lvg-is-authenticated><span class="fa fa-user"></span> <span data-ng-bind="user.username"></span></li>
+			<li data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();login()" data-translate>index.navbar.login</a></li>
+		</ul>
+	</div>
+	<lvg-sidebar></lvg-sidebar>
+	<div data-ui-view class="lavagna-container"></div>
+	<div data-lvg-notification></div>
+	{{#inlineTemplates}}{{.}}{{/inlineTemplates}}
+</body>
+</html>

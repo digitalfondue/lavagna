@@ -1,0 +1,73 @@
+<div data-ng-switch="mode" class="lvg-bulk-action-inline">
+	<div data-ng-switch-when="assign-to">
+		<input type="text" data-lvg-user-autocomplete="toAssign">
+		<button data-ng-click="assign(toAssign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.assign</button>
+	</div>
+	
+	<div data-ng-switch-when="remove-assign-to">
+		<input type="text" data-lvg-user-autocomplete="toRemoveFromAssign">
+		<button data-ng-click="removeAssign(toRemoveFromAssign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.remove</button>
+	</div>
+	
+	<div data-ng-switch-when="re-assign-to">
+		<input type="text" data-lvg-user-autocomplete="toReassign">
+		<button data-ng-click="reassign(toReassign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.reassign</button>
+	</div>
+	
+	<div data-ng-switch-when="set-due-date">
+		<input type="text" data-lvg-datepicker data-ng-model="dueDate">
+		<button data-ng-click="setDueDate(dueDate)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.set</button>
+	</div>
+	
+	<div data-ng-switch-when="remove-due-date">
+		<button data-ng-click="removeDueDate()" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.confirm</button>
+	</div>
+	
+	<div data-ng-switch-when="set-milestone">
+		<lvg-label-picker label="milestoneLabel" data-ng-model="milestoneToSet" data-in-menu="true"></lvg-label-picker>
+		<button data-ng-click="setMilestone(milestoneToSet)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.set</button>
+	</div>
+	
+	<div data-ng-switch-when="remove-milestone">
+		<button data-ng-click="removeMilestone()" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.confirm</button>
+	</div>
+	
+	<div data-ng-switch-when="add-label">
+		<div class="dropdown lvg-button-group add-label">
+			<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
+				<span data-ng-if="labelToAdd.label.name !== undefined" data-ng-bind="labelToAdd.label.name"></span>
+				<span data-ng-if="labelToAdd.label.name === undefined" data-translate>partials.fragments.bulk-action-inline.select</span>
+				 <i class="fa fa-caret-down"></i>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li data-ng-repeat="label in (userLabels | orderObjectBy:'name')"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" data-ng-bind="label.name" data-ng-click="labelToAdd.label = label"></button></li>
+			</ul>
+		</div>
+		<lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-in-menu="true"></lvg-label-picker>
+		<button data-ng-click="addLabel(labelToAdd)" class="lvg-navigation-button" data-translate data-ng-disabled="labelToAdd.label === undefined">partials.fragments.bulk-action-inline.add</button>
+	</div>
+	
+	<div data-ng-switch-when="remove-label">
+		<div class="dropdown lvg-button-group add-label" data-ng-init="toRemoveLabel = {}">
+			<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
+				<span data-ng-if="toRemoveLabel.label.name !== undefined" data-ng-bind="toRemoveLabel.label.name"></span>
+				<span data-ng-if="toRemoveLabel.label.name === undefined" data-translate>partials.fragments.bulk-action-inline.select</span>
+				 <i class="fa fa-caret-down"></i>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li data-ng-repeat="label in (userLabels | orderObjectBy:'name')"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" data-ng-bind="label.name" data-ng-click="toRemoveLabel.label = label"></button></li>
+			</ul>
+		</div>
+		<button data-ng-disabled="toRemoveLabel.label === undefined" data-ng-click="removeLabel(toRemoveLabel.label)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.remove</button>
+	</div>
+	
+	<div data-ng-switch-when="move-to-archive">
+		<button data-ng-click="confirmMove('ARCHIVE')" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.confirm</button>
+	</div>
+	<div data-ng-switch-when="move-to-backlog">
+		<button data-ng-click="confirmMove('BACKLOG')" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.confirm</button>
+	</div>
+	<div data-ng-switch-when="move-to-trash">
+		<button data-ng-click="confirmMove('TRASH')" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.confirm</button>
+	</div>
+</div>

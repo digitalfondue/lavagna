@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/all.css" type="text/css">
+<title>Login in Lavagna</title>
+<style type="text/css">
+#lvg-login .login-demo {
+	display: {{loginDemo}};
+}
+
+#lvg-login .login-ldap {
+	display: {{loginLdap}};
+}
+
+#lvg-login .login-oauth {
+	display: {{loginOauth}};
+}
+
+#lvg-login .login-persona {
+	display: {{loginPersona}};
+}
+/* ------------------------------------------------ */
+</style>
+</head>
+<body id="lvg-login">
+
+	<div class="container">
+		<div class="col-md-8 col-md-offset-2">
+			
+			
+			<div class="lavagna-panel ">
+				<div class="head headonly">
+					<strong>Lavagna</strong>
+				</div>
+			
+				<div class="body separated">
+				
+					<div class="login-demo">
+						<div class="lvg-login-or login-box-0-separator"><hr><span>or</span></div>
+						<div class="error-message-demo">Username/Password is not correct or the account is not enabled</div>
+						<form method="post" action="login/demo/">
+							<p class="form-group">
+								<label for="demo-username">Demo Username</label>
+								<input id="demo-username" type="text" placeholder="User name" name="username" autocomplete="off" class="form-control" required>
+							</p>
+							<p class="form-group">
+								<label for="demo-password">Demo Password </label>
+								<input id="demo-password" type="password" placeholder="Password" name="password" autocomplete="off" class="form-control" required>
+							</p>
+							<p class="single-button">
+								<button type="submit" class="lvg-button lvg-button-submit">Log in</button>
+								<input type="hidden" name="_csrf" value="{{csrfToken}}"> 
+								<input type="hidden" name="reqUrl" value="{{reqUrl}}">
+							</p>
+							<p class="single-button remember-me">
+								<label><input type="checkbox" name="rememberMe" value="true"> remember me</label>
+							</p>
+						</form>
+					</div>
+					<div class="login-ldap">
+						<div class="lvg-login-or login-box-1-separator"><hr><span>or</span></div>
+						<form method="post" action="login/ldap/">
+							<div class="error-message-ldap">Username/Password is not correct or the account is not enabled</div>
+							<p class="form-group">
+								<label for="ldap-username">Username</label>
+								<input id="ldap-username" type="text" placeholder="User name" name="username" autocomplete="off" class="form-control" required>
+							</p>
+							<p class="form-group">
+								<label for="ldap-password">Password</label>
+								<input id="ldap-password" type="password" placeholder="Password" name="password" autocomplete="off" class="form-control" required>
+							</p>
+							<p class="single-button">
+								<button type="submit" class="lvg-button lvg-button-submit">Log in</button>
+								<input type="hidden" name="_csrf" value="{{csrfToken}}"> 
+								<input type="hidden" name="reqUrl" value="{{reqUrl}}">
+							</p>
+							<p class="single-button remember-me">
+								<label><input type="checkbox" name="rememberMe" value="true"> remember me</label>
+							</p>
+						</form>
+					</div>
+					<div class="login-oauth login-persona">
+						<div class="lvg-login-or login-box-2-separator"><hr><span>or</span></div>
+						<div class="error-message-oauth error-message-persona">Username/Password is not correct or the account is not enabled</div>
+						{{#loginOauthProviders}}
+						<div class="single-button">
+							<form method="post" action="login/oauth/{{.}}">
+								<button type="submit" class="lvg-button btn-oauth btn-{{.}}">Login with {{.}}</button>
+								<input type="hidden" name="_csrf" value="{{csrfToken}}" /> 
+								<input type="hidden" name="rememberMe" value="" class="remember-me" />
+								<input type="hidden" name="reqUrl" value="{{reqUrl}}" />
+							</form>
+						</div>
+						{{/loginOauthProviders}}
+					
+						<div id="login-persona-{{loginPersona}}" class="single-button">
+							<button class="lvg-button btn-persona" id="signin-persona">Login with Persona</button>
+							<input type="hidden" name="rememberMe" value="" id="global-remember-me-persona" class="remember-me">
+						</div>
+					
+						<p  class="single-button remember-me">
+							<label><input type="checkbox" name="rememberMe" value="true" id="global-remember-me-oauth"> remember me</label>
+						</p>
+						<script type="text/javascript">
+											document.getElementById("global-remember-me-oauth").onclick = function(ev) {
+												var r = document.getElementsByClassName("remember-me");
+												for (var i = 0; i < r.length; i++) {
+													r[i].value = ev.target.checked ? "true" : "";
+												}
+											};
+					
+					(
+						function() {
+							if ("{{loginPersona}}" === 'block') {
+								var v = document.createElement("script");
+								v.src = "https://login.persona.org/include.js";
+								v.onload = function() {
+										function simpleXhrSentinel(xhr) {
+											return function() {
+												if (xhr.readyState == 4) {
+													if (xhr.status == 200) {
+														var loc = JSON.parse(xhr.responseText).redirectTo;
+														window.location = window.location.pathname.replace(/\/login$/,loc);
+													} else {
+														navigator.id.logout();
+														window.location = window.location.pathname + '?error-persona';
+													}
+												}
+											}
+										}
+					
+										function verifyAssertion(assertion) {
+											var xhr = new XMLHttpRequest();
+											xhr.open("POST", "login/persona/", true);
+					
+											var rememberMe = document.getElementById("global-remember-me-persona").value === "true" ? "true" : "false";
+					
+											var param = "assertion=" + assertion + "&reqUrl={{reqUrl}}&rememberMe=" + rememberMe;
+											xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+											xhr.setRequestHeader("Content-length", param.length);
+											xhr.setRequestHeader("Connection", "close");
+											xhr.setRequestHeader("x-csrf-token", "{{csrfToken}}");
+											xhr.send(param);
+											xhr.onreadystatechange = simpleXhrSentinel(xhr);
+										}
+					
+										function signoutUser() {
+											var xhr = new XMLHttpRequest();
+											xhr.open("GET","logout/persona/", true);
+											xhr.send(null);
+											xhr.onreadystatechange = simpleXhrSentinel(xhr);
+										}
+					
+										navigator.id.watch({
+											loggedInUser : null,
+											onlogin : verifyAssertion,
+											onlogout : signoutUser
+										});
+					
+										document.getElementById('signin-persona').onclick = function() {
+											navigator.id.request();
+										};
+					
+										document.getElementById('login-persona-block').style.display = 'block';
+					
+									};
+					
+									document.body.appendChild(v);
+								}
+						}
+					)();
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+(function() {
+	
+	var errorKeyClass = {
+		'error-demo' : 'error-message-demo',
+		'error-ldap' : 'error-message-ldap',
+		'error-oauth' : 'error-message-oauth',
+		'error-persona' : 'error-message-persona'
+	};
+	
+	for(var k in errorKeyClass) {
+		//show the error message if the query string error is present
+		if(location.search.indexOf("?"+k)  !== -1 || location.search.indexOf("&"+k)  !== -1) {
+			var elem = document.querySelector('.'+errorKeyClass[k]);
+			
+			elem.style.display = 'block'
+			if(elem.scrollIntoView) {
+				elem.scrollIntoView(true);
+			}
+			break;
+		}
+	}
+	
+	var loginBoxes = ["{{loginDemo}}" === 'block', "{{loginLdap}}" === 'block', "{{loginOauth}}" === 'block' || "{{loginPersona}}" === 'block'];
+	
+	for(var i = 0;i< loginBoxes.length;i++)	{
+		if(loginBoxes[i]) {
+			var elem = document.querySelector(".login-box-"+i+"-separator")
+			elem.style.display = 'none';
+			break;
+		}
+	}
+	
+})()
+	</script>
+	
+</body>

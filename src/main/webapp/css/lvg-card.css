@@ -1,0 +1,449 @@
+/*
+	- contains card style
+*/
+
+
+/* 
+===================================
+==== Card Modal ===================
+===================================
+*/
+
+.card-modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1040;
+	overflow: auto;
+	overflow-y: auto;
+}
+
+.card-modal.fade .card-modal-dialog {
+	-webkit-transform: translate(0, -25%);
+	-ms-transform: translate(0, -25%);
+	transform: translate(0, -25%);
+	-webkit-transition: -webkit-transform 0.3s ease-out;
+	-moz-transition: -moz-transform 0.3s ease-out;
+	-o-transition: -o-transform 0.3s ease-out;
+	transition: transform 0.3s ease-out;
+}
+
+.card-modal.in .card-modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+
+.card-modal-dialog {
+	z-index: 1050;
+	width: auto;
+	padding: 60px 10px 10px 10px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.card-modal-content {
+	position: relative;
+	background-color: #eee;
+	border: 1px solid #999999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box;
+}
+
+.card-modal-header {
+	min-height: 16.428571429px;
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.card-modal-title {
+	margin: 0;
+	line-height: 1.428571429;
+	font-size: 18px;
+}
+
+.card-modal-body {
+	position: relative;
+	background-color: #e5e5e5;
+	padding: 20px;
+}
+
+/* 
+===================================
+==== Action List & items here =====
+===================================
+*/
+
+.lavagna-card-actionlist-holder {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.lavagna-card-actionlist-holder > li {
+	clear: both;
+	margin-bottom: 20px;
+}
+
+.lavagna-card-actionlist-holder .add {
+	padding: 10px 15px;
+	background-color: #f5f5f5;
+	heigth: auto;
+	width: 100%;
+	border-top: 1px solid #dddddd;
+}
+
+.lavagna-card-actionlist {
+	border-color: #dddddd;
+	background-color: white;
+}
+
+.lavagna-card-actionlist .head {
+	border-bottom: 1px solid transparent;
+}
+
+.lavagna-card-actionlist .head .title {
+	font-weight: 700;
+	font-size: 16px;
+	word-wrap: break-word;
+}
+
+.lavagna-card-actionlist .list {
+	border-bottom: 1px solid transparent;
+}
+
+.lavagna-card-actionlist .footer {
+	border-top: 1px solid #dddddd;
+	background-color: #f5f5f5;
+	overflow: hidden;
+}
+
+.lavagna-card-actionlist .footer .content {
+	padding: 10px 15px;
+	float: left;
+}
+
+.lavagna-card-actionlist-text {
+	padding: 10px 15px;
+}
+
+.lavagna-card-actionitems {
+	min-height: 42px;
+	margin-bottom: 0;
+	list-style: none;
+	padding: 0;
+}
+
+.lavagna-card-actionitem {
+	border-top: 1px solid #dddddd;
+	position: relative;
+	display: block;
+	padding: 10px 15px;
+	margin-bottom: -1px;
+	background-color: #ffffff;
+	min-height: 42px;
+	word-wrap: break-word;
+}
+
+.lavagna-card-actionitem-text {
+	display: block;
+	margin-left: 20px;
+}
+
+.lavagna-card-actionitem-checkbox {
+	float: left;
+}
+
+.lavagna-card-actionitem-checkbox input {
+	float: left;
+	margin-right: 7px;
+}
+
+/* 
+===================================
+==== card title ===================
+===================================
+*/
+
+.lavagna-card-edit {
+	overflow: hidden;
+	clear: both;
+	display: table;
+	padding: 5px 5px;
+	width: 100%;
+}
+
+
+/* 
+===================================
+==== file upload tab =====
+===================================
+*/
+
+ul.lavagna-files-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul.lavagna-files-list li.lavagna-file {
+	border-top: 1px solid #dddddd;
+	position: relative;
+	display: block;
+	background-color: #ffffff;
+}
+
+ul.lavagna-files-list li.lavagna-file:first-of-type {
+	border-top:0;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-icon {
+	float: left;
+	font-size: 30px;
+	width: 85px;
+	color: #b5b5b5;
+	min-height: 85px;
+	text-align: center;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-icon span {
+	padding-top: 23px;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-info {
+	padding: 10px 15px;
+	word-wrap: break-word;
+	margin-left: 85px;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-info span.username {
+	font-weight: 700;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-info ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-info ul .upload-status {
+	font-weight: 700;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls {
+	top: 10px;
+	right: 15px;
+	position: absolute;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span {
+	color: #d5d5d5;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span:hover {
+	color: black;
+}
+
+.upload-progress {
+	margin-bottom: 5px;
+}
+
+.bootstrap-filestyle {
+	margin-bottom: 5px;
+}
+
+.quickupload-progress {
+	margin-bottom: 5px;
+}
+
+/* 
+===================================
+==== comments tab =====
+===================================
+*/
+
+.lavagna-comments {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	list-style: none;
+}
+
+.lavagna-comments .comment {
+	border-top: 1px solid #dddddd;
+	padding: 10px 15px;
+	word-wrap: break-word;
+}
+
+.lavagna-comments .comment:first-of-type {
+	border-top:0;
+}
+
+.lavagna-comments .comment .header {
+	margin-bottom: 5px;
+}
+
+.lavagna-comments .comment a.user, .description a.user {
+	font-weight: 700;
+	color: black;
+}
+
+.lavagna-comments .comment .date, .description .date, .file-info .date {
+	color: #aaaaaa;
+	font-size: 12px;
+}
+
+.lavagna-comments .comment .content-update, .description .content-update {
+	font-size: 12px;
+	font-style: italic;
+	color: #aaaaaa;
+}
+
+.lavagna-comments .comment .content-update a.user, .description .content-update a.user {
+	font-weight: 700;
+	color: #7e7e7e;
+}
+
+.lavagna-highlight {
+	background-color: rgba(253, 255, 218, 1)
+}
+
+/* 
+===================================
+==== activity tab =====
+===================================
+*/
+
+ul.lavagna-activity {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	list-style: none;
+}
+
+ul.lavagna-activity li:first-of-type {
+	border-top: 0;
+}
+
+ul.lavagna-activity .activity {
+	border-top: 1px solid #dddddd;
+	padding: 10px 15px;
+	word-wrap: break-word;
+}
+
+ul.lavagna-activity .activity .header {
+	margin-bottom: 5px;
+}
+
+ul.lavagna-activity .activity a.user {
+	font-weight: 700;
+	color: black;
+}
+
+ul.lavagna-activity .activity .date {
+	color: #aaaaaa;
+	font-size: 12px;
+}
+
+
+/* 
+===================================
+==== tab UI to remove soon =====
+===================================
+*/
+
+ul.lavagna-tab-controls {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.lavagna-tab-controls li {
+	float: left;
+	display: block;
+}
+
+ul.lavagna-tab-controls li a {
+	padding: 0;
+	margin-right: 20px;
+	display: block;
+	color: #d5d5d5;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+ul.lavagna-tab-controls li a:HOVER {
+	color: black;
+}
+
+ul.lavagna-tab-controls li a.active {
+	color: black;
+}
+
+.lavagna-tab-panel {
+	display: none;
+}
+
+.active-panel {
+	display: block;
+}
+
+/* 
+===================================
+==== misc =========================
+===================================
+*/
+
+.lavagna-closed-card {
+	color: #999;
+	text-decoration: line-through;
+}
+
+.lavagna-card-actionlist-edit .control-item .span {
+	width: auto;
+}
+
+.panel-confirmation-control {
+	padding: 10px 10px;
+	display: block;
+	background-color: #fafafa;
+	border: 1px solid #d0d0d0;
+	margin: 5px 0;
+}
+
+ul.controls-over {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: #d5d5d5;
+}
+
+ul.controls-over li {
+	float: left;
+	margin-left: 10px;
+}
+
+ul.controls-over li:hover {
+	color: black;
+	cursor: pointer;
+}

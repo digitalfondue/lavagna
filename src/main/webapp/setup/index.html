@@ -1,0 +1,316 @@
+<!doctype html>
+<html data-ng-app="lavagna-setup">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="../css/lvg-general.css" type="text/css">
+<script src="../js/angular.min.js"></script>
+<script src="../js/angular-sanitize.min.js"></script>
+<script src="../js/angular-ui-router.min.js"></script>
+<script src="app.js"></script>
+<style type="text/css">
+	div.container {
+		margin-top: 20px;
+	}
+	
+	input[type=checkbox]:invalid {
+  		box-shadow: none;
+	}
+	
+	.body label {
+		font-weight:normal;
+	}
+	
+	
+	.container {
+		max-width:800px;
+		margin:auto;
+	}
+	
+	ul,li {
+		list-style-type: none;
+	}
+	
+	ul {
+		padding-left:10px;
+	}
+	
+	.capitalize {
+		text-transform: capitalize;
+	}
+	
+	.or {
+		text-align:center;
+		margin-top:20px;
+		margin-bottom:10px;
+	}
+	
+	.or hr {
+		border: none;
+		border-top: 1px solid #D0D0D0;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.or span {
+		background-color:white;
+		padding: 10px;
+		position: relative;
+		top: -12px;
+		font-size: 16px;
+	}
+	
+	input[type=file] {
+		display: inline-block;
+	}
+	
+	.buttons .lvg-button-submit {
+		float:right;
+	}
+	 
+</style>
+
+<script type="text/ng-template" id="first-step.html">
+	<div class="head clearfix headonly">
+    	<div class="title title-bold">Setup Lavagna, step 1/4: set base url</div>
+	</div>
+	<div class="body separated">
+		<form data-ng-submit="submitBaseUrl()">
+			<div class="form-group">
+				<label for="baseUrl">Base url</label> <input class="form-control" type="text" id="baseUrl" data-ng-model="baseUrl" required placeholder="{{baseUrlPlaceholder}}">
+				<p class="help-block">The base url of the application. The proposed url is most likely correct.</p>
+			</div>
+			<input type="submit" value="Next" class="lvg-button lvg-button-submit">
+		</form>
+		<div class="or"><hr><span>Or</span></div>
+
+		<p><strong>Import</strong></p>
+		<form data-ng-submit="submitImport()" class="form-inline">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="file" name="file" id="import-lavagna"> <input type="submit" value="Import" class="lvg-button lvg-button-submit">
+				</div>
+			</div>
+		</form>
+	</div>
+</script>
+<script type="text/ng-template" id="second-step.html">
+	<div class="head clearfix headonly">
+    	<div class="title title-bold">Setup Lavagna, step 2/4: select login type</div>
+	</div>
+	<div class="body separated">
+		<form data-ng-submit="submitConfiguration()">
+			<div>
+				<label><input type="radio" data-ng-model="authMethod"
+					name="authMethod" value="DEMO"> Demo</label>
+			</div>
+			<div>
+				<label><input type="radio" data-ng-model="authMethod"
+					name="authMethod" value="LDAP"> Ldap</label>
+				<div data-ng-if="authMethod == 'LDAP'">
+					<div class="form-group">
+						<label for="ldap-serverUrl">Server URL</label> <input class="form-control" type="text"
+							id="ldap-serverUrl"
+							placeholder="ldap://localhost:10389"
+							data-ng-model="ldap.serverUrl"
+							data-ng-required="authMethod == 'LDAP'">
+					</div>
+					<div class="form-group">
+						<label for="ldap-managerDn">Manager DN</label> 
+						<input class="form-control" type="text"
+							id="ldap-managerDn"
+							placeholder="uid=admin,ou=system" 
+							data-ng-model="ldap.managerDn"
+							data-ng-required="authMethod == 'LDAP'">
+					</div>
+					<div class="form-group">
+						<label for="ldap-managerPassword">Manager Password</label> <input class="form-control"
+							id="ldap-managerPassword"
+							placeholder="secret"
+							data-ng-model="ldap.managerPassword"
+							data-ng-required="authMethod == 'LDAP'">
+					</div>
+					<div class="form-group">
+						<label for="ldap-userSearchBase">User Search Base</label> <input class="form-control"
+							id="ldap-userSearchBase"
+							type="text" placeholder="ou=system"
+							data-ng-model="ldap.userSearchBase"
+							data-ng-required="authMethod == 'LDAP'">
+					</div>
+					<div class="form-group">
+						<label for="ldap-userSearchFilter">User Search Filter</label> <input class="form-control"
+							id="ldap-userSearchFilter"
+							type="text" placeholder="uid={0}"
+							data-ng-model="ldap.userSearchFilter"
+							data-ng-required="authMethod == 'LDAP'">
+					</div>
+					<div class="col-md-12">
+						<h4>Check ldap configuration</h4>
+						<div class="form-group">
+							<label for="checkLdap-username">Username</label> <input type="text" class="form-control"
+								id="checkLdap-username"
+								data-ng-model="checkLdap.username">
+						</div>
+						<div class="form-group">
+							<label for="checkLdap-password">Password</label> <input type="password"
+								id="checkLdap-password"
+								class="form-control" data-ng-model="checkLdap.password">
+						</div>
+						<div class="form-group">
+							<button class="lvg-button lvg-button-default" data-ng-click="checkLdapConfiguration(ldap, checkLdap)"
+								type="button">Check</button>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div>
+						<div data-ng-show="ldapCheckResult">
+							<span data-ng-show="ldapCheckResult.first">Everything seems Ok:</span> 
+							<span data-ng-show="!ldapCheckResult.first">An error occured, trace is:</span>
+							<ul>
+								<li data-ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<label><input type="radio" data-ng-model="authMethod"
+					name="authMethod" value="PERSONA"> Persona</label>
+				<div data-ng-if="authMethod == 'PERSONA'" class="form-group">
+					<label for="persona-audience">Audience</label> <input class="form-control" type="text"
+						id="persona-audience"
+						data-ng-model="persona.audience"
+						data-ng-required="authMethod == 'PERSONA'">
+					<p class="help-block">
+						(The protocol, domain name, and port of your site. For example,
+						"https://example.com:443"). See the Mozilla Persona <a
+							href="https://developer.mozilla.org/en/Persona/Remote_Verification_API#Parameters">documentation</a>.
+						The proposed default value is most probably the correct one. Change
+						if necessary.
+					</p>
+				</div>
+			</div>
+			<div>
+				<label><input type="radio" data-ng-model="authMethod"
+					name="authMethod" value="OAUTH"> Oauth</label>
+				<div data-ng-if="authMethod == 'OAUTH'">
+					<div class="form-group">
+						<label for="oauth-baseUrl">Base url for callback urls</label> <input
+							id="oauth-baseUrl"
+							class="form-control" type="text" data-ng-model="oauth.baseUrl"
+							data-ng-required="authMethod == 'OAUTH'">
+					</div>
+					<ul>
+						<li data-ng-repeat="provider in oauthProviders">
+							<div class="checkbox">
+								<label class="capitalize"><input type="checkbox"
+									data-ng-model="oauth[provider].present"
+									data-ng-required="countSelectedOauth() == 0"> {{provider}}</label>
+							</div>
+							<div data-ng-if="oauth[provider].present">
+								<div class="form-group">
+									<label for="oauth-provider-api-key-{{provider}}">Api key</label> <input class="form-control" type="text"
+										id="oauth-provider-api-key-{{provider}}"
+										data-ng-model="oauth[provider].apiKey"
+										data-ng-required="authMethod == 'OAUTH'">
+								</div>
+								<div class="form-group">
+									<label for="oauth-provider-api-secret-{{provider}}">Secret</label> <input class="form-control" type="text"
+										id="oauth-provider-api-secret-{{provider}}"
+										data-ng-model="oauth[provider].apiSecret"
+										data-ng-required="authMethod == 'OAUTH'">
+								</div>
+								<div>Callback url is: {{oauth.baseUrl}}login/oauth/{{provider}}/callback</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div  class="buttons">
+				<input type="submit" value="Next" class="lvg-button lvg-button-submit">
+				<button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="back('first-step')">Back</button>
+			</div>
+		</form>
+	</div>
+</script>
+<script type="text/ng-template" id="third-step.html">
+	<div class="head clearfix headonly">
+    	<div class="title title-bold">Setup Lavagna, step 3/4: insert admin user</div>
+	</div>
+	<div class="body separated">
+		<form data-ng-submit="saveUser()" class="form-inline">
+			<p data-ng-show="authMethod == 'DEMO'">Demo account: the password will be equal to the username. Use only for demo purpose.</p>
+			<p data-ng-show="authMethod == 'LDAP'">Ldap account. Insert username.</p>
+			<p data-ng-show="authMethod == 'PERSONA'">Persona account. Insert email.</p>
+			<p data-ng-show="authMethod == 'OAUTH'">Oauth: insert username for github/bitbucket/twitter. Insert email in case of google.</p>
+			<div class="form-group">
+    			<div class="input-group">
+					<select data-ng-model="accountProvider" data-ng-options="l for l in loginType" class="form-control"></select>
+				</div>
+				<div class="input-group">
+					<input data-ng-model="username" required class="form-control">
+				</div>
+			</div>
+			<div style="margin-top:10px"  class="buttons">
+				<button class="lvg-button lvg-button-submit">Next</button>
+				<button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="back('second-step')">Back</button>
+			</div>
+		</form>
+	</div>
+</script>
+
+<script type="text/ng-template" id="fourth-step.html">
+	<div class="head clearfix headonly">
+    	<div class="title title-bold">Setup Lavagna, step 4/4: confirm and activate</div>
+	</div>
+	<div class="body separated">
+		<p>Confirm the configuration values:</p>
+
+		<ul>
+			<li>Base application url: {{toSave.first[0].second}}
+			<li style="margin-top:20px;">Authentication method: {{selectedAuthMethod}}
+				<div data-ng-if="selectedAuthMethod == 'PERSONA'">
+					Persona parameter:
+					<ul>
+						<li>Persona audience: {{toSave.second[1].second}}
+				</div>
+				<div data-ng-if="selectedAuthMethod == 'OAUTH'">
+					Oauth parameters:
+					<ul>
+						<li>Base url: {{selectedNewOauthConf.baseUrl}}</li>
+						<li data-ng-repeat="v in selectedNewOauthConf.providers" style="margin-top:10px;">
+							<div>Provider: {{v.provider}}</div>
+							<div>Api Key: {{v.apiKey}}</div>
+							<div>Api Secret: {{v.apiSecret}}</div> 
+						</li>
+					</ul>
+		
+				</div>
+				<div data-ng-if="selectedAuthMethod == 'LDAP'">
+					Ldap parameters:
+					<ul>
+						<li data-ng-repeat="v in toSave.second.slice(1)">{{v.first}} : {{v.second}}
+				</div>
+			</li>
+			<li style="margin-top:20px;">Admin account: provider: {{toSave.user.provider}}, username : {{toSave.user.username}}
+		</ul>
+		<form data-ng-submit="activate()" class="form-inline">
+			<p class="buttons">
+				<button class="lvg-button lvg-button-submit">Activate</button>
+				<button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="back('third-step')">Back</button>
+			</p>
+		</form>
+	</div>
+</script>
+
+</head>
+<body >
+	<div class="container">
+		<div class="lavagna-panel">
+			<div data-ui-view></div>
+		</div>
+	</div>
+</body>
+</html>

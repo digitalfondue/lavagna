@@ -1,0 +1,62 @@
+<div class="modal-header">
+	<button type="button" class="close" data-ng-click="$close()">&times;</button>
+	<h3 class="modal-title">{{l.name}}</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="lavagna-card-panel" data-lvg-has-permission="CREATE_ACTION_LIST">
+				<div class="footer-full">
+					<form data-ng-role="form" data-ng-submit="addLabelListValue(newListValue); newListValue=null;">
+						<div class="content input-group">
+							<input type="text" class="form-control" required="required"
+							   placeholder="{{'partials.project.manage-labels.newListValue.placeholder' | translate}}" data-ng-model="newListValue"
+							   autocomplete="off" data-lvg-on-esc>
+							<span class="input-group-btn">
+								<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-xs-12">
+			<div class="lavagna-card-panel">
+				<div class="body-full">
+					<table class="table table-striped">
+						<tr data-ng-repeat="(nValue,lValue) in labelsListValues">
+							<td class="vcenter">{{lValue.value}}</td>
+							<td class="lavagna-icon-column">
+								<button class="lvg-button lvg-button-default"
+										data-ng-disabled="labelsListValues.length < 2 || nValue == 0"
+										data-ng-click="swapLabelListValues(lValue.id, labelsListValues[nValue - 1].id)">
+									<i class="fa fa-arrow-up"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column">
+								<button class="lvg-button lvg-button-default"
+										data-ng-disabled="labelsListValues.length < 2 || labelsListValues.length == nValue + 1"
+										data-ng-click="swapLabelListValues(lValue.id, labelsListValues[nValue + 1].id)">
+									<i class="fa fa-arrow-down"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column">
+								<button class="lvg-button lvg-button-default"
+										data-ng-click="removeLabelListValue(lValue.id)">
+									<i class="fa fa-times"></i>
+								</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="modal-footer">
+	<button data-ng-click="$close()" class="lvg-button lvg-button-default" data-translate>
+		button.close
+	</button>
+</div>

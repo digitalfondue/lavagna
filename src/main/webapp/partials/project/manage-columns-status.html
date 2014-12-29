@@ -1,0 +1,31 @@
+<div class="container auto-margin lavagna-container-top-margin">
+	<div class="row">
+		<div class="col-sm-6" data-ng-repeat="definition in columnsDefinition | addColDefOrder | orderBy:'order'">
+			<div class="lavagna-panel">
+				<div class="head clearfix">
+					<div class="title title-bold">{{'common.column.definition.' + definition.value | translate}}</div>
+				</div>
+				<div class="body-full">
+					<form data-ng-role="form"
+						data-ng-submit="updateColumnDefinition(definition.id, columnDefinition[definition.id].color)">
+						<div class="form-group">
+							<lvg-colorpicker data-ng-model="columnDefinition[definition.id].color"></lvg-colorpicker>
+							<span class="lavagna-project-admin-column-status-name">{{definition.value | capitalize}}</span>
+						</div>
+						<div>
+							<button type="submit" class="lvg-button lvg-button-submit"
+								data-ng-disabled="columnDefinition[definition.id].color == convertIntToColorCode(definition.color) || isNotUniqueColor(columnDefinition[definition.id].color)">
+								<span data-translate>button.save</span>
+							</button>
+							<button type="button" class="lvg-button lvg-button-default"
+								data-ng-disabled="columnDefinition[definition.id].color == convertIntToColorCode(definition.color) || isNotUniqueColor(columnDefinition[definition.id].color)"
+								data-ng-click="columnDefinition[definition.id].color = convertIntToColorCode(definition.color);">
+								<span data-translate>button.reset</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

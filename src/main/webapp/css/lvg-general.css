@@ -1,0 +1,1060 @@
+/*
+	- contains basic style, buttons, panels, elements
+*/
+
+/*
+===================================
+==== basic style ==================
+===================================
+*/
+
+body {
+	font-family: sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	background-color: #e5e5e5;
+	color: #333333;
+}
+
+.auto-margin {
+	margin: 0 auto;
+}
+
+.strike {
+	text-decoration: line-through;
+}
+
+.z-index-500 {
+	z-index: 500
+}
+
+p {
+	margin: 0 0 10px;
+}
+
+.lavagna-container-top-margin {
+	margin-top: 20px;
+}
+
+.lavagna-container-bottom-margin {
+	margin-bottom: 20px;
+}
+
+/* remove the radius from the select when using Webkit or FF */
+
+select {
+	/*-webkit-appearance: none;
+	-moz-appearance: none;*/
+	-webkit-border-radius: 0; /* Safari 3-4, iOS 1-3.2, Android 1.6- */
+	-moz-border-radius: 0; /* Firefox 1-3.6 */
+	border-radius: 0; /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
+}
+
+/*
+===================================
+==== buttons and inputs ===========
+===================================
+*/
+
+/* position correctly the feedback icon for the forms input */
+.form-control-feedback {
+	top: 35px;
+}
+
+/* removal of border radius */
+
+.form-control, .dropdown-menu, .panel, .list-group-item:last-child, .list-group-item:first-child {
+	border-radius: 0;
+}
+
+.lvg-button {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border-radius: 4px;
+	border: 1px solid transparent;
+}
+
+.lvg-inline-button {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.lvg-button[disabled], .lvg-inline-button[disabled] {
+	pointer-events: none;
+	cursor: not-allowed;
+	opacity: 0.65;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.lvg-button:focus, .lvg-inline-button:focus, .lvg-dropdown-button:focus {
+	outline: 0;
+}
+
+.lvg-button-submit {
+	background-color: #428bca;
+	border-color: #357ebd;
+	color: white;
+}
+
+.lvg-button-submit:hover,
+.lvg-button-submit:active,
+.lvg-button-submit:focus {
+	background-color: #3276b1;
+	border-color: #285e8e;
+	color: white;
+}
+
+.lvg-button-default {
+	color: #333333;
+	background-color: #ffffff;
+	border-color: #cccccc;
+}
+
+.lvg-button-default:hover,
+.lvg-button-default:active,
+.lvg-button-default:focus {
+	background-color: #ebebeb;
+	border-color: #adadad;
+	color: #333333;
+}
+
+.lvg-button-warning {
+	color: white;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+}
+
+.lvg-button-warning:hover,
+.lvg-button-warning:active,
+.lvg-button-warning:focus {
+	color: white;
+	background-color: #d43f3a;
+	border-color: #d43f3a;
+}
+
+.lvg-button-white-bg {
+	background-color: white;
+}
+
+.lvg-button-white-bg:hover,
+.lvg-button-white-bg:active,
+.lvg-button-white-bg:focus {
+	background-color: #ebebeb;
+}
+
+.lvg-button-white-bg {
+	background-color: white;
+}
+
+.lvg-button-white-bg:hover,
+.lvg-button-white-bg:active,
+.lvg-button-white-bg:focus {
+	background-color: #ebebeb;
+}
+
+.lvg-button-dropdown-navigation {
+	color: white;
+	text-aligh: left;
+	display: block;
+	padding: 3px 20px;
+	width: 100%;
+	clear: both;
+	font-weight: normal;
+	white-space: nowrap;
+	background-color: #607D8B;
+	opacity: 0.8;
+}
+
+.lvg-button-dropdown-navigation:hover {
+	text-decoration: none;
+	background-color: #78909c;
+	color: white;
+	opacity: 1;
+}
+
+.lvg-button-group {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.lvg-nav-context-button {
+	height: 30px;
+	background-color: #607d8b;
+	color: white;
+	opacity: 0.8;
+}
+
+.lvg-nav-context-button:hover,
+.lvg-nav-context-button:focus
+.lvg-nav-context-button:active {
+	opacity: 1;
+}
+
+.inner-addon {
+	position: relative;
+}
+
+.inner-addon .fa {
+	position: absolute;
+	padding: 10px;
+	pointer-events: none;
+}
+
+.left-inner-addon .fa {
+	left: 0px;
+}
+
+.right-inner-addon .fa {
+	right: 0px;
+}
+
+.left-inner-addon input {
+	padding-left: 30px;
+}
+
+.left-inner-addon input {
+	padding-right: 30px;
+}
+
+.form-selectable {
+	cursor: text !important;
+}
+
+.lvg-form-label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+}
+
+/*
+===================================
+==== panels =======================
+===================================
+*/
+
+.lavagna-form-panel {
+	padding: 10px 10px;
+	background-color: #f5f5f5;
+}
+
+.lavagna-transpartent-panel {
+	padding: 10px 0 0 0;
+	background-color: transparent;
+}
+
+.lavagna-card-panel {
+	border-color: #dddddd;
+	background-color: white;
+	margin-bottom: 20px;
+}
+
+.lavagna-card-panel > div:last-of-type, .lavagna-card-panel > .lavagna-tab-panel > div:last-of-type {
+	border-top: 0;
+	border-bottom: 0;
+}
+
+.lavagna-card-panel .head {
+	border-bottom: 1px solid #dddddd;
+	font-size: 16px;
+	font-weight: 700;
+	padding: 10px 15px;
+}
+
+.lavagna-card-panel .head .title {
+	float: left;
+	padding: 0;
+}
+
+.lavagna-card-panel .body {
+	clear: both;
+	display: block;
+	padding: 10px 15px;
+	margin: 0;
+	word-wrap: break-word;
+	border-bottom: 1px solid #dddddd;
+}
+
+.lavagna-card-panel .body-full {
+	clear: both;
+	display: block;
+	margin: 0;
+	border-bottom: 1px solid #dddddd;
+}
+
+.lavagna-card-panel .footer {
+	border-top: 1px solid #dddddd;
+	background-color: #f5f5f5;
+	overflow: hidden;
+	width: 100%;
+}
+
+.lavagna-card-panel .footer-full {
+	background-color: #f5f5f5;
+	overflow: hidden;
+	width: 100%;
+}
+
+.lavagna-card-panel .footer .content, .lavagna-card-panel .footer-full .content {
+	padding: 10px 15px;
+	width: 100%;
+}
+
+.lavagna-panel {
+	list-style-type: none;
+	display: block;
+	overflow: hidden;
+	background-color: white;
+	border: 1px solid #d0d0d0;
+	padding: 0;
+	margin-bottom: 20px;
+}
+
+.lavagna-panel .head {
+	font-size: 14px;
+	font-weight: normal;
+	word-wrap: break-word;
+	padding: 10px 10px 0 10px;
+}
+
+.lavagna-panel .head.headonly {
+	padding-bottom: 10px;
+}
+
+.lavagna-panel .head .title {
+	padding: 0;
+	font-size: 16px;
+	word-wrap: break-word;
+}
+
+.lavagna-panel .head .title.title-bold {
+	font-weight: bold;
+}
+
+.lavagna-panel .head .title-addon {
+	padding: 0;
+	font-size: 14px;
+	word-wrap: break-word;
+}
+
+.lavagna-panel .head a {
+	cursor: pointer;
+}
+
+.lavagna-panel .body {
+	clear: both;
+	display: block;
+	padding: 5px 10px 10px 10px;
+	margin: 0;
+	font-size: 14px;
+}
+
+.lavagna-panel .body .form-group:last-of-type, .lavagna-panel .body-full .form-group:last-of-type {
+	margin-bottom: 0;
+}
+
+.lavagna-panel .body.separated {
+	border-top: 1px solid #dddddd;
+	padding-top: 10px;
+}
+
+.lavagna-panel .body-full {
+	clear: both;
+	display: block;
+	padding: 10px 10px;
+	margin: 0;
+	font-size: 14px;
+}
+
+.lavagna-panel .body span.fa, .lavagna-panel .body-full span.fa {
+	font-size: 14px;
+}
+
+.lavagna-panel .footer {
+	background-color: #f5f5f5;
+	border-top: 1px solid #d0d0d0;
+	padding: 10px 10px 10px 10px;
+	margin: 0 0 0 0;
+}
+
+.lavagna-panel .footer-light {
+	border-top: 1px solid #d0d0d0;
+	padding: 10px 0 10px 0;
+	margin: 0 10px 0 10px;
+}
+
+.lavagna-panel .footer .content, .lavagna-panel .footer-light .content {
+	padding: 0;
+}
+
+ul.panel-controls {
+	float: right;
+	margin: 0;
+	padding: 0 5px 0 0;
+	color: #d5d5d5;
+	list-style: none;
+}
+
+ul.panel-controls li.control-box {
+	float: left;
+	padding: 10px 15px;
+}
+
+ul.panel-controls li.control-item {
+	float: left;
+	margin-left: 20px;
+}
+
+ul.panel-controls li.control-no-action {
+	color: #424242;
+	margin-left: 20px;
+	float: left;
+}
+
+.active-control {
+	color: #6E6E6E;
+}
+
+ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HOVER, .control-item span.fa-link {
+	cursor: pointer;
+	color: #424242;
+}
+
+.lavagna-panel.disabled .body, .lavagna-panel.disabled .body-full,
+.lavagna-panel.disabled .footer {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.lavagna-panel.collapsed .body, .lavagna-panel.collapsed .body-full,
+.lavagna-panel.collapsed .footer {
+	display: none;
+}
+
+.lavagna-panel-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.lavagna-panel-list .lavagna-panel-list-item {
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px solid #d0d0d0;
+	display: block;
+}
+
+.lavagna-panel-list .lavagna-panel-list-item:last-of-type {
+	border-bottom: 0;
+}
+
+/*
+===================================
+==== colors =======================
+===================================
+*/
+
+/*
+===================================
+==== labels =======================
+===================================
+*/
+
+.lavagna-label {
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-right: 2px;
+	padding: .5em .9em .5em .6em;
+	font-size: 11px;
+}
+
+.white {
+	color: white;
+}
+
+.black {
+	color: black;
+}
+
+.lavagna-label.white a {
+	color: white;
+	text-decoration: underline;
+
+}
+
+.lavagna-label.black a {
+	color: black;
+	text-decoration: underline;
+}
+
+.lavagna-label-no-controls {
+	padding: .4em .9em .3em .6em;
+}
+
+/*
+===================================
+==== notifications ================
+===================================
+*/
+
+#notifications {
+	z-index: 9999;
+}
+
+.lavagna-notifications {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+}
+
+.lavagna-notifications ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lavagna-notifications ul li.notification {
+	margin: 0 0 6px;
+	padding: 5px 10px;
+	width: 280px;
+	box-shadow: 0 0 12px #999999;
+	color: #ffffff;
+	opacity: 0.75;
+	word-wrap: break-word;
+	display: block;
+	position: relative;
+}
+
+.lavagna-notifications ul li.notification:hover {
+	box-shadow: 0 0 12px #999999;
+	opacity: 1;
+}
+
+.lavagna-notifications ul li.success {
+	background: rgba(136, 193, 52, 1);
+}
+
+.lavagna-notifications ul li.error {
+	background: rgba(189, 54, 47, 1);
+}
+
+.lavagna-notifications ul li.warning {
+	background: rgba(248, 148, 6, 1);
+}
+
+li.notification span.lavagna-notification-text {
+	display: inline-block;
+	margin-top: 25px;
+	width: 260px;
+}
+
+li.notification ul.notification-controls {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	list-style: none;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font-size: 12px;
+	border-bottom: 1px solid white;
+	display: block;
+	width: 260px;
+}
+
+li.notification ul.notification-controls li {
+	display: inline;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	margin-left: 10px;
+	padding-bottom: 4px;
+	cursor: pointer;
+	float: right;
+}
+
+/*
+===================================
+==== dropdown menu ================
+===================================
+*/
+
+.dropdown-menu {
+	padding: 0;
+}
+
+.dropdown-menu .divider {
+	padding: 0;
+	margin: 0;
+}
+
+/* drop down submenu, courtesy of: http://www.bootply.com/86684 */
+
+.dropdown-submenu {
+	position: relative;
+}
+
+.dropdown-menu button.lvg-dropdown-button {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: left;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.dropdown-submenu > .dropdown-menu {
+	top: 0;
+	left: 100%;
+	margin-top: 0;
+	margin-left: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+	display: block;
+}
+
+.dropdown-submenu > button:after {
+	display: block;
+	content: " ";
+	float: right;
+	width: 0;
+	height: 0;
+	border-color: transparent;
+	border-style: solid;
+	border-width: 5px 0 5px 5px;
+	border-left-color: #cccccc;
+	margin-top: 5px;
+	margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+	border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+	float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+	left: -100%;
+	margin-left: 10px;
+	-webkit-border-radius: 6px 0 6px 6px;
+	-moz-border-radius: 6px 0 6px 6px;
+	border-radius: 6px 0 6px 6px;
+}
+
+/*
+===================================
+==== Modal ========================
+===================================
+*/
+
+.lavagna-modal .modal-dialog {
+	z-index: 1050;
+	padding: 10px 10px 10px 10px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.lavagna-modal .modal-dialog .modal-content {
+	position: relative;
+	background-color: #eee;
+	border: 1px solid #999999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0;
+	outline: none;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box;
+}
+
+.lavagna-modal .modal-dialog .modal-header {
+	min-height: 16.428571429px;
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-header .close {
+	margin-top: -2px;
+	padding: 0;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	-webkit-appearance: none;
+	float: right;
+	font-size: 21px;
+	font-weight: bold;
+	line-height: 1;
+	color: #000000;
+	text-shadow: 0 1px 0 #ffffff;
+	opacity: 0.2;
+}
+
+.modal-header .close:hover {
+	opacity: 0.5;
+}
+
+.modal-header .close:focus,
+.modal-header .close:hover,
+.modal-header .close:active {
+	border: 0;
+}
+
+.lvg-modal-open {
+	overflow: hidden;
+}
+
+.lvg-modal-overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1030;
+	background-color: #000000;
+}
+
+.lvg-modal-overlay-fade {
+	opacity: 0;
+	-webkit-transition: opacity 0.15s linear;
+	transition: opacity 0.15s linear;
+}
+
+.lvg-modal-overlay-fade.in {
+	opacity: 0.5;
+}
+
+/*
+===================================
+==== lvg-switch ===================
+===================================
+*/
+
+.lvg-switch-controls {
+	height: 22px;
+}
+
+.lvg-switch-label {
+	margin-left: 10px;
+	display: inline-block;
+	vertical-align: 10%;
+}
+
+.lvg-switch {
+	position: relative;
+	border: 1px solid #aaaaaa;
+	background-color: white;
+	cursor: pointer;
+	width: 50px;
+	height: 22px;
+	border-radius: 0;
+	transition: all .5s ease;
+	opacity: 1;
+	display: inline-block;
+}
+
+.lvg-switch .button {
+	height: 18px;
+	width: 18px;
+	background-color: #bebebe;
+	display: block;
+	border-radius: 0;
+	border: 1px solid #aaaaaa;
+	margin-top: -1px;
+	position: absolute;
+	transition: all .5s ease;
+	left: 0;
+	margin: 1px 1px 1px 1px;
+}
+
+.lvg-switch.active {
+	border-color: #357ebd;
+}
+
+.lvg-switch.active .button {
+	left: 28px;
+	background: #428bca;
+	border-color: #357ebd;
+}
+
+.lvg-switch-sm {
+	position: relative;
+	border: 1px solid #aaaaaa;
+	background-color: white;
+	cursor: pointer;
+	width: 30px;
+	height: 15px;
+	border-radius: 0;
+	transition: all .5s ease;
+	opacity: 1;
+	display: inline-block;
+}
+
+.lvg-switch-sm .button {
+	height: 11px;
+	width: 11px;
+	background-color: #bebebe;
+	display: block;
+	border-radius: 0;
+	border: 1px solid #aaaaaa;
+	margin-top: -1px;
+	position: absolute;
+	transition: all .5s ease;
+	left: 0;
+	margin: 1px 1px 1px 1px;
+}
+
+.lvg-switch-sm.active {
+	border-color: #357ebd;
+}
+
+.lvg-switch-sm.active .button {
+	left: 15px;
+	background: #428bca;
+	border-color: #357ebd;
+}
+
+/*
+==========================================
+==== bulk action for board and search ====
+==========================================
+*/
+
+.lvg-bulk-action-inline {
+	display: inline-block;
+}
+
+.lvg-bulk-action-inline > div {
+	display: inline-block;
+}
+
+.lvg-bulk-action-inline input, .lvg-bulk-action-inline select {
+	height:24px;
+	margin-right:3px;
+	box-shadow: none !important;
+	-webkit-user-select: auto !important;
+	outline: none;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+.lvg-bulk-action-inline input::-webkit-input-placeholder {
+    color: white;
+}
+
+.lvg-bulk-action-inline input::-moz-placeholder {
+    color: white;
+}
+.lvg-bulk-action-inline input:-ms-input-placeholder {
+    color: white;
+}
+
+.lvg-bulk-action-inline input.form-control, .lvg-bulk-action-inline select {
+	color:black;
+	display:inline-block;
+	width: auto;
+	padding:0;
+	margin:0;
+	border:0;
+	padding-left:3px;
+	padding-right:3px;
+	line-height:inherit;
+	font-size:inherit;
+	height: auto;
+	height:24px;
+	float:left;
+	margin-right:3px;
+	box-shadow: none !important;
+	-webkit-user-select: auto !important;
+	outline: none;
+}
+
+.lvg-bulk-action-inline input, .lvg-bulk-action-inline input.form-control {
+	height: 24px;
+	color:white;
+	border:0;
+	background-color:#78909C;
+	float:left;
+}
+
+.lvg-bulk-action-inline .dropdown.lvg-button-group.add-label {
+	float:left;
+	margin-right:3px;
+}
+
+
+/*
+===================================
+==== misc =========================
+===================================
+*/
+
+.child-elements {
+	pointer-events: none;
+}
+
+.lavagna-progress {
+	position: relative;
+	background-color: white;
+	padding: 0;
+	height: 3px;
+	border-radius: 0;
+	margin: 0;
+}
+
+.lavagna-progress .progress-bar {
+	z-index: 10;
+	overflow: hidden;
+	position: absolute;
+	border-radius: 0;
+	height: 100%;
+	-webkit-transition: none;
+	-moz-transition: none;
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+/* override jquery ui default */
+
+.ui-autocomplete {
+	z-index: 2000;
+	border-radius: 0;
+}
+
+.ui-corner-all {
+	border-radius: 0;
+}
+
+/*-----------------*/
+/** http://tobiasahlin.com/spinkit/ **/
+.spinner {
+	text-align: center;
+}
+
+.spinner > div {
+	width: 13px;
+	height: 13px;
+	background-color: #333;
+
+	border-radius: 100%;
+	display: inline-block;
+	-webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+	animation: bouncedelay 1.4s infinite ease-in-out;
+	/* Prevent first frame from flickering when animation starts */
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+	0%, 80%, 100% {
+		-webkit-transform: scale(0.0)
+	}
+	40% {
+		-webkit-transform: scale(1.0)
+	}
+}
+
+@keyframes bouncedelay {
+	0%, 80%, 100% {
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+	}
+	40% {
+		transform: scale(1.0);
+		-webkit-transform: scale(1.0);
+	}
+}
+
+/* --------- */
+
+.child-elements {
+	pointer-events: none;
+}
+
+.lavagna-pointer {
+	cursor: pointer;
+}
+
+.lavagna-wbr {
+	word-break: break-all;
+}
+
+.table > tbody > tr > td.vcenter {
+	vertical-align: middle;
+}
+
+.lvg-edit {
+	cursor: text;
+}
+
+.lavagna-hide {
+	display: none !important;
+}
+
+.pull-right {
+	float: right;
+}
+
+.lvg-table {
+	margin: 0;
+}
+
+.lvg-panel-top-pagination {
+	margin: 0 0 5px 0;
+}
+
+.archived {
+	opacity: 0.5;
+}
+
+/* override modal animation*/
+.modal.fade {
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog, .modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+}

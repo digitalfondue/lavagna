@@ -1,0 +1,10 @@
+{{#cards}}
+## {{cardName}} ({{baseApplicationUrl}}{{cardFull.projectShortName}}/{{cardFull.boardShortName}}-{{cardFull.sequence}})
+
+{{#cardEvents}}
+{{.}}
+
+{{/cardEvents}}
+
+
+{{/cards}}

@@ -1,0 +1,95 @@
+<lvg-navbar data-navbar-type="project-menu">
+	<lvg-project-navigation/>
+</lvg-navbar>
+
+<div class="container">
+	<div class="row" data-bindonce data-ng-repeat="milestone in cardsByMilestone"
+		 data-ng-init="milestone.detail = null">
+		<div class="col-xs-12 lavagna-container-top-margin">
+			<div class="lavagna-panel">
+				<div class="progress lvg-progress" data-ng-if="showArray(milestone.cardsCountByStatus, 0)"
+					 style="background-color: {{(statusColors[cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}}">
+					<div class="progress-bar" data-bindonce
+						 data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"
+						 style="width: {{item.count * 100.0 / milestone.totalCards  | number:2}}%; background-color: {{(statusColors[item.status] | color).color}}">
+					</div>
+				</div>
+				<div class="head clearfix">
+					<div class="title title-bold col-xs-10 lvg-milestone-title">
+						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable"
+							  data-ng-click="milestone.edit = !milestone.edit">
+							<i class="fa fa-pencil-square-o" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
+							<i class="fa fa-minus" data-ng-show="milestone.edit"></i>
+						</span>
+						<span data-ng-hide="milestone.edit">{{milestone.labelListValue.value}}</span>
+						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
+							<input data-ng-model="newName">
+							<span data-ng-click="updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
+								<i class="fa fa-check"></i>
+							</span>
+						</span>
+					</div>
+					<div class="title-addon col-xs-2" data-ng-show="milestone.totalCards > 0"
+						 data-ng-click="toggleMilestoneOpenStatus(milestone)">
+						<ul class="panel-controls">
+							<li class="control-item" data-ng-show="milestoneOpenStatus[milestone.labelListValue.value]">
+								<span class="pull-right"><i class="fa fa-chevron-up"></i></span>
+							</li>
+							<li class="control-item active-control" data-ng-hide="milestoneOpenStatus[milestone.labelListValue.value]">
+								<span class="pull-right"><i class="fa fa-chevron-down"></i></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="body">
+					<div data-ng-hide="milestone.totalCards > 0" data-translate>
+						partials.project.milestones.noCards
+					</div>
+					<div class="row" data-ng-hide="milestone.totalCards == 0">
+						<div class="col-md-12">
+							<ul class="statistics-definition">
+								<li class="stat" data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]">
+									<span data-ng-style="statusColors[item.status]|color" class="fa fa-tasks"></span>
+									<span data-translate>{{item.status | capitalize}}:</span>
+									{{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row" data-ng-if="milestoneOpenStatus[milestone.labelListValue.value]">
+						<div class="lvg-milestone-card-title"
+							 data-ng-if="showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
+							partials.project.milestones.assignedAndClosedCards
+						</div>
+						<div data-ng-if="showArray(milestone.detail.assignedAndClosedCards, 1)">
+							<lvg-stats-chart chart-data="milestone.detail.assignedAndClosedCards"></lvg-stats-chart>
+						</div>
+						<div class="lvg-milestone-card-title"
+							 data-ng-if="showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
+							partials.project.milestones.cards
+						</div>
+
+						<div class="lvg-milestone-card"
+							 data-bindonce data-ng-repeat="card in milestone.detail.cards.found">
+
+							<a data-bo-href="'#/' + project.shortName + '/milestones/' + card.boardShortName + '-' + card.sequence"
+							   data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+								<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+							</a>
+							<span> {{card.name}}</span>
+						</div>
+
+						<div data-ng-if="milestone.detail.cards.totalPages > 1" class="pull-right">
+							<pagination total-items="milestone.detail.cards.count" data-ng-model="milestone.currentPage"
+										items-per-page="milestone.detail.cards.countPerPage" max-size="10"
+										class="pagination-sm lvg-milestone-pagination" boundary-links="true"
+										data-ng-change="moveDetailToPage(milestone, milestone.currentPage - 1)"></pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div data-ui-view data-autoscroll="false"></div>

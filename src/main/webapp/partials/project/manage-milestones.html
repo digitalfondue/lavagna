@@ -1,0 +1,65 @@
+<div class="container auto-margin lavagna-container-top-margin">
+	<div class="row">
+		<div class="col-sm-6 col-xs-12">
+			<div class="lavagna-form-panel lavagna-container-bottom-margin">
+				<form data-ng-submit="addLabelListValue(newMilestoneValue);newMilestoneValue = null">
+					<div class="input-group">
+						<input type="text" class="form-control"
+						   	placeholder="{{'partials.project.manage-milestones.newMilestone' | translate}}"
+						   	data-ng-model="newMilestoneValue"
+						   	required="required"
+						   	autocomplete="off"
+							data-lvg-on-esc>
+						<span class="input-group-btn">
+							<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	
+		<div class="col-xs-12">
+			<div class="lavagna-panel">
+					<table class="table lvg-table" data-ng-init="milestoneDeleteStatus = {}">
+						<tr data-ng-repeat="(nValue,lValue) in milestoneValues">
+							<td class="vcenter"><span data-ng-hide="lValue.edit">{{lValue.value}}</span><span data-ng-show="lValue.edit"><input data-ng-model="lValue.value"> <button class="lvg-button lvg-button-default" data-ng-click="update(lValue)"><i class="fa fa-check"></i></button></span></td>
+							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+								<button class="lvg-button lvg-button-default" data-ng-click="lValue.edit = !lValue.edit">
+									<i class="fa fa-pencil-square-o" data-ng-hide="lValue.edit"></i>
+									<i class="fa fa-minus" data-ng-show="lValue.edit"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+								<button class="lvg-button lvg-button-default"
+										data-ng-disabled="milestoneValues.length < 2 || nValue == 0"
+										data-ng-click="swapLabelListValues(lValue.id, milestoneValues[nValue - 1].id)">
+									<i class="fa fa-arrow-up"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+								<button class="lvg-button lvg-button-default"
+										data-ng-disabled="milestoneValues.length < 2 || milestoneValues.length == nValue + 1"
+										data-ng-click="swapLabelListValues(lValue.id, milestoneValues[nValue + 1].id)">
+									<i class="fa fa-arrow-down"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+								<button class="lvg-button lvg-button-default"
+										data-ng-disabled="milestoneValues.length < 2"
+										data-ng-click="milestoneDeleteStatus[lValue.id] = true">
+									<i class="fa fa-times"></i>
+								</button>
+							</td>
+							<td class="lavagna-confirm-column" colspan="4" data-ng-show="milestoneDeleteStatus[lValue.id]">
+								<form data-ng-role="form" data-ng-submit="removeLabelListValue(lValue.id)">
+									<p data-translate>partials.project.manage-milestones.remove</p>
+									<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
+									<button type="button" class="lvg-button lvg-button-default" data-ng-click="milestoneDeleteStatus[lValue.id] = false;" data-translate>button.no</button>
+								</form>
+							</td>
+						</tr>
+					</table>
+			</div>
+		</div>
+	</div>
+</div>

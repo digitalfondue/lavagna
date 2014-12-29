@@ -1,0 +1,15 @@
+<form class="lavagna-search hidden-xs" role="search" data-ng-submit="submit()">
+	<div class="input-group">
+		 
+		
+		<df-autocomplete data-ng-model="toSearch" df-autocomplete-configuration="configuration">
+			<df-autocomplete-list>
+				<ul>
+					<li data-ng-class="{'df-autocomplete-selected' : dfAutocompleteInternalState.autocompleteSelectionIndex == $index}" data-ng-mouseover="dfAutocompleteInternalState.autocompleteSelectionIndex = $index" data-ng-repeat="elem in dfAutocompleteInternalState.autocompleteResult" data-ng-click="selected(elem)">{{elem.text}}
+				</ul>
+			</df-autocomplete-list>
+		</df-autocomplete>
+		
+		<span class="input-group-btn"><button class="lvg-inline-button" type="submit"><span class="fa fa-search"></span></button></span>
+	</div>
+</form>

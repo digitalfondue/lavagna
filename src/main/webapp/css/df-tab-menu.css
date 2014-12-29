@@ -1,0 +1,95 @@
+.df-tab-menu {
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+	text-align: center;
+	background-color: #607d8b;
+	text-transform: uppercase;
+}
+
+.df-tab-menu > li {
+	padding: 0;
+	position: relative;
+	display: inline-block;
+}
+
+.df-tab-menu a {
+	text-decoration: none;
+	color: white;
+}
+
+.df-tab-menu a:hover, .df-tab-menu a:focus {
+	text-decoration: none;
+}
+
+.df-tab-menu > li > a {
+	display: inline-block;
+	width: auto;
+	height: 30px;
+	padding: 5px 10px 5px 10px;
+	opacity: 0.8;
+}
+
+.df-tab-menu > li > a:hover {
+	text-decoration: none;
+	border-bottom: 2px solid #80d8ff;
+	opacity: 1;
+}
+
+.df-tab-menu > li.df-tab-menu-active > a {
+	opacity: 1;
+	border-bottom: 2px solid #80d8ff;
+}
+
+/* 
+	dropdown basic CSS style is credit of bootstrap CSS
+	http://getbootstrap.com/
+*/
+
+.df-tab-menu-dropdown {
+	background-color: #607d8b;
+	top: 30px;
+	right: 0;
+	left: auto;
+	position: absolute;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	font-size: 14px;
+	list-style: none;
+	border: 1px solid #cccccc;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 2px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	background-clip: padding-box;
+}
+
+.df-tab-menu-dropdown li {
+	text-align: left;
+	font-size: 12px;
+}
+
+.df-tab-menu-dropdown li a {
+	color: white;
+	opacity: 0.8;
+	display: block;
+  	padding: 3px 20px;
+  	clear: both;
+  	font-weight: normal;
+  	line-height: 1.428571429;
+  	white-space: nowrap;
+}
+
+.df-tab-menu-dropdown li a:hover {
+	text-decoration: none;
+	background-color: #78909c;
+	opacity: 1;
+}
+
+.df-tab-menu-dropdown-open ~ .df-tab-menu-dropdown {
+	display: block;
+}

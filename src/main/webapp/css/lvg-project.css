@@ -1,0 +1,286 @@
+/*
+	- contains project style such as milestones, status
+*/
+
+/*
+===================================
+==== project/boards home feed =====
+===================================
+*/
+
+.project-list, .board-list {
+	margin-top: 20px;
+}
+
+ul.lavagna-projects, ul.lavagna-boards {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	margin-top: 20px;
+}
+
+ul.lavagna-projects li.lavagna-project:last-child, ul.lavagna-boards li.lavagna-board:last-child {
+	margin-bottom: 0;
+}
+
+.lavagna-project.archived, .lavagna-board.archived {
+	opacity: 0.5;
+}
+
+/*
+===================================
+==== cards in home feed ===========
+===================================
+*/
+
+h2.card-home {
+	margin-bottom: 21px;
+	font-size: 30px;
+	margin-top: 20px;
+	font-weight: 500;
+	line-height: 1.1;
+}
+
+ul.lavagna-home-cards {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	margin-top: 20px;
+}
+
+ul.lavagna-home-cards li.lavagna-home-card:last-child {
+	margin-bottom: 0;
+}
+
+.card-home-date {
+	text-align: right;
+	color: #aaaaaa;
+	font-size: 12px;
+}
+
+/*
+===================================
+==== project statistics ===========
+===================================
+*/
+
+.stats-panel .stats-panel-title {
+	font-size: 16px;
+}
+
+.stats-panel .stats-panel-content {
+	display: table-row;
+	width: 100%;
+}
+
+.item-stats {
+	text-align: right;
+	width: 170px;
+	display: table-cell;
+}
+
+.stats-panel-description {
+	display: table-cell;
+	vertical-align: top;
+	width: 100%;
+}
+
+ul.statistics-definition {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul.statistics-definition li.stat {
+	list-style-type: none;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.stats-tile-title {
+	text-align: center;
+}
+
+.stats-tile-title .chart-header {
+	margin: 5px 0px;
+}
+
+.stats-tile-subtitle {
+	padding: 0px 5px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.stats-tile-value {
+	padding: 0px 5px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: 48pt;
+}
+
+.stats-most-active-tile-value {
+	font-size: 29pt;
+}
+
+/*
+===================================
+==== project admin only ===========
+===================================
+*/
+
+ul.lavagna-project-admin-list {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.lavagna-project-admin-list li.lavagna-admin-item {
+	width: 50%;
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 5px 15px 5px 15px;
+}
+
+.lavagna-form-buttons {
+	margin-bottom: 55px;
+}
+
+.lavagna-project-admin-column-status-name {
+	margin-left: 5px;
+}
+
+/*
+===================================
+==== import ===========
+===================================
+*/
+
+ul.lvg-admin-import {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lvg-admin-import-board {
+	list-style:none;
+}
+
+.lvg-admin-import-organization {
+	font-weight: bold;
+}
+
+ul.lvg-admin-import label {
+	font-weight: normal;
+}
+
+.lvg-import-control-feedback {
+	top:10px;
+}
+
+ul.lvg-admin-import .col-sm-1 {
+	width:10px;
+}
+
+/*
+===================================
+==== milestones ===========
+===================================
+*/
+
+.lvg-milestone-cards-list {
+	list-style-type: none;
+}
+
+.lvg-milestone-pagination {
+	margin: 0;
+	margin-right: 15px;
+}
+
+.lvg-progress {
+	border-radius: 0px;
+	margin-bottom: 5px;
+	height: 5px;
+}
+
+.lvg-milestone-clickable {
+	cursor: pointer;
+}
+
+.lvg-milestone-title {
+	min-height: 28px;
+}
+
+.lvg-milestone-card-title {
+	font-weight: bold;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.lvg-milestone-card {
+	border-top: 1px solid #dddddd;
+	padding: 5px 15px;
+	word-wrap: break-word;
+}
+
+.lvg-milestone-card:first-of-type {
+	border-top: 0;
+}
+
+/*
+===================================
+==== statistics ===========
+===================================
+*/
+
+.lvg-statistics-top-panel {
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.lvg-bar-chart {
+	width: 100%;
+}
+
+.lvg-bar-chart .text {
+	text-align: right;
+	white-space: nowrap;
+	padding-right: 5px;
+}
+
+.lvg-bar-chart .bar {
+	width: 99%;
+}
+
+.lvg-bar-chart .inner-bar {
+	text-align: left;
+	padding: 5px 10px;
+	margin: 5px 0px;
+}
+
+/*
+===================================
+==== misc ===========
+===================================
+*/
+
+.lavagna-icon-column {
+	width: 55px;
+}
+
+.lavagna-confirm-column {
+	width: 220px;
+}
+
+.lavagna-project-home {
+	clear: both;
+}
+
+.lavagna-panel > .lvg-table tr:first-of-type > td {
+	border-top: 0;
+}

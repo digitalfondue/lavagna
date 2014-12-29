@@ -1,0 +1,50 @@
+<div data-ng-init="moveColumnFlag = false">
+	<div data-ng-hide="moveColumnFlag">
+		<ul class="lvg-board-card-menu">
+			<li data-lvg-has-permission="MOVE_CARD">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveColumnFlag = true;" data-ng-bind="'partials.fragments.card-fragment.moveToColumn' | translate"></button>
+			</li>
+			<li class="divider" data-lvg-has-permission="MOVE_CARD"></li>
+			<li data-lvg-has-permission="MOVE_CARD">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'ARCHIVE'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToArchive' | translate"></button>
+			</li>
+			<li data-lvg-has-permission="MOVE_CARD">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'BACKLOG'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToBacklog' | translate"></button>
+			</li>
+			<li data-lvg-has-permission="MOVE_CARD">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'TRASH'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToTrash' | translate"></button>
+			</li>
+			<li class="divider" data-lvg-has-permission="MANAGE_LABEL_VALUE"></li>
+			<li data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-if="!isSelfWatching(card.labels, currentUserId)">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="addUserLabelValue(card.id, labelNameToId['WATCHED_BY'], currentUserId); close();" data-ng-bind="'partials.fragments.card-fragment.watch' | translate"></button>
+			</li>
+			<li data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-if="isSelfWatching(card.labels, currentUserId)">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="removeLabelValueForId(card.id, card.labels, labelNameToId['WATCHED_BY']); close();" data-ng-bind="'partials.fragments.card-fragment.unwatch' | translate"></button>
+			</li>
+			<li class="divider" data-lvg-has-permission="MANAGE_LABEL_VALUE"></li>
+			<li data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-if="!isAssignedToCard(card.labels, currentUserId)">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="addUserLabelValue(card.id, labelNameToId['ASSIGNED'], currentUserId); close();" data-ng-bind="'partials.fragments.card-fragment.take' | translate"></button>
+			</li>
+			<li data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-if="isAssignedToCard(card.labels, currentUserId)">
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="removeLabelValueForId(card.id, card.labels, labelNameToId['ASSIGNED']); close();" data-ng-bind="'partials.fragments.card-fragment.surrender' | translate"></button>
+			</li>
+		</ul>
+	</div>
+	<div data-ng-show="moveColumnFlag" class="fixed-card-menu-panel">
+		<form data-ng-role="form" data-ng-submit="move(card, toColumn);">
+			<div class="lavagna-panel">
+				<div class="body-full">
+					<div class="form-group">
+						<select class="form-control" required data-ng-options="col.name for col in moveColumns" data-ng-model="toColumn"></select>
+					</div>
+				</div>
+				<div class="footer clearfix">
+					<div>
+						<button type="submit" class="lvg-button lvg-button-submit" data-ng-bind="'partials.fragments.move-card-to-column-modal-fragment.move' | translate"></button>
+						<button type="button" data-ng-click="moveColumnFlag = false;" class="lvg-button lvg-button-default" data-ng-bind="'partials.fragments.move-card-to-column-modal-fragment.cancel' | translate"></button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+route, try to follow the RoR convention:
+
+http://guides.rubyonrails.org/routing.html#crud-verbs-and-actions (# 2.2 CRUD, Verbs, and Actions )
+
+
+angular is taken from
+
+https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.js
+https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-sanitize.js
+
+
+notes:
+- http://blog.smartbear.com/open-source/how-to-turn-your-pile-of-code-into-an-open-source-project/
+
+markdown parser:
+
+- https://github.com/chjj/marked
+
+hihglight
+
+- http://highlightjs.org/
+ 
+elastic text area
+
+ - http://monospaced.github.io/angular-elastic/
+   https://github.com/monospaced/angular-elastic
+   https://github.com/monospaced/angular-elastic/releases v2.0.0
+   
+   
+  
+ sockjs:
+ 
+ - taken from https://raw.github.com/rstoyanchev/spring-websocket-portfolio/master/src/main/webapp/assets/lib/sockjs/sockjs.min.js
+ 
+ stomp:
+ 
+ - taken from https://raw.github.com/rstoyanchev/spring-websocket-portfolio/master/src/main/webapp/assets/lib/stomp/dist/stomp.min.js
+ 
+ spectrum: https://rawgithub.com/bgrins/spectrum/master/spectrum.css + js
+ 
+ - taken from 
+
+ how to center stuff with bootstrap:
+ http://stackoverflow.com/a/18153551
+ 
+ 
+ codemirror:
+ 
+  - core + markdown + placeholder v3.21 @ http://codemirror.net/doc/compress.html

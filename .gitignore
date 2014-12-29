@@ -1,0 +1,15 @@
+.classpath
+.project
+.settings
+target
+
+# Intellij
+.idea/
+*.iml
+*.iws
+workspace.xml
+coverage-error.log
+
+# Vagrant
+.vagrant/
+oracle-xe-11.2.0-1.0.x86_64.rpm.zip

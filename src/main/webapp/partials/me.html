@@ -1,0 +1,35 @@
+<lvg-navbar data-navbar-type="user">{{userNameProfile}} <span data-translate>partials.user.title.profile</span></lvg-navbar>
+
+<div class="container auto-margin lavagna-container-top-margin">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="lavagna-panel">
+				<div class="body">
+					<form role="form" data-ng-submit="update(profile)" data-lvg-has-permission="UPDATE_PROFILE">
+						<div class="form-group">
+							<label for="display-name" data-translate>partials.me.displayName</label>
+							<div>
+								<input type="text" class="form-control" id="display-name"
+									   placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="profile.displayName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" data-translate>partials.me.email</label>
+							<div>
+								<input type="email" class="form-control" id="email"
+									   placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="profile.email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="profile.emailNotification"></label>
+						</div>
+					</form>
+				</div>
+				<div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
+					<button type="submit" class="lvg-button lvg-button-submit" data-translate data-ng-click="update(profile)">partials.me.update</button>
+					<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="clearAllTokens()">partials.me.clearAllTokens</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

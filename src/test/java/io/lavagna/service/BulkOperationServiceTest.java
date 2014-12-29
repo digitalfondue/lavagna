@@ -1,0 +1,222 @@
+/**
+ * This file is part of lavagna.
+ *
+ * lavagna is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * lavagna is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package io.lavagna.service;
+
+import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Board;
+import io.lavagna.model.BoardColumn;
+import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.CardFull;
+import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.Project;
+import io.lavagna.model.User;
+import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.service.config.TestServiceConfig;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+//TODO complete cover
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
+@Transactional
+public class BulkOperationServiceTest {
+
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ProjectService projectService;
+	@Autowired
+	private BoardRepository boardRepository;
+	@Autowired
+	private BoardColumnRepository boardColumnRepository;
+	@Autowired
+	private CardService cardService;
+	@Autowired
+	private CardRepository cardRepository;
+	@Autowired
+	private CardLabelRepository cardLabelRepository;
+
+	@Autowired
+	private BulkOperationService bulkOperationService;
+
+	//
+	private CardFull card1;
+	private CardFull card2;
+	private CardFull card3;
+	private User user;
+	private User user2;
+
+	//
+
+	@Before
+	public void prepare() {
+		Helper.createUser(userRepository, "test", "test-user");
+		user = userRepository.findUserByName("test", "test-user");
+
+		Helper.createUser(userRepository, "test", "test-user-2");
+
+		user2 = userRepository.findUserByName("test", "test-user-2");
+
+		Project project = projectService.create("test", "TEST", "desc");
+		Board board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
+
+		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
+		boardColumnRepository.addColumnToBoard("col1", definitions.get(0).getId(),
+				BoardColumn.BoardColumnLocation.BOARD, board.getId());
+		List<BoardColumn> cols = boardColumnRepository.findAllColumnsFor(board.getId(),
+				BoardColumn.BoardColumnLocation.BOARD);
+		BoardColumn col1 = cols.get(0);
+		cardService.createCard("card1", col1.getId(), new Date(), user);
+		cardService.createCard("card2", col1.getId(), new Date(), user);
+		cardService.createCard("card3", col1.getId(), new Date(), user);
+		List<CardFull> cards = cardRepository.findAllByColumnId(col1.getId());
+
+		card1 = cards.get(0);
+		card2 = cards.get(1);
+		card3 = cards.get(2);
+	}
+
+	private boolean hasLabel(int cardId, String name) {
+		Map<CardLabel, List<CardLabelValue>> res = cardLabelRepository.findCardLabelValuesByCardId(cardId);
+		for (CardLabel cl : res.keySet()) {
+			if (cl.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean hasLabelValue(int cardId, String name, LabelValue value) {
+		Map<CardLabel, List<CardLabelValue>> res = cardLabelRepository.findCardLabelValuesByCardId(cardId);
+		for (CardLabel cl : res.keySet()) {
+			if (cl.getName().equals(name) && hasLabelValue(res.get(cl), value)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasLabelValue(List<CardLabelValue> clv, LabelValue value) {
+		for (CardLabelValue c : clv) {
+			if (c.getValue().equals(value)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Test
+	public void testAssign() {
+		assertFalse(hasLabel(card1.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card2.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card3.getId(), "ASSIGNED"));
+
+		bulkOperationService.assign("TEST", Arrays.asList(card1.getId(), card3.getId()), new LabelValue(null, null,
+				null, null, user.getId(), null), user);
+
+		assertTrue(hasLabel(card1.getId(), "ASSIGNED"));
+		assertTrue(hasLabel(card3.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card2.getId(), "ASSIGNED"));
+
+	}
+
+	@Test
+	public void testRemoveAssign() {
+		LabelValue toUser = new LabelValue(null, null, null, null, user.getId(), null);
+		bulkOperationService.assign("TEST", Arrays.asList(card1.getId(), card3.getId()), toUser, user);
+		assertTrue(hasLabel(card1.getId(), "ASSIGNED"));
+		assertTrue(hasLabel(card3.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card2.getId(), "ASSIGNED"));
+
+		bulkOperationService.removeAssign("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), toUser,
+				user);
+
+		assertFalse(hasLabel(card1.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card2.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card3.getId(), "ASSIGNED"));
+
+	}
+
+	@Test
+	public void testReAssign() {
+		LabelValue toUser = new LabelValue(null, null, null, null, user.getId(), null);
+		bulkOperationService.assign("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), toUser, user);
+		assertTrue(hasLabelValue(card1.getId(), "ASSIGNED", toUser));
+		assertTrue(hasLabelValue(card2.getId(), "ASSIGNED", toUser));
+		assertTrue(hasLabelValue(card3.getId(), "ASSIGNED", toUser));
+
+		LabelValue toUser2 = new LabelValue(null, null, null, null, user2.getId(), null);
+
+		bulkOperationService.reAssign("TEST", Arrays.asList(card1.getId(), card3.getId()), toUser2, user);
+		assertTrue(hasLabelValue(card1.getId(), "ASSIGNED", toUser2));
+		assertFalse(hasLabelValue(card1.getId(), "ASSIGNED", toUser));
+
+		assertTrue(hasLabelValue(card3.getId(), "ASSIGNED", toUser2));
+		assertFalse(hasLabelValue(card3.getId(), "ASSIGNED", toUser));
+
+		assertTrue(hasLabelValue(card2.getId(), "ASSIGNED", toUser));
+		assertFalse(hasLabelValue(card2.getId(), "ASSIGNED", toUser2));
+	}
+
+	@Test
+	public void testSetDueDate() {
+		LabelValue date = new LabelValue(new Date());
+		bulkOperationService.setDueDate("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), date, user);
+		assertTrue(hasLabel(card1.getId(), "DUE_DATE"));
+		assertTrue(hasLabel(card2.getId(), "DUE_DATE"));
+		assertTrue(hasLabel(card3.getId(), "DUE_DATE"));
+	}
+
+	@Test
+	public void testRemoveDueDate() {
+		LabelValue date = new LabelValue(new Date());
+		bulkOperationService.setDueDate("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), date, user);
+		assertTrue(hasLabel(card1.getId(), "DUE_DATE"));
+		assertTrue(hasLabel(card2.getId(), "DUE_DATE"));
+		assertTrue(hasLabel(card3.getId(), "DUE_DATE"));
+		
+		bulkOperationService.removeDueDate("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), user);
+		
+		assertFalse(hasLabel(card1.getId(), "DUE_DATE"));
+		assertFalse(hasLabel(card2.getId(), "DUE_DATE"));
+		assertFalse(hasLabel(card3.getId(), "DUE_DATE"));
+	}
+
+	@Test
+	public void testSetMilestone() {
+		// FIXME
+	}
+
+	@Test
+	public void testRemoveMilestone() {
+		// FIXME
+	}
+
+}

@@ -1,0 +1,4 @@
+For google, you should enable the following apis:
+
+- Google+ API 	
+- Google+ Domains API

@@ -1,0 +1,17 @@
+<div class="modal-header">
+	<h3 class="modal-title">
+		<span data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</span>
+	</h3>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<label data-translate>partials.admin.manage-smpt-configuration.emailAddressTest</label> 
+		<input class="form-control" type="email" data-ng-model="to" placeholder="your@email.com">
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="lvg-button lvg-button-submit"
+		data-ng-click="sendTestEmail(configuration, to)"
+		type="button" data-translate>partials.admin.manage-smpt-configuration.send</button>
+	<button data-ng-click="close()" class="lvg-button lvg-button-default" data-translate>button.close</button>
+</div>

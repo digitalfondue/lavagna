@@ -1,0 +1,18 @@
+REST API return data
+
+GET:
+- success: data / failure: exception
+
+DELETE:
+- success: 1/0 / failure: exception
+
+ADD (no duplicates):
+- success: nothing / failure: exception
+
+ADD (duplicates):
+- success: IDs / failure: exception
+
+UPDATE:
+- success: nothing / failure: exception
+
+this will affect the return types of the services/controllers.

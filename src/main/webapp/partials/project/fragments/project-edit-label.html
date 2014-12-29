@@ -1,0 +1,20 @@
+<form data-ng-role="form"
+	data-ng-init="labelToUpdate = {id: label.id, name: label.name, type: label.type, unique: label.unique, color: '#000000'.substr(0, 7 - label.color.toString(16).length) + label.color.toString(16)}"
+	data-ng-submit="updateLabel(labelToUpdate); labelStatus.edit = false;">
+	<div class="form-group">
+		<label data-translate>partials.project.manage-labels.name</label>
+		<input class="form-control" type="text" data-ng-model="labelToUpdate.name">
+	</div>
+	<div class="form-group">
+		<label data-translate>partials.project.manage-labels.color</label>
+
+		<div class="input-group">
+			<span class="input-group-btn"><lvg-colorpicker	data-ng-model="labelToUpdate.color"></lvg-colorpicker></span>
+			<input class="form-control" type="text" data-ng-model="labelToUpdate.color">
+		</div>
+	</div>
+
+	<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
+	<button type="button" data-ng-show="label.type == 'LIST'" class="lvg-button lvg-button-default" data-ng-click="editLabelList(label, labelsListValues);" data-translate>partials.project.manage-labels.editList</button>
+	<button type="button" class="lvg-button lvg-button-default" data-ng-click="labelStatus.edit = false;" data-translate>button.cancel</button>
+</form>

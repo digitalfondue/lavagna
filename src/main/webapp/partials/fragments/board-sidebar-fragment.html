@@ -1,0 +1,56 @@
+<div class="lavagna-board-sidebar lavagna-board-left-sidebar lavagna-left-sidebar-slide-out" 
+	data-ng-class="{'lavagna-board-left-sidebar-out':toggledSidebar}">
+
+    <div class="lavagna-left-sidebar-list">
+    	<div class="sidebar-dropzone" id="sidebar-drop-zone"
+        data-ng-show="sideBarLocation !== undefined"></div>
+    	<div class="lavagna-sidebar-column" data-lvg-fill-sidebar-height="{{toggledSidebar}}">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="dropdown">
+							<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
+								<span data-ng-switch="sideBarLocation">
+									<span data-ng-switch-when="ARCHIVE"data-translate>partials.board.archive</span>
+									<span data-ng-switch-when="BACKLOG"data-translate>partials.board.backlog</span>
+									<span data-ng-switch-when="TRASH" data-translate>partials.board.trash</span>
+								</span>
+								<i class="fa fa-caret-down"></i>
+							</button>
+							<ul class="dropdown-menu">
+								<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="sidebarHandler('ARCHIVE')" data-translate>partials.board.archive</button></li>
+	  							<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="sidebarHandler('BACKLOG')" data-translate>partials.board.backlog</button></li>
+	  							<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="sidebarHandler('TRASH')" data-translate>partials.board.trash</button></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body" data-lvg-fill-sidebar-cards-height="toggledSidebar" 
+				data-lvg-fill-sidebar-cards-height-has-more="{{sidebar[sideBarLocation].hasMore}}"
+				data-lvg-fill-sidebar-cards-height-current-page="{{sidebar[sideBarLocation].currentPage}}">
+				<lvg-spinner data-ng-hide="sidebarLoaded"></lvg-spinner>
+				<div class="clearfix">
+					<ul data-bindonce data-ng-repeat="card in sidebar[sideBarLocation].found track by card.id"
+						data-ui-sortable="sortableCardOptionsForSidebar" class="lavagna-sidebar-cards list-group">
+						<li data-bo-attr data-bo-attr-data-lvg-card-id="card.id" 
+							data-bo-attr-data-lavagna-card-column-id="card.columnId" class="lavagna-board-card">
+							<lvg-card-sidebar-fragment></lvg-card-sidebar-fragment>
+	            		</li>
+					</ul>
+				</div>
+				
+	        	
+			</div>
+			<div class="panel-footer" data-ng-if="sidebar[sideBarLocation].currentPage !== 0 || sidebar[sideBarLocation].hasMore">
+				<ul class="pager">
+					<li class="previous" data-ng-click="sideBarLoad(-1)"
+  						data-ng-if="sidebar[sideBarLocation].currentPage !== 0"><a href data-translate>partials.fragments.board-sidebar-fragment.newer</a></li>
+  					<li class="next" data-ng-click="sideBarLoad(1)"
+  						data-ng-if="sidebar[sideBarLocation].hasMore"><a href data-translate>partials.fragments.board-sidebar-fragment.older</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+    </div>
+</div>

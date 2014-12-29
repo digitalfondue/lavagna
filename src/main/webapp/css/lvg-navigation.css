@@ -1,0 +1,290 @@
+/*
+	- contains header and navigation style
+*/
+
+/* 
+===================================
+==== header =======================
+===================================
+*/
+
+.lvg-inverted, .lvg-inverted a, .lvg-inverted a:hover {
+	color: white;
+}
+
+.lavagna-header {
+	background-color: #607d8b;
+	position: relative;
+	height: 50px;
+	z-index: 1000;
+}
+
+.lavagna-header .header {
+	float: left;
+	clear: both;
+	display: block;
+}
+
+.lavagna-header a.lvg-navbar-brand {
+	float: left;
+	padding: 15px 15px;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+.lavagna-header .lvg-header-right {
+	padding: 15px 15px;
+	line-height: 20px;
+	margin: 0;
+	list-style: none;
+	float: right !important;
+}
+
+.lvg-navigation-bar {
+	background-color: #607d8b;
+	position: relative;
+	z-index: 900;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	margin-bottom: 3px;
+}
+
+.lvg-navigation-bar .navigation-frame {
+	margin-left: 60px;
+	min-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+.lvg-navigation-bar .navigation-frame i, .lvg-navigation-bar .navigation-frame .separator {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #80d8ff;
+}
+
+.lvg-navigation-bar .navigation-frame .project-settings-shortcut i {
+	margin-left: 5px;
+	margin-right: 0;
+	color: #e5e5e5;
+}
+
+.lvg-navigation-bar .menu-frame {
+	width: 100%;
+	min-height: 30px;
+	font-size: 12px;
+	position: relative;
+}
+
+.lvg-navigation-bar .menu-frame .tab-menu-container { 
+	margin-left: 30px;
+	margin-right: 30px;
+	width: auto;
+}
+
+.lvg-navigation-bar .menu-frame .context-menu-container {
+	top: 0px;
+	right: 0px;
+	font-size: 18px;
+	width: auto;
+	height: 30px;
+	position: absolute;
+	text-align: right;
+}
+
+.lvg-navigation-bar .menu-frame .context-menu-container .dropdown-menu {
+	right: 0;
+	left: auto;
+}
+
+.lvg-navigation-bar .menu-frame .context-menu-container .dropdown-menu a {
+	display: block;
+	color: white;
+	opacity: 0.8;
+}
+
+.lvg-navigation-bar .menu-frame .context-menu-container .dropdown-menu a:hover,
+.lvg-navigation-bar .menu-frame .context-menu-container .dropdown-menu a:active,
+.lvg-navigation-bar .menu-frame .context-menu-container .dropdown-menu a:focus {
+	text-decoration: none;
+	background-color: #78909c;
+	color: white;
+	opacity: 1;
+}
+
+.lvg-navigation-bar a:hover, .lvg-navigation-bar a:focus {
+	text-decoration: none;
+	outline-style: none;
+}
+
+.lvg-navigation-bar .lvg-board-location {
+	/*width: 170px;*/
+	margin-left: 60px;
+	margin-right: 10px;
+}
+
+.lvg-navigation-bar .lvg-board-location i.fa {
+	width:15px;
+}
+
+.lvg-navigation-bar .lvg-board-edit {
+	margin-left: 10px;
+}
+
+.lvg-navigation-bar .dropdown-menu {
+	background-color: #607d8b;
+}
+
+.lvg-navigation-bar .open .lvg-dropdown-toggle {
+	background-color: #b0bec5;
+}
+
+.board-menu-frame .lvg-edit-button {
+	color: white;
+	opacity: 0.7;
+}
+
+.board-menu-frame .lvg-edit-button.edit-active {
+	opacity: 1;
+}
+
+.df-tab-menu a[dropdown-toggle] i {
+	padding-left: 5px;
+}
+
+.lvg-board-location, .lvg-board-edit {
+	display: inline-block;
+}
+
+/* 
+===================================
+==== custom buttons ===============
+===================================
+*/
+
+.lvg-navigation-button {
+	background-color: #78909c;
+	color: white;
+	border: 0;
+	border-radius: 0;
+	height: 24px;
+	display: inline-block;
+	padding: 2px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.lvg-navigation-button:focus {
+	outline: 0;
+}
+
+
+/* 
+===================================
+==== main navigation sidebar ======
+===================================
+*/
+
+.lvg-sidebar-overlay {
+	z-index: 1990;
+}
+
+.lvg-left-sidebar {
+	z-index: 2000;
+	top: 0;
+	left: -250px;
+	width: 250px;
+	position: absolute;
+	background-color: #f5f5f5;
+	min-height: 100%;
+	-moz-transition: left 0.3s;
+	-webkit-transition: left 0.3s;
+	-o-transition: left 0.3s;
+	transition: left 0.3s;
+}
+
+.lvg-left-sidebar-open {
+	left: 0px;
+}
+
+.lvg-left-sidebar .sidebar {
+	margin-bottom: 5px;
+	color: #333333;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-form input:focus {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border-color: transparent !important;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li {
+	margin: 0;
+	padding: 0;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li.navigation {
+	font-weight: bold;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li.action {
+	background-color: #eceff1;
+	border-top: 1px solid #cfd8dc;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li > a {
+	padding: 12px 5px 12px 15px;
+	display: block;
+	color: #333333;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li.action > a {
+	padding: 6px 5px 6px 15px;
+	display: block;
+	color: #333333;
+}
+
+.lvg-left-sidebar .sidebar .sidebar-menu > li > a > .fa,
+.lvg-left-sidebar .sidebar .sidebar-menu > li > a > .glyphicon,
+.lvg-left-sidebar .sidebar .sidebar-menu > li > a > .ion {
+	width: 20px;
+	font-weight: normal;
+}
+
+.lvg-left-sidebar .sidebar > .sidebar-menu > li:last-of-type {
+	border-bottom: 1px solid #cfd8dc;
+}
+
+.lvg-left-sidebar .sidebar > .sidebar-menu > li > a {
+	margin-right: 1px;
+}
+
+.lvg-left-sidebar .sidebar > .sidebar-menu li > a:hover {
+	color: #333333;
+}
+
+.lvg-left-sidebar .sidebar > .sidebar-menu li.navigation > a:hover {
+	background-color: #eceff1;
+}
+
+.lvg-left-sidebar .lvg-left-sidebar .sidebar > .sidebar-menu li.action > a:hover {
+	background-color: #cfd8dc;
+}
+
+.lvg-left-sidebar .sidebar a:hover {
+	text-decoration: none;
+}

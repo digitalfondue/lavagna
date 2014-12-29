@@ -1,0 +1,10 @@
+<lvg-navbar data-navbar-type="board-menu"><lvg-board-navigation/></lvg-navbar>
+
+<ng-include data-lvg-board-sidebar src="'partials/fragments/board-sidebar-fragment.html'"></ng-include>
+<div class="horizontal-slide lavagna-left-sidebar-slide-open" data-ng-class="{'lavagna-board-left-sidebar-open':toggledSidebar, 'lavagna-edit-mode' : editMode}" 
+	data-lvg-fill-height="{{toggledSidebar}}" data-lvg-fill-height-margin="295">
+	
+    <div data-ng-include="'partials/fragments/columns-fragment.html'" class="lavagna-columns"></div>
+</div>
+
+<div data-ui-view data-autoscroll="false"></div>
