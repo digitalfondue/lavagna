@@ -44,15 +44,15 @@ http(s)://<your deploy>(:port)/setup/
 
 There you can:
 
-1: configure the application
-2: import a lavagna export
+1. configure the application
+2. import a lavagna export
 
 ### Configuration steps ###
 
-step 1: define the base url
-step 2: define the initial login configuration (demo, ldap, oauth, mozilla persona)
-step 3: define the admin user
-step 4: confirm
+1. define the base url
+2. define the initial login configuration (demo, ldap, oauth, mozilla persona)
+3. define the admin user
+4. confirm
 
 
 ## DEVELOP ##
@@ -90,7 +90,7 @@ for launching web server with the mysql database (use mysql profile):
 
 For debugging
 
-> mvndebug jetty:run
+> mvnDebug jetty:run
 
 For running the test cases
 
