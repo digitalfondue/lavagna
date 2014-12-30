@@ -29,17 +29,15 @@ import java.util.Set;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Simple scheduler. Note: it's not cluster aware.
  */
-@Service
 public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent> {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -49,16 +47,23 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 	private final ConfigurationRepository configurationRepository;
 	private final MySqlFullTextSupportService mySqlFullTextSupportService;
 	private final NotificationService notificationService;
+	private final StatisticsService statisticsService;
 
-	@Autowired
 	public Scheduler(TaskScheduler taskScheduler, Environment env, ConfigurationRepository configurationRepository,
-			MySqlFullTextSupportService mySqlFullTextSupportService, NotificationService notificationService) {
+			MySqlFullTextSupportService mySqlFullTextSupportService, NotificationService notificationService,
+			StatisticsService statisticsService) {
 
 		this.taskScheduler = taskScheduler;
 		this.env = env;
 		this.configurationRepository = configurationRepository;
 		this.mySqlFullTextSupportService = mySqlFullTextSupportService;
 		this.notificationService = notificationService;
+		this.statisticsService = statisticsService;
+	}
+	
+	@Scheduled(cron = "30 59 23,5,11,17 * * *")
+	public void snapshotCardsStatus() {
+		statisticsService.snapshotCardsStatus();
 	}
 
 	private static class EmailNotificationHandler implements Runnable {
@@ -74,7 +79,6 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 
 		@Override
 		public void run() {
-
 			Date upTo = new Date();
 			Set<Integer> usersToNotify = notificationService.check(upTo);
 

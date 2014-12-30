@@ -39,7 +39,6 @@ import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -53,7 +52,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 /**
  * Datasource configuration.
  */
-@EnableScheduling
 @EnableWebSocketMessageBroker
 @EnableTransactionManagement
 @ComponentScan(basePackages = { "io.lavagna.service", "io.lavagna.config.dbmanager" })

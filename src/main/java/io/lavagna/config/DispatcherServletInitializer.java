@@ -36,6 +36,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] { DataSourceConfig.class,//
 				PersistenceAndServiceConfig.class,//
+				SchedulingServiceConfig.class,//
 				WebSecurityConfig.class};
 	}
 

@@ -34,7 +34,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +48,6 @@ public class StatisticsService {
 		this.queries = queries;
 	}
 
-	@Scheduled(cron = "30 59 23,5,11,17 * * *")
 	@Transactional(readOnly = false)
 	public void snapshotCardsStatus() {
 
