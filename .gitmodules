@@ -1,0 +1,18 @@
+[submodule "puppet/modules/postgresql"]
+	path = puppet/modules/postgresql
+	url = https://github.com/puppetlabs/puppet-postgresql.git
+[submodule "puppet/modules/stdlib"]
+	path = puppet/modules/stdlib
+	url = https://github.com/puppetlabs/puppetlabs-stdlib.git
+[submodule "puppet/modules/apt"]
+	path = puppet/modules/apt
+	url = https://github.com/puppetlabs/puppetlabs-apt.git
+[submodule "puppet/modules/concat"]
+	path = puppet/modules/concat
+	url = https://github.com/puppetlabs/puppetlabs-concat.git
+[submodule "puppet/modules/firewall"]
+	path = puppet/modules/firewall
+	url = https://github.com/puppetlabs/puppetlabs-firewall.git
+[submodule "puppet/modules/mysql"]
+	path = puppet/modules/mysql
+	url = https://github.com/puppetlabs/puppetlabs-mysql.git
