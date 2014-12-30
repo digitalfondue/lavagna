@@ -56,8 +56,8 @@ public class TestServiceConfig {
 		Map<String, Map<String, String>> r = new HashMap<>();
 		r.put("HSQLDB", c("HSQLDB", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:lavagna", "sa", ""));
 		r.put("MYSQL", c("MYSQL", "com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/lavagna", "root", ""));
-		r.put("PGSQL",
-				c("PGSQL", "org.postgresql.Driver", "jdbc:postgresql://localhost:5432/lavagna", "postgres", "password"));
+		r.put("PGSQL", c("PGSQL", "org.postgresql.Driver", "jdbc:postgresql://localhost:5432/lavagna", "postgres", "password"));
+		r.put("PGSQL-TRAVIS", c("PGSQL", "org.postgresql.Driver", "jdbc:postgresql://localhost:5432/lavagna", "postgres", ""));
 		return r;
 	}
 

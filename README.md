@@ -10,7 +10,7 @@ It require : java 7 or better, mysql (5.1 or better) or postgresql. It can be de
 
 ## INSTALL ##
 
-Lavagna support mysql (at least 5.1) / pgsql for production use and hsqldb for testing purpose.
+Lavagna support mysql (at least 5.1) / pgsql (tested on 9.1) for production use and hsqldb for testing purpose.
 
 It's distributed in 2 forms:
 
