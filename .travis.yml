@@ -1,6 +1,10 @@
 language: java
 before_script:
-  - mysql -e 'create database lavagna;'
+  - mysql --version
+  - mysql -u root -e "SELECT VERSION();"
+  - mysql -u root -e "SELECT @@sql_mode;"
+  - mysql -u root -e "SHOW GLOBAL VARIABLES;"
+  - mysql -u root -e 'create database lavagna;'
 matrix:
     include:
         - jdk: oraclejdk7
