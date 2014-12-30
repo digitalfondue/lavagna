@@ -34,15 +34,15 @@ Lavagna require the following property to be set on the jvm:
  - datasource.driver=org.hsqldb.jdbcDriver | com.mysql.jdbc.Driver | org.postgresql.Driver
  - datasource.dialect=HSQLDB | MYSQL | PGSQL
  - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
- - datasource.username=<username>
- - datasource.password=<pwd> 
+ - datasource.username=[username]
+ - datasource.password=[pwd] 
  - spring.profile.active= dev | prod
  
 The db user must be able to create tables and others db objects.
 
 Once the application has been started/deployed, go to 
 
-http(s)://<your deploy>(:port)/setup/
+http(s)://[your deploy](:port)/setup/
 
 There you can:
 
