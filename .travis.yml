@@ -1,3 +1,10 @@
 language: java
-jdk:
-    - oraclejdk7
+before_script:
+  - mysql -e 'create database lavagna;'
+matrix:
+    include:
+        - jdk: oraclejdk7
+          env: $PROFILE=-Ddatasource.dialect=HSQLDB
+        - jdk: oraclejdk7
+          env: $PROFILE=-Ddatasource.dialect=MYSQL
+script: mvn test $PROFILE
