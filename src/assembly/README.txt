@@ -24,3 +24,47 @@ This archive contain:
  - /LICENSE.txt: license file (GPL3)
  - /NOTICE.txt: third party licenses file
  
+ 
+Running the application
+-----------------------
+
+For testing purpose you can launch bin/lavagna.sh or bin/lavagna.bat and go 
+to http://localhost:8080 (username: user password: user).
+
+If you want to install it or configure it, you have two options:
+
+- Self contained
+- Deploy in a servlet container
+
+
+Database configuration
+----------------------
+
+Lavagna require a utf8 environment. 
+Check that the database has a utf8 collation.
+
+For ensuring a correct db creation with MySQL create it with:
+
+CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;
+
+
+Self contained:
+---------------
+
+See the bin/lavagna.sh or bin/lavagna.bat scripts and configure them. 
+It will launch the app using a self contained jetty server.
+
+
+Servlet container:
+------------------
+
+You can deploy in any servlet 3.0 container. You will need to set the following
+property to the JVM (see the scripts bin/lavagna.sh / bin/lavagna.bat):
+
+ - datasource.driver=org.hsqldb.jdbcDriver | com.mysql.jdbc.Driver | org.postgresql.Driver
+ - datasource.dialect=HSQLDB | MYSQL | PGSQL
+ - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
+ - datasource.username=[username]
+ - datasource.password=[pwd]
+ - spring.profiles.active= dev | prod
+ 

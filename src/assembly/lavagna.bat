@@ -47,11 +47,11 @@ rem
 rem You will likely want to use prod (as in production) mode.
 
 
-java \
-	-Ddatasource.driver=org.hsqldb.jdbcDriver \
-	-Ddatasource.dialect=HSQLDB \
-	-Ddatasource.url=jdbc:hsqldb:mem:lavagna \
-	-Ddatasource.username=sa \
-	-Ddatasource.password= \
-	-Dspring.profiles.active=dev \
-	-jar ../lavagna/lavagna-jetty-console.war --headless
+java ^
+	-Ddatasource.driver=org.hsqldb.jdbcDriver ^
+	-Ddatasource.dialect=HSQLDB ^
+	-Ddatasource.url=jdbc:hsqldb:mem:lavagna ^
+	-Ddatasource.username=sa ^
+	-Ddatasource.password= ^
+	-Dspring.profiles.active=dev ^
+	-jar %~dp0/../lavagna/lavagna-jetty-console.war --headless

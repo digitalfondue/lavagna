@@ -40,6 +40,5 @@
 			<destName>LICENSE.txt</destName>
 			<outputDirectory>/</outputDirectory>
 		</file>
-		
 	</files>
 </assembly>
