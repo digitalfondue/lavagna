@@ -22,7 +22,7 @@ It's distributed in 2 forms:
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-java -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profile.active=dev -jar lavagna-jetty-console.war --headless
+java -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar lavagna-jetty-console.war --headless
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
@@ -36,7 +36,7 @@ Lavagna requires the following properties to be set on the JVM:
  - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
  - datasource.username=[username]
  - datasource.password=[pwd]
- - spring.profile.active= dev | prod
+ - spring.profiles.active= dev | prod
 
 The db user must be able to create tables and others db objects.
 

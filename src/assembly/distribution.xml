@@ -1,0 +1,45 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>distribution</id>
+	<formats>
+		<format>zip</format>
+		<format>tar.gz</format>
+	</formats>
+
+	<files>
+		<file>
+			<source>target/lavagna.war</source>
+			<outputDirectory>/lavagna/</outputDirectory>
+		</file>
+		<file>
+			<source>target/lavagna-jetty-console.war</source>
+			<outputDirectory>/lavagna/</outputDirectory>
+		</file>
+		<file>
+			<source>src/assembly/lavagna.sh</source>
+			<outputDirectory>/bin/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>unix</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/lavagna.bat</source>
+			<outputDirectory>/bin/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>dos</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/README.txt</source>
+			<destName>README.txt</destName>
+			<outputDirectory>/</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+		<file>
+			<source>LICENSE-GPLv3.txt</source>
+			<destName>LICENSE.txt</destName>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		
+	</files>
+</assembly>
