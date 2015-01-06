@@ -6,7 +6,21 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>lavagna</name>
-	<url>http://maven.apache.org</url>
+	<url>http://lavagna.io</url>
+
+	<scm>
+		<connection>scm:git:git@github.com:digitalfondue/lavagna.git</connection>
+		<developerConnection>scm:git:git@github.com:digitalfondue/lavagna.git</developerConnection>
+		<url>https://github.com/digitalfondue/lavagna.git</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
 
 	<dependencies>
 		<dependency>
@@ -228,7 +242,23 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<configuration>
+							<includedScopes>runtime,compile</includedScopes>
+							<includeTransitiveDependencies>true</includeTransitiveDependencies>
+							<fileTemplate>src/assembly/third-party.ftl</fileTemplate>
+						</configuration>
+						<goals>
+							<goal>add-third-party</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -306,7 +336,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.3</version>
@@ -397,6 +427,25 @@
 										</versionRange>
 										<goals>
 											<goal>prepare-agent</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											license-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.8,)
+										</versionRange>
+										<goals>
+											<goal>add-third-party</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

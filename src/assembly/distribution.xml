@@ -40,5 +40,10 @@
 			<destName>LICENSE.txt</destName>
 			<outputDirectory>/</outputDirectory>
 		</file>
+		<file>
+			<source>target/generated-sources/license/THIRD-PARTY.txt</source>
+			<destName>NOTICE.txt</destName>
+			<outputDirectory>/</outputDirectory>
+		</file>
 	</files>
 </assembly>
