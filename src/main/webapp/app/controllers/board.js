@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ColumnCtrl', function($stateParams, $scope, $filter, $modal, Card, Label, StompClient) {
+	module.controller('ColumnCtrl', function($stateParams, $scope, $filter, $modal, Card, Label, Notification, StompClient) {
 
 		$scope.initializeColumnCtrl = function(columnId) {
 
@@ -73,13 +73,17 @@
 
 
 		$scope.addUserLabelValue = function(cardId, labelId, user) {
-        	Label.addValueToCard(cardId, labelId, Label.userVal(user));
+        	Label.addValueToCard(cardId, labelId, Label.userVal(user)).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+        	});
         };
 
         $scope.removeLabelValueForId = function(cardId, cardLabels, labelId) {
             for(var i = 0; i < cardLabels.length; i++) {
                 if(cardLabels[i].labelId == labelId) {
-                    Label.removeValue(cardId, cardLabels[i].labelValueId);
+                    Label.removeValue(cardId, cardLabels[i].labelValueId).catch(function(error) {
+                		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                	});
                     break;
                 }
             }
@@ -88,7 +92,9 @@
         $scope.moveAllCardsInColumn = function (col, cards, location) {
 
         	var cardIds = cards.map(function(c) {return c.id});
-	    	var confirmAction = function() {Card.moveAllFromColumnToLocation(col.id, cardIds, location);};
+	    	var confirmAction = function() {Card.moveAllFromColumnToLocation(col.id, cardIds, location).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+        	});};
 
 	        $modal.open({
 	        	templateUrl: 'partials/fragments/confirm-modal-fragment.html',
@@ -181,10 +187,6 @@
 		});
 		$scope.$on('$destroy', unbind);
 
-		//--------------------------------------------------------------- NOTIFICATIONS
-
-		$scope.notifications = Notification.notifications;
-
 		//keep track of the selected cards
 		$scope.selectedCards = {};
 		$scope.foundCards = {};
@@ -192,9 +194,6 @@
 		$scope.editMode = false;
 		$scope.switchEditMode = function() {
 			$scope.editMode = !$scope.editMode;
-			//$scope.$apply(function() {
-				
-			//});
 		};
 
 
@@ -314,7 +313,9 @@
 							var colPos =  ui.item.parent().sortable("toArray", {attribute: 'data-lvg-column-id'}).map(function(i) {return parseInt(i, 10);});
 							//mark the placeholder item
 							//ui.item.addClass('lavagna-to-be-cleaned-up');
-							Board.reorderColumn(boardName, $scope.columnsLocation, colPos);
+							Board.reorderColumn(boardName, $scope.columnsLocation, colPos).catch(function(error) {
+				        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+				        	});
 						}
 						ui.item.removeData('hasUpdate');
 					},
@@ -350,9 +351,13 @@
 							ui.item.replaceWith(ui.item.clone());
 
 							if(oldColumnId === newColumnId) {
-								Board.updateCardOrder(boardName, oldColumnId, ids);
+								Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
+					        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+					        	});
 							} else {
-								Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids});
+								Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
+					        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+					        	});
 							}
 						}
 						ui.item.removeData('hasUpdate');
@@ -383,32 +388,44 @@
 			Board.createColumn(boardName, columnToCreate).then(function() {
 				columnToCreate.name = null;
 				columnToCreate.definition = null;
-			});
+			}).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.board.create-column.error'}, false);
+        	});
 		};
 
 		$scope.createCardFromTop = function(cardToCreateFromTop, column) {
 			Board.createCardFromTop(boardName, column.id, {name: cardToCreateFromTop.name}).then(function() {
 				cardToCreateFromTop.name = null;
-			});
+			}).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
+        	});
 		};
 
 		$scope.createCard = function(cardToCreate, column) {
 			Board.createCard(boardName, column.id, {name: cardToCreate.name}).then(function() {
 				cardToCreate.name = null;
-			});
+			}).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
+        	});
 		};
 
 		$scope.saveNewColumnName = function(newName, column) {
-			Board.renameColumn(boardName, column.id, newName);
+			Board.renameColumn(boardName, column.id, newName).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.board.rename-column.error'}, false);
+        	});
 		};
 
 		$scope.setColumnDefinition = function(definition, column) {
-			Board.redefineColumn(boardName, column.id, definition);
+			Board.redefineColumn(boardName, column.id, definition).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.board.redefine-column.error'}, false);
+        	});
 		};
 
 	    $scope.moveColumn = function(column, location) {
 
-	    	var confirmAction = function() {Board.moveColumnToLocation(column.id, location);};
+	    	var confirmAction = function() {Board.moveColumnToLocation(column.id, location).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+        	});};
 
 	    	$modal.open({
 	        	templateUrl: 'partials/fragments/confirm-modal-fragment.html',
