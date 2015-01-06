@@ -99,6 +99,7 @@
 	        $modal.open({
 	        	templateUrl: 'partials/fragments/confirm-modal-fragment.html',
 	        	controller: function($scope) {
+	        		$scope.title =  $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location.title');
 	        		$scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location', {columnName: col.name, location: $filter('capitalize')(location)});
 
 	        		$scope.confirm = function() {
@@ -106,34 +107,10 @@
 	        			$scope.$close();
 	        		};
 	        	},
-	        	size: 'lg'
+	        	size: 'md',
+	        	windowClass: 'lavagna-modal'
 	        });
         }
-        
-        var columnScope = $scope;
-        
-        $scope.showCardModal = function(boardName, card, isWatching, isAssigned) {
-        	$modal.open({
-        		templateUrl : 'partials/fragments/card-menu.html',
-        		size:'lg',
-        		controller: function($scope) {
-        			
-        			//
-        			$scope.moveCard = columnScope.moveCard;
-        			$scope.addUserLabelValue = columnScope.addUserLabelValue;
-        			$scope.removeLabelValueForId = columnScope.removeLabelValueForId;
-        			$scope.labelNameToId = columnScope.labelNameToId;
-        			$scope.currentUserId = columnScope.currentUserId;
-        			$scope.moveCardToColumn = columnScope.moveCardToColumn;
-        			//
-        			
-        			$scope.boardName = boardName;
-        			$scope.card = card;
-        			$scope.isWatching = isWatching;
-        			$scope.isAssigned = isAssigned;
-        		}
-        	});
-        };
 
 	});
 
@@ -430,13 +407,15 @@
 	    	$modal.open({
 	        	templateUrl: 'partials/fragments/confirm-modal-fragment.html',
 	        	controller: function($scope) {
+	        		$scope.title = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location.title');
 	        		$scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location', {columnName: column.name, location: $filter('capitalize')(location)});
 	        		$scope.confirm = function() {
 	        			confirmAction();
 	        			$scope.$close();
 	        		};
 	        	},
-	        	size: 'lg'
+	        	size: 'md',
+	        	windowClass: 'lavagna-modal'
 	        });
 
 
