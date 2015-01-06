@@ -6,7 +6,14 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>lavagna</name>
-	<url>http://maven.apache.org</url>
+	<url>http://lavagna.io</url>
+
+	<scm>
+		<connection>scm:git:git@github.com:digitalfondue/lavagna.git</connection>
+		<developerConnection>scm:git:git@github.com:digitalfondue/lavagna.git</developerConnection>
+		<url>https://github.com/digitalfondue/lavagna.git</url>
+		<tag>HEAD</tag>
+	</scm>
 
 	<licenses>
 		<license>
