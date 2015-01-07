@@ -15,6 +15,13 @@
 		<tag>HEAD</tag>
 	</scm>
 
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/digitalfondue/maven/lavagna</url>
+		</repository>
+	</distributionManagement>
+
 	<licenses>
 		<license>
 			<name>GNU General Public License Version 3</name>
