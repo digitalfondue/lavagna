@@ -3,7 +3,7 @@
 	<groupId>io.lavagna</groupId>
 	<artifactId>lavagna</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-M1</version>
+	<version>1.0-M2-SNAPSHOT</version>
 	<name>lavagna</name>
 	<url>http://lavagna.io</url>
 
@@ -11,7 +11,7 @@
 		<connection>scm:git:git@github.com:digitalfondue/lavagna.git</connection>
 		<developerConnection>scm:git:git@github.com:digitalfondue/lavagna.git</developerConnection>
 		<url>https://github.com/digitalfondue/lavagna.git</url>
-		<tag>lavagna-1.0-M1</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<licenses>
