@@ -48,6 +48,10 @@ ul.lavagna-home-cards {
 	margin-top: 20px;
 }
 
+ul.lavagna-home-cards li.lavagna-home-card {
+	list-style-type: none;
+}
+
 ul.lavagna-home-cards li.lavagna-home-card:last-child {
 	margin-bottom: 0;
 }

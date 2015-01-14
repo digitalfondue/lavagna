@@ -140,10 +140,12 @@
 		});
 		//
 		
-		$scope.isSelfWatching = function(card, currentUserId) {
-			return Card.isWatchedByUser(card, currentUserId);
-		};
-		//
+		// dependencies for card fragment
+        $scope.cardFragmentDependencies = {};
+        var cardFragmentDependenciesToCopy = ['currentUserId'];
+		for(var k in cardFragmentDependenciesToCopy) {
+			$scope.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = $scope[cardFragmentDependenciesToCopy[k]];
+		}
 
 	});
 

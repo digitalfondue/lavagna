@@ -6,11 +6,11 @@
 			</div>
 		
 			<ul class="lvg-search-result-list">
-				<li class="lavagna-home-card lavagna-panel" data-bindonce data-ng-repeat="card in found">
-					<lvg-card-search-result card="card" query="query" page="page" project="project" selected="selected"></lvg-card-search-result>
+				<li class="lavagna-home-card" data-bindonce data-ng-repeat="card in found">
+					<lvg-card-fragment data-view="search" data-card="card" data-project="project" 
+						data-query="query" data-page="page" data-selected="selected" data-dependencies="cardFragmentDependencies"></lvg-card-fragment>
 				</li>
 			</ul>
-			
 			
 			<div data-ng-if="totalPages > 1">
 				<pagination total-items="count" data-ng-model="page" items-per-page="50" max-size="10"  class="pagination-sm" boundary-links="true" data-ng-change="moveToPage(page)"></pagination>

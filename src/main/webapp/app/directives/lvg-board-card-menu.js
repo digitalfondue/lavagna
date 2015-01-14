@@ -10,12 +10,10 @@
 			restrict: 'A',
 			link: function($scope, element, attrs) {
 				
-
 				$scope.openCardMenu = function(card, columns) {
 					
 					//we create a specific scope for the card menu, as the current $scope can be destroyed at any time
-					var $scopeForCardMenu = $rootScope.$new();
-					
+					var $scopeForCardMenu = $scope.$new();
 					
 					var cleanup = function () {
 						$('#cardModal,#cardModalBackdrop').removeClass('in');
@@ -31,20 +29,6 @@
 							cleanup();
 						}
 					};
-					
-					//FIXME this is a ugly hack: copy the necessary stuff to our new scope
-					var variableToCopy = ['labelNameToId', 'hasSystemLabelByName', 'hasUserLabels', 
-					                      'projectName', 'boardName', 'labelNameToId', 'addUserLabelValue',
-					                      'removeLabelValueForId', 'isSelfWatching', 'isAssignedToCard', 'moveCard',
-					                      'currentUserId'];
-					for(var k in variableToCopy) {
-						$scopeForCardMenu[variableToCopy[k]] = $scope[variableToCopy[k]];
-					}
-					
-					//
-					
-					$scopeForCardMenu.card = card;
-					$scopeForCardMenu.columns = columns;
 					
 					$scopeForCardMenu.close = function() {
 						cleanup();
@@ -63,7 +47,7 @@
 							ids.push(card.id);
 							return ids;
 						}).then(function(ids) {
-							Board.moveCardToColumn(card.id, card.columnId, toColumn.id, {newContainer: ids})
+							Board.moveCardToColumn(card.id, card.columnId, toColumn.id, {newContainer: ids});
 						}).then(cleanup);
 					};
 					
@@ -82,7 +66,7 @@
 					$("body").append($('<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade"></div>'));
 					$("#cardModal,#cardModalBackdrop").addClass('in');
 					
-					var template = $compile('<div id="cardBoardMenu"><lvg-card-fragment-ro></lvg-card-fragment-ro>'
+					var template = $compile('<div id="cardBoardMenu" data-bindonce><lvg-card-fragment data-view="board" data-read-only data-card="card" data-board="board"></lvg-card-fragment>'
 							+ '<div id="cardBoardMenuActions">'
 							+ '<div id="cardBoardMenuClose"><button type="button" class="close" data-ng-click="close()">&times;</button></div>'
 							+ '<div data-ng-include="\'partials/fragments/board-card-menu-card-actions-fragment.html\'"></div></div>'

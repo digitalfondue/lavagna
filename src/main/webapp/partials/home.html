@@ -52,8 +52,8 @@
 		<div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
 			<h2 class="card-home" data-translate>partials.home.openTask</h2>
 			<ul data-ng-if="totalOpenCards > 0" class="lavagna-home-cards">
-				<li class="lavagna-home-card lavagna-panel" data-bindonce data-ng-repeat="card in userCards | filter : cardFilter track by card.hash">
-					<lvg-card-board-home-panel card="card"></lvg-card-board-home-panel>
+				<li class="lavagna-home-card" data-bindonce data-ng-repeat="card in userCards | filter : cardFilter track by card.hash">
+					<lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
 				</li>
 			</ul>
 			<span data-ng-if="totalOpenCards == 0" data-translate>partials.home.noTask</span>

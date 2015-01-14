@@ -25,9 +25,15 @@
 			restrict: 'A',
 			transclude: true,
 			scope: true,
-			template: '<a class="lavagna-card-link-placeholder"><span class="lavagna-card-short-placeholder"></span><span data-ng-transclude></span></a>' +
-				' <span class="lavagna-card-name-placeholder"></span>',
+			template: '<span data-bindonce="readOnly">'
+				+ '<span data-bo-if="!readOnly">'
+				+	'<a class="lavagna-card-link-placeholder"><span class="lavagna-card-short-placeholder"></span><span data-ng-transclude></span></a> <span class="lavagna-card-name-placeholder"></span>'
+				+ '</span><span data-bo-if="readOnly">'
+				+	'<span class="lavagna-card-short-placeholder"></span><span data-ng-transclude></span> <span class="lavagna-card-name-placeholder"></span>'
+				+ '</span></span>',
 			link: function ($scope, element, attrs) {
+				$scope.readOnly = attrs.readOnly != undefined;
+				
 				var unregister = $scope.$watch(attrs.lvgCard, function (cardId) {
 					if (cardId == undefined) {
 						return;

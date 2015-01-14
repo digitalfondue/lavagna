@@ -58,8 +58,8 @@
 			<h2 class="card-home" data-translate data-translate-value-name="{{project.name}}">partials.project.project.myOpenTasks</h2>
 			<ul data-ng-if="totalProjectOpenCards > 0"
 				class="lavagna-home-cards">
-				<li class="lavagna-home-card lavagna-panel" data-bindonce data-ng-repeat="card in userProjectCards | filter : cardFilter track by card.hash">
-					<lvg-card-board-home-panel card="card"></lvg-card-board-home-panel>
+				<li class="lavagna-home-card" data-bindonce data-ng-repeat="card in userProjectCards | filter : cardFilter track by card.hash">
+					<lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
 				</li>
 			</ul>
 			<span data-ng-if="totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>

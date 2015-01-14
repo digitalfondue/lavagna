@@ -48,8 +48,15 @@
 			restrict: 'A',
 			transclude: true,
 			scope: true,
-			template: "<a data-lvg-user-tooltip data-lvg-user-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\"></span><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>",
+			template: '<span data-bindonce="readOnly">'
+				+ '<span data-bo-if="!readOnly">'
+				+	'<a data-lvg-user-tooltip data-lvg-user-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
+				+ '</span><span data-bo-if="readOnly">'
+				+	'<span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span>'
+				+ '</span></span>',
 			link: function ($scope, element, attrs) {
+				$scope.readOnly = attrs.readOnly != undefined;
+				
 				var unregister = $scope.$watch(attrs.lvgUser, function (userId) {
 					if (userId == undefined) {
 						return;

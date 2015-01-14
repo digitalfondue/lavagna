@@ -1,17 +1,38 @@
-<div data-lvg-board-card-menu class="lavagna-board-panel" data-bo-class="{'lavagna-is-watching': isSelfWatching(card.labels, currentUserId)}">
+<div data-lvg-board-card-menu 
+	data-bo-class="{'lavagna-is-watching': !listView && isSelfWatching(card.labels, currentUserId), 'lavagna-board-panel' : boardView, 'lavagna-panel' : listView || searchView}">
 	<div class="head clearfix">
 		<div class="title">
-			<div class="row">
-				<div class="col-xs-10"><input type="checkbox" data-ng-model="selectedCards[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"> 
-					<a data-bo-href="'#/' + projectName + '/' + boardName + '-' + card.sequence" data-bo-bind="boardName + '-' + card.sequence"></a> 
+			<div class="row" data-bo-if="boardView && !readOnly">
+				<div class="col-xs-10"><input type="checkbox" data-ng-model="selected[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"> 
+					<a data-bo-href="'#/' + project + '/' + board + '-' + card.sequence" data-bo-bind="board + '-' + card.sequence"></a> 
 				</div>
 				<div class="col-xs-1">
 					<div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-						<div><div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu(card, columns)"><span class="fa fa-chevron-down"></span></div></div>
+						<div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu(card, columns)"><span class="fa fa-chevron-down"></span></div>
 					</div>
 				</div>
 			</div>
-			 <span data-bo-bind="card.name"></span>
+			<div class="row" data-bo-if="boardView && readOnly">
+				<div class="col-xs-10"><span class="fake-link" data-bo-bind="board + '-' + card.sequence"></span></div>
+			</div>
+			<div class="row" data-bo-if="listView">
+				<div class="col-xs-8"><a data-bo-href="'#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence" data-bo-bind="card.boardShortName + '-' + card.sequence"></a></div>
+				<div class="col-xs-4 card-home-date"><span data-bo-bind="card.lastUpdateTime|dateIncremental"></span></div>
+			</div>
+			<div class="row" data-bo-if="searchView">
+				<div class="col-xs-8">
+					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-ng-change="updateSelectCount()" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
+					
+					<a data-bo-href="'#/search/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project == null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+	            	</a>
+					<a data-bo-href="'#/' + card.projectShortName + '/search/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project != null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+	            	</a>
+				</div>
+				<div class="col-xs-4 card-home-date"><span data-bo-bind="card.lastUpdateTime|dateIncremental"></span></div>
+			</div>
+			<span data-bo-bind="card.name"></span>
 		</div>
 	</div>
 	<div class="body">
@@ -36,10 +57,15 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card-info" data-bo-if="hasSystemLabelByName('ASSIGNED', card.labels)">
+		<div class="card-info" data-bo-if="!listView && hasSystemLabelByName('ASSIGNED', card.labels)">
 			<ul class="assigned-users">
 				<li class="assigned-user" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
-					<lvg-label-val value="label"></lvg-label-val>
+					<div data-bo-if="!readOnly">
+						<lvg-label-val value="label"></lvg-label-val>
+					</div>
+					<div data-bo-if="readOnly">
+						<lvg-label-val data-read-only value="label"></lvg-label-val>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -49,7 +75,12 @@
 					class="lavagna-label lavagna-label-no-controls"
 					data-bo-style="label.labelColor|labelBackground"
 					data-bo-class="label.labelColor|labelBackgroundClass">
-					<lvg-label value="label" name="label.labelName"></lvg-label>
+					<div data-bo-if="!readOnly">
+						<lvg-label value="label" name="label.labelName"></lvg-label>
+					</div>
+					<div data-bo-if="readOnly">
+						<lvg-label data-read-only value="label" name="label.labelName"></lvg-label>
+					</div>
 				</li>
 			</ul>
 		</div>

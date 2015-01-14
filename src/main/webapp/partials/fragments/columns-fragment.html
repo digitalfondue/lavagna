@@ -73,7 +73,8 @@
 			<lvg-spinner data-bo-hide="loaded"></lvg-spinner>
 			<ul data-ui-sortable="sortableCardOptions" class="lavagna-board-cards" data-ng-show="loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}">
 				<li data-bindonce data-ng-repeat="card in cardsInColumn | filter : cardFilter track by card.hash" class="lavagna-board-card" data-bo-attr data-bo-attr-data-lvg-card-id="card.id" data-bo-attr-data-lavagna-card-column-id="card.columnId">
-					<lvg-card-fragment></lvg-card-fragment>
+					<lvg-card-fragment data-view="board" data-card="card" 
+						data-project="projectName" data-board="boardName" data-selected="selectedCards" data-dependencies="cardFragmentDependencies"></lvg-card-fragment>
 				</li>
 			</ul>
 		</div>

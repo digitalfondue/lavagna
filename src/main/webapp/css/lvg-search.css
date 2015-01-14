@@ -67,3 +67,7 @@
 	padding:0;
 	margin-top:20px;
 }
+
+.lvg-search-result-list li {
+	list-style-type: none;
+}

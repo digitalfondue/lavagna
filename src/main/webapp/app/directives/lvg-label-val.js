@@ -19,9 +19,9 @@
 			},
 			template: '<span data-bindonce="type" data-bindonce="readOnly">'
 				+ '<span data-bo-if="!readOnly && type === \'USER\'"><span data-lvg-user="displayValue"></span></span>'
-				+ '<span data-bo-if="readOnly && type === \'USER\'"><span data-lvg-user-ro="displayValue"></span></span>'
+				+ '<span data-bo-if="readOnly && type === \'USER\'"><span data-lvg-user="displayValue" data-read-only></span></span>'
 				+ '<span data-bo-if="!readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue"></span></span>'
-				+ '<span data-bo-if="readOnly && type === \'CARD\'"><span data-no-name data-lvg-card-ro="displayValue"></span></span>'
+				+ '<span data-bo-if="readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
 				+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue"></span></span>',
 			link: function ($scope, $element, $attrs) {
 
