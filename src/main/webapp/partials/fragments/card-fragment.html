@@ -21,7 +21,7 @@
 			</div>
 			<div class="row" data-bo-if="searchView">
 				<div class="col-xs-8">
-					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-ng-change="updateSelectCount()" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
+					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
 					
 					<a data-bo-href="'#/search/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project == null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
 	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>

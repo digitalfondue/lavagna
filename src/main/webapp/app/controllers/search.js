@@ -35,9 +35,7 @@
 		}
 
 		var queryString = { params: {}};
-
-		$scope.selected = {};
-
+		
 		$scope.moveToPage = function(page) {
 			$log.debug('move to page', page);
 			var loc = $location.search();
@@ -45,21 +43,22 @@
 			$location.search(loc);
 			triggerSearch();
 		};
-
-
-		function updateSelectCount() {
+		
+		$scope.selected = {};
+		
+		function selectedCardsCount() {
 			var cnt = 0;
 			for(var k in $scope.selected) {
 				if($scope.selected[k] !== false) {
 					cnt++;
 				}
 			}
-			$scope.selectCount = cnt;
+			return cnt;
 		}
+		
+		$scope.selectedCardsCount = selectedCardsCount;
 
-		$scope.updateSelectCount = updateSelectCount;
 		$scope.inProject = $stateParams.projectName !== undefined;
-
 
 		if($stateParams.projectName !== undefined) {
 			queryString.params.projectName = $stateParams.projectName;
@@ -98,7 +97,6 @@
 						for(var i = 0;i<idsToSetAsTrue.length;i++) {
 							$scope.selected[idsToSetAsTrue[i]] = shortProjectName;
 						}
-						updateSelectCount();
 					}
 				})(projects[proj], proj));
 			}
@@ -108,7 +106,6 @@
 			for(var i = 0;i<$scope.found.length;i++) {
 				delete $scope.selected[$scope.found[i].id];
 			}
-			updateSelectCount();
 		};
 
 		triggerSearch();

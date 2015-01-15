@@ -15,7 +15,7 @@
 					type="button" data-ng-click="deselectAllInPage()" data-translate>partials.fragments.search-result-fragment.deselectAllInPage</button></li>
 		</ul>
 	</div>
-	<div class="dropdown lvg-button-group" data-ng-show="selectCount > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'">
+	<div class="dropdown lvg-button-group" data-ng-show="selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'">
 		<button type="button" data-dropdown-toggle
 			class="lvg-navigation-button lvg-dropdown-toggle"
 			data-toggle="dropdown">
