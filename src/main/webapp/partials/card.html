@@ -205,7 +205,7 @@
 									<p>
 										<span data-translate>card.partOf</span> <span
 											data-ng-repeat="milestone in labelValues[labelNameToId['MILESTONE']]">
-											<span><lvg-label-val value="milestone"></lvg-label-val>
+											<span><a data-ng-href="#/{{project.shortName}}/milestones/"><lvg-label-val value="milestone"></lvg-label-val></a>
 												<span class="fa fa-times lavagna-pointer"
 												      data-ng-click="removeLabelValue(milestone)"
 												      data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
