@@ -20,6 +20,11 @@
 			<url>https://www.gnu.org/licenses/gpl.txt</url>
 		</license>
 	</licenses>
+	
+	<prerequisites>
+		<maven>3.0.1</maven>
+	</prerequisites>
+	
 
 	<dependencies>
 		<dependency>
@@ -214,7 +219,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.2</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -223,12 +228,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
+				<version>2.18.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<version>2.7</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -236,7 +241,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.6</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
@@ -326,7 +331,7 @@
 			<plugin>
 				<groupId>org.simplericity.jettyconsole</groupId>
 				<artifactId>jetty-console-maven-plugin</artifactId>
-				<version>1.55</version>
+				<version>1.56</version>
 				<executions>
 					<execution>
 						<goals>
@@ -359,7 +364,7 @@
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>2.6</version>
+				<version>2.7</version>
 				<configuration>
 					<header>com/mycila/maven/plugin/license/templates/GPL-3.txt</header>
 					<includes>
@@ -473,7 +478,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.3</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

@@ -1,14 +1,14 @@
 README
 ======
 
-## ABOUT ##
+## About ##
 
-Lavagna is a small and easy to use agile issue/project tracking software. [![Build Status](https://travis-ci.org/digitalfondue/lavagna.png?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
+Lavagna is a small and easy to use issue/project tracking software. [![Build Status](https://travis-ci.org/digitalfondue/lavagna.png?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
 
 It requires: Java 7 or better, MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
 
-## INSTALL ##
+## Install ##
 
 Lavagna supports MySQL (at least 5.1) and PostgreSQL (tested on 9.1) for production use and HSQLDB for testing purposes.
 
@@ -57,7 +57,7 @@ There you can:
 4. confirm
 
 
-## DEVELOP ##
+## Develop ##
 
 ### IDE Configuration ###
 
@@ -203,16 +203,16 @@ mvn install site
 -> open target/site/jacoco/index.html with your browser
 
 
-## DATABASE MIGRATION ##
+## About Database migration ##
 
 Can be disabled using the following system property: datasource.disable.migration=true
 
 
-## CHECK FOR UPDATED DEPENDENCIES ##
+## Check for updated dependencies ##
 
 Notes:
 
-- HSQLDB atm will not be updated to version 2.3.2 due to a bug
+- HSQLDB at the moment will not be updated to version 2.3.2 due to a bug
   (default null+unique clause has changed)
 - tomcat-jdbc will not be updated to version 8.0.9 due to a strange
   class loader interaction with log4j when launching with mvn jetty:run
