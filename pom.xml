@@ -359,6 +359,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+			    <artifactId>asciidoctor-maven-plugin</artifactId>
+			    <version>1.5.2</version>
+			    <executions>
+			    	<execution>
+			    		<phase>generate-resources</phase>
+			    		<goals>
+			    			<goal>process-asciidoc</goal>
+			    		</goals>
+			    	</execution>
+			    </executions>
+			    <configuration>
+			    	<backend>html</backend>
+			    	<outputDirectory>${project.build.directory}/lavagna/help/</outputDirectory>
+			    </configuration>
+			</plugin>
 
 			<!-- license -->
 			<plugin>
@@ -463,6 +481,27 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.asciidoctor
+										</groupId>
+										<artifactId>
+											asciidoctor-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.5.2,)
+										</versionRange>
+										<goals>
+											<goal>
+												process-asciidoc
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
