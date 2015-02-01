@@ -18,6 +18,13 @@ package io.lavagna.web.security;
 
 import static java.util.EnumSet.of;
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
+import io.lavagna.model.Key;
+import io.lavagna.service.ConfigurationRepository;
+import io.lavagna.service.UserRepository;
+import io.lavagna.web.helper.CSRFToken;
+import io.lavagna.web.helper.Redirector;
+import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.PathConfiguration.UrlMatcher;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,21 +48,13 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.WebApplicationContext;
 
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.CSRFToken;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
-import io.lavagna.web.security.PathConfiguration.UrlMatcher;
-
 /**
  * <pre>
- * FIXME: obviously I'm not happy with this one... 
- * 
+ * FIXME: obviously I'm not happy with this one...
+ *
  * - I was not able to do a dynamic configuration with spring security.
  * - I needed some additional control
- * 
+ *
  * If there is some kind of alternatives that give me the same features/functionality as the current version...
  * </pre>
  */
@@ -148,7 +147,7 @@ public class SecurityFilter implements Filter {
 
 	/**
 	 * Return true if a redirect has been sent and thus the whole flow must be stopped.
-	 * 
+	 *
 	 * @param req
 	 * @param resp
 	 * @param configuration
@@ -203,7 +202,7 @@ public class SecurityFilter implements Filter {
 
 	/**
 	 * Return false if there is an error
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -228,7 +227,7 @@ public class SecurityFilter implements Filter {
 
 	/**
 	 * Return true if the filter must check the
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -282,7 +281,7 @@ public class SecurityFilter implements Filter {
 				}
 			}
 		}
-		
+
 		filterChain.doFilter(request, response);
 	}
 
@@ -306,7 +305,7 @@ public class SecurityFilter implements Filter {
 			res.addHeader("Pragma", "no-cache");
 		}
 
-		res.addHeader("X-Frame-Options", "DENY");
+		res.addHeader("X-Frame-Options", "SAMEORIGIN");
 		res.addHeader("X-XSS-Protection", "1; mode=block");
 		res.addHeader("x-content-type-options", "nosniff");
 	}
