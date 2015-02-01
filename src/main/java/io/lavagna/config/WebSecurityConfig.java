@@ -53,6 +53,7 @@ public class WebSecurityConfig {
 				.request("/bootstrap-3.0/**").permitAll()//
 				.request("/css/**").permitAll()//
 				.request("/js/**").permitAll()//
+				.request("/help/**").permitAll()//
 				.request("/**").denyAll().disableLogin();
 	}
 
