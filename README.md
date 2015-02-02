@@ -22,40 +22,14 @@ It's distributed in 2 forms:
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-java -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar lavagna-jetty-console.war --headless
+wget https://github.com/digitalfondue/lavagna/releases/download/lavagna-1.0-M1/lavagna-1.0-M1-distribution.tar.gz
+tar zxvf lavagna-1.0-M1-distribution.tar.gz
+./lavagna-1.0-M1/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
 
-### Setup ###
-
-Lavagna requires the following properties to be set on the JVM:
-
- - datasource.driver=org.hsqldb.jdbcDriver | com.mysql.jdbc.Driver | org.postgresql.Driver
- - datasource.dialect=HSQLDB | MYSQL | PGSQL
- - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
- - datasource.username=[username]
- - datasource.password=[pwd]
- - spring.profiles.active= dev | prod
-
-The db user must be able to create tables and others db objects.
-
-Once the application has been started/deployed, go to
-
-http(s)://[your deploy](:port)/setup/
-
-There you can:
-
-1. configure the application
-2. import a Lavagna export
-
-### Configuration steps ###
-
-1. define the base url
-2. define the initial login configuration (demo, ldap, oauth, mozilla persona)
-3. define the admin user
-4. confirm
-
+See the README in the archive. A better documentation is arriving.
 
 ## Develop ##
 
