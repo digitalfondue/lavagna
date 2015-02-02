@@ -10,4 +10,6 @@ matrix:
           env: $PROFILE=-Ddatasource.dialect=MYSQL
         - jdk: oraclejdk7
           env: $PROFILE=-Ddatasource.dialect=PGSQL-TRAVIS
-script: mvn test $PROFILE
+script: mvn test jacoco:report $PROFILE
+after_success:
+  - mvn coveralls:report

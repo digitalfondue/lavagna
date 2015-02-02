@@ -3,7 +3,7 @@ README
 
 ## About ##
 
-Lavagna is a small and easy to use issue/project tracking software. [![Build Status](https://travis-ci.org/digitalfondue/lavagna.png?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
+Lavagna is a small and easy to use issue/project tracking software. [![Build Status](https://travis-ci.org/digitalfondue/lavagna.png?branch=master)](https://travis-ci.org/digitalfondue/lavagna) [![Coverage Status](https://coveralls.io/repos/digitalfondue/lavagna/badge.svg?branch=master)](https://coveralls.io/r/digitalfondue/lavagna?branch=master)
 
 It requires Java 7 or better, MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
