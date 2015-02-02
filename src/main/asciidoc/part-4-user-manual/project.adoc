@@ -1,0 +1,17 @@
+=== Project
+
+include::project/create-a-project.adoc[]
+
+include::project/create-a-board.adoc[]
+
+include::project/statistics.adoc[]
+
+include::project/milestones.adoc[]
+
+include::project/manage-milestones.adoc[]
+
+include::project/edit-project-and-boards.adoc[]
+
+include::project/manage-labels.adoc[]
+
+include::project/import-from-trello.adoc[]

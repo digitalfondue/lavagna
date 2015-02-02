@@ -1,3 +1,15 @@
-= Lavagna
+= Lavagna manual
+Lavagna authors <info@digitalfondue.ch>
+:toc:
 
-This is only a placeholder.
+:numbered:
+
+Intro section TBD
+
+include::part-1-about.adoc[]
+
+include::part-2-installation.adoc[]
+
+include::part-3-configuration-and-administration.adoc[]
+
+include::part-4-user-manual.adoc[]

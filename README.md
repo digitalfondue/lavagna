@@ -124,6 +124,27 @@ mvn clean install
 java -Ddatasource.dialect=HSQLDB -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
 ```
 
+### Documentation ###
+
+The documentation is written in asciidoc (see http://asciidoctor.org/).
+It currently reside in src/main/asciidoc .
+
+For building the doc:
+
+```
+mvn clean asciidoctor:process-asciidoc docbkx:generate-html
+```
+
+The output will be present in target/docbkx/html
+
+For testing the documentation inside the application, you will need to run
+
+```
+mvn jetty:run-war
+```
+
+And go to http://localhost:8080/help/
+
 ### Vagrant ###
 
 In order to make it easier to tests on different databases we included 3 Vagrant VMs.
