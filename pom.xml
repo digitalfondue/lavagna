@@ -390,7 +390,22 @@
         		<configuration>
         			<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
 	          		<chunkedOutput>true</chunkedOutput>
+	          		<postProcess>
+	          			<copy todir="${project.build.directory}/lavagna/help/">
+	          				<fileset dir="${project.build.directory}/docbkx/html/"/>
+	          			</copy>
+	          		</postProcess>
         		</configuration>
+        		<dependencies>
+          			<dependency>
+            			<groupId>net.sf.docbook</groupId>
+            			<artifactId>docbook-xml</artifactId>
+            			<version>5.0-all</version>
+            			<classifier>resources</classifier>
+            			<type>zip</type>
+            			<scope>runtime</scope>
+          			</dependency>
+        		</dependencies>
       		</plugin>
 			<plugin>
         		<artifactId>maven-resources-plugin</artifactId>
@@ -398,24 +413,6 @@
         		<configuration>
         			<encoding>UTF-8</encoding>
         		</configuration>
-        		<executions>
-          			<execution>
-            			<phase>prepare-package</phase>
-           				<goals>
-							<goal>copy-resources</goal>
-           				</goals>
-           				<configuration>
-           					<overwrite>true</overwrite>
-            				<outputDirectory>${project.build.directory}/lavagna/help/</outputDirectory>
-            				<resources>
-              					<resource>
-                					<directory>${project.build.directory}/docbkx/html</directory>
-                					<filtering>false</filtering>
-              					</resource>
-	              			</resources>
-           				</configuration>
-          			</execution>
-        		</executions>
       		</plugin>
 
 			<!-- license -->
