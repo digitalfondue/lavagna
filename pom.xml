@@ -20,11 +20,11 @@
 			<url>https://www.gnu.org/licenses/gpl.txt</url>
 		</license>
 	</licenses>
-	
+
 	<prerequisites>
 		<maven>3.0.1</maven>
 	</prerequisites>
-	
+
 
 	<dependencies>
 		<dependency>
@@ -229,6 +229,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
+				<configuration>
+					<argLine>-Xms64m -Xmx256m -XX:MaxPermSize=256m</argLine>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -298,7 +301,7 @@
 							<name>datasource.password</name>
 							<value>${datasource.password}</value>
 						</systemProperty>
-						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value> 
+						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value>
 							</systemProperty> -->
 					</systemProperties>
 				</configuration>
@@ -359,7 +362,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 			    <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -443,7 +446,7 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
