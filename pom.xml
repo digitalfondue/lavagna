@@ -394,6 +394,9 @@
 	          			<copy todir="${project.build.directory}/lavagna/help/">
 	          				<fileset dir="${project.build.directory}/docbkx/html/"/>
 	          			</copy>
+	          			<copy todir="${project.build.directory}/lavagna/help/images/">
+	          				<fileset dir="${basedir}/src/main/asciidoc/images/"/>
+	          			</copy>
 	          		</postProcess>
         		</configuration>
         		<dependencies>

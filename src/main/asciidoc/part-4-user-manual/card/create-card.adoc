@@ -1,1 +1,15 @@
 ==== Create a card
+
+There are two ways to create a card.
+
+The first one, is by using the "+" sign at the end of a column.
+
+image::c04_card_create-card_footer.png[Create a new card using the quick link in the column footer]
+
+The second one, is by using the column context menu, and selecting "Add card"
+
+image::c04_card_create-card_menu.png[Create a new card using the quick link in the column footer]
+
+Enter the card name, click "Add", and a new card will appear at the top of the column, if the card has been created via the context menu, or at the bottom, if the quick link in the footer has been used.
+
+image::c04_card_create-card_done.png[A new card has been created]
