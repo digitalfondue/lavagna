@@ -1,0 +1,5 @@
+=== Search
+
+include::search/global-and-project-search.adoc[]
+
+include::search/board-search.adoc[]

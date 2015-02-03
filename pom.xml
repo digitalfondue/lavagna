@@ -235,14 +235,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
@@ -376,10 +368,55 @@
 			    	</execution>
 			    </executions>
 			    <configuration>
-			    	<backend>html</backend>
-			    	<outputDirectory>${project.build.directory}/lavagna/help/</outputDirectory>
+			    	<backend>docbook5</backend>
+			    	<doctype>book</doctype>
+			    	<toc>true</toc>
+			    	<sourceDocumentName>index.adoc</sourceDocumentName>
+			    	<outputDirectory>${project.build.directory}/generated-docs/</outputDirectory>
 			    </configuration>
 			</plugin>
+			<plugin>
+        		<groupId>com.agilejava.docbkx</groupId>
+        		<artifactId>docbkx-maven-plugin</artifactId>
+        		<version>2.0.16</version>
+        		<executions>
+          			<execution>
+          				<phase>generate-resources</phase>
+            			<goals>
+              				<goal>generate-html</goal>
+            			</goals>
+          			</execution>
+        		</executions>
+        		<configuration>
+        			<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
+	          		<chunkedOutput>true</chunkedOutput>
+        		</configuration>
+      		</plugin>
+			<plugin>
+        		<artifactId>maven-resources-plugin</artifactId>
+        		<version>2.7</version>
+        		<configuration>
+        			<encoding>UTF-8</encoding>
+        		</configuration>
+        		<executions>
+          			<execution>
+            			<phase>prepare-package</phase>
+           				<goals>
+							<goal>copy-resources</goal>
+           				</goals>
+           				<configuration>
+           					<overwrite>true</overwrite>
+            				<outputDirectory>${project.build.directory}/lavagna/help/</outputDirectory>
+            				<resources>
+              					<resource>
+                					<directory>${project.build.directory}/docbkx/html</directory>
+                					<filtering>false</filtering>
+              					</resource>
+	              			</resources>
+           				</configuration>
+          			</execution>
+        		</executions>
+      		</plugin>
 
 			<!-- license -->
 			<plugin>
@@ -506,6 +543,25 @@
 											<goal>
 												process-asciidoc
 											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.agilejava.docbkx
+										</groupId>
+										<artifactId>
+											docbkx-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.0.16,)
+										</versionRange>
+										<goals>
+											<goal>generate-html</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

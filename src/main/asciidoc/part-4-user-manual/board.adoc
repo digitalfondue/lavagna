@@ -1,0 +1,11 @@
+=== Board
+
+include::board/columns.adoc[]
+
+include::board/move-cards-around.adoc[]
+
+include::board/card-menu.adoc[]
+
+include::board/bulk-operations.adoc[]
+
+include::board/side-location.adoc[]
