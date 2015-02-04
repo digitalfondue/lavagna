@@ -129,7 +129,7 @@ public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerC
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/api/socket").withSockJS();
+		registry.addEndpoint("/api/socket").withSockJS().setClientLibraryUrl("../../js/sockjs.min.js");
 	}
 
 	@Override
