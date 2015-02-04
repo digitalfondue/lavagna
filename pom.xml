@@ -298,30 +298,6 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<!-- for heroku -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.eclipse.jetty</groupId>
-									<artifactId>jetty-runner</artifactId>
-									<version>${org.eclipse.jetty.version}</version>
-									<destFileName>jetty-runner.jar</destFileName>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- for executable war -->
 			<plugin>
 				<groupId>org.simplericity.jettyconsole</groupId>
@@ -334,6 +310,15 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<additionalDependencies>
+						<dependency>
+    						<groupId>org.eclipse.jetty.websocket</groupId>
+    						<artifactId>websocket-server</artifactId>
+    						<version>9.2.3.v20140905</version>
+						</dependency>
+					</additionalDependencies>
+				</configuration>
 			</plugin>
 
 			<plugin>
