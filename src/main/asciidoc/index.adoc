@@ -1,6 +1,8 @@
 = Lavagna manual
+:icons: font
 Lavagna authors <info@digitalfondue.ch>
-:toc:
+:toc: left
+:toclevels: 3
 
 :numbered:
 

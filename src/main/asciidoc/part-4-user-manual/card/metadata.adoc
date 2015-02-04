@@ -20,7 +20,7 @@ image::c04_card_metadata_left-column.png[Left column]
 
 In the **Dates** widget, it is possible to configure a date for when the card will be due for completion (configuring the due date requires the UPDATE_CARD permission).
 
-First, click on [fa fa-calendar]## in the widget action bar.
+First, click on icon:calendar[] in the widget action bar.
 
 image::c04_card_metadata_dates-01.png[Card view]
 

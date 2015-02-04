@@ -374,11 +374,12 @@
         		</executions>
         		<configuration>
         			<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
-       				<htmlStylesheet>style/style.css</htmlStylesheet>
+       				<htmlStylesheet>css/style.css</htmlStylesheet>
+					<htmlCustomization>${basedir}/src/main/asciidoc/xsl/lavagna.xsl</htmlCustomization>
 	          		<chunkedOutput>true</chunkedOutput>
 	          		<postProcess>
-	          			<copy todir="${project.build.directory}/docbkx/html/style">
-	          				<fileset dir="${basedir}/src/main/asciidoc/style/"/>
+	          			<copy todir="${project.build.directory}/docbkx/html/css">
+	          				<fileset dir="${basedir}/src/main/asciidoc/css/"/>
 	          			</copy>
 	          			<copy todir="${project.build.directory}/lavagna/help/">
 	          				<fileset dir="${project.build.directory}/docbkx/html/"/>
@@ -386,8 +387,11 @@
 	          			<copy todir="${project.build.directory}/lavagna/help/images/">
 	          				<fileset dir="${basedir}/src/main/asciidoc/images/"/>
 	          			</copy>
-	          			<copy todir="${project.build.directory}/lavagna/help/style">
-	          				<fileset dir="${basedir}/src/main/asciidoc/style/"/>
+	          			<copy todir="${project.build.directory}/lavagna/help/css">
+	          				<fileset dir="${basedir}/src/main/asciidoc/css/"/>
+	          			</copy>
+						<copy todir="${project.build.directory}/lavagna/help/fonts">
+	          				<fileset dir="${basedir}/src/main/asciidoc/fonts/"/>
 	          			</copy>
 	          		</postProcess>
         		</configuration>
