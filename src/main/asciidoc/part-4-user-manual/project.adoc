@@ -14,4 +14,6 @@ include::project/edit-project-and-boards.adoc[]
 
 include::project/manage-labels.adoc[]
 
+include::project/manage-columns.adoc[]
+
 include::project/import-from-trello.adoc[]

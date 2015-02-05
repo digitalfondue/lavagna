@@ -6,10 +6,10 @@ The first one, is by using the icon:plus[] shortcut in the column footer.
 
 image::c04_card_create-card_footer.png[Create a new card using the quick link in the column footer]
 
-The second one, is by using the column context menu (mouse over on the column header, then click icon:chevron-down[], and selecting "Add card"
+The second one, is by using the column context menu (mouse over on the column header, then click icon:chevron-down[], and select **Add card**
 
 image::c04_card_create-card_menu.png[Create a new card using the quick link in the column footer]
 
-Enter the card name, click "Add", and a new card will appear at the top of the column, if the card has been created via the context menu, or at the bottom, if the quick link in the footer has been used.
+Enter the card name, click **Add**, and a new card will appear at the top of the column, if the card has been created via the context menu, or at the bottom, if the quick link in the footer has been used.
 
 image::c04_card_create-card_done.png[A new card has been created]
