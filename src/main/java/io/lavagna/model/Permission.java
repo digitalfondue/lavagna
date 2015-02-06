@@ -58,20 +58,13 @@ public enum Permission {
 	//
 	/* can create a comment */
 	CREATE_CARD_COMMENT(PermissionCategory.CARD), //
+	
+	/* can update and delete comments from other users */
 	UPDATE_CARD_COMMENT(PermissionCategory.CARD), //
 	DELETE_CARD_COMMENT(PermissionCategory.CARD), //
-	//
-	CREATE_ACTION_LIST(PermissionCategory.CARD), //
-	DELETE_ACTION_LIST(PermissionCategory.CARD), //
-	UPDATE_ACTION_LIST(PermissionCategory.CARD), //
-	ORDER_ACTION_LIST(PermissionCategory.CARD), //
-	//
-	CREATE_ACTION_LIST_ITEM(PermissionCategory.CARD), //
-	DELETE_ACTION_LIST_ITEM(PermissionCategory.CARD), //
-	TOGGLE_ACTION_LIST_ITEM(PermissionCategory.CARD), //
-	UPDATE_ACTION_LIST_ITEM(PermissionCategory.CARD), //
-	MOVE_ACTION_LIST_ITEM(PermissionCategory.CARD), //
-	//
+	
+	/* can manage a action list */
+	MANAGE_ACTION_LIST(PermissionCategory.CARD),//
 
 	// file related
 	CREATE_FILE(PermissionCategory.CARD), //

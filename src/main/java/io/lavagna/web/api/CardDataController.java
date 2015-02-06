@@ -217,7 +217,7 @@ public class CardDataController {
 		return event.getDataId();
 	}
 
-	@ExpectPermission(Permission.CREATE_ACTION_LIST)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card/{cardId}/actionlist", method = RequestMethod.POST)
 	@ResponseBody
 	public CardData createActionList(@PathVariable("cardId") int cardId, @RequestBody Content actionListData, User user) {
@@ -226,7 +226,7 @@ public class CardDataController {
 		return actionList;
 	}
 
-	@ExpectPermission(Permission.DELETE_ACTION_LIST)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionlist/{actionListId}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Event deleteActionList(@PathVariable("actionListId") int actionListId, User user) {
@@ -235,7 +235,7 @@ public class CardDataController {
 		return res;
 	}
 
-	@ExpectPermission(value = Permission.DELETE_ACTION_LIST)
+	@ExpectPermission(value = Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/undo/{eventId}/actionlist", method = RequestMethod.POST)
 	@ResponseBody
 	public int undoDeleteActionList(@PathVariable("eventId") int eventId, User user) {
@@ -249,7 +249,7 @@ public class CardDataController {
 		return event.getDataId();
 	}
 
-	@ExpectPermission(Permission.UPDATE_ACTION_LIST)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionlist/{actionListId}/update", method = RequestMethod.POST)
 	@ResponseBody
 	public int updateActionList(@PathVariable("actionListId") int actionListId, @RequestBody Content data, User user) {
@@ -258,7 +258,7 @@ public class CardDataController {
 		return res;
 	}
 
-	@ExpectPermission(Permission.CREATE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionlist/{actionListId}/item", method = RequestMethod.POST)
 	@ResponseBody
 	public CardData createActionItem(@PathVariable("actionListId") int actionListId,
@@ -270,7 +270,7 @@ public class CardDataController {
 		return actionItem;
 	}
 
-	@ExpectPermission(Permission.DELETE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionitem/{actionItemId}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public Event deleteActionItem(@PathVariable("actionItemId") int actionItemId, User user) {
@@ -280,7 +280,7 @@ public class CardDataController {
 		return res;
 	}
 
-	@ExpectPermission(Permission.DELETE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/undo/{eventId}/actionitem", method = RequestMethod.POST)
 	@ResponseBody
 	public int undoDeleteActionItem(@PathVariable("eventId") int eventId, User user) {
@@ -294,7 +294,7 @@ public class CardDataController {
 		return event.getDataId();
 	}
 
-	@ExpectPermission(Permission.TOGGLE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/toggle/{status}", method = RequestMethod.POST)
 	@ResponseBody
 	public int toggleActionItem(@PathVariable("actionItemId") int actionItemId, @PathVariable("status") Boolean status,
@@ -305,7 +305,7 @@ public class CardDataController {
 		return res;
 	}
 
-	@ExpectPermission(Permission.UPDATE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/update", method = RequestMethod.POST)
 	@ResponseBody
 	public int updateActionItem(@PathVariable("actionItemId") int actionItemId, @RequestBody Content data, User user) {
@@ -315,7 +315,7 @@ public class CardDataController {
 		return res;
 	}
 
-	@ExpectPermission(Permission.MOVE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/move-to-actionlist/{to}", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean moveActionItem(@PathVariable("actionItemId") int actionItemId,
@@ -327,7 +327,7 @@ public class CardDataController {
 		return true;
 	}
 
-	@ExpectPermission(Permission.ORDER_ACTION_LIST)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card/{cardId}/order/actionlist", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean reorderActionLists(@PathVariable("cardId") int cardId, @RequestBody List<Number> order) {
@@ -336,7 +336,7 @@ public class CardDataController {
 		return true;
 	}
 
-	@ExpectPermission(Permission.MOVE_ACTION_LIST_ITEM)
+	@ExpectPermission(Permission.MANAGE_ACTION_LIST)
 	@RequestMapping(value = "/api/card-data/actionlist/{actionListId}/order", method = RequestMethod.POST)
 	@ResponseBody
 	public boolean reorderActionItems(@PathVariable("actionListId") int actionListId, @RequestBody List<Number> order) {

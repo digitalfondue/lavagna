@@ -173,7 +173,7 @@
 		};
 		loadActionLists();
 
-		User.hasPermission('ORDER_ACTION_LIST', $stateParams.projectName).then(function() {
+		User.hasPermission('MANAGE_ACTION_LIST', $stateParams.projectName).then(function() {
 			$scope.sortableActionListOptions = {
 					items: '> .lavagna-sortable-card-actionlist',
 					cancel: 'input,textarea,button,select,option,.lavagna-not-sortable-card-actionlist',
@@ -188,7 +188,7 @@
 			$scope.sortableActionListOptions = false;
 		})
 
-		User.hasPermission('MOVE_ACTION_LIST_ITEM', $stateParams.projectName).then(function() {
+		User.hasPermission('MANAGE_ACTION_LIST', $stateParams.projectName).then(function() {
 			$scope.sortableActionItemsOptions = {
 					connectWith: ".lavagna-card-actionitems",
 					start:function(e, ui) {

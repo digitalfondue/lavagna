@@ -623,9 +623,9 @@
 										<div class="title">
 											<div class="lavagna-card-actionlist-text"
 												data-ng-hide="actionListState[actionList.id].editActionName">
-												<span data-lvg-has-not-permission="UPDATE_ACTION_LIST">{{actionList.content}}</span>
+												<span data-lvg-has-not-permission="MANAGE_ACTION_LIST">{{actionList.content}}</span>
 												<span
-													data-lvg-has-permission="UPDATE_ACTION_LIST"
+													data-lvg-has-permission="MANAGE_ACTION_LIST"
 													data-ng-click="actionListState[actionList.id].editActionName=true; actionListState[actionList.id].newActionName = actionList.content">{{actionList.content}}</span>
 											</div>
 											<div class="lavagna-card-edit"
@@ -661,7 +661,7 @@
 													data-ng-hide="actionListState[actionList.id][actionItem.id].editActionName || actionListState[actionList.id][actionItem.id].deleteActionItem"
 													data-ng-init="actionListState[actionList.id][actionItem.id] = {}">
 													<input type="checkbox"
-														data-lvg-has-permission="TOGGLE_ACTION_LIST_ITEM"
+														data-lvg-has-permission="MANAGE_ACTION_LIST"
 														data-ng-checked="actionItem.type == 'ACTION_CHECKED'"
 														data-ng-click="toggleActionItem(actionItem.id)">
 												</div>
@@ -673,10 +673,10 @@
 												<ul class="controls-over"
 													data-ng-if="!actionListState[actionList.id][actionItem.id].editActionName && !actionListState[actionList.id][actionItem.id].deleteActionItem"
 													data-ng-show="actionListState[actionList.id][actionItem.id].showControls">
-													<li data-lvg-has-permission="UPDATE_ACTION_LIST_ITEM"><span
+													<li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 														data-ng-click="actionListState[actionList.id][actionItem.id].editActionName = true;actionListState[actionList.id][actionItem.id].newActionName = actionItem.content"
 														class="fa fa-pencil"></span></li>
-													<li data-lvg-has-permission="DELETE_ACTION_LIST_ITEM"><span
+													<li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 														data-ng-click="actionListState[actionList.id][actionItem.id].deleteActionItem = true"
 														class="fa fa-trash-o"></span></li>
 												</ul>
@@ -714,13 +714,13 @@
 											</li>
 										</ul>
 									</div>
-									<div class="footer" data-as-at-least-one-permission="CREATE_ACTION_LIST_ITEM,DELETE_ACTION_LIST">
+									<div class="footer" data-lvg-has-permission="MANAGE_ACTION_LIST">
 										<ul class="panel-controls"
 											data-ng-hide="actionListState[actionList.id].addItem || actionListState[actionList.id].deleteList">
-											<li class="control-box" data-lvg-has-permission="CREATE_ACTION_LIST_ITEM"><span
+											<li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 												data-ng-click="actionListState[actionList.id].addItem = true"
 												class="fa fa-plus"></span></li>
-											<li class="control-box" data-lvg-has-permission="DELETE_ACTION_LIST"><span
+											<li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 												data-ng-click="actionListState[actionList.id].deleteList = true"
 												class="fa fa-trash-o"></span></li>
 										</ul>
@@ -760,7 +760,7 @@
 									</div>
 								</li>
 							</ul>
-							<div class="lavagna-card-panel" data-lvg-has-permission="CREATE_ACTION_LIST">
+							<div class="lavagna-card-panel" data-lvg-has-permission="MANAGE_ACTION_LIST">
 								<div class="footer-full">
 									<form data-ng-role="form" data-ng-submit="addActionList(newActionList);">
 										<div class="content input-group">
