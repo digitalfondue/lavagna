@@ -87,7 +87,7 @@ public class CardLabelController {
 		return from(cardLabelRepository.findCardLabelValuesByCardId(cardId));
 	}
 
-	@ExpectPermission(Permission.CREATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/project/{projectShortName}/labels", method = RequestMethod.POST)
 	public CardLabel addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody Label label) {
 		Project project = projectService.findByShortName(projectShortName);
@@ -103,7 +103,7 @@ public class CardLabelController {
 		return cardLabelRepository.labelUsedCount(labelId);
 	}
 
-	@ExpectPermission(Permission.UPDATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}", method = RequestMethod.POST)
 	public void updateLabel(@PathVariable("labelId") int labelId, @RequestBody Label label) {
 		CardLabel cl = cardLabelRepository.updateLabel(labelId, label);
@@ -119,7 +119,7 @@ public class CardLabelController {
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
 
-	@ExpectPermission(Permission.DELETE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}", method = RequestMethod.DELETE)
 	public void removeLabel(@PathVariable("labelId") int labelId) {
 
@@ -186,7 +186,7 @@ public class CardLabelController {
 		return cardLabelRepository.findListValuesByLabelId(labelId);
 	}
 
-	@ExpectPermission(Permission.UPDATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}/label-list-values", method = RequestMethod.POST)
 	public void addLabelListValue(@PathVariable("labelId") int labelId, @RequestBody ListValue labelListValue) {
 
@@ -197,7 +197,7 @@ public class CardLabelController {
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
 
-	@ExpectPermission(Permission.UPDATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}", method = RequestMethod.DELETE)
 	public void removeLabelListValue(@PathVariable("labelListValueId") int labelListValueId) {
 
@@ -209,7 +209,7 @@ public class CardLabelController {
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 	}
 
-	@ExpectPermission(Permission.UPDATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}", method = RequestMethod.POST)
 	public void updateLabelListValue(@PathVariable("labelListValueId") int labelListValueId,
 			@RequestBody LabelListValue newLabelListValue) {
@@ -223,7 +223,7 @@ public class CardLabelController {
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 	}
 
-	@ExpectPermission(Permission.UPDATE_LABEL)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}/label-list-values/swap", method = RequestMethod.POST)
 	public void swapLabelListValues(@PathVariable("labelId") int labelId, @RequestBody SwapListValue swapListValue) {
 

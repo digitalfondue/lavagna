@@ -424,9 +424,6 @@
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.sql</include>
-						<include>**/common.properties</include>
-						<include>**/MYSQL.properties</include>
-						<include>**/PGSQL.properties</include>
 					</includes>
 				</configuration>
 				<executions>

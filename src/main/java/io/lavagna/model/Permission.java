@@ -80,10 +80,6 @@ public enum Permission {
 	//
 
 	// label related
-	CREATE_LABEL(PermissionCategory.CARD), //
-	UPDATE_LABEL(PermissionCategory.CARD), //
-	DELETE_LABEL(PermissionCategory.CARD), //
-
 	MANAGE_LABEL_VALUE(PermissionCategory.CARD), //
 	//
 

@@ -98,6 +98,12 @@ mvn clean install
 java -Ddatasource.dialect=HSQLDB -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
 ```
 
+When adding new file, remember to add the license header with:
+
+```
+mvn com.mycila:license-maven-plugin:format
+```
+
 ### Documentation ###
 
 The documentation is written in asciidoc (see http://asciidoctor.org/).

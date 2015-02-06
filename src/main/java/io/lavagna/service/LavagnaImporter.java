@@ -240,7 +240,10 @@ class LavagnaImporter {
 				res.put(rap, EnumSet.noneOf(Permission.class));
 			}
 			for (RoleAndPermission rp : kv.getValue().getRoleAndPermissions()) {
-				res.get(rap).add(rp.getPermission());
+				//we can have null permission enum value if the enum is no more present
+				if(rp.getPermission() != null) {
+					res.get(rap).add(rp.getPermission());
+				}
 			}
 		}
 		return res;
