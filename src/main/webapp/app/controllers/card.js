@@ -7,7 +7,7 @@
 	var module = angular.module('lavagna.controllers');
 
 	module.controller('CardCtrl', function($stateParams, $scope, $rootScope, $filter, $timeout,
-			CardCache, Card, User, LabelCache, Label, StompClient, Notification, Board,
+			CardCache, Card, User, LabelCache, Label, StompClient, Notification, Board, BulkOperations,
 			card, currentUser, project, board //resolved by ui-router
 			) {
 		
@@ -308,31 +308,32 @@
 			}
 			return count > 0;
 		}
+		
+		var currentCard = function() {
+			var cardByProject = {};
+			cardByProject[$stateParams.projectName] = [card.id];
+			return cardByProject;
+		};
 
 		$scope.removeLabelValue = function(label) {
 			
-			LabelCache.findLabelByProjectShortNameAndId(project.shortName, label.labelId).then(function(data) {
-				return data.domain === 'USER';
-			}).then(function(notify) {
-				//we only notify for USER label removal
-				Label.removeValue(card.id, label.cardLabelValueId).then(function(data) {
-					if(notify) {
-						Notification.addAutoAckNotification('success', { 
-							key : 'notification.card.LABEL_DELETE.success', 
-							parameters : { 
-								labelName : $scope.userLabels[label.labelId].name }
-						}, false);
-					}
-				}, function(error) {
-					$scope.actionListState[listId].deleteList = false;
-					if(notify) {
-						Notification.addAutoAckNotification('error', { 
-							key : 'notification.card.LABEL_DELETE.error', 
-							parameters : { 
-								labelName : $scope.userLabels[label.labelId].name }
-						}, false);
-					}
-				})
+			BulkOperations.removeLabel(currentCard(), {id: label.labelId}, label.value).then(function(data) {
+				
+					Notification.addAutoAckNotification('success', { 
+						key : 'notification.card.LABEL_DELETE.success', 
+						parameters : { 
+							labelName : $scope.userLabels[label.labelId].name }
+					}, false);
+				
+			}, function(error) {
+				$scope.actionListState[listId].deleteList = false;
+				
+					Notification.addAutoAckNotification('error', { 
+						key : 'notification.card.LABEL_DELETE.error', 
+						parameters : { 
+							labelName : $scope.userLabels[label.labelId].name }
+					}, false);
+				
 			})
 		};
 
@@ -347,18 +348,44 @@
 			}
 			return false;
 		};
-
-		$scope.updateLabelValue = function(label, prevValues, value) {
-			var labelValueToUpdate = Label.extractValue(label, value);
-			if(prevValues === undefined) {
-				Label.addValueToCard(card.id, label.id, labelValueToUpdate);
-			} else {
-				Label.updateValue(card.id, prevValues[0].cardLabelValueId, labelValueToUpdate);
-			}
+		
+		
+		
+		$scope.setDueDate = function(date) {
+			BulkOperations.setDueDate(currentCard(), date)
 		};
+		
+		$scope.removeDueDate = function() {
+			BulkOperations.removeDueDate(currentCard())
+		};
+		
+		$scope.watchCard = function(user) {
+			BulkOperations.watch(currentCard(), user);
+		};
+		
+		$scope.unWatchCard = function(user) {
+			BulkOperations.unWatch(currentCard(), user);
+		};
+		
+		$scope.assignToUser = function(user) {
+			BulkOperations.assign(currentCard(), user);
+		};
+		
+		$scope.removeAssignForUser = function(user) {
+			BulkOperations.removeAssign(currentCard(), user);
+		};
+		
+		$scope.setMilestone = function(milestone) {
+			BulkOperations.setMilestone(currentCard(), milestone);
+		}
+		
+		$scope.removeMilestone = function() {
+			BulkOperations.removeMilestone(currentCard());
+		}
 
 		$scope.addNewLabel = function(labelToAdd) {
-			$scope.updateLabelValue(labelToAdd.label, undefined, labelToAdd.value);
+			var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
+			BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
 		};
 
 		//-- file upload

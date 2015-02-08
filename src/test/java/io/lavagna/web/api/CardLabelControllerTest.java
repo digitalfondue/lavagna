@@ -24,7 +24,6 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.Project;
@@ -36,7 +35,6 @@ import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.LabelService;
 import io.lavagna.service.ProjectService;
-import io.lavagna.web.api.CardLabelController.LabelIdAndLabelValue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +49,6 @@ public class CardLabelControllerTest {
 
 	private final int labelId = 0;
 	private final int cardId = 0;
-	private final int labelValueId = 0;
 	private final String projectShortName = "TEST";
 	@Mock
 	private ProjectService projectService;
@@ -85,7 +82,7 @@ public class CardLabelControllerTest {
 
 	@Before
 	public void prepare() {
-		cardLabelController = new CardLabelController(cardRepository, projectService, labelService,
+		cardLabelController = new CardLabelController(projectService,
 				cardLabelRepository, eventEmitter);
 
 		project = new Project(0, "test", "TEST", "Test Project", false);
@@ -96,22 +93,6 @@ public class CardLabelControllerTest {
 		Label label = new Label("test", false, LabelType.NULL, 42);
 		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		cardLabelController.addLabel(projectShortName, label);
-	}
-
-	@Test
-	public void addLabelValueToCardTest() {
-		when(cardLabelRepository.findLabelById(labelId)).thenReturn(cardLabel);
-		when(boardRepository.findBoardById(cardLabel.getProjectId())).thenReturn(board);
-		when(cardRepository.findFullBy(cardLabelValue.getCardId())).thenReturn(card);
-		when(boardColumnRepository.findById(card.getColumnId())).thenReturn(boardColumn);
-		when(projectService.findRelatedProjectShortNameByCardId(cardId)).thenReturn("TEST");
-		when(projectService.findRelatedProjectShortNameByLabelId(labelId)).thenReturn("TEST");
-
-		LabelValue value = new LabelValue();
-		LabelIdAndLabelValue labelIdAndLabelValue = new CardLabelController.LabelIdAndLabelValue();
-		labelIdAndLabelValue.setLabelId(labelId);
-		labelIdAndLabelValue.setLabelValue(value);
-		cardLabelController.addLabelValueToCard(cardId, labelIdAndLabelValue, user);
 	}
 
 	@Test
@@ -134,17 +115,6 @@ public class CardLabelControllerTest {
 	}
 
 	@Test
-	public void removeLabelValueTest() {
-		when(cardLabelRepository.findLabelValueById(labelValueId)).thenReturn(cardLabelValue);
-		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
-		when(boardRepository.findBoardById(cardLabel.getProjectId())).thenReturn(board);
-		when(cardRepository.findFullBy(cardLabelValue.getCardId())).thenReturn(card);
-		when(boardColumnRepository.findById(card.getColumnId())).thenReturn(boardColumn);
-
-		cardLabelController.removeLabelValue(labelValueId, user);
-	}
-
-	@Test
 	public void updateLabelTest() {
 		Label label = new Label("test", false, LabelType.STRING, 0);
 		CardLabel cl = new CardLabel(labelId, board.getId(), false, LabelType.STRING, LabelDomain.USER, "test", 0);
@@ -164,18 +134,6 @@ public class CardLabelControllerTest {
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
 
 		cardLabelController.updateSystemLabel(labelId, label);
-	}
-
-	@Test
-	public void updateLabelValueTest() {
-		when(cardLabelRepository.findLabelValueById(labelValueId)).thenReturn(cardLabelValue);
-		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
-		when(boardRepository.findBoardById(cardLabel.getProjectId())).thenReturn(board);
-		when(cardRepository.findFullBy(cardLabelValue.getCardId())).thenReturn(card);
-		when(boardColumnRepository.findById(card.getColumnId())).thenReturn(boardColumn);
-
-		LabelValue value = new LabelValue();
-		cardLabelController.updateLabelValue(labelValueId, value, user);
 	}
 
 	@Test

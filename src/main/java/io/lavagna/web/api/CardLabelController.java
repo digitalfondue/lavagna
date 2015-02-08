@@ -16,25 +16,18 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Event;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
-import io.lavagna.model.User;
 import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
-import io.lavagna.service.LabelService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.web.helper.ExpectPermission;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -54,17 +47,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CardLabelController {
 
-	private final CardRepository cardRepository;
-	private final LabelService labelService;
 	private final CardLabelRepository cardLabelRepository;
 	private final EventEmitter eventEmitter;
 	private final ProjectService projectService;
 
 	@Autowired
-	public CardLabelController(CardRepository cardRepository, ProjectService projectService, LabelService labelService,
+	public CardLabelController(ProjectService projectService,
 			CardLabelRepository cardLabelRepository, EventEmitter eventEmitter) {
-		this.cardRepository = cardRepository;
-		this.labelService = labelService;
 		this.cardLabelRepository = cardLabelRepository;
 		this.eventEmitter = eventEmitter;
 		this.projectService = projectService;
@@ -127,57 +116,6 @@ public class CardLabelController {
 		cardLabelRepository.removeLabel(labelId);
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitDeleteLabel(project.getShortName(), labelId);
-	}
-
-	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
-	@RequestMapping(value = "/api/card/{cardId}/label-value", method = RequestMethod.POST)
-	public void addLabelValueToCard(@PathVariable("cardId") int cardId,
-			@RequestBody LabelIdAndLabelValue labelIdAndLabelValue, User user) {
-
-		// ensure that the project from the card id is the same as the one from the label id
-		Validate.isTrue(projectService.findRelatedProjectShortNameByCardId(cardId).equals(
-				projectService.findRelatedProjectShortNameByLabelId(labelIdAndLabelValue.labelId)));
-
-		labelService.addLabelValueToCard(labelIdAndLabelValue.labelId, cardId, labelIdAndLabelValue.labelValue, user,
-				new Date());
-
-		CardFull card = cardRepository.findFullBy(cardId);
-		eventEmitter.emitAddLabelValueToCard(card.getProjectShortName(), card.getColumnId(), cardId);
-	}
-
-	@Getter
-	@Setter
-	public static class LabelIdAndLabelValue {
-		private int labelId;
-		private LabelValue labelValue;
-	}
-
-	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
-	@RequestMapping(value = "/api/card-label-value/{labelValueId}", method = RequestMethod.POST)
-	public void updateLabelValue(@PathVariable("labelValueId") int labelValueId, @RequestBody LabelValue labelValue,
-			User user) {
-
-		CardLabelValue cardLabelValue = cardLabelRepository.findLabelValueById(labelValueId);
-		CardLabel cl = cardLabelRepository.findLabelById(cardLabelValue.getLabelId());
-
-		labelService.updateLabelValue(cardLabelValue.newValue(cl.getType(), labelValue), user, new Date());
-
-		CardFull card = cardRepository.findFullBy(cardLabelValue.getCardId());
-		eventEmitter.emitUpdateLabelValue(card.getProjectShortName(), card.getColumnId(), cardLabelValue.getCardId());
-	}
-
-	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
-	@RequestMapping(value = "/api/card-label-value/{labelValueId}", method = RequestMethod.DELETE)
-	public Event removeLabelValue(@PathVariable("labelValueId") int labelValueId, User user) {
-
-		CardLabelValue cardLabelValue = cardLabelRepository.findLabelValueById(labelValueId);
-
-		Event res = labelService.removeLabelValue(cardLabelValue, user, new Date());
-
-		CardFull card = cardRepository.findFullBy(cardLabelValue.getCardId());
-		eventEmitter.emitRemoveLabelValue(card.getProjectShortName(), card.getColumnId(), cardLabelValue.getCardId());
-
-		return res;
 	}
 
 	@ExpectPermission(Permission.READ)

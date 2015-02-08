@@ -66,7 +66,7 @@
 											<span
 											data-ng-click="editMetadataDates = true;"
 											class="fa fa-calendar" title="{{'card.configure' | translate}}"
-											data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+											data-lvg-has-permission="UPDATE_CARD"></span>
 										</li>
 										<li class="control-item"
 											data-ng-show="editMetadataDates">
@@ -83,13 +83,13 @@
 									<p data-ng-show="labelValues[labelNameToId['DUE_DATE']][0]">
 										<span data-translate data-translate-value-date="{{labelValues[labelNameToId['DUE_DATE']][0].value.valueTimestamp | date: 'MMM d, y'}}">card.dueDate</span>
 									    <span class="fa fa-times lavagna-pointer"
-                                              data-ng-click="removeLabelValue(labelValues[labelNameToId['DUE_DATE']][0])"
-                                              data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+                                              data-ng-click="removeDueDate()"
+                                              data-lvg-has-permission="UPDATE_CARD"></span>
 									</p>
 								</div>
 								<div class="footer" data-ng-show="editMetadataDates">
 									<div class="content">
-										<form class="form-inline" data-ng-role="form" data-ng-submit="updateLabelValue(labels[labelNameToId['DUE_DATE']], labelValues[labelNameToId['DUE_DATE']], dueDate); dueDate = null;">
+										<form class="form-inline" data-ng-role="form" data-ng-submit="setDueDate(dueDate); dueDate = null;">
 											<div class="form-group">
                                                 <lvg-label-picker label="labels[labelNameToId['DUE_DATE']]" data-ng-model="dueDate" board="board.shortName"></lvg-label-picker>
 											</div>
@@ -107,33 +107,33 @@
 									<ul class="panel-controls">
 										<li class="control-item"
 											data-ng-hide="findElementWithUserId(labelValues[labelNameToId['WATCHED_BY']], currentUser.id)">
-											<span data-ng-click="updateLabelValue(labels[labelNameToId['WATCHED_BY']], undefined, currentUser)"
-												  data-lvg-has-permission="MANAGE_LABEL_VALUE"
+											<span data-ng-click="watchCard(currentUser)"
+												  data-lvg-has-permission="UPDATE_CARD"
 											      class="fa fa-eye" title="{{'card.watch' | translate}}"></span>
 										</li>
 										<li class="control-item"
 											data-ng-show="findElementWithUserId(labelValues[labelNameToId['WATCHED_BY']], currentUser.id)">
-											<span data-ng-click="removeLabelValue(findElementWithUserId(labelValues[labelNameToId['WATCHED_BY']], currentUser.id))"
-											      data-lvg-has-permission="MANAGE_LABEL_VALUE"
+											<span data-ng-click="unWatchCard(currentUser)"
+											      data-lvg-has-permission="UPDATE_CARD"
 											      class="fa fa-eye-slash" title="{{'card.unwatch' | translate}}"></span>
 										</li>
                                         <li class="control-item"
                                             data-ng-hide="findElementWithUserId(labelValues[labelNameToId['ASSIGNED']], currentUser.id)">
-											<span data-ng-click="updateLabelValue(labels[labelNameToId['ASSIGNED']], undefined, currentUser)"
-											      data-lvg-has-permission="MANAGE_LABEL_VALUE"
+											<span data-ng-click="assignToUser(currentUser)"
+											      data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-hand-o-up" title="{{'card.takeCard' | translate}}"></span>
                                         </li>
                                         <li class="control-item"
                                             data-ng-show="findElementWithUserId(labelValues[labelNameToId['ASSIGNED']], currentUser.id)">
-											<span data-ng-click="removeLabelValue(findElementWithUserId(labelValues[labelNameToId['ASSIGNED']], currentUser.id))"
-											      data-lvg-has-permission="MANAGE_LABEL_VALUE"
+											<span data-ng-click="removeAssignForUser(currentUser)"
+											      data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
                                         </li>
 										<li class="control-item"
 											data-ng-hide="editMetadataPeople">
 											<span
 												data-ng-click="editMetadataPeople = true;"
-												data-lvg-has-permission="MANAGE_LABEL_VALUE"
+												data-lvg-has-permission="UPDATE_CARD"
 												class="fa fa-user" title="{{'card.assign' | translate}}"></span>
 										</li>
 										<li class="control-item"
@@ -152,8 +152,8 @@
 											<span data-lvg-user="assigned.value.valueUser">
 											</span>
 											<span class="fa fa-times lavagna-pointer"
-													data-ng-click="removeLabelValue(assigned)"
-													data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+													data-ng-click="removeAssignForUser({id: assigned.value.valueUser})"
+													data-lvg-has-permission="UPDATE_CARD"></span>
 										</span>
 									</p>
 									<p data-ng-show="labelValues[labelNameToId['WATCHED_BY']]">
@@ -167,7 +167,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<form data-ng-role="form" 
-											data-ng-submit="updateLabelValue(labels[labelNameToId['ASSIGNED']], undefined, assignedUser); assignedUser=null;">
+												data-ng-submit="assignToUser(assignedUser); assignedUser=null;">
 												<div class="content input-group">
                                                     <lvg-label-picker label="labels[labelNameToId['ASSIGNED']]" data-ng-model="assignedUser" board="board.shortName"></lvg-label-picker>
                                                     <span class="input-group-btn">
@@ -191,7 +191,7 @@
 											<span
 											data-ng-click="editMetadataMilestone = true;"
 											class="fa fa-plus" title="{{'card.configure' | translate}}"
-											data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+											data-lvg-has-permission="UPDATE_CARD"></span>
 										</li>
 										<li class="control-item"
 											data-ng-show="editMetadataMilestone">
@@ -207,15 +207,15 @@
 											data-ng-repeat="milestone in labelValues[labelNameToId['MILESTONE']]">
 											<span><a data-ng-href="#/{{project.shortName}}/milestones/"><lvg-label-val value="milestone"></lvg-label-val></a>
 												<span class="fa fa-times lavagna-pointer"
-												      data-ng-click="removeLabelValue(milestone)"
-												      data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+												      data-ng-click="removeMilestone()"
+												      data-lvg-has-permission="UPDATE_CARD"></span>
 										</span>
 										</span>
 									</p>
 								</div>
 								<div class="footer" data-ng-show="editMetadataMilestone">
 									<form data-ng-role="form" 
-										data-ng-submit="updateLabelValue(labels[labelNameToId['MILESTONE']], labelValues[labelNameToId['MILESTONE']], milestone); milestone = null;">
+										data-ng-submit="setMilestone(milestone); milestone = null;">
 										<div class="content input-group">
                                             <lvg-label-picker label="labels[labelNameToId['MILESTONE']]" data-ng-model="milestone" board="board.shortName"></lvg-label-picker>
 											<span class="input-group-btn">

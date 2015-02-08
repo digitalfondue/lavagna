@@ -60,18 +60,6 @@
 			swapLabelListValues: function(labelId, swapListValue) {
 				return $http.post('api/label/' + labelId + '/label-list-values/swap', swapListValue).then(extractData);
 			},
-
-			addValueToCard: function(cardId, labelId, value) {
-				return $http.post('api/card/' + cardId + '/label-value/', {labelId: labelId, labelValue: value}).then(extractData);
-			},
-
-			updateValue : function(cardId, labelValueId, value) {
-				return $http.post('api/card-label-value/'+labelValueId, value).then(extractData);
-			},
-
-			removeValue : function(cardId, labelValueId) {
-				return $http['delete']('api/card-label-value/'+labelValueId).then(extractData);
-			},
 			
 			extractValue : function(label, value) {
 				if(label.type === 'STRING') {

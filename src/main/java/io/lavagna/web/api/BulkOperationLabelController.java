@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
@@ -24,6 +25,7 @@ import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.web.helper.ExpectPermission;
 
+import java.util.Collections;
 import java.util.List;
 
 import lombok.Getter;
@@ -38,7 +40,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
 public class BulkOperationLabelController {
 
 	private final BulkOperationService bulkOperationService;
@@ -60,6 +61,7 @@ public class BulkOperationLabelController {
 	 * @param op
 	 * @param user
 	 */
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/assign", method = RequestMethod.POST)
 	public void assign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
@@ -67,6 +69,7 @@ public class BulkOperationLabelController {
 		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-assign", method = RequestMethod.POST)
 	public void removeAssign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
@@ -74,6 +77,7 @@ public class BulkOperationLabelController {
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/re-assign", method = RequestMethod.POST)
 	public void reAssign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
@@ -81,6 +85,7 @@ public class BulkOperationLabelController {
 		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/set-due-date", method = RequestMethod.POST)
 	public void setDueDate(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
@@ -90,13 +95,31 @@ public class BulkOperationLabelController {
 				cardRepository.findAllByIds(updatedAndAdded.getRight()));
 	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-due-date", method = RequestMethod.POST)
 	public void removeDueDate(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.removeDueDate(projectShortName, op.cardIds, user);
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
+	
+	@ExpectPermission(Permission.UPDATE_CARD)
+	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/watch", method = RequestMethod.POST)
+	public void watch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
+			User user) {
+		List<Integer> affected = bulkOperationService.watch(projectShortName, op.cardIds, user);
+		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
+	}
+	
+	@ExpectPermission(Permission.UPDATE_CARD)
+	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-watch", method = RequestMethod.POST)
+	public void unWatch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
+			User user) {
+		List<Integer> affected = bulkOperationService.removeWatch(projectShortName, op.cardIds, user);
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/set-milestone", method = RequestMethod.POST)
 	public void setMilestone(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
@@ -106,6 +129,7 @@ public class BulkOperationLabelController {
 				cardRepository.findAllByIds(updatedAndAdded.getRight()));
 	}
 
+	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-milestone", method = RequestMethod.POST)
 	public void removeMilestone(@PathVariable("projectShortName") String projectShortName,
 			@RequestBody BulkOperation op, User user) {
@@ -113,17 +137,19 @@ public class BulkOperationLabelController {
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
 	
+	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/add-label", method = RequestMethod.POST)
 	public void addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
-		List<Integer> affected = bulkOperationService.addLabel(projectShortName, op.labelId, op.value, op.cardIds, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		List<Integer> affected = bulkOperationService.addUserLabel(projectShortName, op.labelId, op.value, op.cardIds, user);
+		eventEmitter.emitUpdateOrAddValueToCards(Collections.<CardFull>emptyList(), cardRepository.findAllByIds(affected));
 	}
 
+	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-label", method = RequestMethod.POST)
 	public void removeLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
-		List<Integer> affected = bulkOperationService.removeLabel(projectShortName, op.labelId, op.cardIds, user);
+		List<Integer> affected = bulkOperationService.removeUserLabel(projectShortName, op.labelId, op.value, op.cardIds, user);
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
 	}
 

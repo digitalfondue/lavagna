@@ -138,7 +138,8 @@ public class CardLabelValue {
 				return false;
 			}
 			LabelValue lv = (LabelValue) obj;
-			return new EqualsBuilder().append(valueString, lv.valueString).append(valueTimestamp, lv.valueTimestamp)
+			return new EqualsBuilder().append(valueString, lv.valueString)
+					.append(valueTimestamp == null ? null : valueTimestamp.getTime()/1000, lv.valueTimestamp == null ? null : lv.valueTimestamp.getTime()/1000)//go down to second...
 					.append(valueInt, lv.valueInt).append(valueCard, lv.valueCard).append(valueUser, lv.valueUser)
 					.append(valueList, lv.valueList).isEquals();
 		}

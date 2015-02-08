@@ -30,6 +30,22 @@
 				}
 				return $q.all(r);
 			},
+			watch : function(idsByProject, user) {
+				var labelValue = Label.userVal(user.id);
+				var r = [];
+				for(var projectShortName in idsByProject) {
+					r.push($http.post("api/project/"+projectShortName+"/bulk-op/watch", {value : labelValue, cardIds: idsByProject[projectShortName]}));
+				}
+				return $q.all(r);
+			},
+			unWatch : function(idsByProject, user) {
+				var labelValue = Label.userVal(user.id);
+				var r = [];
+				for(var projectShortName in idsByProject) {
+					r.push($http.post("api/project/"+projectShortName+"/bulk-op/remove-watch", {value : labelValue, cardIds: idsByProject[projectShortName]}));
+				}
+				return $q.all(r);
+			},
 			setDueDate : function(idsByProject, dueDate) {
 				var labelValue = Label.dateVal($filter('extractISO8601Date')(dueDate));
 				var r = [];
@@ -68,11 +84,11 @@
 				}
 				return $q.all(r);
 			},
-			removeLabel : function(idsByProject, labelToRemove) {
+			removeLabel : function(idsByProject, labelToRemove, labelValue) {
 				//TODO: -> in reality there can be only one project in this call...
 				var r = [];
 				for(var projectShortName in idsByProject) {
-					r.push($http.post("api/project/"+projectShortName+"/bulk-op/remove-label", {labelId : labelToRemove.id, cardIds: idsByProject[projectShortName]}));
+					r.push($http.post("api/project/"+projectShortName+"/bulk-op/remove-label", {labelId : labelToRemove.id, value: labelValue, cardIds: idsByProject[projectShortName]}));
 				}
 				return $q.all(r);
 			}

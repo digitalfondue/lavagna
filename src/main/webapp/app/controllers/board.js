@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ColumnCtrl', function($stateParams, $scope, $filter, $modal, Card, Label, Notification, StompClient) {
+	module.controller('ColumnCtrl', function($stateParams, $scope, $filter, $modal, Card, Label, Notification, StompClient, BulkOperations) {
 
 		$scope.initializeColumnCtrl = function(columnId) {
 
@@ -39,23 +39,30 @@
 		};
 		$scope.$on('selectall', $scope.selectAllInColumn);
 		$scope.$on('unselectall', $scope.unSelectAllInColumn);
-
-		$scope.addUserLabelValue = function(cardId, labelId, user) {
-        	Label.addValueToCard(cardId, labelId, Label.userVal(user)).catch(function(error) {
-        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-        	});
-        };
-
-        $scope.removeLabelValueForId = function(cardId, cardLabels, labelId) {
-            for(var i = 0; i < cardLabels.length; i++) {
-                if(cardLabels[i].labelId == labelId) {
-                    Label.removeValue(cardId, cardLabels[i].labelValueId).catch(function(error) {
-                		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                	});
-                    break;
-                }
-            }
-        };
+		
+		$scope.assignToCurrentUser = function(cardId, currentUserId) {
+			var cardByProject = {};
+			cardByProject[$stateParams.projectName] = [cardId];
+			BulkOperations.assign(cardByProject, {id: currentUserId});
+		};
+		
+		$scope.removeAssignForCurrentUser = function(cardId, currentUserId) {
+			var cardByProject = {};
+			cardByProject[$stateParams.projectName] = [cardId];
+			BulkOperations.removeAssign(cardByProject, {id: currentUserId});
+		};
+		
+		$scope.watchCard = function(cardId, currentUserId) {
+			var cardByProject = {};
+			cardByProject[$stateParams.projectName] = [cardId];
+			BulkOperations.watch(cardByProject, {id: currentUserId});
+		};
+		
+		$scope.unWatchCard = function(cardId, currentUserId) {
+			var cardByProject = {};
+			cardByProject[$stateParams.projectName] = [cardId];
+			BulkOperations.unWatch(cardByProject, {id: currentUserId});
+		};
 
         $scope.moveAllCardsInColumn = function (col, cards, location) {
 
@@ -82,8 +89,9 @@
         
         // dependencies for card fragment
         $scope.cardFragmentDependencies = {};
-        var cardFragmentDependenciesToCopy = ['labelNameToId', 'addUserLabelValue',
-		                      'removeLabelValueForId', 'moveCard', 'currentUserId', 'columns'];
+        var cardFragmentDependenciesToCopy = ['labelNameToId',
+		                      'moveCard', 'currentUserId', 'columns', 
+		                      'watchCard', 'unWatchCard'];
 		for(var k in cardFragmentDependenciesToCopy) {
 			$scope.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = $scope[cardFragmentDependenciesToCopy[k]];
 		}
