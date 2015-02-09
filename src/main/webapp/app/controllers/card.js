@@ -22,13 +22,6 @@
 		
 		findAndAssignColumns();
 
-		$scope.codeMirrorOptions = {
-				lineWrapping : true,
-		        lineNumbers: true,
-		        mode: 'markdown',
-		        viewportMargin: Infinity
-		};
-
 		$scope.currentUser = currentUser;
 		$scope.project = project;
 		$scope.board = board;

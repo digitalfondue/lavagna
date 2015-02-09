@@ -23,12 +23,12 @@
 				</div>
 				<div class="body" data-ng-hide="boardStatus[ab.shortName].edit" data-ng-class="{archived : ab.archived}">
 					<p><a href="#/{{project.shortName}}/{{ab.shortName}}" data-ng-bind="ab.name"></a></p>
-					<p data-ng-if="ab.description.length > 0" data-ng-bind="ab.description"></p>
+					<p data-ng-if="ab.description.length > 0" data-ng-bind-html="ab.description | markdown"></p>
 					<p data-ng-if="ab.description == null"><i data-translate>common.no-description-available</i></p>
 				</div>
 				<div class="footer" data-ng-if="boardStatus[ab.shortName].edit">
-					<form role="form" data-ng-submit="update(boardStatus[ab.shortName].itemToUpdate)" 
-						data-ng-init="boardStatus[ab.shortName].itemToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: ab.archived}"
+					<form role="form" data-ng-submit="update(boardStatus[ab.shortName].itemToUpdate);preview.show = false" 
+						data-ng-init="boardStatus[ab.shortName].itemToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: ab.archived}; preview.show = false"
 						data-lvg-has-permission="PROJECT_ADMINISTRATION">
 						<div class="form-group">
 							<label for="name" data-translate>partials.project.manage-home.name</label>
@@ -36,13 +36,20 @@
 						</div>
 						<div class="form-group">
 							<label for="description" data-translate>partials.project.manage-home.description</label>
-							<textarea class="form-control" rows="3" id="description" data-ng-model="boardStatus[ab.shortName].itemToUpdate.description"></textarea>
+							<div data-ng-if="!preview.show">
+								<textarea class="form-control" rows="3" id="description" data-ng-model="boardStatus[ab.shortName].itemToUpdate.description" data-lvg-codemirror></textarea>
+							</div>
+							<div data-ng-if="preview.show">
+								<div data-ng-bind-html="boardStatus[ab.shortName].itemToUpdate.description | markdown"></div>
+							</div>
 						</div>
 						<div class="form-group">
 							<label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="boardStatus[ab.shortName].itemToUpdate.archived"></label>
 						</div>
 						<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
-						<button type="button" class="lvg-button lvg-button-default" data-ng-click="boardStatus[ab.shortName].edit = false;" data-translate>button.cancel</button>
+						<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = true" data-ng-hide="preview.show">button.preview</button>
+						<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = false" data-ng-show="preview.show">button.closePreview</button>
+						<button type="button" class="lvg-button lvg-button-default" data-ng-click="boardStatus[ab.shortName].edit = false;preview.show = false" data-translate>button.cancel</button>
 					</form>
 				</div>
 			</div>

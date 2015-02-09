@@ -1,5 +1,5 @@
 <div class="stats-panel-content clearfix">
-	<div class="stats-panel-description" data-ng-bind="item.description"></div>
+	<div class="stats-panel-description" data-ng-bind-html="item.description | markdown"></div>
 	<div data-ng-if="!item.archived && chartData" class="pull-right item-stats">
 		<lvg-chart type="Doughnut" data="chartData" options="chartOptions"></lvg-chart>
 	</div>

@@ -14,7 +14,7 @@
 				</button>
 				
 				<div class="lavagna-form-panel" data-ng-show="createNewBoard" >
-					<form data-ng-submit="createBoard(board)">
+					<form data-ng-submit="createBoard(board); board={};preview.show = false;checkedShortName = undefined; createNewBoard = false;" data-ng-init="board={};preview.show = false;">
 						<div class="form-group">
 							<label for="name" data-translate>partials.fragments.create-board-fragment.name</label> 
 							<input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="board.name" data-ng-keyup="suggestBoardShortName(board)" maxlength="128">
@@ -26,13 +26,20 @@
 						</div>
 						<div class="form-group">
 							<label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
-							<textarea class="form-control" rows="3" id="description" data-ng-model="board.description"></textarea>
+							<div data-ng-hide="preview.show">
+								<textarea class="form-control" rows="3" id="description" data-ng-model="board.description" data-lvg-codemirror></textarea>
+							</div>
+							<div data-ng-show="preview.show">
+								<div data-ng-bind-html="board.description | markdown"></div>
+							</div>
 						</div>
 						<button type="submit" class="lvg-button lvg-button-submit" data-ng-disabled="board.name == NULL || board.shortName == NULL || checkedShortName === undefined || checkedShortName === false">
 							<span class="fa fa-plus"></span>
 							<span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
 						</button>
-						<button type="button" class="lvg-button lvg-button-default" data-ng-click="board = {}; checkedShortName = undefined; createNewBoard = false;">
+						<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = true" data-ng-hide="preview.show">button.preview</button>
+						<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = false" data-ng-show="preview.show">button.closePreview</button>
+						<button type="button" class="lvg-button lvg-button-default" data-ng-click="board = {}; checkedShortName = undefined; createNewBoard = false;preview.show = false">
 							<span data-translate>partials.fragments.create-board-fragment.cancel</span>
 						</button>
 					</form>

@@ -1,5 +1,5 @@
-<form role="form" data-ng-init="itemToUpdate = {shortName: item.shortName, name: item.name, description: item.description, archived: item.archived}"
-	  data-ng-submit="update(itemToUpdate)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+<form role="form" data-ng-init="itemToUpdate = {shortName: item.shortName, name: item.name, description: item.description, archived: item.archived}; preview.show = false"
+	  data-ng-submit="update(itemToUpdate);preview.show = false" data-lvg-has-permission="PROJECT_ADMINISTRATION">
 	<div class="body-full">
 		<div class="form-group">
 			<label for="name" data-translate>partials.project.manage-home.name</label>
@@ -7,7 +7,12 @@
 		</div>
 		<div class="form-group">
 			<label for="description" data-translate>partials.project.manage-home.description</label>
-			<textarea class="form-control" rows="3" id="description" data-ng-model="itemToUpdate.description"></textarea>
+			<div data-ng-if="!preview.show">
+				<textarea class="form-control" rows="3" id="description" data-ng-model="itemToUpdate.description" data-lvg-codemirror></textarea>
+			</div>
+			<div data-ng-if="preview.show">
+				<div data-ng-bind-html="itemToUpdate.description | markdown"></div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="itemToUpdate.archived"></label>
@@ -15,5 +20,7 @@
 	</div>
 	<div class="footer">
 		<button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.project.manage-home.update</button>
+		<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = true" data-ng-hide="preview.show">button.preview</button>
+		<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="preview.show = false" data-ng-show="preview.show">button.closePreview</button>
 	</div>
 </form>
