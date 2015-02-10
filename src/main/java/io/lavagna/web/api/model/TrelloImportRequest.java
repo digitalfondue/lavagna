@@ -27,7 +27,8 @@ public class TrelloImportRequest extends TrelloRequest {
 	private String projectShortName;
 	private List<BoardIdAndShortName> boards;
 	private String importId;
-	
+	private boolean importArchived;
+
 	@Getter
 	@Setter
 	public static class BoardIdAndShortName {

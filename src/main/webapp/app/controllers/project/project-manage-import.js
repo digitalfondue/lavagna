@@ -7,22 +7,22 @@
 	module.controller('ManageImportCtrl', function ($scope, uuid2, StompClient, Project, Admin, project, Notification, Board) {
 
 		$scope.project = project;
-		$scope.importId = uuid2.newguid();
+		$scope.importSettings = {id: uuid2.newguid(), archived: false};
 		$scope.availableOrganizations = [];
 
-		StompClient.subscribe($scope, '/event/import/' + $scope.importId, function (message) {
+		StompClient.subscribe($scope, '/event/import/' + $scope.importSettings.id, function (message) {
 			var body = JSON.parse(message.body);
 			$scope.progress = 100.0 * body["currentBoard"] / body["boards"];
 			$scope.currentBoardName = body["boardName"];
 		});
-		
-		$scope.checkShortName = function(board) {
-			Board.checkShortName(board.shortName).then(function(res) {
+
+		$scope.checkShortName = function (board) {
+			Board.checkShortName(board.shortName).then(function (res) {
 				board.checkedShortName = res;
 			});
 		};
-		
-		$scope.cancel = function() {
+
+		$scope.cancel = function () {
 			$scope.availableOrganizations = [];
 			$scope.progress = 0;
 			$scope.currentBoardName = undefined;
@@ -50,7 +50,7 @@
 				angular.forEach($scope.availableOrganizations, function (o) {
 					angular.forEach(o.boards, function (b) {
 						if (b.import) {
-							boardsToImport.push({id:b.id, shortName:b.shortName});
+							boardsToImport.push({id: b.id, shortName: b.shortName});
 							b.import = false;
 							b.shortName = undefined;
 							b.checkedShortName = undefined;
@@ -62,11 +62,11 @@
 					apiKey: trelloApiKey,
 					secret: trelloSecret,
 					projectShortName: $scope.project.shortName,
-					importId: $scope.importId,
+					importId: $scope.importSettings.id,
+					importArchived: $scope.importSettings.archived,
 					boards: boardsToImport
 				}).then(function () {
 					$scope.trelloImportIsRunning = false;
-					angular.forEach(boardsT)
 					Notification.addAutoAckNotification('success', {key: 'notification.project-manage-import.importFromTrello.success'}, false);
 				});
 			};

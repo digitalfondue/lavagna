@@ -9,14 +9,14 @@
 					<div data-ng-if="hasApiKey">
 						<p data-translate>partials.project.manage-import.notes</p>
 						<span data-lvg-load-script="{{trelloClientUrl}}"><span data-translate>partials.project.manage-import.failedImport</span></span>
-		
+
 						<ul class="lvg-admin-import" data-ng-hide="trelloImportIsRunning">
 							<li data-ng-repeat="organization in availableOrganizations | orderBy: 'name'">
 								<span class="lvg-admin-import-organization">{{organization.name}}</span>
 								<ul class="lvg-admin-import-board">
 									<li data-ng-repeat="board in organization.boards | orderBy: 'name'" data-ng-init="board.import = false;">
 										<div class="row">
-											<div class="col-sm-1"><input type="checkbox" data-ng-model="board.import"></div> 
+											<div class="col-sm-1"><input type="checkbox" data-ng-model="board.import"></div>
 											<div class="col-sm-5">
 												{{board.name}}
 												<div class="form-group has-feedback"  data-ng-class="{'has-error': board.checkedShortName === false}">
@@ -29,7 +29,18 @@
 								</ul>
 							</li>
 						</ul>
-	
+
+						<div class="head clearfix headonly" data-ng-if="availableOrganizations.length > 0 && !trelloImportIsRunning">
+							<div class="title col-xs-9" data-translate>partials.project.manage-import.importArchived</div>
+							<div class="title-addon col-xs-3 lvg-switch-controls">
+								<ul class="panel-controls">
+									<li class="control-no-action">
+										<lvg-switch switch-class="lvg-switch" control="importSettings.archived"></lvg-switch>
+									</li>
+								</ul>
+							</div>
+						</div>
+
 						<div data-ng-show="trelloImportIsRunning">
 							<span data-translate>partials.project.manage-import.progressMessage</span> {{currentBoardName}}...
 						</div>

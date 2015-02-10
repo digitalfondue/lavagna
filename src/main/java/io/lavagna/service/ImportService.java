@@ -49,11 +49,9 @@ import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.Organization;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -140,7 +138,7 @@ public class ImportService {
 			eventEmitter.emitImportProject(importRequest.getImportId(), currentBoard, boardsToImport, board.getName());
 
 			TrelloBoard tBoard = new TrelloBoard(boardShortName, board.getName(), board.getDesc());
-			importBoard(trello, tImport, board, tBoard, lavagnaUsers);
+			importBoard(trello, tImport, board, tBoard, lavagnaUsers, importRequest.isImportArchived());
 			tImport.boards.add(tBoard);
 		}
 		eventEmitter.emitImportProject(importRequest.getImportId(), boardsToImport, boardsToImport, "");
@@ -148,7 +146,7 @@ public class ImportService {
 	}
 
 	private void importBoard(Trello trello, TrelloImportResponse tImport, Board board, TrelloBoard tBoard,
-			Map<String, User> lavagnaUsers) {
+			Map<String, User> lavagnaUsers, boolean importArchived) {
 
 		// Cache the checklists
 		Map<String, CheckList> checklists = new HashMap<>();
@@ -163,7 +161,7 @@ public class ImportService {
 		}
 
 		// Fetch the columns with every card in it
-		for (TList list : board.fetchLists(new Argument("cards", "open"))) {
+		for (TList list : board.fetchLists(new Argument("cards", importArchived ? "all" : "open"))) {
 			TrelloBoardColumn tColumn = new TrelloBoardColumn(list.getName());
 			tBoard.columns.put(list.getPos(), tColumn);
 
