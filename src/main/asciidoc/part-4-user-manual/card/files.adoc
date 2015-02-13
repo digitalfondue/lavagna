@@ -1,1 +1,29 @@
 ==== Files
+
+Files can be uploaded to Lavagna and associated with the current card. When the same file is uploaded to two different cards, a link is created to the existing instance to save space in the database.
+
+File size can be limited in the administration panel, see <<Configuration parameters,Configuration parameters>>.
+
+===== Upload files
+
+To upload one or more files, click on **Select Files** under the **Files** tab. (requires CREATE_FILE permission)
+
+image::c04_card_metadata_files-select.png[Select files]
+
+Multiple files can be uploaded at once: a queue is created locally, and the files will be uploaded in sequence.
+
+image::c04_card_metadata_files-queue.png[Files queue]
+
+When a file is uploaded successfully, the icon on the entry will change from icon:times[] to icon:floppy-o[]
+
+image::c04_card_metadata_files-uploaded.png[Files uploaded]
+
+===== Delete files
+
+To delete a file, click on icon:trash-o[]. A confirmation panel will appear as an additional failsafe. Deleting a file uploaded by the same user does not require any additional permission. (deleting all files requires DELETE_FILE permission).
+
+image::c04_card_metadata_file-delete.png[Delete file]
+
+Once a file is deleted, a particular type of notification will appear in the lower left corner of the application. Clicking undo will result in the file being restored.
+
+image::c04_card_metadata_file-deleted-notification.png[Delete file notification]

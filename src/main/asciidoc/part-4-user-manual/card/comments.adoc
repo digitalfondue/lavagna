@@ -1,1 +1,35 @@
 ==== Comments
+
+Comments are useful to discuss an ongoing task. 
+
+===== Add a new comment
+
+To add a new comment, select the **Comments** tab, enter the text in the form, and press **Add**. The new comment will be displayed at the bottom of the list. (requires CREATE_CARD_COMMENT permission)
+
+Similar to the description, comments can be written using markdown syntax, and the result can be verified at any time by clicking **Preview**.
+
+image::c04_card_metadata_comment-new.png[New comment]
+
+===== Link to a single comment
+
+The icon:link[] can be used to retrive the link to a single comment.
+
+===== Update a comment
+
+To update a comment, click on icon:pencil[] to toggle the edit panel. Updating a comment made by the same user does not require any additional permission. (modifyng all comments requires UPDATE_CARD_COMMENT permission).
+
+image::c04_card_metadata_comment-update.png[Update comment]
+
+Once the comment is updated, the previous version isn't lost. The application keeps track of how many times a comment has been updated, and who made those updates.
+
+image::c04_card_metadata_comment-updated.png[Updated comment]
+
+===== Delete a comment
+
+To delete a comment, click on icon:trash-o[]. A confirmation panel will appear as an additional failsafe. Deleting a comment made by the same user does not require any additional permission. (deleting all comments requires DELETE_CARD_COMMENT permission).
+
+image::c04_card_metadata_comment-delete.png[Delete comment]
+
+Once a comment is deleted, a particular type of notification will appear in the lower left corner of the application. Clicking undo will result in the comment being restored.
+
+image::c04_card_metadata_comment-deleted-notification.png[Delete comment notification]
