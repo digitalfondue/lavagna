@@ -489,11 +489,9 @@
 
 		$scope.retryUpload = function(elementIndex) {
 			$timeout(function() {
-				$scope.$apply(function() {
-					$scope.filesToUpload[elementIndex].xhr = null;
-					$scope.filesToUpload[elementIndex].progress = 0;
-					$scope.filesToUpload[elementIndex].status = 'queue';
-				});
+				$scope.filesToUpload[elementIndex].xhr = null;
+				$scope.filesToUpload[elementIndex].progress = 0;
+				$scope.filesToUpload[elementIndex].status = 'queue';
 			});
 		};
 
