@@ -474,69 +474,6 @@
 															</ul>
 														</div>
 													</li>
-													<li class="lavagna-file clearfix lavagna-file-uploading"
-														data-ng-repeat="upload in uploadingFiles track by $index">
-														<div class="upload-progress progress progress-success lavagna-progress">
-															<div class="progress-bar" style="width: {{upload.progress}}%"></div>
-														</div>
-														<div class="lavagna-file-icon">
-															<span class="fa fa-arrow-up"></span>
-														</div>
-														<div class="lavagna-file-info">
-															<ul>
-																<li class="file-info upload-status"><span data-translate>card.uploading</span> {{upload.progress}}%</li>
-																<li class="file-info" data-ng-bind="upload.file.name"></li>
-																<li class="file-info"><span class="size" data-ng-bind="upload.file.size | fileBytes"></span></li>
-															</ul>
-														</div>
-														<div class="lavagna-file-controls">
-															<ul>
-																<li data-ng-click="abortUpload($index)"
-																	class="control-item"><span
-																	class="fa fa-times"></span></li>
-															</ul>
-														</div>
-													</li>
-													<li class="lavagna-file clearfix lavagna-file-queue"
-														data-ng-repeat="file in filesToUpload track by $index">
-														<div class="lavagna-file-icon">
-															<span class="fa fa-clock-o"></span>
-														</div>
-														<div class="lavagna-file-info">
-															<ul>
-																<li class="file-info upload-status" data-translate>card.waitingForUpload</li>
-																<li class="file-info">{{file.name}}</li>
-																<li class="file-info"><span class="size">{{file.size | fileBytes}}</span></li>
-															</ul>
-														</div>
-														<div class="lavagna-file-controls">
-															<ul>
-																<li data-ng-click="cancelUpload($index)"
-																	class="control-item"><span
-																	class="fa fa-times"></span></li>
-															</ul>
-														</div>
-													</li>
-													<li class="lavagna-file clearfix lavagna-file-results"
-														data-ng-repeat="entry in uploadedFiles track by $index">
-														<div class="lavagna-file-icon">
-															<span class="fa fa-{{entry.icon}}"></span>
-														</div>
-														<div class="lavagna-file-info">
-															<ul>
-																<li class="file-info upload-status"><span data-translate>card.upload</span> {{entry.status}}</li>
-																<li class="file-info">{{entry.file.name}}</li>
-																<li class="file-info"><span class="size">{{entry.file.size | fileBytes}}</span></li>
-															</ul>
-														</div>
-														<div class="lavagna-file-controls">
-															<ul>
-																<li data-ng-click="retryUpload($index)"
-																	class="control-item"><span
-																	class="fa fa-repeat"></span></li>
-															</ul>
-														</div>
-													</li>
 												</ul>
 											</div>
 											<div class="footer" data-lvg-has-permission="CREATE_FILE">
@@ -545,12 +482,40 @@
 														<div>
 															<div class="lvg-button lvg-button-submit"
 																ng-file-select="addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
-															<button type="button"
-																data-ng-click="clearFileUploadResultQueue();"
-																data-ng-show="uploadedFiles.length > 0"
-																class="lvg-button lvg-button-submit" data-translate>button.clear</button>
 														</div>
 													</form>
+													<ul class="lvg-card-file-queue">
+														<li data-ng-repeat="entry in filesToUpload track by $index">
+															<div class="lavagna-file-icon">
+																<span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue', 
+																	'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted', 
+																	'fa-warning': entry.status == 'failed'}"></span>
+															</div>
+															<div class="lavagna-file-metadata">
+																<div class="file-name">{{entry.file.name}}</div>
+																<div class="upload-progress progress progress-success lavagna-progress">
+																	<div class="progress-bar" style="width: {{entry.progress}}%"></div>
+																</div>
+																<div class="file-size"><span class="size">{{entry.file.size | fileBytes}}</span></div>
+															</div>
+															<div class="lavagna-file-controls">
+																<ul>
+																	<li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
+																		data-ng-click="retryUpload($index)"
+																		class="control-item"><span
+																		class="fa fa-repeat"></span></li>
+																	<li data-ng-show="entry.status != 'upload'"
+																		data-ng-click="cancelUpload($index)"
+																		class="control-item"><span
+																		class="fa fa-times"></span></li>
+																	<li data-ng-show="entry.status == 'upload'"
+																		data-ng-click="abortUpload($index)"
+																		class="control-item"><span
+																		class="fa fa-stop"></span></li>
+																</ul>
+															</div>
+														</li>
+													</ul>
 												</div>
 											</div>
 										</div>

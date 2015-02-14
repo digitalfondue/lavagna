@@ -230,9 +230,9 @@
 		};
 
 		$scope.deleteActionList = function(itemId) {
-			Card.deleteActionList(itemId).then(function(data) {
+			Card.deleteActionList(itemId).then(function(event) {
 				Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, function(notification) {
-					Card.undoDeleteActionList(notification.event.id).then(notification.acknowledge)
+					Card.undoDeleteActionList(event.id).then(notification.acknowledge)
 				});
 			}, function(error) {
 				$scope.actionListState[listId].deleteList = false;
@@ -251,9 +251,9 @@
 		};
 
 		$scope.deleteActionItem = function(listId, itemId) {
-			Card.deleteActionItem(itemId).then(function(data) {
+			Card.deleteActionItem(itemId).then(function(event) {
 				Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, function(notification) {
-					Card.undoDeleteActionItem(notification.event.id).then(notification.acknowledge);
+					Card.undoDeleteActionItem(event.id).then(notification.acknowledge);
 				});
 			}, function(error) {
 				$scope.actionListState[listId][itemId].deleteActionItem = false;
@@ -279,9 +279,10 @@
 			Card.updateComment(comment.id, commentToEdit);
 		};
 		$scope.deleteComment = function(comment, control) {
-			Card.deleteComment(comment.id).then(function(data) {
+			Card.deleteComment(comment.id).then(function(event) {
+				console.log(event);
 				Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, function(notification) {
-					Card.undoDeleteComment(notification.event.id).then(notification.acknowledge)
+					Card.undoDeleteComment(event.id).then(notification.acknowledge)
 				});
 			}, function(error) {
 				control = false;
@@ -394,94 +395,112 @@
 
 		loadFiles();
 
-		var processUploadingFile = function(icon, status) {
+		var processUploadingFile = function(status) {
 			$timeout(function() {
-				$scope.processedFiles.push({'icon': icon, 'status': status, 'file': $scope.uploadingFiles['file']});
+				var index = $scope.filesToUpload.indexOf($scope.uploadingFile);
 				$scope.uploadingFile = null;
+				$scope.filesToUpload[index].status = status;
 			});
 		};
 
 
 		var fileUploadProgressCallBack = function(event) {
-			if (event.lengthComputable) {
+			if (event.lengthComputable && event.loaded != event.total) { // prevent null reference
 				$scope.uploadingFile['progress'] = Math.round(event.loaded * 100 / event.total);
 			}
 		};
 
 		var fileUploadCompleteCallBack = function(data, status) {
 			if(status == 200) {
+				var uploadedFile = $scope.uploadingFile;
 				$scope.uploadingFile = null;
+				$scope.filesToUpload.splice($scope.filesToUpload.indexOf(uploadedFile),1);
 			} else {
-				processUploadingFile('warning', 'failed');
+				processUploadingFile('failed');
 			}
 
 		};
 
-		var fileUploadFailedCallBack = function() {
-			processUploadingFile('warning', 'failed');
+		var fileUploadFailedCallBack = function(event) {
+			processUploadingFile('failed');
 		};
 
 		var fileUploadCanceledCallBack = function() {
-			processUploadingFile('stop', 'aborted by user');
 		};
 
 		$scope.filesToUpload = [];
 		$scope.uploadingFile = null;
-		$scope.processedFiles = [];
 
 		$scope.addFiles = function($files) {
 			$scope.$apply(function() {
 				for (var i = 0; i < $files.length; i++) {
-					$scope.filesToUpload.push($files[i]);
+					$scope.filesToUpload.push({
+						xhr : null,
+						progress : 0,
+						file : $files[i],
+						status : 'queue'});
 				}
 			});
 		};
+		
+		function getNextFileToUpload(_files) {
+			for(var f = 0; f < _files.length; f++) {
+				var file = _files[f];
+				if(file.status == 'queue') {
+					return file;
+				}
+			}
+			return null;
+		}
 
 		$scope.uploadNextFile = function() {
 			$timeout(function() {
 				Card.getMaxFileSize().then(function(size) {
-					var file = $scope.filesToUpload.shift();
+					var uploadingFile = getNextFileToUpload($scope.filesToUpload);
+					
+					if(uploadingFile == null) {
+						return;
+					}
+					
 					var maxSize = size === "" ? Math.NaN : parseInt(JSON.parse(size));
-					if(!isNaN(maxSize) && file.size > maxSize) {
+					if(!isNaN(maxSize) && uploadingFile.file.size > maxSize) {
 						Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, false);
 						return;
 					}
 					
-					$scope.uploadingFile = {
-						'xhr': Card.uploadFile(file, card.id, fileUploadProgressCallBack, fileUploadCompleteCallBack,
-								fileUploadFailedCallBack, fileUploadCanceledCallBack),
-						'progress': 0,
-						'file' : file
-					};
+					var uploadingFile = getNextFileToUpload($scope.filesToUpload);
+					
+					$scope.uploadingFile = uploadingFile;
+					
+					$scope.uploadingFile.status = 'upload';
+					$scope.uploadingFile.xhr = Card.uploadFile(uploadingFile.file, card.id, fileUploadProgressCallBack, fileUploadCompleteCallBack,
+								fileUploadFailedCallBack, fileUploadCanceledCallBack);
 				});
 			});
 		};
 
 		$scope.abortUpload = function() {
-			$scope.uploadingFile['xhr'].abort();
+			$scope.uploadingFile.xhr.abort();
 		};
 
 		$scope.cancelUpload = function(elementIndex) {
-			$scope.processedFiles.push({'icon': 'stop', 'status': 'aborted by user', 'file': $scope.filesToUpload.splice(elementIndex, 1)[0]});
+			$scope.filesToUpload.splice(elementIndex, 1);
 		};
-
-		$scope.clearFileUploadResultQueue = function() {
-			$scope.processedFiles = [];
-		};
-
 
 		$scope.retryUpload = function(elementIndex) {
 			$timeout(function() {
 				$scope.$apply(function() {
-					$scope.filesToUpload.push($scope.processedFiles.splice(elementIndex, 1)[0]['file']);
+					$scope.filesToUpload[elementIndex].xhr = null;
+					$scope.filesToUpload[elementIndex].progress = 0;
+					$scope.filesToUpload[elementIndex].status = 'queue';
 				});
 			});
 		};
 
 		$scope.deleteFile = function(dataId) {
-			Card.deleteFile(dataId).then(function(data) {
+			Card.deleteFile(dataId).then(function(event) {
 				Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, function(notification) {
-					Card.undoDeleteFile(notification.event.id).then(notification.acknowledge);
+					Card.undoDeleteFile(event.id).then(notification.acknowledge);
 				});
 			}, function(error) {
 				$scope.fileControls[dataId].deleteFile = false;
@@ -489,17 +508,11 @@
 			});
 		};
 
-		$scope.$watchCollection('uploadingFile', function() {
+		$scope.$watch('filesToUpload', function() {
 			if($scope.filesToUpload.length > 0 && $scope.uploadingFile == null) {
 				$scope.uploadNextFile();
 			}
-		});
-
-		$scope.$watchCollection('filesToUpload', function() {
-			if($scope.filesToUpload.length > 0 && $scope.uploadingFile == null) {
-				$scope.uploadNextFile();
-			}
-		});
+		}, true);
 
 		//activity
 		var loadActivity = function() {

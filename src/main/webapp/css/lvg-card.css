@@ -244,20 +244,31 @@ ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls {
 	position: absolute;
 }
 
-ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul {
+ul.lvg-card-file-queue li div.lavagna-file-controls {
+	top: 0;
+	right: 0;
+	position: absolute;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul, ul.lvg-card-file-queue li div.lavagna-file-controls ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	border: 0;
 }
 
-ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span {
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li, ul.lvg-card-file-queue li div.lavagna-file-controls ul li {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span, ul.lvg-card-file-queue li div.lavagna-file-controls ul li span {
 	color: #d5d5d5;
 	text-decoration: none;
 	cursor: pointer;
 }
 
-ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span:hover {
+ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span:hover, ul.lvg-card-file-queue li div.lavagna-file-controls ul li span:hover {
 	color: black;
 }
 
@@ -272,6 +283,40 @@ ul.lavagna-files-list li.lavagna-file div.lavagna-file-controls ul li span:hover
 .quickupload-progress {
 	margin-bottom: 5px;
 }
+
+ul.lvg-card-file-queue {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+ul.lvg-card-file-queue > li {
+	position: relative;
+	display: block;
+	clear: both;
+	margin-top: 10px;
+}
+
+ul.lvg-card-file-queue li div.lavagna-file-icon {
+	float: left;
+	font-size: 20px;
+	margin-right: 15px;
+	color: #b5b5b5;
+	min-height: 48px;
+	text-align: center;
+}
+
+ul.lvg-card-file-queue li div.lavagna-file-icon span {
+	padding-top: 17px;
+}
+
+ul.lvg-card-file-queue div.lavagna-file-metadata div.file-name {
+	margin-bottom: 5px;
+}
+	
+	
+
 
 /* 
 ===================================
