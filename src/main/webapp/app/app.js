@@ -69,6 +69,12 @@
 			templateUrl : 'partials/home.html',
 			controller : 'HomeCtrl'
 		})
+		//---- ABOUT ----
+		.state('about', {
+			url:'/about/',
+			templateUrl: 'partials/about.html',
+			controller: 'AboutCtrl'
+		})
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',

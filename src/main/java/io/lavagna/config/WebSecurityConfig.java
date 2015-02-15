@@ -54,6 +54,7 @@ public class WebSecurityConfig {
 				.request("/css/**").permitAll()//
 				.request("/js/**").permitAll()//
 				.request("/help/**").permitAll()//
+				.request("/about/**").permitAll()
 				.request("/**").denyAll().disableLogin();
 	}
 

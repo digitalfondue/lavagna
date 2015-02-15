@@ -145,6 +145,7 @@ public class ResourceController {
 
 	@RequestMapping(value = { "/",//
 			"user/{provider}/{username}", "user/{provider}/{username}/projects/", "user/{provider}/{username}/activity/",//
+			"about/",//
 			"search/",//
 			"search/" + PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
 			PROJ_SHORT_NAME + "/",//
