@@ -110,6 +110,8 @@ See <<Files,Files>>.
 
 ====== Activity Tab
 
+The activity tab will list all the actions that have been performed on the card, in descending order.
+
 image::c04_card_metadata_activity.png[Update the description]
 
 ===== Right column
@@ -134,4 +136,4 @@ For more information about Labels, see <<Manage Labels,Manage Labels>>.
 
 ====== Action lists
 
-See <<Manage lists,Manage lists>>.
+See <<Action Lists,Action Lists>>.
