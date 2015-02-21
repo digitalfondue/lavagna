@@ -4,8 +4,8 @@ include::card/create-card.adoc[]
 
 include::card/card.adoc[]
 
-include::card/manage-list.adoc[]
-
 include::card/comments.adoc[]
 
 include::card/files.adoc[]
+
+include::card/manage-list.adoc[]

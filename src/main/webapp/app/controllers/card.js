@@ -412,6 +412,8 @@
 
 		var fileUploadCompleteCallBack = function(data, status) {
 			if(status == 200) {
+				loadFiles();
+				
 				var uploadedFile = $scope.uploadingFile;
 				$scope.uploadingFile = null;
 				$scope.filesToUpload.splice($scope.filesToUpload.indexOf(uploadedFile),1);
@@ -462,15 +464,14 @@
 						return;
 					}
 					
+					$scope.uploadingFile = uploadingFile;
+					
 					var maxSize = size === "" ? Math.NaN : parseInt(JSON.parse(size));
 					if(!isNaN(maxSize) && uploadingFile.file.size > maxSize) {
 						Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, false);
+						processUploadingFile('failed');
 						return;
 					}
-					
-					var uploadingFile = getNextFileToUpload($scope.filesToUpload);
-					
-					$scope.uploadingFile = uploadingFile;
 					
 					$scope.uploadingFile.status = 'upload';
 					$scope.uploadingFile.xhr = Card.uploadFile(uploadingFile.file, card.id, fileUploadProgressCallBack, fileUploadCompleteCallBack,
