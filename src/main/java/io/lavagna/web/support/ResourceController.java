@@ -116,23 +116,23 @@ public class ResourceController {
 	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
-	@RequestMapping(value = { "admin/", "admin/configure-login/", "admin/manage-users/", "admin/role/",
-			"admin/export-import/", "admin/endpoint-info/", "admin/parameters/",
-			"admin/manage-anonymous-users-access/", "admin/manage-smtp-configuration/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "admin", "admin/configure-login", "admin/manage-users", "admin/role",
+			"admin/export-import", "admin/endpoint-info", "admin/parameters",
+			"admin/manage-anonymous-users-access", "admin/manage-smtp-configuration" }, method = RequestMethod.GET)
 	public void handleIndexForAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = { PROJ_SHORT_NAME + "/manage/",//
-			PROJ_SHORT_NAME + "/manage/project/",//
-			PROJ_SHORT_NAME + "/manage/boards/",//
-			PROJ_SHORT_NAME + "/manage/roles/",//
-			PROJ_SHORT_NAME + "/manage/labels/",//
-			PROJ_SHORT_NAME + "/manage/import/",//
-			PROJ_SHORT_NAME + "/manage/milestones/",//
-			PROJ_SHORT_NAME + "/manage/anonymous-users-access/",//
-			PROJ_SHORT_NAME + "/manage/columns-status/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { PROJ_SHORT_NAME + "/manage",//
+			PROJ_SHORT_NAME + "/manage/project",//
+			PROJ_SHORT_NAME + "/manage/boards",//
+			PROJ_SHORT_NAME + "/manage/roles",//
+			PROJ_SHORT_NAME + "/manage/labels",//
+			PROJ_SHORT_NAME + "/manage/import",//
+			PROJ_SHORT_NAME + "/manage/milestones",//
+			PROJ_SHORT_NAME + "/manage/anonymous-users-access",//
+			PROJ_SHORT_NAME + "/manage/columns-status" }, method = RequestMethod.GET)
 	public void handleIndexForProjectAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
@@ -144,16 +144,18 @@ public class ResourceController {
 	}
 
 	@RequestMapping(value = { "/",//
+			"not-found",//
+			"error",//
 			"user/{provider}/{username}", "user/{provider}/{username}/projects/", "user/{provider}/{username}/activity/",//
-			"about/",//
-			"search/",//
+			"about",//
+			"search",//
 			"search/" + PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
-			PROJ_SHORT_NAME + "/",//
-			PROJ_SHORT_NAME + "/search/",//
+			PROJ_SHORT_NAME + "",//
+			PROJ_SHORT_NAME + "/search",//
 			PROJ_SHORT_NAME + "/search/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,// /
 			PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME,//
-			PROJ_SHORT_NAME + "/statistics/",//
-			PROJ_SHORT_NAME + "/milestones/",//
+			PROJ_SHORT_NAME + "/statistics",//
+			PROJ_SHORT_NAME + "/milestones",//
 			PROJ_SHORT_NAME + "/milestones/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
 			PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ }, method = RequestMethod.GET)
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {

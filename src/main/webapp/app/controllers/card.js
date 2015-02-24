@@ -11,6 +11,8 @@
 			card, currentUser, project, board //resolved by ui-router
 			) {
 		
+		console.log(card);
+		
 		
 		var findAndAssignColumns = function() {
 			Board.columns(board.shortName, 'BOARD').then(function(columns) {

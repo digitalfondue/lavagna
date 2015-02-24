@@ -34,7 +34,31 @@
 	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
 
 		$locationProvider.html5Mode(true);
+		
+		$urlRouterProvider.rule(function ($injector, $location) {
+		    var path = $location.url();
+		    
+		    //exception: handle board URL.
+		    if(path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+$/) ||
+		    		path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+\?.*$/)) {
+		    	return;
+		    }
+		    //exception: handle board URL. remove trailing slash
+		    if(path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+\/$/)) {
+		    	return path.substr(0, path.length - 1);
+		    }
 
+		    // check to see if the path already has a slash where it should be
+		    if (path[path.length - 1] === '/' || path.indexOf('/?') > -1) {
+		        return;
+		    }
+
+		    if (path.indexOf('?') > -1) {
+		        return path.replace('?', '/?');
+		    }
+
+		    return path + '/';
+		});
 
 		angular.forEach(io_lavagna.i18n, function(map, lang) {
 			$translateProvider.translations(lang, map)
@@ -69,6 +93,16 @@
 			templateUrl : 'partials/home.html',
 			controller : 'HomeCtrl'
 		})
+		.state('404', {
+			url : '/not-found/',
+			templateUrl : 'partials/404.html',
+			controller : 'ErrorCtrl'
+		})
+		.state('500', {
+			url : '/error/',
+			templateUrl : 'partials/500.html',
+			controller : 'ErrorCtrl'
+		})
 		//---- ABOUT ----
 		.state('about', {
 			url:'/about/',
@@ -81,7 +115,7 @@
 			templateUrl : 'partials/me.html',
 			controller: 'AccountCtrl'
 		}).state('user', {
-            url :'/user/:provider/:username',
+            url :'/user/:provider/:username/',
             templateUrl : 'partials/user.html',
             controller: 'UserCtrl'
         }).state('user-projects', {
@@ -100,7 +134,7 @@
 			controller: 'SearchCtrl',
 			reloadOnSearch: false
 		}).state('globalSearch.card', {
-			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}',
+			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
@@ -196,7 +230,7 @@
 			controller : 'ProjectMilestonesCtrl',
 			resolve : projectResolver
 		}).state('projectMilestones.card', {
-			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}',
+			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
@@ -220,7 +254,7 @@
 			controller: 'SearchCtrl',
 			reloadOnSearch: false
 		}).state('projectSearch.card', {
-			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}',
+			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
@@ -237,25 +271,24 @@
 				}
 			}
 		}).state('projectBoard.card', {
-			url : '-{seqNr:[0-9]+}',
+			url : '-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
-		})
-		// -----------
-		.state('404', {
-			url : '/404/:resourceId',
-			templateUrl : 'partials/404.html',
-			controller : 'ErrorCtrl'
 		});
 
 		$urlRouterProvider.otherwise('/');
 	});
 
 	//reset the title to "Lavagna" (default). The controller will override with his own value if necessary.
-	module.run(function($rootScope) {
+	module.run(function($rootScope, $state) {
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
 			$rootScope.pageTitle = 'Lavagna'
+		});
+		
+		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+		    event.preventDefault();
+		    $state.go(error.status.toString());
 		});
 	})
 
