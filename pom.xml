@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.lavagna</groupId>
 	<artifactId>lavagna</artifactId>
@@ -229,9 +230,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
-				<configuration>
-					<argLine>-Xms64m -Xmx256m -XX:MaxPermSize=256m</argLine>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -271,9 +269,9 @@
 				<configuration>
 					<additionalDependencies>
 						<dependency>
-    						<groupId>org.eclipse.jetty.websocket</groupId>
-    						<artifactId>websocket-server</artifactId>
-    						<version>9.2.9.v20150224</version>
+							<groupId>org.eclipse.jetty.websocket</groupId>
+							<artifactId>websocket-server</artifactId>
+							<version>9.2.9.v20150224</version>
 						</dependency>
 					</additionalDependencies>
 				</configuration>
@@ -300,104 +298,104 @@
 
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
-			    <artifactId>asciidoctor-maven-plugin</artifactId>
-			    <version>1.5.2</version>
-			    <executions>
-			    	<execution>
-			    		<phase>generate-resources</phase>
-			    		<goals>
-			    			<goal>process-asciidoc</goal>
-			    		</goals>
-			    	</execution>
-			    </executions>
-			    <configuration>
-			    	<backend>docbook5</backend>
-			    	<doctype>book</doctype>
-			    	<toc>true</toc>
-			    	<sourceDocumentName>index.adoc</sourceDocumentName>
-			    	<outputDirectory>${project.build.directory}/generated-docs/</outputDirectory>
-			    </configuration>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<backend>docbook5</backend>
+					<doctype>book</doctype>
+					<toc>true</toc>
+					<sourceDocumentName>index.adoc</sourceDocumentName>
+					<outputDirectory>${project.build.directory}/generated-docs/</outputDirectory>
+				</configuration>
 			</plugin>
 			<plugin>
-        		<groupId>com.agilejava.docbkx</groupId>
-        		<artifactId>docbkx-maven-plugin</artifactId>
-        		<version>2.0.16</version>
-        		<executions>
-          			<execution>
-          				<phase>generate-resources</phase>
-            			<goals>
-              				<goal>generate-html</goal>
-            			</goals>
-          			</execution>
-        		</executions>
-        		<configuration>
-        			<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
-       				<htmlStylesheet>css/style.css</htmlStylesheet>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<version>2.0.16</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>generate-html</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
+					<htmlStylesheet>css/style.css</htmlStylesheet>
 					<htmlCustomization>${basedir}/src/main/asciidoc/xsl/lavagna.xsl</htmlCustomization>
-	          		<chunkedOutput>true</chunkedOutput>
-	          		<postProcess>
-	          			<copy todir="${project.build.directory}/docbkx/html/css">
-	          				<fileset dir="${basedir}/src/main/asciidoc/css/"/>
-	          			</copy>
-	          			<copy todir="${project.build.directory}/lavagna/help/">
-	          				<fileset dir="${project.build.directory}/docbkx/html/"/>
-	          			</copy>
-	          			<copy todir="${project.build.directory}/lavagna/help/images/">
-	          				<fileset dir="${basedir}/src/main/asciidoc/images/"/>
-	          			</copy>
-	          			<copy todir="${project.build.directory}/lavagna/help/css">
-	          				<fileset dir="${basedir}/src/main/asciidoc/css/"/>
-	          			</copy>
+					<chunkedOutput>true</chunkedOutput>
+					<postProcess>
+						<copy todir="${project.build.directory}/docbkx/html/css">
+							<fileset dir="${basedir}/src/main/asciidoc/css/" />
+						</copy>
+						<copy todir="${project.build.directory}/lavagna/help/">
+							<fileset dir="${project.build.directory}/docbkx/html/" />
+						</copy>
+						<copy todir="${project.build.directory}/lavagna/help/images/">
+							<fileset dir="${basedir}/src/main/asciidoc/images/" />
+						</copy>
+						<copy todir="${project.build.directory}/lavagna/help/css">
+							<fileset dir="${basedir}/src/main/asciidoc/css/" />
+						</copy>
 						<copy todir="${project.build.directory}/lavagna/help/fonts">
-	          				<fileset dir="${basedir}/src/main/asciidoc/fonts/"/>
-	          			</copy>
-	          		</postProcess>
-        		</configuration>
-        		<dependencies>
-          			<dependency>
-            			<groupId>net.sf.docbook</groupId>
-            			<artifactId>docbook-xml</artifactId>
-            			<version>5.0-all</version>
-            			<classifier>resources</classifier>
-            			<type>zip</type>
-            			<scope>runtime</scope>
-          			</dependency>
-        		</dependencies>
-      		</plugin>
+							<fileset dir="${basedir}/src/main/asciidoc/fonts/" />
+						</copy>
+					</postProcess>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.sf.docbook</groupId>
+						<artifactId>docbook-xml</artifactId>
+						<version>5.0-all</version>
+						<classifier>resources</classifier>
+						<type>zip</type>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
 			<plugin>
-        		<artifactId>maven-resources-plugin</artifactId>
-        		<version>2.7</version>
-        		<configuration>
-        			<encoding>UTF-8</encoding>
-        		</configuration>
-        		<executions>
-        			<execution>
-        				<phase>generate-resources</phase>
-        				<goals>
-        					<goal>copy-resources</goal>
-        				</goals>
-        				<configuration>
-        					<outputDirectory>${basedir}/target/lavagna/about/</outputDirectory>
-        					<resources>
-        						<resource>
-        							<directory>${basedir}/target/generated-sources/license/</directory>
-        							<includes>
-        								<include>*.txt</include>
-        							</includes>
-        							<filtering>false</filtering>
-        						</resource>
-        						<resource>
-        							<directory>${basedir}</directory>
-        							<includes>
-        								<include>LICENSE-GPLv3.txt</include>
-        							</includes>
-        							<filtering>false</filtering>
-        						</resource>
-        					</resources>
-        				</configuration>
-        			</execution>
-        		</executions>
-      		</plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/lavagna/about/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/target/generated-sources/license/</directory>
+									<includes>
+										<include>*.txt</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+								<resource>
+									<directory>${basedir}</directory>
+									<includes>
+										<include>LICENSE-GPLv3.txt</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- license -->
 			<plugin>
@@ -430,15 +428,9 @@
 				<version>0.7.2.201409121644</version>
 				<executions>
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -487,7 +479,7 @@
 							<name>datasource.password</name>
 							<value>${datasource.password}</value>
 						</systemProperty>
-						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value>
+						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value> 
 							</systemProperty> -->
 					</systemProperties>
 				</configuration>
@@ -501,7 +493,7 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
