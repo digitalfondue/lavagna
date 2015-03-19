@@ -31,6 +31,14 @@ Go to http://localhost:8080 and login with "user" (password "user").
 
 See the README in the archive. A better documentation is arriving.
 
+### Docker ###
+
+Lavagna is also available as a Docker image so you can try it on the fly:
+
+```
+https://registry.hub.docker.com/u/digitalfondue/lavagna/
+```
+
 ## Develop ##
 
 ### IDE Configuration ###
