@@ -129,8 +129,7 @@ public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerC
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		//TODO: use a more restricted allowed origin
-		registry.addEndpoint("/api/socket").setAllowedOrigins("*").withSockJS().setClientLibraryUrl("../../js/sockjs.min.js");
+		registry.addEndpoint("/api/socket").withSockJS().setClientLibraryUrl("../../js/sockjs.min.js");
 	}
 
 	@Override
