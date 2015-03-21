@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.WebApplicationContext;
@@ -91,13 +92,13 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		//
-
+		
 		String reqURI = req.getRequestURI();
 
 		// if it's not in the context path of the application, the security
 		// filter will not be triggered
 		if (!reqURI.startsWith(req.getServletContext().getContextPath())) {
-			chain.doFilter(request, response);
+			chain.doFilter(req, resp);
 			return;
 		}
 

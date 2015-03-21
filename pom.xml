@@ -230,6 +230,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
+				<configuration>
+					<skip>${fast-build}</skip>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -281,6 +284,7 @@
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
+					<skipAssembly>${fast-build}</skipAssembly>
 					<descriptors>
 						<descriptor>src/assembly/distribution.xml</descriptor>
 					</descriptors>
@@ -329,6 +333,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<skip>${fast-build}</skip>
 					<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
 					<htmlStylesheet>css/style.css</htmlStylesheet>
 					<htmlCustomization>${basedir}/src/main/asciidoc/xsl/lavagna.xsl</htmlCustomization>
@@ -403,6 +408,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<version>2.7</version>
 				<configuration>
+					<skip>${fast-build}</skip>
 					<header>com/mycila/maven/plugin/license/templates/GPL-3.txt</header>
 					<includes>
 						<include>**/*.java</include>
@@ -426,6 +432,9 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.2.201409121644</version>
+				<configuration>
+					<skip>${fast-build}</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -613,6 +622,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<fast-build>false</fast-build>
 				<jetty.port>8080</jetty.port>
 				<jetty.host>0.0.0.0</jetty.host>
 				<datasource.dialect>HSQLDB</datasource.dialect>
@@ -628,6 +638,7 @@
 		<profile>
 			<id>dev-c9</id>
 			<properties>
+				<fast-build>false</fast-build>
 				<jetty.port>${env.PORT}</jetty.port>
 				<jetty.host>${env.IP}</jetty.host>
 				<datasource.dialect>HSQLDB</datasource.dialect>
@@ -644,6 +655,7 @@
 		<profile>
 			<id>dev-mysql</id>
 			<properties>
+				<fast-build>false</fast-build>
 				<jetty.port>8080</jetty.port>
 				<jetty.host>0.0.0.0</jetty.host>
 				<datasource.dialect>MYSQL</datasource.dialect>
@@ -659,6 +671,7 @@
 		<profile>
 			<id>dev-pgsql</id>
 			<properties>
+				<fast-build>false</fast-build>
 				<jetty.port>8080</jetty.port>
 				<jetty.host>0.0.0.0</jetty.host>
 				<datasource.dialect>PGSQL</datasource.dialect>
@@ -683,6 +696,7 @@
 				</plugins>
 			</build>
 			<properties>
+				<fast-build>true</fast-build>
 				<jetty.port>${env.OPENSHIFT_JETTY_PORT}</jetty.port>
 				<jetty.host>${env.OPENSHIFT_JETTY_IP}</jetty.host>
 				<datasource.dialect>MYSQL</datasource.dialect>
