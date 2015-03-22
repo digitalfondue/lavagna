@@ -87,6 +87,7 @@ public class SecurityFilter implements Filter {
 		}
 	}
 	
+	//TODO: reminder: remove this hack when 4.1.6 is out https://jira.spring.io/browse/SPR-12771 
 	private static class RemoveOrigin extends HttpServletRequestWrapper {
 
 		public RemoveOrigin(HttpServletRequest request) {
