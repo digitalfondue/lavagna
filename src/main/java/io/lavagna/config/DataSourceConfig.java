@@ -35,7 +35,7 @@ import org.springframework.core.env.Environment;
 
 public class DataSourceConfig {
 	
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("2");
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("3");
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(Environment env) throws URISyntaxException {
