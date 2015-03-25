@@ -27,8 +27,6 @@ import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.PathConfiguration.UrlMatcher;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,7 +39,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -87,29 +84,12 @@ public class SecurityFilter implements Filter {
 		}
 	}
 	
-	//TODO: reminder: remove this hack when 4.1.6 is out https://jira.spring.io/browse/SPR-12771 
-	private static class RemoveOrigin extends HttpServletRequestWrapper {
-
-		public RemoveOrigin(HttpServletRequest request) {
-			super(request);
-		}
-		
-		@Override
-		public String getHeader(String name) {
-			return "origin".equalsIgnoreCase(name) ? null : super.getHeader(name);
-		}
-		
-		@Override
-		public Enumeration<String> getHeaders(String name) {
-			return "origin".equalsIgnoreCase(name) ? Collections.enumeration(Collections.<String>emptyList()) : super.getHeaders(name);
-		}
-	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException {
 
-		HttpServletRequest req = new RemoveOrigin((HttpServletRequest) request);
+		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		//
 		

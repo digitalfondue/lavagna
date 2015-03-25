@@ -208,8 +208,8 @@
 	<!-- -->
 	<properties>
 		<org.apache.logging.log4j.version>2.2</org.apache.logging.log4j.version>
-		<org.springframework.version>4.1.5.RELEASE</org.springframework.version>
-		<org.eclipse.jetty.version>9.2.9.v20150224</org.eclipse.jetty.version>
+		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
+		<org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
 	</properties>
