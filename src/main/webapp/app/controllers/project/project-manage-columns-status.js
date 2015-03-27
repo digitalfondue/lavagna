@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectManageColumnsStatusCtrl', function ($stateParams, $scope, $filter, Project, project) {
+	module.controller('ProjectManageColumnsStatusCtrl', function ($stateParams, $scope, $filter, Notification, Project, project) {
 
 		$scope.project = project;
 

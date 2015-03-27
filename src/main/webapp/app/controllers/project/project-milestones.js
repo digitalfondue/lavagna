@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectMilestonesCtrl', function ($stateParams, $scope, Card, User, Label, StompClient, project) {
+	module.controller('ProjectMilestonesCtrl', function ($stateParams, $scope, Card, User, Label, Notification, StompClient, project) {
 
 		$scope.sidebarOpen = true;
 		$scope.project = project;

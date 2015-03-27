@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectManageHomeCtrl', function ($scope, $rootScope, ProjectCache, Project, project) {
+	module.controller('ProjectManageHomeCtrl', function ($scope, $rootScope, Notification, ProjectCache, Project, project) {
 
 			$scope.project = project;
 			$scope.item = project;

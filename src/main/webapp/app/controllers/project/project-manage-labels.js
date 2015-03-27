@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectManageLabelsCtrl', function ($rootScope, $q, $stateParams, $scope, $filter, $translate, $modal, LabelCache, Label, project) {
+	module.controller('ProjectManageLabelsCtrl', function ($rootScope, $q, $stateParams, $scope, $filter, $translate, $modal, Notification, LabelCache, Label, project) {
 
 			$scope.project = project;
 

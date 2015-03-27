@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectManageAnonymousUsersAccessCtrl', function ($scope, $stateParams, User, Permission, project) {
+	module.controller('ProjectManageAnonymousUsersAccessCtrl', function ($scope, $stateParams, User, Notification, Permission, project) {
 
 		$scope.project = project;
 
