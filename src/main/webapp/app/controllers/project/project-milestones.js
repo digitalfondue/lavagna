@@ -85,7 +85,9 @@
 		$scope.updateMilestone = function (milestone, newName) {
 			var newLabelValue = jQuery.extend({}, milestone.labelListValue);
 			newLabelValue.value = newName;
-			Label.updateLabelListValue(newLabelValue);
+			Label.updateLabelListValue(newLabelValue).catch(function(error) {
+				Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
+			});
 		};
 	});
 })();
