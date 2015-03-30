@@ -100,7 +100,7 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		UserWithPermission user = UserSession.fetchFromRequest(request, userService);
 
 		// check the base permission
-		if (user.getBasePermissions().containsKey(expectPermission.value())) {
+		if (containtsOneKeyOf(user, expectPermission.value())) {
 			return true;
 		}
 
@@ -132,6 +132,16 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		response.sendError(HttpStatus.FORBIDDEN.value());
 		return false;
 	}
+	
+	//TODO, not optimal :D
+	private static boolean containtsOneKeyOf(UserWithPermission user, Permission[] permissions) {
+		for(Permission p : permissions) {
+			if(user.getBasePermissions().containsKey(p)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private static Set<String> extractProjectIdsFromRequestUri(String requestUri, ProjectService projectService) {
 		Set<String> projectIds = new HashSet<>();
@@ -140,6 +150,18 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 			projectIds.addAll(extracted);
 		}
 		return projectIds;
+	}
+	
+	
+	//TODO, not optimal :D
+	private boolean allProjectsIdsHavePermission(Set<String> projectIds,
+			UserWithPermission user, Permission[] expectedPermissions) {
+		for (Permission e : expectedPermissions) {
+			if (allProjectsIdsHavePermission(projectIds, user, e)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/***

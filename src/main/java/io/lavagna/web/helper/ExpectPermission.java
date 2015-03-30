@@ -35,7 +35,7 @@ import org.springframework.web.method.HandlerMethod;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface ExpectPermission {
-	Permission value();
+	Permission[] value();
 
 	Class<? extends OwnershipChecker> ownershipChecker() default NoOpOwnershipChecker.class;
 

@@ -106,7 +106,7 @@ public class EndpointInfoController {
 		private final Set<String> patterns;
 
 		/** can be null */
-		private final Permission permission;
+		private final Permission[] permission;
 
 		private final Set<RequestMethod> methods;
 
