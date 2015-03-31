@@ -62,8 +62,12 @@
 				return $http.get('api/search/user', opts).then(extractData);
 			},
 
-			list : function() {
-				return $http.get('api/user/list').then(extractData);
+			list : function(projectShortName) {
+				if(projectShortName !== undefined) {
+					return $http.get('api/project/' + projectShortName + '/user/list').then(extractData);
+				} else {
+					return $http.get('api/user/list').then(extractData);
+				}
 			},
 
 			user : function(userId) {

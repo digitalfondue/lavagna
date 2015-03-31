@@ -88,6 +88,9 @@ public interface ProjectQuery {
 
 	@Query("SELECT CARD_LABEL_PROJECT_ID_FK FROM LA_CARD_LABEL WHERE CARD_LABEL_ID = (SELECT CARD_LABEL_ID_FK FROM LA_CARD_LABEL_VALUE WHERE CARD_LABEL_VALUE_ID = :labelValueId)")
 	List<Integer> findRelatedProjectIdByLabelValueId(@Bind("labelValueId") int labelValueId);
+	
+	@Query("SELECT CARD_LABEL_PROJECT_ID_FK FROM LA_CARD_LABEL WHERE CARD_LABEL_ID = (SELECT CARD_LABEL_ID_FK FROM LA_CARD_LABEL_LIST_VALUE WHERE CARD_LABEL_LIST_VALUE_ID = :labelListValueIdPath)")
+	List<Integer> findRelatedProjectIdByLabelListValudIdPath(@Bind("labelListValueIdPath") int labelListValueIdPath);
 
 	@Query("SELECT BOARD_PROJECT_ID_FK FROM LA_BOARD WHERE BOARD_ID = "//
 			+ "(SELECT BOARD_COLUMN_BOARD_ID_FK FROM LA_BOARD_COLUMN WHERE BOARD_COLUMN_ID = "//

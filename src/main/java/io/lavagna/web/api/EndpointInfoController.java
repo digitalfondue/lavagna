@@ -76,8 +76,8 @@ public class EndpointInfoController {
 	private static Set<String> extractPathVariables(String pattern) {
 
 		Set<String> identifierAndPathVariable = new HashSet<>();
-		// match stuff like "/project/{projectShortName}"
-		Pattern p = Pattern.compile("(/[^/]+/\\{[^\\}]+\\})");
+		// match stuff like "/project/{projectShortName}" or /{projectShortName}/value
+		Pattern p = Pattern.compile("(/[^/]+/\\{[^\\}]+\\})|(\\{[^\\}]+\\}/[^/]+/)");
 		Matcher m = p.matcher(pattern);
 		while (m.find()) {
 			identifierAndPathVariable.add(m.group());
@@ -106,7 +106,7 @@ public class EndpointInfoController {
 		private final Set<String> patterns;
 
 		/** can be null */
-		private final Permission[] permission;
+		private final Permission permission;
 
 		private final Set<RequestMethod> methods;
 

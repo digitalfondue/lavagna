@@ -78,9 +78,15 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		p.add(new AbstractPermissionUrlPath.EventIdUrlPath("/undo/{eventId}", "eventId"));
 
 		p.add(new AbstractPermissionUrlPath.ProjectShortNameUrlPath("/project/{projectShortName}", "projectShortName"));
+		p.add(new AbstractPermissionUrlPath.ProjectShortNameUrlPath("{projectShortName:[A-Z0-9_]+}/manage/", "projectShortName:[A-Z0-9_]+"));
+		p.add(new AbstractPermissionUrlPath.ProjectShortNameUrlPath("{projectShortName:[A-Z0-9_]+}/milestones/", "projectShortName:[A-Z0-9_]+"));
+		p.add(new AbstractPermissionUrlPath.ProjectShortNameUrlPath("{projectShortName:[A-Z0-9_]+}/search/", "projectShortName:[A-Z0-9_]+"));
+		p.add(new AbstractPermissionUrlPath.ProjectShortNameUrlPath("/search/{projectShortName:[A-Z0-9_]+}", "projectShortName:[A-Z0-9_]+"));
 
 		p.add(new AbstractPermissionUrlPath.LabelIdUrlPath("/label/{labelId}", "labelId"));
 		p.add(new AbstractPermissionUrlPath.LabelValueIdUrlPath("/card-label-value/{labelValueId}", "labelValueId"));
+		
+		p.add(new AbstractPermissionUrlPath.LabelListValuedIdPath("/label-list-values/{labelListValueId}", "labelListValueId"));
 		
 		p.add(new AbstractPermissionUrlPath.ColumnDefinitionIdUrlPath("/redefine/{newDefinitionId}", "newDefinitionId"));
 
@@ -100,7 +106,7 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		UserWithPermission user = UserSession.fetchFromRequest(request, userService);
 
 		// check the base permission
-		if (containtsOneKeyOf(user, expectPermission.value())) {
+		if (user.getBasePermissions().containsKey(expectPermission.value())) {
 			return true;
 		}
 
@@ -132,16 +138,6 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		response.sendError(HttpStatus.FORBIDDEN.value());
 		return false;
 	}
-	
-	//TODO, not optimal :D
-	private static boolean containtsOneKeyOf(UserWithPermission user, Permission[] permissions) {
-		for(Permission p : permissions) {
-			if(user.getBasePermissions().containsKey(p)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	private static Set<String> extractProjectIdsFromRequestUri(String requestUri, ProjectService projectService) {
 		Set<String> projectIds = new HashSet<>();
@@ -152,17 +148,6 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		return projectIds;
 	}
 	
-	
-	//TODO, not optimal :D
-	private boolean allProjectsIdsHavePermission(Set<String> projectIds,
-			UserWithPermission user, Permission[] expectedPermissions) {
-		for (Permission e : expectedPermissions) {
-			if (allProjectsIdsHavePermission(projectIds, user, e)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/***
 	 * Check that all the related project have the expected permission

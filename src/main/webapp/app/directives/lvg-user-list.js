@@ -12,12 +12,12 @@
 				userListLocalModel : '=lvgUserListLocalModel',
 				filter: '=ngModel'
 			},
-			link: function ($scope, elem, attrs) {
+			controller: function ($scope, $stateParams) {
 				
 				var refreshList = function() {
 					var val = $scope.filter;
 					if (val === undefined || val.trim().length == 0) {
-						User.list().then(function (res) {
+						User.list($stateParams.projectName).then(function (res) {
 							$scope.userList = res;
 						});
 					} else {

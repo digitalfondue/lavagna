@@ -191,6 +191,10 @@ public class ProjectService {
 	public String findRelatedProjectShortNameByLabelId(Integer labelId) {
 		return fromProjectIdToShortName(firstOrNull(queries.findRelatedProjectIdByLabelId(labelId)));
 	}
+	
+	public String findRelatedProjectShortNameByLabelListValudIdPath(Integer labelListValueIdPath) {
+		return fromProjectIdToShortName(firstOrNull(queries.findRelatedProjectIdByLabelListValudIdPath(labelListValueIdPath)));
+	}
 
 	public String findRelatedProjectShortNameByColumnDefinitionId(int columnDefinitionId) {
 		return fromProjectIdToShortName(firstOrNull(queries

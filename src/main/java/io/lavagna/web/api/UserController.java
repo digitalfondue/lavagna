@@ -128,11 +128,19 @@ public class UserController {
 		return true;
 	}
 
-	@ExpectPermission({Permission.ADMINISTRATION, Permission.PROJECT_ADMINISTRATION})
+	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/user/list", method = RequestMethod.GET)
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
+	
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+	@RequestMapping(value = "/api/project/{projectShortName}/user/list", method = RequestMethod.GET)
+	public List<User> findAllUsersForProject() {
+		return findAllUsers();
+	}
+	
+	
 
 	@Getter
 	@Setter

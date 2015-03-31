@@ -186,8 +186,8 @@ public abstract class AbstractPermissionUrlPath {
 		@Override
 		public Set<String> tryToFetchProjectShortName(Set<String> ids, ProjectService projectService) {
 			Set<String> res = new HashSet<>();
-			for (Integer columnId : from(ids)) {
-				addIfNotNull(res, projectService.findRelatedProjectShortNameByLabelId(columnId));
+			for (Integer labelId : from(ids)) {
+				addIfNotNull(res, projectService.findRelatedProjectShortNameByLabelId(labelId));
 			}
 			return res;
 		}
@@ -201,8 +201,23 @@ public abstract class AbstractPermissionUrlPath {
 		@Override
 		public Set<String> tryToFetchProjectShortName(Set<String> ids, ProjectService projectService) {
 			Set<String> res = new HashSet<>();
-			for (Integer columnId : from(ids)) {
-				addIfNotNull(res, projectService.findRelatedProjectShortNameByLabelValueId(columnId));
+			for (Integer labelValueId : from(ids)) {
+				addIfNotNull(res, projectService.findRelatedProjectShortNameByLabelValueId(labelValueId));
+			}
+			return res;
+		}
+	}
+	
+	static class LabelListValuedIdPath extends AbstractPermissionUrlPath {
+		LabelListValuedIdPath(String path, String paramName) {
+			super(path, paramName);
+		}
+		
+		@Override
+		public Set<String> tryToFetchProjectShortName(Set<String> ids, ProjectService projectService) {
+			Set<String> res = new HashSet<>();
+			for (Integer labelListValueIdPath : from(ids)) {
+				addIfNotNull(res, projectService.findRelatedProjectShortNameByLabelListValudIdPath(labelListValueIdPath));
 			}
 			return res;
 		}
