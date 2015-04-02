@@ -216,12 +216,16 @@ public class PermissionService {
 	@Transactional(readOnly = false)
 	public int deleteRole(Role role) {
 		Objects.requireNonNull(role);
+		queries.removeUsersFromRole(role.getName());
+		queries.deletePermissions(role.getName());
 		return queries.deleteRole(role.getName());
 	}
 
 	@Transactional(readOnly = false)
 	public int deleteRoleInProjectId(Role role, int projectId) {
 		Objects.requireNonNull(role);
+		queries.removeUsersFromRoleInProjectId(role.getName(), projectId);
+		queries.deletePermissionsInProjectId(role.getName(), projectId);
 		return queries.deleteRoleInProjectId(role.getName(), projectId);
 	}
 

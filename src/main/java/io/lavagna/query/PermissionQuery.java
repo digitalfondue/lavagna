@@ -93,6 +93,14 @@ public interface PermissionQuery {
 
 	@Query("DELETE FROM LA_PROJECT_ROLE_PERMISSION WHERE PROJECT_ROLE_ID_FK = (SELECT PROJECT_ROLE_ID FROM LA_PROJECT_ROLE WHERE PROJECT_ROLE_NAME = :roleName AND PROJECT_ID_FK = :projectId)")
 	int deletePermissionsInProjectId(@Bind("roleName") String roleName, @Bind("projectId") int projectId);
+	
+	//
+	@Query("DELETE FROM LA_USER_ROLE WHERE ROLE_ID_FK = (SELECT ROLE_ID FROM LA_ROLE WHERE ROLE_NAME = :roleName)")
+	int removeUsersFromRole(@Bind("roleName") String roleName);
+	
+	@Query("DELETE FROM LA_PROJECT_USER_ROLE WHERE PROJECT_ROLE_ID_FK = (SELECT PROJECT_ROLE_ID FROM LA_PROJECT_ROLE WHERE PROJECT_ROLE_NAME = :roleName AND PROJECT_ID_FK = :projectId)")
+	int removeUsersFromRoleInProjectId(@Bind("roleName") String roleName, @Bind("projectId") int projectId);
+	//
 
 	@Query(type = QueryType.TEMPLATE, value = "INSERT INTO LA_ROLE_PERMISSION(ROLE_ID_FK, PERMISSION) VALUES ((SELECT ROLE_ID FROM LA_ROLE WHERE ROLE_NAME = :roleName), :permission)")
 	String addPermission();
@@ -136,5 +144,4 @@ public interface PermissionQuery {
 			+ " LA_PROJECT_USER_ROLE.PROJECT_ID_FK = :projectId ORDER BY USER_PROVIDER, USER_NAME")
 	List<UserIdentifier> findUserIdentifierByRoleAndProjectId(@Bind("roleName") String roleName,
 			@Bind("projectId") int projectId);
-
 }

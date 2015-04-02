@@ -67,6 +67,12 @@ ul.lvg-modal-roles li.role .role-name {
 	padding-left: 20px;
 }
 
+ul.lvg-modal-roles li.role .role-name label {
+	display: block;
+	font-weight: normal;
+	margin-bottom: 0;
+}
+
 
 /* 
 ===================================
