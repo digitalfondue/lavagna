@@ -4,10 +4,10 @@
 
 	var services = angular.module('lavagna.services');
 
-	services.factory('StompClient', function ($q, $log, $rootScope, CONTEXT_PATH, User, Notification) {
+	services.factory('StompClient', function ($q, $log, $rootScope, $window, CONTEXT_PATH, User, Notification) {
 
 		var defer = $q.defer();
-
+		
 		defer.promise.disconnect = function (f) {
 			return this.then(function (v) {
 				$log.log('stomp client disconnect');
@@ -29,7 +29,10 @@
 				return subscription;
 			});
 		};
-
+		
+		var ignoreErrorOnApplicationDestroy = false;
+		
+		$window.addEventListener("beforeunload",function() {ignoreErrorOnApplicationDestroy = true;});
 
 		User.isAuthenticated().then(function userIsAuth() {
 
@@ -41,9 +44,11 @@
 				defer.resolve(stompClient);
 			}, function (error) {
 				$log.log('stomp client error', error);
-				$rootScope.$apply(function () {
-					Notification.addNotification('error', {key: 'notification.error.connectionFailure'}, false);
-				});
+				if(!ignoreErrorOnApplicationDestroy) {
+					$rootScope.$apply(function () {
+						Notification.addNotification('error', {key: 'notification.error.connectionFailure'}, false);
+					});
+				}
 			});
 		}, function anonymousUser() {
 
