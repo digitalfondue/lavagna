@@ -24,7 +24,8 @@
 					showTooltips: false,
 					scaleBeginAtZero: true,
 					responsive: true,
-					maintainAspectRatio: false
+					maintainAspectRatio: false,
+					animation : false
 				};
 
 				function getSortedIndexes(array) {

@@ -13,7 +13,7 @@
 				stats: '='
 			},
 			link: function ($scope) {
-				$scope.chartOptions = {animationEasing: 'easeOutCirc'};
+				$scope.chartOptions = {animation : false};
 
 				var createNormalizedData = function (stats) {
 					var normalizedStats = [];

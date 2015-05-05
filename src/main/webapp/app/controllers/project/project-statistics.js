@@ -22,12 +22,14 @@
 			showTooltips: false,
 			scaleBeginAtZero: true,
 			responsive: true,
-			maintainAspectRatio: false
+			maintainAspectRatio: false,
+			animation : false
 		};
 
 		$scope.cardsByLabelChartOptions = {
 			responsive: true,
-			maintainAspectRatio: false
+			maintainAspectRatio: false,
+			animation : false
 		};
 
 		var generateDashboard = function (stats) {
