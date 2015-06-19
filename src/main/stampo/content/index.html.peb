@@ -1,0 +1,90 @@
+---
+directive: include-all
+include-all: doc/
+paginate-at-depth: 3
+add-numbering-to-titles: true
+include-child-summary: true
+---
+<!doctype html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="{{relativeRootPath}}/css/pure.css">
+    <link rel="stylesheet" href="{{relativeRootPath}}/css/font-awesome.css">
+    <link rel="stylesheet" href="{{relativeRootPath}}/css/layouts/side-menu.css">
+    <link rel="stylesheet" href="{{relativeRootPath}}/css/custom.css">
+  </head>
+<body>
+
+{% if pagination.depth > 0 %}
+<div id="layout">
+
+  <!-- Menu toggle -->
+  <a href="#menu" id="menuLink" class="menu-link">
+    <!-- Hamburger icon --><span></span>
+  </a>
+
+  <div id="menu">
+    <a class="pure-menu-heading" href="#">My Doc</a>
+    <div class="pure-menu">{{globalToc|raw}}</div>
+  </div>
+{% endif %} 
+ 
+
+  <div id="main">
+    {% if pagination.depth == 0 %}
+    <div class="header">
+      <h1>{{message('title')}}</h1>  
+    </div>
+    {% endif %} 
+  
+    <div class="content">
+      {% if pagination.depth > 0 %}
+      <div class="top-navigation pure-g">
+        <div class="pure-u-1-3 navigation-prev">
+            {% if pagination.previousPageUrl != null  and pagination.previousPageUrl != relativeRootPath %}
+              <a href="{{pagination.previousPageUrl}}">{{pagination.previousPageTitle}}</a> 
+            {% endif %}
+          </div>
+          <div class="pure-u-1-3 navigation-middle">
+            <a href="{{relativeRootPath}}">Index</a>
+          </div>
+          <div class="pure-u-1-3 navigation-next">
+            {% if pagination.nextPageUrl != null %}
+              <a href="{{pagination.nextPageUrl}}">{{pagination.nextPageTitle}}</a>
+            {% endif %}
+          </div>
+      </div>
+      {% endif %} 
+
+      <!-- summary for the current page -->
+      <div class="summary">{{summary|raw}}</div>
+      
+      {% if pagination.depth > 0 %}
+      <!-- main content -->
+      <div>{{includeAllResult|raw}}</div>
+      
+      <!-- bottom navigation-->
+      <div class="bottom-navigation pure-g">
+        <div class="pure-u-1-3 navigation-prev">
+            {% if pagination.previousPageUrl != null and pagination.previousPageUrl != relativeRootPath %}
+              <a href="{{pagination.previousPageUrl}}">{{pagination.previousPageTitle}}</a> 
+            {% endif %}
+          </div>
+          <div class="pure-u-1-3 navigation-middle">
+            <a href="{{relativeRootPath}}">Index</a>
+          </div>
+          <div class="pure-u-1-3 navigation-next">
+            {% if pagination.nextPageUrl != null %}
+              <a href="{{pagination.nextPageUrl}}">{{pagination.nextPageTitle}}</a>
+            {% endif %}
+          </div>
+      </div>
+      {% endif %}       
+    </div>
+  </div>
+</div>
+
+  <script src="{{relativeRootPath}}/js/ui.js"></script>
+</body>
+</html>

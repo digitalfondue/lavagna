@@ -1,9 +1,0 @@
-=== Administration
-
-include::administration/configuration-parameters.adoc[]
-
-include::administration/roles.adoc[]
-
-include::administration/login.adoc[]
-
-include::administration/import-export.adoc[]

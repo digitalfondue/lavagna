@@ -1,0 +1,94 @@
+#menu ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menu .pure-menu > ol > li {
+  border-bottom: 1px solid #333;
+}
+
+#menu .pure-menu > ol > li:last-child {
+  border-bottom:none;
+}
+
+#menu li {
+  list-style-type: none;
+}
+
+#menu li a {
+  padding: 10px;
+  text-decoration:none;
+}
+
+.content h1 a, .content h2 a, .content h3 a, .content h4 a, .content h5 a, .content h6 a {
+  color: #888;
+  text-decoration:none;
+}
+
+.summary ol {
+  list-style-type: none;
+}
+
+.summary {
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+}
+
+.summary a {
+  color: #888;
+  text-decoration:none;
+}
+
+.navigation-prev {
+  text-align:left;
+}
+
+.navigation-middle {
+  text-align:center;
+}
+
+.navigation-next {
+  text-align:right;
+}
+.navigation-prev a:before {
+  content: "«\00a0"
+}
+.navigation-next a:after {
+  content: "\00a0»"
+}
+
+#menu .stampo-number-and-heading-container {
+  display:block;
+}
+
+#menu .stampo-number-and-heading-container a {
+  display:block;
+}
+
+#menu .stampo-number-and-heading-container .stampo-heading-li-number {
+  display:none;
+}
+
+.stampo-heading-li-number, .stampo-heading-toc-number {
+  margin-right: 10px;
+}
+
+.top-navigation > div, .bottom-navigation > div {
+  padding-top:0.6em;
+  padding-bottom:0.6em;
+}
+
+.top-navigation a, .bottom-navigation a {
+  color: #888;
+  text-decoration:none;
+  padding: 0.6em;
+}
+
+.bottom-navigation {
+  border-top:1px solid #eee;
+}
+
+.header {
+  border-bottom:none;
+}

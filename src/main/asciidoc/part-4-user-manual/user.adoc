@@ -1,5 +1,0 @@
-=== User
-
-include::user/user-view.adoc[]
-
-include::user/edit-profile.adoc[]

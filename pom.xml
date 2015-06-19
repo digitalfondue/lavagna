@@ -301,71 +301,22 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>1.5.2</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<backend>docbook5</backend>
-					<doctype>book</doctype>
-					<toc>true</toc>
-					<sourceDocumentName>index.adoc</sourceDocumentName>
-					<outputDirectory>${project.build.directory}/generated-docs/</outputDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<version>2.0.16</version>
-				<executions>
-					<execution>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>generate-html</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<skip>${fast-build}</skip>
-					<sourceDirectory>${project.build.directory}/generated-docs/</sourceDirectory>
-					<htmlStylesheet>css/style.css</htmlStylesheet>
-					<htmlCustomization>${basedir}/src/main/asciidoc/xsl/lavagna.xsl</htmlCustomization>
-					<chunkedOutput>true</chunkedOutput>
-					<postProcess>
-						<copy todir="${project.build.directory}/docbkx/html/css">
-							<fileset dir="${basedir}/src/main/asciidoc/css/" />
-						</copy>
-						<copy todir="${project.build.directory}/lavagna/help/">
-							<fileset dir="${project.build.directory}/docbkx/html/" />
-						</copy>
-						<copy todir="${project.build.directory}/lavagna/help/images/">
-							<fileset dir="${basedir}/src/main/asciidoc/images/" />
-						</copy>
-						<copy todir="${project.build.directory}/lavagna/help/css">
-							<fileset dir="${basedir}/src/main/asciidoc/css/" />
-						</copy>
-						<copy todir="${project.build.directory}/lavagna/help/fonts">
-							<fileset dir="${basedir}/src/main/asciidoc/fonts/" />
-						</copy>
-					</postProcess>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.sf.docbook</groupId>
-						<artifactId>docbook-xml</artifactId>
-						<version>5.0-all</version>
-						<classifier>resources</classifier>
-						<type>zip</type>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
+			  <groupId>ch.digitalfondue.stampo</groupId>
+			  <artifactId>stampo-maven-plugin</artifactId>
+			  <version>1.2</version>
+			  <executions>
+			  <execution>
+			      <phase>compile</phase>
+			      <goals>
+			          <goal>build</goal>
+			      </goals>
+			  </execution>
+			  </executions>
+			  <configuration>
+			    <srcDir>${basedir}/src/main/stampo</srcDir>
+			    <outputDir>${project.build.directory}/generated-docs</outputDir>
+			    <port>45001</port>
+			  </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
