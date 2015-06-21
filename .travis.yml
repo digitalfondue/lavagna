@@ -4,11 +4,11 @@ before_script:
   - mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
 matrix:
     include:
-        - jdk: oraclejdk7
+        - jdk: oraclejdk8
           env: $PROFILE=-Ddatasource.dialect=HSQLDB
-        - jdk: oraclejdk7
+        - jdk: oraclejdk8
           env: $PROFILE=-Ddatasource.dialect=MYSQL
-        - jdk: oraclejdk7
+        - jdk: oraclejdk8
           env: $PROFILE=-Ddatasource.dialect=PGSQL-TRAVIS
 script: mvn test jacoco:report $PROFILE
 after_success:
