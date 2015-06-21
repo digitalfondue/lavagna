@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>3.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -143,7 +143,7 @@
 		<dependency>
 			<groupId>com.julienvey.trello</groupId>
 			<artifactId>trello-java-wrapper</artifactId>
-			<version>0.3</version>
+			<version>0.3.1</version>
 			<!-- we use log4j2 -->
 			<exclusions>
 				<exclusion>
@@ -199,7 +199,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.2</version>
+			<version>1.16.4</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -207,7 +207,7 @@
 
 	<!-- -->
 	<properties>
-		<org.apache.logging.log4j.version>2.2</org.apache.logging.log4j.version>
+		<org.apache.logging.log4j.version>2.3</org.apache.logging.log4j.version>
 		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
 		<org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
