@@ -303,7 +303,7 @@
 			<plugin>
 			  <groupId>ch.digitalfondue.stampo</groupId>
 			  <artifactId>stampo-maven-plugin</artifactId>
-			  <version>1.2</version>
+			  <version>1.2.1</version>
 			  <executions>
 			  <execution>
 			      <phase>compile</phase>
