@@ -142,5 +142,17 @@ public class ListValueMetadataRepositoryTest {
 		
 		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
 	}
+	
+	@Test
+	public void testDeleteCascade() {
+		LabelListValue llv = createLabelListValue();
+		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
+		listValueMetadataQuery.insert(llv.getId(), "KEY2", "VALUE");
+		
+		Assert.assertEquals(2, listValueMetadataQuery.findByLabelListValueId(llv.getId()).size());
+		
+		cardLabelRepository.removeLabelListValue(llv.getId());
+		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+	}
 
 }
