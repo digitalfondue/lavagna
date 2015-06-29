@@ -1,0 +1,146 @@
+/**
+ * This file is part of lavagna.
+ *
+ * lavagna is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * lavagna is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package io.lavagna.service;
+
+import java.util.Date;
+import java.util.List;
+
+import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Board;
+import io.lavagna.model.BoardColumn;
+import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.Card;
+import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.LabelListValue;
+import io.lavagna.model.ListValueMetadata;
+import io.lavagna.model.Project;
+import io.lavagna.model.User;
+import io.lavagna.query.ListValueMetadataQuery;
+import io.lavagna.service.config.TestServiceConfig;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
+@Transactional
+public class ListValueMetadataRepositoryTest {
+	
+	@Autowired
+	private BoardRepository boardRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private BoardColumnRepository boardColumnRepository;
+
+	@Autowired
+	private CardService cardService;
+
+	@Autowired
+	private ProjectService projectService;
+
+	@Autowired
+	private CardLabelRepository cardLabelRepository;
+	
+	@Autowired
+	private ListValueMetadataQuery listValueMetadataQuery;
+	
+	private Project project;
+
+	private Board board;
+
+	private BoardColumn column;
+
+	private User user;
+
+	private Card card;
+	
+	@Before
+	public void setUpBoard() {
+		Helper.createUser(userRepository, "test", "label");
+		user = userRepository.findUserByName("test", "label");
+		project = projectService.create("test", "TEST", "desc");
+		board = boardRepository.createNewBoard("test-label", "LABEL", "label", projectService.findByShortName("TEST")
+				.getId());
+		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
+		column = boardColumnRepository.addColumnToBoard("label-column", definitions.get(0).getId(),
+				BoardColumn.BoardColumnLocation.BOARD, board.getId());
+		card = cardService.createCard("card", column.getId(), new Date(), user);
+	}
+	
+	private LabelListValue createLabelListValue() {
+		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
+				CardLabel.LabelDomain.USER, "listlabel", 0);
+		Assert.assertEquals(0, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
+		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
+		cardLabelRepository.addLabelValueToCard(label, card.getId(), new CardLabelValue.LabelValue(null, null, null,
+				null, null, llv.getId()));
+		return llv;
+	}
+	
+	@Test
+	public void listValueMetadataLifecycleTest() {
+		
+		LabelListValue llv = createLabelListValue();
+
+		
+		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+		
+		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
+		Assert.assertFalse(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+		ListValueMetadata lvm = listValueMetadataQuery.findByLabelListValueId(llv.getId()).get(0);
+		Assert.assertEquals("KEY", lvm.getKey());
+		Assert.assertEquals("VALUE", lvm.getValue());
+		Assert.assertEquals(lvm, listValueMetadataQuery.findById(lvm.getId()));
+		
+		listValueMetadataQuery.update(lvm.getId(), lvm.getLabelListValueId(), lvm.getKey(), "VALUE2");
+		
+		ListValueMetadata lvm2 = listValueMetadataQuery.findById(lvm.getId());
+		Assert.assertEquals("VALUE2", lvm2.getValue());
+		
+		listValueMetadataQuery.delete(lvm.getId());
+		
+		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+		
+	}
+	
+	@Test
+	public void deleteAllWithLabelIdTest() {
+		
+		LabelListValue llv = createLabelListValue();
+		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+		
+		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
+		listValueMetadataQuery.insert(llv.getId(), "KEY2", "VALUE");
+		
+		Assert.assertEquals(2, listValueMetadataQuery.findByLabelListValueId(llv.getId()).size());
+		
+		listValueMetadataQuery.deleteAllWithLabelListValueId(llv.getId());
+		
+		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
+	}
+
+}

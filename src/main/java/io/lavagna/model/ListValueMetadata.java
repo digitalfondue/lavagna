@@ -16,29 +16,26 @@
  */
 package io.lavagna.model;
 
+import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 @EqualsAndHashCode
-public class LabelListValue {
+public class ListValueMetadata {
 
 	private final int id;
-	private final int cardLabelId;
-	private final int order;
+	private final int labelListValueId;
+	private final String key;
 	private final String value;
-
-	public LabelListValue(@Column("CARD_LABEL_LIST_VALUE_ID") int id, @Column("CARD_LABEL_ID_FK") int cardLabelId,
-			@Column("CARD_LABEL_LIST_VALUE_ORDER") int order, @Column("CARD_LABEL_LIST_VALUE") String value) {
+	
+	
+	public ListValueMetadata(@Column("LVM_ID") int id, @Column("LVM_LABEL_LIST_VALUE_ID_FK") int labelListValueId, 
+			@Column("LVM_KEY") String key, @Column("LVM_VALUE") String value) {
 		this.id = id;
-		this.cardLabelId = cardLabelId;
-		this.order = order;
+		this.labelListValueId = labelListValueId;
+		this.key = key;
 		this.value = value;
 	}
-
-
-	public LabelListValue newValue(String newValue) {
-		return new LabelListValue(id, cardLabelId, order, newValue);
-	}
+	
 }
