@@ -114,14 +114,14 @@ public class ListValueMetadataRepositoryTest {
 		ListValueMetadata lvm = listValueMetadataQuery.findByLabelListValueId(llv.getId()).get(0);
 		Assert.assertEquals("KEY", lvm.getKey());
 		Assert.assertEquals("VALUE", lvm.getValue());
-		Assert.assertEquals(lvm, listValueMetadataQuery.findById(lvm.getId()));
+		Assert.assertEquals(lvm, listValueMetadataQuery.findByLabelListValueIdAndKey(lvm.getLabelListValueId(), lvm.getKey()));
 		
-		listValueMetadataQuery.update(lvm.getId(), lvm.getLabelListValueId(), lvm.getKey(), "VALUE2");
+		listValueMetadataQuery.update(lvm.getLabelListValueId(), lvm.getKey(), "VALUE2");
 		
-		ListValueMetadata lvm2 = listValueMetadataQuery.findById(lvm.getId());
+		ListValueMetadata lvm2 = listValueMetadataQuery.findByLabelListValueIdAndKey(lvm.getLabelListValueId(), lvm.getKey());
 		Assert.assertEquals("VALUE2", lvm2.getValue());
 		
-		listValueMetadataQuery.delete(lvm.getId());
+		listValueMetadataQuery.delete(lvm.getLabelListValueId(), lvm.getKey());
 		
 		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
 		

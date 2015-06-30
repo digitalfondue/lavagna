@@ -24,15 +24,13 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class ListValueMetadata {
 
-	private final int id;
 	private final int labelListValueId;
 	private final String key;
 	private final String value;
 	
 	
-	public ListValueMetadata(@Column("LVM_ID") int id, @Column("LVM_LABEL_LIST_VALUE_ID_FK") int labelListValueId, 
+	public ListValueMetadata(@Column("LVM_LABEL_LIST_VALUE_ID_FK") int labelListValueId, 
 			@Column("LVM_KEY") String key, @Column("LVM_VALUE") String value) {
-		this.id = id;
 		this.labelListValueId = labelListValueId;
 		this.key = key;
 		this.value = value;
