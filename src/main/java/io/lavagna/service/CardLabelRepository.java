@@ -25,8 +25,10 @@ import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.ListValueMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.CardLabelQuery;
+import io.lavagna.query.ListValueMetadataQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,11 +53,13 @@ public class CardLabelRepository {
 
 	private final NamedParameterJdbcTemplate jdbc;
 	private final CardLabelQuery queries;
+	private final ListValueMetadataQuery listValuesMetadataQueries;
 
 	@Autowired
-	public CardLabelRepository(NamedParameterJdbcTemplate jdbc, CardLabelQuery queries) {
+	public CardLabelRepository(NamedParameterJdbcTemplate jdbc, CardLabelQuery queries, ListValueMetadataQuery listValuesMetadataQueries) {
 		this.jdbc = jdbc;
 		this.queries = queries;
+		this.listValuesMetadataQueries = listValuesMetadataQueries;
 	}
 
 	@Transactional(readOnly = false)
@@ -268,5 +272,27 @@ public class CardLabelRepository {
 	public int labelUsedCount(int labelId) {
 		return queries.labelUsedCount(labelId);
 	}
+	
+	// ---
+	
+	public List<ListValueMetadata> findListValueMetadataByLabelListValueId(int labelListValueId) {
+		return listValuesMetadataQueries.findByLabelListValueId(labelListValueId);
+	}
+	
+	@Transactional(readOnly = false)
+	public void updateLabelListMetadata(ListValueMetadata metadata) {
+		listValuesMetadataQueries.update(metadata.getLabelListValueId(), metadata.getKey(), metadata.getValue());
+	}
+	
+	@Transactional(readOnly = false)
+	public void createLabelListMetadata(int labelListValueId, String key, String value) {
+		listValuesMetadataQueries.insert(labelListValueId, key, value);
+	}
+	
+	@Transactional(readOnly = false)
+	public void deleteLabelListMetadata(int labelListValueId, String key) {
+		listValuesMetadataQueries.delete(labelListValueId, key);
+	}
+	
 
 }
