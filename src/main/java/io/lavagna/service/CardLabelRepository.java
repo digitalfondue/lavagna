@@ -290,7 +290,7 @@ public class CardLabelRepository {
 	}
 	
 	@Transactional(readOnly = false)
-	public void deleteLabelListMetadata(int labelListValueId, String key) {
+	public void removeLabelListMetadata(int labelListValueId, String key) {
 		listValuesMetadataQueries.delete(labelListValueId, key);
 	}
 	

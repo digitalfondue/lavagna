@@ -21,6 +21,7 @@ import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.ListValueMetadata;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.service.CardLabelRepository;
@@ -126,7 +127,7 @@ public class CardLabelController {
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}/label-list-values", method = RequestMethod.POST)
-	public void addLabelListValue(@PathVariable("labelId") int labelId, @RequestBody ListValue labelListValue) {
+	public void addLabelListValue(@PathVariable("labelId") int labelId, @RequestBody Value labelListValue) {
 
 		cardLabelRepository.addLabelListValue(labelId, labelListValue.value);
 
@@ -178,10 +179,56 @@ public class CardLabelController {
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
+	
+	
+	// metadata
+	@ExpectPermission(Permission.READ)
+	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata", method = RequestMethod.GET)
+	public List<ListValueMetadata> findLabelListValueMetadata(@PathVariable("labelListValueId") int labelListValueId) {
+		return cardLabelRepository.findListValueMetadataByLabelListValueId(labelListValueId);
+	}
+	
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}/create", method = RequestMethod.POST)
+	public void createListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
+		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
+		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
+		Project project = projectService.findById(cl.getProjectId());
+		
+		cardLabelRepository.createLabelListMetadata(labelListValueId, key, value.getValue());
+		
+		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+	}
+	
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}", method = RequestMethod.POST)
+	public void updateListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
+		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
+		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
+		Project project = projectService.findById(cl.getProjectId());
+		
+		cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(labelListValueId, key, value.getValue()));
+		
+		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+	}
+	
+	
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}", method = RequestMethod.DELETE)
+	public void removeLabelListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key) {
+		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
+		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
+		Project project = projectService.findById(cl.getProjectId());
+		
+		cardLabelRepository.removeLabelListMetadata(labelListValueId, key);
+		
+		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+	}
+	//
 
 	@Getter
 	@Setter
-	public static class ListValue {
+	public static class Value {
 		private String value;
 	}
 

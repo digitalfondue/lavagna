@@ -173,7 +173,7 @@ public class CardLabelControllerTest {
 		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
 
-		cardLabelController.addLabelListValue(labelId, new CardLabelController.ListValue());
+		cardLabelController.addLabelListValue(labelId, new CardLabelController.Value());
 	}
 
 	@Test
