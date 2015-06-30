@@ -4,7 +4,7 @@ Comments are sorted in ascending order.
 
 #### Add a new comment
 
-To add a new comment, select the **Comments** tab, enter the text in the form, and press **Add**.  (requires CREATE_CARD_COMMENT permission)
+To add a new comment, select the **Comments** tab, enter the text in the form, and press **Add**.
 
 Similar to the description, comments can be written using markdown syntax, and the result can be verified at any time by clicking **Preview**.
 
@@ -20,7 +20,7 @@ The <i class="fa fa-link"></i> can be used to retrieve the link to a single comm
 
 #### Update a comment
 
-To update a comment, click on <i class="fa fa-pencil"></i> to toggle the edit panel. Updating a comment made by the same user does not require any additional permission. (modifying all comments requires UPDATE_CARD_COMMENT permission).
+To update a comment, click on <i class="fa fa-pencil"></i> to toggle the edit panel. Updating a comment made by the same user does not require any additional permission.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_card_comment-update.png" alt="Update comment">
 
@@ -30,7 +30,7 @@ Once the comment is updated, the previous version isn't lost. The application ke
 
 #### Delete a comment
 
-To delete a comment, click on <i class="fa fa-trash-o"></i>. A confirmation panel will appear as an additional failsafe. Deleting a comment made by the same user does not require any additional permission. (deleting all comments requires DELETE_CARD_COMMENT permission).
+To delete a comment, click on <i class="fa fa-trash-o"></i>. A confirmation panel will appear as an additional failsafe. Deleting a comment made by the same user does not require any additional permission.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_card_comment-delete.png" alt="Delete comment">
 
