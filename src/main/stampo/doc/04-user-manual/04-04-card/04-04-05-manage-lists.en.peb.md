@@ -1,6 +1,6 @@
 ### Manage lists
 
-Action List can be used to keep track of subtasks. Create, Update, and Delete action lists only requires the MANAGE_ACTION_LIST permission.
+Action List can be used to keep track of sub tasks.
 #### Create a new action list
 
 First, use the form on the right column to create a new action list
