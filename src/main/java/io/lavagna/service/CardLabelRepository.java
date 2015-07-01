@@ -25,6 +25,7 @@ import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.ListValueMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.CardLabelQuery;
@@ -33,7 +34,9 @@ import io.lavagna.query.ListValueMetadataQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -230,16 +233,19 @@ public class CardLabelRepository {
 		queries.updateLabelListValue(lvl.getId(), lvl.getValue());
 	}
 
-	public List<LabelListValue> findListValuesByLabelId(int labelId) {
-		return queries.findListValuesByLabelId(labelId);
+	public List<LabelListValueWithMetadata> findListValuesByLabelId(int labelId) {
+		List<LabelListValue> res = queries.findListValuesByLabelId(labelId);
+		return addMetadata(res);
 	}
 
-	public List<LabelListValue> findListValuesByLabelIdAndValue(int labelId, String value) {
-		return queries.findListValuesByLabelIdAndValue(labelId, value);
+	public List<LabelListValueWithMetadata> findListValuesByLabelIdAndValue(int labelId, String value) {
+		List<LabelListValue> res = queries.findListValuesByLabelIdAndValue(labelId, value);
+		return addMetadata(res);
 	}
 
-	public LabelListValue findListValueById(int labelListValueId) {
-		return queries.findListValueById(labelListValueId);
+	public LabelListValueWithMetadata findListValueById(int labelListValueId) {
+		LabelListValue res = queries.findListValueById(labelListValueId);
+		return addMetadata(Collections.singletonList(res)).get(0);
 	}
 
 	@Transactional(readOnly = false)
@@ -274,6 +280,32 @@ public class CardLabelRepository {
 	}
 	
 	// ---
+	
+	private List<LabelListValueWithMetadata> addMetadata(List<LabelListValue> in) {
+		
+		Set<Integer> ids = new HashSet<>(in.size());
+		for (LabelListValue llv : in) {
+			ids.add(llv.getId());
+		}
+		
+		Map<Integer, Map<String, String>> grouped = new HashMap<>();
+		for(ListValueMetadata lvm : ids.isEmpty() ? Collections.<ListValueMetadata>emptyList() : listValuesMetadataQueries.findByLabelListValueIds(ids)) {
+			if(!grouped.containsKey(lvm.getLabelListValueId())) {
+				grouped.put(lvm.getLabelListValueId(), new HashMap<String, String>());
+			}
+			grouped.get(lvm.getLabelListValueId()).put(lvm.getKey(), lvm.getValue());
+		}
+		
+		List<LabelListValueWithMetadata> out = new ArrayList<>(in.size());
+		
+		for(LabelListValue llv : in) {
+			out.add(new LabelListValueWithMetadata(llv, grouped.get(llv.getId())));
+		}
+		
+		
+		
+		return out;
+	}
 	
 	public List<ListValueMetadata> findListValueMetadataByLabelListValueId(int labelListValueId) {
 		return listValuesMetadataQueries.findByLabelListValueId(labelListValueId);

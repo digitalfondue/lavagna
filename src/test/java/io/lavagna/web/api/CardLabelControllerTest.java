@@ -17,6 +17,9 @@
 package io.lavagna.web.api;
 
 import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFull;
@@ -26,6 +29,7 @@ import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.service.BoardColumnRepository;
@@ -145,8 +149,8 @@ public class CardLabelControllerTest {
 	public void swapLabelListValuesTest() {
 		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
-		when(cardLabelRepository.findListValueById(1)).thenReturn(new LabelListValue(1, 0, 0, "value1"));
-		when(cardLabelRepository.findListValueById(2)).thenReturn(new LabelListValue(2, 0, 0, "value2"));
+		when(cardLabelRepository.findListValueById(1)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(1, 0, 0, "value1"), new HashMap<String, String>()));
+		when(cardLabelRepository.findListValueById(2)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(2, 0, 0, "value2"), new HashMap<String, String>()));
 
 		CardLabelController.SwapListValue v = new CardLabelController.SwapListValue();
 		v.setFirst(1);
@@ -158,9 +162,8 @@ public class CardLabelControllerTest {
 	public void swapWrongLabelListValuesTest() {
 		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
-		when(cardLabelRepository.findListValueById(1)).thenReturn(new LabelListValue(1, 0, 0, "value1"));
-		when(cardLabelRepository.findListValueById(2)).thenReturn(
-				new LabelListValue(2, 1, 0, "value2-of-another-label"));
+		when(cardLabelRepository.findListValueById(1)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(1, 0, 0, "value1"), new HashMap<String, String>()));
+		when(cardLabelRepository.findListValueById(2)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(2, 1, 0, "value2-of-another-label"), new HashMap<String, String>()));
 
 		CardLabelController.SwapListValue v = new CardLabelController.SwapListValue();
 		v.setFirst(1);
@@ -178,7 +181,7 @@ public class CardLabelControllerTest {
 
 	@Test
 	public void removeLabelListValueTest() {
-		LabelListValue llv = Mockito.mock(LabelListValue.class);
+		LabelListValueWithMetadata llv = Mockito.mock(LabelListValueWithMetadata.class);
 		when(cardLabelRepository.findListValueById(0)).thenReturn(llv);
 		when(cardLabelRepository.findLabelById(llv.getCardLabelId())).thenReturn(cardLabel);
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);

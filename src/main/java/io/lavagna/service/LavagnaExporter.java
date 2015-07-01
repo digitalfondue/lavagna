@@ -26,7 +26,7 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
 import io.lavagna.model.EventFull;
-import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Pair;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
@@ -194,7 +194,7 @@ class LavagnaExporter {
 		writeEntry(projectNameDir + "/permissions.json",
 				permissionService.findAllRolesAndRelatedPermissionWithUsersInProjectId(p.getId()), zf, osw);
 
-		List<Pair<CardLabel, List<LabelListValue>>> labels = new ArrayList<>();
+		List<Pair<CardLabel, List<LabelListValueWithMetadata>>> labels = new ArrayList<>();
 		for (CardLabel cl : cardLabelRepository.findLabelsByProject(p.getId())) {
 			labels.add(Pair.of(cl, cardLabelRepository.findListValuesByLabelId(cl.getId())));
 		}

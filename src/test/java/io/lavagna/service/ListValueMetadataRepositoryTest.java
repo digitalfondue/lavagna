@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import io.lavagna.model.User;
 import io.lavagna.query.ListValueMetadataQuery;
 import io.lavagna.service.config.TestServiceConfig;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,20 +93,27 @@ public class ListValueMetadataRepositoryTest {
 		card = cardService.createCard("card", column.getId(), new Date(), user);
 	}
 	
-	private LabelListValue createLabelListValue() {
+	private Pair<LabelListValue, LabelListValue> createLabelListValue() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
 		Assert.assertEquals(0, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
 		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
 		cardLabelRepository.addLabelValueToCard(label, card.getId(), new CardLabelValue.LabelValue(null, null, null,
 				null, null, llv.getId()));
-		return llv;
+		
+		
+		LabelListValue llv2 = cardLabelRepository.addLabelListValue(label.getId(), "2");
+		cardLabelRepository.addLabelValueToCard(label, card.getId(), new CardLabelValue.LabelValue(null, null, null,
+				null, null, llv2.getId()));
+		
+		
+		return Pair.of(llv, llv2);
 	}
 	
 	@Test
 	public void listValueMetadataLifecycleTest() {
 		
-		LabelListValue llv = createLabelListValue();
+		LabelListValue llv = createLabelListValue().getLeft();
 
 		
 		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
@@ -130,7 +139,7 @@ public class ListValueMetadataRepositoryTest {
 	@Test
 	public void deleteAllWithLabelIdTest() {
 		
-		LabelListValue llv = createLabelListValue();
+		LabelListValue llv = createLabelListValue().getLeft();
 		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
 		
 		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
@@ -144,8 +153,26 @@ public class ListValueMetadataRepositoryTest {
 	}
 	
 	@Test
+	public void findAll() {
+		
+		Pair<LabelListValue, LabelListValue> llvp = createLabelListValue();
+		
+		List<Integer> labelListValueIds = Arrays.asList(llvp.getLeft().getId(), llvp.getRight().getId());
+		
+		Assert.assertEquals(0, listValueMetadataQuery.findByLabelListValueIds(labelListValueIds).size());
+		
+		listValueMetadataQuery.insert(llvp.getLeft().getId(), "KEY", "VALUE");
+		
+		Assert.assertEquals(1, listValueMetadataQuery.findByLabelListValueIds(labelListValueIds).size());
+		
+		listValueMetadataQuery.insert(llvp.getRight().getId(), "KEY", "VALUE");
+		
+		Assert.assertEquals(2, listValueMetadataQuery.findByLabelListValueIds(labelListValueIds).size());
+	}
+	
+	@Test
 	public void testDeleteCascade() {
-		LabelListValue llv = createLabelListValue();
+		LabelListValue llv = createLabelListValue().getLeft();
 		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
 		listValueMetadataQuery.insert(llv.getId(), "KEY2", "VALUE");
 		

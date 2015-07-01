@@ -16,19 +16,16 @@
  */
 package io.lavagna.service.importexport;
 
-import java.util.Date;
-import java.util.List;
-
 import io.lavagna.model.Board;
 import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.Event;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.LabelListValue;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
+import io.lavagna.model.EventFull;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.CardLabelRepository;
@@ -36,6 +33,9 @@ import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.LabelService;
 import io.lavagna.service.UserRepository;
+
+import java.util.Date;
+import java.util.List;
 
 abstract class AbstractProcessLabelEvent extends AbstractProcessEvent {
 
@@ -70,7 +70,7 @@ abstract class AbstractProcessLabelEvent extends AbstractProcessEvent {
 	protected LabelValue labelValue(CardLabel cl, EventFull e) {
 		Event event = e.getEvent();
 		if (cl.getType() == LabelType.LIST) {
-			List<LabelListValue> res = cardLabelRepository.findListValuesByLabelIdAndValue(cl.getId(), e.getEvent()
+			List<LabelListValueWithMetadata> res = cardLabelRepository.findListValuesByLabelIdAndValue(cl.getId(), e.getEvent()
 					.getValueString());
 			return (res.size() == 1) ? new LabelValue(null, null, null, null, null, res.get(0).getId()) : null;
 		} else if (cl.getType() == LabelType.USER) {

@@ -26,7 +26,7 @@ import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectAndBoard;
@@ -202,7 +202,7 @@ public class CardControllerTest {
 		counts.add(count);
 		when(statisticsService.findCardsCountByMilestone(1)).thenReturn(counts);
 
-		List<LabelListValue> listValues = new ArrayList<>();
+		List<LabelListValueWithMetadata> listValues = new ArrayList<>();
 		when(cardLabelRepository.findListValuesByLabelId(1)).thenReturn(listValues);
 
 		Milestones cardsByMilestone = cardController.findCardsByMilestone("TEST");

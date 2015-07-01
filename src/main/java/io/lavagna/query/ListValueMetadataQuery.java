@@ -16,12 +16,13 @@
  */
 package io.lavagna.query;
 
-import java.util.List;
-
 import io.lavagna.common.Bind;
 import io.lavagna.common.Query;
 import io.lavagna.common.QueryRepository;
 import io.lavagna.model.ListValueMetadata;
+
+import java.util.Collection;
+import java.util.List;
 
 @QueryRepository
 public interface ListValueMetadataQuery {
@@ -41,6 +42,9 @@ public interface ListValueMetadataQuery {
 
 	@Query("SELECT * FROM LA_LIST_VALUE_METADATA WHERE LVM_LABEL_LIST_VALUE_ID_FK = :labelListValueId")
 	List<ListValueMetadata> findByLabelListValueId(@Bind("labelListValueId") int labelListValueId);
+	
+	@Query("SELECT * FROM LA_LIST_VALUE_METADATA WHERE LVM_LABEL_LIST_VALUE_ID_FK IN (:labelListValueIds)")
+	List<ListValueMetadata> findByLabelListValueIds(@Bind("labelListValueIds") Collection<Integer> labelListValueId);
 	
 	@Query("SELECT * FROM LA_LIST_VALUE_METADATA WHERE LVM_LABEL_LIST_VALUE_ID_FK = :labelListValueId AND LVM_KEY = :key")
 	ListValueMetadata findByLabelListValueIdAndKey(@Bind("labelListValueId") int labelListValueId, @Bind("key") String key);

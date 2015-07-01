@@ -25,6 +25,7 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
@@ -233,7 +234,7 @@ public class CardLabelRepositoryTest {
 
 		LabelListValue v1 = cardLabelRepository.addLabelListValue(label.getId(), "1");
 		LabelListValue v2 = cardLabelRepository.addLabelListValue(label.getId(), "2");
-		List<LabelListValue> values = cardLabelRepository.findListValuesByLabelId(label.getId());
+		List<LabelListValueWithMetadata> values = cardLabelRepository.findListValuesByLabelId(label.getId());
 		Assert.assertEquals(1, values.get(0).getOrder());
 		Assert.assertEquals("1", values.get(0).getValue());
 		Assert.assertEquals(2, values.get(1).getOrder());

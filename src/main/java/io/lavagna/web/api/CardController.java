@@ -31,6 +31,7 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Pair;
 import io.lavagna.model.Permission;
@@ -66,6 +67,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +136,7 @@ public class CardController {
 
 	private void getMilestones(int projectId, Map<Integer, Integer> milestoneToIndex, List<MilestoneInfo> milestones) {
 		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
-		List<LabelListValue> listValues = cardLabelRepository.findListValuesByLabelId(label.getId());
+		List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelId(label.getId());
 		int foundUnassignedIndex = -1;
 		int mIndex = 0;
 		for (LabelListValue milestone : listValues) {
@@ -161,7 +163,7 @@ public class CardController {
 
 		int projectId = projectService.findByShortName(projectShortName).getId();
 		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
-		List<LabelListValue> listValues = cardLabelRepository.findListValuesByLabelIdAndValue(label.getId(), milestone);
+		List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelIdAndValue(label.getId(), milestone);
 
 		SearchFilter filter;
 		Map<Long, Pair<Long, Long>> assignedAndClosedCards;

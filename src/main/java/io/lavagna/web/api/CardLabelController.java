@@ -21,6 +21,7 @@ import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.ListValueMetadata;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
@@ -121,7 +122,7 @@ public class CardLabelController {
 
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/label/{labelId}/label-list-values", method = RequestMethod.GET)
-	public List<LabelListValue> findLabelListValues(@PathVariable("labelId") int labelId) {
+	public List<LabelListValueWithMetadata> findLabelListValues(@PathVariable("labelId") int labelId) {
 		return cardLabelRepository.findListValuesByLabelId(labelId);
 	}
 
