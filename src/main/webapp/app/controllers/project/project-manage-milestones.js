@@ -51,5 +51,14 @@
 		$scope.swapLabelListValues = function (first, second) {
 			Label.swapLabelListValues($scope.milestoneLabel.id, {first: first, second: second});
 		};
+		
+		$scope.closeMilestone = function(val) {
+			Label.createLabelListValueMetadata(val.id, 'status', 'CLOSE');
+		};
+		
+		$scope.openMilestone = function(val) {
+			Label.removeLabelListValueMetadata(val.id, 'status');
+		};
+		
 	});
 })();

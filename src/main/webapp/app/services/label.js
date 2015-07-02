@@ -61,6 +61,20 @@
 				return $http.post('api/label/' + labelId + '/label-list-values/swap', swapListValue).then(extractData);
 			},
 			
+			//
+			createLabelListValueMetadata : function(labelListValueId, key, value) {
+				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key + '/create', {value : value}).then(extractData);
+			},
+			
+			updateLabelListValueMetadata : function(labelListValueId, key, value) {
+				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key, {value : value}).then(extractData);
+			},
+			
+			removeLabelListValueMetadata : function(labelListValueId, key) {
+				return $http['delete']('api/label-list-values/' + labelListValueId + '/metadata/' + key).then(extractData);
+			},
+			//
+			
 			extractValue : function(label, value) {
 				if(label.type === 'STRING') {
 					return this.stringVal(value.trim());

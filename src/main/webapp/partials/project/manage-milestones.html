@@ -22,7 +22,7 @@
 			<div class="lavagna-panel">
 					<table class="table lvg-table" data-ng-init="milestoneDeleteStatus = {}">
 						<tr data-ng-repeat="(nValue,lValue) in milestoneValues">
-							<td class="vcenter"><span data-ng-hide="lValue.edit">{{lValue.value}}</span><span data-ng-show="lValue.edit"><input data-ng-model="lValue.value"> <button class="lvg-button lvg-button-default" data-ng-click="update(lValue)"><i class="fa fa-check"></i></button></span></td>
+							<td class="vcenter"><span data-ng-hide="lValue.edit" data-ng-class="{strike : lValue.metadata.status === 'CLOSE'}">{{lValue.value}}</span><span data-ng-show="lValue.edit"><input data-ng-model="lValue.value"> <button class="lvg-button lvg-button-default" data-ng-click="update(lValue)"><i class="fa fa-check"></i></button></span></td>
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
 								<button class="lvg-button lvg-button-default" data-ng-click="lValue.edit = !lValue.edit">
 									<i class="fa fa-pencil-square-o" data-ng-hide="lValue.edit"></i>
@@ -34,6 +34,17 @@
 										data-ng-disabled="milestoneValues.length < 2 || nValue == 0"
 										data-ng-click="swapLabelListValues(lValue.id, milestoneValues[nValue - 1].id)">
 									<i class="fa fa-arrow-up"></i>
+								</button>
+							</td>
+							<td class="lavagna-icon-column">
+								<button class="lvg-button lvg-button-default" data-ng-hide="lValue.metadata.status === 'CLOSE'"
+										data-ng-click="closeMilestone(lValue)">
+									<i class="fa fa-folder-o"></i>
+								</button>
+								
+								<button class="lvg-button lvg-button-default" data-ng-show="lValue.metadata.status === 'CLOSE'"
+										data-ng-click="openMilestone(lValue)">
+									<i class="fa fa-folder-open-o"></i>
 								</button>
 							</td>
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
