@@ -9,6 +9,7 @@
 		var loadListValue = function (labelId, listValueId, scope) {
 			LabelCache.findLabelListValue(labelId, listValueId).then(function (listValue) {
 				scope.displayValue = listValue.value;
+				scope.metadata = listValue.metadata;
 			});
 		};
 
@@ -18,11 +19,11 @@
 				value: '='
 			},
 			template: '<span data-bindonce="type" data-bindonce="readOnly">'
-				+ '<span data-bo-if="!readOnly && type === \'USER\'"><span data-lvg-user="displayValue"></span></span>'
-				+ '<span data-bo-if="readOnly && type === \'USER\'"><span data-lvg-user="displayValue" data-read-only></span></span>'
-				+ '<span data-bo-if="!readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue"></span></span>'
-				+ '<span data-bo-if="readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
-				+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue"></span></span>',
+				+ '<span data-bo-if="!readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSE\'}"><span data-lvg-user="displayValue"></span></span>'
+				+ '<span data-bo-if="readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSE\'}"><span data-lvg-user="displayValue" data-read-only></span></span>'
+				+ '<span data-bo-if="!readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSE\'}"><span data-no-name data-lvg-card="displayValue"></span></span>'
+				+ '<span data-bo-if="readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSE\'}"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
+				+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue" bo-class="{\'strike\' : metadata.status === \'CLOSE\'}"></span></span>',
 			link: function ($scope, $element, $attrs) {
 
 				if ($scope.value === undefined || $scope.value === null) {
