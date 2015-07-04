@@ -199,6 +199,7 @@ public class CardLabelController {
 		cardLabelRepository.createLabelListMetadata(labelListValueId, key, value.getValue());
 		
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
 	
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
@@ -211,6 +212,7 @@ public class CardLabelController {
 		cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(labelListValueId, key, value.getValue()));
 		
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
 	
 	
@@ -224,6 +226,7 @@ public class CardLabelController {
 		cardLabelRepository.removeLabelListMetadata(labelListValueId, key);
 		
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
 	//
 

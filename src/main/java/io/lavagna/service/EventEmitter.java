@@ -368,6 +368,11 @@ public class EventEmitter {
 		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label",
 				event(LavagnaEvent.DELETE_LABEL, labelId));
 	}
+	
+
+	public void emitUpdateLabeListValueId(int labelListValueId) {
+		messagingTemplate.convertAndSend("/event/label-list-values/" + labelListValueId, event(LavagnaEvent.UPDATE_LABEL_LIST_VALUE, labelListValueId));
+	}
 
 	// user profile update
 	public void emitUpdateUserProfile(int userId) {
@@ -396,7 +401,7 @@ public class EventEmitter {
 		//
 		ADD_LABEL_VALUE_TO_CARD, UPDATE_LABEL_VALUE, REMOVE_LABEL_VALUE, UNDO_REMOVE_LABEL_VALUE, ADD_LABEL, UPDATE_LABEL, DELETE_LABEL,
 		//
-		UPDATE_USER;
+		UPDATE_USER, UPDATE_LABEL_LIST_VALUE;
 	}
 
 	// ------------
@@ -415,4 +420,5 @@ public class EventEmitter {
 		private final int boards;
 		private final String boardName;
 	}
+
 }

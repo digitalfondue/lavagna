@@ -5,7 +5,7 @@
 	var directives = angular.module('lavagna.directives');
 
 	//FIXME this directive is hacky
-	directives.directive('lvgBoardCardMenu', function ($rootScope, $compile, $filter, Card, Board) {
+	directives.directive('lvgBoardCardMenu', function ($compile, $filter, Card, Board) {
 		return {
 			restrict: 'A',
 			link: function($scope, element, attrs) {
