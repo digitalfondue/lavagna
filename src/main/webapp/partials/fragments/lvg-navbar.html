@@ -91,4 +91,10 @@
 			<li menu-item="account"><a href="#/me/" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
 		</df-tab-menu>
 	</div>
+	<div data-ng-switch-when="about" class="menu-frame">
+		<df-tab-menu menu-control="{{navigationState}}">
+			<li menu-item="about"><a data-ng-href="#/about/"><span data-translate>partials.about.license</span></a></li>
+			<li menu-item="about-third-party"><a data-ng-href="#/about/third-party/"><span data-translate>partials.about.third-party</span></a></li>
+		</df-tab-menu>
+	</div>
 </div>

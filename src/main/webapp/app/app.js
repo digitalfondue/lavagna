@@ -107,7 +107,12 @@
 		.state('about', {
 			url:'/about/',
 			templateUrl: 'partials/about.html',
-			controller: 'AboutCtrl'
+			controller: 'AboutLicenseCtrl'
+		})
+		.state('about-third-party', {
+			url:'/about/third-party/',
+			templateUrl: 'partials/about.html',
+			controller: 'AboutThirdPartyCtrl'
 		})
 		//---- ACCOUNT ----
 		.state('account', {
