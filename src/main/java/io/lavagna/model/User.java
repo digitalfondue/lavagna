@@ -16,8 +16,6 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
-
 import java.util.Date;
 
 import lombok.Getter;
@@ -25,6 +23,8 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class User {

@@ -16,11 +16,10 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
-
 import java.util.Date;
 
 import lombok.Getter;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class CardFull extends Card {

@@ -17,7 +17,6 @@
 package io.lavagna.config;
 
 import io.lavagna.common.DatabaseMigrationDoneEvent;
-import io.lavagna.common.QueryFactory;
 import io.lavagna.query.ValidationQuery;
 import io.lavagna.service.DatabaseMigrator;
 
@@ -32,6 +31,9 @@ import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import ch.digitalfondue.npjt.QueryFactory;
 
 public class DataSourceConfig {
 	
@@ -49,9 +51,11 @@ public class DataSourceConfig {
 		} else {
 			urlWithCredentials(dataSource, env);
 		}
+		
+		String validationQuery = new QueryFactory(env.getRequiredProperty("datasource.dialect"), (NamedParameterJdbcTemplate) null)
+			.from(ValidationQuery.class).validation();
 
-		dataSource.setValidationQuery(QueryFactory.from(ValidationQuery.class,
-				env.getRequiredProperty("datasource.dialect")).validation());
+		dataSource.setValidationQuery(validationQuery);
 		dataSource.setTestOnBorrow(true);
 		dataSource.setTestOnConnect(true);
 		dataSource.setTestWhileIdle(true);

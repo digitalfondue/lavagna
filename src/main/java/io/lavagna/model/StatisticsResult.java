@@ -16,7 +16,6 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +23,8 @@ import java.util.Date;
 import lombok.Getter;
 
 import org.apache.commons.lang3.time.DateUtils;
+
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class StatisticsResult {

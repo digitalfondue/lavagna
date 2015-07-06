@@ -53,6 +53,11 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.digitalfondue.npjt-extra</groupId>
+			<artifactId>npjt-extra</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- -->
 		<dependency>
 			<groupId>org.springframework</groupId>

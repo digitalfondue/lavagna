@@ -17,7 +17,7 @@
 package io.lavagna.model;
 
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 /**
  * Identify a user in the Lavagna system

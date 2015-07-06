@@ -22,10 +22,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class CardLabel {

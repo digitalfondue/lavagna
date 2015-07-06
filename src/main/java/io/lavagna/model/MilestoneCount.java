@@ -17,7 +17,7 @@
 package io.lavagna.model;
 
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class MilestoneCount {
@@ -26,9 +26,9 @@ public class MilestoneCount {
 	private final ColumnDefinition columnDefinition;
 	private final long count;
 
-	public MilestoneCount(@ConstructorAnnotationRowMapper.Column("CARD_LABEL_VALUE_LIST_VALUE_FK") Integer milestoneId,
-			@ConstructorAnnotationRowMapper.Column("BOARD_COLUMN_DEFINITION_VALUE") ColumnDefinition columnDefinition,
-			@ConstructorAnnotationRowMapper.Column("MILESTONE_COUNT") long count) {
+	public MilestoneCount(@Column("CARD_LABEL_VALUE_LIST_VALUE_FK") Integer milestoneId,
+			@Column("BOARD_COLUMN_DEFINITION_VALUE") ColumnDefinition columnDefinition,
+			@Column("MILESTONE_COUNT") long count) {
 		this.milestoneId = milestoneId;
 		this.columnDefinition = columnDefinition;
 		this.count = count;

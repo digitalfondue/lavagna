@@ -16,9 +16,9 @@
  */
 package io.lavagna.model;
 
-import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import lombok.Getter;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class BoardColumnInfo {

@@ -16,8 +16,8 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryRepository;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryRepository;
 
 @QueryRepository
 public interface MySqlFullTextSupportQuery {

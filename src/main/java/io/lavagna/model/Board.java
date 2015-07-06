@@ -16,8 +16,8 @@
  */
 package io.lavagna.model;
 
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class Board {

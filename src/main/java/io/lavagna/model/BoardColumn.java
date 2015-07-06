@@ -16,13 +16,14 @@
  */
 package io.lavagna.model;
 
+import io.lavagna.model.Event.EventType;
+
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
-import io.lavagna.model.Event.EventType;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class BoardColumn {

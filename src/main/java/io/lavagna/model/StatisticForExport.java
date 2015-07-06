@@ -16,12 +16,12 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 
 import java.util.Date;
 
 import lombok.Getter;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class StatisticForExport {

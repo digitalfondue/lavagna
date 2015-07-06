@@ -16,9 +16,9 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 @EqualsAndHashCode

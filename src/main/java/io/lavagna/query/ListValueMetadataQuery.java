@@ -16,13 +16,14 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.Bind;
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryRepository;
 import io.lavagna.model.ListValueMetadata;
 
 import java.util.Collection;
 import java.util.List;
+
+import ch.digitalfondue.npjt.Bind;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryRepository;
 
 @QueryRepository
 public interface ListValueMetadataQuery {

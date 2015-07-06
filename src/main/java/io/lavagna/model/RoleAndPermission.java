@@ -19,7 +19,7 @@ package io.lavagna.model;
 import java.util.Objects;
 
 import lombok.Getter;
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class RoleAndPermission {

@@ -16,7 +16,6 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
 import io.lavagna.model.CardLabel.LabelType;
 
 import java.util.Date;
@@ -25,6 +24,8 @@ import lombok.Getter;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
 public class CardLabelValue {

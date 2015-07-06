@@ -16,7 +16,8 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
+
 
 public class CardDataIdAndOrder extends Pair<Integer, Integer> {
 	public CardDataIdAndOrder(@Column("CARD_DATA_ID") int first, @Column("CARD_DATA_ORDER") int second) {

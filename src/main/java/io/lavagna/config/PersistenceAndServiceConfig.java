@@ -16,8 +16,6 @@
  */
 package io.lavagna.config;
 
-import io.lavagna.common.QueryFactory;
-import io.lavagna.common.QueryRepositoryScanner;
 
 import java.sql.SQLException;
 
@@ -48,6 +46,9 @@ import org.springframework.util.ErrorHandler;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
+import ch.digitalfondue.npjt.QueryFactory;
+import ch.digitalfondue.npjt.QueryRepositoryScanner;
 
 /**
  * Datasource configuration.

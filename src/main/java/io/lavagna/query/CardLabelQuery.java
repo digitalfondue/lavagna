@@ -16,12 +16,6 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.Bind;
-import io.lavagna.common.QueriesOverride;
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryOverride;
-import io.lavagna.common.QueryRepository;
-import io.lavagna.common.QueryType;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.LabelAndValue;
@@ -30,6 +24,13 @@ import io.lavagna.model.LabelListValue;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import ch.digitalfondue.npjt.Bind;
+import ch.digitalfondue.npjt.QueriesOverride;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryOverride;
+import ch.digitalfondue.npjt.QueryRepository;
+import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface CardLabelQuery {

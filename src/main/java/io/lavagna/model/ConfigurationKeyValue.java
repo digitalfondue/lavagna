@@ -16,7 +16,8 @@
  */
 package io.lavagna.model;
 
-import io.lavagna.common.ConstructorAnnotationRowMapper.Column;
+import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
+
 
 public class ConfigurationKeyValue extends Pair<Key, String> {
 	public ConfigurationKeyValue(@Column("CONF_KEY") Key first, @Column("CONF_VALUE") String second) {

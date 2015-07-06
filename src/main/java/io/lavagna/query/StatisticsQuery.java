@@ -16,11 +16,6 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.Bind;
-import io.lavagna.common.QueriesOverride;
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryOverride;
-import io.lavagna.common.QueryRepository;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.EventsCount;
 import io.lavagna.model.LabelAndValueWithCount;
@@ -30,6 +25,12 @@ import io.lavagna.model.StatisticsResult;
 
 import java.util.Date;
 import java.util.List;
+
+import ch.digitalfondue.npjt.Bind;
+import ch.digitalfondue.npjt.QueriesOverride;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryOverride;
+import ch.digitalfondue.npjt.QueryRepository;
 
 @QueryRepository
 public interface StatisticsQuery {

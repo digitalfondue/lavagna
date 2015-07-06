@@ -16,18 +16,19 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.Bind;
-import io.lavagna.common.QueriesOverride;
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryOverride;
-import io.lavagna.common.QueryRepository;
-import io.lavagna.common.QueryType;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectWithEventCounts;
 
 import java.util.Collection;
 import java.util.List;
+
+import ch.digitalfondue.npjt.Bind;
+import ch.digitalfondue.npjt.QueriesOverride;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryOverride;
+import ch.digitalfondue.npjt.QueryRepository;
+import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface ProjectQuery {

@@ -16,11 +16,11 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.common.QueriesOverride;
-import io.lavagna.common.Query;
-import io.lavagna.common.QueryOverride;
-import io.lavagna.common.QueryRepository;
-import io.lavagna.common.QueryType;
+import ch.digitalfondue.npjt.QueriesOverride;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryOverride;
+import ch.digitalfondue.npjt.QueryRepository;
+import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface SearchQuery {
