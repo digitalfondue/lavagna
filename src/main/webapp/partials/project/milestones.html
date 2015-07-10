@@ -21,7 +21,7 @@
 							<i class="fa fa-pencil-square-o" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
 							<i class="fa fa-minus" data-ng-show="milestone.edit"></i>
 						</span>
-						<span data-ng-hide="milestone.edit">{{milestone.labelListValue.value}}</span>
+						<span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSE'}"></span>
 						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
 							<input data-ng-model="newName">
 							<span data-ng-click="updateMilestone(milestone, newName)" class="lvg-milestone-clickable">

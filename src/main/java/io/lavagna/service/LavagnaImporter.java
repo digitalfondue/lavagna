@@ -33,6 +33,7 @@ import io.lavagna.model.ConfigurationKeyValue;
 import io.lavagna.model.EventFull;
 import io.lavagna.model.ImportContext;
 import io.lavagna.model.LabelListValue;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Pair;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
@@ -308,11 +309,11 @@ class LavagnaImporter {
 	}
 
 	private void importLabels(Path tempFile, Project createdProject, String projectNameDir) {
-		List<Pair<CardLabel, List<LabelListValue>>> labels = readObject(projectNameDir + "/labels.json", tempFile,
-				new TypeToken<List<Pair<CardLabel, List<LabelListValue>>>>() {
+		List<Pair<CardLabel, List<LabelListValueWithMetadata>>> labels = readObject(projectNameDir + "/labels.json", tempFile,
+				new TypeToken<List<Pair<CardLabel, List<LabelListValueWithMetadata>>>>() {
 				});
 
-		for (Pair<CardLabel, List<LabelListValue>> pLabel : labels) {
+		for (Pair<CardLabel, List<LabelListValueWithMetadata>> pLabel : labels) {
 			CardLabel label = pLabel.getFirst();
 
 			if (label.getDomain() == LabelDomain.USER) {
@@ -324,8 +325,13 @@ class LavagnaImporter {
 			if (label.getType() == LabelType.LIST && !pLabel.getSecond().isEmpty()) {
 				CardLabel importedCl = cardLabelRepository.findLabelByName(createdProject.getId(), label.getName(),
 						label.getDomain());
-				for (LabelListValue llv : pLabel.getSecond()) {
-					cardLabelRepository.addLabelListValue(importedCl.getId(), llv.getValue());
+				for (LabelListValueWithMetadata llv : pLabel.getSecond()) {
+					LabelListValue addedLabeListValue = cardLabelRepository.addLabelListValue(importedCl.getId(), llv.getValue());
+					if(llv.getMetadata() != null) {
+						for(Entry<String, String> metadataKV : llv.getMetadata().entrySet()) {
+							cardLabelRepository.createLabelListMetadata(addedLabeListValue.getId(), metadataKV.getKey(), metadataKV.getValue());
+						}
+					}
 				}
 			}
 		}
