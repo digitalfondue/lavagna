@@ -41,6 +41,10 @@ https://registry.hub.docker.com/u/digitalfondue/lavagna/
 
 ## Develop ##
 
+### Java ###
+
+Lavagna runs on Java 7, but requires Java 8 to build. (due to our documentation library)
+
 ### IDE Configuration ###
 
 Lavagna uses project Lombok annotations, you will need to install the support in your IDE.
@@ -114,24 +118,24 @@ mvn com.mycila:license-maven-plugin:format
 
 ### Documentation ###
 
-The documentation is written in asciidoc (see http://asciidoctor.org/).
-It currently reside in src/main/asciidoc .
+The documentation is written using stampo (see https://github.org/digitalfondue/stampo).
+It currently reside in src/main/stampo .
 
 For building the doc:
 
 ```
-mvn clean asciidoctor:process-asciidoc docbkx:generate-html
+mvn clean stampo:build
 ```
 
-The output will be present in target/docbkx/html
+The output will be present in target/generated-docs
 
-For testing the documentation inside the application, you will need to run
+For testing the documentation run
 
 ```
-mvn jetty:run-war
+mvn stampo:serve
 ```
 
-And go to http://localhost:8080/help/
+And go to http://localhost:45001/
 
 ### Vagrant ###
 
