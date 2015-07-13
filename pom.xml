@@ -1,12 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+	</parent>
+	
 	<groupId>io.lavagna</groupId>
 	<artifactId>lavagna</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-M2-SNAPSHOT</version>
+	<inceptionYear>2014</inceptionYear>
+	
 	<name>lavagna</name>
 	<url>http://lavagna.io</url>
+	
+	<licenses>
+		<license>
+			<name>GNU General Public License Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl.txt</url>
+		</license>
+	</licenses>
 
 	<scm>
 		<connection>scm:git:git@github.com:digitalfondue/lavagna.git</connection>
@@ -14,13 +30,30 @@
 		<url>https://github.com/digitalfondue/lavagna.git</url>
 		<tag>HEAD</tag>
 	</scm>
-
-	<licenses>
-		<license>
-			<name>GNU General Public License Version 3</name>
-			<url>https://www.gnu.org/licenses/gpl.txt</url>
-		</license>
-	</licenses>
+	
+	<developers>
+        <developer>
+            <name>Sylvain Jermini</name>
+            <email>sylvain.jermini@syjer.com</email>
+            <organization>digitalfondue</organization>
+            <organizationUrl>http://digitalfondue.ch</organizationUrl>
+        </developer>
+        
+        <developer>
+            <name>Eros Taborelli</name>
+            <email>eros.taborelli@erost.net</email>
+            <organization>digitalfondue</organization>
+            <organizationUrl>http://digitalfondue.ch</organizationUrl>
+        </developer>
+        
+        
+        <developer>
+            <name>Simone Grignola</name>
+            <email>sito@grignola.ch</email>
+            <organization>digitalfondue</organization>
+            <organizationUrl>http://digitalfondue.ch</organizationUrl>
+        </developer>
+	</developers>
 
 	<prerequisites>
 		<maven>3.0.1</maven>
@@ -664,6 +697,33 @@
 				<datasource.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</datasource.password>
 				<spring.profiles.active>prod</spring.profiles.active>
 			</properties>
+		</profile>
+		
+		<profile>
+			<id>sign-artifacts</id>
+			<activation>
+				<property>
+					<name>sign</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
