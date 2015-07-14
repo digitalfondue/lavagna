@@ -46,7 +46,7 @@
 						</div>
 						<div class="progress progress-success ui-corner-all"
 							 data-ng-show="trelloImportIsRunning">
-							<div class="progress-bar" style="width: {{progress}}%"></div>
+							<div class="progress-bar" data-ng-style="{'width': progress + '%'}"></div>
 						</div>
 					</div>
 					<div data-ng-if="!hasApiKey" data-translate>partials.project.manage-import.noKeySet</div>
