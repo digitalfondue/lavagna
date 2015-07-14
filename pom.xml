@@ -1,21 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>9</version>
 	</parent>
-	
+
 	<groupId>io.lavagna</groupId>
 	<artifactId>lavagna</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-M3-SNAPSHOT</version>
 	<inceptionYear>2014</inceptionYear>
-	
+
 	<name>lavagna</name>
 	<url>http://lavagna.io</url>
-	
+
 	<licenses>
 		<license>
 			<name>GNU General Public License Version 3</name>
@@ -29,7 +29,7 @@
 		<url>https://github.com/digitalfondue/lavagna.git</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<developers>
         <developer>
             <name>Sylvain Jermini</name>
@@ -37,15 +37,15 @@
             <organization>digitalfondue</organization>
             <organizationUrl>http://digitalfondue.ch</organizationUrl>
         </developer>
-        
+
         <developer>
             <name>Eros Taborelli</name>
             <email>eros.taborelli@erost.net</email>
             <organization>digitalfondue</organization>
             <organizationUrl>http://digitalfondue.ch</organizationUrl>
         </developer>
-        
-        
+
+
         <developer>
             <name>Simone Grignola</name>
             <email>sito@grignola.ch</email>
@@ -476,7 +476,7 @@
 							<name>datasource.password</name>
 							<value>${datasource.password}</value>
 						</systemProperty>
-						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value> 
+						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value>
 							</systemProperty> -->
 					</systemProperties>
 				</configuration>
@@ -490,7 +490,7 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -584,6 +584,20 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>prod</id>
+			<properties>
+				<fast-build>false</fast-build>
+				<jetty.port>8080</jetty.port>
+				<jetty.host>0.0.0.0</jetty.host>
+				<datasource.dialect>HSQLDB</datasource.dialect>
+				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
+				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
+				<datasource.username>sa</datasource.username>
+				<datasource.password />
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
 			<id>dev-c9</id>
 			<properties>
 				<fast-build>false</fast-build>
@@ -657,7 +671,7 @@
 				<spring.profiles.active>prod</spring.profiles.active>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>sign-artifacts</id>
 			<activation>
