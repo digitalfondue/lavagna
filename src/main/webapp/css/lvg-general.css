@@ -28,6 +28,18 @@ body {
 	z-index: 500
 }
 
+.text-align-center {
+	text-align: center;
+}
+
+.text-align-left {
+	text-align: left;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
 p {
 	margin: 0 0 10px;
 }

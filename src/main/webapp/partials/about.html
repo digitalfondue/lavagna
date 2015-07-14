@@ -1,11 +1,21 @@
 <lvg-navbar data-navbar-type="about"><span data-translate>partials.about.title</span></lvg-navbar>
 
-<div class="container">
+<div class="container lavagna-container-top-margin">
 	<div id="license">
-		<pre data-ng-bind="license"></pre>
+		<div class="lavagna-panel" data-ng-if="showLicense">
+			<div class="body-full text-align-center">
+				<div class="inline-block">
+					<pre data-ng-bind="license" class="inline-block text-align-left"></pre>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div id="third-party">
-		<pre data-ng-bind="thirdParty"></pre>
+		<div class="lavagna-panel" data-ng-if="!showLicense">
+			<div class="body-full">
+				<pre data-ng-bind="thirdParty"></pre>
+			</div>
+		</div>
 	</div>
 </div>
