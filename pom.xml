@@ -535,46 +535,6 @@
 										<ignore />
 									</action>
 								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.asciidoctor
-										</groupId>
-										<artifactId>
-											asciidoctor-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.5.2,)
-										</versionRange>
-										<goals>
-											<goal>
-												process-asciidoc
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											com.agilejava.docbkx
-										</groupId>
-										<artifactId>
-											docbkx-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.0.16,)
-										</versionRange>
-										<goals>
-											<goal>generate-html</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
