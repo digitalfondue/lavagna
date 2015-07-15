@@ -14,46 +14,46 @@
 	div.container {
 		margin-top: 20px;
 	}
-	
+
 	input[type=checkbox]:invalid {
   		box-shadow: none;
 	}
-	
+
 	.body label {
 		font-weight:normal;
 	}
-	
-	
+
+
 	.container {
 		max-width:800px;
 		margin:auto;
 	}
-	
+
 	ul,li {
 		list-style-type: none;
 	}
-	
+
 	ul {
 		padding-left:10px;
 	}
-	
+
 	.capitalize {
 		text-transform: capitalize;
 	}
-	
+
 	.or {
 		text-align:center;
 		margin-top:20px;
 		margin-bottom:10px;
 	}
-	
+
 	.or hr {
 		border: none;
 		border-top: 1px solid #D0D0D0;
 		margin: 0;
 		padding: 0;
 	}
-	
+
 	.or span {
 		background-color:white;
 		padding: 10px;
@@ -61,15 +61,15 @@
 		top: -12px;
 		font-size: 16px;
 	}
-	
+
 	input[type=file] {
 		display: inline-block;
 	}
-	
+
 	.buttons .lvg-button-submit {
 		float:right;
 	}
-	 
+
 </style>
 
 <script type="text/ng-template" id="first-step.html">
@@ -118,15 +118,16 @@
 							data-ng-required="authMethod == 'LDAP'">
 					</div>
 					<div class="form-group">
-						<label for="ldap-managerDn">Manager DN</label> 
+						<label for="ldap-managerDn">Manager DN</label>
 						<input class="form-control" type="text"
 							id="ldap-managerDn"
-							placeholder="uid=admin,ou=system" 
+							placeholder="uid=admin,ou=system"
 							data-ng-model="ldap.managerDn"
 							data-ng-required="authMethod == 'LDAP'">
 					</div>
 					<div class="form-group">
-						<label for="ldap-managerPassword">Manager Password</label> <input class="form-control"
+						<label for="ldap-managerPassword">Manager Password</label>
+						<input class="form-control" type="password"
 							id="ldap-managerPassword"
 							placeholder="secret"
 							data-ng-model="ldap.managerPassword"
@@ -166,7 +167,7 @@
 					<div class="clearfix"></div>
 					<div>
 						<div data-ng-show="ldapCheckResult">
-							<span data-ng-show="ldapCheckResult.first">Everything seems Ok:</span> 
+							<span data-ng-show="ldapCheckResult.first">Everything seems Ok:</span>
 							<span data-ng-show="!ldapCheckResult.first">An error occured, trace is:</span>
 							<ul>
 								<li data-ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
@@ -274,7 +275,8 @@
 				<div data-ng-if="selectedAuthMethod == 'PERSONA'">
 					Persona parameter:
 					<ul>
-						<li>Persona audience: {{toSave.second[1].second}}
+						<li>Persona audience: {{toSave.second[1].second}}</li>
+					</ul>
 				</div>
 				<div data-ng-if="selectedAuthMethod == 'OAUTH'">
 					Oauth parameters:
@@ -283,15 +285,16 @@
 						<li data-ng-repeat="v in selectedNewOauthConf.providers" style="margin-top:10px;">
 							<div>Provider: {{v.provider}}</div>
 							<div>Api Key: {{v.apiKey}}</div>
-							<div>Api Secret: {{v.apiSecret}}</div> 
+							<div>Api Secret: {{v.apiSecret}}</div>
 						</li>
 					</ul>
-		
 				</div>
 				<div data-ng-if="selectedAuthMethod == 'LDAP'">
 					Ldap parameters:
 					<ul>
-						<li data-ng-repeat="v in toSave.second.slice(1)">{{v.first}} : {{v.second}}
+						<li data-ng-repeat="v in toSave.second.slice(1)">{{v.first}} : <span data-ng-if="v.first === 'LDAP_MANAGER_PASSWORD'">{{ v.second | mask }}</span><span data-ng-if="v.first !== 'LDAP_MANAGER_PASSWORD'">{{v.second}}</span>
+						</li>
+					</ul>
 				</div>
 			</li>
 			<li style="margin-top:20px;">Admin account: provider: {{toSave.user.provider}}, username : {{toSave.user.username}}

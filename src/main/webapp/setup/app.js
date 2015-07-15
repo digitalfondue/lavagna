@@ -230,5 +230,14 @@
 		};
 	})
 
+	module.filter('mask', function ($filter) {
+		return function (text) {
+			if (text === undefined) {
+				return null;
+			}
+			return text.replace(/./gi, "*");
+		};
+	});
+
 
 })();
