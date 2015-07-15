@@ -11,7 +11,7 @@
 				$scope.users = l;
 			});
 		}
-		
+
 		function loadRoles() {
 			Permission.findAllRolesAndRelatedPermissions().then(function(res) {
 				var roleNames = [];
@@ -20,24 +20,25 @@
 						roleNames.push(roleName);
 					}
 				}
-				
+
 				$scope.roles = roleNames;
-			});		
+				configureDefaultUserToAdd();
+			});
 		}
 
 		function configureDefaultUserToAdd() {
 			$scope.userToAdd = {
-				provider: $scope.currentUser != undefined ? $scope.currentUser.provider : null, 
-				username: null, 
-				email: null, 
-				displayName: null, 
-				enabled:true, 
+				provider: $scope.currentUser != undefined ? $scope.currentUser.provider : null,
+				username: null,
+				email: null,
+				displayName: null,
+				enabled:true,
 				roles: {
 					'DEFAULT' : true
 				}
 			};
 		}
-		
+
 		User.currentCachedUser().then(function(u) {
 			$scope.currentUser = u;
 			$scope.userToAdd.provider = u.provider;
@@ -79,34 +80,30 @@
 
 		$scope.importUserFile = null;
 
-		var clearBulkImport = function() {
-			$scope.importUserFile = null;
-		};
-		
 		$scope.onFileSelect = function($files) {
 			$scope.importUserFile = $files[0]; //single file
-		}
+		};
 
 		//TODO: progress bar, abort
 		$scope.bulkImport = function() {
 			Admin.importUsers($scope.importUserFile,
 					function(evt) { $log.debug('percent: ' + parseInt(100.0 * evt.loaded / evt.total)); },
-					function(data) { 
+					function(data) {
 						Notification.addAutoAckNotification('success', {
 							key: 'notification.admin-manage-users.bulkImport.success'
 						}, false);
 					},
-					function() { 
+					function() {
 						Notification.addAutoAckNotification('error', {
 							key: 'notification.admin-manage-users.bulkImport.error'
 						}, false);
 					},
 					function() { $log.debug('aborted'); }).then(loadUsers);
 		};
-		
-		// ------- user pagination 
+
+		// ------- user pagination
 		$scope.userListPage = 1;
-		
+
 		$scope.switchPage = function(page) {
 			$scope.userListPage = page;
 		};
