@@ -292,7 +292,7 @@
 				<div data-ng-if="selectedAuthMethod == 'LDAP'">
 					Ldap parameters:
 					<ul>
-						<li data-ng-repeat="v in toSave.second.slice(1)">{{v.first}} : <span data-ng-if="v.first === 'LDAP_MANAGER_PASSWORD'">{{ v.second | mask }}</span><span data-ng-if="v.first !== 'LDAP_MANAGER_PASSWORD'">{{v.second}}</span>
+						<li data-ng-repeat="v in toSave.second.slice(1)">{{v.first}} : {{ v.first === 'LDAP_MANAGER_PASSWORD' ? (v.second | mask) : v.second  }}
 						</li>
 					</ul>
 				</div>

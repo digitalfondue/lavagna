@@ -24,7 +24,7 @@
 				<tbody>
 					<tr data-ng-repeat="(k,v) in conf">
 						<td data-ng-bind="k"></td>
-						<td data-ng-bind="v" class="lavagna-wbr"></td>
+						<td class="lavagna-wbr">{{ k === 'LDAP_MANAGER_PASSWORD' ? (v | mask) : v  }}</td>
 					</tr>
 				</tbody>
 			</table>
