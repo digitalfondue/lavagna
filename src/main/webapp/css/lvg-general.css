@@ -511,7 +511,10 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 .lavagna-label.white a {
 	color: white;
 	text-decoration: underline;
+}
 
+.lavagna-label.white a .lavagna-closed-card {
+	color: white;
 }
 
 .lavagna-label.black a {
