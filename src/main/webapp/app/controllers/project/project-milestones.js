@@ -17,6 +17,14 @@
 			}
 			return Object.keys(array).length > minLength;
 		};
+		
+		$scope.closeMilestone = function(val) {
+			Label.createLabelListValueMetadata(val.id, 'status', 'CLOSE');
+		};
+		
+		$scope.openMilestone = function(val) {
+			Label.removeLabelListValueMetadata(val.id, 'status');
+		};
 
 		var orderByStatus = function (milestone) {
 			var insertStatusIfExists = function (milestone, source, target, status) {

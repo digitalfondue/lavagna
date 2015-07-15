@@ -29,13 +29,20 @@
 							<i class="fa fa-times" data-ng-show="milestone.edit"></i>
 						</span>
 					</div>
-					<div class="title-addon col-xs-2" data-ng-show="milestone.totalCards > 0"
-						 data-ng-click="toggleMilestoneOpenStatus(milestone)">
+					<div class="title-addon col-xs-2">
 						<ul class="panel-controls">
-							<li class="control-item" data-ng-show="milestoneOpenStatus[milestone.labelListValue.value]">
+							<li data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
+								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSE'" data-ng-click="closeMilestone(milestone.labelListValue)">
+									<i class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"></i>
+								</span>
+								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSE'" data-ng-click="openMilestone(milestone.labelListValue)">
+									<i class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"></i>
+								</span>
+							</li>
+							<li class="control-item" data-ng-show="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
 								<span class="pull-right"><i class="fa fa-chevron-up"></i></span>
 							</li>
-							<li class="control-item active-control" data-ng-hide="milestoneOpenStatus[milestone.labelListValue.value]">
+							<li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
 								<span class="pull-right"><i class="fa fa-chevron-down"></i></span>
 							</li>
 						</ul>

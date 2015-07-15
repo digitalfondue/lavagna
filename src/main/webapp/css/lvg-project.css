@@ -243,6 +243,11 @@ ul.lvg-admin-import .col-sm-1 {
 	border-top: 0;
 }
 
+.lvg-milestone-align-down-icon {
+	position: relative;
+	top:2px;
+}
+
 /*
 ===================================
 ==== statistics ===========
