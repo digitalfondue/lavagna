@@ -54,9 +54,9 @@
 									</form>
 								</div>
 							</div>
-						
+
 							<!-- .................................................... -->
-						
+
 							<div class="lavagna-card-panel">
 								<div class="head clearfix">
 									<div class="title" data-translate>card.dates</div>
@@ -98,9 +98,9 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<!-- .................................................... -->
-							
+
 							<div class="lavagna-card-panel">
 								<div class="head clearfix">
 									<div class="title" data-translate>card.people</div>
@@ -166,7 +166,7 @@
 								<div class="footer" data-ng-show="editMetadataPeople">
 									<div class="row">
 										<div class="col-md-12">
-											<form data-ng-role="form" 
+											<form data-ng-role="form"
 												data-ng-submit="assignToUser(assignedUser); assignedUser=null;">
 												<div class="content input-group">
                                                     <lvg-label-picker label="labels[labelNameToId['ASSIGNED']]" data-ng-model="assignedUser" board="board.shortName"></lvg-label-picker>
@@ -179,9 +179,9 @@
 									</div>
 								</div>
 							</div>
-							
+
 							<!-- .................................................... -->
-							
+
 							<div class="lavagna-card-panel">
 								<div class="head clearfix">
 									<div class="title" data-translate>card.milestone</div>
@@ -214,7 +214,7 @@
 									</p>
 								</div>
 								<div class="footer" data-ng-show="editMetadataMilestone">
-									<form data-ng-role="form" 
+									<form data-ng-role="form"
 										data-ng-submit="setMilestone(milestone); milestone = null;">
 										<div class="content input-group">
                                             <lvg-label-picker label="labels[labelNameToId['MILESTONE']]" data-ng-model="milestone" board="board.shortName"></lvg-label-picker>
@@ -258,7 +258,7 @@
 												<div class="content-update"
 													data-ng-show="description.updatedCount == 1">
 													<span data-translate>card.updateCount</span>
-													- 
+													-
 													<span data-translate>card.lastUpdatedBy</span>
 													<span class="user" data-lvg-user="description.updateUser"></span>
 													<span data-translate>card.onDate</span>
@@ -274,7 +274,7 @@
 													<span class="date" data-ng-bind="description.updateDate | dateIncremental"></span>
 												</div>
 											</div>
-											<form data-ng-role="form" 
+											<form data-ng-role="form"
 												data-ng-submit="$parent.editDescription = false; $parent.editDescriptionPreviewMode = false; updateDescription(descriptionToEdit);">
 												<div class="form-group" data-ng-show="editDescription">
 													<div data-ng-hide="editDescriptionPreviewMode">
@@ -389,10 +389,10 @@
 															</div>
 															<div class="form-group">
 																<button class="lvg-button lvg-button-submit" type="submit" data-translate>button.update</button>
-																<button class="lvg-button lvg-button-default" type="button" 
+																<button class="lvg-button lvg-button-default" type="button"
 																	data-ng-click="commentToEditPreview = commentToEdit; commentControl.editCommentPreviewMode = true"
 																	data-ng-hide="commentControl.editCommentPreviewMode"><span data-translate>button.preview</span></button>
-																<button class="lvg-button lvg-button-default" type="button" 
+																<button class="lvg-button lvg-button-default" type="button"
 																	data-ng-click="commentControl.editCommentPreviewMode = false"
 																	data-ng-show="commentControl.editCommentPreviewMode"><span data-translate>button.closePreview</span></button>
 																<button type="button" class="lvg-button lvg-button-default"
@@ -408,7 +408,7 @@
 														data-ng-submit="addComment(comment);previewMode = false">
 														<div class="form-group">
 															<div data-ng-hide="previewMode">
-																<textarea 
+																<textarea
 																	data-lvg-codemirror
 																	id="comment" data-codemirror-placeholder="card.comment.placeholder"
 																	data-ng-model="comment.content" class="form-control"></textarea>
@@ -487,14 +487,14 @@
 													<ul class="lvg-card-file-queue">
 														<li data-ng-repeat="entry in filesToUpload track by $index">
 															<div class="lavagna-file-icon">
-																<span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue', 
-																	'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted', 
+																<span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue',
+																	'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted',
 																	'fa-warning': entry.status == 'failed', 'fa-check': entry.status == 'success'}"></span>
 															</div>
 															<div class="lavagna-file-metadata">
 																<div class="file-name">{{entry.file.name}}</div>
 																<div class="upload-progress progress progress-success lavagna-progress">
-																	<div class="progress-bar" style="width: {{entry.progress}}%"></div>
+																	<div class="progress-bar" data-ng-style="{'width': entry.progress + '%'}"></div>
 																</div>
 																<div class="file-size"><span class="size">{{entry.file.size | fileBytes}}</span></div>
 															</div>
@@ -544,7 +544,7 @@
 									<div class="title" data-translate>card.labels</div>
 								</div>
 								<div class="body" data-ng-if="hasUserLabels(userLabels, labelValues)">
-									<span data-ng-repeat="(n,l) in userLabels"> 
+									<span data-ng-repeat="(n,l) in userLabels">
 										<span data-ng-repeat="val in labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
 											<span data-lvg-label data-name="userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></span>
 										</span>
@@ -583,7 +583,7 @@
 									<div class="head">
 										<div class="progress lavagna-progress progress-success">
 											<div class="progress-bar"
-												style="width: {{actionListsStats[actionList.id]}}%"></div>
+												data-ng-style="{'width': actionListsStats[actionList.id] + '%'}"></div>
 										</div>
 										<div class="title">
 											<div class="lavagna-card-actionlist-text"
