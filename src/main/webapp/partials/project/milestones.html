@@ -16,17 +16,17 @@
 				</div>
 				<div class="head clearfix">
 					<div class="title title-bold col-xs-10 lvg-milestone-title">
-						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable"
-							  data-ng-click="milestone.edit = !milestone.edit">
-							<i class="fa fa-pencil-square-o" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
-							<i class="fa fa-minus" data-ng-show="milestone.edit"></i>
-						</span>
 						<span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSE'}"></span>
 						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
 							<input data-ng-model="newName">
 							<span data-ng-click="updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
 								<i class="fa fa-check"></i>
 							</span>
+						</span>
+						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable"
+							  data-ng-click="milestone.edit = !milestone.edit">
+							<i class="fa fa-pencil" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
+							<i class="fa fa-minus" data-ng-show="milestone.edit"></i>
 						</span>
 					</div>
 					<div class="title-addon col-xs-2" data-ng-show="milestone.totalCards > 0"
