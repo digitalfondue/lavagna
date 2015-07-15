@@ -23,10 +23,10 @@
 								<i class="fa fa-check"></i>
 							</span>
 						</span>
-						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable"
+						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable lvg-milestone-edit"
 							  data-ng-click="milestone.edit = !milestone.edit">
 							<i class="fa fa-pencil" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
-							<i class="fa fa-minus" data-ng-show="milestone.edit"></i>
+							<i class="fa fa-times" data-ng-show="milestone.edit"></i>
 						</span>
 					</div>
 					<div class="title-addon col-xs-2" data-ng-show="milestone.totalCards > 0"

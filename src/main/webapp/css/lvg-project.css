@@ -219,6 +219,14 @@ ul.lvg-admin-import .col-sm-1 {
 	min-height: 28px;
 }
 
+.lvg-milestone-title span.lvg-milestone-edit i.fa-pencil {
+	color: #d5d5d5;
+}
+
+.lvg-milestone-title span.lvg-milestone-edit:hover i.fa-pencil {
+	color: #333;
+}
+
 .lvg-milestone-card-title {
 	font-weight: bold;
 	text-align: center;
