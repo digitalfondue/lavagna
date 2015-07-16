@@ -3,8 +3,9 @@
 		<div class="search-bar" data-ng-init="username">
 			<div class="search-user-form inner-addon left-inner-addon">
 				<i class="fa fa-search"></i>
-				<input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="username" 
-					lvg-user-list="userList"/>
+				<input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}"
+					   class="form-control" data-ng-model="username"
+					   data-lvg-to-focus="username == null" lvg-user-list="userList"/>
 			</div>
 		</div>
 	</div>
@@ -14,7 +15,7 @@
 	<div class="lavagna-form-panel lavagna-container-bottom-margin">
 		<form data-ng-submit="createRole(newRole.name);newRole = null">
 			<div class="input-group">
-				<input type="text" data-lvg-to-focus="addNewActionList"
+				<input type="text"
 					placeholder="{{ 'partials.fragments.common-manage-roles.roleName' | translate }}" required="required"
 					data-ng-model="newRole.name" class="form-control"
 					autocomplete="off"
@@ -78,8 +79,9 @@
 				<form data-ng-submit="addUserToRole(roleState[roleName].newUsername, roleName); roleState[roleName].newUsername = null">
 					<div class="input-group">
 						<input type="text" data-lvg-user-autocomplete="roleState[roleName].newUsername" data-lvg-user-autocomplete-global="true"
-							placeholder="{{ 'partials.fragments.common-manage-roles.username' | translate }}" required="required"
-							class="form-control" data-lvg-on-esc>
+							   data-lvg-to-focus="roleState[roleName].newUsername == null"
+							   placeholder="{{ 'partials.fragments.common-manage-roles.username' | translate }}" required="required"
+							   class="form-control" data-lvg-on-esc>
 						<span class="input-group-btn">
 							<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
 						</span>

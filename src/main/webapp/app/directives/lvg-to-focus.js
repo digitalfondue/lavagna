@@ -9,7 +9,7 @@
 			scope.$watch(attrs.lvgToFocus, function (newval) {
 				if (newval) {
 					$timeout(function () {
-						elem[0].focus();
+						elem.focus();
 					}, 0, false);
 				}
 			});
