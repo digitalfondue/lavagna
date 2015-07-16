@@ -275,12 +275,11 @@
 												</div>
 											</div>
 											<form data-ng-role="form"
-												data-ng-submit="$parent.editDescription = false; $parent.editDescriptionPreviewMode = false; updateDescription(descriptionToEdit);">
+												  data-ng-submit="$parent.editDescription = false; $parent.editDescriptionPreviewMode = false; updateDescription(descriptionToEdit);">
 												<div class="form-group" data-ng-show="editDescription">
 													<div data-ng-hide="editDescriptionPreviewMode">
 														<textarea
 															data-codemirror-placeholder="card.description.placeholder"
-															data-lvg-to-focus="editDescription"
 															data-ng-model="descriptionToEdit" class="form-control"
 															data-lvg-codemirror
 															></textarea>
@@ -382,8 +381,7 @@
 																<div data-ng-hide="commentControl.editCommentPreviewMode">
 																	<textarea
 																		data-ng-model="commentToEdit" class="form-control"
-																		data-lvg-codemirror
-																		data-lvg-to-focus="commentControl.editComment"></textarea>
+																		data-lvg-codemirror></textarea>
 																</div>
 																<div data-ng-show="commentControl.editCommentPreviewMode" data-ng-bind-html="commentToEditPreview | markdown"></div>
 															</div>
@@ -729,7 +727,7 @@
 								<div class="footer-full">
 									<form data-ng-role="form" data-ng-submit="addActionList(newActionList);">
 										<div class="content input-group">
-											<input type="text" data-lvg-to-focus="addNewActionList"
+											<input type="text"
 												placeholder="{{'card.newList.placeholder' | translate}}" required="required"
 												data-ng-model="newActionList.content" class="form-control"
 												autocomplete="off"
