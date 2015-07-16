@@ -8,9 +8,6 @@
 				<li menu-item="projectStatistics"><a data-ng-href="#/{{project.shortName}}/statistics/"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
 			</df-tab-menu>
 		</div>
-		<div data-lvg-has-permission="PROJECT_ADMINISTRATION" class="context-menu-container">
-			<a type="button" class="lvg-inline-button lvg-nav-context-button" data-ng-href="#/{{project.shortName}}/manage/"><i class="fa fa-cog"></i></a>
-		</div>
 	</div>
 	<div data-ng-switch-when="board-menu" class="menu-frame board-menu-frame">
 		<div class="lvg-board-location">
@@ -35,7 +32,7 @@
 				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button></li>
-				
+
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
@@ -45,16 +42,16 @@
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
-					
-										
+
+
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'" data-translate>partials.board.bulkop.moveArchive</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'" data-translate>partials.board.bulkop.moveBacklog</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-trash'; bulkMode.message = 'moveTrash'" data-translate>partials.board.bulkop.moveTrash</button></li>
 		 		</ul>
-		 		
-		 		
+
+
 		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="formatBulkRequest" selected-visible-cards-id-by-column-id="selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
-		 		
+
 			</div>
 		</div>
 	</div>
