@@ -1,4 +1,4 @@
-<lvg-navbar data-navbar-type="user">{{userNameProfile}} <span data-translate>partials.user.title.profile</span></lvg-navbar>
+<lvg-navbar data-navbar-type="user"><a ng-href="#"><span data-translate>partials.home.title</span></a><i class="fa fa-angle-right"></i>{{userNameProfile}} <span data-translate>partials.user.title.profile</span></lvg-navbar>
 <div class="container auto-margin lavagna-container-top-margin">
 	<div class="row">
 		<div class="col-xs-12">
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<div class="footer" data-ng-show="page != 0 || hasMore">
-					<button data-ng-show="page != 0" data-ng-click="loadFor(page - 1)" class="lvg-button lvg-button-default" data-translate>button.next</button> 
+					<button data-ng-show="page != 0" data-ng-click="loadFor(page - 1)" class="lvg-button lvg-button-default" data-translate>button.next</button>
 					<button data-ng-show="hasMore" data-ng-click="loadFor(page + 1)" class="lvg-button lvg-button-default pull-right" data-translate>button.previous</button>
 					<div class="clearfix"></div>
 				</div>
