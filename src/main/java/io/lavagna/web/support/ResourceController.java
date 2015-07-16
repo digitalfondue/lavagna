@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -276,6 +277,9 @@ public class ResourceController {
 	private static Map<String, Map<Object, Object>> fromResources(Resource[] resources) throws IOException {
 
 		Pattern extractLanguage = Pattern.compile("^messages_(.*)\\.properties$");
+		
+		Properties buildProp = new Properties();
+		buildProp.load(new ClassPathResource("io/lavagna/build.properties").getInputStream());
 
 		Map<String, Map<Object, Object>> langs = new HashMap<>();
 
@@ -285,7 +289,8 @@ public class ResourceController {
 			String lang = matcher.group(1);
 			Properties p = new Properties();
 			p.load(res.getInputStream());
-			langs.put(lang, new HashMap<Object, Object>(p));
+			langs.put(lang, new HashMap<>(p));
+			langs.get(lang).putAll(new HashMap<>(buildProp));
 		}
 		return langs;
 	}

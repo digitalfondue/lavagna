@@ -209,7 +209,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
+			<version>5.1.36</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -245,8 +245,8 @@
 	<!-- -->
 	<properties>
 		<org.apache.logging.log4j.version>2.3</org.apache.logging.log4j.version>
-		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
-		<org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
+		<org.springframework.version>4.1.7.RELEASE</org.springframework.version>
+		<org.eclipse.jetty.version>9.3.1.v20150714</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
 	</properties>
@@ -486,6 +486,12 @@
 			<resource>
 				<directory>src/main/resources/</directory>
 				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<excludes><exclude>*.properties</exclude></excludes>
+				<includes><include>io/lavagna/build.properties</include></includes>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<pluginManagement>
