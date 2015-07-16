@@ -1,9 +1,9 @@
 <ul class="lavagna-board-column-holder" data-ng-style="{width: (290+ 4* 2+ (columns.length* 290+ 4* 2* columns.length))+'px'}" data-ui-sortable="sortableColumnOptions">
 	<li class="lavagna-board-column lavagna-sortable-board-column"
 		data-ng-controller="ColumnCtrl"
-		data-ng-repeat="column in columns track by column.id" 
+		data-ng-repeat="column in columns track by column.id"
 		data-bindonce
-		data-ng-init="columnState[column.id] = {};initializeColumnCtrl(column.id);" 
+		data-ng-init="columnState[column.id] = {};initializeColumnCtrl(column.id);"
 		data-bo-attr data-bo-attr-data-lvg-column-id="column.id"
 		data-lvg-update-column-size>
 		<div class="panel-heading" data-ng-style="column.color|columnColor">
@@ -15,7 +15,8 @@
 					</div>
 					<div data-ng-if="columnState[column.id].editColumnName">
 						<div class="form-group">
-							<input type="text" class="form-control" data-lvg-to-focus="columnState[column.id].editColumnName" data-ng-model="columnState[column.id].newColumnName" data-lvg-on-esc="columnState[column.id].editColumnName">
+							<input type="text" class="form-control" data-lvg-to-focus="columnState[column.id].editColumnName"
+								   data-ng-model="columnState[column.id].newColumnName" data-lvg-on-esc="columnState[column.id].editColumnName">
 						</div>
 						<div>
 							<button class="lvg-button lvg-button-submit" data-ng-click="saveNewColumnName(columnState[column.id].newColumnName, column);columnState[column.id].editColumnName=false"><span data-translate>partials.fragments.columns-fragment.save</span></button>
@@ -57,8 +58,10 @@
 					<!-- TODO: move in a directive -->
 					<form data-ng-submit="createCardFromTop(columnState[column.id].cardToCreateFromTop, column)">
 						<div class="form-group">
-							<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}" data-lvg-to-focus="columnState[column.id].addNewCardFromTop" required="required"
-								data-ng-model="columnState[column.id].cardToCreateFromTop.name" class="form-control" data-lvg-on-esc="columnState[column.id].addNewCardFromTop" data-lvg-on-esc-eval="columnState[column.id].cardToCreateFromTop = null"></input>
+							<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+								   data-lvg-to-focus="columnState[column.id].cardToCreateFromTop.name == null" required="required"
+								   data-ng-model="columnState[column.id].cardToCreateFromTop.name" class="form-control"
+								   data-lvg-on-esc="columnState[column.id].addNewCardFromTop" data-lvg-on-esc-eval="columnState[column.id].cardToCreateFromTop = null"></input>
 						</div>
 						<div>
 							<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
@@ -73,7 +76,7 @@
 			<lvg-spinner data-bo-hide="loaded"></lvg-spinner>
 			<ul data-ui-sortable="sortableCardOptions" class="lavagna-board-cards" data-ng-show="loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}">
 				<li data-bindonce data-ng-repeat="card in cardsInColumn | filter : cardFilter track by card.hash" class="lavagna-board-card" data-bo-attr data-bo-attr-data-lvg-card-id="card.id" data-bo-attr-data-lavagna-card-column-id="card.columnId">
-					<lvg-card-fragment data-view="board" data-card="card" 
+					<lvg-card-fragment data-view="board" data-card="card"
 						data-project="projectName" data-board="boardName" data-selected="selectedCards" data-dependencies="cardFragmentDependencies"></lvg-card-fragment>
 				</li>
 			</ul>
@@ -88,12 +91,15 @@
 			<div data-ng-if="columnState[column.id].addNewCard">
 				<form data-ng-submit="createCard(columnState[column.id].cardToCreate, column)">
 					<div class="form-group">
-						<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}" data-lvg-to-focus="columnState[column.id].addNewCard" required="required"
-							data-ng-model="columnState[column.id].cardToCreate.name" class="form-control" data-lvg-on-esc="columnState[column.id].addNewCard" data-lvg-on-esc-eval="columnState[column.id].cardToCreate = null"></input>
+						<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+							   data-lvg-to-focus="columnState[column.id].cardToCreate.name == null" required="required"
+							   data-ng-model="columnState[column.id].cardToCreate.name" class="form-control"
+							   data-lvg-on-esc="columnState[column.id].addNewCard" data-lvg-on-esc-eval="columnState[column.id].cardToCreate = null"></input>
 					</div>
 					<div>
 						<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
-						<button type="button" data-ng-click="columnState[column.id].cardToCreate = null; columnState[column.id].addNewCard = false" class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+						<button type="button" data-ng-click="columnState[column.id].cardToCreate = null; columnState[column.id].addNewCard = false"
+								class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
 					</div>
 				</form>
 			</div>
