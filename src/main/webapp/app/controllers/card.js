@@ -11,8 +11,6 @@
 			card, currentUser, project, board //resolved by ui-router
 			) {
 		
-		console.log(card);
-		
 		
 		var findAndAssignColumns = function() {
 			Board.columns(board.shortName, 'BOARD').then(function(columns) {
@@ -282,7 +280,6 @@
 		};
 		$scope.deleteComment = function(comment, control) {
 			Card.deleteComment(comment.id).then(function(event) {
-				console.log(event);
 				Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, function(notification) {
 					Card.undoDeleteComment(event.id).then(notification.acknowledge)
 				});

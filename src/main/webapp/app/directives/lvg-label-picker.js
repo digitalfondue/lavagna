@@ -12,7 +12,8 @@
 				model: '=ngModel',
 				label: '=',
 				board: '=',
-				inMenu: '='
+				inMenu: '=',
+				group: '='
 			},
 			restrict: 'E',
 			link: function (scope, element, attrs) {
