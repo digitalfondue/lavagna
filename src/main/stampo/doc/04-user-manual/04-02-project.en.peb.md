@@ -10,4 +10,4 @@ User belonging only on one project won't be even aware that there is something e
 
 The project dashboard looks like this:
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_project_dashboard.png" alt="Create new project">
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_project_dashboard.png" alt="Project dashboard">
