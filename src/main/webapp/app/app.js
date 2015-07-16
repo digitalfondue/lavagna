@@ -35,12 +35,18 @@
 
 		$locationProvider.html5Mode(true);
 		
+		//TODO: this is kinda fragile
 		$urlRouterProvider.rule(function ($injector, $location) {
 		    var path = $location.url();
+		    var afterHash = '';
+		    
+		    if(path.indexOf('#') !== -1) {
+		    	afterHash = path.substr(path.indexOf('#'));
+		    	path = path.substr(0, path.indexOf('#'));
+		    }
 		    
 		    //exception: handle board URL.
-		    if(path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+$/) ||
-		    		path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+\?.*$/)) {
+		    if(path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+$/) || path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+\?.*$/)) {
 		    	return;
 		    }
 		    //exception: handle board URL. remove trailing slash
@@ -57,7 +63,7 @@
 		        return path.replace('?', '/?');
 		    }
 
-		    return path + '/';
+		    return path + '/' + afterHash;
 		});
 
 		angular.forEach(io_lavagna.i18n, function(map, lang) {
