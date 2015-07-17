@@ -1,7 +1,7 @@
 <assembly
-	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+		xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 	<id>distribution</id>
 	<formats>
 		<format>zip</format>
@@ -43,6 +43,36 @@
 			<source>target/generated-sources/license/THIRD-PARTY.txt</source>
 			<destName>NOTICE.txt</destName>
 			<outputDirectory>/</outputDirectory>
+		</file>
+		<!-- Windows Service -->
+		<file>
+			<source>src/assembly/windows-service/lavagna.exe</source>
+			<outputDirectory>/bin/windows-service/</outputDirectory>
+			<fileMode>0775</fileMode>
+		</file>
+		<file>
+			<source>src/assembly/windows-service/lavagna.exe.config</source>
+			<outputDirectory>/bin/windows-service/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>dos</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/windows-service/lavagna.xml</source>
+			<outputDirectory>/bin/windows-service/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>dos</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/windows-service/install.bat</source>
+			<outputDirectory>/bin/windows-service/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>dos</lineEnding>
+		</file>
+		<file>
+			<source>src/assembly/windows-service/uninstall.bat</source>
+			<outputDirectory>/bin/windows-service/</outputDirectory>
+			<fileMode>0775</fileMode>
+			<lineEnding>dos</lineEnding>
 		</file>
 	</files>
 </assembly>
