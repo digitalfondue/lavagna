@@ -16,7 +16,7 @@
 				</div>
 				<div class="head clearfix">
 					<div class="title title-bold col-xs-10 lvg-milestone-title">
-						<span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSE'}"></span>
+						<span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSED'}"></span>
 						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
 							<input data-ng-model="newName">
 							<span data-ng-click="updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
@@ -32,10 +32,10 @@
 					<div class="title-addon col-xs-2">
 						<ul class="panel-controls">
 							<li data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
-								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSE'" data-ng-click="closeMilestone(milestone.labelListValue)">
+								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'" data-ng-click="closeMilestone(milestone.labelListValue)">
 									<i class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"></i>
 								</span>
-								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSE'" data-ng-click="openMilestone(milestone.labelListValue)">
+								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'" data-ng-click="openMilestone(milestone.labelListValue)">
 									<i class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"></i>
 								</span>
 							</li>
