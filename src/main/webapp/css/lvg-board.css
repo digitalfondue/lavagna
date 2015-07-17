@@ -150,15 +150,23 @@
 	position: static;
 }
 
-.lavagna-board-card:last-child {
-	margin-bottom: 0;
-}
-
 /* display cards in board UI */
 
 .lavagna-board-panel {
 	border: 1px solid #d0d0d0;
 	background-color: white;
+}
+
+
+
+.lavagna-board-panel:hover {
+	box-shadow: 0 2px 10px rgba(0,0,0,0.30);
+	cursor: move;
+}
+
+#cardBoardMenu .lavagna-board-panel:hover {
+	box-shadow: none;
+	cursor: default;
 }
 
 .lavagna-board-panel .head {
