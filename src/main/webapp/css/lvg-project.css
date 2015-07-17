@@ -227,6 +227,11 @@ ul.lvg-admin-import .col-sm-1 {
 	color: #333;
 }
 
+.lvg-milestone-chart {
+	margin-left:10px;
+	margin-right:10px;
+}
+
 .lvg-milestone-card-title {
 	font-weight: bold;
 	text-align: center;
