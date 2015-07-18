@@ -16,15 +16,16 @@
 		};
 
 		loadConfiguration();
-		
-		$scope.$watch('smtpEnabled', function(newVal, oldVal) {
-			if(newVal == undefined || oldVal == undefined || newVal == oldVal) {
+
+		$scope.$watch('smtpEnabled', function (newVal, oldVal) {
+			if (newVal == undefined || oldVal == undefined || newVal == oldVal) {
 				return;
 			}
 			Admin.updateConfiguration(
-					{toUpdateOrCreate: 
-						[{first: 'SMTP_ENABLED', second: newVal}]}
-				).catch(function(error) {
+				{
+					toUpdateOrCreate: [{first: 'SMTP_ENABLED', second: newVal}]
+				}
+			).catch(function (error) {
 					Notification.addAutoAckNotification('error', {
 						key: 'notification.admin-manage-smtp-configuration.updateConfiguration.error'
 					}, false);
@@ -32,29 +33,37 @@
 		});
 
 		$scope.saveSmtpConfig = function (conf) {
-			Admin.updateConfiguration({toUpdateOrCreate: [
-				{first: 'SMTP_CONFIG', second: JSON.stringify(conf)}
-			]}).then(function() {
-					Notification.addAutoAckNotification('success', {
-						key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.success'
-					}, false);
-				}, function(error) {
-					Notification.addAutoAckNotification('error', {
-						key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.error'
-					}, false);
-				}).then(loadConfiguration);
+			Admin.updateConfiguration({
+				toUpdateOrCreate: [
+					{first: 'SMTP_CONFIG', second: JSON.stringify(conf)}
+				]
+			}).then(function () {
+				Notification.addAutoAckNotification('success', {
+					key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.success'
+				}, false);
+			}, function (error) {
+				Notification.addAutoAckNotification('error', {
+					key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.error'
+				}, false);
+			}).then(loadConfiguration);
 		};
-		
-		$scope.openSmtpConfigModal = function() {
-			var modalInstance = $modal.open({
+
+		$scope.openSmtpConfigModal = function () {
+			$modal.open({
 				templateUrl: 'partials/admin/fragments/smtp-check-modal.html',
-				controller: function($scope, $modalInstance, configuration) {
-					
+				controller: function ($scope, $modalInstance, User) {
+
+					User.currentCachedUser().then(function (user) {
+						if (user.emailNotification) {
+							$scope.to = user.email;
+						}
+					});
+
 					$scope.sendTestEmail = function (conf, to) {
 						return $http.post('api/check-smtp/', conf, {params: {to: to}});
 					};
-					
-					$scope.close = function() {
+
+					$scope.close = function () {
 						$modalInstance.close('done');
 					}
 				},
@@ -65,7 +74,7 @@
 						return $scope.configuration;
 					}
 				}
-		    });
+			});
 		}
 	})
 })();
