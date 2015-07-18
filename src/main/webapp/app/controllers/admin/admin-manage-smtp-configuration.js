@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('AdminManageSmtpConfigurationCtrl', function ($scope, $http, $modal, Admin) {
+	module.controller('AdminManageSmtpConfigurationCtrl', function ($scope, $http, $modal, Admin, Notification) {
 
 		var loadConfiguration = function () {
 			Admin.findByKey('SMTP_ENABLED').then(function (enabled) {
