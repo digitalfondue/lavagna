@@ -51,7 +51,7 @@
 		$scope.openSmtpConfigModal = function () {
 			$modal.open({
 				templateUrl: 'partials/admin/fragments/smtp-check-modal.html',
-				controller: function ($scope, $modalInstance, User) {
+				controller: function ($scope, $modalInstance, configuration, User, Notification) {
 
 					User.currentCachedUser().then(function (user) {
 						if (user.emailNotification) {
@@ -59,8 +59,14 @@
 						}
 					});
 
-					$scope.sendTestEmail = function (conf, to) {
-						return $http.post('api/check-smtp/', conf, {params: {to: to}});
+					$scope.sendTestEmail = function () {
+						Notification.addAutoAckNotification('success', { key: 'notification.smtp-configuration.sending' }, false);
+						return $http.post('api/check-smtp/', configuration, {params: {to: $scope.to}})
+							.success(function () {
+								Notification.addAutoAckNotification('success', { key: 'notification.smtp-configuration.success' }, false);
+							}).error(function () {
+								Notification.addAutoAckNotification('error', { key: 'notification.smtp-configuration.error' }, false);
+							});
 					};
 
 					$scope.close = function () {
