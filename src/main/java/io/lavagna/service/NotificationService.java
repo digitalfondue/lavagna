@@ -17,9 +17,7 @@
 package io.lavagna.service;
 
 import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.Event;
-import io.lavagna.model.Event.EventType;
 import io.lavagna.model.Key;
 import io.lavagna.model.MailConfig;
 import io.lavagna.model.User;
@@ -41,6 +39,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.MustacheException;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,9 +59,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.samskivert.mustache.Mustache;
-import com.samskivert.mustache.MustacheException;
 
 /**
  * Handle the whole email notification process.
@@ -100,7 +97,7 @@ public class NotificationService {
 
 	/**
 	 * Return a list of user id to notify.
-	 * 
+	 *
 	 * @param upTo
 	 * @return
 	 */
@@ -131,30 +128,6 @@ public class NotificationService {
 		jdbc.update(queries.reset() + " " + (userWithChanges.isEmpty() ? "" : queries.notIn()), userWithChangesParam);
 		//
 		return new TreeSet<>(usersToNotify);
-	}
-
-	/**
-	 * Filter events that are older that the "WATCHED_BY" and "ASSIGNED" creation label event if the lastSent is null.
-	 */
-	private static List<Event> filterEvents(List<Event> evs, int userId, Date lastSent) {
-		if (lastSent != null) {
-			return evs;
-		}
-		List<Event> res = new ArrayList<>();
-
-		Set<Integer> cardIdsToToKeep = new HashSet<>();
-
-		for (Event e : evs) {
-			if (cardIdsToToKeep.contains(e.getCardId())
-					|| (("ASSIGNED".equals(e.getLabelName()) || "WATCHED_BY".equals(e.getLabelName()))
-							&& e.getEvent() == EventType.LABEL_CREATE && e.getLabelType() == LabelType.USER && e
-							.getUserId() == userId)) {
-				res.add(e);
-				cardIdsToToKeep.add(e.getCardId());
-			}
-		}
-
-		return res;
 	}
 
 	private List<String> composeCardSection(int cardId, List<Event> events, EventsContext context) {
@@ -214,7 +187,7 @@ public class NotificationService {
 
 	/**
 	 * Send email (if all the conditions are met) to the user.
-	 * 
+	 *
 	 * @param userId
 	 * @param upTo
 	 * @param emailEnabled
@@ -222,9 +195,7 @@ public class NotificationService {
 	 */
 	public void notifyUser(int userId, Date upTo, boolean emailEnabled, MailConfig mailConfig) {
 		Date lastSent = queries.lastEmailSent(userId);
-		List<Event> events = filterEvents(
-				queries.eventsForUser(userId, ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1)), upTo),
-				userId, lastSent);
+		List<Event> events = queries.eventsForUser(userId, ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1)), upTo);
 
 		User user = userRepository.findById(userId);
 		if (!events.isEmpty() && mailConfig != null && mailConfig.isMinimalConfigurationPresent() && emailEnabled

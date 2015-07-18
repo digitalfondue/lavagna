@@ -16,7 +16,7 @@
 			return  (currentUser.basePermissions[permissionToCheck] !== undefined || (projectName !== undefined &&
 						currentUser.permissionsForProject[projectName] !== undefined &&
 						currentUser.permissionsForProject[projectName][permissionToCheck] !== undefined));
-		}
+		};
 
 		return {
 			current : function() {
@@ -31,7 +31,7 @@
 				}
 				return cached;
 			},
-			
+
 			isCurrentUser : function(provider, username) {
 				return this.currentCachedUser().then(function(u) {
 					return u.provider === provider && u.username === username;
@@ -49,7 +49,7 @@
 			invalidateCachedUser : function() {
 				cached = null;
 			},
-			
+
 			findUsersGlobally : function(searchTerm) {
 				return $http.get('api/search/user', {params:{term:searchTerm}}).then(extractData);
 			},
@@ -57,7 +57,7 @@
 			findUsers : function(searchTerm) {
 				var opts = {params:{term:searchTerm}};
 				if($stateParams.projectName) {
-					opts.params.projectName = $stateParams.projectName; 
+					opts.params.projectName = $stateParams.projectName;
 				}
 				return $http.get('api/search/user', opts).then(extractData);
 			},

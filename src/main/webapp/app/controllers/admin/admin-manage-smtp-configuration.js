@@ -59,13 +59,13 @@
 						}
 					});
 
-					$scope.sendTestEmail = function () {
-						Notification.addAutoAckNotification('success', { key: 'notification.smtp-configuration.sending' }, false);
-						return $http.post('api/check-smtp/', configuration, {params: {to: $scope.to}})
+					$scope.sendTestEmail = function (to) {
+						Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.sending'}, false);
+						return $http.post('api/check-smtp/', configuration, {params: {to: to}})
 							.success(function () {
-								Notification.addAutoAckNotification('success', { key: 'notification.smtp-configuration.success' }, false);
+								Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.success'}, false);
 							}).error(function () {
-								Notification.addAutoAckNotification('error', { key: 'notification.smtp-configuration.error' }, false);
+								Notification.addAutoAckNotification('error', {key: 'notification.smtp-configuration.error'}, false);
 							});
 					};
 
