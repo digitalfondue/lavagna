@@ -42,7 +42,18 @@
 			},
 
 			findLabelListValues: function(labelId) {
-				return $http.get('api/label/' + labelId + '/label-list-values').then(extractData);
+				return $http.get('api/label/' + labelId + '/label-list-values').then(extractData).then(function(res) {
+					
+					angular.forEach(res, function(labelListValue) {
+						var toAdd = {};
+						angular.forEach(labelListValue.metadata, function(value, key) {
+							toAdd[key+'Translated'] = $filter('translate')('label-list-value.metadata.' + key + '.' + value); 
+						});
+						labelListValue.metadata = angular.extend({}, labelListValue.metadata, toAdd);
+						
+					});
+					return res;
+				});
 			},
 
 			addLabelListValue: function(labelId, listValue) {
