@@ -29,5 +29,7 @@ This product includes/uses the following libraries:
 <#list dependencyMap as e>
 	<#assign project = e.getKey()/>
 	<#assign licenses = e.getValue()/>
- - ${artifactFormat(project)} 
+ - ${artifactFormat(project)}
 </#list>
+ - winsw: Windows service wrapper in less restrictive license (https://github.com/kohsuke/winsw);
+     License: The MIT License (http://www.opensource.org/licenses/mit-license.php)

@@ -1,34 +1,34 @@
-  _                                        
- | |                                       
- | |     __ ___   ____ _  __ _ _ __   __ _ 
+  _
+ | |
+ | |     __ ___   ____ _  __ _ _ __   __ _
  | |    / _` \ \ / / _` |/ _` | '_ \ / _` |
  | |___| (_| |\ V / (_| | (_| | | | | (_| |
  |______\__,_| \_/ \__,_|\__, |_| |_|\__,_|
-                          __/ |            
+                          __/ |
                          |___/
 
  Version: ${project.version}
- 
+
  http://lavagna.io
 ===========================================
 
 This archive contain:
 
- - /bin/* : shell script for launching lavagna. By default it will launch 
+ - /bin/* : shell script for launching lavagna. By default it will launch
             lavagna in dev mode. You will need to customize the scripts.
 
- - /lavagna/*.war : a simple war that can be deployed in your servlet 
-                    container (tomcat, ...) or an executable war 
+ - /lavagna/*.war : a simple war that can be deployed in your servlet
+                    container (tomcat, ...) or an executable war
                     (which is launched by the scripts)
 
  - /LICENSE.txt: license file (GPL3)
  - /NOTICE.txt: third party licenses file
- 
- 
+
+
 Running the application
 -----------------------
 
-For testing purpose you can launch bin/lavagna.sh or bin/lavagna.bat and go 
+For testing purpose you can launch bin/lavagna.sh, bin/lavagna.bat or bin/windows-service/lavagna.xml and go
 to http://localhost:8080 (username: user password: user).
 
 If you want to install it or configure it, you have two options:
@@ -40,7 +40,7 @@ If you want to install it or configure it, you have two options:
 Database configuration
 ----------------------
 
-Lavagna require a utf8 environment. 
+Lavagna require a utf8 environment.
 Check that the database has a utf8 collation.
 
 For ensuring a correct db creation with MySQL create it with:
@@ -51,7 +51,7 @@ CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;
 Self contained:
 ---------------
 
-See the bin/lavagna.sh or bin/lavagna.bat scripts and configure them. 
+See the bin/lavagna.sh, bin/lavagna.bat or bin/windows-service/lavagna.xml scripts and configure them.
 It will launch the app using a self contained jetty server.
 
 
@@ -67,4 +67,3 @@ property to the JVM (see the scripts bin/lavagna.sh / bin/lavagna.bat):
  - datasource.username=[username]
  - datasource.password=[pwd]
  - spring.profiles.active= dev | prod
- 
