@@ -91,7 +91,7 @@
         $scope.cardFragmentDependencies = {};
         var cardFragmentDependenciesToCopy = ['labelNameToId',
 		                      'moveCard', 'currentUserId', 'columns', 
-		                      'watchCard', 'unWatchCard', 'assignToCurrentUser'];
+		                      'watchCard', 'unWatchCard', 'assignToCurrentUser', 'removeAssignForCurrentUser'];
 		for(var k in cardFragmentDependenciesToCopy) {
 			$scope.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = $scope[cardFragmentDependenciesToCopy[k]];
 		}
