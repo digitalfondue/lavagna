@@ -31,8 +31,6 @@
 			<div class="dropdown lvg-button-group" data-ng-show="selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'">
 				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
-					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button></li>
-
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
@@ -52,6 +50,7 @@
 
 		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="formatBulkRequest" selected-visible-cards-id-by-column-id="selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
 
+				<button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
 			</div>
 		</div>
 	</div>
