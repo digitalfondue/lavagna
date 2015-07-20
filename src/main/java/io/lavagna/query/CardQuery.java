@@ -48,18 +48,32 @@ public interface CardQuery {
 
 	@Query("SELECT * FROM LA_CARD_FULL WHERE BOARD_SHORT_NAME = :boardShortName")
 	List<CardFull> findAllByBoardShortName(@Bind("boardShortName") String boardShortName);
+	
+	
+	//----------------------
+	
+	String FIND_CARD_BY_BOARD_SHORT_NAME = ":boardShortName is not null AND BOARD_SHORT_NAME LIKE CONCAT('%', CONCAT(:boardShortName, '%')) ";
+	String FIND_CARD_BY_SEQ_NR = " AND (:sequenceNr IS NULL OR CARD_SEQ_NUMBER LIKE CONCAT(:sequenceNr, '%'))";
+	String FIND_CARD_BY_SEQ_NR_PGSQL = " AND (:sequenceNr IS NULL OR CAST(CARD_SEQ_NUMBER AS TEXT) LIKE CONCAT(:sequenceNr, '%'))";
 
-	@Query("SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CARD_SEQ_NUMBER LIKE CONCAT(:term, '%')) AND PROJECT_ID IN (:projectIdFilter) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
+	@Query("SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CARD_SEQ_NUMBER LIKE CONCAT(:term, '%')"
+			+ " OR (" + FIND_CARD_BY_BOARD_SHORT_NAME + FIND_CARD_BY_SEQ_NR + ")) AND PROJECT_ID IN (:projectIdFilter) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
 	@QueriesOverride({
-		@QueryOverride(db = DB.PGSQL, value = "SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CAST(CARD_SEQ_NUMBER AS TEXT) LIKE CONCAT(:term, '%')) AND PROJECT_ID IN (:projectIdFilter) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
+		@QueryOverride(db = DB.PGSQL, value = "SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CAST(CARD_SEQ_NUMBER AS TEXT) LIKE CONCAT(:term, '%')"
+				+ " OR (" + FIND_CARD_BY_BOARD_SHORT_NAME + ")) AND PROJECT_ID IN (:projectIdFilter) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
 	})
-	List<CardFull> findCardBy(@Bind("term") String term, @Bind("projectIdFilter") Set<Integer> projectIdFilter);
+	List<CardFull> findCardBy(@Bind("term") String term, @Bind("boardShortName") String maybeBoardShortName, @Bind("sequenceNr") Integer maybeSequenceNumber, 
+			@Bind("projectIdFilter") Set<Integer> projectIdFilter);
 
-	@Query("SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CARD_SEQ_NUMBER LIKE CONCAT(:term, '%')) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
+	@Query("SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CARD_SEQ_NUMBER LIKE CONCAT(:term, '%')" 
+			+ " OR (" + FIND_CARD_BY_BOARD_SHORT_NAME + FIND_CARD_BY_SEQ_NR + ")) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
 	@QueriesOverride({
-		@QueryOverride(db = DB.PGSQL, value = "SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CAST(CARD_SEQ_NUMBER AS TEXT) LIKE CONCAT(:term, '%')) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
+		@QueryOverride(db = DB.PGSQL, value = "SELECT * FROM LA_CARD_FULL WHERE (LOWER(CARD_NAME) LIKE CONCAT('%', CONCAT(LOWER(:term), '%')) OR CAST(CARD_SEQ_NUMBER AS TEXT) LIKE CONCAT(:term, '%') "
+				+ " OR (" + FIND_CARD_BY_BOARD_SHORT_NAME + ")) ORDER BY BOARD_SHORT_NAME ASC, CARD_SEQ_NUMBER ASC LIMIT 10")
 	})
-	List<CardFull> findCardBy(@Bind("term") String term);
+	List<CardFull> findCardBy(@Bind("term") String term, @Bind("boardShortName") String maybeBoardShortName, @Bind("sequenceNr") Integer maybeSequenceNumber);
+	
+	//----------------------
 
 	@Query("SELECT CARD_ID, CARD_NAME, CARD_BOARD_COLUMN_ID_FK, CARD_ORDER, CARD_SEQ_NUMBER, CARD_USER_ID_FK FROM LA_CARD "
 			+ " INNER JOIN LA_BOARD_COLUMN ON CARD_BOARD_COLUMN_ID_FK = BOARD_COLUMN_ID  "

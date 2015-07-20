@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -294,7 +295,24 @@ public class CardRepository {
 	}
 
 	public List<CardFull> findCardBy(String term, Set<Integer> projectIds) {
-		return projectIds == null ? queries.findCardBy(term) : queries.findCardBy(term, projectIds);
+		
+		String maybeBoardShortName = null;
+		Integer maybeSequenceNumber = null;
+		
+		if (term != null) {
+			String[] splitted = term.split("-", 2);
+			maybeBoardShortName = splitted[0].toUpperCase(Locale.ENGLISH);
+			if (splitted.length > 1) {
+				try {
+					maybeSequenceNumber = Integer.valueOf(splitted[1]);
+				} catch (NumberFormatException ignore) {
+					// ignore
+				}
+			}
+		}
+		
+		
+		return projectIds == null ? queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber) : queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber, projectIds);
 	}
 
 	public int getOpenCardsCountByUserId(int id) {

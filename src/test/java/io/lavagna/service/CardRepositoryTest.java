@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -88,8 +89,8 @@ public class CardRepositoryTest {
 		user = userRepository.findUserByName("test", "test-user");
 		projectService.create("test", "TEST", "desc");
 		boardRepository
-				.createNewBoard("test-board", "TEST-BRD", null, projectService.findByShortName("TEST").getId());
-		board = boardRepository.findBoardByShortName("TEST-BRD");
+				.createNewBoard("test-board", "TESTBRD", null, projectService.findByShortName("TEST").getId());
+		board = boardRepository.findBoardByShortName("TESTBRD");
 		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(projectService
 				.findByShortName("TEST").getId());
 		boardColumnRepository.addColumnToBoard("col1", definitions.get(0).getId(), BoardColumnLocation.BOARD,
@@ -291,10 +292,48 @@ public class CardRepositoryTest {
 		Card c2 = cardService.createCard("card2", col1.getId(), new Date(), user);
 		Card c3 = cardService.createCard("card3", col1.getId(), new Date(), user);
 
-		Map<String, Integer> res = cardRepository.findCardsIds(Arrays.asList("TEST-BRD-" + c1.getSequence(),
-				"TEST-BRD-" + c2.getSequence(), "TEST-BRD-" + c3.getSequence()));
-		Assert.assertEquals(res.get("TEST-BRD-" + c1.getSequence()).intValue(), c1.getId());
-		Assert.assertEquals(res.get("TEST-BRD-" + c2.getSequence()).intValue(), c2.getId());
-		Assert.assertEquals(res.get("TEST-BRD-" + c3.getSequence()).intValue(), c3.getId());
+		Map<String, Integer> res = cardRepository.findCardsIds(Arrays.asList("TESTBRD-" + c1.getSequence(),
+				"TESTBRD-" + c2.getSequence(), "TESTBRD-" + c3.getSequence()));
+		Assert.assertEquals(res.get("TESTBRD-" + c1.getSequence()).intValue(), c1.getId());
+		Assert.assertEquals(res.get("TESTBRD-" + c2.getSequence()).intValue(), c2.getId());
+		Assert.assertEquals(res.get("TESTBRD-" + c3.getSequence()).intValue(), c3.getId());
+	}
+	
+	@Test
+	public void testFindCardBy() {
+		Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
+		
+		// find by card "title"
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("card1", null).get(0).getId());
+		
+		// find by card sequenceNr
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy(Integer.toString(c1.getSequence()), null).get(0).getId());
+		
+		// find by board short name
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD", null).get(0).getId());
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-", null).get(0).getId());
+		
+		// find by board short name + seq nr
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), null).get(0).getId());
+	}
+	
+	@Test
+	public void testFindCardByInProject() {
+		Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
+		
+		Set<Integer> projects = Collections.singleton(board.getProjectId());
+		
+		// find by card "title"
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("card1", projects).get(0).getId());
+		
+		// find by card sequenceNr
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy(Integer.toString(c1.getSequence()), projects).get(0).getId());
+		
+		// find by board short name
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD", projects).get(0).getId());
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-", projects).get(0).getId());
+		
+		// find by board short name + seq nr
+		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), projects).get(0).getId());
 	}
 }
