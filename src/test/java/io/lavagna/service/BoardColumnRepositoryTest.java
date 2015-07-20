@@ -17,6 +17,7 @@
 package io.lavagna.service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,8 @@ public class BoardColumnRepositoryTest {
 		int colId2 = boardColumnRepository.addColumnToBoard("test", openDefinition().getId(),
 				BoardColumnLocation.BOARD, board.getId()).getId();
 		Assert.assertEquals(2, boardColumnRepository.findByIds(new HashSet<>(Arrays.asList(colId1, colId2))).size());
+		
+		Assert.assertTrue(boardColumnRepository.findByIds(Collections.<Integer>emptySet()).isEmpty());
 	}
 
 	@Test(expected = EmptyResultDataAccessException.class)
@@ -223,6 +226,13 @@ public class BoardColumnRepositoryTest {
 
 		Assert.assertEquals(BoardColumnLocation.ARCHIVE, boardColumnRepository.findById(bc.getId()).getLocation());
 		Assert.assertEquals(closedDefinition().getId(), boardColumnRepository.findById(bc.getId()).getDefinitionId());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMoveToLocationNotBoard() {
+		BoardColumn bc = boardColumnRepository.addColumnToBoard("test-1", openDefinition().getId(),
+				BoardColumnLocation.BOARD, board.getId());
+		boardColumnRepository.moveToLocation(bc.getId(), BoardColumnLocation.BOARD, user);
 	}
 
 }
