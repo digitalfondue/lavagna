@@ -4,7 +4,7 @@ Each card in the board has its own context menu, from which it's possible to exe
 
 To access the card menu, click on the <i class="fa fa-chevron-down"></i> that appears when hovering on a card.
 
--- image here --
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_board_card-menu.png" alt="Card menu">
 
 A modal menu will open, keeping the card in focus, and displaying the various options. To close the menu, click on <i class="fa fa-times"></i>.
 

@@ -6,7 +6,9 @@ To open the bulk operations menu, click on <i class="fa fa-square-o"></i> in the
 
 The **Select** button can be used to select either all or none of the cards present in the board.
 
-Once at least one card is selected, a **Do** option, containing the various operations, will appear:
+Once at least one card is selected, a **Do** option, containing the various operations, will appear.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_board_bulk-operations.png" alt="Bulk operations">
 
 * **Assign to**: assign the selected card(s) to the selected user. Use the input field to search for a user by name
 * **Remove assign**: remove the selected card(s) from the selected user tasks list
