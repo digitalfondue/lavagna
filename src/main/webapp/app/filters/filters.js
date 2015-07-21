@@ -203,17 +203,25 @@
 	filters.filter('extractISO8601Date', function ($filter) {
 		return function (dueDate, dueDateTime) {
 			try {
+				
+				var isDueDateTimeUndefined = dueDateTime === undefined;
 
-				dueDateTime = dueDateTime || "23:59";
+				dueDateTime = dueDateTime || "12:00";
 
 				var ddmmyyyy = dueDate.trim().split('.');
 				var hhmm = dueDateTime.trim().split(':');
 
 				if (ddmmyyyy.length !== 3 || hhmm.length !== 2) {
 					return false;
-				}
+				}				
 
-				var date = new Date(parseInt(ddmmyyyy[2], 10), parseInt(ddmmyyyy[1], 10) - 1, parseInt(ddmmyyyy[0], 10), parseInt(hhmm[0], 10), parseInt(hhmm[1], 10), 59, 999);
+				var date;
+				
+				if(isDueDateTimeUndefined) {
+					date = new Date(ddmmyyyy[2] + "-" + ddmmyyyy[1] + "-"+ddmmyyyy[0] + "T" + hhmm[0]+":"+hhmm[1]+":00+00:00");
+				} else {
+					date = new Date(parseInt(ddmmyyyy[2], 10), parseInt(ddmmyyyy[1], 10) - 1, parseInt(ddmmyyyy[0], 10), parseInt(hhmm[0], 10), parseInt(hhmm[1], 10), 0, 0);
+				}
 
 				if (isNaN(date.getTime())) {
 					return false;
