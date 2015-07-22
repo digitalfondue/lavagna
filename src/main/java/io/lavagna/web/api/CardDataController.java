@@ -446,7 +446,7 @@ public class CardDataController {
 	@RequestMapping(value = "/api/card-data/activity/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public CardData getCardDataById(@PathVariable("id") int id) {
-		return cardDataRepository.getUndeletedDataLightById(id);
+		return cardDataRepository.getDataLightById(id);
 	}
 
 	@Getter
