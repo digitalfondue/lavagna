@@ -3,22 +3,41 @@
 <head>
 	<title></title>
 <body>
-<div style="padding: 10px; font-family: sans-serif; font-style: normal; font-variant: normal; background-color: #E5E5E5;">
-	{{#cards}}
-	<div style="padding: 10px; font-family: sans-serif; font-style: normal; font-variant: normal;">
-		<div style="background-color: white; border: 1px solid #D0D0D0; padding: 10px;">
-			<h1 style="font-size: 16px">
-				<a style="color: #2A6496"
-				   href="{{baseApplicationUrl}}{{cardFull.projectShortName}}/{{cardFull.boardShortName}}-{{cardFull.sequence}}">{{cardName}}</a>
-			</h1>
-			{{#cardEvents}}
-			<p style="font-size: 12px">
-				<code>{{.}}</code>
-			</p>
-			{{/cardEvents}}
-		</div>
-	</div>
-	{{/cards}}
-</div>
+<table style="padding: 10px; font-family: sans-serif; font-style: normal; font-variant: normal; background-color: #E5E5E5; width: 100%; border-collapse: collapse;"
+	   cellpadding="20" cellspacing="0">
+	<tbody>
+	<tr>
+		<td style="border: none;">
+			{{#cards}}
+			<table style="background-color: white; border: 1px solid #D0D0D0; width: 100%; border-collapse: collapse;"
+				   cellpadding="10" cellspacing="0">
+				<tbody>
+				<tr>
+					<td style="border: none;">
+						<h1 style="font-size: 16px">
+							<a style="color: #2A6496"
+							   href="{{baseApplicationUrl}}{{cardFull.projectShortName}}/{{cardFull.boardShortName}}-{{cardFull.sequence}}">{{cardName}}</a>
+						</h1>
+					</td>
+				</tr>
+				{{#cardEvents}}
+				<tr>
+					<td style="border: none;">
+						<code style="font-size: 12px">{{.}}</code>
+					</td>
+				</tr>
+				{{/cardEvents}}
+				</tbody>
+			</table>
+
+			{{^last}}
+			<br />
+			{{/last}}
+
+			{{/cards}}
+		</td>
+	</tr>
+	</tbody>
+</table>
 </body>
 </html>
