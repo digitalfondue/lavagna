@@ -1,4 +1,4 @@
-<ul class="lavagna-board-column-holder" data-ng-style="{width: (290+ 4* 2+ (columns.length* 290+ 4* 2* columns.length))+'px'}" data-ui-sortable="sortableColumnOptions">
+<ul class="lavagna-board-column-holder" data-ui-sortable="sortableColumnOptions" data-lvg-size-by-visible-columns="columns">
 	<li class="lavagna-board-column lavagna-sortable-board-column"
 		data-ng-controller="ColumnCtrl"
 		data-ng-repeat="column in columns track by column.id"
