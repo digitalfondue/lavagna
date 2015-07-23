@@ -31,19 +31,17 @@
 					</div>
 					<div class="title-addon col-xs-2">
 						<ul class="panel-controls">
-							<li data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
-								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'" data-ng-click="closeMilestone(milestone.labelListValue)">
-									<i class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"></i>
-								</span>
-								<span class="pull-right" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'" data-ng-click="openMilestone(milestone.labelListValue)">
-									<i class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"></i>
-								</span>
+							<li data-ng-if="milestone.labelListValue.id != -1" data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
+								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'" data-ng-click="closeMilestone(milestone.labelListValue)">
+									</span>
+								<span class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'" data-ng-click="openMilestone(milestone.labelListValue)">
+									</span>
 							</li>
 							<li class="control-item" data-ng-show="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-								<span class="pull-right"><i class="fa fa-chevron-up"></i></span>
+								<span class="fa fa-chevron-up"></span>
 							</li>
 							<li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-								<span class="pull-right"><i class="fa fa-chevron-down"></i></span>
+								<span class="fa fa-chevron-down"></span>
 							</li>
 						</ul>
 					</div>
