@@ -26,6 +26,10 @@
 			Label.removeLabelListValueMetadata(val.id, 'status');
 		};
 
+		$scope.orderCardByStatus = function(card) {
+			return card.columnDefinition == "CLOSED" ? 1 : 0;
+		}
+
 		var orderByStatus = function (milestone) {
 			var insertStatusIfExists = function (milestone, source, target, status) {
 				if (source[status] != undefined) {

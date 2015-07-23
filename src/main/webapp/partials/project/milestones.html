@@ -77,7 +77,7 @@
 						</div>
 
 						<div class="lvg-milestone-card"
-							 data-bindonce data-ng-repeat="card in milestone.detail.cards.found">
+							 data-bindonce data-ng-repeat="card in milestone.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
 
 							<a data-bo-href="'#/' + project.shortName + '/milestones/' + card.boardShortName + '-' + card.sequence"
 							   data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
