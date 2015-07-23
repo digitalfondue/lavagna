@@ -159,7 +159,7 @@
 
 
 
-.lavagna-board-panel:hover, .lavagna-sidebar-panel:hover {
+.lvg-can-move-cards .lavagna-board-panel:hover, .lvg-can-move-cards .lavagna-sidebar-panel:hover {
 	box-shadow: 0 2px 10px rgba(0,0,0,0.30);
 	cursor: move;
 }
@@ -285,7 +285,7 @@ ul.assigned-users li.assigned-user:first-child {
 	float: left;
 }
 
-.lvg-column-handle {
+.lvg-can-move-columns .lvg-column-handle {
 	cursor: move;
 }
 
