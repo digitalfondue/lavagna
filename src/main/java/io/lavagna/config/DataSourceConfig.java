@@ -36,8 +36,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import ch.digitalfondue.npjt.QueryFactory;
 
 public class DataSourceConfig {
-	
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("4");
+
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("5");
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(Environment env) throws URISyntaxException {
@@ -51,7 +51,7 @@ public class DataSourceConfig {
 		} else {
 			urlWithCredentials(dataSource, env);
 		}
-		
+
 		String validationQuery = new QueryFactory(env.getRequiredProperty("datasource.dialect"), (NamedParameterJdbcTemplate) null)
 			.from(ValidationQuery.class).validation();
 
@@ -59,23 +59,23 @@ public class DataSourceConfig {
 		dataSource.setTestOnBorrow(true);
 		dataSource.setTestOnConnect(true);
 		dataSource.setTestWhileIdle(true);
-		
-		
+
+
 		if (System.getProperty("startDBManager") != null) {
 			DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:lavagna", "--noexit" });
 		}
-		
+
 		return dataSource;
 	}
 
 
 	/**
 	 * for supporting heroku style url:
-	 * 
+	 *
 	 * <pre>
 	 * [database type]://[username]:[password]@[host]:[port]/[database name]
 	 * </pre>
-	 * 
+	 *
 	 * @param dataSource
 	 * @param env
 	 * @throws URISyntaxException
@@ -101,9 +101,9 @@ public class DataSourceConfig {
 
 	@Bean
 	public DatabaseMigrator migrator(Environment env, DataSource dataSource, ApplicationEventPublisher publisher) {
-		
+
 		boolean isDev = ArrayUtils.contains(env.getActiveProfiles(),"dev");
-		
+
 		DatabaseMigrator migrator = new DatabaseMigrator(env, dataSource, isDev ? MigrationVersion.LATEST : LATEST_STABLE_VERSION);
 		publisher.publishEvent(new DatabaseMigrationDoneEvent(this));
 		return migrator;

@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationListener;
@@ -60,7 +61,7 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 		this.notificationService = notificationService;
 		this.statisticsService = statisticsService;
 	}
-	
+
 	@Scheduled(cron = "30 59 23,5,11,17 * * *")
 	public void snapshotCardsStatus() {
 		statisticsService.snapshotCardsStatus();
@@ -112,7 +113,9 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 			}, 2 * 1000);
 		}
 
+		Integer timespan = NumberUtils.toInt(configurationRepository.getValueOrNull(Key.EMAIL_NOTIFICATION_TIMESPAN), 30);
+
 		taskScheduler.scheduleAtFixedRate(new EmailNotificationHandler(configurationRepository, notificationService),
-				30 * 1000);
+				timespan * 1000);
 	}
 }
