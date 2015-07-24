@@ -13,3 +13,4 @@ matrix:
 script: mvn test jacoco:report $PROFILE
 after_success:
   - mvn coveralls:report
+sudo: false
