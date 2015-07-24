@@ -59,7 +59,8 @@
 							<span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.connect</span>
 					</button>
 					<button type="submit" class="lvg-button lvg-button-submit"
-							data-ng-if="availableOrganizations.length > 0 && !trelloImportIsRunning">
+							data-ng-if="availableOrganizations.length > 0"
+							data-ng-disabled="trelloImportIsRunning">
 						<span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.import</span>
 					</button>
 					<button type="button" class="lvg-button lvg-button-default" data-ng-click="cancel()" data-ng-if="availableOrganizations.length > 0 && !trelloImportIsRunning" data-translate>button.cancel</button>
