@@ -23,7 +23,10 @@
 			scaleBeginAtZero: true,
 			responsive: true,
 			maintainAspectRatio: false,
-			animation : false
+			animation : false,
+			scaleOverride : true,
+            scaleSteps : 4,
+            scaleStartValue : 0
 		};
 
 		$scope.cardsByLabelChartOptions = {
@@ -80,6 +83,10 @@
 				var backlog = open + getStatusFromHistory(stats, index, "BACKLOG");
 				cardsHistory.datasets[0].data.push(backlog);
 			}
+
+			//scale for the chart
+			var maxValue = Math.max.apply(Math, cardsHistory.datasets[0].data);
+			$scope.cardsHistoryChartOptions.scaleStepWidth = maxValue > 4 ? Math.ceil(Math.max(maxValue) / 4) : 1;
 
 			$scope.stats = stats;
 
