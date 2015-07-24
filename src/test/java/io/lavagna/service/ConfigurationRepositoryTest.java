@@ -26,11 +26,14 @@ import java.util.EnumSet;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +45,14 @@ public class ConfigurationRepositoryTest {
 
 	@Autowired
 	private ConfigurationRepository configurationRepository;
+
+	@Autowired
+	private NamedParameterJdbcTemplate jdbc;
+
+	@Before
+	public void prepare() {
+		jdbc.update("DELETE FROM LA_CONF", new EmptySqlParameterSource());
+	}
 
 	@Test
 	public void testHasKeyDefined() {
