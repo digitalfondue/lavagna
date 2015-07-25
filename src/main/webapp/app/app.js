@@ -1,6 +1,13 @@
 (function() {
 
 	'use strict';
+	
+	// horrible workaround
+	// http://stackoverflow.com/questions/4508574/remove-hash-from-url seems an issue in angular+html5 mode
+	// if we have a trailing # in html5mode it cause havoc :D
+	if(window.location.href.indexOf('#') === (window.location.href.length-1) && window.history) {
+		window.history.pushState("", document.title, window.location.pathname);
+	}
 
 	//declare all the modules here
 	angular.module('lavagna.controllers', [ 'lavagna.services' ]);
