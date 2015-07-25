@@ -133,7 +133,7 @@ public class ResourceController {
 			PROJ_SHORT_NAME + "/manage/import",//
 			PROJ_SHORT_NAME + "/manage/milestones",//
 			PROJ_SHORT_NAME + "/manage/anonymous-users-access",//
-			PROJ_SHORT_NAME + "/manage/columns-status" }, method = RequestMethod.GET)
+			PROJ_SHORT_NAME + "/manage/status" }, method = RequestMethod.GET)
 	public void handleIndexForProjectAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
