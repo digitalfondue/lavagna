@@ -232,7 +232,7 @@
 			controller : 'ProjectManageAnonymousUsersAccessCtrl',
           	resolve: projectResolver
 		}).state('ProjectManage.projectManageColumnsStatus', {
-			url : 'columns-status/',
+			url : 'status/',
 			templateUrl : 'partials/project/manage-columns-status.html',
 			controller : 'ProjectManageColumnsStatusCtrl',
 			resolve: projectResolver
