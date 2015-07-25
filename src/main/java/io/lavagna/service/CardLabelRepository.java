@@ -325,6 +325,10 @@ public class CardLabelRepository {
 	public void removeLabelListMetadata(int labelListValueId, String key) {
 		listValuesMetadataQueries.delete(labelListValueId, key);
 	}
+
+	public int countLabeListValueUse(int labelListValueId) {
+		return listValuesMetadataQueries.countUse(labelListValueId);
+	}
 	
 
 }

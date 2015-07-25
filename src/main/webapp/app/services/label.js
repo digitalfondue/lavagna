@@ -55,6 +55,12 @@
 					return res;
 				});
 			},
+			
+			countLabelListValueUse : function(labelListValueId) {
+				return $http.get('api/label-list-values/' + labelListValueId + '/count-use').then(extractData).then(function(val) {
+					return parseInt(val, 10);
+				});
+			},
 
 			addLabelListValue: function(labelId, listValue) {
 				return $http.post('api/label/' + labelId + '/label-list-values', listValue).then(extractData);
@@ -71,8 +77,8 @@
 			swapLabelListValues: function(labelId, swapListValue) {
 				return $http.post('api/label/' + labelId + '/label-list-values/swap', swapListValue).then(extractData);
 			},
-			
 			//
+			
 			createLabelListValueMetadata : function(labelListValueId, key, value) {
 				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key + '/create', {value : value}).then(extractData);
 			},

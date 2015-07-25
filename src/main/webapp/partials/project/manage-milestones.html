@@ -53,9 +53,9 @@
 									<i class="fa fa-check-square"></i>
 								</button>
 							</td>
-							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]" data-ng-init="milestoneUseCount[lValue.id] = false; updateCount(lValue.id)">
 								<button class="lvg-button lvg-button-default"
-										data-ng-disabled="milestoneValues.length < 2"
+										data-ng-disabled="milestoneUseCount[lValue.id] !== 0"
 										data-ng-click="milestoneDeleteStatus[lValue.id] = true">
 									<i class="fa fa-trash-o"></i>
 								</button>

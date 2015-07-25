@@ -7,6 +7,8 @@
 	module.controller('ProjectManageMilestonesCtrl', function ($rootScope, $stateParams, $scope, $modal, $translate, LabelCache, Label, project) {
 
 		$scope.project = project;
+		
+		$scope.milestoneUseCount = {};
 
 		var loadLabel = function () {
 			LabelCache.findByProjectShortName($stateParams.projectName).then(function (labels) {
@@ -39,6 +41,12 @@
 				$scope.newMilestoneValue = null;
 			});
 		};
+		
+		$scope.updateCount = function(id) {
+			Label.countLabelListValueUse(id).then(function(cnt) {
+				$scope.milestoneUseCount[id] = cnt;
+			});
+		}
 
 		$scope.removeLabelListValue = function (labelListValueId) {
 			Label.removeLabelListValue(labelListValueId).then(function() {

@@ -49,4 +49,7 @@ public interface ListValueMetadataQuery {
 	
 	@Query("SELECT * FROM LA_LIST_VALUE_METADATA WHERE LVM_LABEL_LIST_VALUE_ID_FK = :labelListValueId AND LVM_KEY = :key")
 	ListValueMetadata findByLabelListValueIdAndKey(@Bind("labelListValueId") int labelListValueId, @Bind("key") String key);
+
+	@Query("SELECT COUNT(*) FROM LA_CARD_LABEL_VALUE WHERE CARD_LABEL_VALUE_LIST_VALUE_FK = :id")
+	Integer countUse(@Bind("id") int labelListValueId);
 }

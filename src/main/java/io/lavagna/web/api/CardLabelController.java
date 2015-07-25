@@ -136,6 +136,12 @@ public class CardLabelController {
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
+	
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/count-use", method = RequestMethod.GET)
+	public int countUse(@PathVariable("labelListValueId") int labelListValueId) {
+		return cardLabelRepository.countLabeListValueUse(labelListValueId);
+	}
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}", method = RequestMethod.DELETE)
