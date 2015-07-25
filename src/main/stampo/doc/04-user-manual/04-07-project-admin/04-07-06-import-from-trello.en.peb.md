@@ -1,6 +1,6 @@
 ### How to import your data from Trello
 
-
+https://trello.com/app-key
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_api.png" alt="Trello API key">
 
@@ -21,3 +21,6 @@
 
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_done_board.png" alt="Trello imported board">
+
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_original_board.png" alt="Trello imported board">
