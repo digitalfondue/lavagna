@@ -65,6 +65,7 @@
 						templateUrl: 'partials/project/fragments/project-modal-edit-label.html',
 						windowClass: 'lavagna-modal',
 						controller: function ($rootScope, $scope, LabelCache, Label) {
+							$scope.labelListValueUseCount = {};
 							$scope.l = label;
 							$scope.labelsListValues = labelsListValues;
 							
@@ -86,6 +87,12 @@
 										$scope.labelsListValues = listValues;
 									});
 								}
+							};
+							
+							$scope.updateCount = function(id) {
+								Label.countLabelListValueUse(id).then(function(cnt) {
+									$scope.labelListValueUseCount[id] = cnt;
+								});
 							};
 							
 							var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadListValues);
