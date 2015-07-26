@@ -78,7 +78,7 @@ public class ProjectController {
 		return projectService.findAllForUserWithPermissionInProject(user);
 	}
 
-	@ExpectPermission(Permission.CREATE_PROJECT)
+	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/project", method = RequestMethod.POST)
 	public void create(@RequestBody CreateRequest project) {
 		checkShortName(project.getShortName());
@@ -86,13 +86,13 @@ public class ProjectController {
 		eventEmitter.emitCreateProject(project.getShortName());
 	}
 
-	@ExpectPermission(Permission.CREATE_PROJECT)
+	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/suggest-project-short-name", method = RequestMethod.GET)
 	public Suggestion suggestProjectShortName(@RequestParam("name") String name) {
 		return new Suggestion(ShortNameGenerator.generateShortNameFrom(name));
 	}
 
-	@ExpectPermission(Permission.CREATE_PROJECT)
+	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/check-project-short-name", method = RequestMethod.GET)
 	public boolean checkProjectShortName(@RequestParam("name") String name) {
 		return ShortNameGenerator.isShortNameValid(name) && !projectService.existsWithShortName(name);
@@ -118,7 +118,7 @@ public class ProjectController {
 		return boardRepository.findBoardInfo(project.getId());
 	}
 
-	@ExpectPermission(Permission.CREATE_BOARD)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/project/{projectShortName}/board", method = RequestMethod.POST)
 	public void createBoard(@PathVariable("projectShortName") String shortName, @RequestBody CreateRequest board) {
 		checkShortName(board.getShortName());

@@ -73,7 +73,7 @@ public class BoardController {
 		return ShortNameGenerator.isShortNameValid(name) && !boardRepository.existsWithShortName(name);
 	}
 
-	@ExpectPermission(Permission.UPDATE_BOARD)
+	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/board/{shortName}", method = RequestMethod.POST)
 	public Board updateBoard(@PathVariable("shortName") String shortName, @RequestBody UpdateRequest updatedBoard) {
 		Board board = boardRepository.findBoardByShortName(shortName);
