@@ -2,7 +2,7 @@
 
 https://trello.com/app-key
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_api.png" alt="Trello API key">
+To configure the Trello API key, please look at the <a href="{{relativeRootPath}}/03-configuration-and-administration/03-01-config-parameters">Configuration Parameters</a> documentation.
 
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_import.png" alt="Trello import">
