@@ -40,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -170,7 +171,7 @@ public class ListValueMetadataRepositoryTest {
 		Assert.assertEquals(2, listValueMetadataQuery.findByLabelListValueIds(labelListValueIds).size());
 	}
 	
-	@Test
+	@Test(expected = DataIntegrityViolationException.class)
 	public void testDeleteCascade() {
 		LabelListValue llv = createLabelListValue().getLeft();
 		listValueMetadataQuery.insert(llv.getId(), "KEY", "VALUE");
@@ -179,7 +180,6 @@ public class ListValueMetadataRepositoryTest {
 		Assert.assertEquals(2, listValueMetadataQuery.findByLabelListValueId(llv.getId()).size());
 		
 		cardLabelRepository.removeLabelListValue(llv.getId());
-		Assert.assertTrue(listValueMetadataQuery.findByLabelListValueId(llv.getId()).isEmpty());
 	}
 
 }

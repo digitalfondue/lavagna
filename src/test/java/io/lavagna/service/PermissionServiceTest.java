@@ -185,7 +185,7 @@ public class PermissionServiceTest {
 		assertTrue(permissionsForRole(permissionService.findAllRolesAndRelatedPermission(), ROLE).isEmpty());
 
 		Set<Permission> perms = EnumSet
-				.of(Permission.ADMINISTRATION, Permission.CREATE_BOARD, Permission.CREATE_COLUMN);
+				.of(Permission.ADMINISTRATION, Permission.PROJECT_ADMINISTRATION, Permission.CREATE_COLUMN);
 		permissionService.updatePermissionsToRole(role, perms);
 		assertEquals(perms, permissionsForRole(permissionService.findAllRolesAndRelatedPermission(), ROLE));
 
@@ -203,7 +203,7 @@ public class PermissionServiceTest {
 		assertTrue(permissionsForRole(permissionService.findAllRolesAndRelatedPermissionInProjectId(project.getId()),
 				ROLE).isEmpty());
 
-		Set<Permission> perms = EnumSet.of(Permission.CREATE_BOARD, Permission.CREATE_COLUMN);
+		Set<Permission> perms = EnumSet.of(Permission.PROJECT_ADMINISTRATION, Permission.CREATE_COLUMN);
 		permissionService.updatePermissionsToRoleInProjectId(role, perms, project.getId());
 		assertEquals(
 				perms,
@@ -297,7 +297,7 @@ public class PermissionServiceTest {
 		permissionService.assignRoleToUsers(ROLE, usersId);
 
 		Set<Permission> perms = EnumSet
-				.of(Permission.ADMINISTRATION, Permission.CREATE_BOARD, Permission.CREATE_COLUMN);
+				.of(Permission.ADMINISTRATION, Permission.PROJECT_ADMINISTRATION, Permission.CREATE_COLUMN);
 		permissionService.updatePermissionsToRole(ROLE, perms);
 
 		assertEquals(perms, permissionService.findBasePermissionByUserId(user1.getId()));
@@ -309,7 +309,7 @@ public class PermissionServiceTest {
 		permissionService.createRoleInProjectId(ROLE, project.getId());
 		permissionService.assignRoleToUsersInProjectId(ROLE, usersId, project.getId());
 
-		Set<Permission> perms = EnumSet.of(Permission.CREATE_BOARD, Permission.CREATE_COLUMN);
+		Set<Permission> perms = EnumSet.of(Permission.PROJECT_ADMINISTRATION, Permission.CREATE_COLUMN);
 		permissionService.updatePermissionsToRoleInProjectId(ROLE, perms, project.getId());
 
 		assertEquals(perms, permissionService.findPermissionByUsernameInProjectId(user1.getId(), project.getId()));
@@ -347,7 +347,7 @@ public class PermissionServiceTest {
 		assertTrue(permissionService.findPermissionsGroupedByProjectForUserId(user1.getId()).getPermissionsByProject()
 				.isEmpty());
 
-		Set<Permission> permsProject1 = EnumSet.of(Permission.CREATE_BOARD, Permission.CREATE_COLUMN);
+		Set<Permission> permsProject1 = EnumSet.of(Permission.PROJECT_ADMINISTRATION, Permission.CREATE_COLUMN);
 		permissionService.updatePermissionsToRoleInProjectId(ROLE, permsProject1, project.getId());
 
 		assertEquals(1, permissionService.findPermissionsGroupedByProjectForUserId(user1.getId())

@@ -29,18 +29,10 @@ public enum Permission {
 	/* role for admin project */
 	PROJECT_ADMINISTRATION(PermissionCategory.PROJECT),
 
-	/* role for reading a project */
-	CREATE_PROJECT(PermissionCategory.PROJECT, true),
-
 	/* role for reading a board and related column/card/comments */
 	READ(PermissionCategory.BOARD),
 
-	/* can create new board */
-	CREATE_BOARD(PermissionCategory.BOARD), //
-
-	UPDATE_BOARD(PermissionCategory.BOARD), //
-	DELETE_BOARD(PermissionCategory.BOARD), //
-
+	
 	/* can create new column */
 	CREATE_COLUMN(PermissionCategory.COLUMN), //
 
