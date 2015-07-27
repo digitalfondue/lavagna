@@ -1,0 +1,64 @@
+## Setup
+
+### Step 1, Base url or import
+
+After successfully launching the application, go to http://your-lavagna-install/setup .
+
+The following page will be shown:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_1.png" alt="First setup step">
+
+ - If it's a new install, confirm that the base url is correct and click *Next* 
+ - If it's an import, select the exported file and click *Import*. The import process can take a noticeable amount of time.
+ 
+### Step 2, Login provider configuration
+
+Lavagna does **not** store the user credentials by design: an external provider must be chosen. There are 4 possible choice:
+
+ - demo (use for test purpose only)
+ - ldap
+ - mozilla persona
+ - oauth
+ 
+#### Demo provider
+
+The demo provider must **not** be selected in production, as the password **is** the username. It can be useful for a small test round for evaluating the product.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_demo.png" alt="Demo provider">
+
+#### Ldap provider
+
+If the users are stored in a ldap directory (Active Directory is supported too), the ldap provider must be configured.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_ldap.png" alt="Ldap provider">
+
+It requires a user that can query the directory (the Manager DN and Manager Password). 
+
+The query is composed by a base (Search base) and the filter (User search filter), where `{0}` is the placeholder for the username.
+
+The configuration can be tested in the "Check ldap configuration" form.
+
+#### Mozilla persona provider
+
+[Mozilla Persona](https://developer.mozilla.org/en-US/Persona) is simplest external provider available to configure.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_persona.png" alt="Persona provider">
+
+The default Audience value is most likely correct.
+
+#### Oauth provider
+
+The application support 4 external oauth providers: bitbucket, github, google, twitter.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_oauth.png" alt="Oauth provider">
+
+TODO: COMPLETE
+
+
+### Step 3 Insert administator
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_3.png" alt="Insert admin user">
+
+### Step 4 Confirm
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_4.png" alt="Confirm">

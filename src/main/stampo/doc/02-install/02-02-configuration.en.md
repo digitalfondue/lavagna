@@ -6,7 +6,7 @@ Lavagna can run as a standalone application or inside a servlet 3.0+ container.
 
 As a standalone application, see the `bin/lavagna.sh`, `bin/lavagna.bat` or `bin/windows-service/lavagna.xml` scripts and configure them. It will launch the app using a self contained jetty server.
 
-As a default, lavagna launch in dev mode, so check in the scripts that the spring.profiles.active property is set to prod.
+As a default, lavagna launch in dev mode, so check in the scripts that the spring.profiles.active property is set to **prod**.
 
 ### Servlet container
 
