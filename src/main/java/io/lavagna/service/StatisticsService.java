@@ -34,6 +34,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -145,11 +146,19 @@ public class StatisticsService {
 	// Most active card
 
 	public CardFull getMostActiveCardByBoard(int boardId, Date fromDate) {
-		return queries.getMostActiveCardByBoard(boardId, fromDate);
+		try {
+			return queries.getMostActiveCardByBoard(boardId, fromDate);
+		} catch (EmptyResultDataAccessException ex) {
+			return null;
+		}
 	}
 
 	public CardFull getMostActiveCardByProject(int projectId, Date fromDate) {
-		return queries.getMostActiveCardByProject(projectId, fromDate);
+		try {
+			return queries.getMostActiveCardByProject(projectId, fromDate);
+		} catch (EmptyResultDataAccessException ex) {
+			return null;
+		}
 	}
 
 	// Milestones

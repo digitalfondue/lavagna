@@ -186,7 +186,7 @@ public class ProjectController {
 				statisticsService.getAverageUsersPerCardOnProject(projectId),
 				statisticsService.getAverageCardsPerUserOnProject(projectId),
 				statisticsService.getCardsByLabelOnProject(projectId),
-				activeUsers > 0 ? statisticsService.getMostActiveCardByProject(projectId, fromDate) : null);
+				statisticsService.getMostActiveCardByProject(projectId, fromDate));
 	}
 
 	/**

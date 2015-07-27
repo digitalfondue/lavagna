@@ -384,9 +384,33 @@ public class StatisticsServiceTest {
 	}
 
 	@Test
+	public void getTodayMostActiveCardByBoardTest() {
+		Card resultCard = statisticsService.getMostActiveCardByBoard(board.getId(), today);
+		Assert.assertEquals(card.getId(), resultCard.getId());
+	}
+
+	@Test
+	public void getTomorrowMostActiveCardByBoardTest() {
+		Card resultCard = statisticsService.getMostActiveCardByBoard(board.getId(), DateUtils.addDays(today, 1));
+		Assert.assertNull(resultCard);
+	}
+
+	@Test
 	public void getMostActiveCardByProjectTest() {
 		Card resultCard = statisticsService.getMostActiveCardByProject(board.getProjectId(), oneMonthAgo);
 		Assert.assertEquals(card.getId(), resultCard.getId());
+	}
+
+	@Test
+	public void getTodayMostActiveCardByProjectTest() {
+		Card resultCard = statisticsService.getMostActiveCardByProject(board.getProjectId(), today);
+		Assert.assertEquals(card.getId(), resultCard.getId());
+	}
+
+	@Test
+	public void getTomorrowMostActiveCardByProjectTest() {
+		Card resultCard = statisticsService.getMostActiveCardByProject(board.getProjectId(), DateUtils.addDays(today, 1));
+		Assert.assertNull(resultCard);
 	}
 
 	// Milestones

@@ -124,6 +124,6 @@ public class BoardController {
 				statisticsService.getAverageUsersPerCardOnBoard(board.getId()),
 				statisticsService.getAverageCardsPerUserOnBoard(board.getId()),
 				statisticsService.getCardsByLabelOnBoard(board.getId()),
-				activeUsers > 0 ? statisticsService.getMostActiveCardByBoard(board.getId(), fromDate) : null);
+				statisticsService.getMostActiveCardByBoard(board.getId(), fromDate));
 	}
 }
