@@ -1,1 +1,1 @@
-### Global and project-specific search
+### Global and project specific search
