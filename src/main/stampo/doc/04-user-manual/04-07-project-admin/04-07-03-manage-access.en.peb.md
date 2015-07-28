@@ -1,6 +1,6 @@
 ### Manage Access
 
-Under the Anonymous Access tab, is it possible to enable the access to non logged in users to the project. As the description says, if the anonymous access is enabled globally, the project will be already visible to everyone.
+Under the **Anonymous Access** tab, is it possible to enable the access to non logged in users to the project. As the description says, if the anonymous access is enabled globally, the project will be already visible to everyone.
 
 To enable it, click on the toggle on the top right corner.
 
