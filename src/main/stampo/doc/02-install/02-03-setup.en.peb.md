@@ -8,8 +8,8 @@ The following page will be shown:
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_1.png" alt="First setup step">
 
- - If it's a new install, confirm that the base url is correct and click *Next* 
- - If it's an import, select the exported file and click *Import*. The import process can take a noticeable amount of time.
+ - If it's a new install, confirm that the base url is correct and click **Next** 
+ - If it's an import, select the exported file and click **Import**. The import process can take a noticeable amount of time.
  
 ### Step 2, Login provider configuration
 
@@ -57,8 +57,12 @@ TODO: COMPLETE
 
 ### Step 3 Insert administator
 
+In the third step, the administrator must be defined. Enter the username and click **Next**.
+
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_3.png" alt="Insert admin user">
 
 ### Step 4 Confirm
+
+Check the validity of the configuration data. Click on **Activate**: the configuration will be saved and the browser will go to the root of the application. Enter the username (and password if required).
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_4.png" alt="Confirm">
