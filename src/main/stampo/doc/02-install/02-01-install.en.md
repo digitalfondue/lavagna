@@ -27,7 +27,9 @@ CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;
 
 ### Postgresql
 
-For the full text search, the unaccent extension must be present. In general it's already included in the postgresql
+When using Postgresql, ensure that the database/schema is in utf-8.
+
+For the full text search support, the unaccent extension must be present. In general it's already included in the postgresql
 installation. If it's not present, an error will be launched when running lavagna the first time.
 
 
