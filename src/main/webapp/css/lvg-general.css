@@ -423,7 +423,7 @@ ul.panel-controls {
 	float: right;
 	margin: 0;
 	padding: 0 5px 0 0;
-	color: #d5d5d5;
+	color: rgb(117, 117, 117);
 	list-style: none;
 }
 
