@@ -214,6 +214,10 @@ h4, h5, h6 {
   display: block;
 }
 
+.main-summary {
+  border: 0 !important;
+}
+
 .summary a {
   color: #888;
   text-decoration:none;

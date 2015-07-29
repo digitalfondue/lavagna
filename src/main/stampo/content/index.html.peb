@@ -50,7 +50,7 @@ include-child-summary: true
                 {% endif %}
 
                 <!-- summary for the current page -->
-                <div class="summary {% if pagination.depth > 0 %} summary-cutoff {% endif %}">{{summary|raw}}</div>
+                <div class="summary {% if pagination.depth == 0 %}main-summary{% endif %}{% if pagination.depth > 0 %}summary-cutoff{% endif %}">{{summary|raw}}</div>
 
                 {% if pagination.depth > 0 %}
                 <!-- main content -->
