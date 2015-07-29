@@ -1,29 +1,207 @@
-#menu ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/** MATERIAL ICONS, LICENSE: https://github.com/google/material-design-icons/blob/master/LICENSE **/
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://fonts.gstatic.com/s/materialicons/v7/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
 }
 
-#menu .pure-menu > ol > li {
-  border-bottom: 1px solid #333;
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  word-wrap: normal;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }
 
-#menu .pure-menu > ol > li:last-child {
-  border-bottom:none;
+body {
+  font-family: sans-serif;
 }
 
-#menu li {
-  list-style-type: none;
+a {
+  color: #428bca;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+a:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
 }
 
-#menu li a {
-  padding: 10px;
-  text-decoration:none;
+h1, h2, h3 {
+  text-transform: uppercase;
+  font-size: 24px;
 }
+
+h4, h5, h6 {
+  font-size: 18px;
+}
+
+/* DRAWER */
+
+.lvg-drawer {
+    background: #f5f5f5 !important;;
+}
+
+/*
+    All anchors inside the menu should be styled like this.
+    */
+    .lvg-drawer a {
+        color: #333333;
+        border: none;
+        padding: 0.6em 0 0.6em 0.6em;
+    }
+
+    /*
+    Remove all background/borders, since we are applying them to #menu.
+    */
+     .lvg-drawer,
+     .lvg-drawer ul {
+        border: none;
+        background: transparent;
+    }
+
+    /*
+    Add that light border to separate items into groups.
+    */
+    .lvg-drawer ul,
+    .lvg-drawer .menu-item-divided {
+        border-top: 1px solid rgb(207, 216, 220);
+    }
+        /*
+        Change color of the anchor links on hover/focus.
+        */
+        .lvg-drawer li a:hover,
+        .lvg-drawer li a:focus {
+            background: #eceff1;
+        }
+
+    /*
+    This styles the selected menu item `<li>`.
+    */
+    .lvg-drawer-selected,
+    .lvg-drawer-heading {
+        background: #1f8dd6;
+    }
+        /*
+        This styles a link within a selected menu item `<li>`.
+        */
+        .lvg-drawer-selected a {
+            color: #fff;
+        }
+
+    /*
+    This styles the menu heading.
+    */
+    .lvg-drawer-heading {
+        font-size: 110%;
+        color: #fff;
+        margin: 0;
+    }
+
+    .lvg-drawer > ol > li {
+      border-bottom: 1px solid #dddddd;
+    }
+    
+    .lvg-drawer ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .lvg-drawer > ol > li:last-child {
+      border-bottom:none;
+    }
+    
+    .lvg-drawer li {
+      list-style-type: none;
+    }
+    
+    .lvg-drawer li a {
+      padding: 10px;
+      text-decoration:none;
+    }
+
+    .lvg-drawer > ol > li > span > a {
+        font-weight: bold;
+    }
+
+    .lvg-drawer > ol > li > ol span {
+        font-weight: normal;
+        font-size: 14px;
+    }
+
+    .lvg-drawer > ol > li > ol > li ol {
+        display: none;
+    }
+
+    .lvg-drawer .stampo-number-and-heading-container {
+      display:block;
+    }
+
+    .lvg-drawer .stampo-number-and-heading-container a {
+      display:block;
+    }
+
+    .lvg-drawer .stampo-number-and-heading-container .stampo-heading-li-number {
+      display:none;
+    }
+
+/* HEADER */
+
+.lvg-header {
+  background: #607d8b !important;
+}
+
+@media (max-width: 1024px) {
+  .mdl-layout-title {
+    padding-left: 10px;
+  }
+}
+
+
+/* CONTENT */
+
+.lvg-doc {
+  max-width: 768px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #dddddd;
+  padding: 10px 20px;
+}
+.pure-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 
 .content h1 a, .content h2 a, .content h3 a, .content h4 a, .content h5 a, .content h6 a {
   color: #888;
   text-decoration:none;
+}
+
+/* SUMMARY */
+
+@media (max-width: 1024px) {
+  .summary-cutoff ol {
+    display: none;
+  }
+
+  .summary-cutoff {
+    border-top: 0 !important;
+  }
 }
 
 .summary ol {
@@ -33,11 +211,50 @@
 .summary {
   border-bottom: 1px solid #eee;
   border-top: 1px solid #eee;
+  display: block;
 }
 
 .summary a {
   color: #888;
   text-decoration:none;
+}
+
+.summary a:hover {
+  color: #333;
+  text-decoration:none;
+}
+
+.stampo-heading-li-number, .stampo-heading-toc-number {
+  margin-right: 10px;
+}
+
+/* NAVIGATION */
+
+.top-navigation, .bottom-navigation{
+  width: 100%;
+  display:inline-block;
+}
+
+.top-navigation > div, .bottom-navigation > div {
+  padding-top:0.6em;
+  padding-bottom:0.6em;
+  float: left;
+  width: 33%;
+}
+
+.top-navigation a, .bottom-navigation a {
+  color: #888;
+  text-decoration:none;
+  padding: 0.6em;
+}
+
+.top-navigation a:hover, .bottom-navigation a:hover {
+  color: #333;
+  text-decoration:none;
+}
+
+.bottom-navigation {
+  border-top:1px solid #eee;
 }
 
 .navigation-prev {
@@ -56,39 +273,4 @@
 }
 .navigation-next a:after {
   content: "\00a0»"
-}
-
-#menu .stampo-number-and-heading-container {
-  display:block;
-}
-
-#menu .stampo-number-and-heading-container a {
-  display:block;
-}
-
-#menu .stampo-number-and-heading-container .stampo-heading-li-number {
-  display:none;
-}
-
-.stampo-heading-li-number, .stampo-heading-toc-number {
-  margin-right: 10px;
-}
-
-.top-navigation > div, .bottom-navigation > div {
-  padding-top:0.6em;
-  padding-bottom:0.6em;
-}
-
-.top-navigation a, .bottom-navigation a {
-  color: #888;
-  text-decoration:none;
-  padding: 0.6em;
-}
-
-.bottom-navigation {
-  border-top:1px solid #eee;
-}
-
-.header {
-  border-bottom:none;
 }
