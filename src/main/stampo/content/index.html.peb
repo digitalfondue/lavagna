@@ -39,7 +39,7 @@ include-child-summary: true
                         {% endif %}
                     </div>
                     <div class="navigation-middle">
-                        <a href="{{relativeRootPath}}">Index</a>
+                        <a href="{{relativeRootPath}}/index.html">Index</a>
                     </div>
                     <div class="navigation-next">
                         {% if pagination.nextPageUrl != null %}
@@ -64,7 +64,7 @@ include-child-summary: true
                             {% endif %}
                         </div>
                         <div class="pure-u-1-3 navigation-middle">
-                            <a href="{{relativeRootPath}}">Index</a>
+                            <a href="{{relativeRootPath}}/index.html">Index</a>
                         </div>
                         <div class="pure-u-1-3 navigation-next">
                             {% if pagination.nextPageUrl != null %}

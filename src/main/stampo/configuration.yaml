@@ -1,3 +1,4 @@
 locales: 
         - en
 default-locale: en
+use-ugly-url: true

@@ -8,4 +8,4 @@ To enable it, click on the toggle on the top right corner.
 
 The **ROLES** tab is a project level equivalent of the global roles configuration.
 
-Please look at the <a href="{{relativeRootPath}}/03-configuration-and-administration/03-05-roles-and-permissions">Roles and Permissions</a> section.
+Please look at the <a href="{{relativeRootPath}}/03-configuration-and-administration/03-05-roles-and-permissions.html">Roles and Permissions</a> section.
