@@ -1,11 +1,15 @@
 (function() {
 
 	'use strict';
-	
+
+	function supports_history_api() {
+		return !!(window.history && history.pushState);
+	}
+
 	// horrible workaround
 	// http://stackoverflow.com/questions/4508574/remove-hash-from-url seems an issue in angular+html5 mode
 	// if we have a trailing # in html5mode it cause havoc :D
-	if(window.location.href.indexOf('#') === (window.location.href.length-1) && window.history) {
+	if(window.location.href.indexOf('#') === (window.location.href.length-1) && supports_history_api()) {
 		window.history.pushState("", document.title, window.location.pathname);
 	}
 
@@ -41,24 +45,24 @@
 	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
 
 		$locationProvider.html5Mode(true);
-		
+
 		//TODO: this is kinda fragile
 		$urlRouterProvider.rule(function ($injector, $location) {
-			
+
 			//http://stackoverflow.com/questions/4508574/remove-hash-from-url seems an issue in angular+html5 mode
 			//if we have a trailing # in html5mode it cause havoc :D
-			if(window.location.href.indexOf('#') === (window.location.href.length-1) && window.history) {
+			if(window.location.href.indexOf('#') === (window.location.href.length-1) && supports_history_api()) {
 				window.history.pushState("", document.title, window.location.pathname);
 			}
-			
+
 		    var path = $location.url();
 		    var afterHash = '';
-		    
+
 		    if(path.indexOf('#') !== -1) {
 		    	afterHash = path.substr(path.indexOf('#'));
 		    	path = path.substr(0, path.indexOf('#'));
 		    }
-		    
+
 		    //exception: handle board URL.
 		    if(path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+$/) || path.match(/^\/[A-Z0-9_]+\/[A-Z0-9_]+\?.*$/)) {
 		    	return;
@@ -310,7 +314,7 @@
 		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
 			$rootScope.pageTitle = 'Lavagna'
 		});
-		
+
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $state.go(error.status.toString());
