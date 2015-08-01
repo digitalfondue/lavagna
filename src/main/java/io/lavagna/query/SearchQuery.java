@@ -53,8 +53,11 @@ public interface SearchQuery {
 	@Query(type = QueryType.TEMPLATE, value = " LA_BOARD.BOARD_PROJECT_ID_FK IN ")
 	String findSixthRestrictedReadAccess();
 
-	@Query(type = QueryType.TEMPLATE, value = " ORDER BY LA_CARD.CARD_LAST_UPDATED DESC LIMIT ? OFFSET  ?")
-	String findSeventhOrderByAndLimit();
+	@Query(type = QueryType.TEMPLATE, value = " ORDER BY LA_CARD.CARD_LAST_UPDATED DESC ")
+	String findSeventhOrderBy();
+	
+	@Query(type = QueryType.TEMPLATE, value = " LIMIT ? OFFSET ?")
+	String findEighthLimit();
 
 	@Query(type = QueryType.TEMPLATE, value = "SELECT LA_CARD.CARD_ID FROM LA_CARD LEFT JOIN  (")
 	String findCardIdNotInOpen();

@@ -124,9 +124,19 @@ public class SearchService {
 
 		return results;
 	}
-
+	
+	public SearchResults find(List<SearchFilter> unmergedSearchFilter, Integer projectId, Integer boardId,
+			UserWithPermission currentUser) {
+		return find(unmergedSearchFilter, projectId, boardId, currentUser, false, 0);
+	}
+	
 	public SearchResults find(List<SearchFilter> unmergedSearchFilter, Integer projectId, Integer boardId,
 			UserWithPermission currentUser, int page) {
+		return find(unmergedSearchFilter, projectId, boardId, currentUser, true, page);
+	}
+
+	private SearchResults find(List<SearchFilter> unmergedSearchFilter, Integer projectId, Integer boardId,
+			UserWithPermission currentUser, boolean paginate, int page) {
 
 		// if a user don't have access to the specified project id we skip the
 		// whole search
@@ -144,7 +154,7 @@ public class SearchService {
 				&& boardRepository.findBoardById(boardId).getProjectId() != projectId;
 
 		if (userHasNotProjectAccess || userHasNoReadAccess || noProjectIdForBoardId || boardIsntInProject) {
-			return new SearchResults(Collections.<CardFullWithCounts>emptyList(), 0, page, CARDS_PER_PAGE);
+			return new SearchResults(Collections.<CardFullWithCounts>emptyList(), 0, page, paginate ? CARDS_PER_PAGE : Integer.MAX_VALUE, paginate);
 		}
 
 		List<SearchFilter> searchFilters = mergeFreeTextFilters(unmergedSearchFilter);
@@ -206,25 +216,30 @@ public class SearchService {
 
 			params.addAll(projectsWithPermission);
 		}
+		
+		String findCardsQuery = queries.findFirstSelect() + baseQuery.toString() + queries.findSeventhOrderBy();
 
-		params.add(CARDS_PER_PAGE + 1);// limit
-		params.add(page * CARDS_PER_PAGE);// offset
+		if(paginate) {
+			params.add(CARDS_PER_PAGE + 1);// limit
+			params.add(page * CARDS_PER_PAGE);// offset
+			findCardsQuery += queries.findEighthLimit();
+		}
 
-		String findCardsQuery = queries.findFirstSelect() + baseQuery.toString() + queries.findSeventhOrderByAndLimit();
+		
 
 		List<Integer> sr = jdbc.getJdbcOperations().queryForList(findCardsQuery, params.toArray(), Integer.class);
 
 		//
 
 		int count = sr.size();
-		if (page == 0 && sr.size() == (CARDS_PER_PAGE + 1) || page > 0) {
+		if (paginate && page == 0 && sr.size() == (CARDS_PER_PAGE + 1) || page > 0) {
 			String countCardsQuery = queries.findFirstSelectCount() + baseQuery.toString();
 			count = jdbc.getJdbcOperations().queryForObject(countCardsQuery,
 					params.subList(0, params.size() - 2).toArray(), Integer.class);
 		}
 
 		//
-		return new SearchResults(cardFullWithCounts(sr), count, page, CARDS_PER_PAGE);
+		return new SearchResults(cardFullWithCounts(sr), count, page, paginate ? CARDS_PER_PAGE : Integer.MAX_VALUE, paginate);
 	}
 
 	private List<CardFullWithCounts> cardFullWithCounts(List<Integer> sr) {

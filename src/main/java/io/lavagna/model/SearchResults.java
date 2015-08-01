@@ -28,12 +28,14 @@ public class SearchResults {
 	private final int currentPage;
 	private final int countPerPage;
 	private final int totalPages;
+	private final boolean paginate;
 
-	public SearchResults(List<CardFullWithCounts> found, int count, int currentPage, int countPerPage) {
+	public SearchResults(List<CardFullWithCounts> found, int count, int currentPage, int countPerPage, boolean paginate) {
 		this.found = found;
 		this.count = count;
 		this.currentPage = currentPage;
 		this.countPerPage = countPerPage;
-		totalPages = (count + countPerPage - 1) / countPerPage;
+		totalPages = paginate ? ((count + countPerPage - 1) / countPerPage) : 1;
+		this.paginate = paginate;
 	}
 }

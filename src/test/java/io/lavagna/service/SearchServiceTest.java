@@ -290,6 +290,19 @@ public class SearchServiceTest {
 				.find(Arrays.asList(createdByMe), project.getId(), null, userWithPermissions, 0);
 		Assert.assertEquals(1, find.getCount());
 	}
+	
+	@Test
+	public void testWithoutPagination() {
+		for (int i = 0; i < 52; i++) {
+			cardService.createCard("test", column.getId(), new Date(), user);
+		}
+		
+		SearchResults find = searchService.find(Arrays.asList(createdByMe), project.getId(), null, userWithPermissions);
+		Assert.assertEquals(52, find.getFound().size());
+		Assert.assertEquals(52, find.getCount());
+		Assert.assertEquals(0, find.getCurrentPage());
+		Assert.assertEquals(1, find.getTotalPages());
+	}
 
 	@Test
 	public void testPagination() {
