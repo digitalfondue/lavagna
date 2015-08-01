@@ -40,7 +40,7 @@ The configuration can be tested in the "Check ldap configuration" form.
 
 #### Mozilla persona provider
 
-[Mozilla Persona](https://developer.mozilla.org/en-US/Persona) is simplest external provider available to configure.
+[Mozilla Persona](https://developer.mozilla.org/en-US/Persona) is the simplest external provider available to configure.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_persona.png" alt="Persona provider">
 
@@ -52,7 +52,14 @@ The application support 4 external oauth providers: bitbucket, github, google, t
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_oauth.png" alt="Oauth provider">
 
-TODO: COMPLETE
+Select the oauth provider of the first account and provide the api key and secret. The provided callback url should be the correct one that must be provided.
+
+See the documentation for:
+
+ - [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket)
+ - [github](https://developer.github.com/v3/oauth/). Registration page is https://github.com/settings/applications/new
+ - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): you should enable the "Google+ API"
+ - [twitter](https://dev.twitter.com/web/sign-in/implementing)
 
 
 ### Step 3 Insert administator
