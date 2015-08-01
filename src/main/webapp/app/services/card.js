@@ -48,8 +48,8 @@
 			findCardsByMilestone: function (projectName) {
 				return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData);
 			},
-			findCardsByMilestoneDetail: function (projectName, milestone, page) {
-				return $http.get('api/project/' + projectName + '/cards-by-milestone-detail/' + milestone + '/' + page).then(extractData);
+			findCardsByMilestoneDetail: function (projectName, milestone) {
+				return $http.get('api/project/' + projectName + '/cards-by-milestone-detail/' + milestone).then(extractData);
 			},
 			findByColumn: function (columnId) {
 				return $http.get('api/column/' + columnId + '/card').then(extractData);

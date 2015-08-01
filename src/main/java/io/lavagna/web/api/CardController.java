@@ -157,9 +157,9 @@ public class CardController {
 	}
 
 	@ExpectPermission(Permission.READ)
-	@RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}/{page}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}", method = RequestMethod.GET)
 	public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
-			@PathVariable("milestone") String milestone, @PathVariable("page") int page, UserWithPermission user) {
+			@PathVariable("milestone") String milestone, UserWithPermission user) {
 
 		int projectId = projectService.findByShortName(projectShortName).getId();
 		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
@@ -177,7 +177,7 @@ public class CardController {
 			assignedAndClosedCards = null;
 		}
 
-		SearchResults cards = searchService.find(Arrays.asList(filter), projectId, null, user, page);
+		SearchResults cards = searchService.find(Arrays.asList(filter), projectId, null, user);
 		return new MilestoneDetail(cards, assignedAndClosedCards);
 	}
 

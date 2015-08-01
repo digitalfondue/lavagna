@@ -49,10 +49,10 @@
 
 		$scope.moveDetailToPage = function (milestone, page) {
 			User.hasPermission('READ', $stateParams.projectName).then(function () {
-				return Card.findCardsByMilestoneDetail($stateParams.projectName, milestone.labelListValue.value, page);
+				return Card.findCardsByMilestoneDetail($stateParams.projectName, milestone.labelListValue.value);
 			}).then(function (response) {
 				milestone.detail = response;
-				milestone.currentPage = response.cards.currentPage + 1;
+				milestone.currentPage = page + 1; 
 			});
 		};
 

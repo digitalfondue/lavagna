@@ -400,5 +400,63 @@
 			return text.replace(/./gi, "*");
 		};
 	});
+	
+	// imported from https://github.com/angular/angular.js/blob/master/src/ng/filter/limitTo.js
+	// which is under the following license:
+	/* 
+The MIT License
+
+Copyright (c) 2010-2015 Google, Inc. http://angularjs.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+	 */
+	filters.filter('limitToWithOffset', function limitToWithOffset() {
+		
+		function toInt(str) {
+			  return parseInt(str, 10);
+			}
+		
+		
+	  return function(input, limit, begin) {
+	    if (Math.abs(Number(limit)) === Infinity) {
+	      limit = Number(limit);
+	    } else {
+	      limit = toInt(limit);
+	    }
+	    if (isNaN(limit)) return input;
+	
+	    if (angular.isNumber(input)) input = input.toString();
+	    if (!angular.isArray(input) && !angular.isString(input)) return input;
+	
+	    begin = (!begin || isNaN(begin)) ? 0 : toInt(begin);
+	    begin = (begin < 0 && begin >= -input.length) ? input.length + begin : begin;
+	
+	    if (limit >= 0) {
+	      return input.slice(begin, begin + limit);
+	    } else {
+	      if (begin === 0) {
+	        return input.slice(limit, input.length);
+	      } else {
+	        return input.slice(Math.max(0, begin + limit), begin);
+	      }
+	    }
+	  };
+});
 
 })();
