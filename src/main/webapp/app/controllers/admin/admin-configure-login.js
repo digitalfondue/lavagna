@@ -8,7 +8,7 @@
 		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
 	}
 
-	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, CONTEXT_PATH) {
+	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, User, CONTEXT_PATH) {
 		$scope.oauthProviders = ['bitbucket', 'github', 'google', 'twitter'];
 
 		function loadConfiguration() {
@@ -175,7 +175,19 @@
 				}
 				$scope.userHasGlobalRole = userHasGlobalRole;
 			});
-		}
+			
+			Permission.findAllRolesAndRelatedPermissions().then(function(res) {
+				var userHasSearchPermission = false;
+				for(var i = 0; i < res['ANONYMOUS'].roleAndPermissions.length; i++) {
+					var permission = res['ANONYMOUS'].roleAndPermissions[i];
+					if(permission.permission === 'SEARCH') {
+						userHasSearchPermission = true;
+					}
+				}
+				$scope.userHasSearchPermission = userHasSearchPermission;
+			});
+			
+		};
 
 		load();
 		
@@ -202,6 +214,14 @@
 					Permission.removeUserToRole(res.id, 'ANONYMOUS').then(load);
 				}
 			})
+		});
+		
+		$scope.$watch('userHasSearchPermission', function(newVal, oldVal) {
+			if(newVal == undefined || oldVal == undefined || newVal == oldVal) {
+				return;
+			}
+			
+			Permission.toggleSearchPermissionForAnonymousUsers(newVal).then(load);
 		});
 	});
 })();

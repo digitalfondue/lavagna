@@ -52,6 +52,11 @@
 
 		var s = permissionService();
 		s.forProject = permissionService;
+		
+		s.toggleSearchPermissionForAnonymousUsers = function(value) {
+			return $http.post('api/role/ANONYMOUS/toggle-search-permission', {value: value});
+		};
+		
 		return s;
 	});
 })();

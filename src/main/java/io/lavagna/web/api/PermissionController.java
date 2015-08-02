@@ -30,9 +30,14 @@ import io.lavagna.web.api.model.Users;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +73,22 @@ public class PermissionController {
 		int res = permissionService.createRole(new Role(newRole.getName()));
 		eventEmitter.emitCreateRole();
 		return res;
+	}
+	
+	@RequestMapping(value = "/api/role/ANONYMOUS/toggle-search-permission", method = RequestMethod.POST)
+	public void toggleSearchPermission(@RequestBody ToggleSearchPermission addSearch) {
+		Set<Permission> permissions = EnumSet.of(Permission.READ);
+		if (addSearch.value) {
+			permissions.add(Permission.SEARCH);
+		}		
+		permissionService.updatePermissionsToRole(new Role("ANONYMOUS"), permissions);
+		eventEmitter.emitUpdatePermissionsToRole();
+	}
+	
+	@Getter
+	@Setter
+	public static class ToggleSearchPermission {
+		private boolean value;
 	}
 
 	@RequestMapping(value = "/api/role/{roleName}", method = RequestMethod.POST)
