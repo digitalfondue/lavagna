@@ -48,8 +48,8 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 lvg-user-activity-list-item" data-ng-repeat="dateKey in profile.eventsGroupedByDate.keyOrder">
-							<div data-ng-init="showList = false" data-ng-click="showList = !showList">{{dateKey}} : {{profile.eventsGroupedByDate.groupedByDate[dateKey].length}} events
-								<span class="pull-right">
+							<div data-ng-init="showList = false">{{dateKey}} : {{profile.eventsGroupedByDate.groupedByDate[dateKey].length}} events
+								<span class="pull-right" data-ng-click="showList = !showList">
 									<i class="fa fa-chevron-down" data-ng-hide="showList"></i>
 									<i class="fa fa-chevron-up" data-ng-show="showList"></i>
 								</span>

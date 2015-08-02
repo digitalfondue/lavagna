@@ -20,7 +20,7 @@
 				<div class="lavagna-card-title-main" data-ng-show="editCardName">
 					<form data-ng-role="form" data-ng-submit="updateCardName(card, cardNameToEdit);editCardName=false">
 						<div class="form-group">
-							<input class="form-control" data-ng-model="cardNameToEdit" data-lvg-on-esc="editCardName" data-lvg-to-focus="editCardName"></input>
+							<input class="form-control" data-ng-model="cardNameToEdit" data-lvg-on-esc="editCardName" data-lvg-to-focus="editCardName"/>
 						</div>
 						<div>
 							<button class="lvg-button lvg-button-submit" type="submit" data-translate>button.save</button>
@@ -65,14 +65,14 @@
 											data-ng-hide="editMetadataDates">
 											<span
 											data-ng-click="editMetadataDates = true;"
-											class="fa fa-calendar" title="{{'card.configure' | translate}}"
+											class="fa fa-calendar" title="{{'card.setDueDate' | translate}}"
 											data-lvg-has-permission="UPDATE_CARD"></span>
 										</li>
 										<li class="control-item"
 											data-ng-show="editMetadataDates">
 											<span
 											data-ng-click="editMetadataDates = false;"
-											class="fa fa-times active-control" title="{{'button.close' | translate}}"></span>
+											class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
 										</li>
 									</ul>
 								</div>
@@ -140,7 +140,7 @@
 											data-ng-show="editMetadataPeople">
 											<span
 											data-ng-click="editMetadataPeople = false;"
-											class="fa fa-times active-control" title="{{'button.close' | translate}}"></span>
+											class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
 										</li>
 									</ul>
 								</div>
@@ -190,14 +190,14 @@
 											data-ng-hide="editMetadataMilestone">
 											<span
 											data-ng-click="editMetadataMilestone = true;"
-											class="fa fa-plus" title="{{'card.configure' | translate}}"
+											class="fa fa-plus" title="{{'card.setMileStone' | translate}}"
 											data-lvg-has-permission="UPDATE_CARD"></span>
 										</li>
 										<li class="control-item"
 											data-ng-show="editMetadataMilestone">
 											<span
 											data-ng-click="editMetadataMilestone = false;"
-											class="fa fa-times active-control" title="{{'button.close' | translate}}"></span>
+											class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
 										</li>
 									</ul>
 								</div>
@@ -237,11 +237,11 @@
 												<li class="control-item"
 													data-ng-click="descriptionToEdit = description.content; editDescription=true"
 													data-ng-hide="editDescription"><span
-													class="fa fa-pencil"></span></li>
+													class="fa fa-pencil" title="{{'card.setDescription' | translate}}"></span></li>
 												<li class="control-item"
 													data-ng-click="editDescription=false; editDescriptionPreviewMode = false"
 													data-ng-show="editDescription"><span
-													class="fa fa-times active-control"></span></li>
+													class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
 											</ul>
 										</div>
 										<div class="body" data-ng-if="description.content || editDescription">
@@ -330,20 +330,20 @@
 																    data-ng-hide="commentControl.editComment"
 																	data-ng-click="commentControl.deleteComment = false; commentToEdit = comment.content; commentControl.editComment=true"
 																	class="control-item"><span
-																	class="fa fa-pencil"></span></li>
+																	class="fa fa-pencil" title="{{'card.hint.updateComment' | translate}}"></span></li>
 																<li data-ng-show="commentControl.editComment"
 																	data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false"
 																	class="control-item"><span
-																	class="fa fa-pencil active-control"></span></li>
+																	class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
 																<li data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="comment.userId"
 																	data-ng-hide="commentControl.deleteComment"
 																	data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false; commentControl.deleteComment = true"
 																	class="control-item"><span
-																	class="fa fa-trash-o"></span></li>
+																	class="fa fa-trash-o" title="{{'card.hint.deleteComment' | translate}}"></span></li>
 																<li data-ng-show="commentControl.deleteComment"
 																	data-ng-click="commentControl.deleteComment = false"
 																	class="control-item"><span
-																	class="fa fa-trash-o active-control"></span></li>
+																	class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
 															</ul>
 															<form data-role="form" data-ng-if="commentControl.deleteComment"
 																data-ng-submit="deleteComment(comment, commentControl.deleteComment)" class="panel-confirmation-control">
@@ -464,11 +464,11 @@
 																<li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = true"
 																	data-ng-hide="fileControls[file.cardDataId].deleteFile"
 																	class="control-item"><span
-																	class="fa fa-trash-o"></span></li>
+																	class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
 																<li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = false"
 																	data-ng-if="fileControls[file.cardDataId].deleteFile"
 																	class="control-item"><span
-																	class="fa fa-trash-o active-control"></span></li>
+																	class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
 															</ul>
 														</div>
 													</li>
@@ -501,15 +501,15 @@
 																	<li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
 																		data-ng-click="retryUpload($index)"
 																		class="control-item"><span
-																		class="fa fa-repeat"></span></li>
+																		class="fa fa-repeat" title="{{'button.retry' | translate}}"></span></li>
 																	<li data-ng-show="entry.status != 'upload'"
 																		data-ng-click="cancelUpload($index)"
 																		class="control-item"><span
-																		class="fa fa-times"></span></li>
+																		class="fa fa-times" title="{{'button.cancel' | translate}}"></span></li>
 																	<li data-ng-show="entry.status == 'upload'"
 																		data-ng-click="abortUpload($index)"
 																		class="control-item"><span
-																		class="fa fa-stop"></span></li>
+																		class="fa fa-stop" title="{{'button.abort' | translate}}"></span></li>
 																</ul>
 															</div>
 														</li>
@@ -553,7 +553,7 @@
 										data-ng-hide="addLabelPanel" >
 										<li class="control-box"><span
 											data-ng-click="addLabelPanel = true"
-											class="fa fa-plus"></span></li>
+											class="fa fa-plus" title="{{'button.add' | translate }}"></span></li>
 									</ul>
 									<div class="lavagna-card-edit content"
 										data-ng-show="addLabelPanel">
@@ -600,7 +600,7 @@
 															data-ng-model="actionListState[actionList.id].newActionName"
 															class="form-control"
 															data-lvg-to-focus="actionListState[actionList.id].editActionName"
-															data-lvg-on-esc="actionListState[actionList.id].editActionName"></input>
+															data-lvg-on-esc="actionListState[actionList.id].editActionName"/>
 													</div>
 													<div>
 														<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
@@ -638,10 +638,10 @@
 													data-ng-show="actionListState[actionList.id][actionItem.id].showControls">
 													<li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 														data-ng-click="actionListState[actionList.id][actionItem.id].editActionName = true;actionListState[actionList.id][actionItem.id].newActionName = actionItem.content"
-														class="fa fa-pencil"></span></li>
+														class="fa fa-pencil" title="{{'button.edit' | translate}}"></span></li>
 													<li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 														data-ng-click="actionListState[actionList.id][actionItem.id].deleteActionItem = true"
-														class="fa fa-trash-o"></span></li>
+														class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
 												</ul>
 												<div class="lavagna-card-edit"
 													data-ng-if="actionListState[actionList.id][actionItem.id].editActionName">
@@ -653,7 +653,7 @@
 																data-ng-model="actionListState[actionList.id][actionItem.id].newActionName"
 																class="form-control"
 																data-lvg-on-esc="actionListState[actionList.id][actionItem.id].editActionName"
-																data-lvg-to-focus="actionListState[actionList.id][actionItem.id].editActionName"></input>
+																data-lvg-to-focus="actionListState[actionList.id][actionItem.id].editActionName"/>
 														</div>
 														<div>
 															<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
@@ -682,10 +682,10 @@
 											data-ng-hide="actionListState[actionList.id].addItem || actionListState[actionList.id].deleteList">
 											<li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 												data-ng-click="actionListState[actionList.id].addItem = true"
-												class="fa fa-plus"></span></li>
+												class="fa fa-plus" title="{{'button.add' | translate}}"></span></li>
 											<li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
 												data-ng-click="actionListState[actionList.id].deleteList = true"
-												class="fa fa-trash-o"></span></li>
+												class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
 										</ul>
 										<div class="lavagna-card-edit content"
 											data-ng-if="actionListState[actionList.id].addItem">
@@ -697,7 +697,7 @@
 														placeholder="{{'card.itemName.placeholder' | translate}}"
 														data-ng-model="actionListState[actionList.id].itemToCreate.content"
 														class="form-control"
-														data-lvg-on-esc="actionListState[actionList.id].addItem" data-lvg-on-esc-eval="actionListState[actionList.id].itemToCreate = null"></input>
+														data-lvg-on-esc="actionListState[actionList.id].addItem" data-lvg-on-esc-eval="actionListState[actionList.id].itemToCreate = null"/>
 												</div>
 												<div>
 													<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>

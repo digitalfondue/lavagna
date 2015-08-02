@@ -86,7 +86,7 @@
 				data-ng-hide="columnState[column.id].addNewCard || columnState[column.id].deleteColumn">
 				<li class="control-box">
 					<span data-ng-click="columnState[column.id].addNewCard = true"
-						class="fa fa-plus"></span></li>
+						class="fa fa-plus" title="{{'partials.fragments.columns-fragment.addCard' | translate}}"></span></li>
 			</ul>
 			<div data-ng-if="columnState[column.id].addNewCard">
 				<form data-ng-submit="createCard(columnState[column.id].cardToCreate, column)">

@@ -11,15 +11,25 @@
 	</div>
 	<div data-ng-switch-when="board-menu" class="menu-frame board-menu-frame">
 		<div class="lvg-board-location">
-			<button class="lvg-navigation-button lvg-edit-button" data-ng-click="sidebarHandler('ARCHIVE')" data-ng-if="sideBarLocation === undefined || sideBarLocation === 'NONE'"><i class="fa fa-folder-o"></i></button>
-			<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="sidebarHandler('NONE')" data-ng-if="sideBarLocation !== undefined && sideBarLocation !== 'NONE'"><i class="fa fa-folder-open-o"></i></button>
+			<button class="lvg-navigation-button lvg-edit-button"
+					data-ng-click="sidebarHandler('ARCHIVE')"
+					data-ng-if="sideBarLocation === undefined || sideBarLocation === 'NONE'"
+					title="{{'partials.board.showSideLocation' | translate}}">
+				<i class="fa fa-folder-o"></i>
+			</button>
+			<button class="lvg-navigation-button lvg-edit-button edit-active"
+					data-ng-click="sidebarHandler('NONE')"
+					data-ng-if="sideBarLocation !== undefined && sideBarLocation !== 'NONE'"
+					title="{{'partials.board.hideSideLocation' | translate}}">
+				<i class="fa fa-folder-open-o"></i>
+			</button>
 		</div>
 		<div class="lvg-board-edit">
 			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="switchEditMode()"><i class="fa fa-square-o"></i></button>
+				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
 			</div>
 			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="unSelectAll(); switchEditMode()"><i class="fa fa-check-square-o"></i></button>
+				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="unSelectAll(); switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
 			</div>
 			<div data-ng-if="editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group">
 				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>

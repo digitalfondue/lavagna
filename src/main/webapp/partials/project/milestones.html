@@ -32,16 +32,22 @@
 					<div class="title-addon col-xs-2">
 						<ul class="panel-controls">
 							<li data-ng-if="milestone.labelListValue.id != -1" data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
-								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'" data-ng-click="closeMilestone(milestone.labelListValue)">
+								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"
+									  data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'"
+									  data-ng-click="closeMilestone(milestone.labelListValue)"
+									  title="{{'partials.project.milestones.hint.close' | translate}}">
 									</span>
-								<span class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon" data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'" data-ng-click="openMilestone(milestone.labelListValue)">
+								<span class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"
+									  data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'"
+									  data-ng-click="openMilestone(milestone.labelListValue)"
+									  title="{{'partials.project.milestones.hint.open' | translate}}">
 									</span>
 							</li>
 							<li class="control-item" data-ng-show="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-								<span class="fa fa-chevron-up"></span>
+								<span class="fa fa-chevron-up" title="{{'partials.project.milestones.hint.hideCards' | translate}}"></span>
 							</li>
 							<li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-								<span class="fa fa-chevron-down"></span>
+								<span class="fa fa-chevron-down" title="{{'partials.project.milestones.hint.showCards' | translate}}"></span>
 							</li>
 						</ul>
 					</div>
