@@ -61,7 +61,24 @@ Like the "to" filter, the "by:me" search the cards created by the current user a
 
 #### created
 
-TBD
+"created" show all the cards created in the specified time interval.
+
+The supported values are:
+
+ - **created:DATE**
+ - **created:DATE1..DATE2**
+ - **created:late**
+ - **created:today**
+ - **created:this week**
+ - **created:this month**
+ - **created:previous week**
+ - **created:previous month**
+ - **created:last week**
+ - **created:last month**
+ 
+The supported DATE format is yyyy-mm-dd. For searching an interval, add ".." between the two dates, for example: "created:2015-02-01..2015-10-01"
+
+"created:late" will show all the cards created in the past.
 
 #### watched
 
@@ -77,11 +94,43 @@ Like the "to" filter, the "watched:me" search all the cards watched by the curre
 
 #### updated
 
-TBD
+The "updated" filter show all the cards that have been updated in the specified time interval.
+
+The following values are supported:
+
+ - **updated:DATE**
+ - **updated:DATE1..DATE2**
+ - **updated:late**
+ - **updated:today**
+ - **updated:this week**
+ - **updated:this month**
+ - **updated:previous week**
+ - **updated:previous month**
+ - **updated:last week**
+ - **updated:last month**
+
+It follow exactly the same behaviour as the ["created"](#created) filter.
 
 #### due
 
-TBD
+The "due" filter search all the cards that have the due date specified.
+
+The following values are supported:
+
+ - **updated:DATE**
+ - **updated:DATE1..DATE2**
+ - **updated:late**
+ - **updated:today**
+ - **updated:this week**
+ - **updated:this month**
+ - **updated:previous week**
+ - **updated:previous month**
+ - **updated:next week**
+ - **updated:next month**
+ - **updated:last week**
+ - **updated:last month**
+
+It follow exactly the same behaviour as the ["created"](#created) filter, in addition "next week" and "next month" are available as a shortcut. 
 
 #### updated by
 
