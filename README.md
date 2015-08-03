@@ -27,9 +27,9 @@ It's distributed in 2 forms:
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0-M2/lavagna-1.0-M2-distribution.zip
-unzip lavagna-1.0-M2-distribution.zip
-./lavagna-1.0-M2/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0-M3/lavagna-1.0-M3-distribution.zip
+unzip lavagna-1.0-M3-distribution.zip
+./lavagna-1.0-M3/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
