@@ -12,7 +12,7 @@ For each user, the following information are visible:
 * **Display name**: the name displayed around the application, doesn't have to be unique.
 * **Enabled**: whether the user can or cannot use Lavagna
 
-While the users are paginated by 20, it is also possible to filter the results. The search query will apply to provider, username, email, and displayName. A maximum of 10 results will be displayed.
+While the users are paginated by 20, it's also possible to filter the results. The search query will apply to provider, username, email, and displayName. A maximum of 10 results will be displayed.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c03_admin_users-filter.png" alt="Filter users">
 

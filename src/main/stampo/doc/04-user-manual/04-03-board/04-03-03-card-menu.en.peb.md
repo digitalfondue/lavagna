@@ -10,7 +10,7 @@ A modal menu will open, keeping the card in focus, and displaying the various op
 
 The operations available on the card menu are:
 
-* **Move card to column**: it will open a secondary menu, where it is possible to chose one of the available column, and move the card there. To return to the initial menu, click **Cancel**.
+* **Move card to column**: it will open a secondary menu, where it's possible to chose one of the available column, and move the card there. To return to the initial menu, click **Cancel**.
 * **Move to Archive**: archive the card
 * **Move to Backlog**: move the card to the board backlog
 * **Move to Trash**: move the card to the board trash bin

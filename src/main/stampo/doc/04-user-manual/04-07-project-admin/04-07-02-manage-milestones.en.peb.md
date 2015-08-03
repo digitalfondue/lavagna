@@ -1,6 +1,6 @@
 ### Manage milestones
 
-In the **Milestones** tab, is it possible to create new milestones, close completed ones, delete, and change the order displayed in the project milestones page.
+In the **Milestones** tab, it's possible to create new milestones, close completed ones, delete, and change the order displayed in the project milestones page.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_project-admin_milestones.png" alt="Manage milestones">
 

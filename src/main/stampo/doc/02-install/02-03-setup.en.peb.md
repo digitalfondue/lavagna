@@ -58,7 +58,7 @@ See the documentation for:
 
  - [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket)
  - [github](https://developer.github.com/v3/oauth/). Registration page is https://github.com/settings/applications/new
- - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): you should enable the "Google+ API"
+ - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): the "Google+ API" must be enabled
  - [twitter](https://dev.twitter.com/web/sign-in/implementing)
 
 
