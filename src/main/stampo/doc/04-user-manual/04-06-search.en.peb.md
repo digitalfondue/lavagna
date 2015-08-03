@@ -65,9 +65,21 @@ TBD
 
 #### watched
 
-TBD
+"watched" search all the cards watched (or notd) by a specific user.
+
+The permitted values are:
+
+ - **watched:me**
+ - **watched:unassigned**
+ - **watched:LOGIN_PROVIDER:USERNAME**
+ 
+Like the "to" filter, the "watched:me" search all the cards watched by the current user, **watched:unassigned** search the one without watcher and finally "watched:LOGIN_PROVIDER:USERNAME" show the cards with the specified user.
 
 #### updated
+
+TBD
+
+#### due
 
 TBD
 
@@ -103,10 +115,6 @@ The following values are valid:
  - **status:CLOSED**
  - **status:BACKLOG**
  - **status:DEFERRED** 
-
-#### due
-
-TBD
 
 #### location
 
