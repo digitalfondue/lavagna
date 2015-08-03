@@ -10,4 +10,48 @@ Currently the search only support implicitly the "AND" operator. Each search ter
 part of a list of filter that *must* match.
 
 
-TBD complete. 
+### Filters
+
+In both the global/project and board filter the following filters can be defined.
+
+#### label
+
+A label filter begin with the hash symbol: '#'.
+
+When entering # in the search bar, a list of possible label is displayed. For example:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_autocomplete_label_suggestion.png" alt="Label suggestions">
+
+
+When confirming the filter, the search will be done. In this case all the cards with the label "Type" are shown, regardless of the associated value.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_autocomplete_label_type.png" alt="Label type search">
+
+
+For searching the associated value, the complete syntax is : #LABEL: ASSOCIATED_VALUE, in the screenshot below it can be seen in action:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_autocomplete_label_type_bugfixing.png" alt="Label type with bugfixing value search">
+
+#### to
+
+#### by
+
+#### created
+
+#### watched
+
+#### updated
+
+#### updated by
+
+#### milestone
+
+#### status
+
+#### due
+
+#### location
+
+#### Free text search
+
+
