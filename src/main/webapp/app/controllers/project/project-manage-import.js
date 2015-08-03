@@ -3,11 +3,22 @@
 	'use strict';
 
 	var module = angular.module('lavagna.controllers');
+	
+	/* http://stackoverflow.com/a/8809472 */
+	function generateUUID(){
+	    var d = new Date().getTime();
+	    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	        var r = (d + Math.random()*16)%16 | 0;
+	        d = Math.floor(d/16);
+	        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+	    });
+	    return uuid;
+	};
 
-	module.controller('ManageImportCtrl', function ($scope, uuid2, StompClient, Project, Admin, project, Notification, Board) {
+	module.controller('ManageImportCtrl', function ($scope, StompClient, Project, Admin, project, Notification, Board) {
 
 		$scope.project = project;
-		$scope.importSettings = {id: uuid2.newguid(), archived: false};
+		$scope.importSettings = {id: generateUUID(), archived: false};
 		$scope.availableOrganizations = [];
 
 		StompClient.subscribe($scope, '/event/import/' + $scope.importSettings.id, function (message) {

@@ -24,7 +24,7 @@
 			'lavagna.controllers', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
 			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
-			'angularFileUpload', 'angularUUID2' ]);
+			'angularFileUpload']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 

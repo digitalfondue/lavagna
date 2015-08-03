@@ -224,7 +224,6 @@ public class ResourceController {
 					"/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
 					"/js/angular-ui-router.min.js",//
-					"/js/angular-uuid2.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/bindonce.min.js",//
 					"/js/angular-translate.min.js",//
