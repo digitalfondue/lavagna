@@ -1,1 +1,0 @@
-### Global and project specific search

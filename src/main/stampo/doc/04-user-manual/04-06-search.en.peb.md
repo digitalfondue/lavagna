@@ -179,3 +179,25 @@ The following values are valid:
 #### Free text search
 
 All the text that don't fall in the others filters is considered a "free text search". At the moment it use the functions from the underlying DB. 
+
+
+### Single board search
+
+In the board view, the search bar generate a client side filter that is continuously applied when the cards are updated like the following screenshot:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_board_search.png" alt="Board search">
+
+Note: in this view, the "full text search" will not work as expected.
+
+
+### Global and project specific search
+
+When the search is triggered in the home page, a global search is done in all the projects that the user has access to. "Global search found" will be present, as depicted in the following screenshot:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_global_search.png" alt="Global search">
+
+When the user is in the **project** page, a project specific search will be done. In the search result, "Project Search Found" will be present:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_search_project_search.png" alt="Project search">
+
+For both search, some bulk operations can be done. Click the "select" menu, check the cards that need to be updated, like the [bulk operations in the board](04-03-board/04-03-05-bulk-operations.html)
