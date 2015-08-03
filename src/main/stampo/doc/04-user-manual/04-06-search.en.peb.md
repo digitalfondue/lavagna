@@ -12,7 +12,7 @@ part of a list of filter that *must* match.
 
 ### Filters
 
-In both the global/project and board filter the following filters can be defined.
+In both the global/project and board filter the following filters can be defined. For most filters, only a single value can be specified. The filters that receive dates as a parameter can receive two dates for defining a time interval.
 
 #### label
 
@@ -34,24 +34,91 @@ For searching the associated value, the complete syntax is : #LABEL: ASSOCIATED_
 
 #### to
 
+For searching the cards assigned (or not) to a specific user, the "to: " filter must be used.
+
+The following values are permitted:
+
+ - **to:me**
+ - **to:unassigned**
+ - **to:LOGIN_PROVIDER:USERNAME**
+ 
+The "to:me" show the cards assigned to the current user.
+
+The "to:unassiged" show all the cards without an assigned user.
+
+The "to:LOGIN_PROVIDER:USERNAME" show the cards assigned to a specific user. For example: "to:demo:user1".
+
 #### by
+
+"by" search all the cards created by the specified user.
+
+The following values are permitted:
+
+ - **by:me**
+ - **by:LOGIN_PROVIDER:USERNAME**
+
+Like the "to" filter, the "by:me" search the cards created by the current user and "by:LOGIN_PROVIDER:USERNAME" show the ones created by the specified user.
 
 #### created
 
+TBD
+
 #### watched
+
+TBD
 
 #### updated
 
+TBD
+
 #### updated by
+
+"updated_by" search all the cards updated by a specific user.
+
+The following values are permitted:
+
+ - **updated_by:me**
+ - **updated_by:LOGIN_PROVIDER:USERNAME**
+
+Like the "by" filter, the "updated_by:me" search the cards updated by the current user and "updated_by:LOGIN_PROVIDER:USERNAME" show the ones updated by the selected user.
 
 #### milestone
 
+For searching the cards that are assigned (or not) to a specific milestones, the **"milestone:"** filter must be used.
+
+The accepted values are:
+
+ - **milestone:unassigned**
+ - **milestone:MILESTONE_NAME**
+
+The "milestone:unassigned" search all the cards without an assigned milestone.
+
 #### status
+
+The **status:** filter allow to search the cards that are in a specific status (OPEN, CLOSED, BACKLOG, DEFERRED).
+
+The following values are valid:
+
+ - **status:OPEN**
+ - **status:CLOSED**
+ - **status:BACKLOG**
+ - **status:DEFERRED** 
 
 #### due
 
+TBD
+
 #### location
+
+The **location:** filter search for the cards that are in a specific location (BOARD, ARCHIVE, BACKLOG, TRASH)
+
+The following values are valid:
+
+ - **location:BOARD**
+ - **location:ARCHIVE**
+ - **location:BACKLOG**
+ - **location:TRASH** 
 
 #### Free text search
 
-
+All the text that don't fall in the others filters is considered a "free text search". At the moment it use the functions from the underlying DB. 
