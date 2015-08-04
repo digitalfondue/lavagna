@@ -46,4 +46,4 @@ elastic text area
  
  codemirror:
  
-  - core + markdown + placeholder v3.21 @ http://codemirror.net/doc/compress.html
+  - core + markdown + markdown-fold + placeholder v5.5 @ http://codemirror.net/doc/compress.html

@@ -1077,3 +1077,35 @@ li.notification ul.notification-controls li {
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
+
+
+/* code mirror specific code */
+/* variable height : http://codemirror.net/demo/variableheight.html  */
+.CodeMirror {border: 1px solid silver; border-width: 1px 2px; }
+
+.cm-header-1 { font-size: 150%; }
+.cm-header-2 { font-size: 130%; }
+.cm-header-3 { font-size: 120%; }
+.cm-header-4 { font-size: 110%; }
+.cm-header-5 { font-size: 100%; }
+.cm-header-6 { font-size: 90%; }
+.cm-strong { font-size: 140%; }
+
+/* resize http://codemirror.net/demo/resize.html */
+.CodeMirror {
+	border: 1px solid #ccc;
+	height: auto;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.CodeMirror-scroll {
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+.CodeMirror, .CodeMirror-scroll {
+	min-height: 75px;
+}
+
+/* placeholder http://codemirror.net/demo/placeholder.html */
+
+.CodeMirror pre.CodeMirror-placeholder { color: #999; }
