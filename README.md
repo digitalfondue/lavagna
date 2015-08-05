@@ -12,31 +12,33 @@ Lavagna
 
 Lavagna is a small and easy to use issue/project tracking software.
 
-It requires Java 7 or better, MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
+It requires Java 7 or better and optionally a database: MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
 
 ## Install ##
 
-Lavagna supports MySQL (at least 5.1) and PostgreSQL (tested on 9.1) for production use and HSQLDB for testing purposes.
+Lavagna supports MySQL (at least 5.1) and PostgreSQL (tested on 9.1) and HSQLDB (for small deploy).
 
 It's distributed in 2 forms:
 
  - simple war for deploying in your preferred web container
  - self contained war with embedded jetty web server
+ 
+See the documentation at http://help.lavagna.io
 
 ### For testing purposes ###
 
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0-M3/lavagna-1.0-M3-distribution.zip
-unzip lavagna-1.0-M3-distribution.zip
-./lavagna-1.0-M3/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0/lavagna-1.0-distribution.zip
+unzip lavagna-1.0-distribution.zip
+./lavagna-1.0/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
 
-See the README in the archive. A better documentation is arriving.
+See the README in the archive and the documentation at http://help.lavagna.io if you want to customize the scripts and set lavagna in production mode.
 
 ### Docker ###
 
