@@ -1,10 +1,11 @@
-<div data-lvg-board-card-menu 
+<div data-lvg-board-card-menu
 	data-bo-class="{'lavagna-is-watching': !listView && isSelfWatching(card.labels, currentUserId), 'lavagna-board-panel' : boardView, 'lavagna-panel' : listView || searchView}">
 	<div class="head clearfix">
 		<div class="title">
 			<div class="row" data-bo-if="boardView && !readOnly">
-				<div class="col-xs-10"><input type="checkbox" data-ng-model="selected[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"> 
-					<a data-bo-href="'#/' + project + '/' + board + '-' + card.sequence" data-bo-bind="board + '-' + card.sequence"></a> 
+				<div class="col-xs-10">
+					<input type="checkbox" data-ng-model="selected[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
+					<a data-bo-href="'#/' + project + '/' + board + '-' + card.sequence" data-bo-bind="board + '-' + card.sequence"></a>
 				</div>
 				<div class="col-xs-1">
 					<div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
@@ -22,7 +23,7 @@
 			<div class="row" data-bo-if="searchView">
 				<div class="col-xs-8">
 					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
-					
+
 					<a data-bo-href="'#/search/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project == null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
 	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
 	            	</a>
