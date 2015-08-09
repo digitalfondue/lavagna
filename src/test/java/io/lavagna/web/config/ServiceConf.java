@@ -23,6 +23,7 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
+import io.lavagna.service.CalendarService;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.service.BulkOperationService;
 import io.lavagna.service.CardDataRepository;
@@ -192,4 +193,8 @@ public class ServiceConf {
 		return mock(BulkOperationService.class);
 	}
 
+	@Bean
+	public CalendarService getCalendarService() {
+		return mock(CalendarService.class);
+	}
 }

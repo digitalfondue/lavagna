@@ -1,16 +1,16 @@
 /**
  * This file is part of lavagna.
- *
+ * <p/>
  * lavagna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p/>
  * lavagna is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p/>
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,6 +37,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -69,7 +70,7 @@ public class UserRepository {
 	}
 
 	public List<User> findByIds(Collection<Integer> ids) {
-		return ids.isEmpty() ? Collections.<User> emptyList() : queries.findByIds(ids);
+		return ids.isEmpty() ? Collections.<User>emptyList() : queries.findByIds(ids);
 	}
 
 	public boolean userExistsAndEnabled(String provider, String name) {
@@ -83,7 +84,7 @@ public class UserRepository {
 	public List<User> findUsers(String criteria) {
 		return queries.findUsers(criteria);
 	}
-	
+
 	public List<User> findUsers(String criteria, int projectId, Permission permission) {
 		return queries.findUsers(criteria, projectId, permission.toString());//
 	}
@@ -174,7 +175,28 @@ public class UserRepository {
 	}
 
 	@Transactional(readOnly = false)
-	public void clearAllTokens(User currentUser) {
-		queries.deleteAllTokensForUserId(currentUser.getId());
+	public void clearAllTokens(User user) {
+		queries.deleteAllTokensForUserId(user.getId());
 	}
+
+	public String findCalendarTokenFromUser(User user) throws CalendarTokenNotFoundException {
+		try {
+			return queries.findCalendarTokenFromUserId(user.getId());
+		} catch (EmptyResultDataAccessException ex) {
+			throw new CalendarTokenNotFoundException();
+		}
+	}
+
+	public int findUserIdFromCalendarToken(String token) {
+		return queries.findUserIdFromCalendarToken(token);
+	}
+
+	@Transactional(readOnly = false)
+	public int registerCalendarToken(User user, String token) {
+		return queries.registerCalendarToken(user.getId(), token);
+	}
+}
+
+class CalendarTokenNotFoundException extends Exception {
+
 }

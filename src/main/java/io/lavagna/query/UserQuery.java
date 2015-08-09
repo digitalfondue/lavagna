@@ -101,4 +101,15 @@ public interface UserQuery {
 
 	@Query("DELETE FROM LA_USER_REMEMBER WHERE USER_REMEMBER_ID_FK = :userId")
 	int deleteAllTokensForUserId(@Bind("userId") int id);
+
+	@Query("SELECT USER_CALENDAR_TOKEN FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
+	String findCalendarTokenFromUserId(@Bind("userId") int userId);
+
+	@Query("SELECT USER_ID FROM LA_USER AS USER "
+			+ "INNER JOIN LA_USER_CALENDAR AS UC ON UC.USER_CALENDAR_ID_FK = USER.USER_ID "
+			+ "WHERE USER_CALENDAR_TOKEN = :token")
+	Integer findUserIdFromCalendarToken(@Bind("token") String token);
+
+	@Query("INSERT INTO LA_USER_CALENDAR(USER_CALENDAR_ID_FK, USER_CALENDAR_TOKEN) VALUES (:userId, :token)")
+	int registerCalendarToken(@Bind("userId") int userId,@Bind("token") String token);
 }

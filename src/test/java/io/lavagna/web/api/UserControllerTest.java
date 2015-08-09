@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.service.CalendarService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
@@ -56,16 +57,19 @@ public class UserControllerTest {
 
 	@Mock
 	private UserWithPermission user;
-	
+
 	@Mock
 	private ProjectService projectService;
+
+	@Mock
+	private CalendarService calendarService;
 
 	private UserController userController;
 
 	@Before
 	public void prepare() {
 		userController = new UserController(userRepository, eventEmitter, eventRepository,
-				projectService);
+				projectService, calendarService);
 	}
 
 	@Test

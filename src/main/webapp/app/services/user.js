@@ -37,7 +37,9 @@
 					return u.provider === provider && u.username === username;
 				});
 			},
-
+			getCalendarToken : function() {
+				return $http.get('api/self/calendar-token').then(extractData);
+			},
 			updateProfile : function(profile) {
 				return $http.post('api/self', profile);
 			},

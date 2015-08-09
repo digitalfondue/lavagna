@@ -42,6 +42,7 @@ public class WebSecurityConfig {
 				.request("/favicon.ico").permitAll()//
 				.request("/css/all.css").permitAll()//
 				.request("/setup/**").denyAll()//
+				.request("/api/calendar/**").permitAll()
 				.request("/api/**").requireAuthenticated(false)//
 				.request("/**").requireAuthenticated()//
 				.login("/login/**", "/login", "/WEB-INF/views/login.html").logout("/logout/**", "/logout");
