@@ -20,8 +20,10 @@ import static io.lavagna.service.SearchFilter.filter;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.LabelAndValue;
+import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -34,45 +36,69 @@ import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.TzId;
-import net.fortuna.ical4j.model.parameter.Value;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Method;
+import net.fortuna.ical4j.model.property.Organizer;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class CalendarService {
 
 	private final SearchService searchService;
+	private final UserRepository userRepository;
 	private final UserService userService;
 
 	@Autowired
-	public CalendarService(SearchService searchService, UserService userService) {
+	public CalendarService(SearchService searchService, UserService userService, UserRepository userRepository) {
 		this.searchService = searchService;
+		this.userRepository = userRepository;
 		this.userService = userService;
+	}
+
+	@Transactional(readOnly = false)
+	public String findCalendarTokenFromUser(User user) {
+		try {
+			return userRepository.findCalendarTokenFromUser(user);
+		} catch (CalendarTokenNotFoundException ex) {
+			String token = UUID.randomUUID().toString();// <- this use secure random
+			String hashedToken = DigestUtils.sha256Hex(token);
+			userRepository.registerCalendarToken(user, hashedToken);
+			return hashedToken;
+		}
+	}
+
+	private UserWithPermission findUserFromCalendarToken(String token) {
+		int userId = userRepository.findUserIdFromCalendarToken(token);
+		return userService.findUserWithPermission(userId);
 	}
 
 	public Calendar getUserCalendar(String userToken) {
 
-		UserWithPermission user = userService.findUserFromCalendarToken(userToken);
+		UserWithPermission user = findUserFromCalendarToken(userToken);
 
 		final Calendar calendar = new Calendar();
 		calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
 		calendar.getProperties().add(Version.VERSION_2_0);
 		calendar.getProperties().add(CalScale.GREGORIAN);
+		calendar.getProperties().add(Method.PUBLISH);
 
 		Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
 
-		SearchFilter myCardsFilter = filter(SearchFilter.FilterType.ASSIGNED, null, null);
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(myCardsFilter), null, null, user).getFound()) {
+		SearchFilter aFilter = filter(SearchFilter.FilterType.ASSIGNED, SearchFilter.ValueType.CURRENT_USER, "me");
+		for (CardFullWithCounts card : searchService.find(Arrays.asList(aFilter), null, null, user).getFound()) {
 			map.put(card.getId(), card);
 		}
 
-		SearchFilter watchedFilter = filter(SearchFilter.FilterType.WATCHED_BY, null, null);
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(watchedFilter), null, null, user).getFound()) {
+		SearchFilter wFilter = filter(SearchFilter.FilterType.WATCHED_BY, SearchFilter.ValueType.CURRENT_USER, "me");
+		for (CardFullWithCounts card : searchService.find(Arrays.asList(wFilter), null, null, user).getFound()) {
 			map.put(card.getId(), card);
 		}
 
@@ -84,10 +110,15 @@ public class CalendarService {
 					final String cardName = lav.getLabelName() + ": " + card.getName();
 					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), cardName);
 					event.getProperties().add(new Uid(new UUID(card.getColumnId(), card.getId()).toString()));
-					event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
 					TzId tzParam = new TzId(utcTimeZone);
 					event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
+					// TODO add organizer e-mail
+					Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
+					event.getProperties().add(organizer);
+					// TODO add description
 					//event.getProperties().add(new Description("Event desc"));
+					// TODO add direct link to Lavagna
+					// TODO add some tests!
 					events.add(event);
 				}
 			}
