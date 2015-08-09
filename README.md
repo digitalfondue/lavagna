@@ -10,7 +10,7 @@ Lavagna
 
 ## About ##
 
-Lavagna is a small and easy to use issue/project tracking software.
+[Lavagna](http://lavagna.io) is a small and easy to use issue/project tracking software.
 
 It requires Java 7 or better and optionally a database: MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
