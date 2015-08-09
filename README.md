@@ -48,6 +48,10 @@ Lavagna is also available as a Docker image so you can try it on the fly:
 https://registry.hub.docker.com/u/digitalfondue/lavagna/
 ```
 
+### On openshift ###
+
+
+
 ## Develop ##
 
 ### Java ###
@@ -182,8 +186,6 @@ PGSQL: localhost:5432/lavagna as postgres / password
 
 MySQL: localhost:3306/lavagna as root
 
-Oracle: localhost:1521/XE as system / manager
-
 ## Notes about databases ##
 
 The application uses UTF-8 at every stage and on MySQL you will need to create a database with the collation set to utf8_bin:
@@ -191,27 +193,6 @@ The application uses UTF-8 at every stage and on MySQL you will need to create a
 ```
 CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;
 ```
-
-
-#### Oracle support ####
-
-(THIS SECTION SHOULD BE IGNORED)
-
-First add the vbguest plugin:
-
-> vagrant plugin install vagrant-vbguest
-
-Note: if you have an error while installing the vagrant-vbguest plugin, see https://github.com/WinRb/vagrant-windows/issues/193 , install before the vagrant-login plugin with
-
-> vagrant plugin install vagrant-login
-
-
-Download Oracle Database 11g Express Edition for Linux x64 from ( http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html )
-
-Place the file oracle-xe-11.2.0-1.0.x86_64.rpm.zip in the directory puppet/modules/oracle/files of this project.
-
-Thanks to Hilverd Reker for his GitHub repo: https://github.com/hilverd/vagrant-ubuntu-oracle-xe .
-
 
 
 ### Code Coverage ###

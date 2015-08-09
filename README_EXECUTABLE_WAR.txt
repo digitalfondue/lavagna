@@ -15,3 +15,13 @@ For example:
 
 
 You can set port and others options too, see: http://simplericity.com/2009/11/10/1257880778509.html
+
+Options:
+ --sslProxied        - Running behind an SSL proxy
+ --port n            - Create an HTTP listener on port n (default 8080)
+ --bindAddress addr  - Accept connections only on address addr (default: accept on any address)
+ --forwarded         - Set reverse proxy handling using X-Forwarded-For headers
+ --contextPath /path - Set context path (default: /)
+ --headless          - Don't open graphical console, even if available
+ --help              - Print this help message
+ --tmpDir /path      - Temporary directory, default is /tmp
