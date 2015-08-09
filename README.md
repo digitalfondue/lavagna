@@ -50,7 +50,7 @@ https://registry.hub.docker.com/u/digitalfondue/lavagna/
 
 ### On openshift ###
 
-
+See the guide at http://lavagna.io/help/openshift/
 
 ## Develop ##
 
