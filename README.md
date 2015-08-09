@@ -131,7 +131,7 @@ mvn com.mycila:license-maven-plugin:format
 
 ### Documentation ###
 
-The documentation is written using stampo (see https://github.org/digitalfondue/stampo).
+The documentation is written using stampo (see https://github.com/digitalfondue/stampo).
 It currently reside in src/main/stampo .
 
 For building the doc:
