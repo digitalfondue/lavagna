@@ -17,6 +17,7 @@
 package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
+import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.LabelAndValue;
@@ -96,13 +97,18 @@ public class CalendarService {
 
 		Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
 
+		SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
+				BoardColumn.BoardColumnLocation.BOARD.toString());
+
 		SearchFilter aFilter = filter(SearchFilter.FilterType.ASSIGNED, SearchFilter.ValueType.CURRENT_USER, "me");
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(aFilter), null, null, user).getFound()) {
+		for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, aFilter), null, null, user)
+				.getFound()) {
 			map.put(card.getId(), card);
 		}
 
 		SearchFilter wFilter = filter(SearchFilter.FilterType.WATCHED_BY, SearchFilter.ValueType.CURRENT_USER, "me");
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(wFilter), null, null, user).getFound()) {
+		for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, wFilter), null, null, user)
+				.getFound()) {
 			map.put(card.getId(), card);
 		}
 
