@@ -80,6 +80,10 @@ public class CalendarService {
 		return userService.findUserWithPermission(userId);
 	}
 
+	private long getLong(int x, int y) {
+		return (((long) x) << 32) | (y & 0xffffffffL);
+	}
+
 	public Calendar getUserCalendar(String userToken) {
 
 		UserWithPermission user = findUserFromCalendarToken(userToken);
@@ -109,7 +113,11 @@ public class CalendarService {
 				if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
 					final String cardName = lav.getLabelName() + ": " + card.getName();
 					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), cardName);
-					event.getProperties().add(new Uid(new UUID(card.getColumnId(), card.getId()).toString()));
+
+					final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
+							getLong(lav.getLabelId(), lav.getLabelValueId()));
+					event.getProperties().add(new Uid(id.toString()));
+
 					TzId tzParam = new TzId(utcTimeZone);
 					event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 					// TODO add organizer e-mail
