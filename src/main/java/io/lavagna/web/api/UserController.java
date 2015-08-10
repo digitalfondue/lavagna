@@ -131,7 +131,14 @@ public class UserController {
 		return userRepository.findUserByName(provider, name);
 	}
 
-	@RequestMapping(value = "/api/self/calendar-token", method = RequestMethod.GET)
+	@ExpectPermission(Permission.UPDATE_PROFILE)
+	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.DELETE)
+	public CalendarToken clearCalendarToken(UserWithPermission user) {
+		userRepository.deleteCalendarToken(user);
+		return getCalendarToken(user);
+	}
+
+	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.GET)
 	public CalendarToken getCalendarToken(UserWithPermission user) {
 		CalendarToken ct = new CalendarToken();
 		ct.setToken(calendarService.findCalendarTokenFromUser(user));

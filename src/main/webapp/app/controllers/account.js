@@ -44,9 +44,16 @@
 			return window.location.origin;
 		};
 
-		User.getCalendarToken().then(function (resp) {
+		var createUrl = function(resp) {
 			$scope.calendarFeedUrl = getOrigin($window) + "/api/calendar/" + resp.token + "/calendar.ics";
-		});
+		};
+
+		User.getCalendarToken().then(createUrl);
+
+		$scope.clearCalendarToken = function () {
+			User.deleteCalendarToken().then(createUrl);
+		};
+
 
 		$scope.update = function (profile) {
 			User.updateProfile(profile)

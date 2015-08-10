@@ -112,4 +112,7 @@ public interface UserQuery {
 
 	@Query("INSERT INTO LA_USER_CALENDAR(USER_CALENDAR_ID_FK, USER_CALENDAR_TOKEN) VALUES (:userId, :token)")
 	int registerCalendarToken(@Bind("userId") int userId,@Bind("token") String token);
+
+	@Query("DELETE FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
+	int deleteCalendarToken(@Bind("userId") int userId);
 }
