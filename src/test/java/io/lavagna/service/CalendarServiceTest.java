@@ -56,6 +56,16 @@ public class CalendarServiceTest {
 	}
 
 	@Test
+	public void testDoubleFindTokenCreation() {
+		String token = calendarService.findCalendarTokenFromUser(user);
+		String secondToken = calendarService.findCalendarTokenFromUser(user);
+
+		Assert.assertNotNull(secondToken);
+		Assert.assertEquals(64, secondToken.length());
+		Assert.assertEquals(secondToken, token);
+	}
+
+	@Test
 	public void testDeleteTokenCreation() {
 		String token = calendarService.findCalendarTokenFromUser(user);
 		userRepository.deleteCalendarToken(user);
