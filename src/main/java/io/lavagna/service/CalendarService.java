@@ -45,6 +45,7 @@ import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,6 +86,16 @@ public class CalendarService {
 		return (((long) x) << 32) | (y & 0xffffffffL);
 	}
 
+	private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
+		StringBuilder sb = new StringBuilder();
+		if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
+			sb.append(WordUtils.capitalizeFully(lav.getLabelName().replace('_', ' ')));
+		} else {
+			sb.append(lav.getLabelName());
+		}
+		return sb.append(": ").append(card.getName()).toString();
+	}
+
 	public Calendar getUserCalendar(String userToken) {
 
 		UserWithPermission user = findUserFromCalendarToken(userToken);
@@ -117,8 +128,7 @@ public class CalendarService {
 		for (CardFullWithCounts card : map.values()) {
 			for (LabelAndValue lav : card.getLabels()) {
 				if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
-					final String cardName = lav.getLabelName() + ": " + card.getName();
-					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), cardName);
+					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), getEventName(lav, card));
 
 					final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
 							getLong(lav.getLabelId(), lav.getLabelValueId()));
