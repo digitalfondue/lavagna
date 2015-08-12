@@ -105,8 +105,8 @@ public interface UserQuery {
 	@Query("SELECT USER_CALENDAR_TOKEN FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
 	String findCalendarTokenFromUserId(@Bind("userId") int userId);
 
-	@Query("SELECT USER_ID FROM LA_USER AS USER "
-			+ "INNER JOIN LA_USER_CALENDAR AS UC ON UC.USER_CALENDAR_ID_FK = USER.USER_ID "
+	@Query("SELECT USER_ID FROM LA_USER AS USR "
+			+ "INNER JOIN LA_USER_CALENDAR AS UC ON UC.USER_CALENDAR_ID_FK = USR.USER_ID "
 			+ "WHERE USER_CALENDAR_TOKEN = :token")
 	Integer findUserIdFromCalendarToken(@Bind("token") String token);
 
