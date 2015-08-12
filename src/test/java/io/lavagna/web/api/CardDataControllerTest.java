@@ -50,6 +50,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,11 +108,11 @@ public class CardDataControllerTest {
 		CardDataFull cardDataFull2 = new CardDataFull(1, null, cardId, "description 2", user.getId(), 2, new Date(),
 				CardType.DESCRIPTION_HISTORY, 1, EventType.DESCRIPTION_CREATE);
 
-		CardDataFull cardDataFull3 = new CardDataFull(2, null, cardId, "description 1", user.getId(), 0, new Date(),
-				CardType.DESCRIPTION_HISTORY, 1, EventType.DESCRIPTION_UPDATE);
+		CardDataFull cardDataFull3 = new CardDataFull(2, null, cardId, "description 1", user.getId(), 0,
+				DateUtils.addMilliseconds(new Date(),500), CardType.DESCRIPTION_HISTORY, 1, EventType.DESCRIPTION_UPDATE);
 
-		CardDataFull cardDataFull1 = new CardDataFull(0, null, cardId, "description 3", user.getId(), 1, new Date(),
-				CardType.DESCRIPTION, 1, EventType.DESCRIPTION_UPDATE);
+		CardDataFull cardDataFull1 = new CardDataFull(0, null, cardId, "description 3", user.getId(), 1,
+				DateUtils.addMilliseconds(new Date(),500), CardType.DESCRIPTION, 1, EventType.DESCRIPTION_UPDATE);
 
 		List<CardDataFull> cardData = new ArrayList<>();
 		cardData.add(cardDataFull2);
