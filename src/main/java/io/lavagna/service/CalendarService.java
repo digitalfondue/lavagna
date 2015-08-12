@@ -47,6 +47,7 @@ import net.fortuna.ical4j.util.TimeZones;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,8 +98,13 @@ public class CalendarService {
 	}
 
 	public Calendar getUserCalendar(String userToken) {
+		UserWithPermission user;
 
-		UserWithPermission user = findUserFromCalendarToken(userToken);
+		try {
+			user = findUserFromCalendarToken(userToken);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new SecurityException("Invalid token");
+		}
 
 		final Calendar calendar = new Calendar();
 		calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));

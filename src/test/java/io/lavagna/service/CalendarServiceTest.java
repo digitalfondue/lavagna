@@ -20,6 +20,7 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
+import net.fortuna.ical4j.model.Calendar;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,5 +75,21 @@ public class CalendarServiceTest {
 		Assert.assertNotNull(newToken);
 		Assert.assertEquals(64, newToken.length());
 		Assert.assertNotEquals(newToken, token);
+	}
+
+	@Test(expected = SecurityException.class)
+	public void testGetUserCalendarWithWrongToken() {
+		 calendarService.getUserCalendar("abcd");
+	}
+
+	@Test
+	public void testGetUserCalendarOnEmpty() {
+		String token = calendarService.findCalendarTokenFromUser(user);
+
+		Calendar calendar = calendarService.getUserCalendar(token);
+
+		Assert.assertNotNull(calendar);
+		Assert.assertEquals(0, calendar.getComponents().size());
+
 	}
 }
