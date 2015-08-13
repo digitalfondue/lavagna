@@ -6,7 +6,7 @@ Each roles contains a list permissions, that enable one or more actions. A user 
 
 In addition, each project can have its own customized roles: users can be assigned a very restrictive global roles, and then a more permissive project roles.
 
-Example: a project administrator doesn't have to be able to configure the application's SMTP settings, or access other projects. A global group with only **SEARCH** and **UPDATE_PROFILE** permissions will suffice, while at project level a group will all the permissions enabled will be assigned to him.
+Example: a project administrator doesn't have to be able to configure the application's SMTP settings, or access other projects. A global group with only **SEARCH** and **UPDATE_PROFILE** permissions will suffice, while at project level a group with all the permissions enabled will be assigned to him.
 
 Lavagna ships with the global roles out of the box: **ADMIN** and **DEFAULT**. Those two roles cannot be deleted.
 
