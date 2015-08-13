@@ -154,4 +154,17 @@ public class UserControllerTest {
 		verify(projectService).findProjectsActivityByUser(eq(testUser.getId()));
 		verify(eventRepository).getLatestActivityByPage(eq(testUser.getId()), eq(1));
 	}
+
+	@Test
+	public void testGetCalendarToken() {
+
+		String returnToken = "1234abcd";
+		when(calendarService.findCalendarTokenFromUser(user)).thenReturn(returnToken);
+
+		UserController.CalendarToken ct = userController.getCalendarToken(user);
+
+		verify(calendarService).findCalendarTokenFromUser(eq(user));
+		Assert.assertEquals(returnToken, ct.getToken());
+
+	}
 }

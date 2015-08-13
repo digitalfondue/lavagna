@@ -208,21 +208,21 @@ public class CardDataControllerTest {
 				CardType.COMMENT, 5, EventType.COMMENT_CREATE);
 
 		CardDataFull cardDataFull2 = new CardDataFull(0, null, cardId, "comment 1 update 1", user.getId(), 1,
-				new Date(), CardType.COMMENT, 0, EventType.COMMENT_UPDATE);
+				DateUtils.addMilliseconds(new Date(),500), CardType.COMMENT, 0, EventType.COMMENT_UPDATE);
 
 		// comment 2
-		CardDataFull cardDataFull3 = new CardDataFull(1, null, cardId, "comment 2", user.getId(), 2, new Date(),
-				CardType.COMMENT, 3, EventType.COMMENT_CREATE);
+		CardDataFull cardDataFull3 = new CardDataFull(1, null, cardId, "comment 2", user.getId(), 2,
+				DateUtils.addMilliseconds(new Date(),500), CardType.COMMENT, 3, EventType.COMMENT_CREATE);
 
 		CardDataFull cardDataFull4 = new CardDataFull(1, null, cardId, "comment 2 update 1", user.getId(), 2,
-				new Date(), CardType.COMMENT, 4, EventType.COMMENT_UPDATE);
+				DateUtils.addMilliseconds(new Date(),500), CardType.COMMENT, 4, EventType.COMMENT_UPDATE);
 
 		CardDataFull cardDataFull5 = new CardDataFull(1, null, cardId, "comment 2 update 2", user.getId(), 2,
-				new Date(), CardType.COMMENT, 1, EventType.COMMENT_UPDATE);
+				DateUtils.addMilliseconds(new Date(),500), CardType.COMMENT, 1, EventType.COMMENT_UPDATE);
 
 		// comment 3
-		CardDataFull cardDataFull6 = new CardDataFull(2, null, cardId, "comment 3", user.getId(), 3, new Date(),
-				CardType.COMMENT_HISTORY, 2, EventType.COMMENT_CREATE);
+		CardDataFull cardDataFull6 = new CardDataFull(2, null, cardId, "comment 3", user.getId(), 3,
+				DateUtils.addMilliseconds(new Date(),500), CardType.COMMENT_HISTORY, 2, EventType.COMMENT_CREATE);
 
 		List<CardDataFull> cardData = new ArrayList<>();
 		cardData.add(cardDataFull1);
