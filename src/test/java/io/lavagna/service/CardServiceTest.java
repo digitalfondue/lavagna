@@ -60,10 +60,8 @@ public class CardServiceTest {
 	private LabelService labelService;
 	@Autowired
 	private CardLabelRepository cardLabelRepository;
-
 	@Autowired
 	private CardService cardService;
-	
 	@Autowired
 	private CardRepository cardRepository;
 
@@ -109,7 +107,7 @@ public class CardServiceTest {
 		Assert.assertEquals(c2.getId(), res.get(1).getId());
 		Assert.assertEquals(c3.getId(), res.get(2).getId());
 	}
-	
+
 	@Test
 	public void testUpdateCard() {
 		Card c1 = cardService.createCardFromTop("1", col.getId(), new Date(), user);

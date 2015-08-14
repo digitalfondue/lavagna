@@ -112,10 +112,6 @@ public class EventRepositoryTest {
 				col1 = boardColumnRepository.addColumnToBoard("col1", def.getId(), BoardColumnLocation.BOARD,
 						board.getId());
 			}
-			// } else if (def.getValue() == ColumnDefinition.CLOSED) {
-			// col2 = boardColumnRepository.addColumnToBoard("col2", def.getId(), BoardColumnLocation.BOARD,
-			// board.getId());
-			// }
 		}
 
 		cardService.createCard("card1", col1.getId(), new Date(), user);
