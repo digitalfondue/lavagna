@@ -30,11 +30,28 @@ import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.api.UserController.DisplayNameEmail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import javax.servlet.http.HttpServletResponse;
+
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.ValidationException;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Method;
+import net.fortuna.ical4j.model.property.Organizer;
+import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.model.property.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,6 +173,14 @@ public class UserControllerTest {
 	}
 
 	@Test
+	public void testClearAllTokens() {
+
+		userController.clearAllTokens(user);
+
+		verify(userRepository).clearAllTokens(eq(user));
+	}
+
+	@Test
 	public void testGetCalendarToken() {
 
 		String returnToken = "1234abcd";
@@ -165,6 +190,57 @@ public class UserControllerTest {
 
 		verify(calendarService).findCalendarTokenFromUser(eq(user));
 		Assert.assertEquals(returnToken, ct.getToken());
+	}
 
+	@Test
+	public void testClearCalendarToken() {
+
+		userController.clearCalendarToken(user);
+
+		verify(userRepository).deleteCalendarToken(eq(user));
+		verify(calendarService).findCalendarTokenFromUser(eq(user));
+	}
+
+	@Test
+	public void testUserCalendar() throws IOException, ValidationException {
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+		final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
+		when(resp.getOutputStream()).thenReturn(servletOutputStream);
+
+		String token = "1234abcd";
+
+		Calendar calendar = new Calendar();
+		calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
+		calendar.getProperties().add(Version.VERSION_2_0);
+		calendar.getProperties().add(CalScale.GREGORIAN);
+		calendar.getProperties().add(Method.PUBLISH);
+		VEvent event = new VEvent(new net.fortuna.ical4j.model.Date(), "name");
+		event.getProperties().add(new Uid(UUID.randomUUID().toString()));
+		Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
+		event.getProperties().add(organizer);
+		calendar.getComponents().add(event);
+		when(calendarService.getUserCalendar(eq(token))).thenReturn(calendar);
+
+		userController.userCalendar(token, resp);
+
+		verify(calendarService).getUserCalendar(eq(token));
+	}
+
+	class StubServletOutputStream extends ServletOutputStream {
+		public ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		public void write(int i) throws IOException {
+			baos.write(i);
+		}
+
+		@Override
+		public boolean isReady() {
+			return true;
+		}
+
+		@Override
+		public void setWriteListener(WriteListener writeListener) {
+
+		}
 	}
 }

@@ -64,9 +64,6 @@ public class CardRepositoryTest {
 	private CardRepository cardRepository;
 
 	@Autowired
-	private CardLabelRepository cardLabelRepository;
-
-	@Autowired
 	private ProjectService projectService;
 
 
@@ -298,41 +295,41 @@ public class CardRepositoryTest {
 		Assert.assertEquals(res.get("TESTBRD-" + c2.getSequence()).intValue(), c2.getId());
 		Assert.assertEquals(res.get("TESTBRD-" + c3.getSequence()).intValue(), c3.getId());
 	}
-	
+
 	@Test
 	public void testFindCardBy() {
 		Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
-		
+
 		// find by card "title"
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("card1", null).get(0).getId());
-		
+
 		// find by card sequenceNr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy(Integer.toString(c1.getSequence()), null).get(0).getId());
-		
+
 		// find by board short name
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD", null).get(0).getId());
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-", null).get(0).getId());
-		
+
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), null).get(0).getId());
 	}
-	
+
 	@Test
 	public void testFindCardByInProject() {
 		Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
-		
+
 		Set<Integer> projects = Collections.singleton(board.getProjectId());
-		
+
 		// find by card "title"
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("card1", projects).get(0).getId());
-		
+
 		// find by card sequenceNr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy(Integer.toString(c1.getSequence()), projects).get(0).getId());
-		
+
 		// find by board short name
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD", projects).get(0).getId());
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-", projects).get(0).getId());
-		
+
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), projects).get(0).getId());
 	}
