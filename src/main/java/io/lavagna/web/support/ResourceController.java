@@ -181,7 +181,7 @@ public class ResourceController {
 		if (contains(env.getActiveProfiles(), "dev") || indexCache.get() == null) {
 
 			ByteArrayOutputStream index = new ByteArrayOutputStream();
-			output("/index.html", context, index, new BeforeAfter());
+			output("/WEB-INF/views/index.html", context, index, new BeforeAfter());
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");

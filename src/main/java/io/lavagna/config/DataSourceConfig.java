@@ -45,8 +45,7 @@ public class DataSourceConfig {
 		dataSource.setDriverClassName(env.getRequiredProperty("datasource.driver"));
 
 		if (env.containsProperty("datasource.url") && //
-				env.containsProperty("datasource.username") && //
-				env.containsProperty("datasource.password")) {
+				env.containsProperty("datasource.username")) {
 			urlAndCredentials(dataSource, env);
 		} else {
 			urlWithCredentials(dataSource, env);
@@ -96,7 +95,7 @@ public class DataSourceConfig {
 	private static void urlAndCredentials(org.apache.tomcat.jdbc.pool.DataSource dataSource, Environment env) {
 		dataSource.setUrl(env.getRequiredProperty("datasource.url"));
 		dataSource.setUsername(env.getRequiredProperty("datasource.username"));
-		dataSource.setPassword(env.getRequiredProperty("datasource.password"));
+		dataSource.setPassword(env.getProperty("datasource.password") != null ? env.getProperty("datasource.password") : "");
 	}
 
 	@Bean
