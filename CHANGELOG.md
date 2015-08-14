@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2 (2015-08-14)
+
+ - Tomcat 7/8 fix as found in issue [#12](https://github.com/digitalfondue/lavagna/issues/12)
 
 ## 1.0.1 (2015-08-14)
 

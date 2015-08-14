@@ -5,7 +5,7 @@ This is a high level roadmap. Lavagna has currently:
  - a stable 1.0.x branch where small fixes and features will be added
  - the current master (1.1) where the big features are developed
 
-## Expected for 1.0.2
+## Expected for 1.0.3
 
  - iCalendar feed support
 
