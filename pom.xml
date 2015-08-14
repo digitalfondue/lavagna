@@ -457,6 +457,22 @@
 				</configuration>
 			</plugin>
 			<plugin>
+    			<groupId>org.apache.tomcat.maven</groupId>
+    			<artifactId>tomcat7-maven-plugin</artifactId>
+    			<version>2.2</version>
+    			<configuration>
+        			<path>/</path>
+        			<systemProperties>
+        				<spring.profiles.active>${spring.profiles.active}</spring.profiles.active>
+        				<datasource.dialect>${datasource.dialect}</datasource.dialect>
+						<datasource.driver>${datasource.driver}</datasource.driver>
+						<datasource.url>${datasource.url}</datasource.url>
+						<datasource.username>${datasource.username}</datasource.username>
+						<datasource.password>${datasource.password}</datasource.password>
+        			</systemProperties>
+    			</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${org.eclipse.jetty.version}</version>
