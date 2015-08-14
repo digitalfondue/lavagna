@@ -8,11 +8,19 @@ Lavagna
 [![Maven Central](https://img.shields.io/maven-central/v/io.lavagna/lavagna.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22lavagna%22)
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
 
+
+# Latest release is 1.0.1 (2015-08-14) #
+
 ## About ##
 
 [Lavagna](http://lavagna.io) is a small and easy to use issue/project tracking software.
 
 It requires Java 7 or better and optionally a database: MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
+
+See:
+
+ - [roadmap](https://github.com/digitalfondue/lavagna/blob/master/ROADMAP.md)
+ - [changelog](https://github.com/digitalfondue/lavagna/blob/master/CHANGELOG.md)
 
 
 ## Install ##
@@ -31,9 +39,9 @@ See the documentation at http://help.lavagna.io
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0/lavagna-1.0-distribution.zip
-unzip lavagna-1.0-distribution.zip
-./lavagna-1.0/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0.1/lavagna-1.0.1-distribution.zip
+unzip lavagna-1.0.1-distribution.zip
+./lavagna-1.0.1/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
