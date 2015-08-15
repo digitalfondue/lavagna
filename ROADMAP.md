@@ -17,8 +17,9 @@ This is a high level roadmap. Lavagna has currently:
  - switch the authentication manager to spring-security or apache shiro
  - support gitlab oauth 
  - support internal account handling
- - update to spring 4.2.x
  - support commit log parsing (git, svn (?))
  - webhooks support
+ - update to spring 4.2.x [done]
+ - switch connection pool to hikaricp [done]
 
   

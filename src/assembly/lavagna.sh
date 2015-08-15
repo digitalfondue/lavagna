@@ -10,19 +10,16 @@
 #  - HSQLDB (for in memory test or for low volumes using his file store)
 #    You must set:
 #
-#    -Ddatasource.driver=org.hsqldb.jdbcDriver
 #    -Ddatasource.dialect=HSQLDB
 # 
 #  - MySQL
 #    You must set:
 #
-#    -Ddatasource.driver=com.mysql.jdbc.Driver
 #    -Ddatasource.dialect=MYSQL
 #
 #  - PostgreSQL
 #    You must set:
 #
-#    -Ddatasource.driver=org.postgresql.Driver
 #    -Ddatasource.dialect=PGSQL
 #
 # Database configuration:
@@ -50,7 +47,6 @@
 BASEDIR=$(dirname $0)
 
 java \
-	-Ddatasource.driver=org.hsqldb.jdbcDriver \
 	-Ddatasource.dialect=HSQLDB \
 	-Ddatasource.url=jdbc:hsqldb:mem:lavagna \
 	-Ddatasource.username=sa \

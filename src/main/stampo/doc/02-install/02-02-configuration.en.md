@@ -13,7 +13,6 @@ As a default, lavagna launch in dev mode, so check in the scripts that the sprin
 You can deploy in any servlet 3.0 container. You will need to set the following
 property to the JVM (see the scripts bin/lavagna.sh / bin/lavagna.bat):
 
- - datasource.driver=org.hsqldb.jdbcDriver | com.mysql.jdbc.Driver | org.postgresql.Driver
  - datasource.dialect=HSQLDB | MYSQL | PGSQL
  - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
  - datasource.username=[username]

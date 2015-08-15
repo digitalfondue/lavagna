@@ -216,17 +216,19 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<version>8.0.8</version>
-		</dependency>
+        	<groupId>com.zaxxer</groupId>
+        	<artifactId>HikariCP</artifactId>
+        	<version>2.4.0</version>
+    	</dependency>
 
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
 			<version>4.0.4</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -465,7 +467,6 @@
         			<systemProperties>
         				<spring.profiles.active>${spring.profiles.active}</spring.profiles.active>
         				<datasource.dialect>${datasource.dialect}</datasource.dialect>
-						<datasource.driver>${datasource.driver}</datasource.driver>
 						<datasource.url>${datasource.url}</datasource.url>
 						<datasource.username>${datasource.username}</datasource.username>
 						<datasource.password>${datasource.password}</datasource.password>
@@ -490,10 +491,6 @@
 						<systemProperty>
 							<name>datasource.dialect</name>
 							<value>${datasource.dialect}</value>
-						</systemProperty>
-						<systemProperty>
-							<name>datasource.driver</name>
-							<value>${datasource.driver}</value>
 						</systemProperty>
 						<systemProperty>
 							<name>datasource.url</name>
@@ -525,59 +522,6 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.jacoco</groupId>
-										<artifactId>
-											jacoco-maven-plugin
-										</artifactId>
-										<versionRange>
-											[0.7.0.201403182114,)
-										</versionRange>
-										<goals>
-											<goal>prepare-agent</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											license-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.8,)
-										</versionRange>
-										<goals>
-											<goal>add-third-party</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<reporting>
@@ -613,7 +557,6 @@
 				<datasource.dialect>HSQLDB</datasource.dialect>
 				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
 				<!-- <datasource.url>jdbc:log4jdbc:hsqldb:mem:lavagna</datasource.url> -->
-				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
 				<datasource.password />
@@ -627,7 +570,6 @@
 				<jetty.port>8080</jetty.port>
 				<jetty.host>0.0.0.0</jetty.host>
 				<datasource.dialect>HSQLDB</datasource.dialect>
-				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
 				<datasource.password />
@@ -643,7 +585,6 @@
 				<datasource.dialect>HSQLDB</datasource.dialect>
 				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
 				<!-- <datasource.url>jdbc:log4jdbc:hsqldb:mem:lavagna</datasource.url> -->
-				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
 				<datasource.password />
@@ -660,7 +601,6 @@
 				<datasource.dialect>MYSQL</datasource.dialect>
 				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
 				<!-- <datasource.url>jdbc:log4jdbc:mysql://localhost:3306/lavagna</datasource.url> -->
-				<datasource.driver>com.mysql.jdbc.Driver</datasource.driver>
 				<datasource.url>jdbc:mysql://localhost:3306/lavagna</datasource.url>
 				<datasource.username>root</datasource.username>
 				<datasource.password />
@@ -674,41 +614,12 @@
 				<jetty.port>8080</jetty.port>
 				<jetty.host>0.0.0.0</jetty.host>
 				<datasource.dialect>PGSQL</datasource.dialect>
-				<datasource.driver>org.postgresql.Driver</datasource.driver>
 				<datasource.url>jdbc:postgresql://localhost:5432/lavagna</datasource.url>
 				<datasource.username>postgres</datasource.username>
 				<datasource.password>password</datasource.password>
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 		</profile>
-		<profile>
-			<id>openshift</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<skipTests>true</skipTests>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-			<properties>
-				<fast-build>true</fast-build>
-				<jetty.port>${env.OPENSHIFT_JETTY_PORT}</jetty.port>
-				<jetty.host>${env.OPENSHIFT_JETTY_IP}</jetty.host>
-				<datasource.dialect>MYSQL</datasource.dialect>
-				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
-				<!-- <datasource.url>jdbc:log4jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/lavagna</datasource.url> -->
-				<datasource.driver>com.mysql.jdbc.Driver</datasource.driver>
-				<datasource.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/lavagna</datasource.url>
-				<datasource.username>${env.OPENSHIFT_MYSQL_DB_USERNAME}</datasource.username>
-				<datasource.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</datasource.password>
-				<spring.profiles.active>prod</spring.profiles.active>
-			</properties>
-		</profile>
-
 		<profile>
 			<id>sign-artifacts</id>
 			<activation>
