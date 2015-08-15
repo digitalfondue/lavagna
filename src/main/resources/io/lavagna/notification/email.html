@@ -16,14 +16,14 @@
 					<td style="border: none;">
 						<h1 style="font-size: 16px">
 							<a style="color: #2A6496"
-							   href="{{baseApplicationUrl}}{{cardFull.projectShortName}}/{{cardFull.boardShortName}}-{{cardFull.sequence}}">{{cardName}}</a>
+							   href="{{baseApplicationUrl}}{{cardFull.projectShortName}}/{{cardFull.boardShortName}}-{{cardFull.sequence}}">{{#htmlEscape}}{{cardName}}{{/htmlEscape}}</a>
 						</h1>
 					</td>
 				</tr>
 				{{#cardEvents}}
 				<tr>
 					<td style="border: none;">
-						<code style="font-size: 12px">{{.}}</code>
+						<code style="font-size: 12px">{{#htmlEscape}}{{.}}{{/htmlEscape}}</code>
 					</td>
 				</tr>
 				{{/cardEvents}}
