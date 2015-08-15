@@ -9,19 +9,16 @@ rem ----------------
 rem  - HSQLDB (for in memory test or for low volumes using his file store)
 rem    You must set:
 rem
-rem    -Ddatasource.driver=org.hsqldb.jdbcDriver
 rem    -Ddatasource.dialect=HSQLDB
 rem 
 rem  - MySQL
 rem    You must set:
 rem
-rem    -Ddatasource.driver=com.mysql.jdbc.Driver
 rem    -Ddatasource.dialect=MYSQL
 rem
 rem  - PostgreSQL
 rem    You must set:
 rem
-rem    -Ddatasource.driver=org.postgresql.Driver
 rem    -Ddatasource.dialect=PGSQL
 rem
 rem Database configuration:
@@ -48,7 +45,6 @@ rem You will likely want to use prod (as in production) mode.
 
 
 java ^
-	-Ddatasource.driver=org.hsqldb.jdbcDriver ^
 	-Ddatasource.dialect=HSQLDB ^
 	-Ddatasource.url=jdbc:hsqldb:mem:lavagna ^
 	-Ddatasource.username=sa ^

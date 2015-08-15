@@ -17,7 +17,6 @@
 package io.lavagna.config;
 
 import io.lavagna.common.DatabaseMigrationDoneEvent;
-import io.lavagna.query.ValidationQuery;
 import io.lavagna.service.DatabaseMigrator;
 
 import java.net.URI;
@@ -31,9 +30,8 @@ import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import ch.digitalfondue.npjt.QueryFactory;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class DataSourceConfig {
 
@@ -41,8 +39,7 @@ public class DataSourceConfig {
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(Environment env) throws URISyntaxException {
-		org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-		dataSource.setDriverClassName(env.getRequiredProperty("datasource.driver"));
+		HikariDataSource dataSource = new HikariDataSource();
 
 		if (env.containsProperty("datasource.url") && //
 				env.containsProperty("datasource.username")) {
@@ -50,15 +47,6 @@ public class DataSourceConfig {
 		} else {
 			urlWithCredentials(dataSource, env);
 		}
-
-		String validationQuery = new QueryFactory(env.getRequiredProperty("datasource.dialect"), (NamedParameterJdbcTemplate) null)
-			.from(ValidationQuery.class).validation();
-
-		dataSource.setValidationQuery(validationQuery);
-		dataSource.setTestOnBorrow(true);
-		dataSource.setTestOnConnect(true);
-		dataSource.setTestWhileIdle(true);
-
 
 		if (System.getProperty("startDBManager") != null) {
 			DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:lavagna", "--noexit" });
@@ -79,12 +67,12 @@ public class DataSourceConfig {
 	 * @param env
 	 * @throws URISyntaxException
 	 */
-	private static void urlWithCredentials(org.apache.tomcat.jdbc.pool.DataSource dataSource, Environment env)
+	private static void urlWithCredentials(HikariDataSource dataSource, Environment env)
 			throws URISyntaxException {
 		URI dbUri = new URI(env.getRequiredProperty("datasource.url"));
 		dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
 		dataSource.setPassword(dbUri.getUserInfo().split(":")[1]);
-		dataSource.setUrl(String.format("%s://%s:%s%s", scheme(dbUri), dbUri.getHost(), dbUri.getPort(),
+		dataSource.setJdbcUrl(String.format("%s://%s:%s%s", scheme(dbUri), dbUri.getHost(), dbUri.getPort(),
 				dbUri.getPath()));
 	}
 
@@ -92,8 +80,8 @@ public class DataSourceConfig {
 		return "postgres".equals(uri.getScheme()) ? "jdbc:postgresql" : uri.getScheme();
 	}
 
-	private static void urlAndCredentials(org.apache.tomcat.jdbc.pool.DataSource dataSource, Environment env) {
-		dataSource.setUrl(env.getRequiredProperty("datasource.url"));
+	private static void urlAndCredentials(HikariDataSource dataSource, Environment env) {
+		dataSource.setJdbcUrl(env.getRequiredProperty("datasource.url"));
 		dataSource.setUsername(env.getRequiredProperty("datasource.username"));
 		dataSource.setPassword(env.getProperty("datasource.password") != null ? env.getProperty("datasource.password") : "");
 	}
