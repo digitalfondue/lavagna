@@ -25,6 +25,7 @@ import io.lavagna.query.NotificationQuery;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,8 +40,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.samskivert.mustache.Escapers;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.MustacheException;
+import com.samskivert.mustache.Template;
+import com.samskivert.mustache.Template.Fragment;
+
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,6 +84,9 @@ public class NotificationService {
 
 	private final NamedParameterJdbcTemplate jdbc;
 	private final NotificationQuery queries;
+	
+	private final Template emailTextTemplate;
+	private final Template emailHtmlTemplate;
 
 	@Autowired
 	public NotificationService(ConfigurationRepository configurationRepository, UserRepository userRepository,
@@ -93,6 +101,19 @@ public class NotificationService {
 		this.messageSource = messageSource;
 		this.jdbc = jdbc;
 		this.queries = queries;
+		
+		com.samskivert.mustache.Mustache.Compiler compiler = Mustache.compiler().escapeHTML(false).defaultValue("");
+		try {
+			emailTextTemplate = compiler.compile(new InputStreamReader(
+					new ClassPathResource("/io/lavagna/notification/email.txt")
+							.getInputStream(), StandardCharsets.UTF_8));
+			emailHtmlTemplate = compiler
+					.compile(new InputStreamReader(new ClassPathResource(
+							"/io/lavagna/notification/email.html")
+							.getInputStream(), StandardCharsets.UTF_8));
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	/**
@@ -167,20 +188,21 @@ public class NotificationService {
 			cardsModel.add(cardModel);
 		}
 
-		com.samskivert.mustache.Mustache.Compiler compiler = Mustache.compiler().escapeHTML(true).defaultValue("");
+		
 
 		Map<String, Object> tmplModel = new HashMap<>();
+		String baseApplicationUrl = StringUtils.appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/"); 
 		tmplModel.put("cards", cardsModel);
-		tmplModel.put("baseApplicationUrl",
-				StringUtils.appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/"));
+		tmplModel.put("baseApplicationUrl",baseApplicationUrl);
+		tmplModel.put("htmlEscape", new Mustache.Lambda() {
+			@Override
+			public void execute(Fragment frag, Writer out) throws IOException {
+				out.write(Escapers.HTML.escape(frag.execute()));
+			}
+		});
 
-		String text = compiler.compile(
-				new InputStreamReader(new ClassPathResource("/io/lavagna/notification/email.txt").getInputStream(),
-						StandardCharsets.UTF_8)).execute(tmplModel);
-
-		String html = compiler.compile(
-				new InputStreamReader(new ClassPathResource("/io/lavagna/notification/email.html").getInputStream(),
-						StandardCharsets.UTF_8)).execute(tmplModel);
+		String text = emailTextTemplate.execute(tmplModel);
+		String html = emailHtmlTemplate.execute(tmplModel);
 
 		return ImmutableTriple.of(subject.substring(0, subject.length() - ", ".length()), text, html);
 	}
