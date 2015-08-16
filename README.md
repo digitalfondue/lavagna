@@ -208,7 +208,7 @@ CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;
 Jacoco plugin is used.
 
 ```
-mvn install site
+mvn test jacoco:report
 ```
 
 -> open target/site/jacoco/index.html with your browser

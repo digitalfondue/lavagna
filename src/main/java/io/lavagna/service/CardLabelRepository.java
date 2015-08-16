@@ -229,8 +229,8 @@ public class CardLabelRepository {
 	}
 
 	@Transactional(readOnly = false)
-	public void updateLabelListValue(LabelListValue lvl) {
-		queries.updateLabelListValue(lvl.getId(), lvl.getValue());
+	public void updateLabelListValue(LabelListValue llv) {
+		queries.updateLabelListValue(llv.getId(), llv.getValue());
 	}
 
 	public List<LabelListValueWithMetadata> findListValuesByLabelId(int labelId) {
@@ -259,9 +259,22 @@ public class CardLabelRepository {
 		jdbc.batchUpdate(queries.swapLabelListValues(), new SqlParameterSource[] { p1, p2 });
 	}
 
-	public Map<String, Map<Integer, Integer>> findLabelListValueMapping(List<String> labelValues) {
+	/**
+	 * Return a mapping 
+	 * 
+	 * {labelListValue : {labelId : labelListValueId}}
+	 * 
+	 * @param labelListValues
+	 * @return
+	 */
+	public Map<String, Map<Integer, Integer>> findLabelListValueMapping(List<String> labelListValues) {
+		
+		if(labelListValues.isEmpty()) {
+			return Collections.emptyMap();
+		}
+		
 		final Map<String, Map<Integer, Integer>> res = new HashMap<>();
-		jdbc.query(queries.findLabelListValueMapping(), new MapSqlParameterSource("values", labelValues),
+		jdbc.query(queries.findLabelListValueMapping(), new MapSqlParameterSource("values", labelListValues),
 				new RowCallbackHandler() {
 					@Override
 					public void processRow(ResultSet rs) throws SQLException {

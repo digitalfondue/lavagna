@@ -14,7 +14,7 @@
 	}
 
     // set momentjs to use the current locale
-    var locale = window.navigator.userLanguage || window.navigator.language;
+    var locale = navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage);
     moment.locale(locale);
 
 	//declare all the modules here
@@ -91,7 +91,8 @@
 		angular.forEach(io_lavagna.i18n, function(map, lang) {
 			$translateProvider.translations(lang, map)
 		});
-		$translateProvider.preferredLanguage('en');
+		$translateProvider.preferredLanguage(locale);
+		$translateProvider.fallbackLanguage('en');
 		$translateProvider.usePostCompiling(true);
 
 
