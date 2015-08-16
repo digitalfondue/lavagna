@@ -21,9 +21,8 @@ import com.google.gson.GsonBuilder;
 
 public final class Json {
 
-	private Json() {
-	}
+    private Json() {
+    }
 
-	public static final Gson GSON = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-			.create();
+    public static final Gson GSON = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
 }
