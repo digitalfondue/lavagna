@@ -14,7 +14,7 @@
 	}
 
     // set momentjs to use the current locale
-    var locale = window.navigator.userLanguage || window.navigator.language;
+    var locale = navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage);
     moment.locale(locale);
 
 	//declare all the modules here
