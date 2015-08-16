@@ -60,6 +60,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -82,12 +83,15 @@ public class UserControllerTest {
 	@Mock
 	private CalendarService calendarService;
 
+	@Mock
+	private Environment env;
+
 	private UserController userController;
 
 	@Before
 	public void prepare() {
 		userController = new UserController(userRepository, eventEmitter, eventRepository,
-				projectService, calendarService);
+				projectService, calendarService, env);
 	}
 
 	@Test

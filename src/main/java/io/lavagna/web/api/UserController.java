@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import static org.apache.commons.lang3.ArrayUtils.contains;
 import io.lavagna.model.Event;
 import io.lavagna.model.EventsCount;
 import io.lavagna.model.Permission;
@@ -44,6 +45,7 @@ import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ValidationException;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,15 +61,17 @@ public class UserController {
 	private final EventRepository eventRepository;
 	private final ProjectService projectService;
 	private final CalendarService calendarService;
+	private final Environment env;
 
 	@Autowired
 	public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
-			ProjectService projectService, CalendarService calendarService) {
+			ProjectService projectService, CalendarService calendarService, Environment env) {
 		this.userRepository = userRepository;
 		this.eventEmitter = eventEmitter;
 		this.eventRepository = eventRepository;
 		this.projectService = projectService;
 		this.calendarService = calendarService;
+		this.env = env;
 	}
 
 	@RequestMapping(value = "/api/self", method = RequestMethod.GET)
@@ -153,6 +157,7 @@ public class UserController {
 		final Calendar calendar = calendarService.getUserCalendar(userToken);
 		response.setContentType("text/calendar");
 		final CalendarOutputter output = new CalendarOutputter();
+		output.setValidating(contains(env.getActiveProfiles(), "dev"));
 		output.output(calendar, response.getOutputStream());
 	}
 

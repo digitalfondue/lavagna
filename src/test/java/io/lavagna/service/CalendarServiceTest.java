@@ -22,6 +22,7 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
@@ -99,7 +100,6 @@ public class CalendarServiceTest {
 		Assert.assertEquals(BoardColumn.BoardColumnLocation.BOARD, col.getLocation());
 		Assert.assertEquals(ColumnDefinition.OPEN, col.getStatus());
 
-
 		Role r = new Role("TEST");
 		permissionService.createRole(r);
 		permissionService.updatePermissionsToRole(r, EnumSet.of(Permission.READ));
@@ -160,27 +160,24 @@ public class CalendarServiceTest {
 
 		Date now = new Date();
 
-		CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", CardLabel.LabelDomain.SYSTEM);
+		CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
 				user, now);
 
-		CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", CardLabel.LabelDomain.SYSTEM);
+		CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
 				user, now);
 
 		String token = calendarService.findCalendarTokenFromUser(user);
 
-		CardLabel dueDate= cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE",
-				CardLabel.LabelDomain.SYSTEM);
+		CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 		labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
-
 
 		Calendar calendar = calendarService.getUserCalendar(token);
 
 		Assert.assertNotNull(calendar);
 		Assert.assertEquals(2, calendar.getComponents().size());
-
 
 		VEvent event1 = (VEvent) calendar.getComponents().get(0);
 		Assert.assertEquals("Due date: card1", event1.getSummary().getValue());

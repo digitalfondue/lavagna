@@ -17,6 +17,7 @@
 package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
@@ -29,21 +30,29 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Date;
+import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Cn;
 import net.fortuna.ical4j.model.parameter.TzId;
 import net.fortuna.ical4j.model.property.Action;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Created;
 import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.LastModified;
 import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.Organizer;
 import net.fortuna.ical4j.model.property.ProdId;
@@ -107,6 +116,16 @@ public class CalendarService {
 		return sb.append(": ").append(card.getName()).toString();
 	}
 
+	private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
+		if (!cache.containsKey(userId)) {
+			User u = userRepository.findById(userId);
+			String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
+			String email = String.format("mail:%s", firstNonNull(u.getEmail(), "no-e-mail"));
+			cache.put(userId, new UserDescription(name, email));
+		}
+		return cache.get(userId);
+	}
+
 	public Calendar getUserCalendar(String userToken) throws URISyntaxException {
 		UserWithPermission user;
 
@@ -122,6 +141,7 @@ public class CalendarService {
 		calendar.getProperties().add(CalScale.GREGORIAN);
 		calendar.getProperties().add(Method.PUBLISH);
 
+		Map<Integer, UserDescription> usersCache = new HashMap<>();
 		Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
 
 		SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
@@ -154,22 +174,28 @@ public class CalendarService {
 					String name = getEventName(lav, card);
 
 					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
-					final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-					reminder.getProperties().add(Action.DISPLAY);
-					reminder.getProperties().add(new Description(name));
-					event.getAlarms().add(reminder);
+					event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
+					event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
 
 					final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
 							getLong(lav.getLabelId(), lav.getLabelValueId()));
 					event.getProperties().add(new Uid(id.toString()));
 
+					// Reminder on label's date
+					final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+					reminder.getProperties().add(Action.DISPLAY);
+					reminder.getProperties().add(new Description(name));
+					event.getAlarms().add(reminder);
+
 					TzId tzParam = new TzId(utcTimeZone);
 					event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
-					// TODO add organizer e-mail
-					Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
+
+					// Organizer
+					UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
+					Organizer organizer = new Organizer(URI.create(ud.getEmail()));
+					organizer.getParameters().add(new Cn(ud.getName()));
 					event.getProperties().add(organizer);
-					// TODO add description
-					//event.getProperties().add(new Description("Event desc"));
+
 					event.getProperties().add(cardUrl);
 
 					events.add(event);
@@ -182,4 +208,10 @@ public class CalendarService {
 		return calendar;
 	}
 
+	@Getter
+	@Setter
+	@AllArgsConstructor class UserDescription {
+		private String name;
+		private String email;
+	}
 }
