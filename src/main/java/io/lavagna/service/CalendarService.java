@@ -20,11 +20,13 @@ import static io.lavagna.service.SearchFilter.filter;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
+import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -34,17 +36,23 @@ import java.util.UUID;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Date;
+import net.fortuna.ical4j.model.Dur;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.TzId;
+import net.fortuna.ical4j.model.property.Action;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.Organizer;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -55,12 +63,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CalendarService {
 
+	private final ConfigurationRepository configurationRepository;
 	private final SearchService searchService;
 	private final UserRepository userRepository;
 	private final UserService userService;
 
 	@Autowired
-	public CalendarService(SearchService searchService, UserService userService, UserRepository userRepository) {
+	public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
+			UserService userService, UserRepository userRepository) {
+		this.configurationRepository = configurationRepository;
 		this.searchService = searchService;
 		this.userRepository = userRepository;
 		this.userService = userService;
@@ -97,7 +108,7 @@ public class CalendarService {
 		return sb.append(": ").append(card.getName()).toString();
 	}
 
-	public Calendar getUserCalendar(String userToken) {
+	public Calendar getUserCalendar(String userToken) throws URISyntaxException {
 		UserWithPermission user;
 
 		try {
@@ -129,12 +140,25 @@ public class CalendarService {
 			map.put(card.getId(), card);
 		}
 
+		final String applicationUrl = StringUtils.appendIfMissing(
+				configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
+
 		final List<VEvent> events = new ArrayList<>();
 		final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
 		for (CardFullWithCounts card : map.values()) {
+
+			Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
+					card.getBoardShortName(), card.getSequence())));
+
 			for (LabelAndValue lav : card.getLabels()) {
 				if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
-					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), getEventName(lav, card));
+					String name = getEventName(lav, card);
+
+					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
+					final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+					reminder.getProperties().add(Action.DISPLAY);
+					reminder.getProperties().add(new Description(name));
+					event.getAlarms().add(reminder);
 
 					final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
 							getLong(lav.getLabelId(), lav.getLabelValueId()));
@@ -147,8 +171,8 @@ public class CalendarService {
 					event.getProperties().add(organizer);
 					// TODO add description
 					//event.getProperties().add(new Description("Event desc"));
-					// TODO add direct link to Lavagna
-					// TODO add some tests!
+					event.getProperties().add(cardUrl);
+
 					events.add(event);
 				}
 			}

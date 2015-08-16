@@ -33,6 +33,7 @@ import io.lavagna.web.api.UserController.DisplayNameEmail;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumMap;
@@ -202,7 +203,7 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void testUserCalendar() throws IOException, ValidationException {
+	public void testUserCalendar() throws IOException, ValidationException, URISyntaxException {
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 		final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
 		when(resp.getOutputStream()).thenReturn(servletOutputStream);

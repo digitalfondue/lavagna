@@ -30,6 +30,7 @@ import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -148,7 +149,7 @@ public class UserController {
 	@RequestMapping(value = "/api/calendar/{token}/calendar.ics",
 			method = RequestMethod.GET, produces = "text/calendar")
 	public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
-			throws IOException, ValidationException {
+			throws IOException, ValidationException, URISyntaxException {
 		final Calendar calendar = calendarService.getUserCalendar(userToken);
 		response.setContentType("text/calendar");
 		final CalendarOutputter output = new CalendarOutputter();

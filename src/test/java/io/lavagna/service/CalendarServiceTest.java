@@ -17,21 +17,26 @@
 package io.lavagna.service;
 
 import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
+import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.Key;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.Role;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 
-import lombok.val;
 import net.fortuna.ical4j.model.Calendar;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,6 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CalendarServiceTest {
 
+	@Autowired
+	private ConfigurationRepository configurationRepository;
 	@Autowired
 	private ProjectService projectService;
 	@Autowired
@@ -79,10 +86,10 @@ public class CalendarServiceTest {
 		user = userRepository.findUserByName("test", "test-user");
 
 		project = projectService.create("test", "TEST", "desc");
-		val board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
+		Board board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
 
-		val definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
-		for (val def : definitions) {
+		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
+		for (BoardColumnDefinition def : definitions) {
 			if (def.getValue() == ColumnDefinition.OPEN) {
 				col = boardColumnRepository.addColumnToBoard("col1", def.getId(), BoardColumn.BoardColumnLocation.BOARD,
 						board.getId());
@@ -92,10 +99,12 @@ public class CalendarServiceTest {
 		Assert.assertEquals(ColumnDefinition.OPEN, col.getStatus());
 
 
-		val r = new Role("TEST");
+		Role r = new Role("TEST");
 		permissionService.createRole(r);
 		permissionService.updatePermissionsToRole(r, EnumSet.of(Permission.READ));
 		permissionService.assignRolesToUsers(Collections.singletonMap(r, Collections.singleton(user.getId())));
+
+		configurationRepository.insert(Key.BASE_APPLICATION_URL, "localhost");
 	}
 
 	@Test
@@ -127,12 +136,12 @@ public class CalendarServiceTest {
 	}
 
 	@Test(expected = SecurityException.class)
-	public void testGetUserCalendarWithWrongToken() {
+	public void testGetUserCalendarWithWrongToken() throws URISyntaxException {
 		calendarService.getUserCalendar("abcd");
 	}
 
 	@Test
-	public void testGetUserCalendarOnEmpty() {
+	public void testGetUserCalendarOnEmpty() throws URISyntaxException {
 		String token = calendarService.findCalendarTokenFromUser(user);
 
 		Calendar calendar = calendarService.getUserCalendar(token);
@@ -142,30 +151,30 @@ public class CalendarServiceTest {
 	}
 
 	@Test
-	public void testGetUserCalendar() {
+	public void testGetUserCalendar() throws URISyntaxException {
 
-		val assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+		Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
 
-		val watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
+		Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
 
-		val now = new Date();
+		Date now = new Date();
 
-		val assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", CardLabel.LabelDomain.SYSTEM);
+		CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", CardLabel.LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
 				user, now);
 
-		val watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", CardLabel.LabelDomain.SYSTEM);
+		CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", CardLabel.LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
 				user, now);
 
-		val token = calendarService.findCalendarTokenFromUser(user);
+		String token = calendarService.findCalendarTokenFromUser(user);
 
-		val dueDate= cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", CardLabel.LabelDomain.SYSTEM);
+		CardLabel dueDate= cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", CardLabel.LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 		labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 
 
-		val calendar = calendarService.getUserCalendar(token);
+		Calendar calendar = calendarService.getUserCalendar(token);
 
 		Assert.assertNotNull(calendar);
 		Assert.assertEquals(2, calendar.getComponents().size());
