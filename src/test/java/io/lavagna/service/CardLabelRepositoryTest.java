@@ -32,8 +32,10 @@ import io.lavagna.model.User;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.service.config.TestServiceConfig;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -203,6 +205,11 @@ public class CardLabelRepositoryTest {
 				null, null, llv.getId()));
 
 		Assert.assertEquals(1, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
+		Assert.assertEquals("1", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getValue());
+		
+		cardLabelRepository.updateLabelListValue(llv.newValue("MY_NEW_VALUE"));
+		
+		Assert.assertEquals("MY_NEW_VALUE", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getValue());
 	}
 
 	@Test
@@ -257,7 +264,7 @@ public class CardLabelRepositoryTest {
 	//
 	
 	@Test
-	public void testCountLabeListValueUse() {
+	public void testCountLabelListValueUse() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
 		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
@@ -268,6 +275,26 @@ public class CardLabelRepositoryTest {
 	}
 	
 	@Test
+	public void testLabelListValueMapping() {
+		
+		
+		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
+				CardLabel.LabelDomain.USER, "listlabel", 0);
+		
+		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "listvalue");
+		Assert.assertTrue(cardLabelRepository.findLabelListValueMapping(Collections.<String>emptyList()).isEmpty());
+		Assert.assertFalse(cardLabelRepository.findLabelListValueMapping(Collections.singletonList("listvalue")).isEmpty());
+
+		cardLabelRepository.addLabelValueToCard(label, card.getId(), new LabelValue(null, null, null, null, null, llv.getId()));
+
+		Map<String, Map<Integer, Integer>> mapping = cardLabelRepository.findLabelListValueMapping(Collections.singletonList("listvalue"));
+		Assert.assertTrue(mapping.containsKey("listvalue"));
+		Assert.assertTrue(mapping.get("listvalue").containsKey(label.getId()));
+		Assert.assertEquals(Integer.valueOf(llv.getId()), mapping.get("listvalue").get(label.getId()));
+		
+	}
+	
+	@Test
 	public void testHandleLabelListValueMetadata() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
@@ -275,7 +302,6 @@ public class CardLabelRepositoryTest {
 
 		Assert.assertTrue(cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId()).isEmpty());
 		
-
 		//creation
 		cardLabelRepository.createLabelListMetadata(llv.getId(), "KEY", "VALUE");
 		List<ListValueMetadata> metadatas = cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId());
