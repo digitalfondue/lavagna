@@ -26,8 +26,10 @@ import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.ListValueMetadata;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
+import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Date;
@@ -172,8 +174,11 @@ public class CardLabelRepositoryTest {
 				CardLabel.LabelDomain.USER, "label1", 0);
 
 		Assert.assertEquals(0, cardLabelRepository.findCardLabelValuesByCardId(card.getId()).size());
+		Assert.assertEquals(0, cardLabelRepository.labelUsedCount(inserted.getId()));
 
 		cardLabelRepository.addLabelValueToCard(inserted, card.getId(), new CardLabelValue.LabelValue("my string"));
+		
+		Assert.assertEquals(1, cardLabelRepository.labelUsedCount(inserted.getId()));
 
 		Assert.assertEquals(1, cardLabelRepository.findCardLabelValuesByCardId(card.getId()).size());
 
@@ -186,7 +191,7 @@ public class CardLabelRepositoryTest {
 		cardLabelRepository.updateLabel(inserted.getId(), label);
 	}
 
-	@Test()
+	@Test
 	public void testAddLabelListValue() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
@@ -200,7 +205,7 @@ public class CardLabelRepositoryTest {
 		Assert.assertEquals(1, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
 	}
 
-	@Test()
+	@Test
 	public void testFindListValueById() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
@@ -214,7 +219,7 @@ public class CardLabelRepositoryTest {
 		Assert.assertEquals("1", cardLabelRepository.findListValueById(-3).getValue());
 	}
 
-	@Test()
+	@Test
 	public void testRemoveLabelListValue() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
@@ -227,7 +232,7 @@ public class CardLabelRepositoryTest {
 		Assert.assertEquals(0, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
 	}
 
-	@Test()
+	@Test
 	public void testSwapListLabel() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
 				CardLabel.LabelDomain.USER, "listlabel", 0);
@@ -247,5 +252,48 @@ public class CardLabelRepositoryTest {
 		Assert.assertEquals("2", values.get(0).getValue());
 		Assert.assertEquals(2, values.get(1).getOrder());
 		Assert.assertEquals("1", values.get(1).getValue());
+	}
+	
+	//
+	
+	@Test
+	public void testCountLabeListValueUse() {
+		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
+				CardLabel.LabelDomain.USER, "listlabel", 0);
+		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
+		
+		Assert.assertEquals(0, cardLabelRepository.countLabeListValueUse(llv.getId()));
+		cardLabelRepository.addLabelValueToCard(label, card.getId(), new LabelValue(null, null, null, null, null, llv.getId()));
+		Assert.assertEquals(1, cardLabelRepository.countLabeListValueUse(llv.getId()));
+	}
+	
+	@Test
+	public void testHandleLabelListValueMetadata() {
+		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
+				CardLabel.LabelDomain.USER, "listlabel", 0);
+		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
+
+		Assert.assertTrue(cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId()).isEmpty());
+		
+
+		//creation
+		cardLabelRepository.createLabelListMetadata(llv.getId(), "KEY", "VALUE");
+		List<ListValueMetadata> metadatas = cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId());
+		Assert.assertEquals(1, metadatas.size());
+		ListValueMetadata metadata = metadatas.get(0);
+		Assert.assertEquals("KEY", metadata.getKey());
+		Assert.assertEquals("VALUE", metadata.getValue());
+		
+		//update
+		cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(metadata.getLabelListValueId(), metadata.getKey(), "NEW_VALUE"));
+		List<ListValueMetadata> metadatas2 = cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId());
+		Assert.assertEquals(1, metadatas2.size());
+		ListValueMetadata metadata2 = metadatas2.get(0);
+		Assert.assertEquals("KEY", metadata2.getKey());
+		Assert.assertEquals("NEW_VALUE", metadata2.getValue());
+		
+		//delete
+		cardLabelRepository.removeLabelListMetadata(metadata2.getLabelListValueId(), metadata2.getKey());
+		Assert.assertTrue(cardLabelRepository.findListValueMetadataByLabelListValueId(llv.getId()).isEmpty());
 	}
 }
