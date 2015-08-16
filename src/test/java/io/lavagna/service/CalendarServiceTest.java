@@ -38,6 +38,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.component.VEvent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class CalendarServiceTest {
 		permissionService.updatePermissionsToRole(r, EnumSet.of(Permission.READ));
 		permissionService.assignRolesToUsers(Collections.singletonMap(r, Collections.singleton(user.getId())));
 
-		configurationRepository.insert(Key.BASE_APPLICATION_URL, "localhost");
+		configurationRepository.insert(Key.BASE_APPLICATION_URL, "http://localhost");
 	}
 
 	@Test
@@ -169,7 +170,8 @@ public class CalendarServiceTest {
 
 		String token = calendarService.findCalendarTokenFromUser(user);
 
-		CardLabel dueDate= cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", CardLabel.LabelDomain.SYSTEM);
+		CardLabel dueDate= cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE",
+				CardLabel.LabelDomain.SYSTEM);
 		labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 		labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 
@@ -178,5 +180,10 @@ public class CalendarServiceTest {
 
 		Assert.assertNotNull(calendar);
 		Assert.assertEquals(2, calendar.getComponents().size());
+
+
+		VEvent event1 = (VEvent) calendar.getComponents().get(0);
+		Assert.assertEquals("Due date: card1", event1.getSummary().getValue());
+		Assert.assertEquals("http://localhost/TEST/TEST-BRD-1", event1.getUrl().getUri().toASCIIString());
 	}
 }

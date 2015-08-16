@@ -53,7 +53,6 @@ import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -101,7 +100,7 @@ public class CalendarService {
 	private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
 		StringBuilder sb = new StringBuilder();
 		if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
-			sb.append(WordUtils.capitalizeFully(lav.getLabelName().replace('_', ' ')));
+			sb.append(StringUtils.capitalize(lav.getLabelName().replace('_', ' ').toLowerCase()));
 		} else {
 			sb.append(lav.getLabelName());
 		}
