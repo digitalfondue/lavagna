@@ -13,6 +13,10 @@
 		window.history.pushState("", document.title, window.location.pathname);
 	}
 
+    // set momentjs to use the current locale
+    var locale = window.navigator.userLanguage || window.navigator.language;
+    moment.locale(locale);
+
 	//declare all the modules here
 	angular.module('lavagna.controllers', [ 'lavagna.services' ]);
 	angular.module('lavagna.directives', [ 'lavagna.services' ]);
