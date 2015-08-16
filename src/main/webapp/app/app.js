@@ -91,7 +91,8 @@
 		angular.forEach(io_lavagna.i18n, function(map, lang) {
 			$translateProvider.translations(lang, map)
 		});
-		$translateProvider.preferredLanguage('en');
+		$translateProvider.preferredLanguage(locale);
+		$translateProvider.fallbackLanguage('en');
 		$translateProvider.usePostCompiling(true);
 
 
