@@ -32,41 +32,41 @@ import com.google.gson.reflect.TypeToken;
 
 public class Read {
 
-	public static Path readFile(String name, Path tempFile) throws IOException {
-		try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
-			ZipEntry ze = zis.getNextEntry();
-			while (ze != null) {
-				if (ze.getName().equals(name)) {
-					Path p = Files.createTempFile(null, null);
-					Files.copy(zis, p, StandardCopyOption.REPLACE_EXISTING);
-					return p;
-				}
-				ze = zis.getNextEntry();
-			}
-		}
-		return null;
-	}
+    public static Path readFile(String name, Path tempFile) throws IOException {
+        try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry ze = zis.getNextEntry();
+            while (ze != null) {
+                if (ze.getName().equals(name)) {
+                    Path p = Files.createTempFile(null, null);
+                    Files.copy(zis, p, StandardCopyOption.REPLACE_EXISTING);
+                    return p;
+                }
+                ze = zis.getNextEntry();
+            }
+        }
+        return null;
+    }
 
-	public static <T> T readObject(String name, Path tempFile, TypeToken<T> t) {
-		return readMatchingObjects(name, tempFile, t).get(0);
-	}
+    public static <T> T readObject(String name, Path tempFile, TypeToken<T> t) {
+        return readMatchingObjects(name, tempFile, t).get(0);
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> readMatchingObjects(String regex, Path tempFile, TypeToken<T> t) {
-		try {
-			List<T> res = new ArrayList<>();
-			try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
-				ZipEntry ze = zis.getNextEntry();
-				while (ze != null) {
-					if (ze.getName().matches("^" + regex + "$")) {
-						res.add((T) Json.GSON.fromJson(new InputStreamReader(zis, StandardCharsets.UTF_8), t.getType()));
-					}
-					ze = zis.getNextEntry();
-				}
-				return res;
-			}
-		} catch (IOException ioe) {
-			throw new IllegalStateException("error while reading data for " + regex, ioe);
-		}
-	}
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> readMatchingObjects(String regex, Path tempFile, TypeToken<T> t) {
+        try {
+            List<T> res = new ArrayList<>();
+            try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
+                ZipEntry ze = zis.getNextEntry();
+                while (ze != null) {
+                    if (ze.getName().matches("^" + regex + "$")) {
+                        res.add((T) Json.GSON.fromJson(new InputStreamReader(zis, StandardCharsets.UTF_8), t.getType()));
+                    }
+                    ze = zis.getNextEntry();
+                }
+                return res;
+            }
+        } catch (IOException ioe) {
+            throw new IllegalStateException("error while reading data for " + regex, ioe);
+        }
+    }
 }
