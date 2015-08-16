@@ -16,27 +16,36 @@
  */
 package io.lavagna.web.api;
 
+import static org.apache.commons.lang3.ArrayUtils.contains;
 import io.lavagna.model.Event;
 import io.lavagna.model.EventsCount;
 import io.lavagna.model.Permission;
 import io.lavagna.model.ProjectWithEventCounts;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.service.CalendarService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.ExpectPermission;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.Getter;
 import lombok.Setter;
-
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.ValidationException;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,14 +60,18 @@ public class UserController {
 	private final EventEmitter eventEmitter;
 	private final EventRepository eventRepository;
 	private final ProjectService projectService;
+	private final CalendarService calendarService;
+	private final Environment env;
 
 	@Autowired
 	public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
-			ProjectService projectService) {
+			ProjectService projectService, CalendarService calendarService, Environment env) {
 		this.userRepository = userRepository;
 		this.eventEmitter = eventEmitter;
 		this.eventRepository = eventRepository;
 		this.projectService = projectService;
+		this.calendarService = calendarService;
+		this.env = env;
 	}
 
 	@RequestMapping(value = "/api/self", method = RequestMethod.GET)
@@ -123,6 +136,31 @@ public class UserController {
 		return userRepository.findUserByName(provider, name);
 	}
 
+	@ExpectPermission(Permission.UPDATE_PROFILE)
+	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.DELETE)
+	public CalendarToken clearCalendarToken(UserWithPermission user) {
+		userRepository.deleteCalendarToken(user);
+		return getCalendarToken(user);
+	}
+
+	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.GET)
+	public CalendarToken getCalendarToken(UserWithPermission user) {
+		CalendarToken ct = new CalendarToken();
+		ct.setToken(calendarService.findCalendarTokenFromUser(user));
+		return ct;
+	}
+
+	@RequestMapping(value = "/api/calendar/{token}/calendar.ics",
+			method = RequestMethod.GET, produces = "text/calendar")
+	public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
+			throws IOException, ValidationException, URISyntaxException {
+		final Calendar calendar = calendarService.getUserCalendar(userToken);
+		response.setContentType("text/calendar");
+		final CalendarOutputter output = new CalendarOutputter();
+		output.setValidating(contains(env.getActiveProfiles(), "dev"));
+		output.output(calendar, response.getOutputStream());
+	}
+
 	@RequestMapping(value = "/api/keep-alive", method = RequestMethod.GET)
 	public boolean keepAlive() {
 		return true;
@@ -133,14 +171,12 @@ public class UserController {
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
-	
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/project/{projectShortName}/user/list", method = RequestMethod.GET)
 	public List<User> findAllUsersForProject() {
 		return findAllUsers();
 	}
-	
-	
 
 	@Getter
 	@Setter
@@ -166,5 +202,11 @@ public class UserController {
 			this.dailyActivity = dailyActivity;
 			this.latestActivity = latestActivity;
 		}
+	}
+
+	@Getter
+	@Setter
+	public static class CalendarToken {
+		private String token;
 	}
 }

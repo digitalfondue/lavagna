@@ -151,21 +151,21 @@ public class NotificationService {
 		return new TreeSet<>(usersToNotify);
 	}
 
-	private List<String> composeCardSection(int cardId, List<Event> events, EventsContext context) {
+	private List<String> composeCardSection(List<Event> events, EventsContext context) {
 		//
 
 		List<String> res = new ArrayList<>();
 		for (Event e : events) {
 			if (EnumUtils.isValidEnum(SupportedEventType.class, e.getEvent().toString())) {
-				ImmutablePair<String, String[]> message = SupportedEventType.valueOf(e.getEvent().toString()).toKeyAndParam(e,
-						context, cardDataRepository);
+				ImmutablePair<String, String[]> message = SupportedEventType.valueOf(e.getEvent().toString())
+						.toKeyAndParam(e, context, cardDataRepository);
 				res.add(messageSource.getMessage(message.getKey(), message.getValue(), Locale.ENGLISH));
 			}
 		}
 		return res;
 	}
 
-	private ImmutableTriple<String, String, String> composeEmailForUser(User user, EventsContext context)
+	private ImmutableTriple<String, String, String> composeEmailForUser(EventsContext context)
 			throws MustacheException, IOException {
 
 		List<Map<String, Object>> cardsModel = new ArrayList<>();
@@ -181,7 +181,7 @@ public class NotificationService {
 
 			cardModel.put("cardFull", cf);
 			cardModel.put("cardName", cardName.toString());
-			cardModel.put("cardEvents", composeCardSection(kv.getKey(), kv.getValue(), context));
+			cardModel.put("cardEvents", composeCardSection(kv.getValue(), context));
 
 			subject.append(cf.getBoardShortName()).append("-").append(cf.getSequence()).append(", ");
 
@@ -217,7 +217,8 @@ public class NotificationService {
 	 */
 	public void notifyUser(int userId, Date upTo, boolean emailEnabled, MailConfig mailConfig) {
 		Date lastSent = queries.lastEmailSent(userId);
-		List<Event> events = queries.eventsForUser(userId, ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1)), upTo);
+		List<Event> events = queries
+				.eventsForUser(userId, ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1)), upTo);
 
 		User user = userRepository.findById(userId);
 		if (!events.isEmpty() && mailConfig != null && mailConfig.isMinimalConfigurationPresent() && emailEnabled
@@ -256,9 +257,9 @@ public class NotificationService {
 			addIfNotNull(columnIds, e.getPreviousColumnId());
 		}
 
-		final ImmutableTriple<String, String, String> subjectAndText = composeEmailForUser(user,
-				new EventsContext(events, userRepository.findByIds(userIds), cardRepository.findAllByIds(cardIds),
-						cardDataRepository.findDataByIds(cardDataIds), boardColumnRepository.findByIds(columnIds)));
+		final ImmutableTriple<String, String, String> subjectAndText = composeEmailForUser(new EventsContext(events,
+				userRepository.findByIds(userIds), cardRepository.findAllByIds(cardIds),
+				cardDataRepository.findDataByIds(cardDataIds), boardColumnRepository.findByIds(columnIds)));
 
 		mailConfig.send(user.getEmail(), StringUtils.substring("Lavagna: " + subjectAndText.getLeft(), 0, 78),
 				subjectAndText.getMiddle(), subjectAndText.getRight());

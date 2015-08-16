@@ -65,34 +65,20 @@ public class SearchServiceTest {
 
 	@Autowired
 	private Environment env;
-
 	@Autowired
 	private SearchService searchService;
-
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
 	private PermissionService permissionService;
-
 	@Autowired
 	private ProjectService projectService;
-
 	@Autowired
 	private BoardRepository boardRepository;
-
 	@Autowired
 	private BoardColumnRepository boardColumnRepository;
-
 	@Autowired
 	private CardService cardService;
-
-	@Autowired
-	private CardRepository cardRepository;
-
-	@Autowired
-	private CardDataService cardDataService;
-
 	@Autowired
 	private MySqlFullTextSupportService mySqlFullTextSupportService;
 
@@ -111,7 +97,7 @@ public class SearchServiceTest {
 	private BoardColumn closedColumn;
 
 	@Before
-	public void prepareUser() {
+	public void prepare() {
 		userRepository.createUser("test", "test", null, null, true);
 		userRepository.createUser("test", "test-no-access", null, null, true);
 		user = userRepository.findUserByName("test", "test");
@@ -290,13 +276,13 @@ public class SearchServiceTest {
 				.find(Arrays.asList(createdByMe), project.getId(), null, userWithPermissions, 0);
 		Assert.assertEquals(1, find.getCount());
 	}
-	
+
 	@Test
 	public void testWithoutPagination() {
 		for (int i = 0; i < 52; i++) {
 			cardService.createCard("test", column.getId(), new Date(), user);
 		}
-		
+
 		SearchResults find = searchService.find(Arrays.asList(createdByMe), project.getId(), null, userWithPermissions);
 		Assert.assertEquals(52, find.getFound().size());
 		Assert.assertEquals(52, find.getCount());

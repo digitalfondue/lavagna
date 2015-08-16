@@ -37,6 +37,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -69,7 +70,7 @@ public class UserRepository {
 	}
 
 	public List<User> findByIds(Collection<Integer> ids) {
-		return ids.isEmpty() ? Collections.<User> emptyList() : queries.findByIds(ids);
+		return ids.isEmpty() ? Collections.<User>emptyList() : queries.findByIds(ids);
 	}
 
 	public boolean userExistsAndEnabled(String provider, String name) {
@@ -83,7 +84,7 @@ public class UserRepository {
 	public List<User> findUsers(String criteria) {
 		return queries.findUsers(criteria);
 	}
-	
+
 	public List<User> findUsers(String criteria, int projectId, Permission permission) {
 		return queries.findUsers(criteria, projectId, permission.toString());//
 	}
@@ -174,7 +175,33 @@ public class UserRepository {
 	}
 
 	@Transactional(readOnly = false)
-	public void clearAllTokens(User currentUser) {
-		queries.deleteAllTokensForUserId(currentUser.getId());
+	public void clearAllTokens(User user) {
+		queries.deleteAllTokensForUserId(user.getId());
 	}
+
+	public String findCalendarTokenFromUser(User user) throws CalendarTokenNotFoundException {
+		try {
+			return queries.findCalendarTokenFromUserId(user.getId());
+		} catch (EmptyResultDataAccessException ex) {
+			throw new CalendarTokenNotFoundException();
+		}
+	}
+
+	public int findUserIdFromCalendarToken(String token) {
+		return queries.findUserIdFromCalendarToken(token);
+	}
+
+	@Transactional(readOnly = false)
+	public int registerCalendarToken(User user, String token) {
+		return queries.registerCalendarToken(user.getId(), token);
+	}
+
+	@Transactional(readOnly = false)
+	public int deleteCalendarToken(User user) {
+		return queries.deleteCalendarToken(user.getId());
+	}
+}
+
+class CalendarTokenNotFoundException extends Exception {
+
 }

@@ -16,8 +16,6 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.service.UserRepository;
-
 public class Helper {
 
 	static int createUser(UserRepository ur, String provider, String userName) {
