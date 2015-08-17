@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -31,27 +33,27 @@
 	</scm>
 
 	<developers>
-        <developer>
-            <name>Sylvain Jermini</name>
-            <email>sylvain.jermini@syjer.com</email>
-            <organization>digitalfondue</organization>
-            <organizationUrl>http://digitalfondue.ch</organizationUrl>
-        </developer>
+		<developer>
+			<name>Sylvain Jermini</name>
+			<email>sylvain.jermini@syjer.com</email>
+			<organization>digitalfondue</organization>
+			<organizationUrl>http://digitalfondue.ch</organizationUrl>
+		</developer>
 
-        <developer>
-            <name>Eros Taborelli</name>
-            <email>eros.taborelli@erost.net</email>
-            <organization>digitalfondue</organization>
-            <organizationUrl>http://digitalfondue.ch</organizationUrl>
-        </developer>
+		<developer>
+			<name>Eros Taborelli</name>
+			<email>eros.taborelli@erost.net</email>
+			<organization>digitalfondue</organization>
+			<organizationUrl>http://digitalfondue.ch</organizationUrl>
+		</developer>
 
 
-        <developer>
-            <name>Simone Grignola</name>
-            <email>sito@grignola.ch</email>
-            <organization>digitalfondue</organization>
-            <organizationUrl>http://digitalfondue.ch</organizationUrl>
-        </developer>
+		<developer>
+			<name>Simone Grignola</name>
+			<email>sito@grignola.ch</email>
+			<organization>digitalfondue</organization>
+			<organizationUrl>http://digitalfondue.ch</organizationUrl>
+		</developer>
 	</developers>
 
 	<prerequisites>
@@ -240,6 +242,11 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mnode.ical4j</groupId>
+			<artifactId>ical4j</artifactId>
+			<version>1.0.6</version>
+		</dependency>
 	</dependencies>
 
 	<!-- -->
@@ -353,22 +360,22 @@
 			</plugin>
 
 			<plugin>
-			  <groupId>ch.digitalfondue.stampo</groupId>
-			  <artifactId>stampo-maven-plugin</artifactId>
-			  <version>1.2.1</version>
-			  <executions>
-			  <execution>
-			      <phase>compile</phase>
-			      <goals>
-			          <goal>build</goal>
-			      </goals>
-			  </execution>
-			  </executions>
-			  <configuration>
-			    <srcDir>${basedir}/src/main/stampo</srcDir>
-			    <outputDir>${project.build.directory}/lavagna/help/</outputDir>
-			    <port>45001</port>
-			  </configuration>
+				<groupId>ch.digitalfondue.stampo</groupId>
+				<artifactId>stampo-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<srcDir>${basedir}/src/main/stampo</srcDir>
+					<outputDir>${project.build.directory}/lavagna/help/</outputDir>
+					<port>45001</port>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -520,8 +527,12 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources/</directory>
-				<excludes><exclude>*.properties</exclude></excludes>
-				<includes><include>io/lavagna/build.properties</include></includes>
+				<excludes>
+					<exclude>*.properties</exclude>
+				</excludes>
+				<includes>
+					<include>io/lavagna/build.properties</include>
+				</includes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -550,7 +561,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -569,7 +580,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -616,7 +627,7 @@
 				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
-				<datasource.password />
+				<datasource.password/>
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 		</profile>
@@ -630,7 +641,7 @@
 				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
-				<datasource.password />
+				<datasource.password/>
 				<spring.profiles.active>prod</spring.profiles.active>
 			</properties>
 		</profile>
@@ -646,7 +657,7 @@
 				<datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
 				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
 				<datasource.username>sa</datasource.username>
-				<datasource.password />
+				<datasource.password/>
 				<!-- <datasource.disable.migration>true</datasource.disable.migration> -->
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
@@ -663,7 +674,7 @@
 				<datasource.driver>com.mysql.jdbc.Driver</datasource.driver>
 				<datasource.url>jdbc:mysql://localhost:3306/lavagna</datasource.url>
 				<datasource.username>root</datasource.username>
-				<datasource.password />
+				<datasource.password/>
 				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 		</profile>
@@ -702,7 +713,8 @@
 				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
 				<!-- <datasource.url>jdbc:log4jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/lavagna</datasource.url> -->
 				<datasource.driver>com.mysql.jdbc.Driver</datasource.driver>
-				<datasource.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/lavagna</datasource.url>
+				<datasource.url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/lavagna
+				</datasource.url>
 				<datasource.username>${env.OPENSHIFT_MYSQL_DB_USERNAME}</datasource.username>
 				<datasource.password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</datasource.password>
 				<spring.profiles.active>prod</spring.profiles.active>
