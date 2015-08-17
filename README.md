@@ -225,8 +225,6 @@ Notes:
 
 - HSQLDB at the moment will not be updated to version 2.3.2 due to a bug
   (default null+unique clause has changed)
-- tomcat-jdbc will not be updated to version 8.0.9 due to a strange
-  class loader interaction with log4j when launching with mvn jetty:run
 
 ```
 mvn versions:display-dependency-updates
