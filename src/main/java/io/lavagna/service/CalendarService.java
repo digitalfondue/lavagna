@@ -71,147 +71,148 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CalendarService {
 
-	private final ConfigurationRepository configurationRepository;
-	private final SearchService searchService;
-	private final UserRepository userRepository;
-	private final UserService userService;
+    private final ConfigurationRepository configurationRepository;
+    private final SearchService searchService;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-	@Autowired
-	public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
-			UserService userService, UserRepository userRepository) {
-		this.configurationRepository = configurationRepository;
-		this.searchService = searchService;
-		this.userRepository = userRepository;
-		this.userService = userService;
-	}
+    @Autowired
+    public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
+        UserService userService, UserRepository userRepository) {
+        this.configurationRepository = configurationRepository;
+        this.searchService = searchService;
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
 
-	@Transactional(readOnly = false)
-	public String findCalendarTokenFromUser(User user) {
-		try {
-			return userRepository.findCalendarTokenFromUser(user);
-		} catch (CalendarTokenNotFoundException ex) {
-			String token = UUID.randomUUID().toString();// <- this use secure random
-			String hashedToken = DigestUtils.sha256Hex(token);
-			userRepository.registerCalendarToken(user, hashedToken);
-			return hashedToken;
-		}
-	}
+    @Transactional(readOnly = false)
+    public String findCalendarTokenFromUser(User user) {
+        try {
+            return userRepository.findCalendarTokenFromUser(user);
+        } catch (CalendarTokenNotFoundException ex) {
+            String token = UUID.randomUUID().toString();// <- this use secure random
+            String hashedToken = DigestUtils.sha256Hex(token);
+            userRepository.registerCalendarToken(user, hashedToken);
+            return hashedToken;
+        }
+    }
 
-	private UserWithPermission findUserFromCalendarToken(String token) {
-		int userId = userRepository.findUserIdFromCalendarToken(token);
-		return userService.findUserWithPermission(userId);
-	}
+    private UserWithPermission findUserFromCalendarToken(String token) {
+        int userId = userRepository.findUserIdFromCalendarToken(token);
+        return userService.findUserWithPermission(userId);
+    }
 
-	private long getLong(int x, int y) {
-		return (((long) x) << 32) | (y & 0xffffffffL);
-	}
+    private long getLong(int x, int y) {
+        return (((long) x) << 32) | (y & 0xffffffffL);
+    }
 
-	private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
-		StringBuilder sb = new StringBuilder();
-		if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
-			sb.append(StringUtils.capitalize(lav.getLabelName().replace('_', ' ').toLowerCase()));
-		} else {
-			sb.append(lav.getLabelName());
-		}
-		return sb.append(": ").append(card.getName()).toString();
-	}
+    private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
+        StringBuilder sb = new StringBuilder();
+        if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
+            sb.append(StringUtils.capitalize(lav.getLabelName().replace('_', ' ').toLowerCase()));
+        } else {
+            sb.append(lav.getLabelName());
+        }
+        return sb.append(": ").append(card.getBoardShortName()).append("-").append(card.getSequence()).append(" ")
+            .append(card.getName()).toString();
+    }
 
-	private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
-		if (!cache.containsKey(userId)) {
-			User u = userRepository.findById(userId);
-			String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
-			String email = String.format("mail:%s", firstNonNull(u.getEmail(), "no-e-mail"));
-			cache.put(userId, new UserDescription(name, email));
-		}
-		return cache.get(userId);
-	}
+    private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
+        if (!cache.containsKey(userId)) {
+            User u = userRepository.findById(userId);
+            String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
+            String email = String.format("mail:%s", firstNonNull(u.getEmail(), "no-e-mail"));
+            cache.put(userId, new UserDescription(name, email));
+        }
+        return cache.get(userId);
+    }
 
-	public Calendar getUserCalendar(String userToken) throws URISyntaxException {
-		UserWithPermission user;
+    public Calendar getUserCalendar(String userToken) throws URISyntaxException {
+        UserWithPermission user;
 
-		try {
-			user = findUserFromCalendarToken(userToken);
-		} catch (EmptyResultDataAccessException ex) {
-			throw new SecurityException("Invalid token");
-		}
+        try {
+            user = findUserFromCalendarToken(userToken);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new SecurityException("Invalid token");
+        }
 
-		final Calendar calendar = new Calendar();
-		calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
-		calendar.getProperties().add(Version.VERSION_2_0);
-		calendar.getProperties().add(CalScale.GREGORIAN);
-		calendar.getProperties().add(Method.PUBLISH);
+        final Calendar calendar = new Calendar();
+        calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
+        calendar.getProperties().add(Version.VERSION_2_0);
+        calendar.getProperties().add(CalScale.GREGORIAN);
+        calendar.getProperties().add(Method.PUBLISH);
 
-		Map<Integer, UserDescription> usersCache = new HashMap<>();
-		Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
+        Map<Integer, UserDescription> usersCache = new HashMap<>();
+        Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
 
-		SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
-				BoardColumn.BoardColumnLocation.BOARD.toString());
+        SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.BOARD.toString());
 
-		SearchFilter aFilter = filter(SearchFilter.FilterType.ASSIGNED, SearchFilter.ValueType.CURRENT_USER, "me");
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, aFilter), null, null, user)
-				.getFound()) {
-			map.put(card.getId(), card);
-		}
+        SearchFilter aFilter = filter(SearchFilter.FilterType.ASSIGNED, SearchFilter.ValueType.CURRENT_USER, "me");
+        for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, aFilter), null, null, user)
+            .getFound()) {
+            map.put(card.getId(), card);
+        }
 
-		SearchFilter wFilter = filter(SearchFilter.FilterType.WATCHED_BY, SearchFilter.ValueType.CURRENT_USER, "me");
-		for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, wFilter), null, null, user)
-				.getFound()) {
-			map.put(card.getId(), card);
-		}
+        SearchFilter wFilter = filter(SearchFilter.FilterType.WATCHED_BY, SearchFilter.ValueType.CURRENT_USER, "me");
+        for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter, wFilter), null, null, user)
+            .getFound()) {
+            map.put(card.getId(), card);
+        }
 
-		final String applicationUrl = StringUtils.appendIfMissing(
-				configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
+        final String applicationUrl = StringUtils.appendIfMissing(
+            configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
 
-		final List<VEvent> events = new ArrayList<>();
-		final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
-		for (CardFullWithCounts card : map.values()) {
+        final List<VEvent> events = new ArrayList<>();
+        final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
+        for (CardFullWithCounts card : map.values()) {
 
-			Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
-					card.getBoardShortName(), card.getSequence())));
+            Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
+                card.getBoardShortName(), card.getSequence())));
 
-			for (LabelAndValue lav : card.getLabels()) {
-				if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
-					String name = getEventName(lav, card);
+            for (LabelAndValue lav : card.getLabels()) {
+                if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
+                    String name = getEventName(lav, card);
 
-					final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
-					event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
-					event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
+                    final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
+                    event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
+                    event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
 
-					final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
-							getLong(lav.getLabelId(), lav.getLabelValueId()));
-					event.getProperties().add(new Uid(id.toString()));
+                    final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
+                        getLong(lav.getLabelId(), lav.getLabelValueId()));
+                    event.getProperties().add(new Uid(id.toString()));
 
-					// Reminder on label's date
-					final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-					reminder.getProperties().add(Action.DISPLAY);
-					reminder.getProperties().add(new Description(name));
-					event.getAlarms().add(reminder);
+                    // Reminder on label's date
+                    final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+                    reminder.getProperties().add(Action.DISPLAY);
+                    reminder.getProperties().add(new Description(name));
+                    event.getAlarms().add(reminder);
 
-					TzId tzParam = new TzId(utcTimeZone);
-					event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
+                    TzId tzParam = new TzId(utcTimeZone);
+                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
-					// Organizer
-					UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-					Organizer organizer = new Organizer(URI.create(ud.getEmail()));
-					organizer.getParameters().add(new Cn(ud.getName()));
-					event.getProperties().add(organizer);
+                    // Organizer
+                    UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
+                    Organizer organizer = new Organizer(URI.create(ud.getEmail()));
+                    organizer.getParameters().add(new Cn(ud.getName()));
+                    event.getProperties().add(organizer);
 
-					event.getProperties().add(cardUrl);
+                    event.getProperties().add(cardUrl);
 
-					events.add(event);
-				}
-			}
-		}
+                    events.add(event);
+                }
+            }
+        }
 
-		calendar.getComponents().addAll(events);
+        calendar.getComponents().addAll(events);
 
-		return calendar;
-	}
+        return calendar;
+    }
 
-	@Getter
-	@Setter
-	@AllArgsConstructor class UserDescription {
-		private String name;
-		private String email;
-	}
+    @Getter
+    @Setter
+    @AllArgsConstructor class UserDescription {
+        private String name;
+        private String email;
+    }
 }
