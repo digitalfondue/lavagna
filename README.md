@@ -21,6 +21,7 @@ See:
 
  - [roadmap](https://github.com/digitalfondue/lavagna/blob/master/ROADMAP.md)
  - [changelog](https://github.com/digitalfondue/lavagna/blob/master/CHANGELOG.md)
+ - [download](http://lavagna.io/download/)
 
 
 ## Install ##
