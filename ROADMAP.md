@@ -8,6 +8,9 @@ This is a high level roadmap. Lavagna has currently:
 ## Expected for 1.0.3
 
  - iCalendar feed support
+ - update to spring 4.2.x
+ - switch connection pool to hikaricp (simplify configuration)
+ - use the browser locale for showing the correct first day of the week in the calendar (sunday or monday)
 
 ## Expected for 1.1 
 
