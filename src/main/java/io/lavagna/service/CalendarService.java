@@ -87,6 +87,11 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = false)
+    public void setCalendarFeedDisabled(User user, boolean isDisabled) {
+        userRepository.setCalendarFeedDisabled(user, isDisabled);
+    }
+
+    @Transactional(readOnly = false)
     public CalendarInfo findCalendarInfoFromUser(User user) {
         try {
             return userRepository.findCalendarInfoFromUserId(user);
@@ -135,6 +140,10 @@ public class CalendarService {
             user = findUserFromCalendarToken(userToken);
         } catch (EmptyResultDataAccessException ex) {
             throw new SecurityException("Invalid token");
+        }
+
+        if (userRepository.isCalendarFeedDisabled(user)) {
+            throw new SecurityException("Calendar feed disabled");
         }
 
         final Calendar calendar = new Calendar();

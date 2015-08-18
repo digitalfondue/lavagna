@@ -137,6 +137,15 @@ public class CalendarServiceTest {
         Assert.assertNotEquals(newCi.getToken(), ci.getToken());
     }
 
+    @Test
+    public void testSetCalendarFeedDisabled() {
+        Assert.assertFalse(calendarService.findCalendarInfoFromUser(user).isDisabled());
+
+        calendarService.setCalendarFeedDisabled(user, true);
+
+        Assert.assertTrue(calendarService.findCalendarInfoFromUser(user).isDisabled());
+    }
+
     @Test(expected = SecurityException.class)
     public void testGetUserCalendarWithWrongToken() throws URISyntaxException {
         calendarService.getUserCalendar("abcd");
@@ -150,6 +159,15 @@ public class CalendarServiceTest {
 
         Assert.assertNotNull(calendar);
         Assert.assertEquals(0, calendar.getComponents().size());
+    }
+
+    @Test(expected = SecurityException.class)
+    public void testGetUserCalendarOnDisabled() throws URISyntaxException {
+
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+        calendarService.setCalendarFeedDisabled(user, true);
+
+        calendarService.getUserCalendar(ci.getToken());
     }
 
     @Test

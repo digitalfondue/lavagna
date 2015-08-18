@@ -116,4 +116,10 @@ public interface UserQuery {
 
 	@Query("DELETE FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
 	int deleteCalendarToken(@Bind("userId") int userId);
+
+    @Query("UPDATE LA_USER_CALENDAR SET USER_CALENDAR_DISABLE_FEED = :disabled WHERE USER_CALENDAR_ID_FK = :userId")
+    int setCalendarFeedDisabled(@Bind("userId") int userId, @Bind("disabled") boolean isDisabled);
+
+    @Query("SELECT USER_CALENDAR_DISABLE_FEED FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
+    boolean isCalendarFeedDisabled(@Bind("userId") int userId);
 }
