@@ -201,6 +201,15 @@ public class UserRepository {
     public int deleteCalendarToken(User user) {
         return queries.deleteCalendarToken(user.getId());
     }
+
+    @Transactional(readOnly = false)
+    public int setCalendarFeedDisabled(User user, boolean isDisabled) {
+        return queries.setCalendarFeedDisabled(user.getId(), isDisabled);
+    }
+
+    public boolean isCalendarFeedDisabled(User user) {
+        return queries.isCalendarFeedDisabled(user.getId());
+    }
 }
 
 class CalendarTokenNotFoundException extends Exception {
