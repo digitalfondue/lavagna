@@ -19,6 +19,7 @@ package io.lavagna.service;
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
+import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.Key;
@@ -86,14 +87,14 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = false)
-    public String findCalendarTokenFromUser(User user) {
+    public CalendarInfo findCalendarInfoFromUser(User user) {
         try {
-            return userRepository.findCalendarTokenFromUser(user);
+            return userRepository.findCalendarInfoFromUserId(user);
         } catch (CalendarTokenNotFoundException ex) {
             String token = UUID.randomUUID().toString();// <- this use secure random
             String hashedToken = DigestUtils.sha256Hex(token);
             userRepository.registerCalendarToken(user, hashedToken);
-            return hashedToken;
+            return findCalendarInfoFromUser(user);
         }
     }
 

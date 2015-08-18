@@ -37,7 +37,7 @@ import ch.digitalfondue.npjt.QueryFactory;
 
 public class DataSourceConfig {
 
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("9");
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("10");
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(Environment env) throws URISyntaxException {

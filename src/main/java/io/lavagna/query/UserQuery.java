@@ -16,6 +16,7 @@
  */
 package io.lavagna.query;
 
+import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.User;
 
 import java.util.Collection;
@@ -102,8 +103,8 @@ public interface UserQuery {
 	@Query("DELETE FROM LA_USER_REMEMBER WHERE USER_REMEMBER_ID_FK = :userId")
 	int deleteAllTokensForUserId(@Bind("userId") int id);
 
-	@Query("SELECT USER_CALENDAR_TOKEN FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
-	String findCalendarTokenFromUserId(@Bind("userId") int userId);
+	@Query("SELECT USER_CALENDAR_TOKEN, USER_CALENDAR_DISABLE_FEED FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
+    CalendarInfo findCalendarInfoFromUserId(@Bind("userId") int userId);
 
 	@Query("SELECT USER_ID FROM LA_USER AS USR "
 			+ "INNER JOIN LA_USER_CALENDAR AS UC ON UC.USER_CALENDAR_ID_FK = USR.USER_ID "
