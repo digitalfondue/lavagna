@@ -17,6 +17,7 @@
 package io.lavagna.web.api;
 
 import static org.apache.commons.lang3.ArrayUtils.contains;
+import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Event;
 import io.lavagna.model.EventsCount;
 import io.lavagna.model.Permission;
@@ -56,157 +57,149 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-	private final UserRepository userRepository;
-	private final EventEmitter eventEmitter;
-	private final EventRepository eventRepository;
-	private final ProjectService projectService;
-	private final CalendarService calendarService;
-	private final Environment env;
+    private final UserRepository userRepository;
+    private final EventEmitter eventEmitter;
+    private final EventRepository eventRepository;
+    private final ProjectService projectService;
+    private final CalendarService calendarService;
+    private final Environment env;
 
-	@Autowired
-	public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
-			ProjectService projectService, CalendarService calendarService, Environment env) {
-		this.userRepository = userRepository;
-		this.eventEmitter = eventEmitter;
-		this.eventRepository = eventRepository;
-		this.projectService = projectService;
-		this.calendarService = calendarService;
-		this.env = env;
-	}
+    @Autowired
+    public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
+        ProjectService projectService, CalendarService calendarService, Environment env) {
+        this.userRepository = userRepository;
+        this.eventEmitter = eventEmitter;
+        this.eventRepository = eventRepository;
+        this.projectService = projectService;
+        this.calendarService = calendarService;
+        this.env = env;
+    }
 
-	@RequestMapping(value = "/api/self", method = RequestMethod.GET)
-	// user is resolved through UserArgumentResolver
-	public UserWithPermission userProfile(UserWithPermission user) {
-		return user;
-	}
+    @RequestMapping(value = "/api/self", method = RequestMethod.GET)
+    // user is resolved through UserArgumentResolver
+    public UserWithPermission userProfile(UserWithPermission user) {
+        return user;
+    }
 
-	@RequestMapping(value = "/api/self/clear-all-tokens", method = RequestMethod.POST)
-	public void clearAllTokens(UserWithPermission currentUser) {
-		userRepository.clearAllTokens(currentUser);
-	}
+    @RequestMapping(value = "/api/self/clear-all-tokens", method = RequestMethod.POST)
+    public void clearAllTokens(UserWithPermission currentUser) {
+        userRepository.clearAllTokens(currentUser);
+    }
 
-	@RequestMapping(value = "/api/self/feed/{page}", method = RequestMethod.GET)
-	// user is resolved through UserArgumentResolver
-	public List<Event> userFeed(@PathVariable("page") int page, UserWithPermission user) {
-		return eventRepository.getUserFeedByPage(user.getId(), page);
-	}
+    @RequestMapping(value = "/api/self/feed/{page}", method = RequestMethod.GET)
+    // user is resolved through UserArgumentResolver
+    public List<Event> userFeed(@PathVariable("page") int page, UserWithPermission user) {
+        return eventRepository.getUserFeedByPage(user.getId(), page);
+    }
 
-	@ExpectPermission(Permission.UPDATE_PROFILE)
-	@RequestMapping(value = "/api/self", method = RequestMethod.POST)
-	public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
-		int result = userRepository.updateProfile(user, toUpdate.getEmail(), toUpdate.getDisplayName(),
-				toUpdate.isEmailNotification());
-		eventEmitter.emitUpdateUserProfile(user.getId());
-		return result;
-	}
+    @ExpectPermission(Permission.UPDATE_PROFILE)
+    @RequestMapping(value = "/api/self", method = RequestMethod.POST)
+    public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
+        int result = userRepository.updateProfile(user, toUpdate.getEmail(), toUpdate.getDisplayName(),
+            toUpdate.isEmailNotification());
+        eventEmitter.emitUpdateUserProfile(user.getId());
+        return result;
+    }
 
-	@RequestMapping(value = "/api/user/{userId}", method = RequestMethod.GET)
-	public User getUser(@PathVariable("userId") int userId) {
-		return userRepository.findById(userId);
-	}
+    @RequestMapping(value = "/api/user/{userId}", method = RequestMethod.GET)
+    public User getUser(@PathVariable("userId") int userId) {
+        return userRepository.findById(userId);
+    }
 
-	@RequestMapping(value = "/api/user/profile/{provider}/{name}", method = RequestMethod.GET)
-	public UserPublicProfile getUserProfile(@PathVariable("provider") String provider,
-			@PathVariable("name") String name, UserWithPermission currentUser,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		User user = userRepository.findUserByName(provider, name);
+    @RequestMapping(value = "/api/user/profile/{provider}/{name}", method = RequestMethod.GET)
+    public UserPublicProfile getUserProfile(@PathVariable("provider") String provider,
+        @PathVariable("name") String name, UserWithPermission currentUser,
+        @RequestParam(value = "page", defaultValue = "0") int page) {
+        User user = userRepository.findUserByName(provider, name);
 
-		final List<EventsCount> dailyActivity;
-		final List<ProjectWithEventCounts> activeProjects;
-		final List<Event> latestActivity;
-		Date fromDate = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
-		if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
-			dailyActivity = eventRepository.getUserActivity(user.getId(), fromDate);
-			activeProjects = projectService.findProjectsActivityByUser(user.getId());
-			latestActivity = eventRepository.getLatestActivityByPage(user.getId(), page);
-		} else {
-			Collection<Integer> visibleProjectsIds = currentUser.projectsIdWithPermission(Permission.READ);
+        final List<EventsCount> dailyActivity;
+        final List<ProjectWithEventCounts> activeProjects;
+        final List<Event> latestActivity;
+        Date fromDate = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
+        if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
+            dailyActivity = eventRepository.getUserActivity(user.getId(), fromDate);
+            activeProjects = projectService.findProjectsActivityByUser(user.getId());
+            latestActivity = eventRepository.getLatestActivityByPage(user.getId(), page);
+        } else {
+            Collection<Integer> visibleProjectsIds = currentUser.projectsIdWithPermission(Permission.READ);
 
-			dailyActivity = eventRepository.getUserActivityForProjects(user.getId(), fromDate, visibleProjectsIds);
-			activeProjects = projectService.findProjectsActivityByUserInProjects(user.getId(),
-					visibleProjectsIds);
-			latestActivity = eventRepository.getLatestActivityByPageAndProjects(user.getId(), page, visibleProjectsIds);
-		}
+            dailyActivity = eventRepository.getUserActivityForProjects(user.getId(), fromDate, visibleProjectsIds);
+            activeProjects = projectService.findProjectsActivityByUserInProjects(user.getId(),
+                visibleProjectsIds);
+            latestActivity = eventRepository.getLatestActivityByPageAndProjects(user.getId(), page, visibleProjectsIds);
+        }
 
-		return new UserPublicProfile(user, dailyActivity, activeProjects, latestActivity);
-	}
+        return new UserPublicProfile(user, dailyActivity, activeProjects, latestActivity);
+    }
 
-	@RequestMapping(value = "/api/user/{provider}/{name}", method = RequestMethod.GET)
-	public User getUser(@PathVariable("provider") String provider, @PathVariable("name") String name) {
-		return userRepository.findUserByName(provider, name);
-	}
+    @RequestMapping(value = "/api/user/{provider}/{name}", method = RequestMethod.GET)
+    public User getUser(@PathVariable("provider") String provider, @PathVariable("name") String name) {
+        return userRepository.findUserByName(provider, name);
+    }
 
-	@ExpectPermission(Permission.UPDATE_PROFILE)
-	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.DELETE)
-	public CalendarToken clearCalendarToken(UserWithPermission user) {
-		userRepository.deleteCalendarToken(user);
-		return getCalendarToken(user);
-	}
+    @ExpectPermission(Permission.UPDATE_PROFILE)
+    @RequestMapping(value = "/api/calendar/token", method = RequestMethod.DELETE)
+    public CalendarInfo clearCalendarToken(UserWithPermission user) {
+        userRepository.deleteCalendarToken(user);
+        return getCalendarToken(user);
+    }
 
-	@RequestMapping(value = "/api/calendar/token", method = RequestMethod.GET)
-	public CalendarToken getCalendarToken(UserWithPermission user) {
-		CalendarToken ct = new CalendarToken();
-		ct.setToken(calendarService.findCalendarTokenFromUser(user));
-		return ct;
-	}
+    @RequestMapping(value = "/api/calendar/token", method = RequestMethod.GET)
+    public CalendarInfo getCalendarToken(UserWithPermission user) {
+        return calendarService.findCalendarInfoFromUser(user);
+    }
 
-	@RequestMapping(value = "/api/calendar/{token}/calendar.ics",
-			method = RequestMethod.GET, produces = "text/calendar")
-	public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
-			throws IOException, ValidationException, URISyntaxException {
-		final Calendar calendar = calendarService.getUserCalendar(userToken);
-		response.setContentType("text/calendar");
-		final CalendarOutputter output = new CalendarOutputter();
-		output.setValidating(contains(env.getActiveProfiles(), "dev"));
-		output.output(calendar, response.getOutputStream());
-	}
+    @RequestMapping(value = "/api/calendar/{token}/calendar.ics",
+        method = RequestMethod.GET, produces = "text/calendar")
+    public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
+        throws IOException, ValidationException, URISyntaxException {
+        final Calendar calendar = calendarService.getUserCalendar(userToken);
+        response.setContentType("text/calendar");
+        final CalendarOutputter output = new CalendarOutputter();
+        output.setValidating(contains(env.getActiveProfiles(), "dev"));
+        output.output(calendar, response.getOutputStream());
+    }
 
-	@RequestMapping(value = "/api/keep-alive", method = RequestMethod.GET)
-	public boolean keepAlive() {
-		return true;
-	}
+    @RequestMapping(value = "/api/keep-alive", method = RequestMethod.GET)
+    public boolean keepAlive() {
+        return true;
+    }
 
-	@ExpectPermission(Permission.ADMINISTRATION)
-	@RequestMapping(value = "/api/user/list", method = RequestMethod.GET)
-	public List<User> findAllUsers() {
-		return userRepository.findAll();
-	}
+    @ExpectPermission(Permission.ADMINISTRATION)
+    @RequestMapping(value = "/api/user/list", method = RequestMethod.GET)
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
 
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/project/{projectShortName}/user/list", method = RequestMethod.GET)
-	public List<User> findAllUsersForProject() {
-		return findAllUsers();
-	}
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/user/list", method = RequestMethod.GET)
+    public List<User> findAllUsersForProject() {
+        return findAllUsers();
+    }
 
-	@Getter
-	@Setter
-	public static class DisplayNameEmail {
-		private String email;
-		private String displayName;
-		private boolean emailNotification;
-	}
+    @Getter
+    @Setter
+    public static class DisplayNameEmail {
+        private String email;
+        private String displayName;
+        private boolean emailNotification;
+    }
 
-	@Getter
-	public static class UserPublicProfile {
-		private final User user;
-		private final List<EventsCount> dailyActivity;
-		private final List<ProjectWithEventCounts> activeProjects;
-		private final List<Event> latestActivity;
+    @Getter
+    public static class UserPublicProfile {
+        private final User user;
+        private final List<EventsCount> dailyActivity;
+        private final List<ProjectWithEventCounts> activeProjects;
+        private final List<Event> latestActivity;
 
-		public UserPublicProfile(User user, List<EventsCount> dailyActivity,
-				List<ProjectWithEventCounts> activeProjects, List<Event> latestActivity) {
-			// we remove the email
-			this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
-					user.isEnabled(), user.isEmailNotification(), user.getMemberSince());
-			this.activeProjects = activeProjects;
-			this.dailyActivity = dailyActivity;
-			this.latestActivity = latestActivity;
-		}
-	}
-
-	@Getter
-	@Setter
-	public static class CalendarToken {
-		private String token;
-	}
+        public UserPublicProfile(User user, List<EventsCount> dailyActivity,
+            List<ProjectWithEventCounts> activeProjects, List<Event> latestActivity) {
+            // we remove the email
+            this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
+                user.isEnabled(), user.isEmailNotification(), user.getMemberSince());
+            this.activeProjects = activeProjects;
+            this.dailyActivity = dailyActivity;
+            this.latestActivity = latestActivity;
+        }
+    }
 }

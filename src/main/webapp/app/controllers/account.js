@@ -46,6 +46,7 @@
 
 		var createUrl = function(resp) {
 			$scope.calendarFeedUrl = getOrigin($window) + "/api/calendar/" + resp.token + "/calendar.ics";
+            $scope.disabledFeed = resp.disabled;
 		};
 
 		User.getCalendarToken().then(createUrl);

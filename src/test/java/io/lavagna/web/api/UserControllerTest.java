@@ -20,6 +20,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
@@ -65,187 +66,188 @@ import org.springframework.core.env.Environment;
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
-	@Mock
-	private UserRepository userRepository;
+    @Mock
+    private UserRepository userRepository;
 
-	@Mock
-	private EventEmitter eventEmitter;
+    @Mock
+    private EventEmitter eventEmitter;
 
-	@Mock
-	private EventRepository eventRepository;
+    @Mock
+    private EventRepository eventRepository;
 
-	@Mock
-	private UserWithPermission user;
+    @Mock
+    private UserWithPermission user;
 
-	@Mock
-	private ProjectService projectService;
+    @Mock
+    private ProjectService projectService;
 
-	@Mock
-	private CalendarService calendarService;
+    @Mock
+    private CalendarService calendarService;
 
-	@Mock
-	private Environment env;
+    @Mock
+    private Environment env;
 
-	private UserController userController;
+    private UserController userController;
 
-	@Before
-	public void prepare() {
-		userController = new UserController(userRepository, eventEmitter, eventRepository,
-				projectService, calendarService, env);
-	}
+    @Before
+    public void prepare() {
+        userController = new UserController(userRepository, eventEmitter, eventRepository,
+            projectService, calendarService, env);
+    }
 
-	@Test
-	public void findAllUsers() {
-		userController.findAllUsers();
-		verify(userRepository).findAll();
-	}
+    @Test
+    public void findAllUsers() {
+        userController.findAllUsers();
+        verify(userRepository).findAll();
+    }
 
-	@Test
-	public void keepAlive() {
-		Assert.assertTrue(userController.keepAlive());
-	}
+    @Test
+    public void keepAlive() {
+        Assert.assertTrue(userController.keepAlive());
+    }
 
-	@Test
-	public void updateUserProfile() {
-		DisplayNameEmail d = new DisplayNameEmail();
-		d.setDisplayName("displayName");
-		d.setEmail("email");
-		d.setEmailNotification(true);
+    @Test
+    public void updateUserProfile() {
+        DisplayNameEmail d = new DisplayNameEmail();
+        d.setDisplayName("displayName");
+        d.setEmail("email");
+        d.setEmailNotification(true);
 
-		userController.updateUserProfile(user, d);
+        userController.updateUserProfile(user, d);
 
-		verify(userRepository).updateProfile(user, "email", "displayName", true);
-	}
+        verify(userRepository).updateProfile(user, "email", "displayName", true);
+    }
 
-	@Test
-	public void testGetUserById() {
-		when(userRepository.findById(user.getId())).thenReturn(user);
+    @Test
+    public void testGetUserById() {
+        when(userRepository.findById(user.getId())).thenReturn(user);
 
-		User u = userController.getUser(user.getId());
-		Assert.assertEquals(user, u);
-	}
+        User u = userController.getUser(user.getId());
+        Assert.assertEquals(user, u);
+    }
 
-	@Test
-	public void testGetUserByName() {
-		when(userRepository.findUserByName(user.getProvider(), user.getUsername())).thenReturn(user);
+    @Test
+    public void testGetUserByName() {
+        when(userRepository.findUserByName(user.getProvider(), user.getUsername())).thenReturn(user);
 
-		User u = userController.getUser(user.getProvider(), user.getUsername());
-		Assert.assertEquals(user, u);
-	}
+        User u = userController.getUser(user.getProvider(), user.getUsername());
+        Assert.assertEquals(user, u);
+    }
 
-	@Test
-	public void userProfile() {
-		Assert.assertEquals(user, userController.userProfile(user));
-	}
+    @Test
+    public void userProfile() {
+        Assert.assertEquals(user, userController.userProfile(user));
+    }
 
-	@Test
-	public void testGetUserProfileWithoutGlobalRead() {
-		User testUser = mock(User.class);
-		when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
+    @Test
+    public void testGetUserProfileWithoutGlobalRead() {
+        User testUser = mock(User.class);
+        when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
 
-		//
-		userController.getUserProfile("test", "test", user, 1);
-		//
+        //
+        userController.getUserProfile("test", "test", user, 1);
+        //
 
-		// check that we are going in the correct branch
-		verify(user).projectsIdWithPermission(Permission.READ);
-		verify(eventRepository).getUserActivityForProjects(eq(testUser.getId()), Mockito.<Date>any(),
-				Mockito.<Collection<Integer>>any());
-		verify(projectService).findProjectsActivityByUserInProjects(eq(testUser.getId()),
-				Mockito.<Collection<Integer>>any());
-		verify(eventRepository).getLatestActivityByPageAndProjects(eq(testUser.getId()), eq(1),
-				Mockito.<Collection<Integer>>any());
-	}
+        // check that we are going in the correct branch
+        verify(user).projectsIdWithPermission(Permission.READ);
+        verify(eventRepository).getUserActivityForProjects(eq(testUser.getId()), Mockito.<Date>any(),
+            Mockito.<Collection<Integer>>any());
+        verify(projectService).findProjectsActivityByUserInProjects(eq(testUser.getId()),
+            Mockito.<Collection<Integer>>any());
+        verify(eventRepository).getLatestActivityByPageAndProjects(eq(testUser.getId()), eq(1),
+            Mockito.<Collection<Integer>>any());
+    }
 
-	@Test
-	public void testGetUserProfileWithGlobalRead() {
-		User testUser = mock(User.class);
-		when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
+    @Test
+    public void testGetUserProfileWithGlobalRead() {
+        User testUser = mock(User.class);
+        when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
 
-		Map<Permission, Permission> permission = new EnumMap<>(Permission.class);
-		permission.put(Permission.READ, Permission.READ);
-		when(user.getBasePermissions()).thenReturn(permission);
+        Map<Permission, Permission> permission = new EnumMap<>(Permission.class);
+        permission.put(Permission.READ, Permission.READ);
+        when(user.getBasePermissions()).thenReturn(permission);
 
-		//
-		userController.getUserProfile("test", "test", user, 1);
-		//
+        //
+        userController.getUserProfile("test", "test", user, 1);
+        //
 
-		// check that we are going in the correct branch
-		verify(user, Mockito.never()).projectsWithPermission(Permission.READ);
-		verify(eventRepository).getUserActivity(eq(testUser.getId()), Mockito.<Date>any());
-		verify(projectService).findProjectsActivityByUser(eq(testUser.getId()));
-		verify(eventRepository).getLatestActivityByPage(eq(testUser.getId()), eq(1));
-	}
+        // check that we are going in the correct branch
+        verify(user, Mockito.never()).projectsWithPermission(Permission.READ);
+        verify(eventRepository).getUserActivity(eq(testUser.getId()), Mockito.<Date>any());
+        verify(projectService).findProjectsActivityByUser(eq(testUser.getId()));
+        verify(eventRepository).getLatestActivityByPage(eq(testUser.getId()), eq(1));
+    }
 
-	@Test
-	public void testClearAllTokens() {
+    @Test
+    public void testClearAllTokens() {
 
-		userController.clearAllTokens(user);
+        userController.clearAllTokens(user);
 
-		verify(userRepository).clearAllTokens(eq(user));
-	}
+        verify(userRepository).clearAllTokens(eq(user));
+    }
 
-	@Test
-	public void testGetCalendarToken() {
+    @Test
+    public void testGetCalendarToken() {
 
-		String returnToken = "1234abcd";
-		when(calendarService.findCalendarTokenFromUser(user)).thenReturn(returnToken);
+        CalendarInfo retCi = new CalendarInfo("1234abcd", false);
 
-		UserController.CalendarToken ct = userController.getCalendarToken(user);
+        when(calendarService.findCalendarInfoFromUser(user)).thenReturn(retCi);
 
-		verify(calendarService).findCalendarTokenFromUser(eq(user));
-		Assert.assertEquals(returnToken, ct.getToken());
-	}
+        CalendarInfo ci = userController.getCalendarToken(user);
 
-	@Test
-	public void testClearCalendarToken() {
+        verify(calendarService).findCalendarInfoFromUser(eq(user));
+        Assert.assertEquals(retCi.getToken(), ci.getToken());
+    }
 
-		userController.clearCalendarToken(user);
+    @Test
+    public void testClearCalendarToken() {
 
-		verify(userRepository).deleteCalendarToken(eq(user));
-		verify(calendarService).findCalendarTokenFromUser(eq(user));
-	}
+        userController.clearCalendarToken(user);
 
-	@Test
-	public void testUserCalendar() throws IOException, ValidationException, URISyntaxException {
-		HttpServletResponse resp = mock(HttpServletResponse.class);
-		final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
-		when(resp.getOutputStream()).thenReturn(servletOutputStream);
+        verify(userRepository).deleteCalendarToken(eq(user));
+        verify(calendarService).findCalendarInfoFromUser(eq(user));
+    }
 
-		String token = "1234abcd";
+    @Test
+    public void testUserCalendar() throws IOException, ValidationException, URISyntaxException {
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
+        when(resp.getOutputStream()).thenReturn(servletOutputStream);
 
-		Calendar calendar = new Calendar();
-		calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
-		calendar.getProperties().add(Version.VERSION_2_0);
-		calendar.getProperties().add(CalScale.GREGORIAN);
-		calendar.getProperties().add(Method.PUBLISH);
-		VEvent event = new VEvent(new net.fortuna.ical4j.model.Date(), "name");
-		event.getProperties().add(new Uid(UUID.randomUUID().toString()));
-		Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
-		event.getProperties().add(organizer);
-		calendar.getComponents().add(event);
-		when(calendarService.getUserCalendar(eq(token))).thenReturn(calendar);
+        String token = "1234abcd";
 
-		userController.userCalendar(token, resp);
+        Calendar calendar = new Calendar();
+        calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
+        calendar.getProperties().add(Version.VERSION_2_0);
+        calendar.getProperties().add(CalScale.GREGORIAN);
+        calendar.getProperties().add(Method.PUBLISH);
+        VEvent event = new VEvent(new net.fortuna.ical4j.model.Date(), "name");
+        event.getProperties().add(new Uid(UUID.randomUUID().toString()));
+        Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
+        event.getProperties().add(organizer);
+        calendar.getComponents().add(event);
+        when(calendarService.getUserCalendar(eq(token))).thenReturn(calendar);
 
-		verify(calendarService).getUserCalendar(eq(token));
-	}
+        userController.userCalendar(token, resp);
 
-	class StubServletOutputStream extends ServletOutputStream {
-		public ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        verify(calendarService).getUserCalendar(eq(token));
+    }
 
-		public void write(int i) throws IOException {
-			baos.write(i);
-		}
+    class StubServletOutputStream extends ServletOutputStream {
+        public ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		@Override
-		public boolean isReady() {
-			return true;
-		}
+        public void write(int i) throws IOException {
+            baos.write(i);
+        }
 
-		@Override
-		public void setWriteListener(WriteListener writeListener) {
+        @Override
+        public boolean isReady() {
+            return true;
+        }
 
-		}
-	}
+        @Override
+        public void setWriteListener(WriteListener writeListener) {
+
+        }
+    }
 }
