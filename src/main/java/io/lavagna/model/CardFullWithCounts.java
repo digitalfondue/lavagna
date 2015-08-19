@@ -16,18 +16,22 @@
  */
 package io.lavagna.model;
 
+import io.lavagna.model.CardLabel.LabelType;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
-
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.cglib.core.CollectionUtils;
+import org.springframework.cglib.core.Predicate;
 
 @Getter
 public class CardFullWithCounts extends CardFull {
@@ -51,6 +55,16 @@ public class CardFullWithCounts extends CardFull {
 
 		hash = hash(this);
 	}
+
+    public List<LabelAndValue> getLabelsWithType(final LabelType type) {
+        List<LabelAndValue> filteredValues = new ArrayList<>(labels);
+        CollectionUtils.filter(filteredValues, new Predicate() {
+            @Override public boolean evaluate(Object o) {
+                return ((LabelAndValue)o).getLabelType().equals(type);
+            }
+        });
+        return filteredValues;
+    }
 
 	private static String hash(CardFullWithCounts cwc) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
