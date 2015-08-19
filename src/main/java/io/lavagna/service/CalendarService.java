@@ -22,6 +22,7 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
@@ -39,7 +40,6 @@ import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateTime;
@@ -180,37 +180,35 @@ public class CalendarService {
             Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
                 card.getBoardShortName(), card.getSequence())));
 
-            for (LabelAndValue lav : card.getLabels()) {
-                if (lav.getLabelType() == CardLabel.LabelType.TIMESTAMP) {
-                    String name = getEventName(lav, card);
+            for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
+                String name = getEventName(lav, card);
 
-                    final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
-                    event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
-                    event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
+                final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
+                event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
+                event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
 
-                    final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
-                        getLong(lav.getLabelId(), lav.getLabelValueId()));
-                    event.getProperties().add(new Uid(id.toString()));
+                final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
+                    getLong(lav.getLabelId(), lav.getLabelValueId()));
+                event.getProperties().add(new Uid(id.toString()));
 
-                    // Reminder on label's date
-                    final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-                    reminder.getProperties().add(Action.DISPLAY);
-                    reminder.getProperties().add(new Description(name));
-                    event.getAlarms().add(reminder);
+                // Reminder on label's date
+                final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+                reminder.getProperties().add(Action.DISPLAY);
+                reminder.getProperties().add(new Description(name));
+                event.getAlarms().add(reminder);
 
-                    TzId tzParam = new TzId(utcTimeZone);
-                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
+                TzId tzParam = new TzId(utcTimeZone);
+                event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
-                    // Organizer
-                    UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-                    Organizer organizer = new Organizer(URI.create(ud.getEmail()));
-                    organizer.getParameters().add(new Cn(ud.getName()));
-                    event.getProperties().add(organizer);
+                // Organizer
+                UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
+                Organizer organizer = new Organizer(URI.create(ud.getEmail()));
+                organizer.getParameters().add(new Cn(ud.getName()));
+                event.getProperties().add(organizer);
 
-                    event.getProperties().add(cardUrl);
+                event.getProperties().add(cardUrl);
 
-                    events.add(event);
-                }
+                events.add(event);
             }
         }
 
@@ -220,7 +218,6 @@ public class CalendarService {
     }
 
     @Getter
-    @Setter
     @AllArgsConstructor class UserDescription {
         private String name;
         private String email;
