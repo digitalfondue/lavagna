@@ -10,18 +10,18 @@
 							<label for="display-name" data-translate>partials.me.displayName</label>
 							<div>
 								<input type="text" class="form-control" id="display-name"
-									   placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="profile.displayName">
+									   placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="profile.displayName"></input>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="email" data-translate>partials.me.email</label>
 							<div>
 								<input type="email" class="form-control" id="email"
-									   placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="profile.email">
+									   placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="profile.email"></input>
 							</div>
 						</div>
 						<div class="form-group">
-							<label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="profile.emailNotification"></label>
+							<label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="profile.emailNotification"></input></label>
 						</div>
 					</form>
 				</div>
@@ -40,12 +40,15 @@
 				</div>
 				<div class="body separated">
                     <div>
-                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <lvg-switch switch-class="lvg-switch" control="disabledFeed"></lvg-switch></p>
+                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <lvg-switch class="pull-right" switch-class="lvg-switch" control="disabledFeed"></lvg-switch></p>
                     </div>
 					<div>
-						<p><strong data-translate>partials.me.calendar.description</strong> <a target="_blank" ng-href="{{calendarFeedUrl}}">{{calendarFeedUrl}}</a></p>
-					</div>
-				</div>
+                        <label for="feedUrl" data-translate>partials.me.calendar.description</label>
+                        <div>
+                            <input type="text" id="feedUrl" class="form-control" value="{{calendarFeedUrl}}" readonly disabled></input>
+                        </div>
+                    </div>
+                </div>
 				<div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
 					<button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="clearCalendarToken()">partials.me.clearCalendarToken</button>
 				</div>
