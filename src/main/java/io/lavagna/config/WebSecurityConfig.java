@@ -56,7 +56,7 @@ public class WebSecurityConfig {
 				.request("/js/**").permitAll()//
 				.request("/help/**").permitAll()//
 				.request("/about/**").permitAll()
-				.request("/**").denyAll().disableLogin();
+				.request("/**").redirectTo("/setup/").disableLogin();
 	}
 
 	@Lazy
