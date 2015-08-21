@@ -89,7 +89,7 @@ public class SecurityFilterTest {
 
 		sf.init(filterConfig);
 
-		sf.doFilter(request, response, chain);
+		sf.doFilterInternal(request, response, chain);
 	}
 
 	@Test
@@ -108,6 +108,6 @@ public class SecurityFilterTest {
 		MockFilterChain chain = new MockFilterChain();
 
 		sf.init(filterConfig);
-		sf.doFilter(request, response, chain);
+		sf.doFilterInternal(request, response, chain);
 	}
 }

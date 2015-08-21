@@ -33,7 +33,7 @@ public class CSFRFilter extends AbstractBaseFilter {
     private static final Logger LOG = LogManager.getLogger();
 
     @Override
-    protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         
         String token = (String) req.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
         if (token == null) {

@@ -52,7 +52,7 @@ public class HSTSFilter extends AbstractBaseFilter {
     }
 
     @Override
-    protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         
         
         Map<Key, String> configuration = config.findConfigurationFor(of(Key.USE_HTTPS, Key.BASE_APPLICATION_URL));
