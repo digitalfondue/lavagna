@@ -21,29 +21,19 @@ import static org.springframework.web.context.support.WebApplicationContextUtils
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.CSRFToken;
-import io.lavagna.web.helper.Redirector;
 import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.PathConfiguration.UrlMatcher;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.WebApplicationContext;
@@ -58,16 +48,13 @@ import org.springframework.web.context.WebApplicationContext;
  * If there is some kind of alternatives that give me the same features/functionality as the current version...
  * </pre>
  */
-public class SecurityFilter implements Filter {
-
-	private static final Logger LOG = LogManager.getLogger();
+public class SecurityFilter extends AbstractBaseFilter {
 
 	private final PathMatcher pathMatcher = new AntPathMatcher();
 	private ConfigurationRepository config;
 	private UserRepository userRepository;
 	private List<UrlMatcher> configuredAppPathConf;
 	private List<UrlMatcher> unconfiguredAppPathConf;
-
 	//
 
 	@Override
@@ -75,43 +62,18 @@ public class SecurityFilter implements Filter {
 		WebApplicationContext ctx = getRequiredWebApplicationContext(filterConfig.getServletContext());
 		config = ctx.getBean(ConfigurationRepository.class);
 		userRepository = ctx.getBean(UserRepository.class);
-
+				
 		configuredAppPathConf = ctx.getBean("configuredAppPathConf", PathConfiguration.class).buildMatcherList();
 		unconfiguredAppPathConf = ctx.getBean("unconfiguredAppPathConf", PathConfiguration.class).buildMatcherList();
 
-		if ("true".equals(config.getValueOrNull(Key.USE_HTTPS))) {
-			filterConfig.getServletContext().getSessionCookieConfig().setSecure(true);
-		}
 	}
 	
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-			ServletException {
+	protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+	    
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
-		//
-		
-		String reqURI = req.getRequestURI();
-
-		// if it's not in the context path of the application, the security
-		// filter will not be triggered
-		if (!reqURI.startsWith(req.getServletContext().getContextPath())) {
-			chain.doFilter(req, resp);
-			return;
-		}
-
-		Map<Key, String> configuration = config.findConfigurationFor(of(Key.SETUP_COMPLETE, Key.USE_HTTPS,
-				Key.BASE_APPLICATION_URL, Key.ENABLE_ANON_USER));
-
-		if (!handleHttps(req, resp, configuration)) {
-			return;
-		}
-
-		if (!handleCSRF(req, resp)) {
-			return;
-		}
+		Map<Key, String> configuration = config.findConfigurationFor(of(Key.SETUP_COMPLETE, Key.BASE_APPLICATION_URL, Key.ENABLE_ANON_USER));
 
 		addHeaders(req, resp);
 
@@ -144,126 +106,6 @@ public class SecurityFilter implements Filter {
 
 	private void handleRememberMe(HttpServletRequest req, HttpServletResponse resp) {
 		UserSession.authenticateUserIfRemembered(req, resp, userRepository);
-	}
-
-	/**
-	 * Return true if a redirect has been sent and thus the whole flow must be stopped.
-	 *
-	 * @param req
-	 * @param resp
-	 * @param configuration
-	 * @return
-	 * @throws IOException
-	 */
-	private boolean handleHttps(HttpServletRequest req, HttpServletResponse resp, Map<Key, String> configuration)
-			throws IOException {
-
-		final boolean requestOverHttps = isOverHttps(req);
-		final boolean useHttps = "true".equals(configuration.get(Key.USE_HTTPS));
-
-		// warn if the configuration is not aligned with the runtime settings
-		boolean hasConfProblem = false;
-		if (req.getServletContext().getSessionCookieConfig().isSecure() != useHttps) {
-			LOG.warn("SessionCookieConfig is not aligned with settings. The application must be restarted.");
-			hasConfProblem = true;
-		}
-		if (useHttps && !configuration.get(Key.BASE_APPLICATION_URL).startsWith("https://")) {
-			LOG.warn(
-					"The base application url {} does not begin with https:// . It's a mandatory requirement if you want to enable full https mode.",
-					configuration.get(Key.BASE_APPLICATION_URL));
-			hasConfProblem = hasConfProblem || true;
-		}
-
-		// IF ANY CONF error, will skip this part
-		if (hasConfProblem) {
-			return true;
-		}
-
-		String reqUriWithoutContextPath = reqUriWithoutContextPath(req);
-
-		// TODO: we ignore the websocket because the openshift websocket proxy
-		// does not add the X-Forwarded-Proto header. : -> no redirection and
-		// STS for the calls under /api/socket/*
-
-		if (useHttps && !requestOverHttps && !reqUriWithoutContextPath.startsWith("/api/socket/")) {
-			LOG.debug("use https is true and request is not over https, should redirect request");
-			Redirector.sendRedirect(req, resp, reqUriWithoutContextPath);
-			return false;
-		} else if (useHttps && requestOverHttps) {
-			LOG.debug("use https is true and request is over https, adding STS header");
-			resp.setHeader("Strict-Transport-Security", "max-age=31536000");
-			return true;
-		}
-		return true;
-	}
-
-	@Override
-	public void destroy() {
-	}
-
-	/**
-	 * Return false if there is an error
-	 *
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws IOException
-	 */
-	private boolean handleCSRF(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String token = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
-		if (token == null) {
-			token = UUID.randomUUID().toString();
-			request.getSession().setAttribute(CSRFToken.CSRF_TOKEN, token);
-		}
-		response.setHeader(CSRFToken.CSRF_TOKEN_HEADER, token);
-		//
-		if (mustCheckCSRF(request)) {
-			return checkCSRF(request, response);
-		}
-		//
-		return true;
-	}
-
-	private static final Pattern WEBSOCKET_FALLBACK = Pattern.compile("^/api/socket/.*$");
-
-	/**
-	 * Return true if the filter must check the
-	 *
-	 * @param request
-	 * @return
-	 */
-	private boolean mustCheckCSRF(HttpServletRequest request) {
-
-		// ignore the websocket fallback...
-		if ("POST".equals(request.getMethod())
-				&& WEBSOCKET_FALLBACK.matcher(request.getContextPath() + request.getRequestURI()).matches()) {
-			return false;
-		}
-
-		return !CSRFToken.CSRF_METHOD_DONT_CHECK.matcher(request.getMethod()).matches();
-	}
-
-	private static boolean checkCSRF(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String expectedToken = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
-		String token = request.getHeader(CSRFToken.CSRF_TOKEN_HEADER);
-		if (token == null) {
-			token = request.getParameter(CSRFToken.CSRF_FORM_PARAMETER);
-		}
-
-		if (token == null) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "missing token in header or parameter");
-			return false;
-		}
-		if (expectedToken == null) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "missing token from session");
-			return false;
-		}
-		if (!CSRFToken.safeArrayEquals(token.getBytes("UTF-8"), expectedToken.getBytes("UTF-8"))) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "token is not equal to expected");
-			return false;
-		}
-
-		return true;
 	}
 
 	private void handleWith(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
@@ -311,8 +153,4 @@ public class SecurityFilter implements Filter {
 		res.addHeader("x-content-type-options", "nosniff");
 	}
 
-	private static boolean isOverHttps(HttpServletRequest req) {
-		return req.isSecure() || req.getRequestURL().toString().startsWith("https://")
-				|| StringUtils.equals("https", req.getHeader("X-Forwarded-Proto"));
-	}
 }

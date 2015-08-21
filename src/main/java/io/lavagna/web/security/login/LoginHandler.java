@@ -17,8 +17,8 @@
 package io.lavagna.web.security.login;
 
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.CSRFToken;
 import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.CSRFToken;
 
 import java.io.IOException;
 import java.util.HashMap;
