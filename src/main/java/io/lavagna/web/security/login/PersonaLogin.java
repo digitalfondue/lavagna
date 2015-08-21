@@ -89,14 +89,11 @@ public class PersonaLogin extends AbstractLoginHandler {
 		MultiValueMap<String, String> toPost = new LinkedMultiValueMap<>();
 		toPost.add("assertion", req.getParameter("assertion"));
 		toPost.add("audience", audience);
-		VerifierResponse verifier = restTemplate.postForObject("https://verifier.login.persona.org/verify", toPost,
-				VerifierResponse.class);
+		VerifierResponse verifier = restTemplate.postForObject("https://verifier.login.persona.org/verify", toPost, VerifierResponse.class);
 
-		if ("okay".equals(verifier.status) && audience.equals(verifier.audience)
-				&& userRepository.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
+		if ("okay".equals(verifier.status) && audience.equals(verifier.audience) && userRepository.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
-			UserSession
-					.setUser(userRepository.findUserByName(USER_PROVIDER, verifier.email), req, resp, userRepository);
+			UserSession.setUser(userRepository.findUserByName(USER_PROVIDER, verifier.email), req, resp, userRepository);
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
 			JsonObject jsonObject = new JsonObject();
