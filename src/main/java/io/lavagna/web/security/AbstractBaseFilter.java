@@ -49,10 +49,10 @@ public abstract class AbstractBaseFilter implements Filter {
             return;
         }
         
-        doFilter(req, resp, chain);
+        doFilterInternal(req, resp, chain);
     }
     
-    protected abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)  throws IOException, ServletException;
+    protected abstract void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)  throws IOException, ServletException;
 
     @Override
     public void destroy() {
