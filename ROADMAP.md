@@ -18,7 +18,7 @@ This is a high level roadmap. Lavagna has currently:
  - decent i18n
  - improve the UI/UX
  - enable Content-Security-Policy
- - switch the authentication manager to spring-security or apache shiro
+ - refactor the authentication manager: cleanup + simplification
  - support gitlab oauth 
  - support internal account handling
  - support commit log parsing (git, svn (?))
