@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.security.login.oauth;
 
+import static org.apache.commons.lang3.StringUtils.removeStart;
 import io.lavagna.common.Json;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.Redirector;
@@ -23,6 +24,8 @@ import io.lavagna.web.helper.UserSession;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,7 +113,7 @@ public interface OAuthResultHandler {
 			req.getSession().removeAttribute("rememberMe-" + state);
 
 			if (!validateStateParam(req)) {
-				Redirector.sendRedirect(req, resp, errorPage);
+				Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 				return;
 			}
 
@@ -125,12 +128,11 @@ public interface OAuthResultHandler {
 			RemoteUserProfile profile = Json.GSON.fromJson(oauthResponse.getBody(), profileClass);
 
 			if (profile.valid(userRepository, provider)) {
-				String url = Redirector.cleanupRequestedUrl(reqUrl);
-				UserSession.setUser(userRepository.findUserByName(provider, profile.username()), req, resp,
-						userRepository);
-				Redirector.sendRedirect(req, resp, url);
+				String url = Redirector.cleanupRequestedUrl(reqUrl, req);
+				UserSession.setUser(userRepository.findUserByName(provider, profile.username()), req, resp, userRepository);
+				Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 			} else {
-				Redirector.sendRedirect(req, resp, errorPage);
+				Redirector.sendRedirect(req, resp, errorPage, Collections.<String, List<String>> emptyMap());
 			}
 		}
 

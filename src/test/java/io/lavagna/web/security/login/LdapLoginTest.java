@@ -83,9 +83,9 @@ public class LdapLoginTest {
 	public void testMissingUsernameAndPassword() throws IOException {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getServletContext()).thenReturn(context);
-		when(context.getContextPath()).thenReturn("");
+		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + "errorPage");
+		verify(resp).sendRedirect("/errorPage");
 	}
 
 	@Test
@@ -93,10 +93,10 @@ public class LdapLoginTest {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getServletContext()).thenReturn(context);
-		when(context.getContextPath()).thenReturn("");
+		when(req.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + "errorPage");
+		verify(resp).sendRedirect("/errorPage");
 	}
 
 	@Test
@@ -105,10 +105,10 @@ public class LdapLoginTest {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("password");
 		when(req.getServletContext()).thenReturn(context);
-		when(context.getContextPath()).thenReturn("");
+		when(req.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + "errorPage");
+		verify(resp).sendRedirect("/errorPage");
 	}
 
 	private void prepareForLdapSearch() {
@@ -116,7 +116,7 @@ public class LdapLoginTest {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("password");
 		when(req.getServletContext()).thenReturn(context);
-		when(context.getContextPath()).thenReturn("");
+		when(req.getContextPath()).thenReturn("");
 		when(userRepository.userExistsAndEnabled(LdapLogin.USER_PROVIDER, "user")).thenReturn(true);
 	}
 
@@ -124,8 +124,9 @@ public class LdapLoginTest {
 	public void ldapReturnFalse() throws IOException {
 		prepareForLdapSearch();
 		when(ldap.authenticate("user", "password")).thenReturn(false);
+		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + "errorPage");
+		verify(resp).sendRedirect("/errorPage");
 	}
 
 	@Test
@@ -139,7 +140,7 @@ public class LdapLoginTest {
 		when(req.getSession(true)).thenReturn(mock(HttpSession.class));
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl);
+		verify(resp).sendRedirect("/");
 		verify(req.getSession()).invalidate();
 	}
 }

@@ -90,8 +90,10 @@ public class DemoLoginTest {
 
 	@Test
 	public void testMissingUserNameAndPassword() throws IOException {
-		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+	    when(req.getContextPath()).thenReturn("");
+	    Assert.assertTrue(dl.doAction(req, resp));
+		
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
@@ -99,8 +101,9 @@ public class DemoLoginTest {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
 		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(false);
+		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
@@ -108,9 +111,10 @@ public class DemoLoginTest {
 		// POST, username and password not equal
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("not same as user");
+		when(req.getContextPath()).thenReturn("");
 		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
@@ -122,8 +126,9 @@ public class DemoLoginTest {
 		when(req.getSession()).thenReturn(session);
 		when(req.getSession(true)).thenReturn(session);
 		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(req.getContextPath()).thenReturn("/context-path");
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl);
+		verify(resp).sendRedirect("/context-path/");
 		verify(req.getSession()).invalidate();
 	}
 

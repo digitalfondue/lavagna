@@ -16,12 +16,15 @@
  */
 package io.lavagna.web.security.login;
 
+import static org.apache.commons.lang3.StringUtils.removeStart;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.Redirector;
 import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,11 +54,11 @@ public class DemoLogin extends AbstractLoginHandler {
 		if (username != null && username.equals(password)
 				&& userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
 			// FIXME refactor out
-			String url = Redirector.fetchRequestedUrl(req);
+			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
 			UserSession.setUser(userRepository.findUserByName(USER_PROVIDER, username), req, resp, userRepository);
-			Redirector.sendRedirect(req, resp, url);
+			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {
-			Redirector.sendRedirect(req, resp, errorPage);
+			Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 		}
 		return true;
 	}

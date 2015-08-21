@@ -65,15 +65,13 @@ public class SecurityFilter extends AbstractBaseFilter {
 				
 		configuredAppPathConf = ctx.getBean("configuredAppPathConf", PathConfiguration.class).buildMatcherList();
 		unconfiguredAppPathConf = ctx.getBean("unconfiguredAppPathConf", PathConfiguration.class).buildMatcherList();
-
 	}
 	
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-	    
 
-		Map<Key, String> configuration = config.findConfigurationFor(of(Key.SETUP_COMPLETE, Key.BASE_APPLICATION_URL, Key.ENABLE_ANON_USER));
+		Map<Key, String> configuration = config.findConfigurationFor(of(Key.SETUP_COMPLETE, Key.ENABLE_ANON_USER));
 
 		addHeaders(req, resp);
 

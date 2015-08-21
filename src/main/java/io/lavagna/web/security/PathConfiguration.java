@@ -156,8 +156,7 @@ public class PathConfiguration {
 			if (mode == Mode.REQUIRE_AUTHENTICATED && !UserSession.isUserAuthenticated(req)) {
 				if (redirect) {
 					String requestedUrl = extractRequestedUrl(req);
-					Redirector.sendRedirect(req, resp, conf.loginUrlMatcher.loginPageUrl,
-							singletonMap("reqUrl", singletonList(URLEncoder.encode(requestedUrl, "UTF-8"))));
+					Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(conf.loginUrlMatcher.loginPageUrl, "/"), singletonMap("reqUrl", singletonList(URLEncoder.encode(requestedUrl, "UTF-8"))));
 				} else {
 					resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				}
@@ -173,8 +172,7 @@ public class PathConfiguration {
 
 	private static String extractRequestedUrl(HttpServletRequest req) {
 		String queryString = req.getQueryString();
-		return removeStart(req.getRequestURI(), req.getContextPath())
-				+ (queryString != null ? ("?" + queryString) : "");
+		return req.getRequestURI() + (queryString != null ? ("?" + queryString) : "");
 	}
 
 	public static class LogoutUrlMatcher implements UrlMatcher {
