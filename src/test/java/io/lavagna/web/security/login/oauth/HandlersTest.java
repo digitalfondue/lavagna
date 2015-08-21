@@ -138,10 +138,10 @@ public class HandlersTest {
 
 		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
 		when(usersRep.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
-
+		when(req2.getContextPath()).thenReturn("");
 		Assert.assertTrue(!session.isInvalid());
 		bitbucketHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
+		verify(resp2).sendRedirect("/");
 		Assert.assertTrue(session.isInvalid());
 	}
 
@@ -155,10 +155,11 @@ public class HandlersTest {
 
 		when(oauthRes.getBody()).thenReturn("{\"login\" : \"login\"}");
 		when(usersRep.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
+		when(req2.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(!session.isInvalid());
 		githubHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
+		verify(resp2).sendRedirect("/");
 		Assert.assertTrue(session.isInvalid());
 	}
 
@@ -172,9 +173,11 @@ public class HandlersTest {
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
 		when(usersRep.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
 
+		when(req2.getContextPath()).thenReturn("/context-path");
+		
 		Assert.assertTrue(!session.isInvalid());
 		googleHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
+		verify(resp2).sendRedirect("/context-path/");
 		Assert.assertTrue(session.isInvalid());
 	}
 }

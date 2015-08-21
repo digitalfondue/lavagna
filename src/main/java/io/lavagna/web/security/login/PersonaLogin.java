@@ -94,7 +94,7 @@ public class PersonaLogin extends AbstractLoginHandler {
 
 		if ("okay".equals(verifier.status) && audience.equals(verifier.audience)
 				&& userRepository.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
-			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"));
+			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
 			UserSession
 					.setUser(userRepository.findUserByName(USER_PROVIDER, verifier.email), req, resp, userRepository);
 			resp.setStatus(HttpServletResponse.SC_OK);

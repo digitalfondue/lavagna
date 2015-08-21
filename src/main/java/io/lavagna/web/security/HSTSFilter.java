@@ -20,9 +20,10 @@ import static java.util.EnumSet.of;
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.web.helper.Redirector;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -34,7 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 public class HSTSFilter extends AbstractBaseFilter {
     
@@ -83,7 +87,7 @@ public class HSTSFilter extends AbstractBaseFilter {
         // STS for the calls under /api/socket/*
         if (useHttps && !requestOverHttps && !reqUriWithoutContextPath.startsWith("/api/socket/")) {
             LOG.debug("use https is true and request is not over https, should redirect request");
-            Redirector.sendRedirect(req, resp, reqUriWithoutContextPath);
+            sendRedirectAbsolute(configuration.get(Key.BASE_APPLICATION_URL), resp, reqUriWithoutContextPath, Collections.<String, List<String>> emptyMap());
             return;
         } else if (useHttps && requestOverHttps) {
             LOG.debug("use https is true and request is over https, adding STS header");
@@ -91,6 +95,11 @@ public class HSTSFilter extends AbstractBaseFilter {
         }
         
         chain.doFilter(req, resp);
+    }
+    
+    private static void sendRedirectAbsolute(String baseApplicationUrl, HttpServletResponse resp, String page, Map<String, List<String>> params) throws IOException {
+        UriComponents urlToRedirect = UriComponentsBuilder.fromHttpUrl(baseApplicationUrl).path(page).queryParams(new LinkedMultiValueMap<>(params)).build();
+        resp.sendRedirect(urlToRedirect.toUriString());
     }
     
     

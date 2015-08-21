@@ -16,13 +16,9 @@
  */
 package io.lavagna.web.helper;
 
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -40,30 +34,17 @@ public final class Redirector {
 	private Redirector() {
 	}
 
-	public static String cleanupRequestedUrl(String r) {
+	public static String cleanupRequestedUrl(String r, HttpServletRequest request) {
 		try {
-			return (r == null || !r.startsWith("/")) ? "/" : URLDecoder.decode(r, "UTF-8");
+			return (r == null || !r.startsWith("/")) ? (request.getContextPath() + "/") : URLDecoder.decode(r, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			return r;
 		}
 	}
 
-	public static String fetchRequestedUrl(HttpServletRequest req) {
-		return cleanupRequestedUrl(req.getParameter("reqUrl"));
-	}
-
-	public static void sendRedirect(HttpServletRequest req, HttpServletResponse resp, String page) throws IOException {
-		sendRedirect(req, resp, page, Collections.<String, List<String>> emptyMap());
-	}
-
-	public static void sendRedirect(HttpServletRequest req, HttpServletResponse resp, String page,
-			Map<String, List<String>> params) throws IOException {
-		WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(req.getServletContext());
-		String baseApplicationUrl = ctx.getBean(ConfigurationRepository.class).getValue(Key.BASE_APPLICATION_URL);
-
-		UriComponents urlToRedirect = UriComponentsBuilder.fromHttpUrl(baseApplicationUrl).path(page)
-				.queryParams(new LinkedMultiValueMap<>(params)).build();
-
+	
+	public static void sendRedirect(HttpServletRequest req, HttpServletResponse resp, String page, Map<String, List<String>> params) throws IOException {
+		UriComponents urlToRedirect = UriComponentsBuilder.fromPath(page).queryParams(new LinkedMultiValueMap<>(params)).build();
 		resp.sendRedirect(urlToRedirect.toUriString());
 	}
 }
