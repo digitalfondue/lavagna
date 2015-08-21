@@ -251,6 +251,10 @@
                     <groupId>org.codehaus.groovy</groupId>
                     <artifactId>groovy-all</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>bndlib</artifactId>
+                    <groupId>biz.aQute.bnd</groupId>
+                </exclusion>
             </exclusions>
 		</dependency>
 	</dependencies>
