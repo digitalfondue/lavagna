@@ -70,6 +70,8 @@ public class CalendarServiceTest {
     @Autowired
     private CardService cardService;
     @Autowired
+    private CardDataService cardDataService;
+    @Autowired
     private CalendarService calendarService;
     @Autowired
     private LabelService labelService;
@@ -174,6 +176,7 @@ public class CalendarServiceTest {
     public void testGetUserCalendar() throws URISyntaxException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user);
 
         Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
 

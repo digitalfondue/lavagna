@@ -18,6 +18,7 @@ package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import io.lavagna.CardDataHistory;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
@@ -78,14 +79,16 @@ public class CalendarService {
     private final SearchService searchService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CardDataService cardDataService;
 
     @Autowired
     public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
-        UserService userService, UserRepository userRepository) {
+        UserService userService, UserRepository userRepository, CardDataService cardDataService) {
         this.configurationRepository = configurationRepository;
         this.searchService = searchService;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.cardDataService = cardDataService;
     }
 
     @Transactional(readOnly = false)
@@ -182,6 +185,8 @@ public class CalendarService {
             Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
                 card.getBoardShortName(), card.getSequence())));
 
+            CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
+
             for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
                 String name = getEventName(lav, card);
 
@@ -194,7 +199,7 @@ public class CalendarService {
                 event.getProperties().add(new Uid(id.toString()));
 
                 // Reminder on label's date
-                if(card.getColumnDefinition() != ColumnDefinition.CLOSED) {
+                if (card.getColumnDefinition() != ColumnDefinition.CLOSED) {
                     final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
                     reminder.getProperties().add(Action.DISPLAY);
                     reminder.getProperties().add(new Description(name));
@@ -210,7 +215,13 @@ public class CalendarService {
                 organizer.getParameters().add(new Cn(ud.getName()));
                 event.getProperties().add(organizer);
 
+                // Url
                 event.getProperties().add(cardUrl);
+
+                // Description
+                if(cardDesc != null) {
+                    event.getProperties().add(new Description(cardDesc.getContent()));
+                }
 
                 events.add(event);
             }
