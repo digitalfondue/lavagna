@@ -23,10 +23,12 @@ import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.util.CalendarTokenNotFoundException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -192,10 +194,12 @@ public class CalendarService {
                 event.getProperties().add(new Uid(id.toString()));
 
                 // Reminder on label's date
-                final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-                reminder.getProperties().add(Action.DISPLAY);
-                reminder.getProperties().add(new Description(name));
-                event.getAlarms().add(reminder);
+                if(card.getColumnDefinition() != ColumnDefinition.CLOSED) {
+                    final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+                    reminder.getProperties().add(Action.DISPLAY);
+                    reminder.getProperties().add(new Description(name));
+                    event.getAlarms().add(reminder);
+                }
 
                 TzId tzParam = new TzId(utcTimeZone);
                 event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
