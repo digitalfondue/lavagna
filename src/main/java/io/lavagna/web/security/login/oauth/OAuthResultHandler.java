@@ -132,7 +132,7 @@ public interface OAuthResultHandler {
 				UserSession.setUser(userRepository.findUserByName(provider, profile.username()), req, resp, userRepository);
 				Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 			} else {
-				Redirector.sendRedirect(req, resp, errorPage, Collections.<String, List<String>> emptyMap());
+				Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 			}
 		}
 
