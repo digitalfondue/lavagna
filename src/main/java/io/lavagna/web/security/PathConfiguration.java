@@ -39,6 +39,7 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,7 @@ public class PathConfiguration {
 		private final String urlMatcher;
 		private final PathConfiguration conf;
 		private boolean redirect;
+		private String redirectTo;
 		private Mode mode;
 
 		BasicUrlMatcher(PathConfiguration conf, String urlMatcher) {
@@ -139,6 +141,12 @@ public class PathConfiguration {
 			mode = Mode.REQUIRE_AUTHENTICATED;
 			this.redirect = redirect;
 			return conf;
+		}
+		
+		public PathConfiguration redirectTo(String redirectTo) {
+		    mode = Mode.REDIRECT;
+		    this.redirectTo = redirectTo;
+		    return conf;
 		}
 
 		public PathConfiguration permitAll() {
@@ -164,6 +172,9 @@ public class PathConfiguration {
 			} else if (mode == Mode.DENY_ALL) {
 				resp.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return true;
+			} else if(mode == Mode.REDIRECT) {
+			    Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(redirectTo, "/"), Collections.<String, List<String>>emptyMap());
+			  return true;  
 			} else {
 				return false;
 			}
@@ -284,6 +295,6 @@ public class PathConfiguration {
 	}
 
 	private enum Mode {
-		DENY_ALL, UNAUTHENTICATED, REQUIRE_AUTHENTICATED, PERMIT_ALL, LOGIN, LOGOUT
+		DENY_ALL, UNAUTHENTICATED, REQUIRE_AUTHENTICATED, PERMIT_ALL, LOGIN, LOGOUT, REDIRECT
 	}
 }
