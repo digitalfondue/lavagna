@@ -20,7 +20,8 @@ import static org.mockito.Mockito.when;
 import io.lavagna.config.WebSecurityConfig;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.web.security.PathConfiguration;
+import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration;
 import io.lavagna.web.security.SecurityFilter;
 
 import java.io.IOException;
@@ -53,6 +54,9 @@ public class SecurityFilterTest {
 
 	@Mock
 	private ConfigurationRepository configurationRepository;
+	
+	@Mock
+	private UserRepository userRepository;
 
 	@Mock
 	private FilterConfig filterConfig;
@@ -65,12 +69,12 @@ public class SecurityFilterTest {
 		WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
 		
 		//
-		Map<String, PathConfiguration> paths = new LinkedHashMap<>();
-		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository));
+		Map<String, SecurityConfiguration> paths = new LinkedHashMap<>();
+		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, webApplicationContext));
 		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
 		//
 		
-		when(webApplicationContext.getBeansOfType(PathConfiguration.class)).thenReturn(paths);
+		when(webApplicationContext.getBeansOfType(SecurityConfiguration.class)).thenReturn(paths);
 		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
 		when(filterConfig.getServletContext()).thenReturn(servletContext);
 		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);

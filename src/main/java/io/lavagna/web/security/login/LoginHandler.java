@@ -46,8 +46,7 @@ public interface LoginHandler {
 			this.userRepository = userRepository;
 		}
 
-		public static boolean logout(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository)
-				throws IOException, ServletException {
+		public static boolean logout(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) throws IOException, ServletException {
 			UserSession.invalidate(req, resp, userRepository);
 			resp.setStatus(HttpServletResponse.SC_OK);
 			return true;
