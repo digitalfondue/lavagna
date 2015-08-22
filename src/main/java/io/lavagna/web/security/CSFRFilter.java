@@ -16,6 +16,8 @@
  */
 package io.lavagna.web.security;
 
+import static org.apache.commons.lang3.tuple.ImmutablePair.of;
+
 import java.io.IOException;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -25,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,9 +45,13 @@ public class CSFRFilter extends AbstractBaseFilter {
         }
         resp.setHeader(CSRFToken.CSRF_TOKEN_HEADER, token);
         
-        if (mustCheckCSRF(req) && !checkCSRF(req, resp)) {
-            LOG.info("wrong csrf");
-            return;
+        if (mustCheckCSRF(req)) {
+            ImmutablePair<Boolean, ImmutablePair<Integer, String>> res = checkCSRF(req);
+            if (!res.left) {
+                LOG.info("wrong csrf");
+                resp.sendError(res.right.left, res.right.right);
+                return;
+            }
         }
         
         //continue...
@@ -55,7 +62,7 @@ public class CSFRFilter extends AbstractBaseFilter {
     private static final Pattern WEBSOCKET_FALLBACK = Pattern.compile("^/api/socket/.*$");
     
     /**
-     * Return true if the filter must check the
+     * Return true if the filter must check the request
      *
      * @param request
      * @return
@@ -70,7 +77,7 @@ public class CSFRFilter extends AbstractBaseFilter {
         return !CSRFToken.CSRF_METHOD_DONT_CHECK.matcher(request.getMethod()).matches();
     }
 
-    private static boolean checkCSRF(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private static ImmutablePair<Boolean, ImmutablePair<Integer, String>> checkCSRF(HttpServletRequest request) throws IOException {
         String expectedToken = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
         String token = request.getHeader(CSRFToken.CSRF_TOKEN_HEADER);
         if (token == null) {
@@ -78,19 +85,16 @@ public class CSFRFilter extends AbstractBaseFilter {
         }
 
         if (token == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "missing token in header or parameter");
-            return false;
+            return of(false, of(HttpServletResponse.SC_FORBIDDEN, "missing token in header or parameter"));
         }
         if (expectedToken == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "missing token from session");
-            return false;
+            return of(false, of(HttpServletResponse.SC_FORBIDDEN, "missing token from session"));
         }
         if (!CSRFToken.safeArrayEquals(token.getBytes("UTF-8"), expectedToken.getBytes("UTF-8"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "token is not equal to expected");
-            return false;
+            return of(false, of(HttpServletResponse.SC_FORBIDDEN, "token is not equal to expected"));
         }
 
-        return true;
+        return of(true, null);
     }
     
 }

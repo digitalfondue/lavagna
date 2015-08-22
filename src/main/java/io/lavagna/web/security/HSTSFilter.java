@@ -112,8 +112,4 @@ public class HSTSFilter extends AbstractBaseFilter {
                 || StringUtils.equals("https", req.getHeader("X-Forwarded-Proto"));
     }
 
-    @Override
-    public void destroy() {
-    }
-
 }
