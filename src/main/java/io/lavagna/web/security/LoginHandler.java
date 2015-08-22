@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna.web.security.login;
+package io.lavagna.web.security;
 
-import io.lavagna.web.security.CSRFToken;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 
@@ -43,7 +42,7 @@ public interface LoginHandler {
 		protected final Users users;
 		protected final SessionHandler sessionHandler;
 
-		AbstractLoginHandler(Users users, SessionHandler sessionHandler) {
+		public AbstractLoginHandler(Users users, SessionHandler sessionHandler) {
 			this.users = users;
 			this.sessionHandler = sessionHandler;
 		}

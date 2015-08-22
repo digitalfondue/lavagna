@@ -17,10 +17,10 @@
 package io.lavagna.web.security.login;
 
 import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
 import java.util.Map;

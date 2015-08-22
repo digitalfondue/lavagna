@@ -19,7 +19,6 @@ package io.lavagna.web.security;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.web.security.login.LoginHandler;
 
 import java.io.IOException;
 import java.net.URLEncoder;
