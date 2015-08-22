@@ -65,7 +65,6 @@ public class OAuthLogin extends AbstractLoginHandler {
 		this.configurationRepository = configurationRepository;
 		this.errorPage = errorPage;
 		this.handler = handler;
-
 	}
 
 	@Override

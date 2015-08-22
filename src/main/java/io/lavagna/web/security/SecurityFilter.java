@@ -17,7 +17,7 @@
 package io.lavagna.web.security;
 
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
-import io.lavagna.web.security.PathConfiguration.UrlMatcher;
+import io.lavagna.web.security.SecurityConfiguration.UrlMatcher;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,13 +49,12 @@ import org.springframework.web.context.WebApplicationContext;
 public class SecurityFilter extends AbstractBaseFilter {
 
 	private final PathMatcher pathMatcher = new AntPathMatcher();
-	private final SortedMap<String, ImmutablePair<PathConfiguration, List<UrlMatcher>>> pathsToCheck = new TreeMap<>();
+	private final SortedMap<String, ImmutablePair<SecurityConfiguration, List<UrlMatcher>>> pathsToCheck = new TreeMap<>();
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		WebApplicationContext ctx = getRequiredWebApplicationContext(filterConfig.getServletContext());
-		
-		for(Entry<String, PathConfiguration> kv : ctx.getBeansOfType(PathConfiguration.class).entrySet()) {
+		for(Entry<String, SecurityConfiguration> kv : ctx.getBeansOfType(SecurityConfiguration.class).entrySet()) {
 		    pathsToCheck.put(kv.getKey(), ImmutablePair.of(kv.getValue(), kv.getValue().buildMatcherList()));
 		}
 	}
@@ -66,7 +65,7 @@ public class SecurityFilter extends AbstractBaseFilter {
 
 		addHeaders(req, resp);
 		
-		for(ImmutablePair<PathConfiguration, List<UrlMatcher>> path : pathsToCheck.values()) {
+		for(ImmutablePair<SecurityConfiguration, List<UrlMatcher>> path : pathsToCheck.values()) {
 		    if(path.left.matchRequest(req)) {
 		        handleWith(req, resp, chain, path.right);
 		        return;
