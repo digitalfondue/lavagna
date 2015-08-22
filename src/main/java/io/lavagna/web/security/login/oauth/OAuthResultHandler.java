@@ -17,7 +17,6 @@
 package io.lavagna.web.security.login.oauth;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.common.Json;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
@@ -40,6 +39,9 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.springframework.web.util.UriUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public interface OAuthResultHandler {
 
 	void handleAuthorizationUrl(HttpServletRequest req, HttpServletResponse resp) throws IOException;
@@ -47,6 +49,8 @@ public interface OAuthResultHandler {
 	void handleCallback(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	class OAuthResultHandlerAdapter implements OAuthResultHandler {
+	    
+	    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
 		private final String provider;
 		private final String profileUrl;
@@ -128,7 +132,7 @@ public interface OAuthResultHandler {
 			OAuthRequest oauthRequest = reqBuilder.req(Verb.GET, profileUrl);
 			oauthService.signRequest(accessToken, oauthRequest);
 			Response oauthResponse = oauthRequest.send();
-			RemoteUserProfile profile = Json.GSON.fromJson(oauthResponse.getBody(), profileClass);
+			RemoteUserProfile profile = GSON.fromJson(oauthResponse.getBody(), profileClass);
 
 			if (profile.valid(users, provider)) {
 				String url = Redirector.cleanupRequestedUrl(reqUrl, req);

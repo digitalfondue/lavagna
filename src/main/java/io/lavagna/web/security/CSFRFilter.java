@@ -27,11 +27,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CSFRFilter extends AbstractBaseFilter {
+    
+    private static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
+    private static final String CSRF_FORM_PARAMETER = "_csrf";
+    private static final Pattern CSRF_METHOD_DONT_CHECK = Pattern.compile("^GET|HEAD|OPTIONS$");
     
     private static final Logger LOG = LogManager.getLogger();
 
@@ -43,7 +48,7 @@ public class CSFRFilter extends AbstractBaseFilter {
             token = UUID.randomUUID().toString();
             req.getSession().setAttribute(CSRFToken.CSRF_TOKEN, token);
         }
-        resp.setHeader(CSRFToken.CSRF_TOKEN_HEADER, token);
+        resp.setHeader(CSRF_TOKEN_HEADER, token);
         
         if (mustCheckCSRF(req)) {
             ImmutablePair<Boolean, ImmutablePair<Integer, String>> res = checkCSRF(req);
@@ -70,18 +75,18 @@ public class CSFRFilter extends AbstractBaseFilter {
     private boolean mustCheckCSRF(HttpServletRequest request) {
 
         // ignore the websocket fallback...
-        if ("POST".equals(request.getMethod()) && WEBSOCKET_FALLBACK.matcher(request.getContextPath() + request.getRequestURI()).matches()) {
+        if ("POST".equals(request.getMethod()) && WEBSOCKET_FALLBACK.matcher(StringUtils.removeStart(request.getRequestURI(), request.getContextPath())).matches()) {
             return false;
         }
 
-        return !CSRFToken.CSRF_METHOD_DONT_CHECK.matcher(request.getMethod()).matches();
+        return !CSRF_METHOD_DONT_CHECK.matcher(request.getMethod()).matches();
     }
 
     private static ImmutablePair<Boolean, ImmutablePair<Integer, String>> checkCSRF(HttpServletRequest request) throws IOException {
         String expectedToken = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
-        String token = request.getHeader(CSRFToken.CSRF_TOKEN_HEADER);
+        String token = request.getHeader(CSRF_TOKEN_HEADER);
         if (token == null) {
-            token = request.getParameter(CSRFToken.CSRF_FORM_PARAMETER);
+            token = request.getParameter(CSRF_FORM_PARAMETER);
         }
 
         if (token == null) {
@@ -90,11 +95,51 @@ public class CSFRFilter extends AbstractBaseFilter {
         if (expectedToken == null) {
             return of(false, of(HttpServletResponse.SC_FORBIDDEN, "missing token from session"));
         }
-        if (!CSRFToken.safeArrayEquals(token.getBytes("UTF-8"), expectedToken.getBytes("UTF-8"))) {
+        if (!safeArrayEquals(token.getBytes("UTF-8"), expectedToken.getBytes("UTF-8"))) {
             return of(false, of(HttpServletResponse.SC_FORBIDDEN, "token is not equal to expected"));
         }
 
         return of(true, null);
     }
     
+    
+ // ------------------------------------------------------------------------
+    // this function has been imported from KeyCzar.
+
+    /*
+     * Copyright 2008 Google Inc.
+     * 
+     * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+     * with the License. You may obtain a copy of the License at
+     * 
+     * http://www.apache.org/licenses/LICENSE-2.0
+     * 
+     * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+     * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+     * the specific language governing permissions and limitations under the License.
+     */
+
+    /**
+     * An array comparison that is safe from timing attacks. If two arrays are of equal length, this code will always
+     * check all elements, rather than exiting once it encounters a differing byte.
+     * 
+     * @param a1
+     *            An array to compare
+     * @param a2
+     *            Another array to compare
+     * @return True if these arrays are both null or if they have equal length and equal bytes in all elements
+     */
+    private static boolean safeArrayEquals(byte[] a1, byte[] a2) {
+        if (a1 == null || a2 == null) {
+            return a1 == a2;
+        }
+        if (a1.length != a2.length) {
+            return false;
+        }
+        byte result = 0;
+        for (int i = 0; i < a1.length; i++) {
+            result |= a1[i] ^ a2[i];
+        }
+        return result == 0;
+    }
 }
