@@ -25,9 +25,9 @@ public final class CSRFToken {
 
 	//
 	public static final String CSRF_TOKEN = CSRFToken.class.getName() + ".CSRF_TOKEN";
-	public static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
-	public static final String CSRF_FORM_PARAMETER = "_csrf";
-	public static final Pattern CSRF_METHOD_DONT_CHECK = Pattern.compile("^GET|HEAD|OPTIONS$");
+	static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
+	static final String CSRF_FORM_PARAMETER = "_csrf";
+	static final Pattern CSRF_METHOD_DONT_CHECK = Pattern.compile("^GET|HEAD|OPTIONS$");
 
 	// ------------------------------------------------------------------------
 	// this function has been imported from KeyCzar.
@@ -55,7 +55,7 @@ public final class CSRFToken {
 	 *            Another array to compare
 	 * @return True if these arrays are both null or if they have equal length and equal bytes in all elements
 	 */
-	public static boolean safeArrayEquals(byte[] a1, byte[] a2) {
+	static boolean safeArrayEquals(byte[] a1, byte[] a2) {
 		if (a1 == null || a2 == null) {
 			return a1 == a2;
 		}

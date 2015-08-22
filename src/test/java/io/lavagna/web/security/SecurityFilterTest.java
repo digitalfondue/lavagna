@@ -25,6 +25,7 @@ import io.lavagna.web.security.SecurityFilter;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,14 +63,17 @@ public class SecurityFilterTest {
 	@Before
 	public void prepare() {
 		WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
-		when(webApplicationContext.getBean("configuredAppPathConf", PathConfiguration.class)).thenReturn(
-				webSecurityConfig.configuredApp());
-		when(webApplicationContext.getBean("unconfiguredAppPathConf", PathConfiguration.class)).thenReturn(
-				webSecurityConfig.unconfiguredApp());
+		
+		//
+		Map<String, PathConfiguration> paths = new LinkedHashMap<>();
+		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository));
+		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
+		//
+		
+		when(webApplicationContext.getBeansOfType(PathConfiguration.class)).thenReturn(paths);
 		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
 		when(filterConfig.getServletContext()).thenReturn(servletContext);
-		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webApplicationContext);
+		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
 
 	@Test
@@ -83,6 +87,7 @@ public class SecurityFilterTest {
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
 		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
+		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn("true");
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockFilterChain chain = new MockFilterChain();
@@ -103,6 +108,7 @@ public class SecurityFilterTest {
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "false");
 		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
+		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn(null);
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockFilterChain chain = new MockFilterChain();

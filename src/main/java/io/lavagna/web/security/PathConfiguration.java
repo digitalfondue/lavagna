@@ -62,6 +62,7 @@ public class PathConfiguration {
 	private boolean loginUrlDisabled;
 	private LoginUrlMatcher loginUrlMatcher;
 	private LogoutUrlMatcher logoutUrlMatcher;
+	private RequestMatcher requestMatcher = new AlwaysTrueRequestMatcher();
 
 	List<UrlMatcher> buildMatcherList() {
 		List<UrlMatcher> r = new ArrayList<>();
@@ -76,6 +77,15 @@ public class PathConfiguration {
 
 		r.addAll(urlMatchers);
 		return r;
+	}
+	
+	public PathConfiguration requestMatcher(RequestMatcher requestMatcher) {
+	    this.requestMatcher = requestMatcher;
+	    return this;
+	}
+	
+	public boolean matchRequest(HttpServletRequest request) {
+	    return requestMatcher.match(request);
 	}
 
 	public PathConfiguration disableLogin() {
@@ -296,5 +306,16 @@ public class PathConfiguration {
 
 	private enum Mode {
 		DENY_ALL, UNAUTHENTICATED, REQUIRE_AUTHENTICATED, PERMIT_ALL, LOGIN, LOGOUT, REDIRECT
+	}
+	
+	public interface RequestMatcher {
+	    boolean match(HttpServletRequest request);
+	}
+	
+	public static class AlwaysTrueRequestMatcher implements RequestMatcher {
+        @Override
+        public boolean match(HttpServletRequest request) {
+            return true;
+        }
 	}
 }

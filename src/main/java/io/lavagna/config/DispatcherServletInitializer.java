@@ -16,8 +16,10 @@
  */
 package io.lavagna.config;
 
+import io.lavagna.web.security.AnonymousUserFilter;
 import io.lavagna.web.security.CSFRFilter;
 import io.lavagna.web.security.HSTSFilter;
+import io.lavagna.web.security.RememberMeFilter;
 import io.lavagna.web.security.SecurityFilter;
 
 import java.util.Collections;
@@ -61,6 +63,10 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");
 		
 		addFilter(servletContext, "CSFRFilter", CSFRFilter.class, "/*");
+		
+		addFilter(servletContext, "RememberMeFilter", RememberMeFilter.class, "/*");
+		
+		addFilter(servletContext, "AnonymousUserFilter", AnonymousUserFilter.class, "/*");
 		
 		addFilter(servletContext, "SecurityFilter", SecurityFilter.class, "/*");
 		

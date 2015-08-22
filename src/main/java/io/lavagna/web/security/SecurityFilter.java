@@ -16,17 +16,14 @@
  */
 package io.lavagna.web.security;
 
-import static java.util.EnumSet.of;
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.PathConfiguration.UrlMatcher;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -34,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.WebApplicationContext;
@@ -51,63 +49,36 @@ import org.springframework.web.context.WebApplicationContext;
 public class SecurityFilter extends AbstractBaseFilter {
 
 	private final PathMatcher pathMatcher = new AntPathMatcher();
-	private ConfigurationRepository config;
-	private UserRepository userRepository;
-	private List<UrlMatcher> configuredAppPathConf;
-	private List<UrlMatcher> unconfiguredAppPathConf;
-	//
+	private final SortedMap<String, ImmutablePair<PathConfiguration, List<UrlMatcher>>> pathsToCheck = new TreeMap<>();
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		WebApplicationContext ctx = getRequiredWebApplicationContext(filterConfig.getServletContext());
-		config = ctx.getBean(ConfigurationRepository.class);
-		userRepository = ctx.getBean(UserRepository.class);
-				
-		configuredAppPathConf = ctx.getBean("configuredAppPathConf", PathConfiguration.class).buildMatcherList();
-		unconfiguredAppPathConf = ctx.getBean("unconfiguredAppPathConf", PathConfiguration.class).buildMatcherList();
+		
+		for(Entry<String, PathConfiguration> kv : ctx.getBeansOfType(PathConfiguration.class).entrySet()) {
+		    pathsToCheck.put(kv.getKey(), ImmutablePair.of(kv.getValue(), kv.getValue().buildMatcherList()));
+		}
 	}
 	
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
 
-		Map<Key, String> configuration = config.findConfigurationFor(of(Key.SETUP_COMPLETE, Key.ENABLE_ANON_USER));
-
 		addHeaders(req, resp);
-
-		// handle with the correct Url matcher list...
-		if ("true".equals(configuration.get(Key.SETUP_COMPLETE))) {
-			handleRememberMe(req, resp);
-
-			handleAnonymousUser(configuration, req, resp);
-
-			handleWith(req, resp, chain, configuredAppPathConf);
-		} else {
-			handleWith(req, resp, chain, unconfiguredAppPathConf);
+		
+		for(ImmutablePair<PathConfiguration, List<UrlMatcher>> path : pathsToCheck.values()) {
+		    if(path.left.matchRequest(req)) {
+		        handleWith(req, resp, chain, path.right);
+		        return;
+		    }
 		}
+		
+		chain.doFilter(req, resp);
 	}
 
-	private void handleAnonymousUser(Map<Key, String> configuration, HttpServletRequest req, HttpServletResponse resp) {
+	
 
-		final boolean enabled = "true".equals(configuration.get(Key.ENABLE_ANON_USER));
-
-		if (enabled && !UserSession.isUserAuthenticated(req)) {
-			UserSession.setUser(userRepository.findUserByName("system", "anonymous"), req, resp, userRepository, false);
-		}
-
-		// handle the case when the user is logged as a anonymous user but it's
-		// no more enabled
-		if (!enabled && UserSession.isUserAuthenticated(req) && UserSession.isUserAnonymous(req)) {
-			UserSession.invalidate(req, resp, userRepository);
-		}
-	}
-
-	private void handleRememberMe(HttpServletRequest req, HttpServletResponse resp) {
-		UserSession.authenticateUserIfRemembered(req, resp, userRepository);
-	}
-
-	private void handleWith(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
-			List<UrlMatcher> matchers) throws IOException, ServletException {
+	private void handleWith(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, List<UrlMatcher> matchers) throws IOException, ServletException {
 
 		String reqUriWithoutContextPath = reqUriWithoutContextPath(request);
 

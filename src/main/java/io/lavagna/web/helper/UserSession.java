@@ -89,6 +89,9 @@ public final class UserSession {
 	}
 
 	private static ImmutablePair<Integer, String> extractUserIdAndToken(String cookieVal) {
+        if (cookieVal == null) {
+            return null;
+        }
 		try {
 			String[] splitted = cookieVal.split(",");
 			if (splitted.length == 2) {
@@ -99,7 +102,7 @@ public final class UserSession {
 				}
 			}
 		} catch (NullPointerException | NumberFormatException e) {
-			LOG.info("error while extracting userid and token", e);
+			LOG.debug("error while extracting userid and token", e);
 		}
 		return null;
 	}
@@ -119,7 +122,6 @@ public final class UserSession {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -138,13 +140,11 @@ public final class UserSession {
 
 	public static void setUser(User user, HttpServletRequest req, HttpServletResponse resp,
 			UserRepository userRepository) {
-		boolean rememberMe = "true".equals(req.getParameter("rememberMe"))
-				|| "true".equals(req.getAttribute("rememberMe"));
+		boolean rememberMe = "true".equals(req.getParameter("rememberMe")) || "true".equals(req.getAttribute("rememberMe"));
 		setUser(user, req, resp, userRepository, rememberMe);
 	}
 
-	private static void addRememberMeCookie(int userId, HttpServletRequest req, HttpServletResponse resp,
-			UserRepository userRepository) {
+	private static void addRememberMeCookie(int userId, HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
 
 		String token = userRepository.createRememberMeToken(userId);
 		//
