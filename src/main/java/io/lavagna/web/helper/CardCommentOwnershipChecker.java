@@ -46,9 +46,8 @@ public class CardCommentOwnershipChecker implements OwnershipChecker {
 		Matcher matcher = pattern.matcher(request.getRequestURI());
 		try {
 			if (matcher.matches()) {
-				int userId = UserSession.getUserId(request);
 				int commentId = Integer.parseInt(matcher.group(1), 10);
-				return eventRepository.findUsersIdFor(commentId, EventType.COMMENT_CREATE).contains(userId);
+				return eventRepository.findUsersIdFor(commentId, EventType.COMMENT_CREATE).contains(user.getId());
 			}
 		} catch (NumberFormatException nfe) {
 			return false;
