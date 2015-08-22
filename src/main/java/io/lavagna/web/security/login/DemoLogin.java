@@ -17,10 +17,10 @@
 package io.lavagna.web.security.login;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.model.User;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
@@ -37,8 +37,8 @@ public class DemoLogin extends AbstractLoginHandler {
 
 	private final String errorPage;
 
-	public DemoLogin(UserRepository userRepository, SessionHandler sessionHandler, String errorPage) {
-		super(userRepository, sessionHandler);
+	public DemoLogin(Users users, SessionHandler sessionHandler, String errorPage) {
+		super(users, sessionHandler);
 		this.errorPage = errorPage;
 	}
 
@@ -53,10 +53,10 @@ public class DemoLogin extends AbstractLoginHandler {
 		String password = req.getParameter("password");
 		// yes, it's stupid...
 		if (username != null && username.equals(password)
-				&& userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
+				&& users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			// FIXME refactor out
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
-			User user = userRepository.findUserByName(USER_PROVIDER, username);
+			User user = users.findUserByName(USER_PROVIDER, username);
 			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {

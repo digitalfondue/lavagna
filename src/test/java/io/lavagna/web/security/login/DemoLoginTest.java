@@ -20,13 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -48,7 +47,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class DemoLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
 	@Mock
     private SessionHandler sessionHandler;
 	@Mock
@@ -73,7 +72,7 @@ public class DemoLoginTest {
 
 	@Before
 	public void prepare() {
-		dl = new DemoLogin(userRepository, sessionHandler, errorPage);
+		dl = new DemoLogin(users, sessionHandler, errorPage);
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getServletContext()).thenReturn(context);
 		when(context.getContextPath()).thenReturn("");
@@ -102,7 +101,7 @@ public class DemoLoginTest {
 	public void testUserNotEnabled() throws IOException {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(false);
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(false);
 		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(dl.doAction(req, resp));
 		verify(resp).sendRedirect("/" + errorPage);
@@ -114,20 +113,27 @@ public class DemoLoginTest {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("not same as user");
 		when(req.getContextPath()).thenReturn("");
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		Assert.assertTrue(dl.doAction(req, resp));
 		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
 	public void testSuccess() throws IOException {
-		when(userRepository.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(
-				new User(42, DemoLogin.USER_PROVIDER, "username", null, null, true, true, new Date()));
+		when(users.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(new User() { 
+		    public int getId() {
+		        return 42;
+		    }
+		    
+		    public boolean isAnonymous() {
+		        return false;
+		    }
+		});
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
 		when(req.getSession()).thenReturn(session);
 		when(req.getSession(true)).thenReturn(session);
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		when(req.getContextPath()).thenReturn("/context-path");
 		Assert.assertTrue(dl.doAction(req, resp));
 		verify(resp).sendRedirect("/context-path/");

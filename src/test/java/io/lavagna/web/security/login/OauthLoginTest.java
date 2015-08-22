@@ -23,8 +23,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.OAuthLogin.Handler;
 import io.lavagna.web.security.login.OAuthLogin.OAuthProvider;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
@@ -52,7 +52,7 @@ import org.scribe.oauth.OAuthService;
 public class OauthLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
 	@Mock
     private SessionHandler sessionHandler;
 	@Mock
@@ -79,7 +79,7 @@ public class OauthLoginTest {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void prepare() {
-		oAuthLogin = new OAuthLogin(userRepository, sessionHandler, configurationRepository, handler, errorPage);
+		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationRepository, handler, errorPage);
 		when(configurationRepository.getValue(Key.OAUTH_CONFIGURATION)).thenReturn(oauthJsonConf);
 		when(serviceBuilder.provider(any(Class.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.provider(any(Api.class))).thenReturn(serviceBuilder);
@@ -100,7 +100,7 @@ public class OauthLoginTest {
 	public void initiateWithPostWrongUrl() throws IOException {
 		when(req.getRequestURI()).thenReturn("/login/oauth/derp");
 		when(req.getMethod()).thenReturn("POST");
-		when(handler.from(any(OAuthProvider.class), any(String.class), eq(userRepository),eq(sessionHandler),  eq(errorPage))).thenReturn(
+		when(handler.from(any(OAuthProvider.class), any(String.class), eq(users),eq(sessionHandler),  eq(errorPage))).thenReturn(
 				authResultHandler);
 		Assert.assertFalse(oAuthLogin.doAction(req, resp));
 	}
@@ -109,7 +109,7 @@ public class OauthLoginTest {
 	public void initiateWithPost() throws IOException {
 		when(req.getRequestURI()).thenReturn("/login/oauth/google");
 		when(req.getMethod()).thenReturn("POST");
-		when(handler.from(any(OAuthProvider.class), any(String.class), eq(userRepository),eq(sessionHandler),  eq(errorPage))).thenReturn(
+		when(handler.from(any(OAuthProvider.class), any(String.class), eq(users),eq(sessionHandler),  eq(errorPage))).thenReturn(
 				authResultHandler);
 		Assert.assertTrue(oAuthLogin.doAction(req, resp));
 		verify(authResultHandler).handleAuthorizationUrl(req, resp);
@@ -118,7 +118,7 @@ public class OauthLoginTest {
 	@Test
 	public void callbackHandle() throws IOException {
 		when(req.getRequestURI()).thenReturn("/login/oauth/google/callback");
-		when(handler.from(any(OAuthProvider.class), any(String.class), eq(userRepository),eq(sessionHandler),  eq(errorPage))).thenReturn(
+		when(handler.from(any(OAuthProvider.class), any(String.class), eq(users),eq(sessionHandler),  eq(errorPage))).thenReturn(
 				authResultHandler);
 		Assert.assertTrue(oAuthLogin.doAction(req, resp));
 		verify(authResultHandler).handleCallback(req, resp);
@@ -127,7 +127,7 @@ public class OauthLoginTest {
 	@Test
 	public void callbackHandleForWrongProvider() throws IOException {
 		when(req.getRequestURI()).thenReturn("/login/oauth/derp/callback");
-		when(handler.from(any(OAuthProvider.class), any(String.class), eq(userRepository), eq(sessionHandler), eq(errorPage))).thenReturn(
+		when(handler.from(any(OAuthProvider.class), any(String.class), eq(users), eq(sessionHandler), eq(errorPage))).thenReturn(
 				authResultHandler);
 		Assert.assertFalse(oAuthLogin.doAction(req, resp));
 	}
@@ -155,7 +155,7 @@ public class OauthLoginTest {
 
 		for (Entry<String, Class<? extends OAuthResultHandler>> kv : OAuthLogin.SUPPORTED_OAUTH_HANDLER.entrySet()) {
 			oAuthProvider.provider = kv.getKey();
-			OAuthResultHandler handler = h.from(oAuthProvider, "http://localhost:8080/", userRepository, sessionHandler, errorPage);
+			OAuthResultHandler handler = h.from(oAuthProvider, "http://localhost:8080/", users, sessionHandler, errorPage);
 			Assert.assertTrue(handler.getClass().equals(kv.getValue()));
 		}
 	}
@@ -169,6 +169,6 @@ public class OauthLoginTest {
 		oAuthProvider.apiSecret = "secret";
 
 		oAuthProvider.provider = "blabla";
-		h.from(oAuthProvider, "http://localhost:8080/", userRepository, sessionHandler, errorPage);
+		h.from(oAuthProvider, "http://localhost:8080/", users, sessionHandler, errorPage);
 	}
 }

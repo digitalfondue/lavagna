@@ -16,8 +16,8 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
@@ -27,9 +27,9 @@ import com.google.gson.annotations.SerializedName;
 public class TwitterHandler extends AbstractOAuth1Handler {
 
 	public TwitterHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, SessionHandler sessionHandler, String errorPage) {
+			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.twitter", "https://api.twitter.com/1.1/account/verify_credentials.json", UserInfo.class,
-				"oauth_verifier", userRepository, sessionHandler, errorPage, serviceBuilder.provider(TwitterApi.class)
+				"oauth_verifier", users, sessionHandler, errorPage, serviceBuilder.provider(TwitterApi.class)
 						.apiKey(apiKey).apiSecret(apiSecret).callback(callback).build(), reqBuilder);
 	}
 
@@ -39,8 +39,8 @@ public class TwitterHandler extends AbstractOAuth1Handler {
 		private String screenName;
 
 		@Override
-		public boolean valid(UserRepository userRepository, String provider) {
-			return userRepository.userExistsAndEnabled(provider, username());
+		public boolean valid(Users users, String provider) {
+			return users.userExistsAndEnabled(provider, username());
 		}
 
 		@Override

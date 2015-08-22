@@ -20,14 +20,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
+
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +46,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class LdapLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
 	@Mock
     private SessionHandler sessionHandler;
 	@Mock
@@ -69,7 +69,7 @@ public class LdapLoginTest {
 
 	@Before
 	public void prepare() {
-		ldapLogin = new LdapLogin(userRepository, sessionHandler, ldap, "errorPage");
+		ldapLogin = new LdapLogin(users, sessionHandler, ldap, "errorPage");
 
 		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
 				webApplicationContext);
@@ -120,7 +120,7 @@ public class LdapLoginTest {
 		when(req.getParameter("password")).thenReturn("password");
 		when(req.getServletContext()).thenReturn(context);
 		when(req.getContextPath()).thenReturn("");
-		when(userRepository.userExistsAndEnabled(LdapLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(users.userExistsAndEnabled(LdapLogin.USER_PROVIDER, "user")).thenReturn(true);
 	}
 
 	@Test
@@ -137,8 +137,16 @@ public class LdapLoginTest {
 		prepareForLdapSearch();
 
 		when(ldap.authenticate("user", "password")).thenReturn(true);
-		when(userRepository.findUserByName(LdapLogin.USER_PROVIDER, "user")).thenReturn(
-				new User(42, LdapLogin.USER_PROVIDER, "username", null, null, true, true, new Date()));
+		when(users.findUserByName(LdapLogin.USER_PROVIDER, "user")).thenReturn(new User() {
+            
+            public boolean isAnonymous() {
+                return false;
+            }
+            
+            public int getId() {
+                return 42;
+            }
+        });
 		when(req.getSession()).thenReturn(mock(HttpSession.class));
 		when(req.getSession(true)).thenReturn(mock(HttpSession.class));
 

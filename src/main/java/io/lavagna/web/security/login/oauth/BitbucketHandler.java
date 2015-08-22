@@ -16,19 +16,19 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import org.scribe.builder.ServiceBuilder;
 
 public class BitbucketHandler extends AbstractOAuth1Handler {
 
 	public BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, SessionHandler sessionHandler, String errorPage) {
+			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.bitbucket",//
 				"https://bitbucket.org/api/1.0/user",//
 				UserInfo.class, "oauth_verifier", //
-				userRepository,//
+				users,//
 				sessionHandler,//
 				errorPage,//
 				serviceBuilder.provider(new Bitbucket10Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
@@ -40,8 +40,8 @@ public class BitbucketHandler extends AbstractOAuth1Handler {
 		User user;
 
 		@Override
-		public boolean valid(UserRepository userRepository, String provider) {
-			return userRepository.userExistsAndEnabled(provider, user.username);
+		public boolean valid(Users users, String provider) {
+			return users.userExistsAndEnabled(provider, user.username);
 		}
 
 		@Override

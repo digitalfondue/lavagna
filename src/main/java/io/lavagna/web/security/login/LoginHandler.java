@@ -16,9 +16,9 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.CSRFToken;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,11 +40,11 @@ public interface LoginHandler {
 
 	abstract class AbstractLoginHandler implements LoginHandler {
 
-		protected final UserRepository userRepository;
+		protected final Users users;
 		protected final SessionHandler sessionHandler;
 
-		AbstractLoginHandler(UserRepository userRepository, SessionHandler sessionHandler) {
-			this.userRepository = userRepository;
+		AbstractLoginHandler(Users users, SessionHandler sessionHandler) {
+			this.users = users;
 			this.sessionHandler = sessionHandler;
 		}
 
@@ -60,8 +60,7 @@ public interface LoginHandler {
 			String tokenValue = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
 			Map<String, Object> r = new HashMap<>();
 			r.put("csrfToken", tokenValue);
-			r.put("reqUrl", UriComponentsBuilder.fromPath(request.getParameter("reqUrl")).build().encode()
-					.toUriString());
+			r.put("reqUrl", UriComponentsBuilder.fromPath(request.getParameter("reqUrl")).build().encode().toUriString());
 			return r;
 		}
 	}
