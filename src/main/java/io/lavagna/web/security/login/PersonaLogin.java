@@ -17,11 +17,11 @@
 package io.lavagna.web.security.login;
 
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
@@ -67,10 +67,10 @@ public class PersonaLogin extends AbstractLoginHandler {
 	private final RestTemplate restTemplate;
 	private final String logoutPage;
 
-	public PersonaLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository,
+	public PersonaLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository,
 			RestTemplate restTemplate, String logoutPage) {
 
-		super(userRepository, sessionHandler);
+		super(users, sessionHandler);
 
 		this.configurationRepository = configurationRepository;
 		this.logoutPage = logoutPage;
@@ -92,10 +92,10 @@ public class PersonaLogin extends AbstractLoginHandler {
 		toPost.add("audience", audience);
 		VerifierResponse verifier = restTemplate.postForObject("https://verifier.login.persona.org/verify", toPost, VerifierResponse.class);
 
-		if ("okay".equals(verifier.status) && audience.equals(verifier.audience) && userRepository.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
+		if ("okay".equals(verifier.status) && audience.equals(verifier.audience) && users.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
 			
-			User user = userRepository.findUserByName(USER_PROVIDER, verifier.email);
+			User user = users.findUserByName(USER_PROVIDER, verifier.email);
 			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 			
 			resp.setStatus(HttpServletResponse.SC_OK);

@@ -297,6 +297,16 @@ public class SecurityConfiguration {
         void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, boolean addRememberMeCookie);
 	}
 	
+	public interface Users {
+	    boolean userExistsAndEnabled(String provider, String name);
+	    User findUserByName(String provider, String name);
+	}
+	
+	public interface User {
+	    int getId();
+	    boolean isAnonymous();
+	}
+	
 	public static class AlwaysTrueRequestMatcher implements RequestMatcher {
         @Override
         public boolean match(HttpServletRequest request) {

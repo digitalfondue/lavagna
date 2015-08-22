@@ -22,15 +22,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.PersonaLogin.VerifierResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -53,7 +52,7 @@ import org.springframework.web.client.RestTemplate;
 public class PersonaLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
 	
 	@Mock
 	private SessionHandler sessionHandler;
@@ -83,7 +82,7 @@ public class PersonaLoginTest {
 
 	@Before
 	public void prepare() {
-		personaLogin = new PersonaLogin(userRepository, sessionHandler, configurationRepository, restTemplate, logoutPage);
+		personaLogin = new PersonaLogin(users, sessionHandler, configurationRepository, restTemplate, logoutPage);
 	}
 
 	public void prepareSuccessfulPreconditions() {
@@ -140,7 +139,7 @@ public class PersonaLoginTest {
 		verifier.setAudience("audience");
 		verifier.setEmail("email");
 		when(restTemplate.postForObject(any(String.class), any(), eq(VerifierResponse.class))).thenReturn(verifier);
-		when(userRepository.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(false);
+		when(users.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(false);
 
 		Assert.assertTrue(personaLogin.doAction(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -155,9 +154,17 @@ public class PersonaLoginTest {
 		verifier.setAudience("audience");
 		verifier.setEmail("email");
 		when(restTemplate.postForObject(any(String.class), any(), eq(VerifierResponse.class))).thenReturn(verifier);
-		when(userRepository.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(true);
-		when(userRepository.findUserByName(PersonaLogin.USER_PROVIDER, "email")).thenReturn(
-				new User(42, PersonaLogin.USER_PROVIDER, "username", null, null, true, true, new Date()));
+		when(users.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(true);
+		when(users.findUserByName(PersonaLogin.USER_PROVIDER, "email")).thenReturn(new User() {
+
+            public int getId() {
+                return 42;
+            }
+
+            public boolean isAnonymous() {
+                return false;
+            }
+		});
 		when(req.getSession()).thenReturn(session);
 		when(req.getSession(true)).thenReturn(session);
 		when(resp.getWriter()).thenReturn(mock(PrintWriter.class));

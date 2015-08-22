@@ -18,10 +18,10 @@ package io.lavagna.web.security.login.oauth;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
 import io.lavagna.common.Json;
-import io.lavagna.model.User;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -53,21 +53,21 @@ public interface OAuthResultHandler {
 		private final Class<? extends RemoteUserProfile> profileClass;
 		private final String verifierParamName;
 
-		private final UserRepository userRepository;
+		private final Users users;
 		private final String errorPage;
 		private final SessionHandler sessionHandler;
 		protected final OAuthService oauthService;
 		private final OAuthRequestBuilder reqBuilder;
 
 		OAuthResultHandlerAdapter(String provider, String profileUrl, Class<? extends RemoteUserProfile> profileClass,
-				String verifierParamName, UserRepository userRepository, SessionHandler sessionHandler, String errorPage, OAuthService oauthService,
+				String verifierParamName, Users users, SessionHandler sessionHandler, String errorPage, OAuthService oauthService,
 				OAuthRequestBuilder reqBuilder) {
 			this.provider = provider;
 			this.profileUrl = profileUrl;
 			this.profileClass = profileClass;
 			this.verifierParamName = verifierParamName;
 			//
-			this.userRepository = userRepository;
+			this.users = users;
 			this.sessionHandler = sessionHandler;
 			this.errorPage = errorPage;
 			this.oauthService = oauthService;
@@ -130,9 +130,9 @@ public interface OAuthResultHandler {
 			Response oauthResponse = oauthRequest.send();
 			RemoteUserProfile profile = Json.GSON.fromJson(oauthResponse.getBody(), profileClass);
 
-			if (profile.valid(userRepository, provider)) {
+			if (profile.valid(users, provider)) {
 				String url = Redirector.cleanupRequestedUrl(reqUrl, req);
-				User user = userRepository.findUserByName(provider, profile.username());
+				User user = users.findUserByName(provider, profile.username());
 				sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 				Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 			} else {
@@ -153,7 +153,7 @@ public interface OAuthResultHandler {
 	}
 
 	interface RemoteUserProfile {
-		boolean valid(UserRepository userRepository, String provider);
+		boolean valid(Users users, String provider);
 
 		String username();
 	}

@@ -20,10 +20,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
@@ -60,7 +60,7 @@ public class HandlersTest {
 	@Mock
 	private SessionHandler sessionHandler;
 	@Mock
-	private UserRepository usersRep;
+	private Users users;
 	@Mock
 	private HttpServletRequest req, req2;
 	@Mock
@@ -126,11 +126,11 @@ public class HandlersTest {
 
 		when(reqBuilder.req(any(Verb.class), any(String.class))).thenReturn(oauthReq);
 		when(oauthReq.send()).thenReturn(oauthRes);
-		when(usersRep.findUserByName(any(String.class), any(String.class))).thenReturn(user);
+		when(users.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
-		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
-		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
+		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
 	}
 
 	@Test
@@ -140,8 +140,8 @@ public class HandlersTest {
 		verify(resp).sendRedirect("redirect");
 
 		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
-		when(usersRep.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
-		when(usersRep.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
+		when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+		when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("");
 		Assert.assertTrue(!session.isInvalid());
 		bitbucketHandler.handleCallback(req2, resp2);
@@ -159,8 +159,8 @@ public class HandlersTest {
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.github"));
 
 		when(oauthRes.getBody()).thenReturn("{\"login\" : \"login\"}");
-		when(usersRep.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
-		when(usersRep.findUserByName("oauth.github", "login")).thenReturn(user);
+		when(users.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
+		when(users.findUserByName("oauth.github", "login")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(!session.isInvalid());
@@ -178,8 +178,8 @@ public class HandlersTest {
 
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.google"));
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
-		when(usersRep.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
-		when(usersRep.findUserByName("oauth.github", "email")).thenReturn(user);
+		when(users.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
+		when(users.findUserByName("oauth.github", "email")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("/context-path");
 		
 		Assert.assertTrue(!session.isInvalid());

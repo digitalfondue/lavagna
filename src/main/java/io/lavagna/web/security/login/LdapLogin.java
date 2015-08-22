@@ -17,11 +17,11 @@
 package io.lavagna.web.security.login;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.model.User;
 import io.lavagna.service.Ldap;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
@@ -41,8 +41,8 @@ public class LdapLogin extends AbstractLoginHandler {
 	private final String errorPage;
 	private final Ldap ldap;
 
-	public LdapLogin(UserRepository userRepository, SessionHandler sessionHandler, Ldap ldap, String errorPage) {
-		super(userRepository, sessionHandler);
+	public LdapLogin(Users users, SessionHandler sessionHandler, Ldap ldap, String errorPage) {
+		super(users, sessionHandler);
 		this.ldap = ldap;
 		this.errorPage = errorPage;
 	}
@@ -60,7 +60,7 @@ public class LdapLogin extends AbstractLoginHandler {
 		if (authenticate(username, password)) {
 			// FIXME refactor out
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
-			User user = userRepository.findUserByName(USER_PROVIDER, username);
+			User user = users.findUserByName(USER_PROVIDER, username);
 			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {
@@ -72,7 +72,7 @@ public class LdapLogin extends AbstractLoginHandler {
 
 	private boolean authenticate(String username, String password) {
 		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)
-				|| !userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
+				|| !users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			return false;
 		}
 

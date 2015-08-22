@@ -36,6 +36,8 @@ import io.lavagna.web.security.SecurityConfiguration;
 import io.lavagna.web.security.SecurityConfiguration.LoginHandlerFinder;
 import io.lavagna.web.security.SecurityConfiguration.LoginPageGenerator;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.DemoLogin;
 import io.lavagna.web.security.login.LdapLogin;
 import io.lavagna.web.security.login.LoginHandler;
@@ -134,6 +136,42 @@ public class WebSecurityConfig {
         };
     }
     
+    private static class WebSecurityUser implements User {
+        
+        private final int id;
+        private final boolean anonymous;
+        
+        private WebSecurityUser(io.lavagna.model.User user) {
+            this.id = user.getId();
+            this.anonymous = user.isAnonymous();
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public boolean isAnonymous() {
+            return anonymous;
+        }
+        
+    }
+    
+    @Bean
+    private Users users(final UserRepository userRepository) {
+        return new Users() {
+            @Override
+            public boolean userExistsAndEnabled(String provider, String name) {
+                return userRepository.userExistsAndEnabled(provider, name);
+            }
+            @Override
+            public User findUserByName(String provider, String name) {
+                return new WebSecurityUser(userRepository.findUserByName(provider, name));
+            }
+        };
+    }
+    
     private LoginHandlerFinder loginHandlerFinder(final ConfigurationRepository configurationRepository, final ApplicationContext context) {
         return new LoginHandlerFinder() {
             @Override
@@ -182,26 +220,26 @@ public class WebSecurityConfig {
 
     @Lazy
     @Bean
-    public DemoLogin demoLogin(UserRepository userRepository, SessionHandler sessionHandler) {
-        return new DemoLogin(userRepository, sessionHandler, "/login?error-demo");
+    public DemoLogin demoLogin(Users users, SessionHandler sessionHandler) {
+        return new DemoLogin(users, sessionHandler, "/login?error-demo");
     }
 
     @Lazy
     @Bean
-    public OAuthLogin oauthLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository) {
-        return new OAuthLogin(userRepository, sessionHandler, configurationRepository, new Handler(new ServiceBuilder()), "/login?error-oauth");
+    public OAuthLogin oauthLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository) {
+        return new OAuthLogin(users, sessionHandler, configurationRepository, new Handler(new ServiceBuilder()), "/login?error-oauth");
     }
 
     @Lazy
     @Bean
-    public LdapLogin ldapLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Ldap ldap) {
-        return new LdapLogin(userRepository, sessionHandler, ldap, "/login?error-ldap");
+    public LdapLogin ldapLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Ldap ldap) {
+        return new LdapLogin(users, sessionHandler, ldap, "/login?error-ldap");
     }
 
     @Lazy
     @Bean
-    public PersonaLogin personaLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
-        return new PersonaLogin(userRepository, sessionHandler, configurationRepository, restTemplate, "/WEB-INF/views/logout-persona.html");
+    public PersonaLogin personaLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
+        return new PersonaLogin(users, sessionHandler, configurationRepository, restTemplate, "/WEB-INF/views/logout-persona.html");
     }
 
     @Lazy

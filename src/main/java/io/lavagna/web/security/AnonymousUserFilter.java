@@ -18,10 +18,10 @@ package io.lavagna.web.security;
 
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 import io.lavagna.model.Key;
-import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -38,14 +38,14 @@ import org.springframework.web.context.WebApplicationContext;
 public class AnonymousUserFilter extends AbstractBaseFilter {
     
     private ConfigurationRepository configurationRepository;
-    private UserRepository userRepository;
+    private Users users;
     private SessionHandler sessionHandler;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         WebApplicationContext ctx = getRequiredWebApplicationContext(filterConfig.getServletContext());
         this.configurationRepository = ctx.getBean(ConfigurationRepository.class);
-        this.userRepository = ctx.getBean(UserRepository.class);
+        this.users = ctx.getBean(Users.class);
         this.sessionHandler = ctx.getBean(SessionHandler.class);
     }
 
@@ -65,7 +65,7 @@ public class AnonymousUserFilter extends AbstractBaseFilter {
         boolean enabled = "true".equals(configuration.get(Key.ENABLE_ANON_USER));
         
         if (enabled && !sessionHandler.isUserAuthenticated(req)) {
-            User user = userRepository.findUserByName("system", "anonymous");
+            User user = users.findUserByName("system", "anonymous");
             sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp, false);
         }
 
