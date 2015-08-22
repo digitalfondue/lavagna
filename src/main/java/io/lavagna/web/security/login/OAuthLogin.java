@@ -16,9 +16,9 @@
  */
 package io.lavagna.web.security.login;
 
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;

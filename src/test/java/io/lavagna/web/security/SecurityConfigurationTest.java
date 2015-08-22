@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import io.lavagna.web.security.SecurityConfiguration.BasicUrlMatcher;
 import io.lavagna.web.security.SecurityConfiguration.LoginPageGenerator;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
-import io.lavagna.web.security.login.LoginHandler;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
