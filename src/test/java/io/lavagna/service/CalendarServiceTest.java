@@ -70,6 +70,8 @@ public class CalendarServiceTest {
     @Autowired
     private CardService cardService;
     @Autowired
+    private CardDataService cardDataService;
+    @Autowired
     private CalendarService calendarService;
     @Autowired
     private LabelService labelService;
@@ -174,6 +176,7 @@ public class CalendarServiceTest {
     public void testGetUserCalendar() throws URISyntaxException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user);
 
         Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
 
@@ -199,7 +202,7 @@ public class CalendarServiceTest {
         Assert.assertEquals(2, calendar.getComponents().size());
 
         VEvent event1 = (VEvent) calendar.getComponents().get(0);
-        Assert.assertEquals("Due date: TEST-BRD-1 card1", event1.getSummary().getValue());
+        Assert.assertEquals("TEST-BRD-1 card1 (OPEN)", event1.getSummary().getValue());
         Assert.assertEquals("http://localhost/TEST/TEST-BRD-1", event1.getUrl().getUri().toASCIIString());
     }
 }

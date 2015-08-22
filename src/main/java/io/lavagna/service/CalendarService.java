@@ -18,15 +18,17 @@ package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import io.lavagna.CardDataHistory;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.util.CalendarTokenNotFoundException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -76,14 +78,16 @@ public class CalendarService {
     private final SearchService searchService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CardDataService cardDataService;
 
     @Autowired
     public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
-        UserService userService, UserRepository userRepository) {
+        UserService userService, UserRepository userRepository, CardDataService cardDataService) {
         this.configurationRepository = configurationRepository;
         this.searchService = searchService;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.cardDataService = cardDataService;
     }
 
     @Transactional(readOnly = false)
@@ -112,15 +116,9 @@ public class CalendarService {
         return (((long) x) << 32) | (y & 0xffffffffL);
     }
 
-    private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
-        StringBuilder sb = new StringBuilder();
-        if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
-            sb.append(StringUtils.capitalize(lav.getLabelName().replace('_', ' ').toLowerCase()));
-        } else {
-            sb.append(lav.getLabelName());
-        }
-        return sb.append(": ").append(card.getBoardShortName()).append("-").append(card.getSequence()).append(" ")
-            .append(card.getName()).toString();
+    private String getEventName(CardFullWithCounts card) {
+        return String.format("%s-%s %s (%s)", card.getBoardShortName(), card.getSequence(), card.getName(),
+            card.getColumnDefinition());
     }
 
     private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
@@ -180,8 +178,10 @@ public class CalendarService {
             Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
                 card.getBoardShortName(), card.getSequence())));
 
+            CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
+
             for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
-                String name = getEventName(lav, card);
+                String name = getEventName(card);
 
                 final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
                 event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
@@ -192,10 +192,12 @@ public class CalendarService {
                 event.getProperties().add(new Uid(id.toString()));
 
                 // Reminder on label's date
-                final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-                reminder.getProperties().add(Action.DISPLAY);
-                reminder.getProperties().add(new Description(name));
-                event.getAlarms().add(reminder);
+                if (card.getColumnDefinition() != ColumnDefinition.CLOSED) {
+                    final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+                    reminder.getProperties().add(Action.DISPLAY);
+                    reminder.getProperties().add(new Description(name));
+                    event.getAlarms().add(reminder);
+                }
 
                 TzId tzParam = new TzId(utcTimeZone);
                 event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
@@ -206,7 +208,13 @@ public class CalendarService {
                 organizer.getParameters().add(new Cn(ud.getName()));
                 event.getProperties().add(organizer);
 
+                // Url
                 event.getProperties().add(cardUrl);
+
+                // Description
+                if (cardDesc != null) {
+                    event.getProperties().add(new Description(cardDesc.getContent()));
+                }
 
                 events.add(event);
             }
@@ -218,7 +226,8 @@ public class CalendarService {
     }
 
     @Getter
-    @AllArgsConstructor class UserDescription {
+    @AllArgsConstructor
+    static class UserDescription {
         private String name;
         private String email;
     }

@@ -20,6 +20,7 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
+import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.query.UserQuery;
 
 import java.sql.ResultSet;
@@ -210,8 +211,4 @@ public class UserRepository {
     public boolean isCalendarFeedDisabled(User user) {
         return queries.isCalendarFeedDisabled(user.getId());
     }
-}
-
-class CalendarTokenNotFoundException extends Exception {
-
 }
