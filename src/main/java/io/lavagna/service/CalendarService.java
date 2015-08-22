@@ -22,7 +22,6 @@ import io.lavagna.CardDataHistory;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
@@ -117,15 +116,9 @@ public class CalendarService {
         return (((long) x) << 32) | (y & 0xffffffffL);
     }
 
-    private String getEventName(LabelAndValue lav, CardFullWithCounts card) {
-        StringBuilder sb = new StringBuilder();
-        if (lav.getLabelDomain() == CardLabel.LabelDomain.SYSTEM) {
-            sb.append(StringUtils.capitalize(lav.getLabelName().replace('_', ' ').toLowerCase()));
-        } else {
-            sb.append(lav.getLabelName());
-        }
-        return sb.append(": ").append(card.getBoardShortName()).append("-").append(card.getSequence()).append(" ")
-            .append(card.getName()).toString();
+    private String getEventName(CardFullWithCounts card) {
+        return String.format("%s-%s %s (%s)", card.getBoardShortName(), card.getSequence(), card.getName(),
+            card.getColumnDefinition());
     }
 
     private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
@@ -188,7 +181,7 @@ public class CalendarService {
             CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
 
             for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
-                String name = getEventName(lav, card);
+                String name = getEventName(card);
 
                 final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
                 event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
@@ -219,7 +212,7 @@ public class CalendarService {
                 event.getProperties().add(cardUrl);
 
                 // Description
-                if(cardDesc != null) {
+                if (cardDesc != null) {
                     event.getProperties().add(new Description(cardDesc.getContent()));
                 }
 
@@ -233,7 +226,8 @@ public class CalendarService {
     }
 
     @Getter
-    @AllArgsConstructor class UserDescription {
+    @AllArgsConstructor
+    static class UserDescription {
         private String name;
         private String email;
     }
