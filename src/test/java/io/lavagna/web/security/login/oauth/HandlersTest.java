@@ -19,8 +19,6 @@ package io.lavagna.web.security.login.oauth;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
@@ -54,7 +52,6 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(MockitoJUnitRunner.class)
 public class HandlersTest {
 
-	private static final String BASE_APPLICATION_URL = "http://localhost/";
 	@Mock
 	private ServiceBuilder sBuilder;
 	@Mock
@@ -65,9 +62,6 @@ public class HandlersTest {
 	private HttpServletRequest req, req2;
 	@Mock
 	private HttpServletResponse resp, resp2;
-	//
-	@Mock
-	private ConfigurationRepository configurationRepository;
 
 	@Mock
 	private OAuthService oauthService;
@@ -119,10 +113,7 @@ public class HandlersTest {
 		when(req2.getSession(true)).thenReturn(session2);
 
 		when(req2.getServletContext()).thenReturn(servletContext);
-		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webappContext);
-		when(webappContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
-		when(configurationRepository.getValue(Key.BASE_APPLICATION_URL)).thenReturn(BASE_APPLICATION_URL);
+		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webappContext);
 
 		when(reqBuilder.req(any(Verb.class), any(String.class))).thenReturn(oauthReq);
 		when(oauthReq.send()).thenReturn(oauthRes);

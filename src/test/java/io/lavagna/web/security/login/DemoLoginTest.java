@@ -19,8 +19,6 @@ package io.lavagna.web.security.login;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
@@ -61,11 +59,7 @@ public class DemoLoginTest {
 	@Mock
 	private WebApplicationContext webApplicationContext;
 	@Mock
-	private ConfigurationRepository configurationRepository;
-	@Mock
 	private User user;
-
-	private final String baseUrl = "http://test.com:8444/";
 
 	private String errorPage = "errorPage";
 	private DemoLogin dl;
@@ -77,10 +71,7 @@ public class DemoLoginTest {
 		when(req.getServletContext()).thenReturn(context);
 		when(context.getContextPath()).thenReturn("");
 
-		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webApplicationContext);
-		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
-		when(configurationRepository.getValue(Key.BASE_APPLICATION_URL)).thenReturn(baseUrl);
+		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
 
 	@Test

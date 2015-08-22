@@ -16,9 +16,6 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.common.Json;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
@@ -39,6 +36,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Getter;
+
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.scribe.builder.ServiceBuilder;
 import org.springframework.util.StringUtils;
@@ -56,14 +55,14 @@ public class OAuthLogin extends AbstractLoginHandler {
 		SUPPORTED_OAUTH_HANDLER = Collections.unmodifiableMap(r);
 	}
 
-	private final ConfigurationRepository configurationRepository;
+	private final OauthConfigurationFetcher oauthConfigurationFetcher;
 	private final String errorPage;
 	private final Handler handler;
 
-	public OAuthLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Handler handler,
+	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, Handler handler,
 			String errorPage) {
 		super(users, sessionHandler);
-		this.configurationRepository = configurationRepository;
+		this.oauthConfigurationFetcher = oauthConfigurationFetcher;
 		this.errorPage = errorPage;
 		this.handler = handler;
 	}
@@ -71,8 +70,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 	@Override
 	public boolean doAction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION),
-				OAuthConfiguration.class);
+		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
 
 		String requestURI = req.getRequestURI();
 
@@ -97,8 +95,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 		Map<String, Object> m = super.modelForLoginPage(request);
 
-		OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION),
-				OAuthConfiguration.class);
+		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
 
 		List<String> loginOauthProviders = new ArrayList<>();
 
@@ -113,9 +110,15 @@ public class OAuthLogin extends AbstractLoginHandler {
 		return m;
 	}
 
-	static class OAuthConfiguration {
-		String baseUrl;
-		List<OAuthProvider> providers;
+	public static class OAuthConfiguration {
+	    
+		private final String baseUrl;
+		private final List<OAuthProvider> providers;
+		
+		public OAuthConfiguration(String baseUrl, List<OAuthProvider> providers) {
+		    this.baseUrl = baseUrl;
+		    this.providers = providers;
+		}
 
 		public boolean hasProvider(String provider) {
 			for (OAuthProvider o : providers) {
@@ -144,6 +147,31 @@ public class OAuthLogin extends AbstractLoginHandler {
 			return null;
 		}
 	}
+	
+	@Getter
+	public static class OAuthProvider {
+	    private final String provider;// google, github, bitbucket, twitter
+	    private final String apiKey;
+	    private final String apiSecret;
+	    
+	    public OAuthProvider(String provider, String apiKey, String apiSecret) {
+	        this.provider = provider;
+	        this.apiKey = apiKey;
+	        this.apiSecret = apiSecret;
+	    }
+
+	    public boolean matchAuthorization(String requestURI) {
+	        return requestURI.endsWith("/oauth/" + provider);
+	    }
+
+	    public boolean matchCallback(String requestURI) {
+	        return requestURI.endsWith("/oauth/" + provider + "/callback");
+	    }
+	}
+	
+	public interface OauthConfigurationFetcher {
+	    OAuthConfiguration fetch();
+	}
 
 	public static class Handler {
 
@@ -170,20 +198,6 @@ public class OAuthLogin extends AbstractLoginHandler {
 			} else {
 				throw new IllegalArgumentException("type " + oauthProvider.provider + " is not supported");
 			}
-		}
-	}
-
-	static class OAuthProvider {
-		String provider;// google, github, bitbucket, twitter
-		String apiKey;
-		String apiSecret;
-
-		public boolean matchAuthorization(String requestURI) {
-			return requestURI.endsWith("login/oauth/" + provider);
-		}
-
-		public boolean matchCallback(String requestURI) {
-			return requestURI.endsWith("login/oauth/" + provider + "/callback");
 		}
 	}
 }

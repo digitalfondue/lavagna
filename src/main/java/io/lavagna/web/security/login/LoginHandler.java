@@ -49,8 +49,7 @@ public interface LoginHandler {
 		}
 
 		@Override
-		public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException,
-				ServletException {
+		public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		    sessionHandler.invalidate(req, resp);
 		    resp.setStatus(HttpServletResponse.SC_OK);
 			return true;
