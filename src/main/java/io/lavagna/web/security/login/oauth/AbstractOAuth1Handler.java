@@ -26,14 +26,15 @@ import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
 import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 public abstract class AbstractOAuth1Handler extends OAuthResultHandlerAdapter {
 
 	AbstractOAuth1Handler(String provider, String profileUrl, Class<? extends RemoteUserProfile> profileClass,
-			String verifierParamName, UserRepository userRepository, String errorPage, OAuthService oauthService,
+			String verifierParamName, UserRepository userRepository, SessionHandler sessionHandler, String errorPage, OAuthService oauthService,
 			OAuthRequestBuilder reqBuilder) {
-		super(provider, profileUrl, profileClass, verifierParamName, userRepository, errorPage, oauthService,
+		super(provider, profileUrl, profileClass, verifierParamName, userRepository, sessionHandler, errorPage, oauthService,
 				reqBuilder);
 	}
 

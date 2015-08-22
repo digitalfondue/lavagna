@@ -18,9 +18,10 @@ package io.lavagna.web.security.login.oauth;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
 import io.lavagna.common.Json;
+import io.lavagna.model.User;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,11 +55,12 @@ public interface OAuthResultHandler {
 
 		private final UserRepository userRepository;
 		private final String errorPage;
+		private final SessionHandler sessionHandler;
 		protected final OAuthService oauthService;
 		private final OAuthRequestBuilder reqBuilder;
 
 		OAuthResultHandlerAdapter(String provider, String profileUrl, Class<? extends RemoteUserProfile> profileClass,
-				String verifierParamName, UserRepository userRepository, String errorPage, OAuthService oauthService,
+				String verifierParamName, UserRepository userRepository, SessionHandler sessionHandler, String errorPage, OAuthService oauthService,
 				OAuthRequestBuilder reqBuilder) {
 			this.provider = provider;
 			this.profileUrl = profileUrl;
@@ -66,6 +68,7 @@ public interface OAuthResultHandler {
 			this.verifierParamName = verifierParamName;
 			//
 			this.userRepository = userRepository;
+			this.sessionHandler = sessionHandler;
 			this.errorPage = errorPage;
 			this.oauthService = oauthService;
 			this.reqBuilder = reqBuilder;
@@ -129,7 +132,8 @@ public interface OAuthResultHandler {
 
 			if (profile.valid(userRepository, provider)) {
 				String url = Redirector.cleanupRequestedUrl(reqUrl, req);
-				UserSession.setUser(userRepository.findUserByName(provider, profile.username()), req, resp, userRepository);
+				User user = userRepository.findUserByName(provider, profile.username());
+				sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 				Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 			} else {
 				Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());

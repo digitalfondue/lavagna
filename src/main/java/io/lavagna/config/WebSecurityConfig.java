@@ -16,7 +16,6 @@
  */
 package io.lavagna.config;
 
-import static io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler.logout;
 import static java.util.Arrays.asList;
 
 import java.io.IOException;
@@ -44,7 +43,6 @@ import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.OAuthLogin.Handler;
 import io.lavagna.web.security.login.PersonaLogin;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -60,11 +58,11 @@ import com.samskivert.mustache.Mustache;
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityConfiguration configuredApp(ConfigurationRepository configurationRepository, UserRepository userRepository, ApplicationContext context) {
+    public SecurityConfiguration configuredApp(ConfigurationRepository configurationRepository, UserRepository userRepository, SessionHandler sessionHandler, ApplicationContext context) {
         
         return new SecurityConfiguration().requestMatcher(onlyWhenSetupComplete(configurationRepository))
                 .loginHandlerFinder(loginHandlerFinder(configurationRepository, context))
-                .sessionHandler(sessionHandler(userRepository))
+                .sessionHandler(sessionHandler)
                 .request("/favicon.ico").permitAll()
                 .request("/css/all.css").permitAll()
                 .request("/setup/**").denyAll()
@@ -106,16 +104,32 @@ public class WebSecurityConfig {
         };
     }
     
-    private SessionHandler sessionHandler(final UserRepository userRepository) {
+    @Bean
+    public SessionHandler sessionHandler(final UserRepository userRepository) {
         return new SessionHandler() {
             @Override
-            public boolean fallBackInvalidation(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-                return logout(req, resp, userRepository);
+            public void invalidate(HttpServletRequest req, HttpServletResponse resp) {
+                UserSession.invalidate(req, resp, userRepository);
             }
 
             @Override
             public boolean isUserAuthenticated(HttpServletRequest req) {
                 return UserSession.isUserAuthenticated(req);
+            }
+            
+            @Override
+            public boolean isUserAnonymous(HttpServletRequest req) {
+                return UserSession.isUserAnonymous(req);
+            }
+
+            @Override
+            public void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp) {
+                UserSession.setUser(userId, isUserAnonymous, req, resp, userRepository);
+            }
+
+            @Override
+            public void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, boolean addRememberMeCookie) {
+                UserSession.setUser(userId, isUserAnonymous, req, resp, userRepository, addRememberMeCookie);
             }
         };
     }
@@ -168,26 +182,26 @@ public class WebSecurityConfig {
 
     @Lazy
     @Bean
-    public DemoLogin demoLogin(UserRepository userRepository) {
-        return new DemoLogin(userRepository, "/login?error-demo");
+    public DemoLogin demoLogin(UserRepository userRepository, SessionHandler sessionHandler) {
+        return new DemoLogin(userRepository, sessionHandler, "/login?error-demo");
     }
 
     @Lazy
     @Bean
-    public OAuthLogin oauthLogin(UserRepository userRepository, ConfigurationRepository configurationRepository) {
-        return new OAuthLogin(userRepository, configurationRepository, new Handler(new ServiceBuilder()), "/login?error-oauth");
+    public OAuthLogin oauthLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository) {
+        return new OAuthLogin(userRepository, sessionHandler, configurationRepository, new Handler(new ServiceBuilder()), "/login?error-oauth");
     }
 
     @Lazy
     @Bean
-    public LdapLogin ldapLogin(UserRepository userRepository, ConfigurationRepository configurationRepository, Ldap ldap) {
-        return new LdapLogin(userRepository, ldap, "/login?error-ldap");
+    public LdapLogin ldapLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Ldap ldap) {
+        return new LdapLogin(userRepository, sessionHandler, ldap, "/login?error-ldap");
     }
 
     @Lazy
     @Bean
-    public PersonaLogin personaLogin(UserRepository userRepository, ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
-        return new PersonaLogin(userRepository, configurationRepository, restTemplate, "/WEB-INF/views/logout-persona.html");
+    public PersonaLogin personaLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
+        return new PersonaLogin(userRepository, sessionHandler, configurationRepository, restTemplate, "/WEB-INF/views/logout-persona.html");
     }
 
     @Lazy

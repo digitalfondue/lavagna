@@ -17,9 +17,10 @@
 package io.lavagna.web.security.login;
 
 import static org.apache.commons.lang3.StringUtils.removeStart;
+import io.lavagna.model.User;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 
 import java.io.IOException;
@@ -36,8 +37,8 @@ public class DemoLogin extends AbstractLoginHandler {
 
 	private final String errorPage;
 
-	public DemoLogin(UserRepository userRepository, String errorPage) {
-		super(userRepository);
+	public DemoLogin(UserRepository userRepository, SessionHandler sessionHandler, String errorPage) {
+		super(userRepository, sessionHandler);
 		this.errorPage = errorPage;
 	}
 
@@ -55,7 +56,8 @@ public class DemoLogin extends AbstractLoginHandler {
 				&& userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
 			// FIXME refactor out
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
-			UserSession.setUser(userRepository.findUserByName(USER_PROVIDER, username), req, resp, userRepository);
+			User user = userRepository.findUserByName(USER_PROVIDER, username);
+			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
 			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {
 			Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());

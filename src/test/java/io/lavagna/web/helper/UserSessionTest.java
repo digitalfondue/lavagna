@@ -38,7 +38,7 @@ public class UserSessionTest {
 		User user = Mockito.mock(User.class);
 		Assert.assertFalse(UserSession.isUserAuthenticated(req));
 
-		UserSession.setUser(user, req, resp, Mockito.mock(UserRepository.class));
+		UserSession.setUser(user.getId(), user.isAnonymous(), req, resp, Mockito.mock(UserRepository.class));
 
 		Assert.assertTrue(UserSession.isUserAuthenticated(req));
 

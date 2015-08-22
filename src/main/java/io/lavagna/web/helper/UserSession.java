@@ -51,8 +51,7 @@ public final class UserSession {
 		return Boolean.TRUE.equals(req.getSession().getAttribute(AUTH_USER_IS_ANONYMOUS));
 	}
 
-	public static void authenticateUserIfRemembered(HttpServletRequest req, HttpServletResponse resp,
-			UserRepository userRepository) {
+	public static void authenticateUserIfRemembered(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
 		Cookie c;
 		if (isUserAuthenticated(req) || (c = getCookie(req, "LAVAGNA_REMEMBER_ME")) == null) {
 			return;
@@ -62,7 +61,8 @@ public final class UserSession {
 
 		if (uIdToken != null && userRepository.rememberMeTokenExists(uIdToken.getLeft(), uIdToken.getRight())) {
 			userRepository.deleteRememberMeToken(uIdToken.getLeft(), uIdToken.getRight());
-			setUser(userRepository.findById(uIdToken.getLeft()), req, resp, userRepository, true);
+			User user = userRepository.findById(uIdToken.getLeft());
+			setUser(user.getId(), user.isAnonymous(), req, resp, userRepository, true);
 		} else {
 			// delete cookie because it's invalid
 			c.setMaxAge(0);
@@ -125,23 +125,22 @@ public final class UserSession {
 		return null;
 	}
 
-	public static void setUser(User user, HttpServletRequest req, HttpServletResponse resp,
+	public static void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp,
 			UserRepository userRepository, boolean addRememberMeCookie) {
 
 		req.getSession().invalidate();
 		if (addRememberMeCookie) {
-			addRememberMeCookie(user.getId(), req, resp, userRepository);
+			addRememberMeCookie(userId, req, resp, userRepository);
 		}
 		HttpSession session = req.getSession(true);
 		session.setAttribute(AUTH_KEY, true);
-		session.setAttribute(AUTH_USER_ID, user.getId());
-		session.setAttribute(AUTH_USER_IS_ANONYMOUS, user.isAnonymous());
+		session.setAttribute(AUTH_USER_ID, userId);
+		session.setAttribute(AUTH_USER_IS_ANONYMOUS, isUserAnonymous);
 	}
-
-	public static void setUser(User user, HttpServletRequest req, HttpServletResponse resp,
-			UserRepository userRepository) {
-		boolean rememberMe = "true".equals(req.getParameter("rememberMe")) || "true".equals(req.getAttribute("rememberMe"));
-		setUser(user, req, resp, userRepository, rememberMe);
+	
+	public static void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
+	    boolean rememberMe = "true".equals(req.getParameter("rememberMe")) || "true".equals(req.getAttribute("rememberMe"));
+	    setUser(userId, isUserAnonymous, req, resp, userRepository, rememberMe);
 	}
 
 	private static void addRememberMeCookie(int userId, HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {

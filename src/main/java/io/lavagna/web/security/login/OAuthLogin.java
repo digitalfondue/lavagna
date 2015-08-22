@@ -20,6 +20,7 @@ import io.lavagna.common.Json;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
@@ -59,9 +60,9 @@ public class OAuthLogin extends AbstractLoginHandler {
 	private final String errorPage;
 	private final Handler handler;
 
-	public OAuthLogin(UserRepository userRepository, ConfigurationRepository configurationRepository, Handler handler,
+	public OAuthLogin(UserRepository userRepository, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Handler handler,
 			String errorPage) {
-		super(userRepository);
+		super(userRepository, sessionHandler);
 		this.configurationRepository = configurationRepository;
 		this.errorPage = errorPage;
 		this.handler = handler;
@@ -78,14 +79,14 @@ public class OAuthLogin extends AbstractLoginHandler {
 		if ("POST".equals(req.getMethod())) {
 			OAuthProvider authHandler = conf.matchAuthorization(requestURI);
 			if (authHandler != null) {
-				handler.from(authHandler, conf.baseUrl, userRepository, errorPage).handleAuthorizationUrl(req, resp);
+				handler.from(authHandler, conf.baseUrl, userRepository, sessionHandler, errorPage).handleAuthorizationUrl(req, resp);
 				return true;
 			}
 		}
 
 		OAuthProvider callbackHandler = conf.matchCallback(requestURI);
 		if (callbackHandler != null) {
-			handler.from(callbackHandler, conf.baseUrl, userRepository, errorPage).handleCallback(req, resp);
+			handler.from(callbackHandler, conf.baseUrl, userRepository, sessionHandler, errorPage).handleCallback(req, resp);
 			return true;
 		}
 		return false;
@@ -154,7 +155,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 		}
 
 		// TODO: refactor
-		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, UserRepository userRepository,
+		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, UserRepository userRepository, SessionHandler sessionHandler,
 				String errorPage) {
 			String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
 			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.provider + "/callback";
@@ -162,7 +163,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 				try {
 					return ConstructorUtils.invokeConstructor(SUPPORTED_OAUTH_HANDLER.get(oauthProvider.provider),
 							serviceBuilder, reqBuilder, oauthProvider.apiKey, oauthProvider.apiSecret, callbackUrl,
-							userRepository, errorPage);
+							userRepository, sessionHandler, errorPage);
 				} catch (ReflectiveOperationException iea) {
 					throw new IllegalStateException(iea);
 				}

@@ -17,6 +17,7 @@
 package io.lavagna.web.security.login.oauth;
 
 import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 import org.scribe.builder.ServiceBuilder;
@@ -26,11 +27,12 @@ import com.google.gson.annotations.SerializedName;
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 
 	public GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, String errorPage) {
+			String apiSecret, String callback, UserRepository userRepository, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.google",//
 				"https://www.googleapis.com/plus/v1/people/me/openIdConnect",//
 				UserInfo.class, "code",//
 				userRepository,//
+				sessionHandler,//
 				errorPage,//
 				serviceBuilder.provider(new Google20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
 						.scope("openid email").build(), reqBuilder);

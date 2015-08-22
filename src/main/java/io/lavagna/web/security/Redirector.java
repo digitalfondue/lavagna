@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna.web.helper;
+package io.lavagna.web.security;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

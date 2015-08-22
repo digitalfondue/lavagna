@@ -19,7 +19,6 @@ package io.lavagna.web.security;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.web.helper.Redirector;
 import io.lavagna.web.security.login.LoginHandler;
 
 import java.io.IOException;
@@ -220,7 +219,8 @@ public class SecurityConfiguration {
 				return handlers.get(subPath).handleLogout(req, resp);
 			} else {
 	             // fallback to default logout handler
-			    return conf.sessionHandler.fallBackInvalidation(req, resp);
+			    conf.sessionHandler.invalidate(req, resp);
+			    return true;
 			}
 		}
 	}
@@ -289,8 +289,12 @@ public class SecurityConfiguration {
 	}
 	
 	public interface SessionHandler {
-	    boolean fallBackInvalidation(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
+	    void invalidate(HttpServletRequest req, HttpServletResponse resp);
 	    boolean isUserAuthenticated(HttpServletRequest req);
+        boolean isUserAnonymous(HttpServletRequest req);
+        
+        void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp);
+        void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, boolean addRememberMeCookie);
 	}
 	
 	public static class AlwaysTrueRequestMatcher implements RequestMatcher {

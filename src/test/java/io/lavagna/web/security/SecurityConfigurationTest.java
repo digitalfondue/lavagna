@@ -19,7 +19,6 @@ package io.lavagna.web.security;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,28 +29,22 @@ import io.lavagna.web.security.login.LoginHandler;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 //TODO COMPLETE
 @RunWith(MockitoJUnitRunner.class)
 public class SecurityConfigurationTest {
+    
+    @Mock
+    private SessionHandler sessionHandler;
 
     @Test
     public void testBuildDefault() {
         SecurityConfiguration pc = new SecurityConfiguration()
                 .request("/setup/**").denyAll()
                 .request("/**").requireAuthenticated()
-                .sessionHandler(new SessionHandler() {
-                    @Override
-                    public boolean isUserAuthenticated(HttpServletRequest req) {
-                        return false;
-                    }
-                    
-                    @Override
-                    public boolean fallBackInvalidation(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-                        return true;
-                    }
-                })
+                .sessionHandler(sessionHandler)
                 .login("/login/**", "/login/", new LoginPageGenerator() {
                     @Override
                     public void generate(HttpServletRequest req,
