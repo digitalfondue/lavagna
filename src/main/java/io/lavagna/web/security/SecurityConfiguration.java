@@ -183,7 +183,7 @@ public class SecurityConfiguration {
 				return true;
 			} else if(mode == Mode.REDIRECT) {
 			    Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(redirectTo, "/"), Collections.<String, List<String>>emptyMap());
-			  return true;  
+			    return true;  
 			} else {
 				return false;
 			}

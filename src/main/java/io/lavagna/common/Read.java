@@ -14,9 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna.service.importexport;
-
-import io.lavagna.common.Json;
+package io.lavagna.common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class Read {
 
-    static Path readFile(String name, Path tempFile) throws IOException {
+    public static Path readFile(String name, Path tempFile) throws IOException {
         try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
             ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
