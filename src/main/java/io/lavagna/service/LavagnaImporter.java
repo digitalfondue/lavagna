@@ -16,8 +16,8 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Read.readMatchingObjects;
-import static io.lavagna.common.Read.readObject;
+import static io.lavagna.service.importexport.Read.readMatchingObjects;
+import static io.lavagna.service.importexport.Read.readObject;
 import static java.util.Collections.singletonList;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
