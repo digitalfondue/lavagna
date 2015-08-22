@@ -16,7 +16,6 @@
  */
 package io.lavagna.web.config;
 
-import io.lavagna.model.User;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.UserSession;
 
@@ -38,7 +37,7 @@ public class TestWebConf {
 		SESSION = new MockHttpSession();
 		Mockito.when(req.getSession()).thenReturn(UNAUTH_SESSION);
 		Mockito.when(req.getSession(true)).thenReturn(SESSION);
-		UserSession.setUser(Mockito.mock(User.class), req, resp, Mockito.mock(UserRepository.class));
+		UserSession.setUser(0, false, req, resp, Mockito.mock(UserRepository.class));
 	}
 
 }

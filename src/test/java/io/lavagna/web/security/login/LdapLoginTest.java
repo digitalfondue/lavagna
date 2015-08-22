@@ -24,6 +24,7 @@ import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
 import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.Date;
@@ -47,6 +48,8 @@ public class LdapLoginTest {
 	@Mock
 	private UserRepository userRepository;
 	@Mock
+    private SessionHandler sessionHandler;
+	@Mock
 	private ConfigurationRepository configurationRepository;
 	@Mock
 	private Ldap ldap;
@@ -66,7 +69,7 @@ public class LdapLoginTest {
 
 	@Before
 	public void prepare() {
-		ldapLogin = new LdapLogin(userRepository, ldap, "errorPage");
+		ldapLogin = new LdapLogin(userRepository, sessionHandler, ldap, "errorPage");
 
 		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
 				webApplicationContext);
@@ -141,6 +144,6 @@ public class LdapLoginTest {
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
 		verify(resp).sendRedirect("/");
-		verify(req.getSession()).invalidate();
+		verify(sessionHandler).setUser(42, false, req, resp);
 	}
 }

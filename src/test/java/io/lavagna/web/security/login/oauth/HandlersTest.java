@@ -23,6 +23,7 @@ import io.lavagna.model.Key;
 import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
@@ -56,6 +57,8 @@ public class HandlersTest {
 	private static final String BASE_APPLICATION_URL = "http://localhost/";
 	@Mock
 	private ServiceBuilder sBuilder;
+	@Mock
+	private SessionHandler sessionHandler;
 	@Mock
 	private UserRepository usersRep;
 	@Mock
@@ -125,9 +128,9 @@ public class HandlersTest {
 		when(oauthReq.send()).thenReturn(oauthRes);
 		when(usersRep.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
-		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
-		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
+		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
+		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
+		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, sessionHandler, errPage);
 	}
 
 	@Test
@@ -138,11 +141,13 @@ public class HandlersTest {
 
 		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
 		when(usersRep.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+		when(usersRep.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("");
 		Assert.assertTrue(!session.isInvalid());
 		bitbucketHandler.handleCallback(req2, resp2);
 		verify(resp2).sendRedirect("/");
-		Assert.assertTrue(session.isInvalid());
+		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+		
 	}
 
 	@Test
@@ -155,12 +160,14 @@ public class HandlersTest {
 
 		when(oauthRes.getBody()).thenReturn("{\"login\" : \"login\"}");
 		when(usersRep.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
+		when(usersRep.findUserByName("oauth.github", "login")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(!session.isInvalid());
 		githubHandler.handleCallback(req2, resp2);
 		verify(resp2).sendRedirect("/");
-		Assert.assertTrue(session.isInvalid());
+
+		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
 
 	@Test
@@ -172,12 +179,13 @@ public class HandlersTest {
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.google"));
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
 		when(usersRep.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
-
+		when(usersRep.findUserByName("oauth.github", "email")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("/context-path");
 		
 		Assert.assertTrue(!session.isInvalid());
 		googleHandler.handleCallback(req2, resp2);
 		verify(resp2).sendRedirect("/context-path/");
-		Assert.assertTrue(session.isInvalid());
+		
+		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
 }

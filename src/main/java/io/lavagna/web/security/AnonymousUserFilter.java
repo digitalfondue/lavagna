@@ -18,9 +18,10 @@ package io.lavagna.web.security;
 
 import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 import io.lavagna.model.Key;
+import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -38,12 +39,14 @@ public class AnonymousUserFilter extends AbstractBaseFilter {
     
     private ConfigurationRepository configurationRepository;
     private UserRepository userRepository;
+    private SessionHandler sessionHandler;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         WebApplicationContext ctx = getRequiredWebApplicationContext(filterConfig.getServletContext());
         this.configurationRepository = ctx.getBean(ConfigurationRepository.class);
         this.userRepository = ctx.getBean(UserRepository.class);
+        this.sessionHandler = ctx.getBean(SessionHandler.class);
     }
 
     @Override
@@ -57,18 +60,19 @@ public class AnonymousUserFilter extends AbstractBaseFilter {
         chain.doFilter(request, response);
     }
     
-    private void handleAnonymousUser(Map<Key, String> configuration, HttpServletRequest req, HttpServletResponse resp) {
+    private void handleAnonymousUser(Map<Key, String> configuration, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         boolean enabled = "true".equals(configuration.get(Key.ENABLE_ANON_USER));
-
-        if (enabled && !UserSession.isUserAuthenticated(req)) {
-            UserSession.setUser(userRepository.findUserByName("system", "anonymous"), req, resp, userRepository, false);
+        
+        if (enabled && !sessionHandler.isUserAuthenticated(req)) {
+            User user = userRepository.findUserByName("system", "anonymous");
+            sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp, false);
         }
 
         // handle the case when the user is logged as a anonymous user but it's
         // no more enabled
-        if (!enabled && UserSession.isUserAuthenticated(req) && UserSession.isUserAnonymous(req)) {
-            UserSession.invalidate(req, resp, userRepository);
+        if (!enabled && sessionHandler.isUserAuthenticated(req) && sessionHandler.isUserAnonymous(req)) {
+            sessionHandler.invalidate(req, resp);
         }
     }
 

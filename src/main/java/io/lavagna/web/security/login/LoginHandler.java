@@ -17,8 +17,8 @@
 package io.lavagna.web.security.login;
 
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.CSRFToken;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,21 +41,19 @@ public interface LoginHandler {
 	abstract class AbstractLoginHandler implements LoginHandler {
 
 		protected final UserRepository userRepository;
+		protected final SessionHandler sessionHandler;
 
-		AbstractLoginHandler(UserRepository userRepository) {
+		AbstractLoginHandler(UserRepository userRepository, SessionHandler sessionHandler) {
 			this.userRepository = userRepository;
-		}
-
-		public static boolean logout(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) throws IOException, ServletException {
-			UserSession.invalidate(req, resp, userRepository);
-			resp.setStatus(HttpServletResponse.SC_OK);
-			return true;
+			this.sessionHandler = sessionHandler;
 		}
 
 		@Override
 		public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException,
 				ServletException {
-			return logout(req, resp, userRepository);
+		    sessionHandler.invalidate(req, resp);
+		    resp.setStatus(HttpServletResponse.SC_OK);
+			return true;
 		}
 
 		public Map<String, Object> modelForLoginPage(HttpServletRequest request) {

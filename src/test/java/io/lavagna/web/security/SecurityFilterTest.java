@@ -23,6 +23,7 @@ import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.security.SecurityConfiguration;
 import io.lavagna.web.security.SecurityFilter;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.EnumMap;
@@ -56,6 +57,9 @@ public class SecurityFilterTest {
 	private ConfigurationRepository configurationRepository;
 	
 	@Mock
+	private SessionHandler sessionHandler;
+	
+	@Mock
 	private UserRepository userRepository;
 
 	@Mock
@@ -70,7 +74,7 @@ public class SecurityFilterTest {
 		
 		//
 		Map<String, SecurityConfiguration> paths = new LinkedHashMap<>();
-		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, webApplicationContext));
+		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, sessionHandler, webApplicationContext));
 		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
 		//
 		

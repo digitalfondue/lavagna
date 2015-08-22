@@ -23,7 +23,7 @@ import io.lavagna.model.Key;
 import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.Date;
@@ -50,6 +50,8 @@ public class DemoLoginTest {
 	@Mock
 	private UserRepository userRepository;
 	@Mock
+    private SessionHandler sessionHandler;
+	@Mock
 	private ServletContext context;
 	@Mock
 	private HttpServletResponse resp;
@@ -71,7 +73,7 @@ public class DemoLoginTest {
 
 	@Before
 	public void prepare() {
-		dl = new DemoLogin(userRepository, errorPage);
+		dl = new DemoLogin(userRepository, sessionHandler, errorPage);
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getServletContext()).thenReturn(context);
 		when(context.getContextPath()).thenReturn("");
@@ -129,7 +131,7 @@ public class DemoLoginTest {
 		when(req.getContextPath()).thenReturn("/context-path");
 		Assert.assertTrue(dl.doAction(req, resp));
 		verify(resp).sendRedirect("/context-path/");
-		verify(req.getSession()).invalidate();
+		verify(sessionHandler).setUser(42, false, req, resp);
 	}
 
 	@Test
@@ -138,7 +140,7 @@ public class DemoLoginTest {
 		Assert.assertTrue(dl.handleLogout(req, resp));
 
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		verify(session).invalidate();
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 	@Test
@@ -150,11 +152,10 @@ public class DemoLoginTest {
 		when(req.getSession()).thenReturn(unauthMockSession, mockSession);
 		when(req.getSession(true)).thenReturn(mockSession);
 
-		UserSession.setUser(user, req, resp, userRepository);
 
 		Assert.assertTrue(dl.handleLogout(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		Assert.assertTrue(mockSession.isInvalid());
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 	@Test

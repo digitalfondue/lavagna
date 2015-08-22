@@ -25,7 +25,7 @@ import io.lavagna.model.Key;
 import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.login.PersonaLogin.VerifierResponse;
 
 import java.io.IOException;
@@ -54,6 +54,10 @@ public class PersonaLoginTest {
 
 	@Mock
 	private UserRepository userRepository;
+	
+	@Mock
+	private SessionHandler sessionHandler;
+	
 	@Mock
 	private ConfigurationRepository configurationRepository;
 	@Mock
@@ -79,7 +83,7 @@ public class PersonaLoginTest {
 
 	@Before
 	public void prepare() {
-		personaLogin = new PersonaLogin(userRepository, configurationRepository, restTemplate, logoutPage);
+		personaLogin = new PersonaLogin(userRepository, sessionHandler, configurationRepository, restTemplate, logoutPage);
 	}
 
 	public void prepareSuccessfulPreconditions() {
@@ -160,7 +164,7 @@ public class PersonaLoginTest {
 
 		Assert.assertTrue(personaLogin.doAction(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		verify(req.getSession()).invalidate();
+		verify(sessionHandler).setUser(42, false, req, resp);
 	}
 
 	@Test
@@ -190,7 +194,6 @@ public class PersonaLoginTest {
 		when(req.getSession()).thenReturn(unauthMockSession, mockSession);
 		when(req.getSession(true)).thenReturn(mockSession);
 
-		UserSession.setUser(user, req, resp, userRepository);
 		when(req.getMethod()).thenReturn("POST");
 		PrintWriter pw = mock(PrintWriter.class);
 		when(resp.getWriter()).thenReturn(pw);
@@ -200,7 +203,7 @@ public class PersonaLoginTest {
 
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
 		verify(resp).setContentType("application/json");
-		Assert.assertTrue(mockSession.isInvalid());
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 }
