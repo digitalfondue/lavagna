@@ -19,13 +19,10 @@ package io.lavagna.web.security.login;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.Ldap;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-
+import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 
 import java.io.IOException;
 
@@ -50,9 +47,7 @@ public class LdapLoginTest {
 	@Mock
     private SessionHandler sessionHandler;
 	@Mock
-	private ConfigurationRepository configurationRepository;
-	@Mock
-	private Ldap ldap;
+	private LdapAuthenticator ldap;
 
 	@Mock
 	private HttpServletResponse resp;
@@ -63,8 +58,6 @@ public class LdapLoginTest {
 	@Mock
 	private WebApplicationContext webApplicationContext;
 
-	private final String baseUrl = "http://test.com:8444/";
-
 	private LdapLogin ldapLogin;
 
 	@Before
@@ -73,8 +66,6 @@ public class LdapLoginTest {
 
 		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
 				webApplicationContext);
-		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
-		when(configurationRepository.getValue(Key.BASE_APPLICATION_URL)).thenReturn(baseUrl);
 	}
 
 	@Test

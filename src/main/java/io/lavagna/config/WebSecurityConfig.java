@@ -40,9 +40,13 @@ import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.DemoLogin;
 import io.lavagna.web.security.login.LdapLogin;
+import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 import io.lavagna.web.security.login.LoginHandler;
 import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.OAuthLogin.Handler;
+import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
+import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
+import io.lavagna.web.security.login.PersonaLogin.AudienceFetcher;
 import io.lavagna.web.security.login.PersonaLogin;
 
 import javax.servlet.http.HttpServletRequest;
@@ -226,20 +230,42 @@ public class WebSecurityConfig {
 
     @Lazy
     @Bean
-    public OAuthLogin oauthLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository) {
-        return new OAuthLogin(users, sessionHandler, configurationRepository, new Handler(new ServiceBuilder()), "/login?error-oauth");
+    public OAuthLogin oauthLogin(Users users, SessionHandler sessionHandler, final ConfigurationRepository configurationRepository) {
+        OauthConfigurationFetcher configurationFetcher = new OauthConfigurationFetcher() {
+            @Override
+            public OAuthConfiguration fetch() {
+                return Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
+            }
+        };
+        return new OAuthLogin(users, sessionHandler, configurationFetcher, new Handler(new ServiceBuilder()), "/login?error-oauth");
     }
 
     @Lazy
     @Bean
-    public LdapLogin ldapLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, Ldap ldap) {
-        return new LdapLogin(users, sessionHandler, ldap, "/login?error-ldap");
+    public LdapLogin ldapLogin(Users users, SessionHandler sessionHandler, final Ldap ldap) {
+        
+        LdapAuthenticator authenticator = new LdapAuthenticator() {
+            @Override
+            public boolean authenticate(String username, String password) {
+                return ldap.authenticate(username, password);
+            }
+        };
+        
+        return new LdapLogin(users, sessionHandler, authenticator, "/login?error-ldap");
     }
 
     @Lazy
     @Bean
-    public PersonaLogin personaLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
-        return new PersonaLogin(users, sessionHandler, configurationRepository, restTemplate, "/WEB-INF/views/logout-persona.html");
+    public PersonaLogin personaLogin(Users users, SessionHandler sessionHandler, final ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
+        
+        AudienceFetcher audienceFetcher = new AudienceFetcher() {
+            @Override
+            public String fetch() {
+                return configurationRepository.getValue(Key.PERSONA_AUDIENCE);
+            }
+        };
+        
+        return new PersonaLogin(users, sessionHandler, audienceFetcher, restTemplate, "/WEB-INF/views/logout-persona.html");
     }
 
     @Lazy

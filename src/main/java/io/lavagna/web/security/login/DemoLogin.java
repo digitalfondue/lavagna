@@ -52,8 +52,7 @@ public class DemoLogin extends AbstractLoginHandler {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		// yes, it's stupid...
-		if (username != null && username.equals(password)
-				&& users.userExistsAndEnabled(USER_PROVIDER, username)) {
+		if (username != null && username.equals(password) && users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			// FIXME refactor out
 			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
 			User user = users.findUserByName(USER_PROVIDER, username);

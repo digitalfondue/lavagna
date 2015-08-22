@@ -21,18 +21,18 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.OAuthLogin.Handler;
+import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OAuthProvider;
+import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +56,7 @@ public class OauthLoginTest {
 	@Mock
     private SessionHandler sessionHandler;
 	@Mock
-	private ConfigurationRepository configurationRepository;
+	private OauthConfigurationFetcher configurationFetcher;
 	@Mock
 	private Handler handler;
 	@Mock
@@ -67,20 +67,25 @@ public class OauthLoginTest {
 	private HttpServletResponse resp;
 	@Mock
 	private HttpServletRequest req;
+	
+	private OAuthConfiguration configuration;
 
 	private String errorPage = "errorPage";
 
-	private static final String oauthJsonConf = "{ \"baseUrl\" : \"http://localhost:8080/\", \"providers\" : ["
-			+ "{\"provider\" : \"bitbucket\", \"apiKey\" : \"apiKey\", \"apiSecret\" : \"secret\"},"
-			+ "{\"provider\" : \"google\", \"apiKey\": \"apiKey\", \"apiSecret\" : \"secret\"}]}";
+
 
 	private OAuthLogin oAuthLogin;
 
 	@SuppressWarnings("unchecked")
 	@Before
 	public void prepare() {
-		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationRepository, handler, errorPage);
-		when(configurationRepository.getValue(Key.OAUTH_CONFIGURATION)).thenReturn(oauthJsonConf);
+	    
+	    configuration = new OAuthConfiguration("http://baseUrl", Arrays.asList(
+	            new OAuthProvider("google", "", ""), 
+	            new OAuthProvider("bitbucket", "", "")));
+	    
+		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationFetcher, handler, errorPage);
+		when(configurationFetcher.fetch()).thenReturn(configuration);
 		when(serviceBuilder.provider(any(Class.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.provider(any(Api.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.apiKey(any(String.class))).thenReturn(serviceBuilder);
@@ -148,27 +153,16 @@ public class OauthLoginTest {
 	@Test
 	public void testHandler() {
 		Handler h = new Handler(serviceBuilder);
-		OAuthProvider oAuthProvider = new OAuthProvider();
-
-		oAuthProvider.apiKey = "key";
-		oAuthProvider.apiSecret = "secret";
-
-		for (Entry<String, Class<? extends OAuthResultHandler>> kv : OAuthLogin.SUPPORTED_OAUTH_HANDLER.entrySet()) {
-			oAuthProvider.provider = kv.getKey();
-			OAuthResultHandler handler = h.from(oAuthProvider, "http://localhost:8080/", users, sessionHandler, errorPage);
-			Assert.assertTrue(handler.getClass().equals(kv.getValue()));
-		}
+		OAuthProvider oAuthProvider = new OAuthProvider("google", "key", "secret");
+		OAuthResultHandler handler = h.from(oAuthProvider, "http://localhost:8080/", users, sessionHandler, errorPage);
+		
+		Assert.assertTrue(handler.getClass().equals(OAuthLogin.SUPPORTED_OAUTH_HANDLER.get(oAuthProvider.getProvider())));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testHandlerFailure() {
 		Handler h = new Handler(serviceBuilder);
-		OAuthProvider oAuthProvider = new OAuthProvider();
-
-		oAuthProvider.apiKey = "key";
-		oAuthProvider.apiSecret = "secret";
-
-		oAuthProvider.provider = "blabla";
+		OAuthProvider oAuthProvider = new OAuthProvider("blabla", "key", "secret");
 		h.from(oAuthProvider, "http://localhost:8080/", users, sessionHandler, errorPage);
 	}
 }

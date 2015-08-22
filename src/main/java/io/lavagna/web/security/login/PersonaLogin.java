@@ -16,8 +16,6 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
@@ -63,16 +61,15 @@ public class PersonaLogin extends AbstractLoginHandler {
 
 	static final String USER_PROVIDER = "persona";
 
-	private final ConfigurationRepository configurationRepository;
+	private final AudienceFetcher audienceFetcher;
 	private final RestTemplate restTemplate;
 	private final String logoutPage;
 
-	public PersonaLogin(Users users, SessionHandler sessionHandler, ConfigurationRepository configurationRepository,
-			RestTemplate restTemplate, String logoutPage) {
+	public PersonaLogin(Users users, SessionHandler sessionHandler, AudienceFetcher audienceFetcher, RestTemplate restTemplate, String logoutPage) {
 
 		super(users, sessionHandler);
 
-		this.configurationRepository = configurationRepository;
+		this.audienceFetcher = audienceFetcher;
 		this.logoutPage = logoutPage;
 		this.restTemplate = restTemplate;
 	}
@@ -85,7 +82,7 @@ public class PersonaLogin extends AbstractLoginHandler {
 			return true;
 		}
 
-		String audience = configurationRepository.getValue(Key.PERSONA_AUDIENCE);
+		String audience = audienceFetcher.fetch();
 
 		MultiValueMap<String, String> toPost = new LinkedMultiValueMap<>();
 		toPost.add("assertion", req.getParameter("assertion"));
@@ -159,6 +156,10 @@ public class PersonaLogin extends AbstractLoginHandler {
 		Map<String, Object> r = super.modelForLoginPage(request);
 		r.put("loginPersona", "block");
 		return r;
+	}
+	
+	public interface AudienceFetcher {
+	    String fetch();
 	}
 
 }

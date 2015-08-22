@@ -21,11 +21,10 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
+import io.lavagna.web.security.login.PersonaLogin.AudienceFetcher;
 import io.lavagna.web.security.login.PersonaLogin.VerifierResponse;
 
 import java.io.IOException;
@@ -58,7 +57,7 @@ public class PersonaLoginTest {
 	private SessionHandler sessionHandler;
 	
 	@Mock
-	private ConfigurationRepository configurationRepository;
+	private AudienceFetcher audienceFetcher;
 	@Mock
 	private RestTemplate restTemplate;
 	@Mock
@@ -82,14 +81,14 @@ public class PersonaLoginTest {
 
 	@Before
 	public void prepare() {
-		personaLogin = new PersonaLogin(users, sessionHandler, configurationRepository, restTemplate, logoutPage);
+		personaLogin = new PersonaLogin(users, sessionHandler, audienceFetcher, restTemplate, logoutPage);
 	}
 
 	public void prepareSuccessfulPreconditions() {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameterMap()).thenReturn(parameterMap);
 		when(parameterMap.containsKey("assertion")).thenReturn(true);
-		when(configurationRepository.getValue(Key.PERSONA_AUDIENCE)).thenReturn("audience");
+		when(audienceFetcher.fetch()).thenReturn("audience");
 	}
 
 	@Test
