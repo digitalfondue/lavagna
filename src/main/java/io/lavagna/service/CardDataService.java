@@ -17,9 +17,9 @@
 package io.lavagna.service;
 
 import static java.util.EnumSet.of;
-import io.lavagna.CardDataHistory;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataFull;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;

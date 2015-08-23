@@ -16,9 +16,9 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.CardDataHistory;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataFull;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
