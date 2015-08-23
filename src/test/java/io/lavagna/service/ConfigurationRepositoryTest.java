@@ -101,6 +101,13 @@ public class ConfigurationRepositoryTest {
 		configurationRepository.insert(Key.PERSONA_AUDIENCE, "test");
 		Assert.assertEquals(2, configurationRepository.findAll().size());
 	}
+	
+	@Test
+    public void testGetValueOrNull() {
+	    Assert.assertNull(configurationRepository.getValueOrNull(Key.TEST_PLACEHOLDER));
+	    configurationRepository.insert(Key.TEST_PLACEHOLDER, "TEST");
+	    Assert.assertEquals("TEST", configurationRepository.getValueOrNull(Key.TEST_PLACEHOLDER));
+	}
 
 	@Test
 	public void findFor() {
