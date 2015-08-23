@@ -7,6 +7,7 @@ This is a high level roadmap. Lavagna has currently:
 
 ## Expected for 1.0.3 (~september 2015)
 
+ - fix issue [#13](https://github.com/digitalfondue/lavagna/issues/13)
  - iCalendar feed support [done]
  - update to spring 4.2.x  [done]
  - switch connection pool to hikaricp (simplify configuration)  [done]
@@ -18,11 +19,11 @@ This is a high level roadmap. Lavagna has currently:
  - decent i18n
  - improve the UI/UX
  - enable Content-Security-Policy
- - refactor the authentication manager: cleanup + simplification
  - support gitlab oauth 
  - support internal account handling
  - support commit log parsing (git, svn (?))
  - webhooks support
+ - refactor the authentication manager: cleanup + simplification [WIP]
  - iCalendar feed support [done]
  - update to spring 4.2.x [done]
  - switch connection pool to hikaricp [done]

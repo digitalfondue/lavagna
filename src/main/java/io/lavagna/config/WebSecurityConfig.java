@@ -88,8 +88,9 @@ public class WebSecurityConfig {
                 .request("/css/**").permitAll()
                 .request("/js/**").permitAll()
                 .request("/help/**").permitAll()
-                .request("/about/**").permitAll().request("/**")
-                .redirectTo("/setup/").disableLogin();
+                .request("/about/**").permitAll()
+                .request("/**").redirectTo("/setup/")
+                .disableLogin();
     }
     
     private LoginPageGenerator loginPageGenerator() {
