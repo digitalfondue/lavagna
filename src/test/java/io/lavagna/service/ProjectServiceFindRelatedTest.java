@@ -28,6 +28,7 @@ import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.model.LabelListValue;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
@@ -79,6 +80,9 @@ public class ProjectServiceFindRelatedTest {
 	private CardLabel cardLabel;
 	private CardLabelValue cardLabelValue;
 
+    private CardLabel cardLabelList;
+    private LabelListValue labelListValue;
+
 	@Before
 	public void prepare() {
 		project = projectService.create("test-findrelated", PROJECT_SHORT_NAME_TEST_FIND, "desc");
@@ -102,6 +106,9 @@ public class ProjectServiceFindRelatedTest {
 		cardLabelRepository.addLabelValueToCard(cardLabel, card.getId(), new LabelValue("test"));
 		cardLabelValue = cardLabelRepository.findCardLabelValuesByBoardId(board.getId(), BoardColumnLocation.BOARD)
 				.get(card.getId()).get(cardLabel).get(0);
+		
+		cardLabelList = cardLabelRepository.addLabel(project.getId(), true, LabelType.LIST, LabelDomain.USER, "list", 0);
+		labelListValue = cardLabelRepository.addLabelListValue(cardLabelList.getId(), "value1");
 	}
 
 	@Test
@@ -133,20 +140,34 @@ public class ProjectServiceFindRelatedTest {
 
 	@Test
 	public void testFindRelatedProjectShortNameByColumnId() {
-		Assert.assertEquals(project.getShortName(),
-				projectService.findRelatedProjectShortNameByColumnId(column.getId()));
+		Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByColumnId(column.getId()));
 	}
 
 	@Test
 	public void testFindRelatedProjectShortNameByLabelId() {
-		Assert.assertEquals(project.getShortName(),
-				projectService.findRelatedProjectShortNameByLabelId(cardLabel.getId()));
+		Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByLabelId(cardLabel.getId()));
 	}
 
 	@Test
 	public void testFindRelatedProjectShortNameByLabelValueId() {
-		Assert.assertEquals(project.getShortName(),
-				projectService.findRelatedProjectShortNameByLabelValueId(cardLabelValue.getCardLabelValueId()));
+		Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByLabelValueId(cardLabelValue.getCardLabelValueId()));
 	}
+	
+	@Test
+    public void testFindRelatedProjectShortNameByEventId() {
+	    int eventId = cardRepository.fetchAllActivityByCardId(card.getId()).get(0).getId();
+	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByEventId(eventId));
+	}
+	
 
+	@Test
+    public void testFindRelatedProjectShortNameByLabelListValudIdPath() {
+	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByLabelListValudIdPath(labelListValue.getId()));
+	}
+	
+	@Test
+    public void testFindRelatedProjectShortNameByColumnDefinitionId() {
+	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByColumnDefinitionId(column.getDefinitionId()));
+	}
+	
 }
