@@ -18,11 +18,11 @@ package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import io.lavagna.CardDataHistory;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
@@ -63,6 +63,7 @@ import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

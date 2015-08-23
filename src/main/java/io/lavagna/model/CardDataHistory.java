@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna;
+package io.lavagna.model;
 
 import java.util.Date;
 
