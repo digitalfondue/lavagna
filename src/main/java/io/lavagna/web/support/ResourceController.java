@@ -27,8 +27,10 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -41,6 +43,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -54,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 
 @Controller
 public class ResourceController {
@@ -63,6 +67,7 @@ public class ResourceController {
 	private static final String CARD_SEQ = "{cardId:[0-9]+}";
 	private final Environment env;
 	// we don't care if the values are set more than one time
+	private final AtomicReference<Template> indexTopTemplate = new AtomicReference<>();
 	private final AtomicReference<byte[]> indexCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> jsCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> cssCache = new AtomicReference<>();
@@ -177,9 +182,14 @@ public class ResourceController {
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ServletContext context = request.getServletContext();
+		
+		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
+		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
+		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
+		    indexTopTemplate.set(Mustache.compiler().escapeHTML(false).compile(indexTop.toString(StandardCharsets.UTF_8.name())));
+		}
 
 		if (contains(env.getActiveProfiles(), "dev") || indexCache.get() == null) {
-
 			ByteArrayOutputStream index = new ByteArrayOutputStream();
 			output("/WEB-INF/views/index.html", context, index, new BeforeAfter());
 
@@ -188,12 +198,18 @@ public class ResourceController {
 			data.put("inlineTemplates", prepareTemplates(context, "/partials/"));
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
-					.compile(index.toString(StandardCharsets.UTF_8.displayName())).execute(data)
+					.compile(index.toString(StandardCharsets.UTF_8.name())).execute(data)
 					.getBytes(StandardCharsets.UTF_8));
 		}
 
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
+			
+			Map<String, Object> localizationData = new HashMap<>();
+			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
+			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
+			
+			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
 	}
