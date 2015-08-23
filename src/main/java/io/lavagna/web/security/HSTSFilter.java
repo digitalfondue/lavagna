@@ -108,8 +108,7 @@ public class HSTSFilter extends AbstractBaseFilter {
     }
     
     private static boolean isOverHttps(HttpServletRequest req) {
-        return req.isSecure() || req.getRequestURL().toString().startsWith("https://")
-                || StringUtils.equals("https", req.getHeader("X-Forwarded-Proto"));
+        return req.isSecure() || req.getRequestURL().toString().startsWith("https://") || StringUtils.equals("https", req.getHeader("X-Forwarded-Proto"));
     }
 
 }
