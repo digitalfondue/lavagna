@@ -87,6 +87,14 @@ public class UserRepository {
         return queries.findUsers(criteria);
     }
 
+    /**
+     * Find users that have access to specific project
+     * 
+     * @param criteria
+     * @param projectId
+     * @param permission
+     * @return
+     */
     public List<User> findUsers(String criteria, int projectId, Permission permission) {
         return queries.findUsers(criteria, projectId, permission.toString());//
     }

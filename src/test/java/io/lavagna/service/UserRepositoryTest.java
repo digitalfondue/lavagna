@@ -17,10 +17,15 @@
 package io.lavagna.service;
 
 import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Permission;
+import io.lavagna.model.Project;
+import io.lavagna.model.Role;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +48,12 @@ public class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ProjectService projectService;
+	
+	@Autowired
+	private PermissionService permissionService;
 
 	@Test
 	public void createUserTest() {
@@ -95,10 +106,12 @@ public class UserRepositoryTest {
 		Assert.assertTrue(res.size() == 2);
 		Assert.assertTrue(res.contains(user1));
 		Assert.assertTrue(res.contains(user2));
+		
+		Assert.assertTrue(userRepository.findByIds(Collections.<Integer>emptyList()).isEmpty());
 	}
 
 	@Test
-	public void existUser() {
+	public void existUserAndEnabled() {
 		Assert.assertFalse(userRepository.userExistsAndEnabled("test", TEST_USER_NAME));
 		Helper.createUser(userRepository, "test", TEST_USER_NAME);
 		Assert.assertTrue(userRepository.userExistsAndEnabled("test", TEST_USER_NAME));
@@ -111,6 +124,21 @@ public class UserRepositoryTest {
 		userRepository.toggle(u.getId(), true);
 		Assert.assertTrue(userRepository.userExistsAndEnabled("test", TEST_USER_NAME));
 	}
+	
+	@Test
+    public void existUser() {
+        Assert.assertFalse(userRepository.userExists("test", TEST_USER_NAME));
+        Helper.createUser(userRepository, "test", TEST_USER_NAME);
+        Assert.assertTrue(userRepository.userExists("test", TEST_USER_NAME));
+
+        User u = userRepository.findUserByName("test", TEST_USER_NAME);
+
+        userRepository.toggle(u.getId(), false);
+        Assert.assertTrue(userRepository.userExists("test", TEST_USER_NAME));
+
+        userRepository.toggle(u.getId(), true);
+        Assert.assertTrue(userRepository.userExists("test", TEST_USER_NAME));
+    }
 
 	@Test
 	public void updateProfile() {
@@ -141,6 +169,38 @@ public class UserRepositoryTest {
 		Assert.assertFalse(userRepository.findUsers("-us").isEmpty());
 		Assert.assertFalse(userRepository.findUsers("test-user").isEmpty());
 		Assert.assertTrue(userRepository.findUsers("test-user-").isEmpty());
+	}
+	
+	@Test
+	public void findUsersInProject() {
+	    Project project = projectService.create("TEST", "TEST", "desc");
+	    
+	    Assert.assertTrue(userRepository.findUsers("-us", project.getId(), Permission.READ).isEmpty());
+	    Helper.createUser(userRepository, "test", TEST_USER_NAME);
+	    
+	    //user does not have role READ
+	    Assert.assertTrue(userRepository.findUsers("-us", project.getId(), Permission.READ).isEmpty());
+	    
+	    User user = userRepository.findUserByName("test", TEST_USER_NAME);
+	    
+	    Role globalRead = new Role("READ");
+	    permissionService.createRole(globalRead);
+	    permissionService.updatePermissionsToRole(globalRead, EnumSet.of(Permission.READ));
+	    permissionService.assignRoleToUsers(globalRead, Collections.singleton(user.getId()));
+	    
+	    Assert.assertEquals(1, userRepository.findUsers("-us", project.getId(), Permission.READ).size());
+	    
+	    
+        Helper.createUser(userRepository, "test", TEST_USER_NAME + "2");
+        User user2 = userRepository.findUserByName("test", TEST_USER_NAME+"2");
+        
+        Role projectRead = new Role("READ");
+        permissionService.createRoleInProjectId(projectRead, project.getId());
+        permissionService.updatePermissionsToRoleInProjectId(projectRead, EnumSet.of(Permission.READ), project.getId());
+        permissionService.assignRoleToUsersInProjectId(projectRead, Collections.singleton(user2.getId()), project.getId());
+        
+        
+        Assert.assertEquals(2, userRepository.findUsers("-us", project.getId(), Permission.READ).size());
 	}
 
 	@Test
