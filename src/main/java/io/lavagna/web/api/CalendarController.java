@@ -79,10 +79,9 @@ public class CalendarController {
         method = RequestMethod.GET, produces = "text/calendar")
     public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
         throws IOException, ValidationException, URISyntaxException {
-        final Calendar calendar = calendarService.getUserCalendar(userToken);
+        Calendar calendar = calendarService.getUserCalendar(userToken);
         response.setContentType("text/calendar");
-        final CalendarOutputter output = new CalendarOutputter();
-        output.setValidating(contains(env.getActiveProfiles(), "dev"));
+        CalendarOutputter output = new CalendarOutputter(false); // <- no validation on the output
         output.output(calendar, response.getOutputStream());
     }
 
