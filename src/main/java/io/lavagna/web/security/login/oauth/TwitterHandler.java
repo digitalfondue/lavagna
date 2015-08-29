@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class TwitterHandler extends AbstractOAuth1Handler {
 
-	public TwitterHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+    private TwitterHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.twitter", "https://api.twitter.com/1.1/account/verify_credentials.json", UserInfo.class,
 				"oauth_verifier", users, sessionHandler, errorPage, serviceBuilder.provider(TwitterApi.class)
@@ -50,4 +50,14 @@ public class TwitterHandler extends AbstractOAuth1Handler {
 
 	}
 
+    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, String apiKey, String apiSecret,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new TwitterHandler(serviceBuilder, reqBuilder, apiKey, apiSecret, callback, users, sessionHandler, errorPage);
+        }
+    };
 }

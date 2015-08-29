@@ -21,8 +21,10 @@ import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
+import io.lavagna.web.security.login.oauth.GitlabHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
+import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
 import io.lavagna.web.security.login.oauth.TwitterHandler;
 
@@ -38,20 +40,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.Getter;
 
-import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.scribe.builder.ServiceBuilder;
 import org.springframework.util.StringUtils;
 
 public class OAuthLogin extends AbstractLoginHandler {
 
-	static final Map<String, Class<? extends OAuthResultHandler>> SUPPORTED_OAUTH_HANDLER;
+	static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
 
 	static {
-		Map<String, Class<? extends OAuthResultHandler>> r = new LinkedHashMap<>();
-		r.put("bitbucket", BitbucketHandler.class);
-		r.put("github", GithubHandler.class);
-		r.put("google", GoogleHandler.class);
-		r.put("twitter", TwitterHandler.class);
+		Map<String, OAuthResultHandlerFactory> r = new LinkedHashMap<>();
+		r.put("bitbucket", BitbucketHandler.FACTORY);
+		r.put("gitlab", GitlabHandler.FACTORY);
+		r.put("github", GithubHandler.FACTORY);
+		r.put("google", GoogleHandler.FACTORY);
+		r.put("twitter", TwitterHandler.FACTORY);
 		SUPPORTED_OAUTH_HANDLER = Collections.unmodifiableMap(r);
 	}
 
@@ -182,19 +184,13 @@ public class OAuthLogin extends AbstractLoginHandler {
 			this.serviceBuilder = serviceBuilder;
 		}
 
-		// TODO: refactor
 		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler,
 				String errorPage) {
 			String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
 			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.provider + "/callback";
 			if (SUPPORTED_OAUTH_HANDLER.containsKey(oauthProvider.provider)) {
-				try {
-					return ConstructorUtils.invokeConstructor(SUPPORTED_OAUTH_HANDLER.get(oauthProvider.provider),
-							serviceBuilder, reqBuilder, oauthProvider.apiKey, oauthProvider.apiSecret, callbackUrl,
-							users, sessionHandler, errorPage);
-				} catch (ReflectiveOperationException iea) {
-					throw new IllegalStateException(iea);
-				}
+			    return SUPPORTED_OAUTH_HANDLER.get(oauthProvider.provider).build(serviceBuilder, reqBuilder, 
+			            oauthProvider.apiKey, oauthProvider.apiSecret, callbackUrl,users, sessionHandler, errorPage);
 			} else {
 				throw new IllegalArgumentException("type " + oauthProvider.provider + " is not supported");
 			}

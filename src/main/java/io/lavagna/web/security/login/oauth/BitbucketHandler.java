@@ -23,7 +23,7 @@ import org.scribe.builder.ServiceBuilder;
 
 public class BitbucketHandler extends AbstractOAuth1Handler {
 
-	public BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+	private BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.bitbucket",//
 				"https://bitbucket.org/api/1.0/user",//
@@ -53,4 +53,15 @@ public class BitbucketHandler extends AbstractOAuth1Handler {
 	private static class User {
 		String username;
 	}
+	
+	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, String apiKey, String apiSecret,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new BitbucketHandler(serviceBuilder, reqBuilder, apiKey, apiSecret, callback, users, sessionHandler, errorPage);
+        }
+    }; 
 }

@@ -87,9 +87,9 @@ public class HandlersTest {
 	private String callback = "callback";
 	private String errPage = "error";
 
-	private BitbucketHandler bitbucketHandler;
-	private GoogleHandler googleHandler;
-	private GithubHandler githubHandler;
+	private OAuthResultHandler bitbucketHandler;
+	private OAuthResultHandler googleHandler;
+	private OAuthResultHandler githubHandler;
 
 	@Before
 	public void prepare() {
@@ -119,9 +119,9 @@ public class HandlersTest {
 		when(oauthReq.send()).thenReturn(oauthRes);
 		when(users.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
 	}
 
 	@Test

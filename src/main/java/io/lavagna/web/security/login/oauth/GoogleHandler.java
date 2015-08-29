@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 
-	public GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+    private GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.google",//
 				"https://www.googleapis.com/plus/v1/people/me/openIdConnect",//
@@ -69,7 +69,17 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 		public void setEmailVerified(boolean emailVerified) {
 			this.emailVerified = emailVerified;
 		}
-
 	}
-
+	
+	
+    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, String apiKey, String apiSecret,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new GoogleHandler(serviceBuilder, reqBuilder, apiKey, apiSecret, callback, users, sessionHandler, errorPage);
+        }
+    };
 }
