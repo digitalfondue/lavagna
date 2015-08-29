@@ -142,8 +142,23 @@ public class HandlersTest {
 		bitbucketHandler.handleCallback(req2, resp2);
 		verify(resp2).sendRedirect("/");
 		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
-		
 	}
+	
+	@Test
+    public void handleTwitterFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
+        twitterHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect");
+
+        when(oauthRes.getBody()).thenReturn("{\"screen_name\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.twitter", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.twitter", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+        Assert.assertTrue(!session.isInvalid());
+        twitterHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
 
 	@Test
 	public void handleGithubFlowAuth() throws IOException {
