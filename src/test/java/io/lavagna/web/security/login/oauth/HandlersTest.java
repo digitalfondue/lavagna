@@ -218,6 +218,4 @@ public class HandlersTest {
         
         verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
     }
-	
-	//TODO cover twitter flow
 }
