@@ -75,4 +75,9 @@ public class DemoLogin extends AbstractLoginHandler {
     public List<String> getAllHandlerNames() {
         return Collections.singletonList(USER_PROVIDER);
     }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 }

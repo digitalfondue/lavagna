@@ -8,19 +8,18 @@
 		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
 	}
 
-	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, User, CONTEXT_PATH, oauthProviders) {
+	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, $q, Admin, Permission, Notification, User, CONTEXT_PATH, oauthProviders) {
 		$scope.oauthProviders = oauthProviders;
 
 		function loadConfiguration() {
-			Admin.findAllConfiguration().then(function(conf) {
+			$q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus()]).then(function(res) {
+				
+				var conf = res[0]; 
+				var allBaseLogin = res[1];
+			
 				$scope.currentConf = conf;
-
-				var authMethods = JSON.parse(conf['AUTHENTICATION_METHOD']);
-				$scope.authMethod = {"DEMO": false, "LDAP": false, "PERSONA" : false, "OAUTH" : false};
-				for(var i = 0; i < authMethods.length;i++) {
-					$scope.authMethod[authMethods[i]] = true;
-				}
-
+				$scope.authMethod = allBaseLogin;
+				
 				$scope.persona = {audience : conf['PERSONA_AUDIENCE'] || ($window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window))};
 
 				$scope.ldap = {
@@ -75,13 +74,11 @@
 			}).then(loadConfiguration);
 		}
 		
-		$scope.$watch('authMethod.DEMO', updateActiveProviders);
-		
-		$scope.$watch('authMethod.LDAP', updateActiveProviders);
-		
-		$scope.$watch('authMethod.PERSONA', updateActiveProviders);
-		
-		$scope.$watch('authMethod.OAUTH', updateActiveProviders);
+		Admin.findAllBaseLoginWithActivationStatus().then(function(res) {
+			angular.forEach(res, function(val, key) {
+				$scope.$watch('authMethod.'+key, updateActiveProviders); 
+			});
+		});
 		
 		// -- save providers config
 		

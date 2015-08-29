@@ -206,4 +206,9 @@ public class OAuthLogin extends AbstractLoginHandler {
         }
         return res;
     }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 }

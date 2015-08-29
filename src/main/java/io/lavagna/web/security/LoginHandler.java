@@ -37,6 +37,7 @@ public interface LoginHandler {
 	boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
 	
 	List<String> getAllHandlerNames();
+	String getBaseProviderName();
 
 	Map<String, Object> modelForLoginPage(HttpServletRequest request);
 

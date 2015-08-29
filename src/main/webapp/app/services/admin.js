@@ -67,6 +67,9 @@
 			},
 			findAllUnprefixedOauthProviders : function() {
 				return $http.get('api/login/oauth/all').then(extractData);
+			},
+			findAllBaseLoginWithActivationStatus : function() {
+				return $http.get('api/login/all-base-with-activation-status').then(extractData);
 			}
 		};
 	});

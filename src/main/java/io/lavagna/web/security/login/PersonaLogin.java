@@ -169,4 +169,9 @@ public class PersonaLogin extends AbstractLoginHandler {
         return Collections.singletonList(USER_PROVIDER);
     }
 
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
+
 }
