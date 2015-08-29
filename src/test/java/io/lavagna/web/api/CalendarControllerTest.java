@@ -50,7 +50,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.env.Environment;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalendarControllerTest {
@@ -64,14 +63,11 @@ public class CalendarControllerTest {
     @Mock
     private CalendarService calendarService;
 
-    @Mock
-    private Environment env;
-
     private CalendarController calendarController;
 
     @Before
     public void prepare() {
-        calendarController = new CalendarController(userRepository, calendarService, env);
+        calendarController = new CalendarController(userRepository, calendarService);
     }
 
     @Test

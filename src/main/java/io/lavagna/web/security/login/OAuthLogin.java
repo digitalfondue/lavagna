@@ -46,6 +46,7 @@ import org.springframework.util.StringUtils;
 public class OAuthLogin extends AbstractLoginHandler {
 
 	static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
+	static final String USER_PROVIDER = "oauth";
 
 	static {
 		Map<String, OAuthResultHandlerFactory> r = new LinkedHashMap<>();
@@ -196,4 +197,13 @@ public class OAuthLogin extends AbstractLoginHandler {
 			}
 		}
 	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        List<String> res = new ArrayList<>();
+        for (String sub : SUPPORTED_OAUTH_HANDLER.keySet()) {
+            res.add(USER_PROVIDER + "." + sub);
+        }
+        return res;
+    }
 }

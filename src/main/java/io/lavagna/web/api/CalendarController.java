@@ -16,7 +16,6 @@
  */
 package io.lavagna.web.api;
 
-import static org.apache.commons.lang3.ArrayUtils.contains;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;
 import io.lavagna.model.UserWithPermission;
@@ -34,7 +33,6 @@ import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,13 +44,11 @@ public class CalendarController {
 
     private final UserRepository userRepository;
     private final CalendarService calendarService;
-    private final Environment env;
 
     @Autowired
-    public CalendarController(UserRepository userRepository, CalendarService calendarService, Environment env) {
+    public CalendarController(UserRepository userRepository, CalendarService calendarService) {
         this.userRepository = userRepository;
         this.calendarService = calendarService;
-        this.env = env;
     }
 
     @ExpectPermission(Permission.UPDATE_PROFILE)

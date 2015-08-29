@@ -70,4 +70,9 @@ public class DemoLogin extends AbstractLoginHandler {
 		r.put("loginDemo", "block");
 		return r;
 	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
 }

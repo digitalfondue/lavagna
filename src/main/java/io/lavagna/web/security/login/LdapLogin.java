@@ -88,4 +88,9 @@ public class LdapLogin extends AbstractLoginHandler {
 	    boolean authenticate(String username, String password);
 	}
 
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
+
 }

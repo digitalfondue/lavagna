@@ -59,6 +59,11 @@
 				.error(failedCallback);
 				
 				return upload;
+			},
+			
+			//----
+			findAllLoginHandlers : function() {
+				return $http.get('api/login/all').then(extractData);
 			}
 		};
 	});

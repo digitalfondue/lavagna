@@ -46,7 +46,9 @@
 
 		configureDefaultUserToAdd();
 
-		$scope.loginProviders = ["demo", "ldap", "persona", "oauth.bitbucket", "oauth.google", "oauth.github", "oauth.twitter"];
+		Admin.findAllLoginHandlers().then(function(loginProviders) {
+			$scope.loginProviders = loginProviders;
+		});
 
 		loadUsers();
 		loadRoles();
