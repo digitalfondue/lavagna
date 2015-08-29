@@ -8,8 +8,8 @@
 		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
 	}
 
-	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, User, CONTEXT_PATH) {
-		$scope.oauthProviders = ['bitbucket', 'github', 'google', 'twitter'];
+	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, User, CONTEXT_PATH, oauthProviders) {
+		$scope.oauthProviders = oauthProviders;
 
 		function loadConfiguration() {
 			Admin.findAllConfiguration().then(function(conf) {

@@ -19,11 +19,13 @@ package io.lavagna.web.api;
 import io.lavagna.model.Permission;
 import io.lavagna.web.helper.ExpectPermission;
 import io.lavagna.web.security.LoginHandler;
+import io.lavagna.web.security.login.OAuthLogin;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,11 +43,22 @@ public class LoginInfoController {
     }
     
     @RequestMapping(value = "/api/login/all", method = RequestMethod.GET)
-    public Collection<String> findAllLogin(HttpServletRequest request) {
+    public Collection<String> getAllLoginProviders(HttpServletRequest request) {
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
         List<String> res = new ArrayList<>();
         for(LoginHandler handler : ctx.getBeansOfType(LoginHandler.class).values()) {
             res.addAll(handler.getAllHandlerNames());
+        }
+        Collections.sort(res);
+        return res;
+    }
+    
+    @RequestMapping(value = "/api/login/oauth/all", method = RequestMethod.GET)
+    public Collection<String> getAllUnprefixedOauthProviders(HttpServletRequest request) {
+        WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        List<String> res = new ArrayList<>();
+        for(String s : ctx.getBean(OAuthLogin.class).getAllHandlerNames()) {
+            res.add(s.split(Pattern.quote("."), 2)[1]);
         }
         Collections.sort(res);
         return res;

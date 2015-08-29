@@ -203,7 +203,8 @@
 		}).state('admin.adminConfigureLogin', {
 			url: 'configure-login/',
 			templateUrl: 'partials/admin/configure-login.html',
-			controller: 'AdminConfigureLoginCtrl'
+			controller: 'AdminConfigureLoginCtrl',
+			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllUnprefixedOauthProviders();}}
 		}).state('admin.adminManageSmtpConfiguration', {
 			url : 'manage-smtp-configuration/',
 			templateUrl : 'partials/admin/manage-smtp-configuration.html',

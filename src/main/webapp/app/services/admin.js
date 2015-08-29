@@ -64,6 +64,9 @@
 			//----
 			findAllLoginHandlers : function() {
 				return $http.get('api/login/all').then(extractData);
+			},
+			findAllUnprefixedOauthProviders : function() {
+				return $http.get('api/login/oauth/all').then(extractData);
 			}
 		};
 	});
