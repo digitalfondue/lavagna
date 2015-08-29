@@ -18,7 +18,7 @@
 
 		var generateTooltipHTML = function (user) {
 			var userDisplayText = $filter('formatUser')(user);
-			var userProviderClass = providerMap[user.provider];
+			var userProviderClass = providerMap[user.provider] || 'fa-laptop';
 			return '<div class=\"lavagna-user-tooltip\">' +
 				'<div class=\"provider\"><i class=\"fa ' + userProviderClass + '\"></i></div>' +
 				'<div class=\"name\">' + userDisplayText + '</div>' +

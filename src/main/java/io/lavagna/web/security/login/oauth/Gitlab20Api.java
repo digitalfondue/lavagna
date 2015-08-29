@@ -19,7 +19,16 @@ package io.lavagna.web.security.login.oauth;
 import static io.lavagna.web.security.login.oauth.Utils.encode;
 
 import org.scribe.builder.api.DefaultApi20;
+import org.scribe.extractors.AccessTokenExtractor;
 import org.scribe.model.OAuthConfig;
+import org.scribe.model.OAuthConstants;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuth20ServiceImpl;
+import org.scribe.oauth.OAuthService;
 
 public class Gitlab20Api extends DefaultApi20 {
 
@@ -31,6 +40,34 @@ public class Gitlab20Api extends DefaultApi20 {
     @Override
     public String getAuthorizationUrl(OAuthConfig config) {
         return "https://gitlab.com/oauth/authorize?client_id="+encode(config.getApiKey())+"&redirect_uri="+encode(config.getCallback())+"&response_type=code";
+    }
+    
+    @Override
+    public Verb getAccessTokenVerb() {
+        return Verb.POST;
+    }
+    
+    @Override
+    public AccessTokenExtractor getAccessTokenExtractor() {
+        return new JsonTokenExtractor();
+    }
+    
+    @Override
+    public OAuthService createService(final OAuthConfig config) {
+        return new OAuth20ServiceImpl(this, config) {
+            @Override
+            public Token getAccessToken(Token requestToken, Verifier verifier) {
+                OAuthRequest request = new OAuthRequest(getAccessTokenVerb(), getAccessTokenEndpoint());
+                request.addBodyParameter(OAuthConstants.CLIENT_ID, config.getApiKey());
+                request.addBodyParameter(OAuthConstants.CLIENT_SECRET, config.getApiSecret());
+                request.addBodyParameter(OAuthConstants.CODE, verifier.getValue());
+                request.addBodyParameter(OAuthConstants.REDIRECT_URI, config.getCallback());
+                // well, the doc is not correct, see https://github.com/gitlabhq/gitlabhq/issues/9141
+                request.addBodyParameter("grant_type", "authorization_code"); 
+                Response response = request.send();
+                return getAccessTokenExtractor().extract(response.getBody());
+            }
+        };
     }
 
 }
