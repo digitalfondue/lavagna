@@ -29,7 +29,7 @@ public class TwitterHandler extends AbstractOAuth1Handler {
     private TwitterHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.twitter", "https://api.twitter.com/1.1/account/verify_credentials.json", UserInfo.class,
-				"oauth_verifier", users, sessionHandler, errorPage, serviceBuilder.provider(TwitterApi.class)
+				"oauth_verifier", users, sessionHandler, errorPage, serviceBuilder.provider(new TwitterApi())
 						.apiKey(apiKey).apiSecret(apiSecret).callback(callback).build(), reqBuilder);
 	}
 

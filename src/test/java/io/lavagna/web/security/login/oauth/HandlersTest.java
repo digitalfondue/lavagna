@@ -90,6 +90,8 @@ public class HandlersTest {
 	private OAuthResultHandler bitbucketHandler;
 	private OAuthResultHandler googleHandler;
 	private OAuthResultHandler githubHandler;
+    private OAuthResultHandler gitlabHandler;
+    private OAuthResultHandler twitterHandler;
 
 	@Before
 	public void prepare() {
@@ -122,6 +124,8 @@ public class HandlersTest {
 		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
 		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
 		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		gitlabHandler = GitlabHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		twitterHandler = TwitterHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
 	}
 
 	@Test
@@ -170,7 +174,7 @@ public class HandlersTest {
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.google"));
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
 		when(users.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
-		when(users.findUserByName("oauth.github", "email")).thenReturn(user);
+		when(users.findUserByName("oauth.google", "email")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("/context-path");
 		
 		Assert.assertTrue(!session.isInvalid());
@@ -179,4 +183,26 @@ public class HandlersTest {
 		
 		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
+	
+	
+	@Test
+    public void handleGitlabFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+        gitlabHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.gitlab", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.gitlab", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("/context-path");
+        
+        Assert.assertTrue(!session.isInvalid());
+        gitlabHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/context-path/");
+        
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
+	
+	//TODO cover twitter flow
 }

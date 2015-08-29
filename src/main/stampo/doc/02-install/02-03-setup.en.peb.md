@@ -48,7 +48,7 @@ The default Audience value is most likely correct.
 
 #### Oauth provider
 
-The application support 4 external oauth providers: bitbucket, github, google, twitter.
+The application support the following external oauth providers: bitbucket, gitlab.com, github, google, twitter.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_oauth.png" alt="Oauth provider">
 
@@ -57,6 +57,7 @@ Select the oauth provider of the first account and provide the api key and secre
 See the documentation for:
 
  - [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket)
+ - [gitlab](http://doc.gitlab.com/ce/integration/oauth_provider.html). Registration page is https://gitlab.com/profile/applications
  - [github](https://developer.github.com/v3/oauth/). Registration page is https://github.com/settings/applications/new
  - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): the "Google+ API" must be enabled
  - [twitter](https://dev.twitter.com/web/sign-in/implementing)
