@@ -18,40 +18,37 @@ package io.lavagna.web.security.login.oauth;
 
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
+import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 import org.scribe.builder.ServiceBuilder;
 
-public class BitbucketHandler extends AbstractOAuth1Handler {
+public class BitbucketHandler extends OAuthResultHandlerAdapter {
 
 	private BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.bitbucket",//
-				"https://bitbucket.org/api/1.0/user",//
-				UserInfo.class, "oauth_verifier", //
+				"https://api.bitbucket.org/2.0/user",//
+				UserInfo.class, "code", //
 				users,//
 				sessionHandler,//
 				errorPage,//
-				serviceBuilder.provider(new Bitbucket10Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
+				serviceBuilder.provider(new Bitbucket20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
 						.build(), reqBuilder);
 	}
 
 	private static class UserInfo implements RemoteUserProfile {
 
-		User user;
+	    String username;
 
 		@Override
 		public boolean valid(Users users, String provider) {
-			return users.userExistsAndEnabled(provider, user.username);
+			return users.userExistsAndEnabled(provider, username);
 		}
 
 		@Override
 		public String username() {
-			return user.username;
+			return username;
 		}
-	}
-
-	private static class User {
-		String username;
 	}
 	
 	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {

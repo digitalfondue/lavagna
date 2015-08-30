@@ -130,18 +130,22 @@ public class HandlersTest {
 
 	@Test
 	public void handleBitbucketFlowAuth() throws IOException {
-		when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
-		bitbucketHandler.handleAuthorizationUrl(req, resp);
-		verify(resp).sendRedirect("redirect");
+	    when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+	    bitbucketHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
 
-		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
-		when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
-		when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
-		when(req2.getContextPath()).thenReturn("");
-		Assert.assertTrue(!session.isInvalid());
-		bitbucketHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect("/");
-		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
+
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+
+        Assert.assertTrue(!session.isInvalid());
+        bitbucketHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
 	
 	@Test
