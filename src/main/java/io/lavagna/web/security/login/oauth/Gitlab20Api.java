@@ -18,6 +18,7 @@ package io.lavagna.web.security.login.oauth;
 
 import static io.lavagna.web.security.login.oauth.Utils.encode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.scribe.builder.api.DefaultApi20;
 import org.scribe.extractors.AccessTokenExtractor;
 import org.scribe.model.OAuthConfig;
@@ -30,16 +31,25 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuth20ServiceImpl;
 import org.scribe.oauth.OAuthService;
 
+// based from doc: http://doc.gitlab.com/ce/api/oauth2.html
 public class Gitlab20Api extends DefaultApi20 {
+    
+    private final String baseUrl;
+    
+    public Gitlab20Api(String baseUrl) {
+        this.baseUrl = StringUtils.removeEnd(baseUrl, "/");
+    }
 
     @Override
     public String getAccessTokenEndpoint() {
-        return "https://gitlab.com/oauth/token";
+        // https://gitlab.com/oauth/token
+        return baseUrl+"/oauth/token";
     }
 
     @Override
     public String getAuthorizationUrl(OAuthConfig config) {
-        return "https://gitlab.com/oauth/authorize?client_id="+encode(config.getApiKey())+"&redirect_uri="+encode(config.getCallback())+"&response_type=code";
+        // https://gitlab.com/oauth/authorize
+        return baseUrl+"/oauth/authorize?client_id="+encode(config.getApiKey())+"&redirect_uri="+encode(config.getCallback())+"&response_type=code";
     }
     
     @Override

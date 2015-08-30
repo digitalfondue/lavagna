@@ -41,6 +41,14 @@ public class OAuthProvider {
         this.baseUrl = baseUrl;
         this.profileUrl = profileUrl;
     }
+    
+    public String baseUrlOrDefault(String defaultBaseUrl) {
+        return hasCustomBaseAndProfileUrl ? baseUrl : defaultBaseUrl;
+    }
+    
+    public String profileUrlOrDefault(String defaultProfileUrl) {
+        return hasCustomBaseAndProfileUrl ? profileUrl : defaultProfileUrl;
+    }
 
     public boolean matchAuthorization(String requestURI) {
         return requestURI.endsWith("/oauth/" + provider);

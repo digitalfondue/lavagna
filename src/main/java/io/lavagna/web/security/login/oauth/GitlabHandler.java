@@ -24,16 +24,22 @@ import org.scribe.builder.ServiceBuilder;
 
 public class GitlabHandler extends OAuthResultHandlerAdapter {
     
-    private GitlabHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-            String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
+    private GitlabHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, OAuthProvider provider, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
+        
         super("oauth.gitlab",//
-                "https://gitlab.com/api/v3/user",//
-                UserInfo.class, "code",//
+                provider.profileUrlOrDefault("https://gitlab.com/api/v3/user"),//
+                UserInfo.class,// 
+                "code",//
                 users,//
                 sessionHandler,//
                 errorPage,//
-                serviceBuilder.provider(new Gitlab20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
-                        .build(), reqBuilder);
+                serviceBuilder
+                    .provider(new Gitlab20Api(provider.baseUrlOrDefault("https://gitlab.com")))
+                    .apiKey(provider.getApiKey())
+                    .apiSecret(provider.getApiSecret())
+                    .callback(callback)
+                    .build(), 
+                reqBuilder);
     }
     
     public static class UserInfo implements RemoteUserProfile {
@@ -59,7 +65,7 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {
-            return new GitlabHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
+            return new GitlabHandler(serviceBuilder, reqBuilder, provider, callback, users, sessionHandler, errorPage);
         }
     };
 }
