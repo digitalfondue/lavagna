@@ -25,9 +25,9 @@ import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.OAuthLogin.Handler;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
-import io.lavagna.web.security.login.OAuthLogin.OAuthProvider;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
+import io.lavagna.web.security.login.oauth.OAuthProvider;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
 
 import java.io.IOException;

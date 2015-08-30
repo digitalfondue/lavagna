@@ -26,8 +26,7 @@ public interface OAuthResultHandlerFactory {
 
     OAuthResultHandler build(ServiceBuilder serviceBuilder, 
             OAuthRequestBuilder reqBuilder, 
-            String apiKey,
-            String apiSecret, 
+            OAuthProvider oauthProvider, 
             String callback, 
             Users users, 
             SessionHandler sessionHandler, 

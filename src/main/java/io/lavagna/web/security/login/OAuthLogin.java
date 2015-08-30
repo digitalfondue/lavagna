@@ -23,6 +23,7 @@ import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
 import io.lavagna.web.security.login.oauth.GitlabHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
+import io.lavagna.web.security.login.oauth.OAuthProvider;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
 import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
@@ -37,8 +38,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import lombok.Getter;
 
 import org.scribe.builder.ServiceBuilder;
 import org.springframework.util.StringUtils;
@@ -125,7 +124,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 		public boolean hasProvider(String provider) {
 			for (OAuthProvider o : providers) {
-				if (provider.equals(o.provider)) {
+				if (provider.equals(o.getProvider())) {
 					return true;
 				}
 			}
@@ -151,27 +150,6 @@ public class OAuthLogin extends AbstractLoginHandler {
 		}
 	}
 	
-	@Getter
-	public static class OAuthProvider {
-	    private final String provider;// google, github, bitbucket, twitter
-	    private final String apiKey;
-	    private final String apiSecret;
-	    
-	    public OAuthProvider(String provider, String apiKey, String apiSecret) {
-	        this.provider = provider;
-	        this.apiKey = apiKey;
-	        this.apiSecret = apiSecret;
-	    }
-
-	    public boolean matchAuthorization(String requestURI) {
-	        return requestURI.endsWith("/oauth/" + provider);
-	    }
-
-	    public boolean matchCallback(String requestURI) {
-	        return requestURI.endsWith("/oauth/" + provider + "/callback");
-	    }
-	}
-	
 	public interface OauthConfigurationFetcher {
 	    OAuthConfiguration fetch();
 	}
@@ -188,12 +166,12 @@ public class OAuthLogin extends AbstractLoginHandler {
 		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler,
 				String errorPage) {
 			String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
-			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.provider + "/callback";
-			if (SUPPORTED_OAUTH_HANDLER.containsKey(oauthProvider.provider)) {
-			    return SUPPORTED_OAUTH_HANDLER.get(oauthProvider.provider).build(serviceBuilder, reqBuilder, 
-			            oauthProvider.apiKey, oauthProvider.apiSecret, callbackUrl,users, sessionHandler, errorPage);
+			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.getProvider() + "/callback";
+			if (SUPPORTED_OAUTH_HANDLER.containsKey(oauthProvider.getProvider())) {
+			    return SUPPORTED_OAUTH_HANDLER.get(oauthProvider.getProvider()).build(serviceBuilder, reqBuilder, 
+			            oauthProvider, callbackUrl,users, sessionHandler, errorPage);
 			} else {
-				throw new IllegalArgumentException("type " + oauthProvider.provider + " is not supported");
+				throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
 			}
 		}
 	}

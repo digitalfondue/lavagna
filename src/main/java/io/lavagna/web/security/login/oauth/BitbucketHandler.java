@@ -55,10 +55,10 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
         
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
-                OAuthRequestBuilder reqBuilder, String apiKey, String apiSecret,
+                OAuthRequestBuilder reqBuilder, OAuthProvider provider,
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {
-            return new BitbucketHandler(serviceBuilder, reqBuilder, apiKey, apiSecret, callback, users, sessionHandler, errorPage);
+            return new BitbucketHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
     }; 
 }

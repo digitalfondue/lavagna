@@ -121,11 +121,11 @@ public class HandlersTest {
 		when(oauthReq.send()).thenReturn(oauthRes);
 		when(users.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		gitlabHandler = GitlabHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		twitterHandler = TwitterHandler.FACTORY.build(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("bitbucket", key, secret), callback, users, sessionHandler, errPage);
+		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("github", key, secret), callback, users, sessionHandler, errPage);
+		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("google", key, secret), callback, users, sessionHandler, errPage);
+		gitlabHandler = GitlabHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("gitlab", key, secret), callback, users, sessionHandler, errPage);
+		twitterHandler = TwitterHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("twiiter", key, secret), callback, users, sessionHandler, errPage);
 	}
 
 	@Test
