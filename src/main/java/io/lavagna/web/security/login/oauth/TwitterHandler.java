@@ -59,5 +59,10 @@ public class TwitterHandler extends AbstractOAuth1Handler {
                 String errorPage) {
             return new TwitterHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
+
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return false;
+        }
     };
 }

@@ -23,6 +23,7 @@ import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.helper.ExpectPermission;
 import io.lavagna.web.security.LoginHandler;
 import io.lavagna.web.security.login.OAuthLogin;
+import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,9 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,10 +53,12 @@ import com.google.gson.reflect.TypeToken;
 public class LoginInfoController {
     
     private final ConfigurationRepository configurationRepository;
+    private final OAuthLogin oauthLogin;
 
     @Autowired
-    public LoginInfoController(ConfigurationRepository configurationRepository) {
+    public LoginInfoController(ConfigurationRepository configurationRepository, OAuthLogin oauthLogin) {
         this.configurationRepository = configurationRepository;
+        this.oauthLogin = oauthLogin;
     }
     
     @RequestMapping(value = "/api/login/all", method = RequestMethod.GET)
@@ -66,12 +72,23 @@ public class LoginInfoController {
         return res;
     }
     
+    @Getter
+    @AllArgsConstructor
+    public static class OAuthProviderInfo implements Comparable<OAuthProviderInfo> {
+        private final String name;
+        private final boolean hasConfigurableBaseUrl;
+        
+        @Override
+        public int compareTo(OAuthProviderInfo o) {
+            return name.compareTo(o.name);
+        }
+    }
+    
     @RequestMapping(value = "/api/login/oauth/all", method = RequestMethod.GET)
-    public Collection<String> getAllUnprefixedOauthProviders(HttpServletRequest request) {
-        WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
-        List<String> res = new ArrayList<>();
-        for(String s : ctx.getBean(OAuthLogin.class).getAllHandlerNames()) {
-            res.add(s.split(Pattern.quote("."), 2)[1]);
+    public Collection<OAuthProviderInfo> getAllUnprefixedOauthProviders() {
+        List<OAuthProviderInfo> res = new ArrayList<>();
+        for(Entry<String, OAuthResultHandlerFactory> e : oauthLogin.getAllHandlers().entrySet()) {
+            res.add(new OAuthProviderInfo(e.getKey(), e.getValue().hasConfigurableBaseUrl()));
         }
         Collections.sort(res);
         return res;

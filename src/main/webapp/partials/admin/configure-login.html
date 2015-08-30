@@ -130,21 +130,21 @@
 
 			<div class="form-group" data-ng-repeat="provider in oauthProviders">
 				<div>
-					<lvg-switch switch-class="lvg-switch-sm" control="oauth[provider].present"></lvg-switch> 
-					<div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider"></span></div>
+					<lvg-switch switch-class="lvg-switch-sm" control="oauth[provider.name].present"></lvg-switch> 
+					<div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider.name"></span></div>
 				</div>
-				<div data-ng-show="oauth[provider].present" class="lvg-oauth-provider-panel">
+				<div data-ng-show="oauth[provider.name].present" class="lvg-oauth-provider-panel">
 					<div class="form-group">
 						<div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.apiKey</div> 
-						<input class="form-control" type="text" data-ng-model="oauth[provider].apiKey">
+						<input class="form-control" type="text" data-ng-model="oauth[provider.name].apiKey">
 					</div>
 					<div class="form-group">
 						<div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.secret</div> 
-						<input class="form-control" type="text" data-ng-model="oauth[provider].apiSecret">
+						<input class="form-control" type="text" data-ng-model="oauth[provider.name].apiSecret">
 					</div>
 					<div class="form-group">
 						<div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.callback</div> 
-						<input class="form-control form-selectable" type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{provider}}/callback">
+						<input class="form-control form-selectable" type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
 					</div>
 				</div>
 			</div>

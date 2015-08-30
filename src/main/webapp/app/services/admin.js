@@ -65,7 +65,7 @@
 			findAllLoginHandlers : function() {
 				return $http.get('api/login/all').then(extractData);
 			},
-			findAllUnprefixedOauthProviders : function() {
+			findAllOauthProvidersInfo : function() {
 				return $http.get('api/login/oauth/all').then(extractData);
 			},
 			findAllBaseLoginWithActivationStatus : function() {

@@ -45,7 +45,7 @@ import org.springframework.util.StringUtils;
 public class OAuthLogin extends AbstractLoginHandler {
 
 	static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
-	static final String USER_PROVIDER = "oauth";
+	private static final String USER_PROVIDER = "oauth";
 
 	static {
 		Map<String, OAuthResultHandlerFactory> r = new LinkedHashMap<>();
@@ -174,6 +174,10 @@ public class OAuthLogin extends AbstractLoginHandler {
 				throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
 			}
 		}
+	}
+	
+	public Map<String, OAuthResultHandlerFactory> getAllHandlers() {
+	    return SUPPORTED_OAUTH_HANDLER;
 	}
 
     @Override

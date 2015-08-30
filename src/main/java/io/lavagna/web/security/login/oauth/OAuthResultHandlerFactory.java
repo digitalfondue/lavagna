@@ -31,4 +31,7 @@ public interface OAuthResultHandlerFactory {
             Users users, 
             SessionHandler sessionHandler, 
             String errorPage);
+    
+    
+    boolean hasConfigurableBaseUrl();
 }

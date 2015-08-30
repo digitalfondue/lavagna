@@ -60,5 +60,10 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
                 String errorPage) {
             return new BitbucketHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
+
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return false;
+        }
     }; 
 }

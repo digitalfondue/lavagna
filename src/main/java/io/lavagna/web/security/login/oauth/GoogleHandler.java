@@ -81,5 +81,10 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
                 String errorPage) {
             return new GoogleHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
+
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return false;
+        }
     };
 }

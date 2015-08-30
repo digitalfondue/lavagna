@@ -67,5 +67,10 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
                 String errorPage) {
             return new GitlabHandler(serviceBuilder, reqBuilder, provider, callback, users, sessionHandler, errorPage);
         }
+
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return true;
+        }
     };
 }

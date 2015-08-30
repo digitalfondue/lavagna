@@ -35,7 +35,7 @@
 				$scope.oauth = {};
 
 				angular.forEach($scope.oauthProviders, function(p) {
-					$scope.oauth[p] = {};
+					$scope.oauth[p.name] = {};
 				});
 
 				$scope.oauth.baseUrl = oauth.baseUrl || CONTEXT_PATH;
@@ -121,7 +121,7 @@
 			
 			var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers : []};
 			angular.forEach($scope.oauthProviders, function(provider) {
-				addProviderIfPresent(newOauthConf.providers, $scope.oauth[provider], provider);
+				addProviderIfPresent(newOauthConf.providers, $scope.oauth[provider.name], provider.name);
 			});
 			toUpdate.push({first : 'OAUTH_CONFIGURATION', second : JSON.stringify(newOauthConf)});
 			

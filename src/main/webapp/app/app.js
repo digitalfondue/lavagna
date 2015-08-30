@@ -204,7 +204,7 @@
 			url: 'configure-login/',
 			templateUrl: 'partials/admin/configure-login.html',
 			controller: 'AdminConfigureLoginCtrl',
-			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllUnprefixedOauthProviders();}}
+			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
 		}).state('admin.adminManageSmtpConfiguration', {
 			url : 'manage-smtp-configuration/',
 			templateUrl : 'partials/admin/manage-smtp-configuration.html',
