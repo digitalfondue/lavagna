@@ -66,7 +66,7 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
         }
     }
     
-    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
         
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,

@@ -32,6 +32,25 @@ public interface OAuthResultHandlerFactory {
             SessionHandler sessionHandler, 
             String errorPage);
     
-    
+    /** 
+     * Can be used as a configurable base
+     * */
     boolean hasConfigurableBaseUrl();
+    
+    /**
+     * _IS_ a configured instance
+     * */
+    boolean isConfigurableInstance();
+    
+    public abstract class Adapter implements OAuthResultHandlerFactory {
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return false;
+        }
+        
+        @Override
+        public boolean isConfigurableInstance() {
+            return false;
+        }
+    }
 }

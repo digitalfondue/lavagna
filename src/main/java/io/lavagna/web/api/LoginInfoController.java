@@ -77,6 +77,7 @@ public class LoginInfoController {
     public static class OAuthProviderInfo implements Comparable<OAuthProviderInfo> {
         private final String name;
         private final boolean hasConfigurableBaseUrl;
+        private final boolean isConfigurableInstance;
         
         @Override
         public int compareTo(OAuthProviderInfo o) {
@@ -88,7 +89,7 @@ public class LoginInfoController {
     public Collection<OAuthProviderInfo> getAllUnprefixedOauthProviders() {
         List<OAuthProviderInfo> res = new ArrayList<>();
         for(Entry<String, OAuthResultHandlerFactory> e : oauthLogin.getAllHandlers().entrySet()) {
-            res.add(new OAuthProviderInfo(e.getKey(), e.getValue().hasConfigurableBaseUrl()));
+            res.add(new OAuthProviderInfo(e.getKey(), e.getValue().hasConfigurableBaseUrl(), e.getValue().isConfigurableInstance()));
         }
         Collections.sort(res);
         return res;

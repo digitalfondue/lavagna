@@ -50,6 +50,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 	static {
 		Map<String, OAuthResultHandlerFactory> r = new LinkedHashMap<>();
+		//TODO: move the strings directly in the factory.
 		r.put("bitbucket", BitbucketHandler.FACTORY);
 		r.put("gitlab", GitlabHandler.FACTORY);
 		r.put("github", GithubHandler.FACTORY);
@@ -182,12 +183,40 @@ public class OAuthLogin extends AbstractLoginHandler {
 	    if(conf != null && conf.providers != null) {
 	        for(OAuthProvider provider : conf.providers) {
 	            if(provider.isHasCustomBaseAndProfileUrl()) {
-	                res.put(provider.getProvider(), SUPPORTED_OAUTH_HANDLER.get(provider.getBaseProvider()));
+	                res.put(provider.getProvider(), new CustomOAuthResultHandlerFactory(SUPPORTED_OAUTH_HANDLER.get(provider.getBaseProvider())));
 	            }
 	        }
 	    }
 	    
 	    return res;
+	}
+	
+	private static class CustomOAuthResultHandlerFactory implements OAuthResultHandlerFactory {
+	    
+	    private final OAuthResultHandlerFactory factory;
+
+        private CustomOAuthResultHandlerFactory(OAuthResultHandlerFactory factory) {
+	        this.factory = factory;
+	    }
+
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, OAuthProvider oauthProvider,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return factory.build(serviceBuilder, reqBuilder, oauthProvider, callback, users, sessionHandler, errorPage);
+        }
+
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return factory.hasConfigurableBaseUrl();
+        }
+
+        @Override
+        public boolean isConfigurableInstance() {
+            return true;
+        }
+	    
 	}
 
     @Override

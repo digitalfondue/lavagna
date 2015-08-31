@@ -14,10 +14,11 @@
 		$scope.oauthNewProvider = {};
 
 		function loadConfiguration() {
-			$q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus()]).then(function(res) {
+			$q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus(), Admin.findAllOauthProvidersInfo()]).then(function(res) {
 				
 				var conf = res[0]; 
 				var allBaseLogin = res[1];
+				$scope.oauthProviders = res[2];
 			
 				$scope.currentConf = conf;
 				$scope.authMethod = allBaseLogin;
@@ -114,7 +115,11 @@
 		
 		function addProviderIfPresent(list, conf, provider) {
 			if(conf && conf.present) {
-				list.push({provider: provider, apiKey: conf.apiKey, apiSecret : conf.apiSecret});
+				list.push({provider: provider, apiKey: conf.apiKey, apiSecret : conf.apiSecret, 
+					hasCustomBaseAndProfileUrl: conf.hasCustomBaseAndProfileUrl, 
+					baseProvider: conf.baseProvider, 
+					baseUrl: conf.baseUrl,
+					profileUrl: conf.profileUrl});
 			}
 		}
 		

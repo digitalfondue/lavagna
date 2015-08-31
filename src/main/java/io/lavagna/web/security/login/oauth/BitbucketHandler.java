@@ -51,7 +51,7 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
 		}
 	}
 	
-	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
         
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
@@ -59,11 +59,6 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {
             return new BitbucketHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
-        }
-
-        @Override
-        public boolean hasConfigurableBaseUrl() {
-            return false;
         }
     }; 
 }

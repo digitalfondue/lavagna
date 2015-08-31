@@ -72,7 +72,7 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 	}
 	
 	
-    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
         
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
@@ -80,11 +80,6 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {
             return new GoogleHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
-        }
-
-        @Override
-        public boolean hasConfigurableBaseUrl() {
-            return false;
         }
     };
 }

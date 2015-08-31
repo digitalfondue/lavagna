@@ -50,7 +50,7 @@ public class GithubHandler extends OAuthResultHandlerAdapter {
 		}
 	}
 	
-	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory() {
+	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
         
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
@@ -58,11 +58,6 @@ public class GithubHandler extends OAuthResultHandlerAdapter {
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {
             return new GithubHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
-        }
-
-        @Override
-        public boolean hasConfigurableBaseUrl() {
-            return false;
         }
     };
 
