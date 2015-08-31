@@ -43,7 +43,6 @@ import io.lavagna.web.security.login.DemoLogin;
 import io.lavagna.web.security.login.LdapLogin;
 import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 import io.lavagna.web.security.login.OAuthLogin;
-import io.lavagna.web.security.login.OAuthLogin.Handler;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
 import io.lavagna.web.security.login.PersonaLogin.AudienceFetcher;
@@ -235,10 +234,10 @@ public class WebSecurityConfig {
         OauthConfigurationFetcher configurationFetcher = new OauthConfigurationFetcher() {
             @Override
             public OAuthConfiguration fetch() {
-                return Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
+                return Json.GSON.fromJson(configurationRepository.getValueOrNull(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
             }
         };
-        return new OAuthLogin(users, sessionHandler, configurationFetcher, new Handler(new ServiceBuilder()), "/login?error-oauth");
+        return new OAuthLogin(users, sessionHandler, configurationFetcher, new ServiceBuilder(), "/login?error-oauth");
     }
 
     @Lazy

@@ -47,11 +47,11 @@
 	background-color: #309aea;
 }
 
-#lvg-login .btn-gitlab {
-	background-color: #548;
+#lvg-login button[class*="btn-gitlab"] {
+    background-color: #548;
 }
 
-#lvg-login .btn-gitlab:hover {
+#lvg-login button[class*="btn-gitlab"]:hover {
 	background-color: #392e5c;
 }
 

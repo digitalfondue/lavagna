@@ -98,13 +98,14 @@ ul.lvg-label-admin li {
 ===================================
 */
 
-.lvg-oauth-provider {
-	font-weight: bold;
-}
-
 .lvg-oauth-provider-panel {
 	padding-left: 45px;
 	padding-top: 10px;
+}
+
+.lvg-oauth-provider-title {
+	font-weight: bold;
+	padding-bottom:10px;
 }
 
 /* 

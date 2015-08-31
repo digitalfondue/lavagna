@@ -32,6 +32,7 @@ import io.lavagna.web.security.login.oauth.TwitterHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ import org.springframework.util.StringUtils;
 
 public class OAuthLogin extends AbstractLoginHandler {
 
-	static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
+	private static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
 	private static final String USER_PROVIDER = "oauth";
 
 	static {
@@ -59,14 +60,14 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 	private final OauthConfigurationFetcher oauthConfigurationFetcher;
 	private final String errorPage;
-	private final Handler handler;
+	private final ServiceBuilder serviceBuilder;
+	private final OAuthRequestBuilder reqBuilder = new OAuthRequestBuilder();
 
-	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, Handler handler,
-			String errorPage) {
+	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, ServiceBuilder serviceBuilder, String errorPage) {
 		super(users, sessionHandler);
 		this.oauthConfigurationFetcher = oauthConfigurationFetcher;
+		this.serviceBuilder = serviceBuilder;
 		this.errorPage = errorPage;
-		this.handler = handler;
 	}
 
 	@Override
@@ -79,14 +80,14 @@ public class OAuthLogin extends AbstractLoginHandler {
 		if ("POST".equals(req.getMethod())) {
 			OAuthProvider authHandler = conf.matchAuthorization(requestURI);
 			if (authHandler != null) {
-				handler.from(authHandler, conf.baseUrl, users, sessionHandler, errorPage).handleAuthorizationUrl(req, resp);
+				from(authHandler, conf.baseUrl, users, sessionHandler, errorPage).handleAuthorizationUrl(req, resp);
 				return true;
 			}
 		}
 
 		OAuthProvider callbackHandler = conf.matchCallback(requestURI);
 		if (callbackHandler != null) {
-			handler.from(callbackHandler, conf.baseUrl, users, sessionHandler, errorPage).handleCallback(req, resp);
+			from(callbackHandler, conf.baseUrl, users, sessionHandler, errorPage).handleCallback(req, resp);
 			return true;
 		}
 		return false;
@@ -101,7 +102,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 		List<String> loginOauthProviders = new ArrayList<>();
 
-		for (String p : SUPPORTED_OAUTH_HANDLER.keySet()) {
+		for (String p : getAllHandlers().keySet()) {
 			if (conf.hasProvider(p)) {
 				loginOauthProviders.add(p);
 			}
@@ -151,39 +152,48 @@ public class OAuthLogin extends AbstractLoginHandler {
 	}
 	
 	public interface OauthConfigurationFetcher {
+	    /**
+	     * Can return null.
+	     * 
+	     * @return
+	     */
 	    OAuthConfiguration fetch();
 	}
+		
+    public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler, String errorPage) {
+        String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
+        String callbackUrl = baseUrl + "/login/oauth/"+ oauthProvider.getProvider() + "/callback";
+        
+        Map<String, OAuthResultHandlerFactory> handlers = getAllHandlers();
 
-	public static class Handler {
-
-		private final ServiceBuilder serviceBuilder;
-		private final OAuthRequestBuilder reqBuilder = new OAuthRequestBuilder();
-
-		public Handler(ServiceBuilder serviceBuilder) {
-			this.serviceBuilder = serviceBuilder;
-		}
-
-		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler,
-				String errorPage) {
-			String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
-			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.getProvider() + "/callback";
-			if (SUPPORTED_OAUTH_HANDLER.containsKey(oauthProvider.getProvider())) {
-			    return SUPPORTED_OAUTH_HANDLER.get(oauthProvider.getProvider()).build(serviceBuilder, reqBuilder, 
-			            oauthProvider, callbackUrl,users, sessionHandler, errorPage);
-			} else {
-				throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
-			}
-		}
-	}
+        if (handlers.containsKey(oauthProvider.getProvider())) {
+            return handlers.get(oauthProvider.getProvider()).build(serviceBuilder, reqBuilder, oauthProvider, callbackUrl, users, sessionHandler, errorPage);
+        } else {
+            throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
+        }
+    }
+	
 	
 	public Map<String, OAuthResultHandlerFactory> getAllHandlers() {
-	    return SUPPORTED_OAUTH_HANDLER;
+	    
+	    Map<String, OAuthResultHandlerFactory> res = new HashMap<>(SUPPORTED_OAUTH_HANDLER);
+	    
+	    OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
+	    if(conf != null && conf.providers != null) {
+	        for(OAuthProvider provider : conf.providers) {
+	            if(provider.isHasCustomBaseAndProfileUrl()) {
+	                res.put(provider.getProvider(), SUPPORTED_OAUTH_HANDLER.get(provider.getBaseProvider()));
+	            }
+	        }
+	    }
+	    
+	    return res;
 	}
 
     @Override
     public List<String> getAllHandlerNames() {
         List<String> res = new ArrayList<>();
-        for (String sub : SUPPORTED_OAUTH_HANDLER.keySet()) {
+        for (String sub : getAllHandlers().keySet()) {
             res.add(USER_PROVIDER + "." + sub);
         }
         return res;

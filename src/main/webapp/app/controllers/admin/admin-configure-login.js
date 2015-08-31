@@ -10,6 +10,8 @@
 
 	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, $q, Admin, Permission, Notification, User, CONTEXT_PATH, oauthProviders) {
 		$scope.oauthProviders = oauthProviders;
+		
+		$scope.oauthNewProvider = {};
 
 		function loadConfiguration() {
 			$q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus()]).then(function(res) {
@@ -116,13 +118,27 @@
 			}
 		}
 		
-		$scope.saveOauthConfig = function() {
+		$scope.saveOauthConfig = function(oauthNewProvider) {
 			var toUpdate = [];
 			
 			var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers : []};
 			angular.forEach($scope.oauthProviders, function(provider) {
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth[provider.name], provider.name);
 			});
+			
+			
+			if(oauthNewProvider) {
+				newOauthConf.providers.push({
+					provider: oauthNewProvider.type.name + '-'+ oauthNewProvider.name,
+					apiKey: oauthNewProvider.apiKey,
+					apiSecret: oauthNewProvider.apiSecret,
+					hasCustomBaseAndProfileUrl:true,
+					baseProvider: oauthNewProvider.type.name,
+					baseUrl: oauthNewProvider.baseUrl,
+					profileUrl: oauthNewProvider.profileUrl
+				});
+			}
+			
 			toUpdate.push({first : 'OAUTH_CONFIGURATION', second : JSON.stringify(newOauthConf)});
 			
 			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {

@@ -16,6 +16,8 @@
  */
 package io.lavagna.web.security.login.oauth;
 
+import org.springframework.util.StringUtils;
+
 import lombok.Getter;
 
 @Getter
@@ -26,18 +28,20 @@ public class OAuthProvider {
     
     //support for self hosted oauth2 provider (e.g. gitlab)
     private final boolean hasCustomBaseAndProfileUrl;
+    private final String baseProvider;
     private final String baseUrl;
     private final String profileUrl;
     
     public OAuthProvider(String provider, String apiKey, String apiSecret) {
-        this(provider, apiKey, apiSecret, false, null, null);
+        this(provider, apiKey, apiSecret, false, null, null, null);
     }
     
-    public OAuthProvider(String provider, String apiKey, String apiSecret, boolean hasCustomBaseAndProfileUrl, String baseUrl, String profileUrl) {
+    public OAuthProvider(String provider, String apiKey, String apiSecret, boolean hasCustomBaseAndProfileUrl, String baseProvider, String baseUrl, String profileUrl) {
         this.provider = provider;
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
         this.hasCustomBaseAndProfileUrl = hasCustomBaseAndProfileUrl;
+        this.baseProvider = baseProvider;
         this.baseUrl = baseUrl;
         this.profileUrl = profileUrl;
     }
@@ -47,7 +51,7 @@ public class OAuthProvider {
     }
     
     public String profileUrlOrDefault(String defaultProfileUrl) {
-        return hasCustomBaseAndProfileUrl ? profileUrl : defaultProfileUrl;
+        return hasCustomBaseAndProfileUrl && StringUtils.hasText(profileUrl) ? profileUrl : defaultProfileUrl;
     }
 
     public boolean matchAuthorization(String requestURI) {

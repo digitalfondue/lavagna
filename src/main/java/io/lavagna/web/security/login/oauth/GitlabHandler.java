@@ -20,14 +20,15 @@ import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.scribe.builder.ServiceBuilder;
 
 public class GitlabHandler extends OAuthResultHandlerAdapter {
     
     private GitlabHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, OAuthProvider provider, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
         
-        super("oauth.gitlab",//
-                provider.profileUrlOrDefault("https://gitlab.com/api/v3/user"),//
+        super("oauth." + provider.getProvider(),//
+                getProfileUrl(provider),//
                 UserInfo.class,// 
                 "code",//
                 users,//
@@ -40,6 +41,13 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
                     .callback(callback)
                     .build(), 
                 reqBuilder);
+    }
+    
+    // 
+    //
+    // https://gitlab.com/api/v3/user
+    private static String getProfileUrl(OAuthProvider provider) {
+        return provider.profileUrlOrDefault(StringUtils.removeEnd(provider.baseUrlOrDefault("https://gitlab.com"), "/") + "/api/v3/user");
     }
     
     public static class UserInfo implements RemoteUserProfile {
