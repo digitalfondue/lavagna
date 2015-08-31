@@ -10,14 +10,6 @@ This is a high level roadmap. Lavagna has currently:
 
  - support gitlab oauth (gitlab.com AND other gitlab instances (self-hosted and not))
 
-## Expected for 1.0.3 (1 september 2015)
-
- - fix issue [#13](https://github.com/digitalfondue/lavagna/issues/13)
- - iCalendar feed support [done]
- - update to spring 4.2.x  [done]
- - switch connection pool to hikaricp (simplify configuration)  [done]
- - use the browser locale for showing the correct first day of the week in the calendar (sunday or monday)  [done]
-
 ## Expected for 1.1 
 
  - client side refactoring, porting to angular 1.4.x
