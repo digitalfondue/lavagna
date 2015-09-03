@@ -208,7 +208,7 @@
 							<div class="checkbox">
 								<label class="capitalize"><input type="checkbox"
 									data-ng-model="oauth[provider].present"
-									data-ng-required="countSelectedOauth() == 0"> {{provider}}</label>
+									data-ng-required="countSelectedOauth() == 0 && oauthNewProvider.type == null"> {{provider}}</label>
 							</div>
 							<div data-ng-if="oauth[provider].present">
 								<div class="form-group">
@@ -227,6 +227,42 @@
 							</div>
 						</li>
 					</ul>
+                    <div class="or"><hr><span>Or</span></div>
+                    <div>Custom OAuth provider:</div>
+                    <div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.type">Type</label>
+                            <select class="form-control" data-ng-model="oauthNewProvider.type" id="oauthNewProvider.type" ng-required data-ng-options="name for name in oauthCustomizable">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.name">Name</label>
+                            <input class="form-control" type="text" data-ng-model="oauthNewProvider.name" id="oauthNewProvider.name" ng-required="oauthNewProvider.type.length > 0" pattern="[a-z]*" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.baseUrl">Base url</label>
+                            <input class="form-control" type="text" data-ng-model="oauthNewProvider.baseUrl" id="oauthNewProvider.baseUrl" ng-required="oauthNewProvider.type.length > 0">
+                        </div>
+                        <!-- 
+                        <div class="form-group">
+                            <label for="oauthNewProvider.profileUrl">Profile url</label>
+                            <input class="form-control" type="text" data-ng-model="oauthNewProvider.profileUrl" id="oauthNewProvider.profileUrl">
+                        </div> 
+                        -->
+                        <div class="form-group">
+                            <label for="oauthNewProvider.apiKey">Api Key</label>
+                            <input class="form-control" type="text" data-ng-model="oauthNewProvider.apiKey" id="oauthNewProvider.apiKey" ng-required="oauthNewProvider.type.length > 0">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.apiSecret">Api Secret</label>
+                            <input class="form-control" type="text" data-ng-model="oauthNewProvider.apiSecret" id="oauthNewProvider.apiSecret" ng-required="oauthNewProvider.type.length > 0">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.callback">Callback url is:</label>
+                            <input id="oauthNewProvider.callback" class="form-control form-selectable" type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type}}-{{oauthNewProvider.name}}/callback">
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<div  class="buttons">
@@ -284,6 +320,7 @@
 						<li>Base url: {{selectedNewOauthConf.baseUrl}}</li>
 						<li data-ng-repeat="v in selectedNewOauthConf.providers" style="margin-top:10px;">
 							<div>Provider: {{v.provider}}</div>
+                            <div ng-if="v.hasCustomBaseAndProfileUrl">Base url for custom provider: {{v.baseUrl}}</div>
 							<div>Api Key: {{v.apiKey}}</div>
 							<div>Api Secret: {{v.apiSecret}}</div>
 						</li>
