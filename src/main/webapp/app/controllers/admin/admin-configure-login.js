@@ -14,7 +14,7 @@
 		$scope.oauthNewProvider = {};
 
 		function loadConfiguration() {
-			$q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus(), Admin.findAllOauthProvidersInfo()]).then(function(res) {
+			return $q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus(), Admin.findAllOauthProvidersInfo()]).then(function(res) {
 				
 				var conf = res[0]; 
 				var allBaseLogin = res[1];
@@ -123,7 +123,7 @@
 			}
 		}
 		
-		$scope.saveOauthConfig = function(oauthNewProvider) {
+		$scope.saveOauthConfig = function saveOauthConfig(oauthNewProvider) {
 			var toUpdate = [];
 			
 			var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers : []};
@@ -146,15 +146,41 @@
 			
 			toUpdate.push({first : 'OAUTH_CONFIGURATION', second : JSON.stringify(newOauthConf)});
 			
-			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
+			return Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
 				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveOAuthConfig.success'}, false);
 			}, function(error) {
 				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
 			}).then(loadConfiguration);
-		};
+		}
+		
+		
+		
+		$scope.openOauthAddNewModal = function() {
+			$modal.open({
+				templateUrl: 'partials/admin/fragments/add-oauth-provider-modal.html',
+				size: 'lg',
+				controller: ['$scope', '$modalInstance', function($modalScope, $modalInstance) {
+					
+					$modalScope.oauth = $scope.oauth;
+
+					$modalScope.oauthProviders = $scope.oauthProviders;
+					
+					$modalScope.saveOauthConfig = function(toSave) {
+						$scope.saveOauthConfig(toSave).then(function() {
+							$modalInstance.close('done');
+						});
+					}
+					
+					$modalScope.close = function() {
+						$modalInstance.close('done');
+					}
+				}],
+				windowClass: 'lavagna-modal'
+			});
+		}
 		
 		$scope.openLdapConfigModal = function() {
-			var modalInstance = $modal.open({
+			$modal.open({
 				templateUrl: 'partials/admin/fragments/ldap-check-modal.html',
 				controller: function($scope, $modalInstance, ldapConfig) {
 					$scope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
