@@ -39,7 +39,10 @@ import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -127,6 +130,21 @@ public class NotificationServiceTest {
 
 		assignedLabel = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
 		watchedLabel = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+	}
+	
+	@Test
+	public void testCheck() {
+	    Set<Integer> noUsersToNotify = notificationService.check(DateUtils.addDays(new Date(), -1));
+	    Assert.assertTrue(noUsersToNotify.isEmpty());
+	    
+	    // assign card
+	    labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
+                null, null, null, user.getId(), null), user, new Date());
+	    
+	    cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
+	    
+	    notificationService.check(DateUtils.addDays(new Date(), 1));
+	    Assert.assertTrue(notificationService.check(DateUtils.addDays(new Date(), 2)).contains(user.getId()));
 	}
 
 	@Test

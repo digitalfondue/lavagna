@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3 (2015-09-01)
+
+ - fix issue [#13](https://github.com/digitalfondue/lavagna/issues/13)
+ - iCalendar feed support
+ - update to spring 4.2.x
+ - switch connection pool to hikaricp (simplify configuration)
+ - use the browser locale for showing the correct first day of the week in the calendar (sunday or monday)
+
 ## 1.0.2 (2015-08-14)
 
  - Tomcat 7/8 fix as found in issue [#12](https://github.com/digitalfondue/lavagna/issues/12)

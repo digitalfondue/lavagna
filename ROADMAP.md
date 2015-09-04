@@ -4,13 +4,11 @@ This is a high level roadmap. Lavagna has currently:
 
  - a stable 1.0.x branch where small fixes and features will be added. Some of the work done in the master branch will be backported.
  - the current master (1.1) where the big features are developed
+ 
+ 
+## Expected for 1.0.4 (mid september - october 2015)
 
-## Expected for 1.0.3 (~september 2015)
-
- - iCalendar feed support [merged, still WIP]
- - update to spring 4.2.x  [done]
- - switch connection pool to hikaricp (simplify configuration)  [done]
- - use the browser locale for showing the correct first day of the week in the calendar (sunday or monday)  [done]
+ - support gitlab oauth (gitlab.com AND other gitlab instances (self-hosted and not))
 
 ## Expected for 1.1 
 
@@ -18,12 +16,12 @@ This is a high level roadmap. Lavagna has currently:
  - decent i18n
  - improve the UI/UX
  - enable Content-Security-Policy
- - switch the authentication manager to spring-security or apache shiro
- - support gitlab oauth 
+ - support gitlab oauth
  - support internal account handling
  - support commit log parsing (git, svn (?))
  - webhooks support
+ - refactor the authentication manager: cleanup + simplification [WIP]
+ - iCalendar feed support [done]
  - update to spring 4.2.x [done]
  - switch connection pool to hikaricp [done]
-
-  
+ 

@@ -19,14 +19,11 @@ package io.lavagna.web.security.login;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.model.User;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -48,7 +45,9 @@ import org.springframework.web.context.WebApplicationContext;
 public class DemoLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
+	@Mock
+    private SessionHandler sessionHandler;
 	@Mock
 	private ServletContext context;
 	@Mock
@@ -60,26 +59,19 @@ public class DemoLoginTest {
 	@Mock
 	private WebApplicationContext webApplicationContext;
 	@Mock
-	private ConfigurationRepository configurationRepository;
-	@Mock
 	private User user;
-
-	private final String baseUrl = "http://test.com:8444/";
 
 	private String errorPage = "errorPage";
 	private DemoLogin dl;
 
 	@Before
 	public void prepare() {
-		dl = new DemoLogin(userRepository, errorPage);
+		dl = new DemoLogin(users, sessionHandler, errorPage);
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getServletContext()).thenReturn(context);
 		when(context.getContextPath()).thenReturn("");
 
-		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webApplicationContext);
-		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
-		when(configurationRepository.getValue(Key.BASE_APPLICATION_URL)).thenReturn(baseUrl);
+		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
 
 	@Test
@@ -90,17 +82,20 @@ public class DemoLoginTest {
 
 	@Test
 	public void testMissingUserNameAndPassword() throws IOException {
-		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+	    when(req.getContextPath()).thenReturn("");
+	    Assert.assertTrue(dl.doAction(req, resp));
+		
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
 	public void testUserNotEnabled() throws IOException {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(false);
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(false);
+		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
@@ -108,23 +103,32 @@ public class DemoLoginTest {
 		// POST, username and password not equal
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("not same as user");
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(req.getContextPath()).thenReturn("");
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl + errorPage);
+		verify(resp).sendRedirect("/" + errorPage);
 	}
 
 	@Test
 	public void testSuccess() throws IOException {
-		when(userRepository.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(
-				new User(42, DemoLogin.USER_PROVIDER, "username", null, null, true, true, new Date()));
+		when(users.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(new User() { 
+		    public int getId() {
+		        return 42;
+		    }
+		    
+		    public boolean isAnonymous() {
+		        return false;
+		    }
+		});
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
 		when(req.getSession()).thenReturn(session);
 		when(req.getSession(true)).thenReturn(session);
-		when(userRepository.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
+		when(req.getContextPath()).thenReturn("/context-path");
 		Assert.assertTrue(dl.doAction(req, resp));
-		verify(resp).sendRedirect(baseUrl);
-		verify(req.getSession()).invalidate();
+		verify(resp).sendRedirect("/context-path/");
+		verify(sessionHandler).setUser(42, false, req, resp);
 	}
 
 	@Test
@@ -133,7 +137,7 @@ public class DemoLoginTest {
 		Assert.assertTrue(dl.handleLogout(req, resp));
 
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		verify(session).invalidate();
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 	@Test
@@ -145,11 +149,10 @@ public class DemoLoginTest {
 		when(req.getSession()).thenReturn(unauthMockSession, mockSession);
 		when(req.getSession(true)).thenReturn(mockSession);
 
-		UserSession.setUser(user, req, resp, userRepository);
 
 		Assert.assertTrue(dl.handleLogout(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		Assert.assertTrue(mockSession.isInvalid());
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 	@Test

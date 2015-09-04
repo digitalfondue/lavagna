@@ -17,7 +17,7 @@ Relevant urls:
 
 Procfile content:
 --------------------
-web:    java $JAVA_OPTS -Ddatasource.dialect=PGSQL -Ddatasource.driver=org.postgresql.Driver -Ddatasource.url=$DATABASE_URL -Dspring.profiles.active=prod -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
+web:    java $JAVA_OPTS -Ddatasource.dialect=PGSQL -Ddatasource.url=$DATABASE_URL -Dspring.profiles.active=prod -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
 --------------------
 
 system.properties content:

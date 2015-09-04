@@ -20,6 +20,7 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
@@ -54,133 +55,154 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CalendarServiceTest {
 
-	@Autowired
-	private ConfigurationRepository configurationRepository;
-	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private BoardRepository boardRepository;
-	@Autowired
-	private BoardColumnRepository boardColumnRepository;
-	@Autowired
-	private PermissionService permissionService;
-	@Autowired
-	private CardService cardService;
-	@Autowired
-	private CalendarService calendarService;
-	@Autowired
-	private LabelService labelService;
-	@Autowired
-	private CardLabelRepository cardLabelRepository;
+    @Autowired
+    private ConfigurationRepository configurationRepository;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BoardRepository boardRepository;
+    @Autowired
+    private BoardColumnRepository boardColumnRepository;
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private CardDataService cardDataService;
+    @Autowired
+    private CalendarService calendarService;
+    @Autowired
+    private LabelService labelService;
+    @Autowired
+    private CardLabelRepository cardLabelRepository;
 
-	private Project project;
+    private Project project;
 
-	private BoardColumn col;
+    private BoardColumn col;
 
-	private User user;
+    private User user;
 
-	@Before
-	public void prepare() {
+    @Before
+    public void prepare() {
 
-		Helper.createUser(userRepository, "test", "test-user");
-		user = userRepository.findUserByName("test", "test-user");
+        Helper.createUser(userRepository, "test", "test-user");
+        user = userRepository.findUserByName("test", "test-user");
 
-		project = projectService.create("test", "TEST", "desc");
-		Board board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
+        project = projectService.create("test", "TEST", "desc");
+        Board board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
 
-		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
-		for (BoardColumnDefinition def : definitions) {
-			if (def.getValue() == ColumnDefinition.OPEN) {
-				col = boardColumnRepository.addColumnToBoard("col1", def.getId(), BoardColumn.BoardColumnLocation.BOARD,
-						board.getId());
-			}
-		}
-		Assert.assertEquals(BoardColumn.BoardColumnLocation.BOARD, col.getLocation());
-		Assert.assertEquals(ColumnDefinition.OPEN, col.getStatus());
+        List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
+        for (BoardColumnDefinition def : definitions) {
+            if (def.getValue() == ColumnDefinition.OPEN) {
+                col = boardColumnRepository.addColumnToBoard("col1", def.getId(), BoardColumn.BoardColumnLocation.BOARD,
+                    board.getId());
+            }
+        }
+        Assert.assertEquals(BoardColumn.BoardColumnLocation.BOARD, col.getLocation());
+        Assert.assertEquals(ColumnDefinition.OPEN, col.getStatus());
 
-		Role r = new Role("TEST");
-		permissionService.createRole(r);
-		permissionService.updatePermissionsToRole(r, EnumSet.of(Permission.READ));
-		permissionService.assignRolesToUsers(Collections.singletonMap(r, Collections.singleton(user.getId())));
+        Role r = new Role("TEST");
+        permissionService.createRole(r);
+        permissionService.updatePermissionsToRole(r, EnumSet.of(Permission.READ));
+        permissionService.assignRolesToUsers(Collections.singletonMap(r, Collections.singleton(user.getId())));
 
-		configurationRepository.insert(Key.BASE_APPLICATION_URL, "http://localhost");
-	}
+        configurationRepository.insert(Key.BASE_APPLICATION_URL, "http://localhost");
+    }
 
-	@Test
-	public void testTokenCreation() {
-		String token = calendarService.findCalendarTokenFromUser(user);
-		Assert.assertNotNull(token);
-		Assert.assertEquals(64, token.length());
-	}
+    @Test
+    public void testTokenCreation() {
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+        Assert.assertNotNull(ci.getToken());
+        Assert.assertEquals(64, ci.getToken().length());
+    }
 
-	@Test
-	public void testDoubleFindTokenCreation() {
-		String token = calendarService.findCalendarTokenFromUser(user);
-		String secondToken = calendarService.findCalendarTokenFromUser(user);
+    @Test
+    public void testDoubleFindTokenCreation() {
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+        CalendarInfo secondCi = calendarService.findCalendarInfoFromUser(user);
 
-		Assert.assertNotNull(secondToken);
-		Assert.assertEquals(64, secondToken.length());
-		Assert.assertEquals(secondToken, token);
-	}
+        Assert.assertNotNull(secondCi.getToken());
+        Assert.assertEquals(64, secondCi.getToken().length());
+        Assert.assertEquals(secondCi.getToken(), ci.getToken());
+    }
 
-	@Test
-	public void testDeleteTokenCreation() {
-		String token = calendarService.findCalendarTokenFromUser(user);
-		userRepository.deleteCalendarToken(user);
-		String newToken = calendarService.findCalendarTokenFromUser(user);
+    @Test
+    public void testDeleteTokenCreation() {
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+        userRepository.deleteCalendarToken(user);
+        CalendarInfo newCi = calendarService.findCalendarInfoFromUser(user);
 
-		Assert.assertNotNull(newToken);
-		Assert.assertEquals(64, newToken.length());
-		Assert.assertNotEquals(newToken, token);
-	}
+        Assert.assertNotNull(newCi.getToken());
+        Assert.assertEquals(64, newCi.getToken().length());
+        Assert.assertNotEquals(newCi.getToken(), ci.getToken());
+    }
 
-	@Test(expected = SecurityException.class)
-	public void testGetUserCalendarWithWrongToken() throws URISyntaxException {
-		calendarService.getUserCalendar("abcd");
-	}
+    @Test
+    public void testSetCalendarFeedDisabled() {
+        Assert.assertFalse(calendarService.findCalendarInfoFromUser(user).isDisabled());
 
-	@Test
-	public void testGetUserCalendarOnEmpty() throws URISyntaxException {
-		String token = calendarService.findCalendarTokenFromUser(user);
+        calendarService.setCalendarFeedDisabled(user, true);
 
-		Calendar calendar = calendarService.getUserCalendar(token);
+        Assert.assertTrue(calendarService.findCalendarInfoFromUser(user).isDisabled());
+    }
 
-		Assert.assertNotNull(calendar);
-		Assert.assertEquals(0, calendar.getComponents().size());
-	}
+    @Test(expected = SecurityException.class)
+    public void testGetUserCalendarWithWrongToken() throws URISyntaxException {
+        calendarService.getUserCalendar("abcd");
+    }
 
-	@Test
-	public void testGetUserCalendar() throws URISyntaxException {
+    @Test
+    public void testGetUserCalendarOnEmpty() throws URISyntaxException {
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
 
-		Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        Calendar calendar = calendarService.getUserCalendar(ci.getToken());
 
-		Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
+        Assert.assertNotNull(calendar);
+        Assert.assertEquals(0, calendar.getComponents().size());
+    }
 
-		Date now = new Date();
+    @Test(expected = SecurityException.class)
+    public void testGetUserCalendarOnDisabled() throws URISyntaxException {
 
-		CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
-		labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
-				user, now);
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+        calendarService.setCalendarFeedDisabled(user, true);
 
-		CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
-		labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
-				user, now);
+        calendarService.getUserCalendar(ci.getToken());
+    }
 
-		String token = calendarService.findCalendarTokenFromUser(user);
+    @Test
+    public void testGetUserCalendar() throws URISyntaxException {
 
-		CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
-		labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
-		labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+        Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user);
 
-		Calendar calendar = calendarService.getUserCalendar(token);
+        Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
 
-		Assert.assertNotNull(calendar);
-		Assert.assertEquals(2, calendar.getComponents().size());
+        Date now = new Date();
 
-		VEvent event1 = (VEvent) calendar.getComponents().get(0);
-		Assert.assertEquals("Due date: card1", event1.getSummary().getValue());
-		Assert.assertEquals("http://localhost/TEST/TEST-BRD-1", event1.getUrl().getUri().toASCIIString());
-	}
+        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
+            user, now);
+
+        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
+            user, now);
+
+        CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
+
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+        labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+
+        Calendar calendar = calendarService.getUserCalendar(ci.getToken());
+
+        Assert.assertNotNull(calendar);
+        Assert.assertEquals(2, calendar.getComponents().size());
+
+        VEvent event1 = (VEvent) calendar.getComponents().get(0);
+        Assert.assertEquals("TEST-BRD-1 card1 (OPEN)", event1.getSummary().getValue());
+        Assert.assertEquals("http://localhost/TEST/TEST-BRD-1", event1.getUrl().getUri().toASCIIString());
+    }
 }

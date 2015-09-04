@@ -16,14 +16,15 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -62,16 +63,15 @@ public class PersonaLogin extends AbstractLoginHandler {
 
 	static final String USER_PROVIDER = "persona";
 
-	private final ConfigurationRepository configurationRepository;
+	private final AudienceFetcher audienceFetcher;
 	private final RestTemplate restTemplate;
 	private final String logoutPage;
 
-	public PersonaLogin(UserRepository userRepository, ConfigurationRepository configurationRepository,
-			RestTemplate restTemplate, String logoutPage) {
+	public PersonaLogin(Users users, SessionHandler sessionHandler, AudienceFetcher audienceFetcher, RestTemplate restTemplate, String logoutPage) {
 
-		super(userRepository);
+		super(users, sessionHandler);
 
-		this.configurationRepository = configurationRepository;
+		this.audienceFetcher = audienceFetcher;
 		this.logoutPage = logoutPage;
 		this.restTemplate = restTemplate;
 	}
@@ -84,19 +84,19 @@ public class PersonaLogin extends AbstractLoginHandler {
 			return true;
 		}
 
-		String audience = configurationRepository.getValue(Key.PERSONA_AUDIENCE);
+		String audience = audienceFetcher.fetch();
 
 		MultiValueMap<String, String> toPost = new LinkedMultiValueMap<>();
 		toPost.add("assertion", req.getParameter("assertion"));
 		toPost.add("audience", audience);
-		VerifierResponse verifier = restTemplate.postForObject("https://verifier.login.persona.org/verify", toPost,
-				VerifierResponse.class);
+		VerifierResponse verifier = restTemplate.postForObject("https://verifier.login.persona.org/verify", toPost, VerifierResponse.class);
 
-		if ("okay".equals(verifier.status) && audience.equals(verifier.audience)
-				&& userRepository.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
-			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"));
-			UserSession
-					.setUser(userRepository.findUserByName(USER_PROVIDER, verifier.email), req, resp, userRepository);
+		if ("okay".equals(verifier.status) && audience.equals(verifier.audience) && users.userExistsAndEnabled(USER_PROVIDER, verifier.email)) {
+			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
+			
+			User user = users.findUserByName(USER_PROVIDER, verifier.email);
+			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
+			
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
 			JsonObject jsonObject = new JsonObject();
@@ -141,7 +141,7 @@ public class PersonaLogin extends AbstractLoginHandler {
 	@Override
 	public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		if ("POST".equalsIgnoreCase(req.getMethod())) {
-			UserSession.invalidate(req, resp, userRepository);
+		    sessionHandler.invalidate(req, resp);
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
 			JsonObject jsonObject = new JsonObject();
@@ -159,5 +159,19 @@ public class PersonaLogin extends AbstractLoginHandler {
 		r.put("loginPersona", "block");
 		return r;
 	}
+	
+	public interface AudienceFetcher {
+	    String fetch();
+	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 
 }

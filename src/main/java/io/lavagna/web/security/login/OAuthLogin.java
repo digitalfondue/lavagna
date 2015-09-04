@@ -16,21 +16,23 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.common.Json;
-import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
+import io.lavagna.web.security.login.oauth.GitlabHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
+import io.lavagna.web.security.login.oauth.OAuthProvider;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
+import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
 import io.lavagna.web.security.login.oauth.TwitterHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,55 +40,55 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.scribe.builder.ServiceBuilder;
 import org.springframework.util.StringUtils;
 
 public class OAuthLogin extends AbstractLoginHandler {
 
-	static final Map<String, Class<? extends OAuthResultHandler>> SUPPORTED_OAUTH_HANDLER;
+	private static final Map<String, OAuthResultHandlerFactory> SUPPORTED_OAUTH_HANDLER;
+	private static final String USER_PROVIDER = "oauth";
 
 	static {
-		Map<String, Class<? extends OAuthResultHandler>> r = new LinkedHashMap<>();
-		r.put("bitbucket", BitbucketHandler.class);
-		r.put("github", GithubHandler.class);
-		r.put("google", GoogleHandler.class);
-		r.put("twitter", TwitterHandler.class);
+		Map<String, OAuthResultHandlerFactory> r = new LinkedHashMap<>();
+		//TODO: move the strings directly in the factory.
+		r.put("bitbucket", BitbucketHandler.FACTORY);
+		r.put("gitlab", GitlabHandler.FACTORY);
+		r.put("github", GithubHandler.FACTORY);
+		r.put("google", GoogleHandler.FACTORY);
+		r.put("twitter", TwitterHandler.FACTORY);
 		SUPPORTED_OAUTH_HANDLER = Collections.unmodifiableMap(r);
 	}
 
-	private final ConfigurationRepository configurationRepository;
+	private final OauthConfigurationFetcher oauthConfigurationFetcher;
 	private final String errorPage;
-	private final Handler handler;
+	private final ServiceBuilder serviceBuilder;
+	private final OAuthRequestBuilder reqBuilder = new OAuthRequestBuilder();
 
-	public OAuthLogin(UserRepository userRepository, ConfigurationRepository configurationRepository, Handler handler,
-			String errorPage) {
-		super(userRepository);
-		this.configurationRepository = configurationRepository;
+	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, ServiceBuilder serviceBuilder, String errorPage) {
+		super(users, sessionHandler);
+		this.oauthConfigurationFetcher = oauthConfigurationFetcher;
+		this.serviceBuilder = serviceBuilder;
 		this.errorPage = errorPage;
-		this.handler = handler;
-
 	}
 
 	@Override
 	public boolean doAction(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION),
-				OAuthConfiguration.class);
+		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
 
 		String requestURI = req.getRequestURI();
 
 		if ("POST".equals(req.getMethod())) {
 			OAuthProvider authHandler = conf.matchAuthorization(requestURI);
 			if (authHandler != null) {
-				handler.from(authHandler, conf.baseUrl, userRepository, errorPage).handleAuthorizationUrl(req, resp);
+				from(authHandler, conf.baseUrl, users, sessionHandler, errorPage).handleAuthorizationUrl(req, resp);
 				return true;
 			}
 		}
 
 		OAuthProvider callbackHandler = conf.matchCallback(requestURI);
 		if (callbackHandler != null) {
-			handler.from(callbackHandler, conf.baseUrl, userRepository, errorPage).handleCallback(req, resp);
+			from(callbackHandler, conf.baseUrl, users, sessionHandler, errorPage).handleCallback(req, resp);
 			return true;
 		}
 		return false;
@@ -97,12 +99,11 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 		Map<String, Object> m = super.modelForLoginPage(request);
 
-		OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValue(Key.OAUTH_CONFIGURATION),
-				OAuthConfiguration.class);
+		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
 
 		List<String> loginOauthProviders = new ArrayList<>();
 
-		for (String p : SUPPORTED_OAUTH_HANDLER.keySet()) {
+		for (String p : getAllHandlers().keySet()) {
 			if (conf.hasProvider(p)) {
 				loginOauthProviders.add(p);
 			}
@@ -113,13 +114,19 @@ public class OAuthLogin extends AbstractLoginHandler {
 		return m;
 	}
 
-	static class OAuthConfiguration {
-		String baseUrl;
-		List<OAuthProvider> providers;
+	public static class OAuthConfiguration {
+	    
+		private final String baseUrl;
+		private final List<OAuthProvider> providers;
+		
+		public OAuthConfiguration(String baseUrl, List<OAuthProvider> providers) {
+		    this.baseUrl = baseUrl;
+		    this.providers = providers;
+		}
 
 		public boolean hasProvider(String provider) {
 			for (OAuthProvider o : providers) {
-				if (provider.equals(o.provider)) {
+				if (provider.equals(o.getProvider())) {
 					return true;
 				}
 			}
@@ -144,46 +151,85 @@ public class OAuthLogin extends AbstractLoginHandler {
 			return null;
 		}
 	}
+	
+	public interface OauthConfigurationFetcher {
+	    /**
+	     * Can return null.
+	     * 
+	     * @return
+	     */
+	    OAuthConfiguration fetch();
+	}
+		
+    public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler, String errorPage) {
+        String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
+        String callbackUrl = baseUrl + "/login/oauth/"+ oauthProvider.getProvider() + "/callback";
+        
+        Map<String, OAuthResultHandlerFactory> handlers = getAllHandlers();
 
-	public static class Handler {
+        if (handlers.containsKey(oauthProvider.getProvider())) {
+            return handlers.get(oauthProvider.getProvider()).build(serviceBuilder, reqBuilder, oauthProvider, callbackUrl, users, sessionHandler, errorPage);
+        } else {
+            throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
+        }
+    }
+	
+	
+	public Map<String, OAuthResultHandlerFactory> getAllHandlers() {
+	    
+	    Map<String, OAuthResultHandlerFactory> res = new HashMap<>(SUPPORTED_OAUTH_HANDLER);
+	    
+	    OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
+	    if(conf != null && conf.providers != null) {
+	        for(OAuthProvider provider : conf.providers) {
+	            if(provider.isHasCustomBaseAndProfileUrl()) {
+	                res.put(provider.getProvider(), new CustomOAuthResultHandlerFactory(SUPPORTED_OAUTH_HANDLER.get(provider.getBaseProvider())));
+	            }
+	        }
+	    }
+	    
+	    return res;
+	}
+	
+	private static class CustomOAuthResultHandlerFactory implements OAuthResultHandlerFactory {
+	    
+	    private final OAuthResultHandlerFactory factory;
 
-		private final ServiceBuilder serviceBuilder;
-		private final OAuthRequestBuilder reqBuilder = new OAuthRequestBuilder();
+        private CustomOAuthResultHandlerFactory(OAuthResultHandlerFactory factory) {
+	        this.factory = factory;
+	    }
 
-		public Handler(ServiceBuilder serviceBuilder) {
-			this.serviceBuilder = serviceBuilder;
-		}
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, OAuthProvider oauthProvider,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return factory.build(serviceBuilder, reqBuilder, oauthProvider, callback, users, sessionHandler, errorPage);
+        }
 
-		// TODO: refactor
-		public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, UserRepository userRepository,
-				String errorPage) {
-			String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
-			String callbackUrl = baseUrl + "/login/oauth/" + oauthProvider.provider + "/callback";
-			if (SUPPORTED_OAUTH_HANDLER.containsKey(oauthProvider.provider)) {
-				try {
-					return ConstructorUtils.invokeConstructor(SUPPORTED_OAUTH_HANDLER.get(oauthProvider.provider),
-							serviceBuilder, reqBuilder, oauthProvider.apiKey, oauthProvider.apiSecret, callbackUrl,
-							userRepository, errorPage);
-				} catch (ReflectiveOperationException iea) {
-					throw new IllegalStateException(iea);
-				}
-			} else {
-				throw new IllegalArgumentException("type " + oauthProvider.provider + " is not supported");
-			}
-		}
+        @Override
+        public boolean hasConfigurableBaseUrl() {
+            return factory.hasConfigurableBaseUrl();
+        }
+
+        @Override
+        public boolean isConfigurableInstance() {
+            return true;
+        }
+	    
 	}
 
-	static class OAuthProvider {
-		String provider;// google, github, bitbucket, twitter
-		String apiKey;
-		String apiSecret;
+    @Override
+    public List<String> getAllHandlerNames() {
+        List<String> res = new ArrayList<>();
+        for (String sub : getAllHandlers().keySet()) {
+            res.add(USER_PROVIDER + "." + sub);
+        }
+        return res;
+    }
 
-		public boolean matchAuthorization(String requestURI) {
-			return requestURI.endsWith("login/oauth/" + provider);
-		}
-
-		public boolean matchCallback(String requestURI) {
-			return requestURI.endsWith("login/oauth/" + provider + "/callback");
-		}
-	}
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 }

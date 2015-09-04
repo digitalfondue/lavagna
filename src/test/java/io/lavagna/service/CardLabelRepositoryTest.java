@@ -27,15 +27,20 @@ import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.ListValueMetadata;
+import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
+import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -192,26 +197,113 @@ public class CardLabelRepositoryTest {
 		label = new Label("label-new-2", false, CardLabel.LabelType.TIMESTAMP, inserted.getColor());
 		cardLabelRepository.updateLabel(inserted.getId(), label);
 	}
+	
+	@Test
+    public void testFindLabelValueByLabelAndValue() {
+	    CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.STRING,
+                CardLabel.LabelDomain.USER, "label1", 0);
+	    
+	    CardLabelValue value = cardLabelRepository.addLabelValueToCard(label, card.getId(), new CardLabelValue.LabelValue("my string"));
+	    
+	    List<CardLabelValue> found = cardLabelRepository.findLabelValueByLabelAndValue(card.getId(), label, new CardLabelValue.LabelValue("my string"));
+	    
+	    Assert.assertEquals(1, found.size());
+	    
+	    Assert.assertEquals(value.getCardLabelValueId(), found.get(0).getCardLabelValueId());
+	    Assert.assertEquals(value.getValue(), found.get(0).getValue());
+    }
+	
+	@Test
+	public void testFindUserLabelNameByGlobalRead() {
+	    CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.STRING,
+                CardLabel.LabelDomain.USER, "label1", 0);
+	    
+	    UserWithPermission uwpGlobalRead = new UserWithPermission(user, EnumSet.of(Permission.READ),
+	            Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+	    
+	    List<String> foundLabels = cardLabelRepository.findUserLabelNameBy("label1", project.getId(), uwpGlobalRead);
+	    Assert.assertEquals(1, foundLabels.size());
+	    Assert.assertEquals(label.getName(), foundLabels.get(0));
+        
+        List<String> foundLabels2 = cardLabelRepository.findUserLabelNameBy("label1", null, uwpGlobalRead);
+        Assert.assertEquals(1, foundLabels2.size());
+        Assert.assertEquals(label.getName(), foundLabels2.get(0));
+	}
+	
+	@Test
+    public void testFindUserLabelNameByProjectRead() {
+	    
+	    CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.STRING,
+                CardLabel.LabelDomain.USER, "label1", 0);
+	    
+	    UserWithPermission uwpProjectRead = new UserWithPermission(user, EnumSet.noneOf(Permission.class),
+                Collections.<String, Set<Permission>>singletonMap(project.getShortName(), EnumSet.of(Permission.READ)), 
+                Collections.<Integer, Set<Permission>>singletonMap(project.getId(), EnumSet.of(Permission.READ)));
+	    
+	    List<String> foundLabels1 = cardLabelRepository.findUserLabelNameBy("label1", project.getId(), uwpProjectRead);
+        Assert.assertEquals(1, foundLabels1.size());
+        Assert.assertEquals(label.getName(), foundLabels1.get(0));
+        
+        List<String> foundLabels2 = cardLabelRepository.findUserLabelNameBy("label1", null, uwpProjectRead);
+        Assert.assertEquals(1, foundLabels2.size());
+        Assert.assertEquals(label.getName(), foundLabels2.get(0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+    public void testFindUserLabelNameByProjectNoReadWithProjectId() {
+	    
+	    cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.STRING, CardLabel.LabelDomain.USER, "label1", 0);
+	    
+	    UserWithPermission noRead = new UserWithPermission(user, EnumSet.noneOf(Permission.class),
+                Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+	    cardLabelRepository.findUserLabelNameBy("label1", project.getId(), noRead);
+    }
+	
+	
+	//TODO: check use and correctness for this case
+	@Test
+    public void testFindUserLabelNameByProjectNoReadWithProjectIdNull() {
+	    
+	    cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.STRING, LabelDomain.USER, "label1", 0);
+	    
+        UserWithPermission noRead = new UserWithPermission(user, EnumSet.noneOf(Permission.class),
+                Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+        Assert.assertEquals(1, cardLabelRepository.findUserLabelNameBy("label1", null, noRead).size());
+    }
 
 	@Test
 	public void testAddLabelListValue() {
-		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
-				CardLabel.LabelDomain.USER, "listlabel", 0);
+		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST, LabelDomain.USER, "listlabel", 0);
 
 		Assert.assertEquals(0, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
 
-		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "1");
+		LabelListValue llv = cardLabelRepository.addLabelListValue(label.getId(), "123");
 		cardLabelRepository.addLabelValueToCard(label, card.getId(), new CardLabelValue.LabelValue(null, null, null,
 				null, null, llv.getId()));
+		
+		cardLabelRepository.createLabelListMetadata(llv.getId(), "MY_KEY", "MY_METADATA");
 
 		Assert.assertEquals(1, cardLabelRepository.findListValuesByLabelId(label.getId()).size());
-		Assert.assertEquals("1", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getValue());
+		Assert.assertEquals("123", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getValue());
+		
+		Assert.assertEquals("MY_METADATA", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getMetadata().get("MY_KEY"));
 		
 		cardLabelRepository.updateLabelListValue(llv.newValue("MY_NEW_VALUE"));
 		
 		Assert.assertEquals("MY_NEW_VALUE", cardLabelRepository.findListValuesByLabelId(label.getId()).get(0).getValue());
+		
+		
+		//
+		UserWithPermission uwpGlobalRead = new UserWithPermission(user, EnumSet.of(Permission.READ),
+                Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+		Assert.assertEquals(1, cardLabelRepository.findListValuesBy(LabelDomain.USER, "listlabel", "MY_NEW_VALUE", project.getId(), uwpGlobalRead).size());
+		Assert.assertEquals("MY_NEW_VALUE", cardLabelRepository.findListValuesBy(LabelDomain.USER, "listlabel", "MY_NEW_VALUE", project.getId(), uwpGlobalRead).get(0));
+		
+		
+		Assert.assertEquals(1, cardLabelRepository.findListValuesBy(LabelDomain.USER, "listlabel", "MY_NEW_VALUE", null, uwpGlobalRead).size());
+        Assert.assertEquals("MY_NEW_VALUE", cardLabelRepository.findListValuesBy(LabelDomain.USER, "listlabel", "MY_NEW_VALUE", null, uwpGlobalRead).get(0));
 	}
-
+	
 	@Test
 	public void testFindListValueById() {
 		CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,

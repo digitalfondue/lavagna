@@ -46,6 +46,7 @@ import io.lavagna.service.SearchService;
 import io.lavagna.service.SetupService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
+import io.lavagna.web.security.login.OAuthLogin;
 
 import java.util.Collections;
 import java.util.Date;
@@ -196,5 +197,10 @@ public class ServiceConf {
 	@Bean
 	public CalendarService getCalendarService() {
 		return mock(CalendarService.class);
+	}
+	
+	@Bean
+	public OAuthLogin getOAuthLogin() {
+	    return mock(OAuthLogin.class);
 	}
 }

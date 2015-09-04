@@ -20,11 +20,14 @@ import static org.mockito.Mockito.when;
 import io.lavagna.config.WebSecurityConfig;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.web.security.PathConfiguration;
+import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration;
 import io.lavagna.web.security.SecurityFilter;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
 import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,6 +55,12 @@ public class SecurityFilterTest {
 
 	@Mock
 	private ConfigurationRepository configurationRepository;
+	
+	@Mock
+	private SessionHandler sessionHandler;
+	
+	@Mock
+	private UserRepository userRepository;
 
 	@Mock
 	private FilterConfig filterConfig;
@@ -62,14 +71,17 @@ public class SecurityFilterTest {
 	@Before
 	public void prepare() {
 		WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
-		when(webApplicationContext.getBean("configuredAppPathConf", PathConfiguration.class)).thenReturn(
-				webSecurityConfig.configuredApp());
-		when(webApplicationContext.getBean("unconfiguredAppPathConf", PathConfiguration.class)).thenReturn(
-				webSecurityConfig.unconfiguredApp());
+		
+		//
+		Map<String, SecurityConfiguration> paths = new LinkedHashMap<>();
+		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, sessionHandler, webApplicationContext));
+		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
+		//
+		
+		when(webApplicationContext.getBeansOfType(SecurityConfiguration.class)).thenReturn(paths);
 		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
 		when(filterConfig.getServletContext()).thenReturn(servletContext);
-		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webApplicationContext);
+		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
 
 	@Test
@@ -83,13 +95,14 @@ public class SecurityFilterTest {
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
 		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
+		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn("true");
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockFilterChain chain = new MockFilterChain();
 
 		sf.init(filterConfig);
 
-		sf.doFilter(request, response, chain);
+		sf.doFilterInternal(request, response, chain);
 	}
 
 	@Test
@@ -103,11 +116,12 @@ public class SecurityFilterTest {
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "false");
 		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
+		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn(null);
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockFilterChain chain = new MockFilterChain();
 
 		sf.init(filterConfig);
-		sf.doFilter(request, response, chain);
+		sf.doFilterInternal(request, response, chain);
 	}
 }

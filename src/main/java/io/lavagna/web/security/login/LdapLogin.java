@@ -16,13 +16,16 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.service.Ldap;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
+import static org.apache.commons.lang3.StringUtils.removeStart;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +38,10 @@ public class LdapLogin extends AbstractLoginHandler {
 	static final String USER_PROVIDER = "ldap";
 
 	private final String errorPage;
-	private final Ldap ldap;
-
-	public LdapLogin(UserRepository userRepository, Ldap ldap, String errorPage) {
-		super(userRepository);
+	private final LdapAuthenticator ldap;
+	
+	public LdapLogin(Users users, SessionHandler sessionHandler, LdapAuthenticator ldap, String errorPage) {
+		super(users, sessionHandler);
 		this.ldap = ldap;
 		this.errorPage = errorPage;
 	}
@@ -55,19 +58,19 @@ public class LdapLogin extends AbstractLoginHandler {
 
 		if (authenticate(username, password)) {
 			// FIXME refactor out
-			String url = Redirector.fetchRequestedUrl(req);
-			UserSession.setUser(userRepository.findUserByName(USER_PROVIDER, username), req, resp, userRepository);
-			Redirector.sendRedirect(req, resp, url);
+			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
+			User user = users.findUserByName(USER_PROVIDER, username);
+			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
+			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {
-			Redirector.sendRedirect(req, resp, errorPage);
+			Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 		}
 		return true;
 
 	}
 
 	private boolean authenticate(String username, String password) {
-		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)
-				|| !userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
+		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || !users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			return false;
 		}
 
@@ -80,5 +83,19 @@ public class LdapLogin extends AbstractLoginHandler {
 		r.put("loginLdap", "block");
 		return r;
 	}
+	
+	public interface LdapAuthenticator {
+	    boolean authenticate(String username, String password);
+	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 
 }

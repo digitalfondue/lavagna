@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna.web.security.login;
+package io.lavagna.web.security;
 
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.CSRFToken;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -35,36 +35,34 @@ public interface LoginHandler {
 	boolean doAction(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
+	
+	List<String> getAllHandlerNames();
+	String getBaseProviderName();
 
 	Map<String, Object> modelForLoginPage(HttpServletRequest request);
 
 	abstract class AbstractLoginHandler implements LoginHandler {
 
-		protected final UserRepository userRepository;
+		protected final Users users;
+		protected final SessionHandler sessionHandler;
 
-		AbstractLoginHandler(UserRepository userRepository) {
-			this.userRepository = userRepository;
-		}
-
-		public static boolean logout(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository)
-				throws IOException, ServletException {
-			UserSession.invalidate(req, resp, userRepository);
-			resp.setStatus(HttpServletResponse.SC_OK);
-			return true;
+		public AbstractLoginHandler(Users users, SessionHandler sessionHandler) {
+			this.users = users;
+			this.sessionHandler = sessionHandler;
 		}
 
 		@Override
-		public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException,
-				ServletException {
-			return logout(req, resp, userRepository);
+		public boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		    sessionHandler.invalidate(req, resp);
+		    resp.setStatus(HttpServletResponse.SC_OK);
+			return true;
 		}
 
 		public Map<String, Object> modelForLoginPage(HttpServletRequest request) {
 			String tokenValue = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
 			Map<String, Object> r = new HashMap<>();
 			r.put("csrfToken", tokenValue);
-			r.put("reqUrl", UriComponentsBuilder.fromPath(request.getParameter("reqUrl")).build().encode()
-					.toUriString());
+			r.put("reqUrl", UriComponentsBuilder.fromPath(request.getParameter("reqUrl")).build().encode().toUriString());
 			return r;
 		}
 	}

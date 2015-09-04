@@ -31,6 +31,7 @@ import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class CardServiceTest {
 	private Project project;
 	private Board board;
 	private BoardColumn col;
+	private BoardColumn col2;
 	private CardLabel assigned;
 	private LabelValue labelValueToUser;
 
@@ -90,6 +92,7 @@ public class CardServiceTest {
 		Assert.assertNotNull(openCol);
 
 		col = boardColumnRepository.addColumnToBoard("col1", openCol.getId(), BoardColumnLocation.BOARD, board.getId());
+		col2 = boardColumnRepository.addColumnToBoard("col2", openCol.getId(), BoardColumnLocation.BOARD, board.getId());
 
 		assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
 
@@ -98,6 +101,9 @@ public class CardServiceTest {
 
 	@Test
 	public void testFetchAllInColumn() {
+	    
+	    Assert.assertTrue(cardService.fetchAllInColumn(col.getId()).isEmpty());
+	    
 		Card c2 = cardService.createCard("2", col.getId(), new Date(), user);
 		Card c3 = cardService.createCard("3", col.getId(), new Date(), user);
 		Card c1 = cardService.createCardFromTop("1", col.getId(), new Date(), user);
@@ -106,6 +112,22 @@ public class CardServiceTest {
 		Assert.assertEquals(c1.getId(), res.get(0).getId());
 		Assert.assertEquals(c2.getId(), res.get(1).getId());
 		Assert.assertEquals(c3.getId(), res.get(2).getId());
+	}
+	
+	@Test
+	public void testMoveCardToColumnAndReorder() {
+	    Card c1 = cardService.createCard("1", col2.getId(), new Date(), user);
+	    Card c2 = cardService.createCard("2", col.getId(), new Date(), user);
+        Card c3 = cardService.createCard("3", col.getId(), new Date(), user);
+        
+        cardService.moveCardToColumnAndReorder(c1.getId(), col2.getId(), col.getId(), Arrays.asList(c3.getId(), c2.getId(), c1.getId()), user);
+        
+        List<CardFullWithCounts> res = cardService.fetchAllInColumn(col.getId());
+        
+        Assert.assertEquals(c1.getId(), res.get(2).getId());
+        Assert.assertEquals(c2.getId(), res.get(1).getId());
+        Assert.assertEquals(c3.getId(), res.get(0).getId());
+        
 	}
 
 	@Test
@@ -126,6 +148,20 @@ public class CardServiceTest {
 		labelService.addLabelValueToCard(assigned.getId(), c3.getId(), labelValueToUser, user, new Date());
 
 		Assert.assertEquals(2, cardService.getAllOpenCards(user, 0, 50).getTotalCards());
+		
+		// test pagination
+		for(int i = 0; i < 10; i++) {
+		    Card card = cardService.createCard("2", col.getId(), new Date(), user);
+		    labelService.addLabelValueToCard(assigned.getId(), card.getId(), labelValueToUser, user, new Date());
+		}
+		
+		
+		Assert.assertEquals(12, cardService.getAllOpenCards(user, 0, 10).getTotalCards());
+		//1 more than max page -> we know there is another page after this one
+		Assert.assertEquals(11, cardService.getAllOpenCards(user, 0, 10).getCards().size()); 
+		
+		Assert.assertEquals(12, cardService.getAllOpenCards(user, 1, 10).getTotalCards());
+		Assert.assertEquals(2, cardService.getAllOpenCards(user, 1, 10).getCards().size());
 	}
 
 	@Test
@@ -141,5 +177,20 @@ public class CardServiceTest {
 
 		Assert.assertEquals(2, cardService.getAllOpenCardsByProject(project.getShortName(), user, 0, 50)
 				.getTotalCards());
+		
+		// test pagination
+        for(int i = 0; i < 10; i++) {
+            Card card = cardService.createCard("2", col.getId(), new Date(), user);
+            labelService.addLabelValueToCard(assigned.getId(), card.getId(), labelValueToUser, user, new Date());
+        }
+        
+        
+        Assert.assertEquals(12, cardService.getAllOpenCardsByProject(project.getShortName(), user, 0, 10).getTotalCards());
+        //1 more than max page -> we know there is another page after this one
+        Assert.assertEquals(11, cardService.getAllOpenCardsByProject(project.getShortName(), user, 0, 10).getCards().size()); 
+        
+        Assert.assertEquals(12, cardService.getAllOpenCardsByProject(project.getShortName(), user, 1, 10).getTotalCards());
+        Assert.assertEquals(2, cardService.getAllOpenCardsByProject(project.getShortName(), user, 1, 10).getCards().size());
+        
 	}
 }

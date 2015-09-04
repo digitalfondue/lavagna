@@ -20,10 +20,13 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
+import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event.EventType;
+import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
@@ -62,10 +65,14 @@ public class CardRepositoryTest {
 
 	@Autowired
 	private CardRepository cardRepository;
+	
+	@Autowired
+	private BulkOperationService bulkOperationService;
 
 	@Autowired
 	private ProjectService projectService;
 
+	private Project project;
 
 	private Board board;
 
@@ -84,15 +91,15 @@ public class CardRepositoryTest {
 	public void prepare() {
 		Helper.createUser(userRepository, "test", "test-user");
 		user = userRepository.findUserByName("test", "test-user");
-		projectService.create("test", "TEST", "desc");
+		project = projectService.create("test", "TEST", "desc");
 		boardRepository
-				.createNewBoard("test-board", "TESTBRD", null, projectService.findByShortName("TEST").getId());
+				.createNewBoard("test-board", "TESTBRD", null, project.getId());
 		board = boardRepository.findBoardByShortName("TESTBRD");
-		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(projectService
-				.findByShortName("TEST").getId());
-		boardColumnRepository.addColumnToBoard("col1", definitions.get(0).getId(), BoardColumnLocation.BOARD,
+		Map<ColumnDefinition, BoardColumnDefinition> definitions = projectService.findMappedColumnDefinitionsByProjectId(projectService.findByShortName("TEST").getId());
+		
+		boardColumnRepository.addColumnToBoard("col1", definitions.get(ColumnDefinition.OPEN).getId(), BoardColumnLocation.BOARD,
 				board.getId());
-		boardColumnRepository.addColumnToBoard("col2", definitions.get(0).getId(), BoardColumnLocation.BOARD,
+		boardColumnRepository.addColumnToBoard("col2", definitions.get(ColumnDefinition.CLOSED).getId(), BoardColumnLocation.BOARD,
 				board.getId());
 		List<BoardColumn> cols = boardColumnRepository.findAllColumnsFor(board.getId(), BoardColumnLocation.BOARD);
 		col1 = cols.get(0);
@@ -165,6 +172,15 @@ public class CardRepositoryTest {
 		Card c2 = cardService.createCard("card2", col1.getId(), new Date(), user);
 		List<CardFull> res = cardRepository.findAllByIds(Arrays.asList(c1.getId(), c2.getId()));
 		Assert.assertTrue(res.size() == 2);
+		
+		Assert.assertTrue(cardRepository.findAllByIds(Collections.<Integer>emptyList()).isEmpty());
+	}
+	
+	@Test
+	public void testExistCardWith() {
+	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
+	    Assert.assertFalse(cardRepository.existCardWith(board.getShortName(), c1.getSequence()+1));
+	    Assert.assertTrue(cardRepository.existCardWith(board.getShortName(), c1.getSequence()));
 	}
 
 	@Test
@@ -290,7 +306,7 @@ public class CardRepositoryTest {
 		Card c3 = cardService.createCard("card3", col1.getId(), new Date(), user);
 
 		Map<String, Integer> res = cardRepository.findCardsIds(Arrays.asList("TESTBRD-" + c1.getSequence(),
-				"TESTBRD-" + c2.getSequence(), "TESTBRD-" + c3.getSequence()));
+				"TESTBRD-" + c2.getSequence(), "TESTBRD-" + c3.getSequence(), "TESTBRD-abcd"));
 		Assert.assertEquals(res.get("TESTBRD-" + c1.getSequence()).intValue(), c1.getId());
 		Assert.assertEquals(res.get("TESTBRD-" + c2.getSequence()).intValue(), c2.getId());
 		Assert.assertEquals(res.get("TESTBRD-" + c3.getSequence()).intValue(), c3.getId());
@@ -312,6 +328,10 @@ public class CardRepositoryTest {
 
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), null).get(0).getId());
+		
+		Assert.assertTrue(cardRepository.findCardBy(null, null).isEmpty());
+		
+		
 	}
 
 	@Test
@@ -332,5 +352,50 @@ public class CardRepositoryTest {
 
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), projects).get(0).getId());
+		
+		//
+		Assert.assertTrue(cardRepository.findCardBy(null, Collections.<Integer>emptySet()).isEmpty());
+	}
+	
+	@Test
+	public void testGetOpenCardsCount() {
+	    Assert.assertEquals(0, cardRepository.getOpenCardsCountByUserId(user.getId()));
+	    Assert.assertEquals(0, cardRepository.getOpenCardsCountByProjectAndUserId(project.getShortName(), user.getId()));
+
+	    // open cards
+	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
+	    Card c2 = cardService.createCard("card2", col1.getId(), new Date(), user);
+	    // closed cards
+	    Card c3 = cardService.createCard("card3", col2.getId(), new Date(), user);
+	    Card c4 = cardService.createCard("card4", col2.getId(), new Date(), user);
+	    
+	    LabelValue toUser = new LabelValue(null, null, null, null, user.getId(), null);
+	    
+	    bulkOperationService.assign(project.getShortName(), Arrays.asList(c1.getId(), c2.getId(), c3.getId(), c4.getId()), toUser, user);
+	    
+	    Assert.assertEquals(2, cardRepository.getOpenCardsCountByUserId(user.getId()));
+        Assert.assertEquals(2, cardRepository.getOpenCardsCountByProjectAndUserId(project.getShortName(), user.getId()));
+	}
+	
+	@Test
+	public void testFetchAllActivityByCardId() {
+	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
+	    //card creation activity
+	    Assert.assertEquals(1, cardRepository.fetchAllActivityByCardId(c1.getId()).size());
+	    
+	    cardService.updateCard(c1.getId(), "new name", user, new Date());
+
+	    //card update activity
+	    Assert.assertEquals(2, cardRepository.fetchAllActivityByCardId(c1.getId()).size());
+	}
+	
+	@Test
+	public void testFetchPaginatedByBoardIdAndLocation() {
+	    for(int i = 0; i<11;i++) {
+	        cardService.createCard("card1", col1.getId(), new Date(), user);
+	    }
+	    
+	    Assert.assertEquals(11, cardRepository.fetchPaginatedByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD, 0).size());
+	    Assert.assertEquals(1, cardRepository.fetchPaginatedByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD, 1).size());
 	}
 }

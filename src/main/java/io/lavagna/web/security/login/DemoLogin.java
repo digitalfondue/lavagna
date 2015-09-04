@@ -16,12 +16,16 @@
  */
 package io.lavagna.web.security.login;
 
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
-import io.lavagna.web.security.login.LoginHandler.AbstractLoginHandler;
+import static org.apache.commons.lang3.StringUtils.removeStart;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +37,8 @@ public class DemoLogin extends AbstractLoginHandler {
 
 	private final String errorPage;
 
-	public DemoLogin(UserRepository userRepository, String errorPage) {
-		super(userRepository);
+	public DemoLogin(Users users, SessionHandler sessionHandler, String errorPage) {
+		super(users, sessionHandler);
 		this.errorPage = errorPage;
 	}
 
@@ -48,14 +52,14 @@ public class DemoLogin extends AbstractLoginHandler {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		// yes, it's stupid...
-		if (username != null && username.equals(password)
-				&& userRepository.userExistsAndEnabled(USER_PROVIDER, username)) {
+		if (username != null && username.equals(password) && users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			// FIXME refactor out
-			String url = Redirector.fetchRequestedUrl(req);
-			UserSession.setUser(userRepository.findUserByName(USER_PROVIDER, username), req, resp, userRepository);
-			Redirector.sendRedirect(req, resp, url);
+			String url = Redirector.cleanupRequestedUrl(req.getParameter("reqUrl"), req);
+			User user = users.findUserByName(USER_PROVIDER, username);
+			sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
+			Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 		} else {
-			Redirector.sendRedirect(req, resp, errorPage);
+			Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 		}
 		return true;
 	}
@@ -66,4 +70,14 @@ public class DemoLogin extends AbstractLoginHandler {
 		r.put("loginDemo", "block");
 		return r;
 	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 }

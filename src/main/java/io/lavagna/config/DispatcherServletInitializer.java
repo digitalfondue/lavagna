@@ -16,10 +16,15 @@
  */
 package io.lavagna.config;
 
+import io.lavagna.web.security.AnonymousUserFilter;
+import io.lavagna.web.security.CSFRFilter;
+import io.lavagna.web.security.HSTSFilter;
+import io.lavagna.web.security.RememberMeFilter;
 import io.lavagna.web.security.SecurityFilter;
 
 import java.util.Collections;
 
+import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -53,25 +58,36 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-
-		javax.servlet.FilterRegistration.Dynamic secFilter = servletContext.addFilter("SecurityFilter",
-				SecurityFilter.class);
-		secFilter.setAsyncSupported(true);
-		secFilter.addMappingForUrlPatterns(null, false, "/*");
-
-		javax.servlet.FilterRegistration.Dynamic etagFilter = servletContext.addFilter("ETagFilter",
-				ShallowEtagHeaderFilter.class);
-		etagFilter.addMappingForUrlPatterns(null, false, "*.js", "*.css",//
-				"/", "/project/*", "/admin/*", "/me/",//
-				"*.html", "*.woff", "*.eot", "*.svg", "*.ttf");
-
-		javax.servlet.FilterRegistration.Dynamic gzipFilter = servletContext.addFilter("GzipFilter", GzipFilter.class);
-		gzipFilter.addMappingForUrlPatterns(null, false, "*.js", "*.css",//
-				"/", "/project/*", "/admin/*", "/me/",//
-				"/api/self", "/api/board/*", "/api/project/*");
+		
+		//definition order = execution order, the first executed filter is HSTSFilter
+		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");
+		
+		addFilter(servletContext, "CSFRFilter", CSFRFilter.class, "/*");
+		
+		addFilter(servletContext, "RememberMeFilter", RememberMeFilter.class, "/*");
+		
+		addFilter(servletContext, "AnonymousUserFilter", AnonymousUserFilter.class, "/*");
+		
+		addFilter(servletContext, "SecurityFilter", SecurityFilter.class, "/*");
+		
+		addFilter(servletContext, "ETagFilter", ShallowEtagHeaderFilter.class, "*.js", "*.css",//
+                "/", "/project/*", "/admin/*", "/me/",//
+                "*.html", "*.woff", "*.eot", "*.svg", "*.ttf");
+		
+		addFilter(servletContext, "GzipFilter", GzipFilter.class, "*.js", "*.css",//
+                "/", "/project/*", "/admin/*", "/me/",//
+                "/api/self", "/api/board/*", "/api/project/*");
+		
+		
 		servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
 		servletContext.getSessionCookieConfig().setHttpOnly(true);
 		servletContext.getSessionCookieConfig().setName("LAVAGNA_SESSION_ID");
+	}
+
+    private static void addFilter(ServletContext context, String filterName, Class<? extends Filter> filterClass, String... urlPatterns) {
+	    javax.servlet.FilterRegistration.Dynamic hstsFilter = context.addFilter(filterName, filterClass);
+        hstsFilter.setAsyncSupported(true);
+        hstsFilter.addMappingForUrlPatterns(null, false, urlPatterns);
 	}
 
 	@Override

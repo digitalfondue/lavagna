@@ -16,39 +16,49 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
+import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 import org.scribe.builder.ServiceBuilder;
 
-public class BitbucketHandler extends AbstractOAuth1Handler {
+public class BitbucketHandler extends OAuthResultHandlerAdapter {
 
-	public BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, String errorPage) {
+	private BitbucketHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.bitbucket",//
-				"https://bitbucket.org/api/1.0/user",//
-				UserInfo.class, "oauth_verifier", //
-				userRepository,//
+				"https://api.bitbucket.org/2.0/user",//
+				UserInfo.class, "code", //
+				users,//
+				sessionHandler,//
 				errorPage,//
-				serviceBuilder.provider(new Bitbucket10Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
+				serviceBuilder.provider(new Bitbucket20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
 						.build(), reqBuilder);
 	}
 
 	private static class UserInfo implements RemoteUserProfile {
 
-		User user;
+	    String username;
 
 		@Override
-		public boolean valid(UserRepository userRepository, String provider) {
-			return userRepository.userExistsAndEnabled(provider, user.username);
+		public boolean valid(Users users, String provider) {
+			return users.userExistsAndEnabled(provider, username);
 		}
 
 		@Override
 		public String username() {
-			return user.username;
+			return username;
 		}
 	}
-
-	private static class User {
-		String username;
-	}
+	
+	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, OAuthProvider provider,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new BitbucketHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
+        }
+    }; 
 }

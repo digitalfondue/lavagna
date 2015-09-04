@@ -19,10 +19,9 @@ package io.lavagna.web.security.login.oauth;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.model.User;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.BitbucketHandler;
 import io.lavagna.web.security.login.oauth.GithubHandler;
 import io.lavagna.web.security.login.oauth.GoogleHandler;
@@ -53,18 +52,16 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(MockitoJUnitRunner.class)
 public class HandlersTest {
 
-	private static final String BASE_APPLICATION_URL = "http://localhost/";
 	@Mock
 	private ServiceBuilder sBuilder;
 	@Mock
-	private UserRepository usersRep;
+	private SessionHandler sessionHandler;
+	@Mock
+	private Users users;
 	@Mock
 	private HttpServletRequest req, req2;
 	@Mock
 	private HttpServletResponse resp, resp2;
-	//
-	@Mock
-	private ConfigurationRepository configurationRepository;
 
 	@Mock
 	private OAuthService oauthService;
@@ -90,9 +87,11 @@ public class HandlersTest {
 	private String callback = "callback";
 	private String errPage = "error";
 
-	private BitbucketHandler bitbucketHandler;
-	private GoogleHandler googleHandler;
-	private GithubHandler githubHandler;
+	private OAuthResultHandler bitbucketHandler;
+	private OAuthResultHandler googleHandler;
+	private OAuthResultHandler githubHandler;
+    private OAuthResultHandler gitlabHandler;
+    private OAuthResultHandler twitterHandler;
 
 	@Before
 	public void prepare() {
@@ -116,34 +115,54 @@ public class HandlersTest {
 		when(req2.getSession(true)).thenReturn(session2);
 
 		when(req2.getServletContext()).thenReturn(servletContext);
-		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webappContext);
-		when(webappContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
-		when(configurationRepository.getValue(Key.BASE_APPLICATION_URL)).thenReturn(BASE_APPLICATION_URL);
+		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webappContext);
 
 		when(reqBuilder.req(any(Verb.class), any(String.class))).thenReturn(oauthReq);
 		when(oauthReq.send()).thenReturn(oauthRes);
-		when(usersRep.findUserByName(any(String.class), any(String.class))).thenReturn(user);
+		when(users.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
-		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
-		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, usersRep, errPage);
+		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("bitbucket", key, secret), callback, users, sessionHandler, errPage);
+		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("github", key, secret), callback, users, sessionHandler, errPage);
+		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("google", key, secret), callback, users, sessionHandler, errPage);
+		gitlabHandler = GitlabHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("gitlab", key, secret), callback, users, sessionHandler, errPage);
+		twitterHandler = TwitterHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("twiiter", key, secret), callback, users, sessionHandler, errPage);
 	}
 
 	@Test
 	public void handleBitbucketFlowAuth() throws IOException {
-		when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
-		bitbucketHandler.handleAuthorizationUrl(req, resp);
-		verify(resp).sendRedirect("redirect");
+	    when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+	    bitbucketHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
 
-		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
-		when(usersRep.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
 
-		Assert.assertTrue(!session.isInvalid());
-		bitbucketHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
-		Assert.assertTrue(session.isInvalid());
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+
+        Assert.assertTrue(!session.isInvalid());
+        bitbucketHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
+	
+	@Test
+    public void handleTwitterFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
+        twitterHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect");
+
+        when(oauthRes.getBody()).thenReturn("{\"screen_name\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.twitter", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.twitter", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+        Assert.assertTrue(!session.isInvalid());
+        twitterHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
 
 	@Test
 	public void handleGithubFlowAuth() throws IOException {
@@ -154,12 +173,15 @@ public class HandlersTest {
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.github"));
 
 		when(oauthRes.getBody()).thenReturn("{\"login\" : \"login\"}");
-		when(usersRep.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
+		when(users.userExistsAndEnabled("oauth.github", "login")).thenReturn(true);
+		when(users.findUserByName("oauth.github", "login")).thenReturn(user);
+		when(req2.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(!session.isInvalid());
 		githubHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
-		Assert.assertTrue(session.isInvalid());
+		verify(resp2).sendRedirect("/");
+
+		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
 
 	@Test
@@ -170,11 +192,34 @@ public class HandlersTest {
 
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.google"));
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
-		when(usersRep.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
-
+		when(users.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
+		when(users.findUserByName("oauth.google", "email")).thenReturn(user);
+		when(req2.getContextPath()).thenReturn("/context-path");
+		
 		Assert.assertTrue(!session.isInvalid());
 		googleHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect(BASE_APPLICATION_URL);
-		Assert.assertTrue(session.isInvalid());
+		verify(resp2).sendRedirect("/context-path/");
+		
+		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
+	
+	
+	@Test
+    public void handleGitlabFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+        gitlabHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.gitlab", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.gitlab", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("/context-path");
+        
+        Assert.assertTrue(!session.isInvalid());
+        gitlabHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/context-path/");
+        
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
 }

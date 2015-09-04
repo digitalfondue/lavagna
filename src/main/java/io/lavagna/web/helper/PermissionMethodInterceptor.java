@@ -104,6 +104,11 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		Class<? extends OwnershipChecker> ownershipChecker = expectPermission.ownershipChecker();
 
 		UserWithPermission user = UserSession.fetchFromRequest(request, userService);
+		
+		if(user == null) {
+		    response.sendError(HttpStatus.FORBIDDEN.value());
+		    return false;
+		}
 
 		// check the base permission
 		if (user.getBasePermissions().containsKey(expectPermission.value())) {

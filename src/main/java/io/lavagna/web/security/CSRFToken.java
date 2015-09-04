@@ -14,30 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.lavagna.web.security.login.oauth;
+package io.lavagna.web.security;
 
-import org.scribe.builder.api.DefaultApi10a;
-import org.scribe.model.Token;
+public final class CSRFToken {
 
-/**
- * <pre>
- * https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket
- * </pre>
- */
-class Bitbucket10Api extends DefaultApi10a {
-
-	@Override
-	public String getRequestTokenEndpoint() {
-		return "https://bitbucket.org/api/1.0/oauth/request_token";
+	private CSRFToken() {
 	}
 
-	@Override
-	public String getAccessTokenEndpoint() {
-		return "https://bitbucket.org/api/1.0/oauth/access_token";
-	}
-
-	@Override
-	public String getAuthorizationUrl(Token requestToken) {
-		return "https://bitbucket.org/api/1.0/oauth/authenticate?oauth_token=" + requestToken.getToken();
-	}
+	//
+	public static final String CSRF_TOKEN = CSRFToken.class.getName() + ".CSRF_TOKEN";
 }

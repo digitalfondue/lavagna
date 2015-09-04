@@ -16,13 +16,16 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.common.Json;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.Redirector;
-import io.lavagna.web.helper.UserSession;
+import static org.apache.commons.lang3.StringUtils.removeStart;
+import io.lavagna.web.security.Redirector;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +39,9 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.springframework.web.util.UriUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public interface OAuthResultHandler {
 
 	void handleAuthorizationUrl(HttpServletRequest req, HttpServletResponse resp) throws IOException;
@@ -43,26 +49,30 @@ public interface OAuthResultHandler {
 	void handleCallback(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	class OAuthResultHandlerAdapter implements OAuthResultHandler {
+	    
+	    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
 		private final String provider;
 		private final String profileUrl;
 		private final Class<? extends RemoteUserProfile> profileClass;
 		private final String verifierParamName;
 
-		private final UserRepository userRepository;
+		private final Users users;
 		private final String errorPage;
+		private final SessionHandler sessionHandler;
 		protected final OAuthService oauthService;
 		private final OAuthRequestBuilder reqBuilder;
 
 		OAuthResultHandlerAdapter(String provider, String profileUrl, Class<? extends RemoteUserProfile> profileClass,
-				String verifierParamName, UserRepository userRepository, String errorPage, OAuthService oauthService,
+				String verifierParamName, Users users, SessionHandler sessionHandler, String errorPage, OAuthService oauthService,
 				OAuthRequestBuilder reqBuilder) {
 			this.provider = provider;
 			this.profileUrl = profileUrl;
 			this.profileClass = profileClass;
 			this.verifierParamName = verifierParamName;
 			//
-			this.userRepository = userRepository;
+			this.users = users;
+			this.sessionHandler = sessionHandler;
 			this.errorPage = errorPage;
 			this.oauthService = oauthService;
 			this.reqBuilder = reqBuilder;
@@ -110,7 +120,7 @@ public interface OAuthResultHandler {
 			req.getSession().removeAttribute("rememberMe-" + state);
 
 			if (!validateStateParam(req)) {
-				Redirector.sendRedirect(req, resp, errorPage);
+				Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 				return;
 			}
 
@@ -122,15 +132,15 @@ public interface OAuthResultHandler {
 			OAuthRequest oauthRequest = reqBuilder.req(Verb.GET, profileUrl);
 			oauthService.signRequest(accessToken, oauthRequest);
 			Response oauthResponse = oauthRequest.send();
-			RemoteUserProfile profile = Json.GSON.fromJson(oauthResponse.getBody(), profileClass);
+			RemoteUserProfile profile = GSON.fromJson(oauthResponse.getBody(), profileClass);
 
-			if (profile.valid(userRepository, provider)) {
-				String url = Redirector.cleanupRequestedUrl(reqUrl);
-				UserSession.setUser(userRepository.findUserByName(provider, profile.username()), req, resp,
-						userRepository);
-				Redirector.sendRedirect(req, resp, url);
+			if (profile.valid(users, provider)) {
+				String url = Redirector.cleanupRequestedUrl(reqUrl, req);
+				User user = users.findUserByName(provider, profile.username());
+				sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp);
+				Redirector.sendRedirect(req, resp, url, Collections.<String, List<String>> emptyMap());
 			} else {
-				Redirector.sendRedirect(req, resp, errorPage);
+				Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(errorPage, "/"), Collections.<String, List<String>> emptyMap());
 			}
 		}
 
@@ -147,7 +157,7 @@ public interface OAuthResultHandler {
 	}
 
 	interface RemoteUserProfile {
-		boolean valid(UserRepository userRepository, String provider);
+		boolean valid(Users users, String provider);
 
 		String username();
 	}

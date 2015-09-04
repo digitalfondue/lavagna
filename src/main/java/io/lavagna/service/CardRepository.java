@@ -108,6 +108,14 @@ public class CardRepository {
 		return queries.fetchAllActivityByCardId(cardId);
 	}
 
+	/**
+	 * 10 element per page. Return 11 elements for signaling if there are more pages
+	 * 
+	 * @param boardId
+	 * @param location
+	 * @param page
+	 * @return
+	 */
 	public List<Card> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
 		return queries.fetchPaginatedByBoardIdAndLocation(boardId, location.toString(), 11, page * 10);
 	}
@@ -294,6 +302,7 @@ public class CardRepository {
 		return res;
 	}
 
+	//TODO: not happy about the interface of this one...
 	public List<CardFull> findCardBy(String term, Set<Integer> projectIds) {
 		
 		String maybeBoardShortName = null;
@@ -310,9 +319,13 @@ public class CardRepository {
 				}
 			}
 		}
-		
-		
-		return projectIds == null ? queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber) : queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber, projectIds);
+		if(projectIds == null) {
+		    return queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber);
+		} else if (projectIds.isEmpty()){
+		    return Collections.emptyList();
+		} else {
+		    return queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber, projectIds);
+		}
 	}
 
 	public int getOpenCardsCountByUserId(int id) {

@@ -236,4 +236,14 @@ public class ProjectServiceTest {
 				Collections.<Integer>emptyList());
 		Assert.assertEquals(0, projects.size());
 	}
+	
+	@Test
+	public void testExistsWithShortName() {
+	    Assert.assertFalse(projectService.existsWithShortName(null));
+	    Assert.assertFalse(projectService.existsWithShortName(""));
+	    Assert.assertFalse(projectService.existsWithShortName("PROJECT"));
+	    
+	    projectService.create("PROJECT", "PROJECT", "desc");
+	    Assert.assertTrue(projectService.existsWithShortName("PROJECT"));
+	}
 }

@@ -16,7 +16,8 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 import org.scribe.builder.ServiceBuilder;
@@ -25,12 +26,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 
-	public GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, String errorPage) {
+    private GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.google",//
 				"https://www.googleapis.com/plus/v1/people/me/openIdConnect",//
 				UserInfo.class, "code",//
-				userRepository,//
+				users,//
+				sessionHandler,//
 				errorPage,//
 				serviceBuilder.provider(new Google20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
 						.scope("openid email").build(), reqBuilder);
@@ -43,8 +45,8 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 		private boolean emailVerified;
 
 		@Override
-		public boolean valid(UserRepository userRepository, String provider) {
-			return emailVerified && userRepository.userExistsAndEnabled(provider, email);
+		public boolean valid(Users users, String provider) {
+			return emailVerified && users.userExistsAndEnabled(provider, email);
 		}
 
 		@Override
@@ -67,7 +69,17 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 		public void setEmailVerified(boolean emailVerified) {
 			this.emailVerified = emailVerified;
 		}
-
 	}
-
+	
+	
+    public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, OAuthProvider provider,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new GoogleHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
+        }
+    };
 }

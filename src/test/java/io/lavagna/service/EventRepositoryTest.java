@@ -168,6 +168,11 @@ public class EventRepositoryTest {
 		// simulate CardDataService here, user1 deletes user2 comment
 		Event event = eventRepository.insertCardDataEvent(comment.getId(), comment.getCardId(),
 				EventType.COMMENT_DELETE, user.getId(), comment.getId(), oneDayAgo);
+		
+		Event eventBis = eventRepository.getEventById(event.getId());
+		
+		Assert.assertEquals(event, eventBis);
+		
 		cardDataRepo.softDelete(comment.getId(), of(CardType.COMMENT));
 
 		CardFull cardBeforeUpdate = cardRepository.findFullBy(card1.getId());

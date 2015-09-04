@@ -21,16 +21,14 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Key;
-import io.lavagna.model.User;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.User;
+import io.lavagna.web.security.SecurityConfiguration.Users;
+import io.lavagna.web.security.login.PersonaLogin.AudienceFetcher;
 import io.lavagna.web.security.login.PersonaLogin.VerifierResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -53,9 +51,13 @@ import org.springframework.web.client.RestTemplate;
 public class PersonaLoginTest {
 
 	@Mock
-	private UserRepository userRepository;
+	private Users users;
+	
 	@Mock
-	private ConfigurationRepository configurationRepository;
+	private SessionHandler sessionHandler;
+	
+	@Mock
+	private AudienceFetcher audienceFetcher;
 	@Mock
 	private RestTemplate restTemplate;
 	@Mock
@@ -79,14 +81,14 @@ public class PersonaLoginTest {
 
 	@Before
 	public void prepare() {
-		personaLogin = new PersonaLogin(userRepository, configurationRepository, restTemplate, logoutPage);
+		personaLogin = new PersonaLogin(users, sessionHandler, audienceFetcher, restTemplate, logoutPage);
 	}
 
 	public void prepareSuccessfulPreconditions() {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameterMap()).thenReturn(parameterMap);
 		when(parameterMap.containsKey("assertion")).thenReturn(true);
-		when(configurationRepository.getValue(Key.PERSONA_AUDIENCE)).thenReturn("audience");
+		when(audienceFetcher.fetch()).thenReturn("audience");
 	}
 
 	@Test
@@ -136,7 +138,7 @@ public class PersonaLoginTest {
 		verifier.setAudience("audience");
 		verifier.setEmail("email");
 		when(restTemplate.postForObject(any(String.class), any(), eq(VerifierResponse.class))).thenReturn(verifier);
-		when(userRepository.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(false);
+		when(users.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(false);
 
 		Assert.assertTrue(personaLogin.doAction(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -151,16 +153,24 @@ public class PersonaLoginTest {
 		verifier.setAudience("audience");
 		verifier.setEmail("email");
 		when(restTemplate.postForObject(any(String.class), any(), eq(VerifierResponse.class))).thenReturn(verifier);
-		when(userRepository.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(true);
-		when(userRepository.findUserByName(PersonaLogin.USER_PROVIDER, "email")).thenReturn(
-				new User(42, PersonaLogin.USER_PROVIDER, "username", null, null, true, true, new Date()));
+		when(users.userExistsAndEnabled(PersonaLogin.USER_PROVIDER, "email")).thenReturn(true);
+		when(users.findUserByName(PersonaLogin.USER_PROVIDER, "email")).thenReturn(new User() {
+
+            public int getId() {
+                return 42;
+            }
+
+            public boolean isAnonymous() {
+                return false;
+            }
+		});
 		when(req.getSession()).thenReturn(session);
 		when(req.getSession(true)).thenReturn(session);
 		when(resp.getWriter()).thenReturn(mock(PrintWriter.class));
 
 		Assert.assertTrue(personaLogin.doAction(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
-		verify(req.getSession()).invalidate();
+		verify(sessionHandler).setUser(42, false, req, resp);
 	}
 
 	@Test
@@ -190,7 +200,6 @@ public class PersonaLoginTest {
 		when(req.getSession()).thenReturn(unauthMockSession, mockSession);
 		when(req.getSession(true)).thenReturn(mockSession);
 
-		UserSession.setUser(user, req, resp, userRepository);
 		when(req.getMethod()).thenReturn("POST");
 		PrintWriter pw = mock(PrintWriter.class);
 		when(resp.getWriter()).thenReturn(pw);
@@ -200,7 +209,7 @@ public class PersonaLoginTest {
 
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
 		verify(resp).setContentType("application/json");
-		Assert.assertTrue(mockSession.isInvalid());
+		verify(sessionHandler).invalidate(req, resp);
 	}
 
 }

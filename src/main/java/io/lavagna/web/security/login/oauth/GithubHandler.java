@@ -16,19 +16,21 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import io.lavagna.service.UserRepository;
+import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
+import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
 
 import org.scribe.builder.ServiceBuilder;
 
 public class GithubHandler extends OAuthResultHandlerAdapter {
 
-	public GithubHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
-			String apiSecret, String callback, UserRepository userRepository, String errorPage) {
+    private GithubHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.github",//
 				"https://api.github.com/user",//
 				UserInfo.class, "code",//
-				userRepository,//
+				users,//
+				sessionHandler,//
 				errorPage,//
 				serviceBuilder.provider(new Github20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
 						.build(), reqBuilder);
@@ -38,8 +40,8 @@ public class GithubHandler extends OAuthResultHandlerAdapter {
 		String login;
 
 		@Override
-		public boolean valid(UserRepository userRepository, String provider) {
-			return userRepository.userExistsAndEnabled(provider, login);
+		public boolean valid(Users users, String provider) {
+			return users.userExistsAndEnabled(provider, login);
 		}
 
 		@Override
@@ -47,5 +49,16 @@ public class GithubHandler extends OAuthResultHandlerAdapter {
 			return login;
 		}
 	}
+	
+	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
+        
+        @Override
+        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+                OAuthRequestBuilder reqBuilder, OAuthProvider provider,
+                String callback, Users users, SessionHandler sessionHandler,
+                String errorPage) {
+            return new GithubHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
+        }
+    };
 
 }
