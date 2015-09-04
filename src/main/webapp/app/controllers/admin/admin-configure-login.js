@@ -8,19 +8,21 @@
 		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
 	}
 
-	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, Admin, Permission, Notification, User, CONTEXT_PATH) {
-		$scope.oauthProviders = ['bitbucket', 'github', 'google', 'twitter'];
+	module.controller('AdminConfigureLoginCtrl', function($scope, $window, $modal, $q, Admin, Permission, Notification, User, CONTEXT_PATH, oauthProviders) {
+		$scope.oauthProviders = oauthProviders;
+		
+		$scope.oauthNewProvider = {};
 
 		function loadConfiguration() {
-			Admin.findAllConfiguration().then(function(conf) {
+			return $q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus(), Admin.findAllOauthProvidersInfo()]).then(function(res) {
+				
+				var conf = res[0]; 
+				var allBaseLogin = res[1];
+				$scope.oauthProviders = res[2];
+			
 				$scope.currentConf = conf;
-
-				var authMethods = JSON.parse(conf['AUTHENTICATION_METHOD']);
-				$scope.authMethod = {"DEMO": false, "LDAP": false, "PERSONA" : false, "OAUTH" : false};
-				for(var i = 0; i < authMethods.length;i++) {
-					$scope.authMethod[authMethods[i]] = true;
-				}
-
+				$scope.authMethod = allBaseLogin;
+				
 				$scope.persona = {audience : conf['PERSONA_AUDIENCE'] || ($window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window))};
 
 				$scope.ldap = {
@@ -36,7 +38,7 @@
 				$scope.oauth = {};
 
 				angular.forEach($scope.oauthProviders, function(p) {
-					$scope.oauth[p] = {};
+					$scope.oauth[p.name] = {};
 				});
 
 				$scope.oauth.baseUrl = oauth.baseUrl || CONTEXT_PATH;
@@ -75,13 +77,11 @@
 			}).then(loadConfiguration);
 		}
 		
-		$scope.$watch('authMethod.DEMO', updateActiveProviders);
-		
-		$scope.$watch('authMethod.LDAP', updateActiveProviders);
-		
-		$scope.$watch('authMethod.PERSONA', updateActiveProviders);
-		
-		$scope.$watch('authMethod.OAUTH', updateActiveProviders);
+		Admin.findAllBaseLoginWithActivationStatus().then(function(res) {
+			angular.forEach(res, function(val, key) {
+				$scope.$watch('authMethod.'+key, updateActiveProviders); 
+			});
+		});
 		
 		// -- save providers config
 		
@@ -115,28 +115,72 @@
 		
 		function addProviderIfPresent(list, conf, provider) {
 			if(conf && conf.present) {
-				list.push({provider: provider, apiKey: conf.apiKey, apiSecret : conf.apiSecret});
+				list.push({provider: provider, apiKey: conf.apiKey, apiSecret : conf.apiSecret, 
+					hasCustomBaseAndProfileUrl: conf.hasCustomBaseAndProfileUrl, 
+					baseProvider: conf.baseProvider, 
+					baseUrl: conf.baseUrl,
+					profileUrl: conf.profileUrl});
 			}
 		}
 		
-		$scope.saveOauthConfig = function() {
+		$scope.saveOauthConfig = function saveOauthConfig(oauthNewProvider) {
 			var toUpdate = [];
 			
 			var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers : []};
 			angular.forEach($scope.oauthProviders, function(provider) {
-				addProviderIfPresent(newOauthConf.providers, $scope.oauth[provider], provider);
+				addProviderIfPresent(newOauthConf.providers, $scope.oauth[provider.name], provider.name);
 			});
+			
+			
+			if(oauthNewProvider) {
+				newOauthConf.providers.push({
+					provider: oauthNewProvider.type.name + '-'+ oauthNewProvider.name,
+					apiKey: oauthNewProvider.apiKey,
+					apiSecret: oauthNewProvider.apiSecret,
+					hasCustomBaseAndProfileUrl:true,
+					baseProvider: oauthNewProvider.type.name,
+					baseUrl: oauthNewProvider.baseUrl,
+					profileUrl: oauthNewProvider.profileUrl
+				});
+			}
+			
 			toUpdate.push({first : 'OAUTH_CONFIGURATION', second : JSON.stringify(newOauthConf)});
 			
-			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
+			return Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
 				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveOAuthConfig.success'}, false);
 			}, function(error) {
 				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
 			}).then(loadConfiguration);
-		};
+		}
+		
+		
+		
+		$scope.openOauthAddNewModal = function() {
+			$modal.open({
+				templateUrl: 'partials/admin/fragments/add-oauth-provider-modal.html',
+				size: 'lg',
+				controller: ['$scope', '$modalInstance', function($modalScope, $modalInstance) {
+					
+					$modalScope.oauth = $scope.oauth;
+
+					$modalScope.oauthProviders = $scope.oauthProviders;
+					
+					$modalScope.saveOauthConfig = function(toSave) {
+						$scope.saveOauthConfig(toSave).then(function() {
+							$modalInstance.close('done');
+						});
+					}
+					
+					$modalScope.close = function() {
+						$modalInstance.close('done');
+					}
+				}],
+				windowClass: 'lavagna-modal'
+			});
+		}
 		
 		$scope.openLdapConfigModal = function() {
-			var modalInstance = $modal.open({
+			$modal.open({
 				templateUrl: 'partials/admin/fragments/ldap-check-modal.html',
 				controller: function($scope, $modalInstance, ldapConfig) {
 					$scope.checkLdapConfiguration = function(ldapConf, ldapCheck) {

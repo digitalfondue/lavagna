@@ -20,10 +20,12 @@ import io.lavagna.model.CardLabel.LabelType;
 
 import java.util.Date;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 
 @Getter
+@EqualsAndHashCode
 public class Event {
 
 	public enum EventType {

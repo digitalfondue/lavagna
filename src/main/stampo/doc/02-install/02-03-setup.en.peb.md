@@ -48,18 +48,37 @@ The default Audience value is most likely correct.
 
 #### Oauth provider
 
-The application support 4 external oauth providers: bitbucket, github, google, twitter.
+The application support the following external oauth providers: 
+
+ - bitbucket 
+ - gitlab.com
+ - github
+ - google
+ - twitter
+ 
+Additionally, self-hosted/others external gitlab instances can be configured in the Custom Oauth provider section.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_oauth.png" alt="Oauth provider">
+
+#### Preconfigured oauth providers
 
 Select the oauth provider of the first account and provide the api key and secret. The provided callback url should be the correct one that must be provided.
 
 See the documentation for:
 
  - [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket)
+ - [gitlab](http://doc.gitlab.com/ce/integration/oauth_provider.html). Registration page is https://gitlab.com/profile/applications
  - [github](https://developer.github.com/v3/oauth/). Registration page is https://github.com/settings/applications/new
  - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): the "Google+ API" must be enabled
  - [twitter](https://dev.twitter.com/web/sign-in/implementing)
+ 
+#### Custom oauth providers
+
+If you have a self-hosted (or others) gitlab instance, you can configure in the "Custom oauth providers" section.
+Select the type, enter the name, the base url, api key and api secret.
+
+Please note that if you are using **self signed certificates** you _must_ include them in the default keystore of your java virtual machine. See the [keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html#keytool_option_importcert) documentation and this [stackoverflow post](http://stackoverflow.com/a/11617655). Lavagna will **not** provide a way to ignore untrusted certificates. 
+
 
 
 ### Step 3 Insert administator

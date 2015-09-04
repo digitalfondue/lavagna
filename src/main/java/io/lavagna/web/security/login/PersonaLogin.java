@@ -23,6 +23,8 @@ import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -161,5 +163,15 @@ public class PersonaLogin extends AbstractLoginHandler {
 	public interface AudienceFetcher {
 	    String fetch();
 	}
+
+    @Override
+    public List<String> getAllHandlerNames() {
+        return Collections.singletonList(USER_PROVIDER);
+    }
+
+    @Override
+    public String getBaseProviderName() {
+        return USER_PROVIDER;
+    }
 
 }

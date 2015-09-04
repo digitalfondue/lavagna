@@ -87,9 +87,11 @@ public class HandlersTest {
 	private String callback = "callback";
 	private String errPage = "error";
 
-	private BitbucketHandler bitbucketHandler;
-	private GoogleHandler googleHandler;
-	private GithubHandler githubHandler;
+	private OAuthResultHandler bitbucketHandler;
+	private OAuthResultHandler googleHandler;
+	private OAuthResultHandler githubHandler;
+    private OAuthResultHandler gitlabHandler;
+    private OAuthResultHandler twitterHandler;
 
 	@Before
 	public void prepare() {
@@ -119,27 +121,48 @@ public class HandlersTest {
 		when(oauthReq.send()).thenReturn(oauthRes);
 		when(users.findUserByName(any(String.class), any(String.class))).thenReturn(user);
 
-		bitbucketHandler = new BitbucketHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		githubHandler = new GithubHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
-		googleHandler = new GoogleHandler(sBuilder, reqBuilder, key, secret, callback, users, sessionHandler, errPage);
+		bitbucketHandler = BitbucketHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("bitbucket", key, secret), callback, users, sessionHandler, errPage);
+		githubHandler = GithubHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("github", key, secret), callback, users, sessionHandler, errPage);
+		googleHandler = GoogleHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("google", key, secret), callback, users, sessionHandler, errPage);
+		gitlabHandler = GitlabHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("gitlab", key, secret), callback, users, sessionHandler, errPage);
+		twitterHandler = TwitterHandler.FACTORY.build(sBuilder, reqBuilder, new OAuthProvider("twiiter", key, secret), callback, users, sessionHandler, errPage);
 	}
 
 	@Test
 	public void handleBitbucketFlowAuth() throws IOException {
-		when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
-		bitbucketHandler.handleAuthorizationUrl(req, resp);
-		verify(resp).sendRedirect("redirect");
+	    when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+	    bitbucketHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
 
-		when(oauthRes.getBody()).thenReturn("{\"user\" : {\"username\" : \"username\"}}");
-		when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
-		when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
-		when(req2.getContextPath()).thenReturn("");
-		Assert.assertTrue(!session.isInvalid());
-		bitbucketHandler.handleCallback(req2, resp2);
-		verify(resp2).sendRedirect("/");
-		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
-		
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.bitbucket"));
+
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.bitbucket", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.bitbucket", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+
+        Assert.assertTrue(!session.isInvalid());
+        bitbucketHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
+	
+	@Test
+    public void handleTwitterFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
+        twitterHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect");
+
+        when(oauthRes.getBody()).thenReturn("{\"screen_name\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.twitter", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.twitter", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("");
+        Assert.assertTrue(!session.isInvalid());
+        twitterHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/");
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
 
 	@Test
 	public void handleGithubFlowAuth() throws IOException {
@@ -170,7 +193,7 @@ public class HandlersTest {
 		when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.google"));
 		when(oauthRes.getBody()).thenReturn("{\"email\" : \"email\", \"email_verified\" : true}");
 		when(users.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
-		when(users.findUserByName("oauth.github", "email")).thenReturn(user);
+		when(users.findUserByName("oauth.google", "email")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("/context-path");
 		
 		Assert.assertTrue(!session.isInvalid());
@@ -179,4 +202,24 @@ public class HandlersTest {
 		
 		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
+	
+	
+	@Test
+    public void handleGitlabFlowAuth() throws IOException {
+        when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
+        gitlabHandler.handleAuthorizationUrl(req, resp);
+        verify(resp).sendRedirect("redirect&state=" + session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+
+        when(req2.getParameter("state")).thenReturn((String) session.getAttribute("EXPECTED_STATE_FOR_oauth.gitlab"));
+        when(oauthRes.getBody()).thenReturn("{\"username\" : \"username\"}");
+        when(users.userExistsAndEnabled("oauth.gitlab", "username")).thenReturn(true);
+        when(users.findUserByName("oauth.gitlab", "username")).thenReturn(user);
+        when(req2.getContextPath()).thenReturn("/context-path");
+        
+        Assert.assertTrue(!session.isInvalid());
+        gitlabHandler.handleCallback(req2, resp2);
+        verify(resp2).sendRedirect("/context-path/");
+        
+        verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
+    }
 }

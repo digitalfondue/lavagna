@@ -21,7 +21,6 @@ import static java.lang.String.format;
 
 import org.apache.commons.lang3.Validate;
 import org.scribe.builder.api.DefaultApi20;
-import org.scribe.exceptions.OAuthException;
 import org.scribe.extractors.AccessTokenExtractor;
 import org.scribe.model.OAuthConfig;
 import org.scribe.model.OAuthConstants;
@@ -33,11 +32,6 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuth20ServiceImpl;
 import org.scribe.oauth.OAuthService;
 import org.scribe.utils.Preconditions;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Google OAuth 2.0 implementation.
@@ -95,33 +89,5 @@ class Google20Api extends DefaultApi20 {
 				return getAccessTokenExtractor().extract(response.getBody());
 			}
 		};
-	}
-
-	static class JsonTokenExtractor implements AccessTokenExtractor {
-	    
-	    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
-
-		@Override
-		public Token extract(String response) {
-			try {
-				return new Token(GSON.fromJson(response, AccessToken.class).getAccessToken(), "", response);
-			} catch (JsonSyntaxException | NullPointerException e) {
-				throw new OAuthException("Cannot extract an acces token. Response was: " + response, e);
-			}
-		}
-
-		static class AccessToken {
-			@SerializedName("access_token")
-			private String accessToken;
-
-			public String getAccessToken() {
-				return accessToken;
-			}
-
-			public void setAccessToken(String accessToken) {
-				this.accessToken = accessToken;
-			}
-		}
-
 	}
 }

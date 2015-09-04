@@ -75,7 +75,9 @@
 		$rootScope.ldap = {};
 		$rootScope.persona = {audience: $window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window)};
 		$rootScope.oauth = {baseUrl: getOrigin($window) + $window.location.pathname.replace(/setup\/$/, '')};
-		$rootScope.oauthProviders = ['bitbucket', 'github', 'google', 'twitter'];
+		$rootScope.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
+		$rootScope.oauthCustomizable = ['gitlab'];
+		$rootScope.oauthNewProvider = {};
 		angular.forEach($rootScope.oauthProviders, function (p) {
 			$rootScope.oauth[p] = {present: false};
 		});
@@ -181,9 +183,25 @@
 				var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers: []};
 
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['bitbucket'], 'bitbucket') && loginType.push('oauth.bitbucket');
+				addProviderIfPresent(newOauthConf.providers, $scope.oauth['gitlab'], 'gitlab') && loginType.push('oauth.gitlab');
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['github'], 'github') && loginType.push('oauth.github');
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['google'], 'google') && loginType.push('oauth.google');
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['twitter'], 'twitter') && loginType.push('oauth.twitter');
+				
+				if($scope.oauthNewProvider.type) {
+					var providerName = $scope.oauthNewProvider.type+'-'+$scope.oauthNewProvider.name;
+					newOauthConf.providers.push({
+						provider: providerName,
+						apiKey: $scope.oauthNewProvider.apiKey,
+						apiSecret: $scope.oauthNewProvider.apiSecret,
+						hasCustomBaseAndProfileUrl: true,
+						baseProvider: $scope.oauthNewProvider.type,
+						baseUrl: $scope.oauthNewProvider.baseUrl
+					});
+					
+					loginType.push('oauth.'+providerName);
+				}
+				
 				config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
 				$rootScope.selectedNewOauthConf = newOauthConf;
 			} else if ($scope.authMethod == 'DEMO') {

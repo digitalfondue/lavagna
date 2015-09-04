@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -133,7 +134,7 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllCommentsByCardId(card1.getId()).isEmpty());
         // when updating a card that has no description, a fresh one is created
         String newCardDescription = "test-update-description";
-        cardDataService.updateDescription(card1.getId(), newCardDescription, new Date(), user);
+        cardDataService.updateDescription(card1.getId(), newCardDescription, DateUtils.addHours(new Date(), -3), user);
         assertEquals(cardDataService.findDescriptionByCardId(card1.getId()).size(), 1);
         assertEquals(newCardDescription, cardDataService.findLatestDescriptionByCardId(card1.getId()).getContent());
 
@@ -151,6 +152,8 @@ public class CardDataServiceTest {
 
         assertEquals(cardData1.getId(), updatedCardData.get(0).getId());
         assertEquals("test-update-description-after-update", updatedCardData.get(0).getContent());
+        
+        assertEquals("test-update-description-after-update", cardDataService.findLatestDescriptionByCardId(card1.getId()).getContent());
     }
 
     @Test

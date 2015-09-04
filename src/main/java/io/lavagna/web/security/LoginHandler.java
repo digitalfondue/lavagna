@@ -21,6 +21,7 @@ import io.lavagna.web.security.SecurityConfiguration.Users;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -34,6 +35,9 @@ public interface LoginHandler {
 	boolean doAction(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
+	
+	List<String> getAllHandlerNames();
+	String getBaseProviderName();
 
 	Map<String, Object> modelForLoginPage(HttpServletRequest request);
 

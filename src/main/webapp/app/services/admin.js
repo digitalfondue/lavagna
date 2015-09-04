@@ -59,6 +59,17 @@
 				.error(failedCallback);
 				
 				return upload;
+			},
+			
+			//----
+			findAllLoginHandlers : function() {
+				return $http.get('api/login/all').then(extractData);
+			},
+			findAllOauthProvidersInfo : function() {
+				return $http.get('api/login/oauth/all').then(extractData);
+			},
+			findAllBaseLoginWithActivationStatus : function() {
+				return $http.get('api/login/all-base-with-activation-status').then(extractData);
 			}
 		};
 	});
