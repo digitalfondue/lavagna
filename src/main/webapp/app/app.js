@@ -19,13 +19,14 @@
 
 	//declare all the modules here
 	angular.module('lavagna.controllers', [ 'lavagna.services' ]);
+	angular.module('lavagna.components', [ 'lavagna.services' ]);
 	angular.module('lavagna.directives', [ 'lavagna.services' ]);
 	angular.module('lavagna.filters', []);
 	angular.module('lavagna.services', []);
 	//
 
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
-			'lavagna.controllers', 'lavagna.filters', 'lavagna.directives',
+			'lavagna.controllers', 'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
 			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
 			'angularFileUpload']);
@@ -117,6 +118,15 @@
 				return ProjectCache.project($stateParams.projectName);
 			}
 		};
+
+		var boardResolver = {
+            project : function(ProjectCache, $stateParams) {
+                return ProjectCache.project($stateParams.projectName);
+            },
+            board : function(BoardCache, $stateParams) {
+                return BoardCache.board($stateParams.shortName);
+            }
+		}
 
 		$stateProvider.state('home', {
 			url : '/',
@@ -259,53 +269,61 @@
 			resolve: projectResolver
 		})
 
-		// ---- MILESTONES ----
-		.state('projectMilestones', {
-			url : '/:projectName/milestones/',
-			templateUrl : 'partials/project/milestones.html',
-			controller : 'ProjectMilestonesCtrl',
-			resolve : projectResolver
-		}).state('projectMilestones.card', {
+		//---- PROJECT ----
+		.state('project', {
+		    abstract: true,
+		    url : '/:projectName/',
+		    templateUrl: 'app/components/project/project.html',
+		    controller: function(project) {
+                this.project = project;
+            },
+            controllerAs: 'projectResolver',
+            resolve : projectResolver
+		})
+		.state('project.boards', {
+			url: '',
+			template: '<lvg-component-project project="projectResolver.project"></lvg-component-project>'
+		}).state('project.statistics', {
+			url: 'statistics/',
+			template: '<lvg-component-project-statistics project="projectResolver.project"></lvg-component-project-statistics>'
+		}).state('project.milestones', {
+            url : 'milestones/',
+            template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
+        }).state('project.milestones.card', {
+            url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
+            templateUrl : 'partials/card.html',
+            controller : 'CardCtrl',
+            resolve : cardCtrlResolver
+        })
+
+        //---- PROJECT SEARCH ----
+        .state('projectSearch', {
+			url : '/:projectName/search/?q&page',
+			templateUrl : 'partials/project/search.html',
+			controller: 'SearchCtrl',
+			reloadOnSearch: false
+		}).state('/:projectName/projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
 		})
 
-
-		//---- PROJECT ----
-		.state('project', {
-			url : '/:projectName/',
-			templateUrl : 'partials/project/project.html',
-			controller : 'ProjectCtrl',
-			resolve : projectResolver
-		}).state('projectStatistics', {
-			url : '/:projectName/statistics/',
-			templateUrl : 'partials/project/statistics.html',
-			controller: 'ProjectStatisticsCtrl',
-			resolve : projectResolver
-		}).state('projectSearch', {
-			url : '/:projectName/search/?q&page',
-			templateUrl : 'partials/project/search.html',
-			controller: 'SearchCtrl',
-			reloadOnSearch: false
-		}).state('projectSearch.card', {
-			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
-			resolve : cardCtrlResolver
-		}).state('projectBoard', {
-			url : '/:projectName/{shortName:[A-Z0-9_]+}',
-			templateUrl : 'partials/board.html',
-			controller : 'BoardCtrl',
-			resolve : {
-				project : function(ProjectCache, $stateParams) {
-					return ProjectCache.project($stateParams.projectName);
-				},
-				board : function(BoardCache, $stateParams) {
-					return BoardCache.board($stateParams.shortName);
-				}
-			}
+		//---- BOARD ----
+		.state('projectBoard', {
+		    abstract : true,
+            url : '/:projectName/{shortName:[A-Z0-9_]+}',
+            templateUrl : 'app/components/board/board.html',
+            controller : function(project, board) {
+                this.project = project;
+                this.board = board;
+            },
+            controllerAs: 'boardCtrlResolver',
+            resolve : boardResolver
+		})
+		.state('projectBoard.board', {
+			url : '',
+			template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>'
 		}).state('projectBoard.card', {
 			url : '-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
@@ -365,4 +383,4 @@
 	module.config(function($httpProvider) {
 		$httpProvider.interceptors.push('lavagnaHttpInterceptor');
 	});
-})();
+})()

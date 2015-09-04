@@ -70,10 +70,10 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 			this.emailVerified = emailVerified;
 		}
 	}
-	
-	
+
+
     public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
-        
+
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,
@@ -81,5 +81,6 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
                 String errorPage) {
             return new GoogleHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
+
     };
 }

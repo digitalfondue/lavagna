@@ -115,10 +115,10 @@ public class OAuthLogin extends AbstractLoginHandler {
 	}
 
 	public static class OAuthConfiguration {
-	    
+
 		private final String baseUrl;
 		private final List<OAuthProvider> providers;
-		
+
 		public OAuthConfiguration(String baseUrl, List<OAuthProvider> providers) {
 		    this.baseUrl = baseUrl;
 		    this.providers = providers;
@@ -151,20 +151,20 @@ public class OAuthLogin extends AbstractLoginHandler {
 			return null;
 		}
 	}
-	
+
 	public interface OauthConfigurationFetcher {
 	    /**
 	     * Can return null.
-	     * 
+	     *
 	     * @return
 	     */
 	    OAuthConfiguration fetch();
 	}
-		
+
     public OAuthResultHandler from(OAuthProvider oauthProvider, String confBaseUrl, Users users, SessionHandler sessionHandler, String errorPage) {
         String baseUrl = StringUtils.trimTrailingCharacter(confBaseUrl, '/');
         String callbackUrl = baseUrl + "/login/oauth/"+ oauthProvider.getProvider() + "/callback";
-        
+
         Map<String, OAuthResultHandlerFactory> handlers = getAllHandlers();
 
         if (handlers.containsKey(oauthProvider.getProvider())) {
@@ -173,12 +173,12 @@ public class OAuthLogin extends AbstractLoginHandler {
             throw new IllegalArgumentException("type " + oauthProvider.getProvider() + " is not supported");
         }
     }
-	
-	
+
+
 	public Map<String, OAuthResultHandlerFactory> getAllHandlers() {
-	    
+
 	    Map<String, OAuthResultHandlerFactory> res = new HashMap<>(SUPPORTED_OAUTH_HANDLER);
-	    
+
 	    OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
 	    if(conf != null && conf.providers != null) {
 	        for(OAuthProvider provider : conf.providers) {
@@ -187,12 +187,12 @@ public class OAuthLogin extends AbstractLoginHandler {
 	            }
 	        }
 	    }
-	    
+
 	    return res;
 	}
-	
+
 	private static class CustomOAuthResultHandlerFactory implements OAuthResultHandlerFactory {
-	    
+
 	    private final OAuthResultHandlerFactory factory;
 
         private CustomOAuthResultHandlerFactory(OAuthResultHandlerFactory factory) {
@@ -216,7 +216,7 @@ public class OAuthLogin extends AbstractLoginHandler {
         public boolean isConfigurableInstance() {
             return true;
         }
-	    
+
 	}
 
     @Override

@@ -1,0 +1,176 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6 lavagna-container-top-margin">
+            <div class="lavagna-form-panel lvg-statistics-top-panel">
+                <form class="form" role="form">
+                    <div class="form-group">
+                        <label class="control-label" data-translate>partials.project.statistics.filterByBoard</label>
+
+                        <select class="form-control" data-ng-model="projectStatsCtrl.boardToFilter"
+                                data-ng-options="board.name for board in projectStatsCtrl.boards | filter:{archived: false}"
+                                data-ng-change="projectStatsCtrl.filterByBoard(projectStatsCtrl.boardToFilter)">
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6 lavagna-container-top-margin">
+            <div class="lavagna-form-panel lvg-statistics-top-panel">
+                <form class="form" role="form">
+                    <div class="form-group">
+                        <label class="control-label" data-translate>partials.project.statistics.dateRange</label>
+
+                        <select class="form-control" data-ng-model="projectStatsCtrl.dateRange"
+                                data-ng-options="date.name for date in projectStatsCtrl.availableDateRanges"
+                                data-ng-change="projectStatsCtrl.changeDateRange(projectStatsCtrl.dateRange)">
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="lavagna-container-top-margin"
+             data-ng-class="{'col-md-6': projectStatsCtrl.stats.mostActiveCard == null, 'col-md-3': projectStatsCtrl.stats.mostActiveCard}">
+            <lvg-stats-tile tile-title="'partials.project.statistics.createdThisPeriod'|translate"
+                            value="projectStatsCtrl.openedThisPeriod" value-color="projectStatsCtrl.stats.openTaskColor">
+            </lvg-stats-tile>
+        </div>
+        <div class="lavagna-container-top-margin"
+             data-ng-class="{'col-md-6': projectStatsCtrl.stats.mostActiveCard == null, 'col-md-3': projectStatsCtrl.stats.mostActiveCard}">
+            <lvg-stats-tile tile-title="'partials.project.statistics.closedThisPeriod'|translate"
+                            value="projectStatsCtrl.closedThisPeriod" value-color="projectStatsCtrl.stats.closedTaskColor">
+            </lvg-stats-tile>
+        </div>
+        <div class="col-md-6 lavagna-container-top-margin" data-ng-if="projectStatsCtrl.stats.mostActiveCard">
+            <div class="lavagna-panel">
+                <div class="stats-tile-title">
+                    <h4 data-translate>partials.project.statistics.mostActiveCard</h4>
+                </div>
+                <div class="stats-tile-value stats-most-active-tile-value">
+                    <a data-ng-href="#/{{projectStatsCtrl.stats.mostActiveCard.projectShortName}}/{{projectStatsCtrl.stats.mostActiveCard.boardShortName}}-{{projectStatsCtrl.stats.mostActiveCard.sequence}}"
+                       data-ng-class="{'lavagna-closed-card':projectStatsCtrl.stats.mostActiveCard.columnDefinition == 'CLOSED'}">
+                        <span>{{projectStatsCtrl.stats.mostActiveCard.boardShortName}}-{{projectStatsCtrl.stats.mostActiveCard.sequence}}</span>
+                    </a>
+                </div>
+                <div class="stats-tile-subtitle"><h5>{{projectStatsCtrl.stats.mostActiveCard.name}}</h5></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" data-ng-if="projectStatsCtrl.showCreatedAndClosedCards">
+        <div class="col-md-12 lavagna-container-top-margin">
+            <div class="lavagna-panel">
+                <div class="head clearfix">
+                    <div class="stats-tile-title">
+                        <h4 class="chart-header">
+                            <span data-translate>partials.project.statistics.createdAndClosedCards</span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="body">
+                    <div>
+                        <lvg-stats-chart chart-data="projectStatsCtrl.stats.createdAndClosedCards"></lvg-stats-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.open'|translate"
+                            value="projectStatsCtrl.stats.openTaskCount" value-color="projectStatsCtrl.stats.openTaskColor"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.closed'|translate"
+                            value="projectStatsCtrl.stats.closedTaskCount" value-color="projectStatsCtrl.stats.closedTaskColor"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.deferred'|translate"
+                            value="projectStatsCtrl.stats.deferredTaskCount" value-color="projectStatsCtrl.stats.deferredTaskColor"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.backlog'|translate"
+                            value="projectStatsCtrl.stats.backlogTaskCount" value-color="projectStatsCtrl.stats.backlogTaskColor"></lvg-stats-tile>
+        </div>
+    </div>
+
+    <div class="row" data-ng-if="projectStatsCtrl.showCardsHistory">
+        <div class="col-md-12">
+            <div class="lavagna-panel lavagna-container-top-margin">
+                <div class="head clearfix">
+                    <div class="stats-tile-title">
+                        <h4 class="chart-header">
+                            <span data-translate>partials.project.statistics.cardsHistory</span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="body">
+                    <div>
+                        <lvg-chart type="Line" data="projectStatsCtrl.chartCardsHistoryData" height="220"
+                                   options="projectStatsCtrl.cardsHistoryChartOptions"
+                                   class="img-responsive"></lvg-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.totalCards'|translate"
+                            value="projectStatsCtrl.totalCards"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.activeUsers'|translate"
+                            value="projectStatsCtrl.stats.activeUsers"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.averageCardsPerUser'|translate"
+                            value="projectStatsCtrl.stats.averageCardsPerUser|number:2"></lvg-stats-tile>
+        </div>
+        <div class="col-md-3 lavagna-container-top-margin">
+            <lvg-stats-tile tile-title="'partials.project.statistics.averageUsersPerCard'|translate"
+                            value="projectStatsCtrl.stats.averageUsersPerCard|number:2"></lvg-stats-tile>
+        </div>
+    </div>
+
+    <div class="row" data-ng-if="showCardsByLabel">
+        <div class="col-md-12">
+            <div class="lavagna-panel lavagna-container-top-margin">
+                <div class="head clearfix">
+                    <div class="stats-tile-title">
+                        <h4 class="chart-header">
+                            <span data-translate>partials.project.statistics.cardsByLabel</span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="body">
+                    <div>
+                        <div>
+                            <table class="lvg-bar-chart">
+                                <tr data-ng-repeat="label in projectStatsCtrl.stats.cardsByLabel">
+                                    <td class="text">
+                                        <lvg-label value="label" name="label.labelName"></lvg-label>
+                                    </td>
+                                    <td class="bar">
+                                        <div class="inner-bar" data-bindonce
+                                             data-bo-style="label|labelChartBar: cardsByLabelMax"
+                                             data-bo-class="label.labelColor|labelBackgroundClass">
+                                            {{label.count}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-ui-view data-autoscroll="false"></div>

@@ -52,7 +52,7 @@
             <ul class="lavagna-boards">
                 <li class="lavagna-board lavagna-panel" data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
                     <div class="body-full">
-                        <lvg-board-panel data-board="board" data-project-short-name="projectCtrl.project.projectName"></lvg-board-panel>
+                        <lvg-board-panel data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-board-panel>
                     </div>
                 </li>
             </ul>
@@ -65,7 +65,7 @@
 
         </div>
         <div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
-            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.name}}">partials.project.project.myOpenTasks</h2>
+            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
             <ul data-ng-if="totalProjectOpenCards > 0"
                 class="lavagna-home-cards">
                 <li class="lavagna-home-card" data-bindonce data-ng-repeat="card in projectCtrl.userProjectCards | filter : cardFilter track by card.hash">

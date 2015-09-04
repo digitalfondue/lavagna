@@ -187,7 +187,7 @@
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['github'], 'github') && loginType.push('oauth.github');
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['google'], 'google') && loginType.push('oauth.google');
 				addProviderIfPresent(newOauthConf.providers, $scope.oauth['twitter'], 'twitter') && loginType.push('oauth.twitter');
-				
+
 				if($scope.oauthNewProvider.type) {
 					var providerName = $scope.oauthNewProvider.type+'-'+$scope.oauthNewProvider.name;
 					newOauthConf.providers.push({
@@ -198,10 +198,10 @@
 						baseProvider: $scope.oauthNewProvider.type,
 						baseUrl: $scope.oauthNewProvider.baseUrl
 					});
-					
+
 					loginType.push('oauth.'+providerName);
 				}
-				
+
 				config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
 				$rootScope.selectedNewOauthConf = newOauthConf;
 			} else if ($scope.authMethod == 'DEMO') {

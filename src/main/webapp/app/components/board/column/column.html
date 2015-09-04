@@ -1,0 +1,98 @@
+<div class="panel-heading" data-ng-style="boardColumnCtrl.column.color|columnColor">
+    <div class="row lvg-column-handle">
+        <div class="col-xs-10">
+            <div data-ng-if="!boardColumnCtrl.columnState.editColumnName">
+                <span data-ng-click="boardColumnCtrl.columnState.editColumnName=true; boardColumnCtrl.columnState.newColumnName = boardColumnCtrl.column.name" data-lvg-has-permission="RENAME_COLUMN"class="lvg-edit">{{::boardCtrl.project.shortName}} - {{::boardColumnCtrl.column.name}}</span>
+                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{::boardCtrl.project.shortName}} - {{::boardColumnCtrl.column.name}}</span>
+            </div>
+            <div data-ng-if="boardColumnCtrl.columnState.editColumnName">
+                <div class="form-group">
+                    <input type="text" class="form-control" data-lvg-to-focus="boardColumnCtrl.columnState.editColumnName"
+                           data-ng-model="boardColumnCtrl.columnState.newColumnName" data-lvg-on-esc="boardColumnCtrl.columnState.editColumnName">
+                </div>
+                <div>
+                    <button class="lvg-button lvg-button-submit" data-ng-click="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false"><span data-translate>partials.fragments.columns-fragment.save</span></button>
+                    <button class="lvg-button lvg-button-default" data-ng-click="boardColumnCtrl.columnState.editColumnName=false"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1">
+            <div data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN" class="dropdown">
+                <div data-dropdown-toggle data-toggle="dropdown"><div class="lavagna-card-caret-container lavagna-not-sortable-board-column"><span class="fa fa-chevron-down"></span><span class="fa fa-chevron-up"></span></div></div>
+                <ul class="dropdown-menu lvg-board-column-menu">
+                    <li data-lvg-has-permission="CREATE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.columnState.addNewCardFromTop = true"><span data-translate>partials.fragments.columns-fragment.addCard</span></button></li>
+                    <li class="divider lavagna-visibile-in-edit-mode">
+                    <li class="lavagna-visibile-in-edit-mode" data-lvg-has-permission="MANAGE_LABEL_VALUE"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.selectAllInColumn()" data-translate>partials.fragments.columns-fragment.selectAll</button></li>
+                    <li class="lavagna-visibile-in-edit-mode" data-lvg-has-permission="MANAGE_LABEL_VALUE"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.unSelectAllInColumn()" data-translate>partials.fragments.columns-fragment.selectNone</button></li>
+                    <li class="divider" data-lvg-has-all-permissions="CREATE_CARD,RENAME_COLUMN"></li>
+                    <li class="dropdown-submenu" data-lvg-has-permission="RENAME_COLUMN">
+                        <button class="lvg-dropdown-button lvg-button-white-bg" data-translate>partials.fragments.columns-fragment.columnStatus</button>
+                        <ul class="dropdown-menu">
+                            <li data-ng-repeat="definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'">
+                                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="definition.color | color" class="fa fa-square"></span> {{::definition.value|capitalize}}</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="divider" data-lvg-has-all-permissions="RENAME_COLUMN,MOVE_CARD"></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'ARCHIVE')" data-translate>partials.fragments.columns-fragment.moveAllToArchive</button></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'BACKLOG')" data-translate>partials.fragments.columns-fragment.moveAllToBacklog</button></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'TRASH')" data-translate>partials.fragments.columns-fragment.moveAllToTrash</button></li>
+                    <li class="divider" data-lvg-has-all-permissions="MOVE_CARD,MOVE_COLUMN"></li>
+                    <li data-lvg-has-permission="MOVE_COLUMN"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveColumn('ARCHIVE')" data-translate>partials.fragments.columns-fragment.moveColumnToArchive</button></li>
+                    <li data-lvg-has-permission="MOVE_COLUMN"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveColumn('BACKLOG')" data-translate>partials.fragments.columns-fragment.moveColumnToBacklog</button></li>
+                    <li data-lvg-has-permission="MOVE_COLUMN"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveColumn('TRASH')" data-translate>partials.fragments.columns-fragment.moveColumnToTrash</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div data-ng-if="boardColumnCtrl.columnState.addNewCardFromTop" class="row">
+        <div class="col-xs-11">
+            <!-- TODO: move in a directive -->
+            <form data-ng-submit="boardColumnCtrl.createCardFromTop(boardColumnCtrl.columnState.cardToCreateFromTop)">
+                <div class="form-group">
+                    <input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+                           data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreateFromTop.name == null" required="required"
+                           data-ng-model="boardColumnCtrl.columnState.cardToCreateFromTop.name" class="form-control"
+                           data-lvg-on-esc="boardColumnCtrl.columnState.addNewCardFromTop" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreateFromTop = null"></input>
+                </div>
+                <div>
+                    <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
+                    <button type="button" data-ng-click="boardColumnCtrl.columnState.cardToCreateFromTop = null; boardColumnCtrl.columnState.addNewCardFromTop = false" class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <lvg-spinner data-ng-hide="::(boardColumnCtrl.loaded)"></lvg-spinner>
+    <ul data-ui-sortable="boardCtrl.sortableCardOptions" class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}">
+        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : cardFilter track by card.hash" class="lavagna-board-card"
+            data-ng-attr-data-lvg-card-id="{{::card.id}}" data-ng-attr-data-lavagna-card-column-id="{{::card.columnId}}">
+            <lvg-card-fragment data-view="board" data-card="card"
+                               data-project="boardColumnCtrl.project.shortName" data-board="boardColumnCtrl.board.shortName" data-selected="boardCtrl.selectedCards" data-dependencies="boardColumnCtrl.cardFragmentDependencies"></lvg-card-fragment>
+        </li>
+    </ul>
+</div>
+<div class="panel-footer" data-lvg-has-permission="CREATE_CARD">
+    <ul class="board-controls"
+        data-ng-hide="boardColumnCtrl.columnState.addNewCard || boardColumnCtrl.columnState.deleteColumn">
+        <li class="control-box">
+					<span data-ng-click="boardColumnCtrl.columnState.addNewCard = true"
+                          class="fa fa-plus" title="{{'partials.fragments.columns-fragment.addCard' | translate}}"></span></li>
+    </ul>
+    <div data-ng-if="boardColumnCtrl.columnState.addNewCard">
+        <form data-ng-submit="boardColumnCtrl.createCard(boardColumnCtrl.columnState.cardToCreate)">
+            <div class="form-group">
+                <input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+                       data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreate.name == null" required="required"
+                       data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"
+                       data-lvg-on-esc="boardColumnCtrl.columnState.addNewCard" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreate = null"></input>
+            </div>
+            <div>
+                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
+                <button type="button" data-ng-click="boardColumnCtrl.columnState.cardToCreate = null; boardColumnCtrl.columnState.addNewCard = false"
+                        class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+            </div>
+        </form>
+    </div>
+</div>

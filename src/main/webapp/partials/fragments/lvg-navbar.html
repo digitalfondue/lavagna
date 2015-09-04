@@ -3,23 +3,23 @@
 	<div data-ng-switch-when="project-menu" class="menu-frame">
 		<div class="tab-menu-container">
 			<df-tab-menu data-menu-control="{{navigationState}}" data-more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-				<li menu-item="project"><a data-ng-href="#/{{project.shortName}}/"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
-				<li menu-item="projectMilestones"><a data-ng-href="#/{{project.shortName}}/milestones/"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
-				<li menu-item="projectStatistics"><a data-ng-href="#/{{project.shortName}}/statistics/"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
+				<li menu-item="project.boards"><a data-ui-sref="project.boards({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
+				<li menu-item="project.milestones"><a data-ui-sref="project.milestones({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
+				<li menu-item="project.statistics"><a data-ui-sref="project.statistics({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
 			</df-tab-menu>
 		</div>
 	</div>
 	<div data-ng-switch-when="board-menu" class="menu-frame board-menu-frame">
 		<div class="lvg-board-location">
 			<button class="lvg-navigation-button lvg-edit-button"
-					data-ng-click="sidebarHandler('ARCHIVE')"
-					data-ng-if="sideBarLocation === undefined || sideBarLocation === 'NONE'"
+					data-ng-click="boardCtrl.toggledSidebar = true"
+					data-ng-hide="boardCtrl.toggledSidebar"
 					title="{{'partials.board.showSideLocation' | translate}}">
 				<i class="fa fa-folder-o"></i>
 			</button>
 			<button class="lvg-navigation-button lvg-edit-button edit-active"
-					data-ng-click="sidebarHandler('NONE')"
-					data-ng-if="sideBarLocation !== undefined && sideBarLocation !== 'NONE'"
+                    data-ng-click="boardCtrl.toggledSidebar = false"
+                    data-ng-show="boardCtrl.toggledSidebar"
 					title="{{'partials.board.hideSideLocation' | translate}}">
 				<i class="fa fa-folder-open-o"></i>
 			</button>

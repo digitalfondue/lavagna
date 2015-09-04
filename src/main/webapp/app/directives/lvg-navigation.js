@@ -8,7 +8,7 @@
 		return {
 			restrict: 'E',
 			template: '<a ng-href="#"><span data-translate>partials.home.title</span></a><i class="fa fa-angle-right"></i>' +
-			'{{project.shortName}}<span class="separator">-</span>{{project.name}}<a data-lvg-has-permission="PROJECT_ADMINISTRATION" class="project-settings-shortcut" ng-href="#/{{project.shortName}}/manage/" title="{{\'partials.project.fragments.nabvar.projectAdmin\' | translate}}"><i class="fa fa-cog"></i></a>'
+			'{{projectResolver.project.shortName}}<span class="separator">-</span>{{projectResolver.project.name}}<a data-lvg-has-permission="PROJECT_ADMINISTRATION" class="project-settings-shortcut" ng-href="#/{{project.shortName}}/manage/" title="{{\'partials.project.fragments.nabvar.projectAdmin\' | translate}}"><i class="fa fa-cog"></i></a>'
 		}
 	});
 
