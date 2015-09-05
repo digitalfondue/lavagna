@@ -9,18 +9,22 @@ This is a high level roadmap. Lavagna has currently:
 ## Expected for 1.0.4 (mid september - october 2015)
 
  - support gitlab oauth (gitlab.com AND other gitlab instances (self-hosted and not))
+ 
+## Expected for 1.0.5 (october 2015)
+
+ - support for internal password protected accounts
 
 ## Expected for 1.1 
 
- - client side refactoring, porting to angular 1.4.x
  - decent i18n
  - improve the UI/UX
  - enable Content-Security-Policy
- - support gitlab oauth
- - support internal account handling
  - support commit log parsing (git, svn (?))
  - webhooks support
- - refactor the authentication manager: cleanup + simplification [WIP]
+ - client side refactoring, porting to angular 1.4.x [wip]
+ - support internal account handling [wip]
+ - refactor the authentication manager: cleanup + simplification [mostly done]
+ - support gitlab oauth [done]
  - iCalendar feed support [done]
  - update to spring 4.2.x [done]
  - switch connection pool to hikaricp [done]
