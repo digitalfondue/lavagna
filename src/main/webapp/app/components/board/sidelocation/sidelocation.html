@@ -10,7 +10,6 @@
                     <div class="col-xs-12">
                         <div class="dropdown">
                             <button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
-                                {{boardSidebarCtrl.sideBarLocation}}
 								<span data-ng-switch="boardSidebarCtrl.sideBarLocation">
 									<span data-ng-switch-when="ARCHIVE"data-translate>partials.board.archive</span>
 									<span data-ng-switch-when="BACKLOG"data-translate>partials.board.backlog</span>
@@ -18,10 +17,13 @@
 								</span>
                                 <i class="fa fa-caret-down"></i>
                             </button>
-                            <ul class="dropdown-menu" data-ng-model="boardSidebarCtrl.sideBarLocation" data-ng-change="boardSidebarCtrl.switchLocation()">
-                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardSidebarCtrl.sideBarLocation = 'ARCHIVE'" data-translate>partials.board.archive</button></li>
-                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardSidebarCtrl.sideBarLocation = 'BACKLOG'" data-translate>partials.board.backlog</button></li>
-                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardSidebarCtrl.sideBarLocation = 'TRASH'" data-translate>partials.board.trash</button></li>
+                            <ul class="dropdown-menu">
+                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                            data-ng-click="boardSidebarCtrl.sideBarLocation = 'ARCHIVE'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.archive</button></li>
+                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                            data-ng-click="boardSidebarCtrl.sideBarLocation = 'BACKLOG'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.backlog</button></li>
+                                <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                            data-ng-click="boardSidebarCtrl.sideBarLocation = 'TRASH'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.trash</button></li>
                             </ul>
                         </div>
                     </div>

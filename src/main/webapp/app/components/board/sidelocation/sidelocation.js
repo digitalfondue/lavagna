@@ -9,7 +9,6 @@
     function BoardSidebarComponent(Board, Card, User, StompClient) {
         return {
             restrict: 'E',
-            //require: '^boardCtrl',
             controller: BoardSidebarController,
             controllerAs: 'boardSidebarCtrl',
             scope: true,
@@ -32,8 +31,8 @@
                 });
 
                 scope.$watch('boardSidebarCtrl.control', function(control) {
-                    console.log("derp derp something changed = " + control);
                     if(control) {
+                        $("#sidebar-drop-zone").hide();
                         boardSidebarCtrl.sideBarLocation = 'ARCHIVE';
                         boardSidebarCtrl.switchLocation();
                     }
@@ -53,9 +52,6 @@
         var subscriptionScope;
 
         ctrl.switchLocation = function () {
-            console.log("switchLocation = " + ctrl.sideBarLocation);
-
-            console.log(subscriptionScope);
             if (subscriptionScope !== undefined) {
                 subscriptionScope.$destroy();
             }

@@ -9,7 +9,6 @@
     function BoardColumnComponent(Board, Card, Label, Notification, StompClient, BulkOperations) {
         return {
             restrict: 'E',
-            require: '^boardCtrl',
             controller: BoardColumnController,
             controllerAs: 'boardColumnCtrl',
             scope: true,
@@ -18,42 +17,38 @@
                 board: '=',
                 column: '='
             },
-            templateUrl: 'app/components/board/column/column.html'
+            templateUrl: 'app/components/board/column/column.html',
+            link: function($scope, $elements, $attrs, boardColumnCtrl) {
+                var projectShortName = boardColumnCtrl.project.shortName;
+                var boardShortName = boardColumnCtrl.board.shortName;
+                var columnId = boardColumnCtrl.column.id;
+
+                var initializeColumn = function() {
+
+                    var loadCards = function() {
+                        Card.findByColumn(columnId).then(function(res) {
+                            $("[data-lvg-column-id="+columnId+"] .lavagna-to-be-cleaned-up").remove();
+                            boardColumnCtrl.cardsInColumn = res;
+                            boardColumnCtrl.loaded = true;
+                        });
+                    };
+                    StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
+
+                    $scope.$on('loadcards', loadCards);
+
+                    loadCards();
+                };
+
+                initializeColumn();
+            }
         }
     }
 
     function BoardColumnController($scope, $filter, $modal, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
 
-        var projectShortName = ctrl.project.shortName;
-        var boardShortName = ctrl.board.shortName;
-        var columnId = ctrl.column.id;
-
         //capture all status variables
         ctrl.columnState = {};
-
-        ctrl.initializeColumnCtrl = function() {
-
-            var loadCards = function() {
-                Card.findByColumn(columnId).then(function(res) {
-                    $("[data-lvg-column-id="+columnId+"] .lavagna-to-be-cleaned-up").remove();
-                    ctrl.cardsInColumn = res;
-                    ctrl.loaded = true;
-                    //ctrl.foundCards[columnId] = res;
-                });
-            };
-            StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
-
-            $scope.$on('loadcards', loadCards);
-
-            loadCards();
-
-            $scope.$on('$destroy', function() {
-                //delete ctrl.cards;
-            });
-        };
-
-        ctrl.initializeColumnCtrl();
 
         ctrl.selectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.cardFilter), function(c) {
