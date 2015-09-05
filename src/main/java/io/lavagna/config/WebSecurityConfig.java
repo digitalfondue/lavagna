@@ -33,6 +33,7 @@ import io.lavagna.web.security.SecurityConfiguration;
 import io.lavagna.web.security.SecurityConfiguration.*;
 import io.lavagna.web.security.login.DemoLogin;
 import io.lavagna.web.security.login.LdapLogin;
+import io.lavagna.web.security.login.PasswordLogin;
 import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
@@ -243,8 +244,7 @@ public class WebSecurityConfig {
     }
 
     public enum LoginHandlerType {
-
-        DEMO(DemoLogin.class, "demo"), LDAP(LdapLogin.class, "ldap"), OAUTH(OAuthLogin.class, "oauth");
+        DEMO(DemoLogin.class, "demo"), LDAP(LdapLogin.class, "ldap"), OAUTH(OAuthLogin.class, "oauth"), PASSWORD(PasswordLogin.class, "password");
 
         LoginHandlerType(Class<? extends LoginHandler> classHandler, String pathAfterLogin) {
             this.classHandler = classHandler;
@@ -312,6 +312,12 @@ public class WebSecurityConfig {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(asList(new FormHttpMessageConverter(), new GsonHttpMessageConverter()));
         return restTemplate;
+    }
+
+    @Lazy
+    @Bean
+    public PasswordLogin passwordLogin(Users users, SessionHandler sessionHandler) {
+        return new PasswordLogin(users, sessionHandler);
     }
 
 }
