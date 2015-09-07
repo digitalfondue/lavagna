@@ -13,7 +13,6 @@
             controllerAs: 'boardSidebarCtrl',
             scope: true,
             bindToController: {
-                control: '=',
                 board: '=',
                 project: '='
             },
@@ -30,14 +29,9 @@
                     }
                 });
 
-                scope.$watch('boardSidebarCtrl.control', function(control) {
-                    if(control) {
-                        $("#sidebar-drop-zone").hide();
-                        boardSidebarCtrl.sideBarLocation = 'ARCHIVE';
-                        boardSidebarCtrl.switchLocation();
-                    }
-
-                });
+                $("#sidebar-drop-zone").hide();
+                boardSidebarCtrl.sideBarLocation = 'ARCHIVE';
+                boardSidebarCtrl.switchLocation();
             }
 
         }
