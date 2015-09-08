@@ -102,9 +102,6 @@
 				card : function(CardCache, $stateParams) {
 					return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
 				},
-				currentUser : function(User) {
-					return User.currentCachedUser();
-				},
 				project : function(ProjectCache, $stateParams) {
 					return ProjectCache.project($stateParams.projectName);
 				},
@@ -297,12 +294,12 @@
         })
 
         //---- PROJECT SEARCH ----
-        .state('projectSearch', {
-			url : '/:projectName/search/?q&page',
+        .state('project.search', {
+			url : 'search/?q&page',
 			templateUrl : 'partials/project/search.html',
 			controller: 'SearchCtrl',
 			reloadOnSearch: false
-		}).state('/:projectName/projectSearch.card', {
+		}).state('project.search.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
@@ -324,10 +321,13 @@
 		.state('projectBoard.board', {
 			url : '',
 			template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>'
-		}).state('projectBoard.card', {
+		}).state('projectBoard.board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
+			template : '<lvg-component-card project="boardCtrlResolver.project" board="boardCtrlResolver.board" card="cardCtrlResolver.card" set-title="appCtrl.setTitle"></lvg-component-card>',
+			controller : function(card, project, board) {
+			    this.card = card;
+			},
+			controllerAs : 'cardCtrlResolver',
 			resolve : cardCtrlResolver
 		});
 
@@ -336,9 +336,9 @@
 
 	//reset the title to "Lavagna" (default). The controller will override with his own value if necessary.
 	module.run(function($rootScope, $state) {
-		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
+		/*$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
 			$rootScope.pageTitle = 'Lavagna'
-		});
+		});*/
 
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
