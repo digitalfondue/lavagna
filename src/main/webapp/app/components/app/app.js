@@ -8,10 +8,19 @@
     function AppController($window, User) {
         var ctrl = this;
 
-        ctrl.title = "Lavagna";
+        var titleStack = [];
+        var baseTitle = "Lavagna";
+
+        ctrl.title = baseTitle;
 
         ctrl.setTitle = function(title) {
+            titleStack.push(title);
             ctrl.title = title;
+        }
+
+        ctrl.revertTitle = function() {
+            titleStack.pop();
+            ctrl.title = titleStack.length > 0 ? titleStack[titleStack.length - 1]: baseTitle;
         }
 
         User.current().then(function (u) {

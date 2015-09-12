@@ -288,8 +288,12 @@
             template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            templateUrl : 'partials/card.html',
-            controller : 'CardCtrl',
+            template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
+            controller : function(card, project, board) {
+                this.board = board;
+                this.card = card;
+            },
+            controllerAs : 'cardCtrlResolver',
             resolve : cardCtrlResolver
         })
 
@@ -301,9 +305,13 @@
 			reloadOnSearch: false
 		}).state('project.search.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
-			resolve : cardCtrlResolver
+			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
+            controller : function(card, project, board) {
+                this.board = board;
+                this.card = card;
+            },
+            controllerAs : 'cardCtrlResolver',
+            resolve : cardCtrlResolver
 		})
 
 		//---- BOARD ----
@@ -323,7 +331,7 @@
 			template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>'
 		}).state('projectBoard.board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="boardCtrlResolver.project" board="boardCtrlResolver.board" card="cardCtrlResolver.card" set-title="appCtrl.setTitle"></lvg-component-card>',
+			template : '<lvg-component-card project="boardCtrlResolver.project" board="boardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
 			controller : function(card, project, board) {
 			    this.card = card;
 			},

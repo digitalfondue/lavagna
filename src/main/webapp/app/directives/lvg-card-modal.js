@@ -7,10 +7,14 @@
 	directives.directive('lvgCardModal', function () {
 		return {
 			restrict: 'A',
+			scope: {
+			    onClose: '='
+			},
 			controller: function ($scope, $element, $state) {
 
 				$scope.goBack = function() {
 					//go to parent state
+					$scope.onClose();
 					$state.go('^');
 				}
 			},

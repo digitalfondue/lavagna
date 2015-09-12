@@ -15,7 +15,7 @@
                 project: '=',
                 board: '=',
                 card: '=',
-                setTitle: '='
+                app: '='
             },
             controller: CardController,
             controllerAs: 'cardCtrl'
@@ -74,7 +74,7 @@
         //
 
         var refreshTitle = function() {
-            ctrl.setTitle('[' + board.shortName + '-' + card.sequence + '] ' + card.name + ' - Lavagna');
+            ctrl.app.setTitle('[' + board.shortName + '-' + card.sequence + '] ' + card.name + ' - Lavagna');
         };
         refreshTitle();
         //------------------
