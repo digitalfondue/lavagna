@@ -127,8 +127,7 @@
 
 		$stateProvider.state('home', {
 			url : '/',
-			templateUrl : 'partials/home.html',
-			controller : 'HomeCtrl'
+			template : '<lvg-component-dashboard></lvg-component-dashboard>'
 		})
 		.state('404', {
 			url : '/not-found/',
@@ -342,12 +341,7 @@
 		$urlRouterProvider.otherwise('/');
 	});
 
-	//reset the title to "Lavagna" (default). The controller will override with his own value if necessary.
 	module.run(function($rootScope, $state) {
-		/*$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
-			$rootScope.pageTitle = 'Lavagna'
-		});*/
-
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $state.go(error.status.toString());
