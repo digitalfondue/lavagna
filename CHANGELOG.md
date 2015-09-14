@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4 (2015-09-15)
+
+ - [#8] implement gitlab support for gitlab.com and self hosted instances
+ - updates some libraries
+ - refactor part of the login system
+
 ## 1.0.3 (2015-09-01)
 
  - fix issue [#13](https://github.com/digitalfondue/lavagna/issues/13)
