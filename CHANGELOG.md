@@ -2,7 +2,7 @@
 
 ## 1.0.4 (2015-09-15)
 
- - [#8] implement gitlab support for gitlab.com and self hosted instances
+ - [#8](https://github.com/digitalfondue/lavagna/issues/8) implement gitlab support for gitlab.com and self hosted instances
  - updates some libraries
  - refactor part of the login system
 
