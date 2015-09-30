@@ -50,7 +50,10 @@
 				<li data-bo-if="card.counts['FILE'].count > 0">
 					<span class="fa fa-file"></span> <span data-bo-bind="card.counts['FILE'].count"></span>
 				</li>
-				<li data-ng-if="hasSystemLabelByName('DUE_DATE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId">
+				<li data-ng-if="hasSystemLabelByName('DUE_DATE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
+                    data-bo-class="{'lvg-due-date-tomorrow': ((label.labelValueTimestamp | daysDiff) == -1),
+                                    'lvg-due-date-now': ((label.labelValueTimestamp | daysDiff) == 0),
+                                    'lvg-due-date-past': ((label.labelValueTimestamp | daysDiff) > 0)}">
 					<span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
 				</li>
 				<li data-ng-if="hasSystemLabelByName('MILESTONE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
