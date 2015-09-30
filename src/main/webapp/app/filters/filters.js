@@ -48,6 +48,16 @@
 		}, 1000, 'markdown', $cacheFactory);
 	});
 
+    filters.filter('daysDiff', function () {
+        return function (input) {
+            if (input == null) {
+                return null;
+            }
+            return moment().startOf('day').diff(input, 'days');
+        }
+    });
+
+
 	filters.filter('capitalize', function () {
 		return function (input, scope) {
 			if (input == null) {
@@ -203,7 +213,7 @@
 	filters.filter('extractISO8601Date', function ($filter) {
 		return function (dueDate, dueDateTime) {
 			try {
-				
+
 				var isDueDateTimeUndefined = dueDateTime === undefined;
 
 				dueDateTime = dueDateTime || "12:00";
@@ -213,10 +223,10 @@
 
 				if (ddmmyyyy.length !== 3 || hhmm.length !== 2) {
 					return false;
-				}				
+				}
 
 				var date;
-				
+
 				if(isDueDateTimeUndefined) {
 					date = new Date(ddmmyyyy[2] + "-" + ddmmyyyy[1] + "-"+ddmmyyyy[0] + "T" + hhmm[0]+":"+hhmm[1]+":00+00:00");
 				} else {
@@ -400,10 +410,10 @@
 			return text.replace(/./gi, "*");
 		};
 	});
-	
+
 	// imported from https://github.com/angular/angular.js/blob/master/src/ng/filter/limitTo.js
 	// which is under the following license:
-	/* 
+	/*
 The MIT License
 
 Copyright (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -427,12 +437,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 	 */
 	filters.filter('limitToWithOffset', function limitToWithOffset() {
-		
+
 		function toInt(str) {
 			  return parseInt(str, 10);
 			}
-		
-		
+
+
 	  return function(input, limit, begin) {
 	    if (Math.abs(Number(limit)) === Infinity) {
 	      limit = Number(limit);
@@ -440,13 +450,13 @@ THE SOFTWARE.
 	      limit = toInt(limit);
 	    }
 	    if (isNaN(limit)) return input;
-	
+
 	    if (angular.isNumber(input)) input = input.toString();
 	    if (!angular.isArray(input) && !angular.isString(input)) return input;
-	
+
 	    begin = (!begin || isNaN(begin)) ? 0 : toInt(begin);
 	    begin = (begin < 0 && begin >= -input.length) ? input.length + begin : begin;
-	
+
 	    if (limit >= 0) {
 	      return input.slice(begin, begin + limit);
 	    } else {
