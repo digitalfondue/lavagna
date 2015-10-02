@@ -125,6 +125,21 @@
             }
 		}
 
+		var userResolver = {
+		    user: function(User, $stateParams) {
+		        return User.getUserProfile($stateParams.provider, $stateParams.username, 0);
+		    },
+		    isCurrentUser: function(User, $stateParams) {
+		        return User.isCurrentUser($stateParams.provider, $stateParams.username);
+		    }
+		}
+
+		var currentUserResolver = {
+            user: function(User) {
+                return User.currentCachedUser();
+            }
+		}
+
 		$stateProvider.state('home', {
 			url : '/',
 			template : '<lvg-component-dashboard></lvg-component-dashboard>'
@@ -153,20 +168,35 @@
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
-			templateUrl : 'partials/me.html',
-			controller: 'AccountCtrl'
+			template: '<lvg-component-account></lvg-component-account>',
+			controller: function(user) {
+                this.provider = user.provider;
+                this.username = user.username;
+                this.isCurrentUser = true;
+            },
+            controllerAs: 'userResolver',
+            resolve : currentUserResolver
 		}).state('user', {
             url :'/user/:provider/:username/',
-            templateUrl : 'partials/user.html',
-            controller: 'UserCtrl'
-        }).state('user-projects', {
-        	url :'/user/:provider/:username/projects/',
-            templateUrl : 'partials/user/projects.html',
-            controller: 'UserProjectsCtrl'
-        }).state('user-activity', {
-        	url :'/user/:provider/:username/activity/',
-            templateUrl : 'partials/user/activity.html',
-            controller: 'UserActivityCtrl'
+            abstract: true,
+            template: '<lvg-component-user user="userResolver.user"></lvg-component-user>',
+            controller: function(user, isCurrentUser) {
+                this.user = user;
+                this.provider = user.user.provider;
+                this.username = user.user.username;
+                this.isCurrentUser = isCurrentUser;
+            },
+            controllerAs: 'userResolver',
+            resolve : userResolver
+		}).state('user.dashboard', {
+            url :'',
+            template : '<lvg-component-user-dashboard profile="userCtrl.profile"></lvg-component-user-dashboard>'
+        }).state('user.projects', {
+        	url :'projects/',
+            templateUrl : 'app/components/user/projects/projects.html'
+        }).state('user.activity', {
+        	url :'activity/',
+            templateUrl : 'app/components/user/activity/activity.html'
         })
 		//---- SEARCH ----
 		.state('globalSearch', {

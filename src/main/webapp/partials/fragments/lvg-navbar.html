@@ -91,10 +91,10 @@
 	</div>
 	<div data-ng-switch-when="user" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="user"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}"><span data-translate>partials.user.tab.profile</span></a></li>
-			<li menu-item="user-projects"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/projects/"><span data-translate>partials.user.tab.projects</span></a></li>
-			<li menu-item="user-activity"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/activity/"><span data-translate>partials.user.tab.activity</span></a></li>
-			<li menu-item="account"><a href="#/me/" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
+			<li menu-item="user.dashboard"><a data-ui-sref="user.dashboard({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.profile</span></a></li>
+			<li menu-item="user.projects"><a data-ui-sref="user.projects({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.projects</span></a></li>
+			<li menu-item="user.activity"><a data-ui-sref="user.activity({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.activity</span></a></li>
+			<li menu-item="account"><a data-ui-sref="account" data-ng-show="userResolver.isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="about" class="menu-frame">

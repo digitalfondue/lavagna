@@ -1,32 +1,45 @@
-(function () {
+(function() {
 
     'use strict';
 
-    var module = angular.module('lavagna.controllers');
+    var components = angular.module('lavagna.components');
 
-    module.controller('AccountCtrl', function ($window, $scope, User, Notification) {
+    components.directive('lvgComponentAccount', AccountComponent);
 
+    function AccountComponent($window, User, Notification) {
+        return {
+            restrict: 'E',
+            scope: true,
+            bindToController: {},
+            controller: AccountController,
+            controllerAs: 'accountCtrl',
+            templateUrl: 'app/components/account/account.html'
+        }
+    };
+
+    function AccountController($window, User, Notification) {
+        var ctrl = this;
 
         User.currentCachedUser().then(function (user) {
-            $scope.userNameProfile = user.username;
-            $scope.userProvider = user.provider;
-            $scope.userUsername = user.username;
+            ctrl.userNameProfile = user.username;
+            ctrl.userProvider = user.provider;
+            ctrl.userUsername = user.username;
         });
 
 
-        $scope.profile = {};
+        ctrl.profile = {};
 
-        $scope.isCurrentUser = true;
+        ctrl.isCurrentUser = true;
 
         var loadUser = function (u) {
-            $scope.user = u;
-            $scope.profile.email = u.email;
-            $scope.profile.displayName = u.displayName;
-            $scope.profile.emailNotification = u.emailNotification;
+            ctrl.user = u;
+            ctrl.profile.email = u.email;
+            ctrl.profile.displayName = u.displayName;
+            ctrl.profile.emailNotification = u.emailNotification;
 
         };
 
-        $scope.clearAllTokens = function () {
+        ctrl.clearAllTokens = function () {
             User.clearAllTokens().then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.user.tokenCleared.success'}, false);
             }, function () {
@@ -45,24 +58,22 @@
         };
 
         var createUrl = function (resp) {
-            $scope.calendarFeedUrl = getOrigin($window) + "/api/calendar/" + resp.token + "/calendar.ics";
-            $scope.disabledFeed = resp.disabled;
+            ctrl.calendarFeedUrl = getOrigin($window) + "/api/calendar/" + resp.token + "/calendar.ics";
+            ctrl.disabledFeed = resp.disabled;
         };
 
         User.getCalendarToken().then(createUrl);
 
-        $scope.clearCalendarToken = function () {
+        ctrl.clearCalendarToken = function () {
             User.deleteCalendarToken().then(createUrl);
         };
 
-        $scope.$watch('disabledFeed', function (newVal, oldVal) {
-            if (newVal == undefined || oldVal == undefined || newVal == oldVal) {
-                return;
-            }
-            User.updateCalendarFeedStatus($scope.disabledFeed).then(createUrl);
-        });
+        ctrl.updateFeed = function() {
+            ctrl.disabledFeed = !ctrl.disabledFeed;
+            User.updateCalendarFeedStatus(ctrl.disabledFeed).then(createUrl);
+        }
 
-        $scope.update = function (profile) {
+        ctrl.update = function(profile) {
             User.updateProfile(profile)
                 .then(User.invalidateCachedUser)
                 .then(User.current).then(loadUser).then(function () {
@@ -71,5 +82,5 @@
                     Notification.addAutoAckNotification('error', {key: 'notification.user.update.error'}, false);
                 });
         }
-    });
+    };
 })();
