@@ -250,9 +250,12 @@
 		//---- MANAGE PROJECT ----
 		.state('ProjectManage', {
         	url : '/:projectName/manage/',
-			templateUrl : 'partials/project/manage.html',
+			templateUrl : 'app/components/project/manage/manage.html',
 			abstract: true,
-          	controller : 'ProjectManageCtrl',
+          	controller : function(project) {
+                this.project = project;
+          	},
+          	controllerAs: 'projectResolver',
           	resolve: projectResolver
         }).state('ProjectManage.projectRole', {
 			url : 'roles/',
@@ -285,14 +288,10 @@
 			resolve: projectResolver
 		}).state('ProjectManage.projectManageBoards', {
 			url : 'boards/',
-			templateUrl : 'partials/project/manage-boards.html',
-			controller : 'ProjectManageBoardsCtrl',
-			resolve: projectResolver
+			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
 		}).state('ProjectManage.projectManageHome', {
 			url : '',
-			templateUrl : 'partials/project/manage-home.html',
-			controller : 'ProjectManageHomeCtrl',
-			resolve: projectResolver
+			template: '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>'
 		})
 
 		//---- PROJECT ----

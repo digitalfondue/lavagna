@@ -1,0 +1,58 @@
+<div class="container auto-margin lavagna-container-top-margin">
+    <div class="row">
+        <div class="col-md-12" data-ng-repeat="ab in manageBoardsCtrl.boards" data-ng-init="manageBoardsCtrl.view.boardStatus[ab.shortName] = {}">
+            <div class="lavagna-panel">
+                <div class="head clearfix" data-ng-class="{headonly : manageBoardsCtrl.view.boardStatus[ab.shortName].edit}">
+                    <div class="title title-bold col-xs-9" data-ng-bind="ab.shortName"></div>
+                    <div class="title-addon col-xs-3">
+                        <ul class="panel-controls" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                            <li class="control-item" data-ng-hide="manageBoardsCtrl.view.boardStatus[ab.shortName].edit || ab.archived" data-ng-click="manageBoardsCtrl.archive(ab);">
+                                <span class="pull-right"><i class="fa fa-archive" title="{{'common.archive' | translate}}"></i></span>
+                            </li>
+                            <li class="control-item" data-ng-hide="manageBoardsCtrl.view.boardStatus[ab.shortName].edit || !ab.archived " data-ng-click="manageBoardsCtrl.unarchive(ab);">
+                                <span class="pull-right"><i class="fa fa-upload" title="{{'common.unarchive' | translate}}"></i></span>
+                            </li>
+                            <li class="control-item" data-ng-hide="manageBoardsCtrl.view.boardStatus[ab.shortName].edit" data-ng-click="manageBoardsCtrl.view.boardStatus[ab.shortName].edit = true;">
+                                <span class="pull-right"><i class="fa fa-pencil" title="{{'common.edit' | translate}}"></i></span>
+                            </li>
+                            <li class="control-item active-control" data-ng-show="manageBoardsCtrl.view.boardStatus[ab.shortName].edit" data-ng-click="manageBoardsCtrl.view.boardStatus[ab.shortName].edit = false;">
+                                <span class="pull-right"><i class="fa fa-times" title="{{'common.cancel' | translate}}"></i></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="body" data-ng-hide="manageBoardsCtrl.view.boardStatus[ab.shortName].edit" data-ng-class="{archived : ab.archived}">
+                    <p><a data-ui-sref="projectBoard.board({projectName: manageBoardsCtrl.project.shortName, shortName: ab.shortName})">{{::ab.name}}</a></p>
+                    <p data-ng-if="ab.description.length > 0" data-ng-bind-html="ab.description | markdown"></p>
+                    <p data-ng-if="ab.description == null"><i data-translate>common.no-description-available</i></p>
+                </div>
+                <div class="footer" data-ng-if="manageBoardsCtrl.view.boardStatus[ab.shortName].edit">
+                    <form role="form" data-ng-submit="manageBoardsCtrl.update(manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate);manageBoardsCtrl.view.boardStatus[ab.shortName].preview = false"
+                          data-ng-init="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: ab.archived}; manageBoardsCtrl.view.boardStatus[ab.shortName].preview = false"
+                          data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                        <div class="form-group">
+                            <label for="name" data-translate>partials.project.manage-home.name</label>
+                            <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="description" data-translate>partials.project.manage-home.description</label>
+                            <div data-ng-if="!manageBoardsCtrl.view.boardStatus[ab.shortName].preview">
+                                <textarea class="form-control" rows="3" id="description" data-ng-model="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.description" data-lvg-codemirror></textarea>
+                            </div>
+                            <div data-ng-if="manageBoardsCtrl.view.boardStatus[ab.shortName].preview">
+                                <div data-ng-bind-html="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.description | markdown"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.archived"></label>
+                        </div>
+                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="manageBoardsCtrl.view.boardStatus[ab.shortName].preview = true" data-ng-hide="manageBoardsCtrl.view.boardStatus[ab.shortName].preview">button.preview</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="manageBoardsCtrl.view.boardStatus[ab.shortName].preview = false" data-ng-show="manageBoardsCtrl.view.boardStatus[ab.shortName].preview">button.closePreview</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageBoardsCtrl.view.boardStatus[ab.shortName].edit = false;manageBoardsCtrl.view.boardStatus[ab.shortName].preview = false" data-translate>button.cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="container auto-margin lavagna-container-top-margin">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="lavagna-panel">
+                <form role="form" data-ng-init="projectManageCtrl.view.itemToUpdate = {shortName: projectManageCtrl.project.shortName, name: projectManageCtrl.project.name, description: projectManageCtrl.project.description, archived: projectManageCtrl.project.archived}; projectManageCtrl.view.preview = false"
+                      data-ng-submit="projectManageCtrl.update(projectManageCtrl.view.itemToUpdate);projectManageCtrl.view.preview = false" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                    <div class="body-full">
+                        <div class="form-group">
+                            <label for="name" data-translate>partials.project.manage-home.name</label>
+                            <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="projectManageCtrl.view.itemToUpdate.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="description" data-translate>partials.project.manage-home.description</label>
+                            <div data-ng-if="!projectManageCtrl.view.preview">
+                                <textarea class="form-control" rows="3" id="description" data-ng-model="projectManageCtrl.view.itemToUpdate.description" data-lvg-codemirror></textarea>
+                            </div>
+                            <div data-ng-if="projectManageCtrl.view.preview">
+                                <div data-ng-bind-html="projectManageCtrl.view.itemToUpdate.description | markdown"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="itemToUpdate.archived"></label>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.project.manage-home.update</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="projectManageCtrl.view.preview = true" data-ng-hide="projectManageCtrl.view.preview">button.preview</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="projectManageCtrl.view.preview = false" data-ng-show="projectManageCtrl.view.preview">button.closePreview</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
