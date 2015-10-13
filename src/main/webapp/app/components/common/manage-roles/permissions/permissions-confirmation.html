@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <span data-translate>partials.fragments.common-manage-roles.confirmation.title</span>
+    </h3>
+</div>
+<div class="modal-body">
+    <p><span data-translate>partials.fragments.common-manage-roles.confirmation.content</span> {{::confirmCtrl.roleName}}</p>
+</div>
+<div class="modal-footer">
+    <button data-ng-click="confirmCtrl.confirm()" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
+    <button data-ng-click="confirmCtrl.deny()" class="lvg-button lvg-button-default" data-translate>button.no</button>
+    <button data-ng-click="confirmCtrl.cancel()" class="lvg-button lvg-button-default" data-translate>button.cancel</button>
+</div>

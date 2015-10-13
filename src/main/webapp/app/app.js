@@ -257,10 +257,9 @@
           	},
           	controllerAs: 'projectResolver',
           	resolve: projectResolver
-        }).state('ProjectManage.projectRole', {
+        }).state('ProjectManage.roles', {
 			url : 'roles/',
-			templateUrl : 'partials/project/manage-roles.html',
-			controller: 'ManageRoleCtrl'
+			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
 		}).state('ProjectManage.projectImport', {
 			url : 'import/',
 			templateUrl : 'partials/project/manage-import.html',
@@ -273,23 +272,17 @@
           	resolve: projectResolver
 		}).state('ProjectManage.projectManageMilestones', {
 			url : 'milestones/',
-			templateUrl : 'partials/project/manage-milestones.html',
-			controller : 'ProjectManageMilestonesCtrl',
-          	resolve: projectResolver
-		}).state('ProjectManage.projectManageAnonymousUsers', {
+			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
+		}).state('ProjectManage.access', {
 			url : 'anonymous-users-access/',
-			templateUrl : 'partials/project/manage-anonymous-users-access.html',
-			controller : 'ProjectManageAnonymousUsersAccessCtrl',
-          	resolve: projectResolver
+			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
 		}).state('ProjectManage.projectManageColumnsStatus', {
 			url : 'status/',
-			templateUrl : 'partials/project/manage-columns-status.html',
-			controller : 'ProjectManageColumnsStatusCtrl',
-			resolve: projectResolver
-		}).state('ProjectManage.projectManageBoards', {
+			template: '<lvg-component-project-manage-status project="projectResolver.project"></lvg-component-project-manage-status>'
+		}).state('ProjectManage.boards', {
 			url : 'boards/',
 			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
-		}).state('ProjectManage.projectManageHome', {
+		}).state('ProjectManage.project', {
 			url : '',
 			template: '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>'
 		})

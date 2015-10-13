@@ -193,7 +193,7 @@ public class ResourceController {
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ServletContext context = request.getServletContext();
-		
+
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
 		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
@@ -215,11 +215,11 @@ public class ResourceController {
 
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
-			
+
 			Map<String, Object> localizationData = new HashMap<>();
 			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
 			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
-			
+
 			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
@@ -260,7 +260,7 @@ public class ResourceController {
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.11.0.min.js",//
+					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
 					"/js/df-tab-menu.min.js",//
 					"/js/df-autocomplete.js")) {
 				output(res, context, allJs, ba);
