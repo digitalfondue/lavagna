@@ -262,19 +262,17 @@
 			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
 		}).state('ProjectManage.import', {
 			url : 'import/',
-			templateUrl : 'partials/project/manage-import.html',
-			controller: 'ManageImportCtrl',
-          	resolve: projectResolver
+			template : '<lvg-component-project-manage-import project="projectResolver.project"></lvg-component-project-manage-import>'
 		}).state('ProjectManage.labels', {
 			url : 'labels/',
 			template : '<lvg-component-project-manage-labels project="projectResolver.project"></lvg-component-project-manage-labels>'
-		}).state('ProjectManage.projectManageMilestones', {
+		}).state('ProjectManage.milestones', {
 			url : 'milestones/',
 			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
 		}).state('ProjectManage.access', {
 			url : 'anonymous-users-access/',
 			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
-		}).state('ProjectManage.projectManageColumnsStatus', {
+		}).state('ProjectManage.status', {
 			url : 'status/',
 			template: '<lvg-component-project-manage-status project="projectResolver.project"></lvg-component-project-manage-status>'
 		}).state('ProjectManage.boards', {

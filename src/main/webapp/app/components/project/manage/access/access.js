@@ -41,9 +41,8 @@
 
         load();
 
-        ctrl.update = function() {
-            ctrl.userHasRole = !ctrl.userHasRole;
-            updateAnonymousAccess(ctrl.userHasRole);
+        ctrl.update = function(newValue) {
+            updateAnonymousAccess(newValue);
         }
 
         var updateAnonymousAccess = function(newVal) {
