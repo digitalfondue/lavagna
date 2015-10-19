@@ -70,10 +70,10 @@
 			<li menu-item="ProjectManage.boards"><a data-ui-sref="ProjectManage.boards({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.boards</span></a></li>
 			<li menu-item="ProjectManage.access"><a data-ui-sref="ProjectManage.access({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.anonymousUsersAccess</span></a></li>
 			<li menu-item="ProjectManage.roles"><a data-ui-sref="ProjectManage.roles({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.roles</span></a></li>
-			<li menu-item="ProjectManage.projectManageLabels"><a data-ng-href="#/{{project.shortName}}/manage/labels/"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
+			<li menu-item="ProjectManage.labels"><a data-ui-sref="ProjectManage.labels({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
 			<li menu-item="ProjectManage.milestones"><a data-ui-sref="ProjectManage.milestones({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.milestones</span></a></li>
 			<li menu-item="ProjectManage.status"><a data-ui-sref="ProjectManage.status({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.status</span></a></li>
-			<li menu-item="ProjectManage.projectImport"><a data-ng-href="#/{{project.shortName}}/manage/import/"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
+			<li menu-item="ProjectManage.import"><a data-ui-sref="ProjectManage.import({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="admin-menu" class="menu-frame">

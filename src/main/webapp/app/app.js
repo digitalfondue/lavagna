@@ -260,16 +260,14 @@
         }).state('ProjectManage.roles', {
 			url : 'roles/',
 			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
-		}).state('ProjectManage.projectImport', {
+		}).state('ProjectManage.import', {
 			url : 'import/',
 			templateUrl : 'partials/project/manage-import.html',
 			controller: 'ManageImportCtrl',
           	resolve: projectResolver
-		}).state('ProjectManage.projectManageLabels', {
+		}).state('ProjectManage.labels', {
 			url : 'labels/',
-			templateUrl : 'partials/project/manage-labels.html',
-			controller : 'ProjectManageLabelsCtrl',
-          	resolve: projectResolver
+			template : '<lvg-component-project-manage-labels project="projectResolver.project"></lvg-component-project-manage-labels>'
 		}).state('ProjectManage.projectManageMilestones', {
 			url : 'milestones/',
 			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
