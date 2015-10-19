@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4.1 (2015-10-19)
+
+ - update dependencies ([spring framework](https://spring.io/blog/2015/10/15/spring-framework-4-2-2-4-1-8-and-3-2-15-available-now) due to a possible security issue)
+
 ## 1.0.4 (2015-09-15)
 
  - [#8](https://github.com/digitalfondue/lavagna/issues/8) implement gitlab support for gitlab.com and self hosted instances
