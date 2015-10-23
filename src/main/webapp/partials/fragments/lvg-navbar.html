@@ -76,12 +76,12 @@
 	</div>
 	<div data-ng-switch-when="admin-menu" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-   			<li menu-item="admin.adminShowAllParameters"><a href="#/admin/"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
-    		<li menu-item="admin.adminConfigureLogin"><a href="#/admin/configure-login/"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
-			<li menu-item="admin.adminManageSmtpConfiguration"><a href="#/admin/manage-smtp-configuration/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
-			<li menu-item="admin.adminManageUsers"><a href="#/admin/manage-users/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
-			<li menu-item="admin.adminRole"><a href="#/admin/role/"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
-    		<li menu-item="admin.adminExportImport"><a href="#/admin/export-import/"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
+   			<li menu-item="admin.home"><a data-ui-sref="admin.home"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
+    		<li menu-item="admin.login"><a data-ui-sref="admin.login"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
+			<li menu-item="admin.smtp"><a data-ui-sref="admin.smtp"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
+			<li menu-item="admin.users"><a data-ui-sref="admin.users"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
+			<li menu-item="admin.roles"><a data-ui-sref="admin.roles"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
+    		<li menu-item="admin.exportimport"><a data-ui-sref="admin.exportimport"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="search" class="menu-frame">

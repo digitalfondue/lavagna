@@ -214,35 +214,31 @@
 		.state('admin', {
 			url: '/admin/',
 			abstract: true,
-			templateUrl : 'partials/admin/admin.html',
-			controller: 'AdminCtrl'
-		}).state('admin.adminShowAllParameters', {
+			template : '<lvg-component-admin></lvg-component-admin>'
+		}).state('admin.home', {
 			url: '',
-			templateUrl: 'partials/admin/parameters.html',
-			controller: 'AdminParametersCtrl'
-		}).state('admin.adminRole', {
-			url: 'role/',
-			templateUrl : 'partials/fragments/common-manage-roles.html',
-			controller: 'ManageRoleCtrl'
-		}).state('admin.adminExportImport', {
+			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
+		}).state('admin.roles', {
+			url: 'roles/',
+			template: '<lvg-component-manage-roles></lvg-component-manage-roles>'
+		}).state('admin.exportimport', {
 			url: 'export-import/',
 			templateUrl : 'partials/admin/export-import.html',
 			controller : 'AdminExportImportCtrl'
-		}).state('admin.adminEndpointInfo', {
+		}).state('admin.endpointinfo', {
 			url: 'endpoint-info/',
 			templateUrl : 'partials/admin/endpoint-info.html',
 			controller: 'AdminEndpointInfoCtrl'
-		}).state('admin.adminManageUsers', {
-			url: 'manage-users/',
-			templateUrl : 'partials/admin/manage-users.html',
-			controller: 'AdminManageUsersCtrl'
-		}).state('admin.adminConfigureLogin', {
-			url: 'configure-login/',
+		}).state('admin.users', {
+			url: 'users/',
+			template : '<lvg-component-admin-users current-user="appCtrl.currentUser"></lvg-component-admin-users>'
+		}).state('admin.login', {
+			url: 'login/',
 			templateUrl: 'partials/admin/configure-login.html',
 			controller: 'AdminConfigureLoginCtrl',
 			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
-		}).state('admin.adminManageSmtpConfiguration', {
-			url : 'manage-smtp-configuration/',
+		}).state('admin.smtp', {
+			url : 'smtp/',
 			templateUrl : 'partials/admin/manage-smtp-configuration.html',
 			controller : 'AdminManageSmtpConfigurationCtrl'
 		})
@@ -270,7 +266,7 @@
 			url : 'milestones/',
 			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
 		}).state('ProjectManage.access', {
-			url : 'anonymous-users-access/',
+			url : 'access/',
 			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
 		}).state('ProjectManage.status', {
 			url : 'status/',
