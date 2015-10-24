@@ -23,6 +23,7 @@
             $scope.profile.email = u.email;
             $scope.profile.displayName = u.displayName;
             $scope.profile.emailNotification = u.emailNotification;
+            $scope.profile.skipOwnNotifications = u.skipOwnNotifications;
 
         };
 

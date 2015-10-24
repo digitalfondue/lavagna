@@ -85,10 +85,11 @@ public class UserControllerTest {
         d.setDisplayName("displayName");
         d.setEmail("email");
         d.setEmailNotification(true);
+        d.setSkipOwnNotifications(true);
 
         userController.updateUserProfile(user, d);
 
-        verify(userRepository).updateProfile(user, "email", "displayName", true);
+        verify(userRepository).updateProfile(user, "email", "displayName", true, true);
     }
 
     @Test

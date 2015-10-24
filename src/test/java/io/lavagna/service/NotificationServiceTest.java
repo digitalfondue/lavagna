@@ -93,17 +93,12 @@ public class NotificationServiceTest {
 	private CardLabelRepository cardLabelRepository;
 
 	private Board board;
-
 	private BoardColumn col1;
-
 	private Card card1;
-
 	private Card card2;
-
-	private User user;
-
+    private User user;
+    private User otherUser;
 	private CardLabel assignedLabel;
-
 	private CardLabel watchedLabel;
 
 	@Before
@@ -113,6 +108,9 @@ public class NotificationServiceTest {
 
 		userRepository.createUser("test", "test-user", "test@test.test", "display name", true);
 		user = userRepository.findUserByName("test", "test-user");
+
+        userRepository.createUser("test", "other-user", "other@test.test", "display name", true);
+        otherUser = userRepository.findUserByName("test", "other-user");
 
 		Project project = projectService.create("test", "TEST", "desc");
 		board = boardRepository.createNewBoard("test-board", "TEST-BRD", null, project.getId());
@@ -131,18 +129,18 @@ public class NotificationServiceTest {
 		assignedLabel = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
 		watchedLabel = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
 	}
-	
+
 	@Test
 	public void testCheck() {
 	    Set<Integer> noUsersToNotify = notificationService.check(DateUtils.addDays(new Date(), -1));
 	    Assert.assertTrue(noUsersToNotify.isEmpty());
-	    
+
 	    // assign card
 	    labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
                 null, null, null, user.getId(), null), user, new Date());
-	    
+
 	    cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
-	    
+
 	    notificationService.check(DateUtils.addDays(new Date(), 1));
 	    Assert.assertTrue(notificationService.check(DateUtils.addDays(new Date(), 2)).contains(user.getId()));
 	}
@@ -168,15 +166,30 @@ public class NotificationServiceTest {
 				eq("test@test.test"),
 				eq("Lavagna: TEST-BRD-1, TEST-BRD-2"),
 				any(String.class), any(String.class));
-		
-//		eq("## TEST-BOARD-1 card1 (https://base.application.lavagna.io/TEST/TEST-BOARD-1)\n\n"
-//				+ "User display name <test@test.test> assigned the card to: display name <test@test.test>\n\n"
-//				+ "User display name <test@test.test> has added the comment:\n"//
-//				+ "first comment\n\n\n\n"
-//				//
-//				+ "## TEST-BOARD-2 card2 (https://base.application.lavagna.io/TEST/TEST-BOARD-2)\n\n"
-//				+ "User display name <test@test.test> is now watching this card\n\n"
-//				+ "User display name <test@test.test> has added the comment:\n"
-//				+ "first comment on card 2\n\n\n\n")
 	}
+
+    @Test
+    public void sendEmailTestWithoutMyEvents() {
+
+        userRepository.updateProfile(user, user.getEmail(), user.getDisplayName(), true, true);
+
+        labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
+            null, null, null, user.getId(), null), user, new Date());
+        labelService.addLabelValueToCard(watchedLabel.getId(), card2.getId(), new CardLabelValue.LabelValue(null, null,
+            null, null, user.getId(), null), user, new Date());
+
+        cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
+
+        cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), otherUser);
+
+        MailConfig mc = mock(MailConfig.class);
+        when(mc.isMinimalConfigurationPresent()).thenReturn(true);
+        when(mc.getFrom()).thenReturn("from@lavagna.io");
+        notificationService.notifyUser(user.getId(), new Date(), true, mc);
+
+        verify(mc).send(
+            eq("test@test.test"),
+            eq("Lavagna: TEST-BRD-2"),
+            any(String.class), any(String.class));
+    }
 }

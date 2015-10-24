@@ -45,7 +45,6 @@ import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.MustacheException;
 import com.samskivert.mustache.Template;
 import com.samskivert.mustache.Template.Fragment;
-
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -72,202 +71,205 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false)
 public class NotificationService {
 
-	private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LogManager.getLogger();
 
-	private final ConfigurationRepository configurationRepository;
-	private final BoardColumnRepository boardColumnRepository;
-	private final CardDataRepository cardDataRepository;
-	private final CardRepository cardRepository;
-	private final UserRepository userRepository;
+    private final ConfigurationRepository configurationRepository;
+    private final BoardColumnRepository boardColumnRepository;
+    private final CardDataRepository cardDataRepository;
+    private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
-	private final MessageSource messageSource;
+    private final MessageSource messageSource;
 
-	private final NamedParameterJdbcTemplate jdbc;
-	private final NotificationQuery queries;
-	
-	private final Template emailTextTemplate;
-	private final Template emailHtmlTemplate;
+    private final NamedParameterJdbcTemplate jdbc;
+    private final NotificationQuery queries;
 
-	@Autowired
-	public NotificationService(ConfigurationRepository configurationRepository, UserRepository userRepository,
-			CardDataRepository cardDataRepository, CardRepository cardRepository,
-			BoardColumnRepository boardColumnRepository, MessageSource messageSource, NamedParameterJdbcTemplate jdbc,
-			NotificationQuery queries) {
-		this.configurationRepository = configurationRepository;
-		this.userRepository = userRepository;
-		this.cardDataRepository = cardDataRepository;
-		this.cardRepository = cardRepository;
-		this.boardColumnRepository = boardColumnRepository;
-		this.messageSource = messageSource;
-		this.jdbc = jdbc;
-		this.queries = queries;
-		
-		com.samskivert.mustache.Mustache.Compiler compiler = Mustache.compiler().escapeHTML(false).defaultValue("");
-		try {
-			emailTextTemplate = compiler.compile(new InputStreamReader(
-					new ClassPathResource("/io/lavagna/notification/email.txt")
-							.getInputStream(), StandardCharsets.UTF_8));
-			emailHtmlTemplate = compiler
-					.compile(new InputStreamReader(new ClassPathResource(
-							"/io/lavagna/notification/email.html")
-							.getInputStream(), StandardCharsets.UTF_8));
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+    private final Template emailTextTemplate;
+    private final Template emailHtmlTemplate;
 
-	/**
-	 * Return a list of user id to notify.
-	 *
-	 * @param upTo
-	 * @return
-	 */
-	public Set<Integer> check(Date upTo) {
+    @Autowired
+    public NotificationService(ConfigurationRepository configurationRepository, UserRepository userRepository,
+        CardDataRepository cardDataRepository, CardRepository cardRepository,
+        BoardColumnRepository boardColumnRepository, MessageSource messageSource, NamedParameterJdbcTemplate jdbc,
+        NotificationQuery queries) {
+        this.configurationRepository = configurationRepository;
+        this.userRepository = userRepository;
+        this.cardDataRepository = cardDataRepository;
+        this.cardRepository = cardRepository;
+        this.boardColumnRepository = boardColumnRepository;
+        this.messageSource = messageSource;
+        this.jdbc = jdbc;
+        this.queries = queries;
 
-		final List<Integer> userWithChanges = new ArrayList<>();
-		List<SqlParameterSource> res = jdbc.query(queries.countNewForUsersId(), new RowMapper<SqlParameterSource>() {
+        com.samskivert.mustache.Mustache.Compiler compiler = Mustache.compiler().escapeHTML(false).defaultValue("");
+        try {
+            emailTextTemplate = compiler.compile(new InputStreamReader(
+                new ClassPathResource("/io/lavagna/notification/email.txt")
+                    .getInputStream(), StandardCharsets.UTF_8));
+            emailHtmlTemplate = compiler
+                .compile(new InputStreamReader(new ClassPathResource(
+                    "/io/lavagna/notification/email.html")
+                    .getInputStream(), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
-			@Override
-			public SqlParameterSource mapRow(ResultSet rs, int rowNum) throws SQLException {
-				int userId = rs.getInt("USER_ID");
-				userWithChanges.add(userId);
-				return new MapSqlParameterSource("count", rs.getInt("COUNT_EVENT_ID")).addValue("userId", userId);
-			}
-		});
+    /**
+     * Return a list of user id to notify.
+     *
+     * @param upTo
+     * @return
+     */
+    public Set<Integer> check(Date upTo) {
 
-		if (!res.isEmpty()) {
-			jdbc.batchUpdate(queries.updateCount(), res.toArray(new SqlParameterSource[res.size()]));
-		}
-		queries.updateCheckDate(upTo);
+        final List<Integer> userWithChanges = new ArrayList<>();
+        List<SqlParameterSource> res = jdbc.query(queries.countNewForUsersId(), new RowMapper<SqlParameterSource>() {
 
-		// select users that have pending notifications that were not present in this check round
-		MapSqlParameterSource userWithChangesParam = new MapSqlParameterSource("userWithChanges", userWithChanges);
-		//
-		List<Integer> usersToNotify = jdbc.queryForList(queries.usersToNotify() + " "
-				+ (userWithChanges.isEmpty() ? "" : queries.notIn()), userWithChangesParam, Integer.class);
-		//
-		jdbc.update(queries.reset() + " " + (userWithChanges.isEmpty() ? "" : queries.notIn()), userWithChangesParam);
-		//
-		return new TreeSet<>(usersToNotify);
-	}
+            @Override
+            public SqlParameterSource mapRow(ResultSet rs, int rowNum) throws SQLException {
+                int userId = rs.getInt("USER_ID");
+                userWithChanges.add(userId);
+                return new MapSqlParameterSource("count", rs.getInt("COUNT_EVENT_ID")).addValue("userId", userId);
+            }
+        });
 
-	private List<String> composeCardSection(List<Event> events, EventsContext context) {
-		//
+        if (!res.isEmpty()) {
+            jdbc.batchUpdate(queries.updateCount(), res.toArray(new SqlParameterSource[res.size()]));
+        }
+        queries.updateCheckDate(upTo);
 
-		List<String> res = new ArrayList<>();
-		for (Event e : events) {
-			if (EnumUtils.isValidEnum(SupportedEventType.class, e.getEvent().toString())) {
-				ImmutablePair<String, String[]> message = SupportedEventType.valueOf(e.getEvent().toString())
-						.toKeyAndParam(e, context, cardDataRepository);
-				res.add(messageSource.getMessage(message.getKey(), message.getValue(), Locale.ENGLISH));
-			}
-		}
-		return res;
-	}
+        // select users that have pending notifications that were not present in this check round
+        MapSqlParameterSource userWithChangesParam = new MapSqlParameterSource("userWithChanges", userWithChanges);
+        //
+        List<Integer> usersToNotify = jdbc.queryForList(queries.usersToNotify() + " "
+            + (userWithChanges.isEmpty() ? "" : queries.notIn()), userWithChangesParam, Integer.class);
+        //
+        jdbc.update(queries.reset() + " " + (userWithChanges.isEmpty() ? "" : queries.notIn()), userWithChangesParam);
+        //
+        return new TreeSet<>(usersToNotify);
+    }
 
-	private ImmutableTriple<String, String, String> composeEmailForUser(EventsContext context)
-			throws MustacheException, IOException {
+    private List<String> composeCardSection(List<Event> events, EventsContext context) {
+        //
 
-		List<Map<String, Object>> cardsModel = new ArrayList<>();
+        List<String> res = new ArrayList<>();
+        for (Event e : events) {
+            if (EnumUtils.isValidEnum(SupportedEventType.class, e.getEvent().toString())) {
+                ImmutablePair<String, String[]> message = SupportedEventType.valueOf(e.getEvent().toString())
+                    .toKeyAndParam(e, context, cardDataRepository);
+                res.add(messageSource.getMessage(message.getKey(), message.getValue(), Locale.ENGLISH));
+            }
+        }
+        return res;
+    }
 
-		StringBuilder subject = new StringBuilder();
-		for (Entry<Integer, List<Event>> kv : context.events.entrySet()) {
+    private ImmutableTriple<String, String, String> composeEmailForUser(EventsContext context)
+        throws MustacheException, IOException {
 
-			Map<String, Object> cardModel = new HashMap<>();
+        List<Map<String, Object>> cardsModel = new ArrayList<>();
 
-			CardFull cf = context.cards.get(kv.getKey());
-			StringBuilder cardName = new StringBuilder(cf.getBoardShortName()).append("-").append(cf.getSequence())
-					.append(" ").append(cf.getName());
+        StringBuilder subject = new StringBuilder();
+        for (Entry<Integer, List<Event>> kv : context.events.entrySet()) {
 
-			cardModel.put("cardFull", cf);
-			cardModel.put("cardName", cardName.toString());
-			cardModel.put("cardEvents", composeCardSection(kv.getValue(), context));
+            Map<String, Object> cardModel = new HashMap<>();
 
-			subject.append(cf.getBoardShortName()).append("-").append(cf.getSequence()).append(", ");
+            CardFull cf = context.cards.get(kv.getKey());
+            StringBuilder cardName = new StringBuilder(cf.getBoardShortName()).append("-").append(cf.getSequence())
+                .append(" ").append(cf.getName());
 
-			cardsModel.add(cardModel);
-		}
+            cardModel.put("cardFull", cf);
+            cardModel.put("cardName", cardName.toString());
+            cardModel.put("cardEvents", composeCardSection(kv.getValue(), context));
 
-		
+            subject.append(cf.getBoardShortName()).append("-").append(cf.getSequence()).append(", ");
 
-		Map<String, Object> tmplModel = new HashMap<>();
-		String baseApplicationUrl = StringUtils.appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/"); 
-		tmplModel.put("cards", cardsModel);
-		tmplModel.put("baseApplicationUrl",baseApplicationUrl);
-		tmplModel.put("htmlEscape", new Mustache.Lambda() {
-			@Override
-			public void execute(Fragment frag, Writer out) throws IOException {
-				out.write(Escapers.HTML.escape(frag.execute()));
-			}
-		});
+            cardsModel.add(cardModel);
+        }
 
-		String text = emailTextTemplate.execute(tmplModel);
-		String html = emailHtmlTemplate.execute(tmplModel);
+        Map<String, Object> tmplModel = new HashMap<>();
+        String baseApplicationUrl = StringUtils
+            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
+        tmplModel.put("cards", cardsModel);
+        tmplModel.put("baseApplicationUrl", baseApplicationUrl);
+        tmplModel.put("htmlEscape", new Mustache.Lambda() {
+            @Override
+            public void execute(Fragment frag, Writer out) throws IOException {
+                out.write(Escapers.HTML.escape(frag.execute()));
+            }
+        });
 
-		return ImmutableTriple.of(subject.substring(0, subject.length() - ", ".length()), text, html);
-	}
+        String text = emailTextTemplate.execute(tmplModel);
+        String html = emailHtmlTemplate.execute(tmplModel);
 
-	/**
-	 * Send email (if all the conditions are met) to the user.
-	 *
-	 * @param userId
-	 * @param upTo
-	 * @param emailEnabled
-	 * @param mailConfig
-	 */
-	public void notifyUser(int userId, Date upTo, boolean emailEnabled, MailConfig mailConfig) {
-		Date lastSent = queries.lastEmailSent(userId);
-		List<Event> events = queries
-				.eventsForUser(userId, ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1)), upTo);
+        return ImmutableTriple.of(subject.substring(0, subject.length() - ", ".length()), text, html);
+    }
 
-		User user = userRepository.findById(userId);
-		if (!events.isEmpty() && mailConfig != null && mailConfig.isMinimalConfigurationPresent() && emailEnabled
-				&& user.canSendEmail()) {
-			try {
-				sendEmailToUser(user, events, mailConfig);
-			} catch (MustacheException | IOException | MailException e) {
-				LOG.warn("Error while sending an email to user with id " + user.getId(), e);
-			}
-		}
+    /**
+     * Send email (if all the conditions are met) to the user.
+     *
+     * @param userId
+     * @param upTo
+     * @param emailEnabled
+     * @param mailConfig
+     */
+    public void notifyUser(int userId, Date upTo, boolean emailEnabled, MailConfig mailConfig) {
+        Date lastSent = queries.lastEmailSent(userId);
 
-		//
-		queries.updateSentEmailDate(upTo, userId);
-	}
+        User user = userRepository.findById(userId);
 
-	private void sendEmailToUser(User user, List<Event> events, MailConfig mailConfig) throws MustacheException,
-			IOException {
+        Date fromDate = ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1));
 
-		Set<Integer> userIds = new HashSet<>();
-		userIds.add(user.getId());
-		Set<Integer> cardIds = new HashSet<>();
-		Set<Integer> cardDataIds = new HashSet<>();
-		Set<Integer> columnIds = new HashSet<>();
+        List<Event> events = user.isSkipOwnNotifications() ?
+            queries.eventsForUserWithoutHisOwns(userId, fromDate, upTo) : queries.eventsForUser(userId, fromDate, upTo);
 
-		for (Event e : events) {
-			cardIds.add(e.getCardId());
-			userIds.add(e.getUserId());
+        if (!events.isEmpty() && mailConfig != null && mailConfig.isMinimalConfigurationPresent() && emailEnabled
+            && user.canSendEmail()) {
+            try {
+                sendEmailToUser(user, events, mailConfig);
+            } catch (MustacheException | IOException | MailException e) {
+                LOG.warn("Error while sending an email to user with id " + user.getId(), e);
+            }
+        }
 
-			addIfNotNull(userIds, e.getValueUser());
-			addIfNotNull(cardIds, e.getValueCard());
+        //
+        queries.updateSentEmailDate(upTo, userId);
+    }
 
-			addIfNotNull(cardDataIds, e.getDataId());
-			addIfNotNull(cardDataIds, e.getPreviousDataId());
+    private void sendEmailToUser(User user, List<Event> events, MailConfig mailConfig) throws MustacheException,
+        IOException {
 
-			addIfNotNull(columnIds, e.getColumnId());
-			addIfNotNull(columnIds, e.getPreviousColumnId());
-		}
+        Set<Integer> userIds = new HashSet<>();
+        userIds.add(user.getId());
+        Set<Integer> cardIds = new HashSet<>();
+        Set<Integer> cardDataIds = new HashSet<>();
+        Set<Integer> columnIds = new HashSet<>();
 
-		final ImmutableTriple<String, String, String> subjectAndText = composeEmailForUser(new EventsContext(events,
-				userRepository.findByIds(userIds), cardRepository.findAllByIds(cardIds),
-				cardDataRepository.findDataByIds(cardDataIds), boardColumnRepository.findByIds(columnIds)));
+        for (Event e : events) {
+            cardIds.add(e.getCardId());
+            userIds.add(e.getUserId());
 
-		mailConfig.send(user.getEmail(), StringUtils.substring("Lavagna: " + subjectAndText.getLeft(), 0, 78),
-				subjectAndText.getMiddle(), subjectAndText.getRight());
-	}
+            addIfNotNull(userIds, e.getValueUser());
+            addIfNotNull(cardIds, e.getValueCard());
 
-	private static <T> void addIfNotNull(Set<T> s, T v) {
-		if (v != null) {
-			s.add(v);
-		}
-	}
+            addIfNotNull(cardDataIds, e.getDataId());
+            addIfNotNull(cardDataIds, e.getPreviousDataId());
+
+            addIfNotNull(columnIds, e.getColumnId());
+            addIfNotNull(columnIds, e.getPreviousColumnId());
+        }
+
+        final ImmutableTriple<String, String, String> subjectAndText = composeEmailForUser(new EventsContext(events,
+            userRepository.findByIds(userIds), cardRepository.findAllByIds(cardIds),
+            cardDataRepository.findDataByIds(cardDataIds), boardColumnRepository.findByIds(columnIds)));
+
+        mailConfig.send(user.getEmail(), StringUtils.substring("Lavagna: " + subjectAndText.getLeft(), 0, 78),
+            subjectAndText.getMiddle(), subjectAndText.getRight());
+    }
+
+    private static <T> void addIfNotNull(Set<T> s, T v) {
+        if (v != null) {
+            s.add(v);
+        }
+    }
 }
