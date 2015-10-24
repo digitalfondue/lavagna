@@ -37,11 +37,13 @@ public class User {
 	private final boolean enabled;
 	private final boolean emailNotification;
 	private final Date memberSince;
+    private final boolean skipOwnNotifications;
 
 	public User(@Column("USER_ID") int id, @Column("USER_PROVIDER") String provider,
 			@Column("USER_NAME") String username, @Column("USER_EMAIL") String email,
 			@Column("USER_DISPLAY_NAME") String displayName, @Column("USER_ENABLED") Boolean enabled,
-			@Column("USER_EMAIL_NOTIFICATION") boolean emailNotification, @Column("USER_MEMBER_SINCE") Date memberSince) {
+			@Column("USER_EMAIL_NOTIFICATION") boolean emailNotification, @Column("USER_MEMBER_SINCE") Date memberSince,
+            @Column("USER_SKIP_OWN_NOTIFICATIONS") boolean skipOwnNotifications) {
 		this.id = id;
 		this.username = username;
 		this.provider = provider;
@@ -50,6 +52,7 @@ public class User {
 		this.enabled = enabled == null ? true : enabled;
 		this.emailNotification = emailNotification;
 		this.memberSince = memberSince;
+        this.skipOwnNotifications = skipOwnNotifications;
 	}
 
 	@Override
@@ -59,14 +62,14 @@ public class User {
 		}
 		User u = (User) obj;
 		return new EqualsBuilder().append(id, u.id).append(provider, u.provider).append(username, u.username)
-				.append(email, u.email).append(displayName, u.displayName).append(enabled, u.enabled)
-				.append(emailNotification, u.emailNotification).isEquals();
+            .append(email, u.email).append(displayName, u.displayName).append(enabled, u.enabled)
+            .append(emailNotification, u.emailNotification).append(skipOwnNotifications, u.skipOwnNotifications).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(id).append(provider).append(username).append(email).append(displayName)
-				.append(enabled).append(emailNotification).toHashCode();
+				.append(enabled).append(emailNotification).append(skipOwnNotifications).toHashCode();
 	}
 
 	public boolean isAnonymous() {

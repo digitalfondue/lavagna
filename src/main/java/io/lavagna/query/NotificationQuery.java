@@ -62,6 +62,14 @@ public interface NotificationQuery {
 			+ " INNER JOIN LA_EVENT ON CARD_ID_FK = EVENT_CARD_ID_FK WHERE EVENT_TIME BETWEEN :from AND :upTo ORDER BY EVENT_TIME ASC")
 	List<Event> eventsForUser(@Bind("userId") int userId, @Bind("from") Date from, @Bind("upTo") Date upTo);
 
+    @Query("SELECT * FROM (SELECT DISTINCT CARD_ID_FK FROM LA_CARD_LABEL "
+        + " INNER JOIN LA_CARD_LABEL_VALUE ON CARD_LABEL_ID = CARD_LABEL_ID_FK "
+        + " WHERE CARD_LABEL_VALUE_USER_FK = :userId AND CARD_LABEL_DOMAIN = 'SYSTEM' AND "
+        + " CARD_LABEL_NAME IN ('ASSIGNED', 'WATCHED_BY') ) CARD_IDS "
+        + " INNER JOIN LA_EVENT ON CARD_ID_FK = EVENT_CARD_ID_FK "
+        + " WHERE EVENT_USER_ID_FK <> :userId AND EVENT_TIME BETWEEN :from AND :upTo ORDER BY EVENT_TIME ASC")
+    List<Event> eventsForUserWithoutHisOwns(@Bind("userId") int userId, @Bind("from") Date from, @Bind("upTo") Date upTo);
+
 	@Query("UPDATE LA_USER SET USER_LAST_EMAIL_SENT = :sentDate WHERE USER_ID = :userId")
 	int updateSentEmailDate(@Bind("sentDate") Date sentDate, @Bind("userId") int userId);
 }

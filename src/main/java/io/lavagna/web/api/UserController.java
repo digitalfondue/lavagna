@@ -81,7 +81,7 @@ public class UserController {
     @RequestMapping(value = "/api/self", method = RequestMethod.POST)
     public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
         int result = userRepository.updateProfile(user, toUpdate.getEmail(), toUpdate.getDisplayName(),
-            toUpdate.isEmailNotification());
+            toUpdate.isEmailNotification(), toUpdate.isSkipOwnNotifications());
         eventEmitter.emitUpdateUserProfile(user.getId());
         return result;
     }
@@ -145,6 +145,7 @@ public class UserController {
         private String email;
         private String displayName;
         private boolean emailNotification;
+        private boolean skipOwnNotifications;
     }
 
     @Getter
@@ -158,7 +159,7 @@ public class UserController {
             List<ProjectWithEventCounts> activeProjects, List<Event> latestActivity) {
             // we remove the email
             this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
-                user.isEnabled(), user.isEmailNotification(), user.getMemberSince());
+                user.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications());
             this.activeProjects = activeProjects;
             this.dailyActivity = dailyActivity;
             this.latestActivity = latestActivity;

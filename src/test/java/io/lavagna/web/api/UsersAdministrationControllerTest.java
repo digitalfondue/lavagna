@@ -60,7 +60,7 @@ public class UsersAdministrationControllerTest {
 
 	@Test
 	public void toggleUser() {
-		User u = new User(42, "demo", "a", null, null, true, true, new Date());
+		User u = new User(42, "demo", "a", null, null, true, true, new Date(), false);
 		Update up = new Update();
 		up.setEnabled(false);
 		usersAdministrationController.toggle(0, u, up);
@@ -87,7 +87,7 @@ public class UsersAdministrationControllerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void sameUser() {
-		User u = new User(0, "demo", "a", null, null, true, true, new Date());
+		User u = new User(0, "demo", "a", null, null, true, true, new Date(), false);
 		Update up = new Update();
 		up.setEnabled(false);
 		usersAdministrationController.toggle(0, u, up);

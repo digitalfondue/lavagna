@@ -48,10 +48,10 @@ public class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private ProjectService projectService;
-	
+
 	@Autowired
 	private PermissionService permissionService;
 
@@ -106,7 +106,7 @@ public class UserRepositoryTest {
 		Assert.assertTrue(res.size() == 2);
 		Assert.assertTrue(res.contains(user1));
 		Assert.assertTrue(res.contains(user2));
-		
+
 		Assert.assertTrue(userRepository.findByIds(Collections.<Integer>emptyList()).isEmpty());
 	}
 
@@ -124,7 +124,7 @@ public class UserRepositoryTest {
 		userRepository.toggle(u.getId(), true);
 		Assert.assertTrue(userRepository.userExistsAndEnabled("test", TEST_USER_NAME));
 	}
-	
+
 	@Test
     public void existUser() {
         Assert.assertFalse(userRepository.userExists("test", TEST_USER_NAME));
@@ -147,13 +147,13 @@ public class UserRepositoryTest {
 		Assert.assertNull(user.getEmail());
 		Assert.assertNull(user.getDisplayName());
 
-		userRepository.updateProfile(user, "email@email.getEmail()", "display name", true);
+		userRepository.updateProfile(user, "email@email.getEmail()", "display name", true, true);
 
 		User userUpdate = userRepository.findUserByName("test", TEST_USER_NAME);
 		Assert.assertEquals("email@email.getEmail()", userUpdate.getEmail());
 		Assert.assertEquals("display name", userUpdate.getDisplayName());
 
-		userRepository.updateProfile(user, null, null, true);
+		userRepository.updateProfile(user, null, null, true, true);
 
 		User userUpdate2 = userRepository.findUserByName("test", TEST_USER_NAME);
 		Assert.assertNull(userUpdate2.getEmail());
@@ -170,36 +170,36 @@ public class UserRepositoryTest {
 		Assert.assertFalse(userRepository.findUsers("test-user").isEmpty());
 		Assert.assertTrue(userRepository.findUsers("test-user-").isEmpty());
 	}
-	
+
 	@Test
 	public void findUsersInProject() {
 	    Project project = projectService.create("TEST", "TEST", "desc");
-	    
+
 	    Assert.assertTrue(userRepository.findUsers("-us", project.getId(), Permission.READ).isEmpty());
 	    Helper.createUser(userRepository, "test", TEST_USER_NAME);
-	    
+
 	    //user does not have role READ
 	    Assert.assertTrue(userRepository.findUsers("-us", project.getId(), Permission.READ).isEmpty());
-	    
+
 	    User user = userRepository.findUserByName("test", TEST_USER_NAME);
-	    
+
 	    Role globalRead = new Role("READ");
 	    permissionService.createRole(globalRead);
 	    permissionService.updatePermissionsToRole(globalRead, EnumSet.of(Permission.READ));
 	    permissionService.assignRoleToUsers(globalRead, Collections.singleton(user.getId()));
-	    
+
 	    Assert.assertEquals(1, userRepository.findUsers("-us", project.getId(), Permission.READ).size());
-	    
-	    
+
+
         Helper.createUser(userRepository, "test", TEST_USER_NAME + "2");
         User user2 = userRepository.findUserByName("test", TEST_USER_NAME+"2");
-        
+
         Role projectRead = new Role("READ");
         permissionService.createRoleInProjectId(projectRead, project.getId());
         permissionService.updatePermissionsToRoleInProjectId(projectRead, EnumSet.of(Permission.READ), project.getId());
         permissionService.assignRoleToUsersInProjectId(projectRead, Collections.singleton(user2.getId()), project.getId());
-        
-        
+
+
         Assert.assertEquals(2, userRepository.findUsers("-us", project.getId(), Permission.READ).size());
 	}
 
@@ -255,9 +255,9 @@ public class UserRepositoryTest {
 		Assert.assertTrue(userRepository.rememberMeTokenExists(u.getId(), token1));
 		Assert.assertTrue(userRepository.rememberMeTokenExists(u.getId(), token2));
 		Assert.assertTrue(userRepository.rememberMeTokenExists(u.getId(), token3));
-		
+
 		userRepository.clearAllTokens(u);
-		
+
 		Assert.assertFalse(userRepository.rememberMeTokenExists(u.getId(), token1));
 		Assert.assertFalse(userRepository.rememberMeTokenExists(u.getId(), token2));
 		Assert.assertFalse(userRepository.rememberMeTokenExists(u.getId(), token3));

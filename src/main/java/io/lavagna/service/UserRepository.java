@@ -89,7 +89,7 @@ public class UserRepository {
 
     /**
      * Find users that have access to specific project
-     * 
+     *
      * @param criteria
      * @param projectId
      * @param permission
@@ -113,7 +113,8 @@ public class UserRepository {
             .addValue("userName", trimToNull(user.getUsername())).addValue("email", trimToNull(user.getEmail()))
             .addValue("displayName", trimToNull(user.getDisplayName())).addValue("enabled", user.isEnabled())
             .addValue("emailNotification", user.isEmailNotification())
-            .addValue("memberSince", ObjectUtils.firstNonNull(user.getMemberSince(), new Date()));
+            .addValue("memberSince", ObjectUtils.firstNonNull(user.getMemberSince(), new Date()))
+            .addValue("skipOwnNotifications", user.isSkipOwnNotifications());
     }
 
     @Transactional(readOnly = false)
@@ -122,8 +123,9 @@ public class UserRepository {
     }
 
     @Transactional(readOnly = false)
-    public int updateProfile(User user, String email, String displayName, boolean emailNotification) {
-        return queries.updateProfile(trimToNull(email), trimToNull(displayName), emailNotification, user.getId());
+    public int updateProfile(User user, String email, String displayName, boolean emailNotification, boolean skipOwnNotifications) {
+        return queries.updateProfile(trimToNull(email), trimToNull(displayName), emailNotification,skipOwnNotifications,
+            user.getId());
     }
 
     @Transactional(readOnly = false)
