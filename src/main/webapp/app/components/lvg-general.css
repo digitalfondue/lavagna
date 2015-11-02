@@ -579,8 +579,11 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 
 li.notification span.lavagna-notification-text {
 	display: inline-block;
-	margin-top: 25px;
 	width: 260px;
+}
+
+li.notification span.lavagna-notification-text-margin {
+    margin-top: 25px;
 }
 
 li.notification ul.notification-controls {
