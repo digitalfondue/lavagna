@@ -10,52 +10,52 @@
 			CardCache, Card, User, LabelCache, Label, StompClient, Notification, Board, BulkOperations,
 			card, currentUser, project, board //resolved by ui-router
 			) {
-		
-		
+
+
 		var findAndAssignColumns = function() {
 			Board.columns(board.shortName, 'BOARD').then(function(columns) {
 				$scope.columns = columns;
 			});
 		};
-		
+
 		StompClient.subscribe($scope, '/event/board/'+board.shortName+'/location/BOARD/column', findAndAssignColumns);
-		
+
 		findAndAssignColumns();
 
 		$scope.currentUser = currentUser;
 		$scope.project = project;
 		$scope.board = board;
 		$scope.card = card;
-		
+
 		//
-		
+
 		$scope.notSameColumn = function(col) {
 			return col.id != $scope.card.columnId;
 		};
-		
+
 		$scope.notEmptyColumn = function(model) {
 			return model != "" && model != null;
 		}
 		//
-		
+
 		var $scopeForColumn = undefined;
-		
+
 		var loadColumn = function(columnId) {
 			Board.column(columnId).then(function(col) {
 				$scope.column = col;
 			});
-			
+
 			if($scopeForColumn) {
 				$scopeForColumn.$destroy();
 			}
-			
+
 			$scopeForColumn = $scope.$new()
-			
+
 			//subscribe on any change to the column
 			StompClient.subscribe($scopeForColumn, '/event/column/' + columnId, function() {
 				loadColumn(columnId);
 			});
-			
+
 		};
 		loadColumn(card.columnId);
 		//
@@ -231,7 +231,7 @@
 
 		$scope.deleteActionList = function(itemId) {
 			Card.deleteActionList(itemId).then(function(event) {
-				Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, function(notification) {
+				Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, true, function(notification) {
 					Card.undoDeleteActionList(event.id).then(notification.acknowledge)
 				});
 			}, function(error) {
@@ -252,7 +252,7 @@
 
 		$scope.deleteActionItem = function(listId, itemId) {
 			Card.deleteActionItem(itemId).then(function(event) {
-				Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, function(notification) {
+				Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, true, function(notification) {
 					Card.undoDeleteActionItem(event.id).then(notification.acknowledge);
 				});
 			}, function(error) {
@@ -280,7 +280,7 @@
 		};
 		$scope.deleteComment = function(comment, control) {
 			Card.deleteComment(comment.id).then(function(event) {
-				Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, function(notification) {
+				Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, true, function(notification) {
 					Card.undoDeleteComment(event.id).then(notification.acknowledge)
 				});
 			}, function(error) {
@@ -290,7 +290,7 @@
 		};
 
 		// labels
-		
+
 		$scope.hasUserLabels = function(userLabels, labelValues) {
 			if(userLabels === undefined || labelValues === undefined) {
 				return false;
@@ -301,7 +301,7 @@
 			}
 			return count > 0;
 		}
-		
+
 		var currentCard = function() {
 			var cardByProject = {};
 			cardByProject[$stateParams.projectName] = [card.id];
@@ -309,24 +309,24 @@
 		};
 
 		$scope.removeLabelValue = function(label) {
-			
+
 			BulkOperations.removeLabel(currentCard(), {id: label.labelId}, label.value).then(function(data) {
-				
-					Notification.addAutoAckNotification('success', { 
-						key : 'notification.card.LABEL_DELETE.success', 
-						parameters : { 
+
+					Notification.addAutoAckNotification('success', {
+						key : 'notification.card.LABEL_DELETE.success',
+						parameters : {
 							labelName : $scope.userLabels[label.labelId].name }
 					}, false);
-				
+
 			}, function(error) {
 				$scope.actionListState[listId].deleteList = false;
-				
-					Notification.addAutoAckNotification('error', { 
-						key : 'notification.card.LABEL_DELETE.error', 
-						parameters : { 
+
+					Notification.addAutoAckNotification('error', {
+						key : 'notification.card.LABEL_DELETE.error',
+						parameters : {
 							labelName : $scope.userLabels[label.labelId].name }
 					}, false);
-				
+
 			})
 		};
 
@@ -341,37 +341,37 @@
 			}
 			return false;
 		};
-		
-		
-		
+
+
+
 		$scope.setDueDate = function(date) {
 			BulkOperations.setDueDate(currentCard(), date)
 		};
-		
+
 		$scope.removeDueDate = function() {
 			BulkOperations.removeDueDate(currentCard())
 		};
-		
+
 		$scope.watchCard = function(user) {
 			BulkOperations.watch(currentCard(), user);
 		};
-		
+
 		$scope.unWatchCard = function(user) {
 			BulkOperations.unWatch(currentCard(), user);
 		};
-		
+
 		$scope.assignToUser = function(user) {
 			BulkOperations.assign(currentCard(), user);
 		};
-		
+
 		$scope.removeAssignForUser = function(user) {
 			BulkOperations.removeAssign(currentCard(), user);
 		};
-		
+
 		$scope.setMilestone = function(milestone) {
 			BulkOperations.setMilestone(currentCard(), milestone);
 		}
-		
+
 		$scope.removeMilestone = function() {
 			BulkOperations.removeMilestone(currentCard());
 		}
@@ -412,7 +412,7 @@
 		var fileUploadCompleteCallBack = function(data, status) {
 			if(status == 200) {
 				loadFiles();
-				
+
 				var uploadedFile = $scope.uploadingFile;
 				$scope.uploadingFile = null;
 				$scope.filesToUpload.splice($scope.filesToUpload.indexOf(uploadedFile),1);
@@ -443,7 +443,7 @@
 				}
 			});
 		};
-		
+
 		function getNextFileToUpload(_files) {
 			for(var f = 0; f < _files.length; f++) {
 				var file = _files[f];
@@ -458,20 +458,20 @@
 			$timeout(function() {
 				Card.getMaxFileSize().then(function(size) {
 					var uploadingFile = getNextFileToUpload($scope.filesToUpload);
-					
+
 					if(uploadingFile == null) {
 						return;
 					}
-					
+
 					$scope.uploadingFile = uploadingFile;
-					
+
 					var maxSize = size === "" ? Math.NaN : parseInt(JSON.parse(size));
 					if(!isNaN(maxSize) && uploadingFile.file.size > maxSize) {
-						Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, false);
+						Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, true, false);
 						processUploadingFile('failed');
 						return;
 					}
-					
+
 					$scope.uploadingFile.status = 'upload';
 					$scope.uploadingFile.xhr = Card.uploadFile(uploadingFile.file, card.id, fileUploadProgressCallBack, fileUploadCompleteCallBack,
 								fileUploadFailedCallBack, fileUploadCanceledCallBack);
@@ -497,7 +497,7 @@
 
 		$scope.deleteFile = function(dataId) {
 			Card.deleteFile(dataId).then(function(event) {
-				Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, function(notification) {
+				Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, true, function(notification) {
 					Card.undoDeleteFile(event.id).then(notification.acknowledge);
 				});
 			}, function(error) {
@@ -524,7 +524,7 @@
 		$scope.hasActivity = function() {
 			return ($scope.comments !== undefined && $scope.actionLists !== undefined && $scope.actionItems !== undefined && $scope.files !== undefined);
 		};
-		
+
 		$scope.moveCard = function(card, location) {
 			Card.moveAllFromColumnToLocation(card.columnId, [card.id], location).then(reloadCard).then(function() {
 				Notification.addAutoAckNotification('success', {
@@ -538,7 +538,7 @@
 				}, false);
 			});
 		};
-		
+
 		$scope.moveToColumn = function(card, toColumn) {
 			if(angular.isUndefined(toColumn)) {
 				return;
