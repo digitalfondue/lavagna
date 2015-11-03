@@ -10,7 +10,7 @@
 	color: #428bca;
 }
 
-/* 
+/*
 ===================================
 ==== USER PROFILE =================
 ===================================
@@ -74,7 +74,7 @@
 	border-top:none;
 }
 
-/* 
+/*
 ===================================
 ==== USER TOOLTIP =================
 ===================================
@@ -87,25 +87,25 @@
 	padding: 0;
 }
 
-.lavagna-user-tooltip {
+.lavagna-tooltip {
 	width: 300px;
 }
 
-.lavagna-user-tooltip .provider {
+.lavagna-tooltip .provider {
 	float: left;
 	width: 50px;
 	height: 50px;
 	padding: 0;
 }
 
-.lavagna-user-tooltip .provider .fa {
+.lavagna-tooltip .provider .fa {
 	font-size: 24px;
 	position: relative;
 	top: 13px;
 	left: 13px;
 }
 
-.lavagna-user-tooltip .name {
+.lavagna-tooltip .name {
 	display: table-cell;
 	width: 250px;
 	height: 50px;
@@ -116,7 +116,7 @@
 	padding-left: 10px;
 }
 
-.lavagna-user-tooltip .user-info {
+.lavagna-tooltip .user-info {
 	display: table-cell;
 	float: left;
 	width: 300px;
@@ -124,19 +124,19 @@
 	margin-bottom: 10px;
 }
 
-.lavagna-user-tooltip .user-info ul {
+.lavagna-tooltip .user-info ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	display: block;
 }
 
-.lavagna-user-tooltip .user-info ul li {
+.lavagna-tooltip .user-info ul li {
 	text-align: left;
 	margin-left: 10px;
 }
 
-.lavagna-user-tooltip .user-info ul li i.fa {
+.lavagna-tooltip .user-info ul li i.fa {
 	margin-right: 10px;
 	width: 20px;
 	text-align: center;
