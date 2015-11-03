@@ -19,7 +19,7 @@
 		var generateTooltipHTML = function (user) {
 			var userDisplayText = $filter('formatUser')(user);
 			var userProviderClass = providerMap[user.provider] || 'fa-laptop';
-			return '<div class=\"lavagna-user-tooltip\">' +
+			return '<div class=\"lavagna-tooltip\">' +
 				'<div class=\"provider\"><i class=\"fa ' + userProviderClass + '\"></i></div>' +
 				'<div class=\"name\">' + userDisplayText + '</div>' +
 				'<div class=\"user-info\"><ul>' +
@@ -50,13 +50,13 @@
 			scope: true,
 			template: '<span data-bindonce="readOnly">'
 				+ '<span data-bo-if="!readOnly">'
-				+	'<a data-lvg-user-tooltip data-lvg-user-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
+				+	'<a data-lvg-tooltip data-lvg-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
 				+ '</span><span data-bo-if="readOnly">'
 				+	'<span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span>'
 				+ '</span></span>',
 			link: function ($scope, element, attrs) {
 				$scope.readOnly = attrs.readOnly != undefined;
-				
+
 				var unregister = $scope.$watch(attrs.lvgUser, function (userId) {
 					if (userId == undefined) {
 						return;
@@ -80,35 +80,5 @@
 				});
 			}
 		};
-	});
-
-	directives.directive('lvgUserTooltip', function () {
-		return {
-			restrict: 'A',
-			link: function ($scope, element, attrs) {
-				attrs.$observe('lvgUserTooltipHtml', function (html) {
-					if (html === undefined || html === null || html.length === 0) {
-						return;
-					}
-					$(element).tooltip({
-						items: '[data-lvg-user-tooltip], [lvg-user-tooltip]',
-						content: html,
-						show: { delay: 500 },
-						close: function (event, ui) {
-							ui.tooltip.hover(
-								function () {
-									$(this).stop(true).fadeTo(400, 1);
-								},
-								function () {
-									$(this).fadeOut("400", function () {
-										$(this).remove();
-									})
-								}
-							);
-						}
-					});
-				});
-			}
-		}
 	});
 })();
