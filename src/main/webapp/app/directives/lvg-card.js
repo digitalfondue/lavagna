@@ -18,6 +18,7 @@
 					namePlaceholder.text(card.name);
 				}
 				linkPlaceholder.attr('href', '#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence);
+                linkPlaceholder.attr('title', card.name);
 			});
 		};
 
@@ -33,7 +34,7 @@
 				+ '</span></span>',
 			link: function ($scope, element, attrs) {
 				$scope.readOnly = attrs.readOnly != undefined;
-				
+
 				var unregister = $scope.$watch(attrs.lvgCard, function (cardId) {
 					if (cardId == undefined) {
 						return;
@@ -49,7 +50,7 @@
 						loadCard(cardId, linkPlaceholder, shortNamePlaceholder, namePlaceholder, noName);
 					});
 					$scope.$on('$destroy', unbind);
-					
+
 					unregister();
 				});
 			}
