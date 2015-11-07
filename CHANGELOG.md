@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5 (2015-11-07)
+
+ - UI/UX improvements
+   - Change due date color based on the current date
+   - Card label: on mouse hover, show a tooltip with the card name
+   - Email notification: now the user can choose to receive only changes made by other users
+
 ## 1.0.4.1 (2015-10-19)
 
  - update dependencies ([spring framework](https://spring.io/blog/2015/10/15/spring-framework-4-2-2-4-1-8-and-3-2-15-available-now) due to a possible security issue)
