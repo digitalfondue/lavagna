@@ -574,7 +574,7 @@
                                 </div>
                             </div>
                             <ul class="lavagna-card-actionlist-holder"
-                                data-ui-sortable="sortableActionListOptions">
+                                data-ui-sortable="cardCtrl.sortableActionListOptions">
                                 <li
                                     class="lavagna-card-actionlist lavagna-sortable-card-actionlist"
                                     data-ng-repeat="actionList in cardCtrl.actionLists | orderBy:'order' track by actionList.id"
@@ -614,7 +614,7 @@
                                         </div>
                                     </div>
                                     <div class="list">
-                                        <ul data-ui-sortable="sortableActionItemsOptions"
+                                        <ul data-ui-sortable="cardCtrl.sortableActionItemsOptions"
                                             class="lavagna-card-actionitems">
                                             <li
                                                 data-ng-repeat="actionItem in cardCtrl.actionItems[actionList.id] | orderBy:'order'"
