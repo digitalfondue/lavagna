@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5.1 (2015-11-16)
+
+ - Fix XSS issue in the file upload section (require an authenticated user)
+
 ## 1.0.5 (2015-11-07)
 
  - UI/UX improvements
