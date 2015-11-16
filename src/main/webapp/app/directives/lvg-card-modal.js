@@ -19,33 +19,27 @@
 				}
 			},
 			link: function ($scope) {
+				
+				var close = function () {
+					cleanup();
+					$scope.goBack();
+				};
+				
+				var escapeHandler = function (e) {
+					if (e.keyCode == 27) {
+						$scope.$apply(close);
+					}
+				};
+				
 				var cleanup = function () {
 					$('#cardModal,#cardModalBackdrop').removeClass('in');
 					$('#cardModal,#cardModalBackdrop').remove();
 					$("body").removeClass('lvg-modal-open');
-					$(document).unbind('keyup', $scope.escapeHandler);
-				};
-
-				$scope.close = function () {
-					cleanup();
-					$scope.goBack();
+					$(document).unbind('keyup', escapeHandler);
 				};
 
 				$scope.$on('$destroy', cleanup);
-
-				$scope.escapeHandler = function (e) {
-					if (e.keyCode == 27) {
-						$scope.$apply($scope.close);
-					}
-				};
-
-				$(document).bind('keyup', $scope.escapeHandler);
-
-				$scope.clickHandler = function (event) {
-					if (event.target.id == 'cardModal') {
-						$scope.close();
-					}
-				};
+				$(document).bind('keyup', escapeHandler);
 
 				$("body").append($('<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade"></div>'));
 				$("body").addClass('lvg-modal-open');
