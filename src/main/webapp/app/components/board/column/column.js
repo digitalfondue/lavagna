@@ -106,7 +106,7 @@
         };
 
         ctrl.moveColumn = function(location) {
-            var confirmAction = function() {Board.moveColumnToLocation(columnId, location).catch(function(error) {
+            var confirmAction = function() {Board.moveColumnToLocation(ctrl.column.id, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
 
@@ -152,13 +152,13 @@
         }
 
         ctrl.saveNewColumnName = function(newName) {
-            Board.renameColumn(boardShortName, columnId, newName).catch(function(error) {
+            Board.renameColumn(boardShortName, ctrl.column.id, newName).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.rename-column.error'}, false);
             });
         };
 
         ctrl.setColumnDefinition = function(definition) {
-            Board.redefineColumn(boardShortName, columnId, definition).catch(function(error) {
+            Board.redefineColumn(boardShortName, ctrl.column.id, definition).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.redefine-column.error'}, false);
             });
         };

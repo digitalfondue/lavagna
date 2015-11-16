@@ -2,8 +2,8 @@
     <div class="row lvg-column-handle">
         <div class="col-xs-10">
             <div data-ng-if="!boardColumnCtrl.columnState.editColumnName">
-                <span data-ng-click="boardColumnCtrl.columnState.editColumnName=true; boardColumnCtrl.columnState.newColumnName = boardColumnCtrl.column.name" data-lvg-has-permission="RENAME_COLUMN"class="lvg-edit">{{::boardColumnCtrl.column.name}}</span>
-                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{::boardColumnCtrl.column.name}}</span>
+                <span data-ng-click="boardColumnCtrl.columnState.editColumnName=true; boardColumnCtrl.columnState.newColumnName = boardColumnCtrl.column.name" data-lvg-has-permission="RENAME_COLUMN"class="lvg-edit">{{boardColumnCtrl.column.name}}</span>
+                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{boardColumnCtrl.column.name}}</span>
             </div>
             <div data-ng-if="boardColumnCtrl.columnState.editColumnName">
                 <div class="form-group">
