@@ -29,7 +29,6 @@
 
 	function CardFragmentController(Card) {
 	    var ctrl = this;
-	    console.log()
 
         ctrl.readOnly = ctrl.readOnly != undefined;
         ctrl.hideAssignedUsers = ctrl.hideAssignedUsers != undefined;

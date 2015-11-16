@@ -26,6 +26,8 @@
 
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
+        
+        ctrl.selectedCards = {};
 
         User.currentCachedUser().then(function(currentUser) {
             ctrl.currentUserId = currentUser.id;
@@ -72,7 +74,7 @@
             $scope.$broadcast('selectall');
         };
 
-        $scope.unSelectAll = function() {
+        ctrl.unSelectAll = function() {
             $scope.$broadcast('unselectall');
         };
 

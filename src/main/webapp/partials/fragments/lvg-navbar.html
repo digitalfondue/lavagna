@@ -25,20 +25,20 @@
 			</button>
 		</div>
 		<div class="lvg-board-edit">
-			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
+			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="boardCtrl.editMode" class="lvg-button-group">
+				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="boardCtrl.switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
 			</div>
-			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="unSelectAll(); switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
+			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="boardCtrl.editMode" class="lvg-button-group">
+				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="boardCtrl.unSelectAll(); boardCtrl.switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
 			</div>
-			<div data-ng-if="editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group">
-				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
+			<div data-ng-if="boardCtrl.editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
+				<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
-    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="selectAll()" data-translate>partials.board.selection.all</button></li>
-    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="unSelectAll()" data-translate>partials.board.selection.none</button></li>
+    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardCtrl.selectAll()" data-translate>partials.board.selection.all</button></li>
+    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardCtrl.unSelectAll()" data-translate>partials.board.selection.none</button></li>
   				</ul>
 			</div>
-			<div class="dropdown lvg-button-group" data-ng-show="selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'">
+			<div class="dropdown lvg-button-group" data-ng-show="boardCtrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'">
 				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>

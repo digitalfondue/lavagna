@@ -15,7 +15,8 @@
             bindToController: {
                 project: '=',
                 board: '=',
-                column: '='
+                column: '=',
+                selectedCards: '='
             },
             templateUrl: 'app/components/board/column/column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {
