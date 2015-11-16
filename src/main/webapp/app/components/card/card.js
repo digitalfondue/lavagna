@@ -84,6 +84,7 @@
                 ctrl.card = c;
                 refreshTitle();
                 loadColumn(c.columnId);
+                card = ctrl.card;
             });
             loadActivity();
         };
