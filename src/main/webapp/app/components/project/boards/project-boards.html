@@ -4,7 +4,7 @@
         <div class="board-list col-md-6">
 
             <div data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="createNewBoard">
+                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="projectCtrl.createNewBoard">
                     <span class="fa fa-plus"></span>
                     <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
                 </button>
@@ -25,10 +25,10 @@
                         </div>
                         <div class="form-group">
                             <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
-                            <div data-ng-hide="preview.show">
+                            <div data-ng-hide="projectCtrl.preview.show">
                                 <textarea class="form-control" rows="3" id="description" data-ng-model="projectCtrl.board.description" data-lvg-codemirror></textarea>
                             </div>
-                            <div data-ng-show="preview.show">
+                            <div data-ng-show="projectCtrl.preview.show">
                                 <div data-ng-bind-html="projectCtrl.board.description | markdown"></div>
                             </div>
                         </div>
