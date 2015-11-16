@@ -521,8 +521,8 @@
                                         </div>
                                         <div class="lavagna-tab-panel" id="lavagna-card-panel-activity">
                                             <div class="body-full">
-                                                <ul data-ng-if="hasActivity()" class="lavagna-activity">
-                                                    <li data-ng-repeat="activity in activities | orderBy: '-id' track by activity.id"
+                                                <ul data-ng-if="cardCtrl.hasActivity()" class="lavagna-activity">
+                                                    <li data-ng-repeat="activity in cardCtrl.activities | orderBy: '-id' track by activity.id"
                                                         class="activity">
                                                         <div class="header">
                                                             <span class="user" data-lvg-user="activity.userId"></span>&nbsp;<span
