@@ -577,37 +577,37 @@
                                 data-ui-sortable="sortableActionListOptions">
                                 <li
                                     class="lavagna-card-actionlist lavagna-sortable-card-actionlist"
-                                    data-ng-repeat="actionList in actionLists | orderBy:'order' track by actionList.id"
-                                    data-ng-init="actionListState[actionList.id] = {}"
+                                    data-ng-repeat="actionList in cardCtrl.actionLists | orderBy:'order' track by actionList.id"
+                                    data-ng-init="cardCtrl.actionListState[actionList.id] = {}"
                                     data-lavagna-actionlist-id="{{actionList.id}}">
                                     <div class="head">
                                         <div class="progress lavagna-progress progress-success">
                                             <div class="progress-bar"
-                                                 data-ng-style="{'width': actionListsStats[actionList.id] + '%'}"></div>
+                                                 data-ng-style="{'width': cardCtrl.actionListsStats[actionList.id] + '%'}"></div>
                                         </div>
                                         <div class="title">
                                             <div class="lavagna-card-actionlist-text"
-                                                 data-ng-hide="actionListState[actionList.id].editActionName">
+                                                 data-ng-hide="cardCtrl.actionListState[actionList.id].editActionName">
                                                 <span data-lvg-has-not-permission="MANAGE_ACTION_LIST">{{actionList.content}}</span>
 												<span
                                                     data-lvg-has-permission="MANAGE_ACTION_LIST"
-                                                    data-ng-click="actionListState[actionList.id].editActionName=true; actionListState[actionList.id].newActionName = actionList.content">{{actionList.content}}</span>
+                                                    data-ng-click="cardCtrl.actionListState[actionList.id].editActionName=true; cardCtrl.actionListState[actionList.id].newActionName = actionList.content">{{actionList.content}}</span>
                                             </div>
                                             <div class="lavagna-card-edit"
-                                                 data-ng-if="actionListState[actionList.id].editActionName">
-                                                <form data-ng-submit="saveActionList(actionList.id, actionListState[actionList.id].newActionName);actionListState[actionList.id].editActionName=false">
+                                                 data-ng-if="cardCtrl.actionListState[actionList.id].editActionName">
+                                                <form data-ng-submit="cardCtrl.saveActionList(actionList.id, cardCtrl.actionListState[actionList.id].newActionName);cardCtrl.actionListState[actionList.id].editActionName=false">
                                                     <div class="form-group">
                                                         <input data-ng-hide="previewMode"
                                                                placeholder="{{'card.name.placeholder' | translate}}"
-                                                               data-ng-model="actionListState[actionList.id].newActionName"
+                                                               data-ng-model="cardCtrl.actionListState[actionList.id].newActionName"
                                                                class="form-control"
-                                                               data-lvg-to-focus="actionListState[actionList.id].editActionName"
-                                                               data-lvg-on-esc="actionListState[actionList.id].editActionName"/>
+                                                               data-lvg-to-focus="cardCtrl.actionListState[actionList.id].editActionName"
+                                                               data-lvg-on-esc="cardCtrl.actionListState[actionList.id].editActionName"/>
                                                     </div>
                                                     <div>
                                                         <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
                                                         <button type="button" class="lvg-button lvg-button-default"
-                                                                data-ng-click="actionListState[actionList.id].editActionName=false"><span data-translate>button.cancel</span></button>
+                                                                data-ng-click="cardCtrl.actionListState[actionList.id].editActionName=false"><span data-translate>button.cancel</span></button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -617,62 +617,62 @@
                                         <ul data-ui-sortable="sortableActionItemsOptions"
                                             class="lavagna-card-actionitems">
                                             <li
-                                                data-ng-repeat="actionItem in actionItems[actionList.id] | orderBy:'order'"
+                                                data-ng-repeat="actionItem in cardCtrl.actionItems[actionList.id] | orderBy:'order'"
                                                 class="lavagna-card-actionitem"
                                                 data-lavagna-actionlistitem-id="{{actionItem.id}}"
-                                                data-ng-mouseover="actionListState[actionList.id][actionItem.id].showControls = true"
-                                                data-ng-mouseout="actionListState[actionList.id][actionItem.id].showControls = false">
+                                                data-ng-mouseover="cardCtrl.actionListState[actionList.id][actionItem.id].showControls = true"
+                                                data-ng-mouseout="cardCtrl.actionListState[actionList.id][actionItem.id].showControls = false">
                                                 <div class="lavagna-card-actionitem-checkbox"
-                                                     data-ng-hide="actionListState[actionList.id][actionItem.id].editActionName || actionListState[actionList.id][actionItem.id].deleteActionItem"
-                                                     data-ng-init="actionListState[actionList.id][actionItem.id] = {}">
+                                                     data-ng-hide="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName || cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem"
+                                                     data-ng-init="cardCtrl.actionListState[actionList.id][actionItem.id] = {}">
                                                     <input type="checkbox"
                                                            data-lvg-has-permission="MANAGE_ACTION_LIST"
                                                            data-ng-checked="actionItem.type == 'ACTION_CHECKED'"
-                                                           data-ng-click="toggleActionItem(actionItem.id)">
+                                                           data-ng-click="cardCtrl.toggleActionItem(actionItem.id)">
                                                 </div>
                                                 <div class="lavagna-card-actionitem-text"
-                                                     data-ng-hide="actionListState[actionList.id][actionItem.id].editActionName || actionListState[actionList.id][actionItem.id].deleteActionItem">
+                                                     data-ng-hide="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName || cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem">
 													<span
                                                         data-ng-class="{strike : actionItem.type == 'ACTION_CHECKED'}" data-ng-bind="actionItem.content"></span>
                                                 </div>
                                                 <ul class="controls-over"
-                                                    data-ng-if="!actionListState[actionList.id][actionItem.id].editActionName && !actionListState[actionList.id][actionItem.id].deleteActionItem"
-                                                    data-ng-show="actionListState[actionList.id][actionItem.id].showControls">
+                                                    data-ng-if="!cardCtrl.actionListState[actionList.id][actionItem.id].editActionName && !cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem"
+                                                    data-ng-show="cardCtrl.actionListState[actionList.id][actionItem.id].showControls">
                                                     <li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
-                                                        data-ng-click="actionListState[actionList.id][actionItem.id].editActionName = true;actionListState[actionList.id][actionItem.id].newActionName = actionItem.content"
+                                                        data-ng-click="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName = true;cardCtrl.actionListState[actionList.id][actionItem.id].newActionName = actionItem.content"
                                                         class="fa fa-pencil" title="{{'button.edit' | translate}}"></span></li>
                                                     <li data-lvg-has-permission="MANAGE_ACTION_LIST"><span
-                                                        data-ng-click="actionListState[actionList.id][actionItem.id].deleteActionItem = true"
+                                                        data-ng-click="cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem = true"
                                                         class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
                                                 </ul>
                                                 <div class="lavagna-card-edit"
-                                                     data-ng-if="actionListState[actionList.id][actionItem.id].editActionName">
+                                                     data-ng-if="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName">
                                                     <form
-                                                        data-ng-submit="saveActionItem(actionItem.id, actionListState[actionList.id][actionItem.id].newActionName);actionListState[actionList.id][actionItem.id].editActionName=false">
+                                                        data-ng-submit="cardCtrl.saveActionItem(actionItem.id, cardCtrl.actionListState[actionList.id][actionItem.id].newActionName);cardCtrl.actionListState[actionList.id][actionItem.id].editActionName=false">
                                                         <div class="form-group">
                                                             <input data-ng-hide="previewMode"
                                                                    placeholder="{{'card.actionItem.placeholder' | translate}}"
-                                                                   data-ng-model="actionListState[actionList.id][actionItem.id].newActionName"
+                                                                   data-ng-model="cardCtrl.actionListState[actionList.id][actionItem.id].newActionName"
                                                                    class="form-control"
-                                                                   data-lvg-on-esc="actionListState[actionList.id][actionItem.id].editActionName"
-                                                                   data-lvg-to-focus="actionListState[actionList.id][actionItem.id].editActionName"/>
+                                                                   data-lvg-on-esc="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName"
+                                                                   data-lvg-to-focus="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName"/>
                                                         </div>
                                                         <div>
                                                             <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
                                                             <button type="button" class="lvg-button lvg-button-default"
-                                                                    data-ng-click="actionListState[actionList.id][actionItem.id].editActionName = false; actionListState[actionList.id][actionItem.id].showControls = false"><span data-translate>button.cancel</span></button>
+                                                                    data-ng-click="cardCtrl.actionListState[actionList.id][actionItem.id].editActionName = false; cardCtrl.actionListState[actionList.id][actionItem.id].showControls = false"><span data-translate>button.cancel</span></button>
                                                         </div>
                                                     </form>
                                                 </div>
                                                 <div class="lavagna-card-edit"
-                                                     data-ng-if="actionListState[actionList.id][actionItem.id].deleteActionItem">
+                                                     data-ng-if="cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem">
                                                     <form
-                                                        data-ng-submit="deleteActionItem(actionList.id, actionItem.id);">
+                                                        data-ng-submit="cardCtrl.deleteActionItem(actionList.id, actionItem.id);">
                                                         <div class="form-group" data-translate>card.deleteThisActionItem</div>
                                                         <div>
                                                             <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
                                                             <button type="button" class="lvg-button lvg-button-default"
-                                                                    data-ng-click="actionListState[actionList.id][actionItem.id].deleteActionItem = false; actionListState[actionList.id][actionItem.id].showControls = false"><span data-translate>button.no</span></button>
+                                                                    data-ng-click="cardCtrl.actionListState[actionList.id][actionItem.id].deleteActionItem = false; cardCtrl.actionListState[actionList.id][actionItem.id].showControls = false"><span data-translate>button.no</span></button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -681,44 +681,44 @@
                                     </div>
                                     <div class="footer" data-lvg-has-permission="MANAGE_ACTION_LIST">
                                         <ul class="panel-controls"
-                                            data-ng-hide="actionListState[actionList.id].addItem || actionListState[actionList.id].deleteList">
+                                            data-ng-hide="cardCtrl.actionListState[actionList.id].addItem || cardCtrl.actionListState[actionList.id].deleteList">
                                             <li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
-                                                data-ng-click="actionListState[actionList.id].addItem = true"
+                                                data-ng-click="cardCtrl.actionListState[actionList.id].addItem = true"
                                                 class="fa fa-plus" title="{{'button.add' | translate}}"></span></li>
                                             <li class="control-box" data-lvg-has-permission="MANAGE_ACTION_LIST"><span
-                                                data-ng-click="actionListState[actionList.id].deleteList = true"
+                                                data-ng-click="cardCtrl.actionListState[actionList.id].deleteList = true"
                                                 class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
                                         </ul>
                                         <div class="lavagna-card-edit content"
-                                             data-ng-if="actionListState[actionList.id].addItem">
+                                             data-ng-if="cardCtrl.actionListState[actionList.id].addItem">
                                             <form
-                                                data-ng-submit="addActionItem(actionList.id, actionListState[actionList.id].itemToCreate)">
+                                                data-ng-submit="cardCtrl.addActionItem(actionList.id, cardCtrl.actionListState[actionList.id].itemToCreate)">
                                                 <div class="form-group">
                                                     <input
-                                                        data-lvg-to-focus="actionListState[actionList.id].addItem"
+                                                        data-lvg-to-focus="cardCtrl.actionListState[actionList.id].addItem"
                                                         placeholder="{{'card.itemName.placeholder' | translate}}"
-                                                        data-ng-model="actionListState[actionList.id].itemToCreate.content"
+                                                        data-ng-model="cardCtrl.actionListState[actionList.id].itemToCreate.content"
                                                         class="form-control"
-                                                        data-lvg-on-esc="actionListState[actionList.id].addItem" data-lvg-on-esc-eval="actionListState[actionList.id].itemToCreate = null"/>
+                                                        data-lvg-on-esc="cardCtrl.actionListState[actionList.id].addItem" data-lvg-on-esc-eval="cardCtrl.actionListState[actionList.id].itemToCreate = null"/>
                                                 </div>
                                                 <div>
                                                     <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
                                                     <button type="button" class="lvg-button lvg-button-default"
-                                                            data-ng-click="actionListState[actionList.id].itemToCreate = null; actionListState[actionList.id].addItem = false"><span data-translate>button.cancel</span></button>
+                                                            data-ng-click="cardCtrl.actionListState[actionList.id].itemToCreate = null; cardCtrl.actionListState[actionList.id].addItem = false"><span data-translate>button.cancel</span></button>
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="lavagna-card-edit content"
-                                             data-ng-if="actionListState[actionList.id].deleteList">
+                                             data-ng-if="cardCtrl.actionListState[actionList.id].deleteList">
                                             <form
-                                                data-ng-submit="deleteActionList(actionList.id)">
+                                                data-ng-submit="cardCtrl.deleteActionList(actionList.id)">
                                                 <div class="form-group">
                                                     <span data-translate>card.deleteThisActionList</span>
                                                 </div>
                                                 <div>
                                                     <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
                                                     <button type="button" class="lvg-button lvg-button-default"
-                                                            data-ng-click="actionListState[actionList.id].deleteList = false"><span data-translate>button.no</span></button>
+                                                            data-ng-click="cardCtrl.actionListState[actionList.id].deleteList = false"><span data-translate>button.no</span></button>
                                                 </div>
                                             </form>
                                         </div>
@@ -727,7 +727,7 @@
                             </ul>
                             <div class="lavagna-card-panel" data-lvg-has-permission="MANAGE_ACTION_LIST">
                                 <div class="footer-full">
-                                    <form data-ng-role="form" data-ng-submit="addActionList(newActionList);">
+                                    <form data-ng-role="form" data-ng-submit="cardCtrl.addActionList(newActionList);">
                                         <div class="content input-group">
                                             <input type="text"
                                                    placeholder="{{'card.newList.placeholder' | translate}}" required="required"
