@@ -520,7 +520,7 @@
             });
         };
 
-        $scope.$watch('filesToUpload', function() {
+        $scope.$watch('cardCtrl.filesToUpload', function() {
             if(ctrl.filesToUpload.length > 0 && ctrl.uploadingFile == null) {
                 ctrl.uploadNextFile();
             }

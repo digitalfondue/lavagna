@@ -435,10 +435,10 @@
                                             </div>
                                         </div>
                                         <div class="lavagna-tab-panel" id="lavagna-card-panel-files">
-                                            <div class="body-full" data-ng-if="files">
+                                            <div class="body-full" data-ng-if="cardCtrl.files">
                                                 <ul class="lavagna-files-list" data-ng-init="fileControls = {}">
                                                     <li class="lavagna-file clearfix"
-                                                        data-ng-repeat="file in files"
+                                                        data-ng-repeat="file in cardCtrl.files"
                                                         data-ng-init="fileControls[file.cardDataId] = {}">
                                                         <div class="lavagna-file-icon">
                                                             <span class="fa fa-floppy-o"></span>
@@ -452,7 +452,7 @@
                                                                 <li class="file-info"><span class="size" data-ng-bind="file.size | fileBytes"></span></li>
                                                             </ul>
                                                             <form data-role="form" data-ng-if="fileControls[file.cardDataId].deleteFile"
-                                                                  data-ng-submit="deleteFile(file.cardDataId)" class="panel-confirmation-control">
+                                                                  data-ng-submit="cardCtrl.deleteFile(file.cardDataId)" class="panel-confirmation-control">
                                                                 <div class="form-group" data-translate>card.deleteThisFile</div>
                                                                 <div>
                                                                     <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
@@ -481,11 +481,11 @@
                                                     <form data-role="form">
                                                         <div>
                                                             <div class="lvg-button lvg-button-submit"
-                                                                 ng-file-select="addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
+                                                                 ng-file-select="cardCtrl.addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
                                                         </div>
                                                     </form>
                                                     <ul class="lvg-card-file-queue">
-                                                        <li data-ng-repeat="entry in filesToUpload track by $index">
+                                                        <li data-ng-repeat="entry in cardCtrl.filesToUpload track by $index">
                                                             <div class="lavagna-file-icon">
 																<span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue',
 																	'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted',
@@ -501,15 +501,15 @@
                                                             <div class="lavagna-file-controls">
                                                                 <ul>
                                                                     <li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
-                                                                        data-ng-click="retryUpload($index)"
+                                                                        data-ng-click="cardCtrl.retryUpload($index)"
                                                                         class="control-item"><span
                                                                         class="fa fa-repeat" title="{{'button.retry' | translate}}"></span></li>
                                                                     <li data-ng-show="entry.status != 'upload'"
-                                                                        data-ng-click="cancelUpload($index)"
+                                                                        data-ng-click="cardCtrl.cancelUpload($index)"
                                                                         class="control-item"><span
                                                                         class="fa fa-times" title="{{'button.cancel' | translate}}"></span></li>
                                                                     <li data-ng-show="entry.status == 'upload'"
-                                                                        data-ng-click="abortUpload($index)"
+                                                                        data-ng-click="cardCtrl.abortUpload($index)"
                                                                         class="control-item"><span
                                                                         class="fa fa-stop" title="{{'button.abort' | translate}}"></span></li>
                                                                 </ul>
