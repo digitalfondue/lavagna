@@ -319,9 +319,9 @@
                                             </ul>
                                         </div>
                                         <div class="lavagna-tab-panel" id="lavagna-card-panel-comments">
-                                            <div class="body-full" data-ng-if="comments.length > 0">
+                                            <div class="body-full" data-ng-if="cardCtrl.comments.length > 0">
                                                 <ul class="lavagna-comments">
-                                                    <li data-ng-repeat="comment in comments | orderBy: 'time' track by comment.id "
+                                                    <li data-ng-repeat="comment in cardCtrl.comments | orderBy: 'time' track by comment.id "
                                                         class="comment" data-bo-attr data-bo-attr-id="comment.id" data-bindonce data-lvg-scroll-to-comment="comment.id">
                                                         <div class="header">
                                                             <span class="user" data-lvg-user="comment.userId"></span>&nbsp;<span
@@ -349,7 +349,7 @@
                                                                     class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
                                                             </ul>
                                                             <form data-role="form" data-ng-if="commentControl.deleteComment"
-                                                                  data-ng-submit="deleteComment(comment, commentControl.deleteComment)" class="panel-confirmation-control">
+                                                                  data-ng-submit="cardCtrl.deleteComment(comment, commentControl.deleteComment)" class="panel-confirmation-control">
                                                                 <div class="form-group" data-translate>card.deleteThisComment</div>
                                                                 <div>
                                                                     <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
@@ -379,7 +379,7 @@
                                                             <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
                                                         </div>
                                                         <form data-role="form" data-ng-if="commentControl.editComment"
-                                                              data-ng-submit="updateComment(comment, commentToEdit);commentControl.editComment=false;commentControl.editCommentPreviewMode=false">
+                                                              data-ng-submit="cardCtrl.updateComment(comment, commentToEdit);commentControl.editComment=false;commentControl.editCommentPreviewMode=false">
                                                             <div class="form-group">
                                                                 <div data-ng-hide="commentControl.editCommentPreviewMode">
 																	<textarea
@@ -406,7 +406,7 @@
                                             <div class="footer" data-lvg-has-permission="CREATE_CARD_COMMENT">
                                                 <div class="content">
                                                     <form data-role="form"
-                                                          data-ng-submit="addComment(comment);previewMode = false">
+                                                          data-ng-submit="cardCtrl.addComment(comment);previewMode = false">
                                                         <div class="form-group">
                                                             <div data-ng-hide="previewMode">
 																<textarea
