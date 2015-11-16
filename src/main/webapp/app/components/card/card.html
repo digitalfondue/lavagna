@@ -13,7 +13,7 @@
 						<span data-ng-if="cardCtrl.column.columnLocation !== 'BOARD'"><span data-translate>card.in</span> <span data-ng-bind="cardCtrl.column.columnLocation"></span></span>
 					</span>
                 </div>
-                <div class="lavagna-card-title-main" data-ng-hide="cardCtrl.editCardName">
+                <div class="lavagna-card-title-main" data-ng-hide="cardCtrl.view.editCardName">
                     <h4 class="card-modal-title">
                         <span data-lvg-has-permission="UPDATE_CARD" data-ng-bind="cardCtrl.card.name" data-ng-click="cardCtrl.view.editCardName=true; cardCtrl.view.cardNameToEdit = cardCtrl.card.name"></span>
                         <span data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="cardCtrl.card.name"></span>

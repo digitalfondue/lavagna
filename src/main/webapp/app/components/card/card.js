@@ -285,7 +285,7 @@
         };
 
         // -----
-        ctrl.updateCardName = function(newName) {
+        ctrl.updateCardName = function(card, newName) {
             Card.update(card.id, newName);
         };
         //
