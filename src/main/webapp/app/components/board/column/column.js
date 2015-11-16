@@ -46,6 +46,8 @@
 
     function BoardColumnController($scope, $filter, $modal, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
+        
+        var boardShortName = ctrl.board.shortName;
 
         //capture all status variables
         ctrl.columnState = {};
@@ -64,7 +66,7 @@
         $scope.$on('unselectall', ctrl.unSelectAllInColumn);
 
         ctrl.createCardFromTop = function(cardToCreateFromTop) {
-            Board.createCardFromTop(boardShortName, columnId, {name: cardToCreateFromTop.name}).then(function() {
+            Board.createCardFromTop(boardShortName, ctrl.column.id, {name: cardToCreateFromTop.name}).then(function() {
                 cardToCreateFromTop.name = null;
             }).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
@@ -72,7 +74,7 @@
         };
 
         ctrl.createCard = function(cardToCreate) {
-            Board.createCard(boardShortName, columnId, {name: cardToCreate.name}).then(function() {
+            Board.createCard(boardShortName, ctrl.column.id, {name: cardToCreate.name}).then(function() {
                 cardToCreate.name = null;
             }).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
