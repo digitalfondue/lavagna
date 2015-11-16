@@ -3,7 +3,7 @@
     <div class="card-modal-dialog">
         <div class="card-modal-content">
             <div class="card-modal-header modal-header" data-ng-style="cardCtrl.column.columnColor | columnColor">
-                <button type="button" class="close" data-ng-click="close()">&times;</button>
+                <a class="close" data-ui-sref="^">&times;</a>
                 <div class="lavagna-card-title-info">
                     <span><a data-ui-sref="project.boards({projectName: cardCtrl.project.shortName})" data-ng-bind="cardCtrl.project.name"></a> /</span>
                     <span><a data-ui-sref="projectBoard.board({projectName: cardCtrl.project.shortName, shortName: cardCtrl.board.shortName})" data-ng-bind="cardCtrl.board.name"></a> /</span>
