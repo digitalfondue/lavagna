@@ -1,0 +1,117 @@
+<div class="lavagna-container-bottom-margin col-sm-6 col-xs-12">
+    <div class="lavagna-form-panel">
+        <div class="search-bar" data-ng-init="adminUsersCtrl.view.username">
+            <div class="search-user-form inner-addon left-inner-addon">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="adminUsersCtrl.view.username"
+                       lvg-user-list="adminUsersCtrl.view.userList" lvg-user-list-local-model="adminUsersCtrl.users"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-6 col-xs-12">
+    <div class="lavagna-container-bottom-margin lavagna-transpartent-panel" data-ng-hide="adminUsersCtrl.view.addNewUser || adminUsersCtrl.view.bulkUserImport">
+        <div class="form-group pull-right">
+            <button type="button" class="lvg-button lvg-button-submit" data-ng-click="adminUsersCtrl.view.addNewUser = true">
+                <span class="fa fa-plus"></span>
+                <span data-translate>partials.admin.manage-users.addUser</span>
+            </button>
+            <button type="button" class="lvg-button lvg-button-submit" data-ng-click="adminUsersCtrl.view.bulkUserImport = true">
+                <span class="fa fa-upload"></span>
+                <span data-translate>partials.admin.manage-users.import</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-6 col-xs-12">
+    <div class="lavagna-container-bottom-margin lavagna-form-panel" data-ng-show="adminUsersCtrl.view.addNewUser">
+        <form role="form" data-ng-submit="adminUsersCtrl.addUser(adminUsersCtrl.view.userToAdd);">
+            <div class="form-group">
+                <label data-translate>partials.admin.manage-users.provider</label>
+                <select class="form-control"
+                        data-ng-model="adminUsersCtrl.view.userToAdd.provider"
+                        data-ng-options="val for val in adminUsersCtrl.loginProviders"
+                        required>
+                </select>
+            </div>
+            <div class="form-group">
+                <label data-translate>partials.admin.manage-users.username</label>
+                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.username" required>
+            </div>
+            <div class="form-group">
+                <label data-translate>partials.admin.manage-users.email</label>
+                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.email">
+            </div>
+            <div class="form-group">
+                <label data-translate>partials.admin.manage-users.displayName</label>
+                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.displayName">
+            </div>
+            <div class="form-group" data-ng-init="adminUsersCtrl.view.userToAdd.roles = {}">
+                <label data-translate>partials.admin.manage-users.roles</label>
+                <ul class="lvg-roles-panel-list">
+                    <li data-ng-repeat="role in roles">
+                        <label><input data-ng-model="adminUsersCtrl.view.userToAdd.roles[role]" type="checkbox"><span>{{::role}}</span></label>
+                    </li>
+                </ul>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" data-ng-model="adminUsersCtrl.view.userToAdd.enabled"> <span data-translate>partials.admin.manage-users.enabled</span>
+                </label>
+            </div>
+            <button type="submit" class="lvg-button lvg-button-submit"><span class="fa fa-plus"></span> <span data-translate>partials.admin.manage-users.addUser</span></button>
+            <button type="button" class="lvg-button lvg-button-default" data-ng-click="adminUsersCtrl.view.addNewUser = false"><span data-translate>partials.admin.manage-users.cancel</span></button>
+        </form>
+    </div>
+</div>
+
+<div class="col-sm-6 col-xs-12">
+    <div class="lavagna-container-bottom-margin lavagna-form-panel" data-ng-show="adminUsersCtrl.view.bulkUserImport">
+        <form role="form" data-ng-submit="adminUsersCtrl.bulkImport()">
+            <div class="form-group">
+                <div class="lvg-button lvg-button-submit" ng-file-select="adminUsersCtrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
+                <div data-ng-if="adminUsersCtrl.importUserFile != null">{{adminUsersCtrl.importUserFile.name}}</div>
+                <div data-ng-if="adminUsersCtrl.importUserFile == null" data-translate>common.no-files-selected</div>
+            </div>
+            <button type="submit" class="lvg-button lvg-button-submit" data-translate data-ng-disabled="adminUsersCtrl.importUserFile == null">partials.admin.manage-users.import</button>
+            <button type="button" class="lvg-button lvg-button-default" data-ng-click="adminUsersCtrl.importUserFile = null; adminUsersCtrl.view.bulkUserImport = false"><span data-translate>button.cancel</span></button>
+        </form>
+    </div>
+</div>
+
+<div class="col-md-12 col-xs-12">
+    <div class="lavagna-panel">
+        <div class="body-full">
+            <div data-ng-if="adminUsersCtrl.view.userList.length > 20">
+                <pagination ng-model="adminUsersCtrl.view.userListPage" total-items="adminUsersCtrl.view.userList.length" items-per-page="20"
+                            class="lvg-panel-top-pagination pagination-sm" rotate="false" ng-change="adminUsersCtrl.switchPage(adminUsersCtrl.view.userListPage)"></pagination>
+            </div>
+            <table class="table table-striped table-bordered lvg-table">
+                <thead>
+                <tr>
+                    <th data-translate>partials.admin.manage-users.provider</th>
+                    <th data-translate>partials.admin.manage-users.username</th>
+                    <th data-translate>partials.admin.manage-users.email</th>
+                    <th data-translate>partials.admin.manage-users.displayName</th>
+                    <th data-translate>partials.admin.manage-users.enabled</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList | usersPagination:20:adminUsersCtrl.view.userListPage">
+                    <td data-ng-bind="u.provider"></td>
+                    <td data-ng-bind="u.username"></td>
+                    <td data-ng-bind="u.email"></td>
+                    <td data-ng-bind="u.displayName"></td>
+                    <td><input data-ng-show="u.id != adminUsersCtrl.currentUser.id"
+                               type="checkbox" data-ng-model="u.enabled"
+                               data-ng-change="adminUsersCtrl.updateUserStatus(u.id, u.enabled)"> <input
+                        data-ng-show="u.id == adminUsersCtrl.currentUser.id" type="checkbox"
+                        data-ng-model="u.enabled" disabled="disabled"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

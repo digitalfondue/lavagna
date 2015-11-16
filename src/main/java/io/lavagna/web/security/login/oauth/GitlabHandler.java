@@ -24,12 +24,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.scribe.builder.ServiceBuilder;
 
 public class GitlabHandler extends OAuthResultHandlerAdapter {
-    
+
     private GitlabHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, OAuthProvider provider, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
-        
+
         super("oauth." + provider.getProvider(),//
                 getProfileUrl(provider),//
-                UserInfo.class,// 
+                UserInfo.class,//
                 "code",//
                 users,//
                 sessionHandler,//
@@ -39,19 +39,19 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
                     .apiKey(provider.getApiKey())
                     .apiSecret(provider.getApiSecret())
                     .callback(callback)
-                    .build(), 
+                    .build(),
                 reqBuilder);
     }
-    
-    // 
+
+    //
     //
     // https://gitlab.com/api/v3/user
     private static String getProfileUrl(OAuthProvider provider) {
         return provider.profileUrlOrDefault(StringUtils.removeEnd(provider.baseUrlOrDefault("https://gitlab.com"), "/") + "/api/v3/user");
     }
-    
+
     public static class UserInfo implements RemoteUserProfile {
-        
+
         // http://doc.gitlab.com/ce/api/users.html#current-user
         String username;
 
@@ -65,9 +65,9 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
             return username;
         }
     }
-    
+
     public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
-        
+
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,

@@ -1,0 +1,15 @@
+<lvg-navbar data-navbar-type="admin-menu">
+    <span data-translate>partials.admin.fragments.navbar.title</span>
+</lvg-navbar>
+
+<div class="container lavagna-container-top-margin">
+    <section class="content">
+        <div class="alert alert-danger" data-ng-if="adminCtrl.httpsConfigurationCheck.length > 0">
+            <h3 data-translate>partials.admin.admin.httpsRelatedProblems</h3>
+
+            <p data-ng-repeat="desc in adminCtrl.httpsConfigurationCheck">{{::desc}}</p>
+        </div>
+
+        <div data-ui-view data-autoscroll="false"></div>
+    </section>
+</div>

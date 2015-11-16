@@ -7,15 +7,17 @@
 	directives.directive('lvgCardModal', function () {
 		return {
 			restrict: 'A',
-			transclude: true,
+			scope: {
+			    onClose: '='
+			},
 			controller: function ($scope, $element, $state) {
-				
+
 				$scope.goBack = function() {
 					//go to parent state
+					$scope.onClose();
 					$state.go('^');
 				}
 			},
-			template: '<div data-ng-transclude></div>',
 			link: function ($scope) {
 				var cleanup = function () {
 					$('#cardModal,#cardModalBackdrop').removeClass('in');
@@ -23,14 +25,14 @@
 					$("body").removeClass('lvg-modal-open');
 					$(document).unbind('keyup', $scope.escapeHandler);
 				};
-				
+
 				$scope.close = function () {
 					cleanup();
 					$scope.goBack();
 				};
-				
+
 				$scope.$on('$destroy', cleanup);
-				
+
 				$scope.escapeHandler = function (e) {
 					if (e.keyCode == 27) {
 						$scope.$apply($scope.close);

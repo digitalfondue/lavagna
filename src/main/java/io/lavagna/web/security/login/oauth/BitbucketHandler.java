@@ -50,9 +50,9 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
 			return username;
 		}
 	}
-	
+
 	public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
-        
+
         @Override
         public OAuthResultHandler build(ServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,
@@ -60,5 +60,5 @@ public class BitbucketHandler extends OAuthResultHandlerAdapter {
                 String errorPage) {
             return new BitbucketHandler(serviceBuilder, reqBuilder, provider.getApiKey(), provider.getApiSecret(), callback, users, sessionHandler, errorPage);
         }
-    }; 
+    };
 }

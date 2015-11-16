@@ -1,0 +1,88 @@
+<div class="container">
+    <div class="row lavagna-project-home">
+        <div class="col-md-3" data-lvg-is-not-authenticated></div>
+        <div class="board-list col-md-6">
+
+            <div data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="createNewBoard">
+                    <span class="fa fa-plus"></span>
+                    <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
+                </button>
+
+                <div class="lavagna-form-panel" data-ng-show="projectCtrl.createNewBoard" >
+                    <form data-ng-submit="projectCtrl.createBoard(board); projectCtrl.board={};projectCtrl.preview.show = false;projectCtrl.checkedShortName = undefined; projectCtrl.createNewBoard = false;"
+                          data-ng-init="projectCtrl.board={}; projectCtrl.preview.show = false;">
+                        <div class="form-group">
+                            <label for="name" data-translate>partials.fragments.create-board-fragment.name</label>
+                            <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off"
+                                   data-ng-model="projectCtrl.board.name" data-ng-keyup="projectCtrl.suggestBoardShortName(projectCtrl.board)" maxlength="128">
+                        </div>
+                        <div class="form-group has-feedback"  data-ng-class="{'has-error': projectCtrl.checkedShortName === false}">
+                            <label for="shortName" data-translate>partials.fragments.create-board-fragment.shortName</label>
+                            <input type="text" autocomplete="off" class="form-control uppercase" id="shortName" placeholder=""
+                                   required="required" data-ng-model="projectCtrl.board.shortName" maxlength="8">
+                            <i class="fa form-control-feedback"  data-ng-class="{'fa-times' : projectCtrl.checkedShortName === false, 'fa-check' : projectCtrl.checkedShortName === true}"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
+                            <div data-ng-hide="preview.show">
+                                <textarea class="form-control" rows="3" id="description" data-ng-model="projectCtrl.board.description" data-lvg-codemirror></textarea>
+                            </div>
+                            <div data-ng-show="preview.show">
+                                <div data-ng-bind-html="projectCtrl.board.description | markdown"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="lvg-button lvg-button-submit"
+                                data-ng-disabled="projectCtrl.board.name == NULL || projectCtrl.board.shortName == NULL || projectCtrl.checkedShortName === undefined || projectCtrl.checkedShortName === false">
+                            <span class="fa fa-plus"></span>
+                            <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
+                        </button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate
+                                data-ng-click="projectCtrl.preview.show = true" data-ng-hide="projectCtrl.preview.show">button.preview</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate
+                                data-ng-click="projectCtrl.preview.show = false" data-ng-show="projectCtrl.preview.show">button.closePreview</button>
+                        <button type="button" class="lvg-button lvg-button-default"
+                                data-ng-click="projectCtrl.board = {}; projectCtrl.checkedShortName = undefined; projectCtrl.createNewBoard = false; projectCtrl.preview.show = false">
+                            <span data-translate>partials.fragments.create-board-fragment.cancel</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <ul class="lavagna-boards">
+                <li class="lavagna-board lavagna-panel" data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
+                    <div class="body-full">
+                        <lvg-board-panel data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-board-panel>
+                    </div>
+                </li>
+            </ul>
+            <div data-ng-if="projectCtrl.totalBoards > projectCtrl.boardsPerPage">
+                <pagination total-items="projectCtrl.totalBoards" data-ng-model="projectCtrl.boardPage"
+                            items-per-page="projectCtrl.boardsPerPage" max-size="projectCtrl.maxVisibleBoardPages"
+                            class="pagination-sm" boundary-links="true" rotate="false"
+                            data-ng-change="projectCtrl.switchBoardPage(projectCtrl.boardPage)"></pagination>
+            </div>
+
+        </div>
+        <div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
+            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
+            <ul data-ng-if="totalProjectOpenCards > 0"
+                class="lavagna-home-cards">
+                <li class="lavagna-home-card" data-bindonce data-ng-repeat="card in projectCtrl.userProjectCards | filter : cardFilter track by card.hash">
+                    <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
+                </li>
+            </ul>
+            <span data-ng-if="projectCtrl.totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>
+            <div data-ng-if="projectCtrl.totalProjectOpenCards > projectCtrl.projectCardsPerPage">
+                <pagination total-items="projectCtrl.totalProjectOpenCards"
+                            data-ng-model="projectCtrl.cardProjectPage" items-per-page="projectCtrl.projectCardsPerPage"
+                            max-size="projectCtrl.maxVisibleCardProjectPages" class="pagination-sm"
+                            boundary-links="true" rotate="false"
+                            data-ng-change="projectCtrl.fetchUserCardsInProjectPage(projectCtrl.cardProjectPage)"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div data-autoscroll="false"></div>

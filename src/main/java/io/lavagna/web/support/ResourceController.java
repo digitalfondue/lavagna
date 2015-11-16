@@ -105,6 +105,17 @@ public class ResourceController {
 		}
 	}
 
+    private static void concatenateResourcesWithExtension(ServletContext context, String initialPath, String extension,
+            OutputStream os, BeforeAfter ba) throws IOException {
+        for (String s : new TreeSet<>(context.getResourcePaths(initialPath))) {
+            if (s.endsWith(extension)) {
+                output(s, context, os, ba);
+            } else if (s.endsWith("/")) {
+                concatenateResourcesWithExtension(context, s, extension, os, ba);
+            }
+        }
+    }
+
 	private static void concatenateOutput(String directory, String fileExtension, ServletContext context,
 			OutputStream os, BeforeAfter ba) throws IOException {
 		for (String res : new TreeSet<>(context.getResourcePaths(directory))) {
@@ -122,9 +133,9 @@ public class ResourceController {
 	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
-	@RequestMapping(value = { "admin", "admin/configure-login", "admin/manage-users", "admin/role",
+	@RequestMapping(value = { "admin", "admin/login", "admin/users", "admin/roles",
 			"admin/export-import", "admin/endpoint-info", "admin/parameters",
-			"admin/manage-anonymous-users-access", "admin/manage-smtp-configuration" }, method = RequestMethod.GET)
+			"admin/smtp" }, method = RequestMethod.GET)
 	public void handleIndexForAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
@@ -137,7 +148,7 @@ public class ResourceController {
 			PROJ_SHORT_NAME + "/manage/labels",//
 			PROJ_SHORT_NAME + "/manage/import",//
 			PROJ_SHORT_NAME + "/manage/milestones",//
-			PROJ_SHORT_NAME + "/manage/anonymous-users-access",//
+			PROJ_SHORT_NAME + "/manage/access",//
 			PROJ_SHORT_NAME + "/manage/status" }, method = RequestMethod.GET)
 	public void handleIndexForProjectAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
@@ -148,20 +159,20 @@ public class ResourceController {
 	public void handleIndexForMe(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
-	
-	@RequestMapping("/not-found") 
+
+	@RequestMapping("/not-found")
 	public void notFound(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		handleIndex(request, response);
 	}
-	
+
 	@RequestMapping("/error")
 	public void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		handleIndex(request, response);
 	}
-	
-	@RequestMapping("/404") 
+
+	@RequestMapping("/404")
 	public String handle404() {
 		return "redirect:/not-found";
 	}
@@ -182,7 +193,7 @@ public class ResourceController {
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ServletContext context = request.getServletContext();
-		
+
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
 		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
@@ -195,7 +206,7 @@ public class ResourceController {
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
-			data.put("inlineTemplates", prepareTemplates(context, "/partials/"));
+			data.put("inlineTemplates", prepareTemplates(context, "/app/"));
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
 					.compile(index.toString(StandardCharsets.UTF_8.name())).execute(data)
@@ -204,11 +215,11 @@ public class ResourceController {
 
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
-			
+
 			Map<String, Object> localizationData = new HashMap<>();
 			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
 			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
-			
+
 			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
@@ -249,7 +260,7 @@ public class ResourceController {
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.11.0.min.js",//
+					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
 					"/js/df-tab-menu.min.js",//
 					"/js/df-autocomplete.js")) {
 				output(res, context, allJs, ba);
@@ -260,16 +271,17 @@ public class ResourceController {
 			addMessages(context, allJs, ba);
 			//
 
-			output("/app/app.js", context, allJs, ba);
-			concatenateOutput("/app/controllers/", ".js", context, allJs, ba);
-			concatenateOutput("/app/controllers/admin/", ".js", context, allJs, ba);
-			concatenateOutput("/app/controllers/project/", ".js", context, allJs, ba);
-			concatenateOutput("/app/directives/", ".js", context, allJs, ba);
-			concatenateOutput("/app/filters/", ".js", context, allJs, ba);
-			concatenateOutput("/app/services/", ".js", context, allJs, ba);
+            //
+            //concatenateResourcesWithExtension(context, "/app/app.js", ".js", allJs, ba);
+            output("/app/app.js", context, allJs, ba);
+            concatenateResourcesWithExtension(context, "/app/controllers/", ".js", allJs, ba);
+            concatenateResourcesWithExtension(context, "/app/components/", ".js", allJs, ba);
+            concatenateResourcesWithExtension(context, "/app/directives/", ".js", allJs, ba);
+            concatenateResourcesWithExtension(context, "/app/filters/", ".js", allJs, ba);
+            concatenateResourcesWithExtension(context, "/app/services/", ".js", allJs, ba);
+            //
 
 			jsCache.set(allJs.toByteArray());
-
 		}
 
 		try (OutputStream os = response.getOutputStream()) {
@@ -292,7 +304,7 @@ public class ResourceController {
 	private static Map<String, Map<Object, Object>> fromResources(Resource[] resources) throws IOException {
 
 		Pattern extractLanguage = Pattern.compile("^messages_(.*)\\.properties$");
-		
+
 		Properties buildProp = new Properties();
 		buildProp.load(new ClassPathResource("io/lavagna/build.properties").getInputStream());
 
@@ -317,25 +329,11 @@ public class ResourceController {
 			ByteArrayOutputStream cssOs = new ByteArrayOutputStream();
 			ServletContext context = request.getServletContext();
 			BeforeAfter ba = new BeforeAfter();
-			for (String res : Arrays.asList("/css/bootstrap.css",//
-					"/css/highlight-default.css",//
-					"/css/jquery-ui.css",//
-					"/css/spectrum.css",//
-					"/css/codemirror.css",//
-					"/css/font-awesome.css",//
-					"/css/df-tab-menu.css",//
-					"/css/df-autocomplete.css",//
-					"/css/lvg-general.css",//
-					"/css/lvg-navigation.css",//
-					"/css/lvg-project.css",//
-					"/css/lvg-board.css",//
-					"/css/lvg-card.css",//
-					"/css/lvg-admin.css",//
-					"/css/lvg-user.css",//
-					"/css/lvg-search.css",
-					"/css/lvg-login.css")) {
-				output(res, context, cssOs, ba);
-			}
+
+            //make sure we add the css in the right order
+            concatenateResourcesWithExtension(context, "/css/", ".css", cssOs, ba);
+
+            concatenateResourcesWithExtension(context, "/app/components/", ".css", cssOs, ba);
 
 			cssCache.set(cssOs.toByteArray());
 		}

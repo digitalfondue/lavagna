@@ -157,7 +157,7 @@ public class BulkOperationServiceTest {
 		bulkOperationService.assign("TEST", Arrays.asList(card1.getId(), card3.getId()), toUser, user);
 		assertTrue(hasLabel(card1.getId(), "ASSIGNED"));
 		assertTrue(hasLabel(card3.getId(), "ASSIGNED"));
-		assertFalse(hasLabel(card2.getId(), "ASSIGNED"));
+		assertFalse(hasLabel(card2.getId(), "ASSIGNtestRemoveWatchED"));
 
 		bulkOperationService.removeAssign("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), toUser,
 				user);

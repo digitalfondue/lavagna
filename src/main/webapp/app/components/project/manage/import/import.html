@@ -1,0 +1,69 @@
+<div class="col-sm-12">
+    <form data-ng-submit="manageImportCtrl.importFromTrello()">
+        <div class="lavagna-panel">
+            <div class="head clearfix headonly">
+                <div class="title title-bold" data-translate>partials.project.manage-import.trello</div>
+            </div>
+            <div class="body separated">
+                <div data-ng-if="manageImportCtrl.hasApiKey">
+                    <p data-translate>partials.project.manage-import.notes</p>
+                    <span data-lvg-load-script="{{manageImportCtrl.trelloClientUrl}}"><span data-translate>partials.project.manage-import.failedImport</span></span>
+
+                    <ul class="lvg-admin-import" data-ng-hide="manageImportCtrl.view.trelloImportIsRunning">
+                        <li data-ng-repeat="organization in manageImportCtrl.availableOrganizations | orderBy: 'name'">
+                            <span class="lvg-admin-import-organization">{{organization.name}}</span>
+                            <ul class="lvg-admin-import-board">
+                                <li data-ng-repeat="board in organization.boards | orderBy: 'name'" data-ng-init="board.import = false;">
+                                    <div class="row">
+                                        <div class="col-sm-1"><input type="checkbox" data-ng-model="board.import" data-ng-change="manageImportCtrl.manageImports(board)"></div>
+                                        <div class="col-sm-5">
+                                            {{board.name}}
+                                            <div class="form-group has-feedback"  data-ng-class="{'has-error': board.checkedShortName === false}">
+                                                <input data-ng-if="board.import" data-ng-change="manageImportCtrl.checkShortName(board)" data-ng-model="board.shortName" type="text" autocomplete="off" class="form-control uppercase" placeholder="shortname" required="required" maxlength="8">
+                                                <i data-ng-if="board.import" class="fa form-control-feedback lvg-import-control-feedback"  data-ng-class="{'fa-times' : board.checkedShortName === false, 'fa-check' : board.checkedShortName === true}"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="head clearfix headonly" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning">
+                        <div class="title col-xs-9" data-translate>partials.project.manage-import.importArchived</div>
+                        <div class="title-addon col-xs-3 lvg-switch-controls">
+                            <ul class="panel-controls">
+                                <li class="control-no-action">
+                                    <lvg-switch switch-class="lvg-switch" control="manageImportCtrl.importSettings.archived"></lvg-switch>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div data-ng-show="manageImportCtrl.view.trelloImportIsRunning">
+                        <span data-translate>partials.project.manage-import.progressMessage</span> {{manageImportCtrl.view.currentBoardName}}...
+                    </div>
+                    <div class="progress progress-success ui-corner-all"
+                         data-ng-show="manageImportCtrl.view.trelloImportIsRunning">
+                        <div class="progress-bar" data-ng-style="{'width': manageImportCtrl.view.progress + '%'}"></div>
+                    </div>
+                </div>
+                <div data-ng-if="!manageImportCtrl.hasApiKey" data-translate>partials.project.manage-import.noKeySet</div>
+            </div>
+            <div class="footer" data-ng-if="manageImportCtrl.hasApiKey">
+                <button type="button" class="lvg-button lvg-button-submit"
+                        data-ng-click="manageImportCtrl.connectToTrello()"
+                        data-ng-disabled="manageImportCtrl.view.connectingToTrello"
+                        data-ng-if="manageImportCtrl.availableOrganizations.length <= 0">
+                    <span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.connect</span>
+                </button>
+                <button type="submit" class="lvg-button lvg-button-submit"
+                        data-ng-if="manageImportCtrl.availableOrganizations.length > 0"
+                        data-ng-disabled="manageImportCtrl.view.trelloImportIsRunning || manageImportCtrl.boardsToImport < 1">
+                    <span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.import</span>
+                </button>
+                <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageImportCtrl.cancel()" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning" data-translate>button.cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

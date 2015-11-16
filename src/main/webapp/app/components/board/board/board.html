@@ -1,0 +1,42 @@
+<lvg-navbar data-navbar-type="board-menu">
+    <lvg-board-navigation/>
+</lvg-navbar>
+
+<div class="lavagna-board-sidebar lavagna-board-left-sidebar lavagna-left-sidebar-slide-out"
+     data-ng-class="{'lavagna-board-left-sidebar-out':boardCtrl.toggledSidebar}">
+	<div data-ng-if="boardCtrl.toggledSidebar">
+		<lvg-component-board-sidebar project="boardCtrl.project" board="boardCtrl.board"></lvg-component-board-sidebar>
+	</div>
+</div>
+
+<div class="horizontal-slide lavagna-left-sidebar-slide-open" data-ng-class="{'lavagna-board-left-sidebar-open':boardCtrl.toggledSidebar, 'lavagna-edit-mode' : boardCtrl.editMode, 'lvg-can-move-columns' : boardCtrl.sortableColumnOptions, 'lvg-can-move-cards': boardCtrl.sortableCardOptions}"
+     data-lvg-fill-height="{{boardCtrl.toggledSidebar}}" data-lvg-fill-height-margin="295">
+    <ul class="lavagna-board-column-holder" data-ui-sortable="boardCtrl.sortableColumnOptions" data-lvg-size-by-visible-columns="boardCtrl.columns">
+        <li class="lavagna-board-column lavagna-sortable-board-column"
+            data-ng-repeat="column in boardCtrl.columns track by column.id"
+            data-ng-attr-data-lvg-column-id="{{::column.id}}"
+            data-lvg-update-column-size>
+            <lvg-component-board-column project="boardCtrl.project" board="boardCtrl.board" column="column"></lvg-component-board-column>
+        </li>
+        <li class="lavagna-board-column lavagna-not-sortable-board-column panel panel-default" data-lvg-has-permission="CREATE_COLUMN">
+            <div class="panel-footer">
+                <form data-ng-submit="boardCtrl.createColumn(boardCtrl.columnToCreate);">
+                    <div class="form-group">
+                        <input type="text" id="column" placeholder="{{'partials.fragments.columns-fragment.columnName.placeholder' | translate}}" data-ng-model="boardCtrl.columnToCreate.name" class="form-control"
+                               autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control"
+                                data-ng-model="boardCtrl.columnToCreate.definition"
+                                data-ng-options="definition.id as (definition.value | capitalize) for definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'" required></select>
+                    </div>
+                    <div>
+                        <button class="lvg-button lvg-button-submit" data-ng-disabled="boardCtrl.columnToCreate.definition == null || boardCtrl.columnToCreate.name == null" type="submit" data-translate>partials.fragments.columns-fragment.add</button>
+                    </div>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div data-ui-view data-autoscroll="false"></div>

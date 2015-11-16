@@ -1,0 +1,106 @@
+<div class="col-md-4">
+    <div class="lavagna-form-panel lavagna-container-bottom-margin">
+        <div class="search-bar" data-ng-init="username">
+            <div class="search-user-form inner-addon left-inner-addon">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}"
+                       class="form-control" data-ng-model="manageRolesCtrl.view.username"
+                       data-lvg-to-focus="manageRolesCtrl.viewusername == null" lvg-user-list="manageRolesCtrl.view.userList"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-offset-5 col-md-3">
+    <div class="lavagna-form-panel lavagna-container-bottom-margin">
+        <form data-ng-submit="manageRolesCtrl.createRole(manageRolesCtrl.view.newRole.name);manageRolesCtrl.view.newRole = null">
+            <div class="input-group">
+                <input type="text"
+                       placeholder="{{ 'partials.fragments.common-manage-roles.roleName' | translate }}" required="required"
+                       data-ng-model="manageRolesCtrl.view.newRole.name" class="form-control"
+                       autocomplete="off"
+                       data-lvg-on-esc>
+				<span class="input-group-btn">
+					<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
+				</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="col-xs-12" data-ng-repeat="(roleName, roleDescriptor) in manageRolesCtrl.roles"
+     data-ng-init="manageRolesCtrl.view.roleState[roleName] = {}">
+    <div class="lavagna-panel">
+        <div class="head clearfix">
+            <div class="title col-xs-9">
+                <a data-ng-href data-ng-click="manageRolesCtrl.open(roleName, roleDescriptor)">{{::roleName}}</a>
+            </div>
+            <div class="title-addon col-xs-3">
+                <ul class="panel-controls">
+                    <li class="control-no-action">
+                        <span class="pull-right"><i class="fa fa-user"></i> {{manageRolesCtrl.usersWithRole[roleName].length}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="body">
+			<span class="lavagna-label lavagna-role-user" data-ng-if="manageRolesCtrl.usersWithRole[roleName].length > 0"  data-ng-repeat="user in manageRolesCtrl.usersWithRole[roleName] | usersInList:manageRolesCtrl.view.userList | limitTo: 40">
+				<span data-lvg-user="user.id"></span>
+				<span class="fa fa-times lavagna-pointer"
+                      data-ng-click="manageRolesCtrl.removeUserToRole(user.id, roleName)"></span>
+			</span>
+            <span data-ng-if="manageRolesCtrl.usersWithRole[roleName].length == 0" data-translate>partials.fragments.common-manage-roles.noUsersForRole</span>
+        </div>
+        <div class="footer clearfix">
+            <ul class="panel-controls" data-ng-hide="manageRolesCtrl.view.roleState[roleName].delete">
+                <li class="control-item"
+                    data-ng-hide="manageRolesCtrl.view.roleState[roleName].delete || !roleDescriptor.removable || manageRolesCtrl.view.roleState[roleName].addUser">
+					<span
+                        data-ng-click="manageRolesCtrl.view.roleState[roleName].addUser = false; manageRolesCtrl.view.roleState[roleName].delete = true;"
+                        class="fa fa-trash-o" title="{{'button.delete' | translate}}"
+                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+                </li>
+                <li class="control-item"
+                    data-ng-hide="manageRolesCtrl.view.roleState[roleName].addUser">
+					<span
+                        data-ng-click="manageRolesCtrl.view.roleState[roleName].delete = false; manageRolesCtrl.view.roleState[roleName].addUser = true;"
+                        class="fa fa-plus" title="{{'button.add' | translate}}"
+                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+                </li>
+                <li class="control-item"
+                    data-ng-show="manageRolesCtrl.view.roleState[roleName].addUser">
+					<span
+                        data-ng-click="manageRolesCtrl.view.roleState[roleName].addUser = false;"
+                        class="fa fa-times" title="{{'button.close' | translate}}"
+                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
+                </li>
+            </ul>
+            <div class="content col-xs-10 col-md-6" data-ng-show="manageRolesCtrl.view.roleState[roleName].addUser">
+                <form data-ng-submit="manageRolesCtrl.addUserToRole(manageRolesCtrl.view.roleState[roleName].newUsername, roleName); manageRolesCtrl.view.roleState[roleName].newUsername = null">
+                    <div class="input-group">
+                        <input type="text" data-lvg-user-autocomplete="manageRolesCtrl.view.roleState[roleName].newUsername" data-lvg-user-autocomplete-global="true"
+                               data-lvg-to-focus="manageRolesCtrl.view.roleState[roleName].newUsername == null"
+                               placeholder="{{ 'partials.fragments.common-manage-roles.username' | translate }}" required="required"
+                               class="form-control" data-lvg-on-esc>
+						<span class="input-group-btn">
+							<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
+						</span>
+                    </div>
+                </form>
+            </div>
+            <div class="content col-xs-12 col-md-6" data-ng-show="manageRolesCtrl.view.roleState[roleName].delete">
+                <form
+                    data-ng-submit="manageRolesCtrl.deleteRole(roleName)">
+                    <div class="form-group">
+                        <span data-translate>partials.fragments.common-manage-roles.deleteThisRole</span>
+                    </div>
+                    <div>
+                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
+                        <button type="button" class="lvg-button lvg-button-default"
+                                data-ng-click="manageRolesCtrl.view.roleState[roleName].delete = false"><span data-translate>button.no</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

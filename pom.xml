@@ -216,7 +216,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1204-jdbc42</version>
 		</dependency>
-		
+
 		<dependency>
         	<groupId>com.zaxxer</groupId>
         	<artifactId>HikariCP</artifactId>
@@ -228,7 +228,7 @@
 			<artifactId>urlrewritefilter</artifactId>
 			<version>4.0.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
