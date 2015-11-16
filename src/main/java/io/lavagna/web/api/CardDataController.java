@@ -42,11 +42,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -345,10 +348,10 @@ public class CardDataController {
             Path p = Files.createTempFile("lavagna", "upload");
             try (InputStream fileIs = file.getInputStream()) {
                 Files.copy(fileIs, p, StandardCopyOption.REPLACE_EXISTING);
-
                 String digest = DigestUtils.sha256Hex(Files.newInputStream(p));
+                String contentType = file.getContentType() != null ? file.getContentType() : "application/octet-stream";
                 boolean result = cardDataService.createFile(file.getOriginalFilename(), digest, file.getSize(), cardId,
-                    Files.newInputStream(p), file.getContentType(), user, new Date()).getLeft();
+                    Files.newInputStream(p), contentType, user, new Date()).getLeft();
                 if (result) {
                     LOG.debug("file uploaded! size: {}, original name: {}, content-type: {}", file.getSize(),
                         file.getOriginalFilename(), file.getContentType());
@@ -376,6 +379,12 @@ public class CardDataController {
         }
         return true;
     }
+    
+    private static Set<String> WHITE_LIST_MIME_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(//
+            "image/gif", "image/jpeg", "image/png", "image/webp", "image/bmp",// images
+            "video/webm", "video/ogg", "video/mp4",//
+            "text/plain"//
+            )));
 
     // TODO: fix exception handling
     @ExpectPermission(Permission.READ)
@@ -383,7 +392,12 @@ public class CardDataController {
     public void getFile(@PathVariable("fileId") int fileId, HttpServletResponse response) {
         FileDataLight fileData = cardDataRepository.getUndeletedFileByCardDataId(fileId);
         try (OutputStream out = response.getOutputStream()) {
-            response.setContentType(fileData.getContentType());
+            if (WHITE_LIST_MIME_TYPES.contains(fileData.getContentType())) {
+                response.setContentType(fileData.getContentType());
+            } else {
+                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileData.getName() + "\"");
+                response.setContentType("application/octet-stream");
+            }
             cardDataRepository.outputFileContent(fileData.getDigest(), out);
         } catch (IOException e) {
             LOG.error("error getting file", e);
