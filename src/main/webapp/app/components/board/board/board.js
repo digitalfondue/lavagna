@@ -27,8 +27,6 @@
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
         
-        ctrl.selectedCards = {};
-
         User.currentCachedUser().then(function(currentUser) {
             ctrl.currentUserId = currentUser.id;
         });
@@ -80,15 +78,22 @@
 
         var selectedVisibleCardsId = function() {
             var ids = [];
-            for(var columnId in ctrl.foundCards) {
-                if($scope.foundCards[columnId]) {
-                    angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
-                        if(ctrl.selectedCards[c.id]) {
-                            ids.push(c.id);
-                        }
-                    });
-                }
-            }
+            //FIXME uncomplete
+            angular.forEach(ctrl.selectedCards, function(v,k) {
+            	if(v) {
+            		ids.push(k);
+            	}
+            });
+//            console.log(ctrl.foundCards);
+//            for(var columnId in ctrl.foundCards) {
+//                if($scope.foundCards[columnId]) {
+//                    angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
+//                        if(ctrl.selectedCards[c.id]) {
+//                            ids.push(c.id);
+//                        }
+//                    });
+//                }
+//            }
             return ids;
         };
 
@@ -110,7 +115,7 @@
         };
 
         ctrl.selectedVisibleCount = function() {
-            return selectedVisibleCardsId().length;
+        	return selectedVisibleCardsId().length;
         };
 
 

@@ -38,8 +38,8 @@
     				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardCtrl.unSelectAll()" data-translate>partials.board.selection.none</button></li>
   				</ul>
 			</div>
-			<div class="dropdown lvg-button-group" data-ng-show="boardCtrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'">
-				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
+			<div class="dropdown lvg-button-group" data-ng-show="boardCtrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'" data-uib-dropdown>
+				<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
@@ -56,7 +56,7 @@
 		 		</ul>
 
 
-		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="formatBulkRequest" selected-visible-cards-id-by-column-id="selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
+		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="boardCtrl.formatBulkRequest" selected-visible-cards-id-by-column-id="boardCtrl.selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
 
 				<button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
 			</div>
