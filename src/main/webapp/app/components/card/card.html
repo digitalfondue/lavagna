@@ -5,9 +5,8 @@
             <div class="card-modal-header modal-header" data-ng-style="cardCtrl.column.columnColor | columnColor">
                 <button type="button" class="close" data-ng-click="close()">&times;</button>
                 <div class="lavagna-card-title-info">
-                    <span>
-                        <a data-ng-href="#/{{project.shortName}}/" data-ng-bind="project.name"></a> /</span>
-                    <span><a data-ng-href="#/{{project.shortName}}/{{board.shortName}}" data-ng-bind="board.name"></a> /</span>
+                    <span><a data-ui-sref="project.boards({projectName: cardCtrl.project.shortName})" data-ng-bind="cardCtrl.project.name"></a> /</span>
+                    <span><a data-ui-sref="projectBoard.board({projectName: cardCtrl.project.shortName, shortName: cardCtrl.board.shortName})" data-ng-bind="cardCtrl.board.name"></a> /</span>
                     <span>{{::cardCtrl.board.shortName}}-{{::cardCtrl.card.sequence}}</span>
 					<span class="lvg-card-in-column">
 						<span data-ng-if="cardCtrl.column.columnLocation === 'BOARD'"><span data-translate>card.inColumn</span> <span data-ng-bind="cardCtrl.column.columnName"></span></span>
