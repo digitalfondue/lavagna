@@ -40,11 +40,11 @@
 	display: none;
 }
 
-.lavagna-board-column > .panel-heading:hover .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .lavagna-card-caret-container .fa-chevron-down {
+.lavagna-board-column .panel-heading:hover .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .lavagna-card-caret-container .fa-chevron-down {
 	display: block;
 }
 
-.lavagna-board-column > .panel-heading:hover .open .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .open .lavagna-card-caret-container .fa-chevron-down {
+.lavagna-board-column .panel-heading:hover .open .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .open .lavagna-card-caret-container .fa-chevron-down {
 	display: none;
 }
 
