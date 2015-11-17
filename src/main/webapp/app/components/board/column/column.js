@@ -131,7 +131,7 @@
         ctrl.moveAllCardsInColumn = function (cards, location) {
 
             var cardIds = cards.map(function(c) {return c.id});
-            var confirmAction = function() {Card.moveAllFromColumnToLocation(cardIds, location).catch(function(error) {
+            var confirmAction = function() {Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
 

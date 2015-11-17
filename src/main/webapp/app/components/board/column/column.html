@@ -34,9 +34,9 @@
                         </ul>
                     </li>
                     <li class="divider" data-lvg-has-all-permissions="RENAME_COLUMN,MOVE_CARD"></li>
-                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'ARCHIVE')" data-translate>partials.fragments.columns-fragment.moveAllToArchive</button></li>
-                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'BACKLOG')" data-translate>partials.fragments.columns-fragment.moveAllToBacklog</button></li>
-                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(cardsInColumn, 'TRASH')" data-translate>partials.fragments.columns-fragment.moveAllToTrash</button></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'ARCHIVE')" data-translate>partials.fragments.columns-fragment.moveAllToArchive</button></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'BACKLOG')" data-translate>partials.fragments.columns-fragment.moveAllToBacklog</button></li>
+                    <li data-lvg-has-permission="MOVE_CARD"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'TRASH')" data-translate>partials.fragments.columns-fragment.moveAllToTrash</button></li>
                     <li class="divider" data-lvg-has-all-permissions="MOVE_CARD,MOVE_COLUMN"></li>
                     <li data-lvg-has-permission="MOVE_COLUMN"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveColumn('ARCHIVE')" data-translate>partials.fragments.columns-fragment.moveColumnToArchive</button></li>
                     <li data-lvg-has-permission="MOVE_COLUMN"><button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="boardColumnCtrl.moveColumn('BACKLOG')" data-translate>partials.fragments.columns-fragment.moveColumnToBacklog</button></li>
