@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="row" data-ng-if="::(cardFragmentCtrl.boardView && cardFragmentCtrl.readOnly)">
-				<div class="col-xs-10"><span class="fake-link">{{::cardFragmentCtrl.board}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
+				<div class="col-xs-10"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
 			</div>
 			<div class="row" data-ng-if="::(cardFragmentCtrl.listView)">
 				<div class="col-xs-8"><a data-ui-sref="projectBoard.board.card({projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence})">
