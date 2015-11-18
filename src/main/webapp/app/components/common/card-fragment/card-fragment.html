@@ -56,22 +56,22 @@
 				</li>
 				
 				
-				<li data-ng-if="hasSystemLabelByName('DUE_DATE', card.labels)" 
+				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', card.labels)" 
 				    data-bindonce 
-				    data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
+				    data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
 				    data-bo-class="{'lvg-due-date-tomorrow': ((label.labelValueTimestamp | daysDiff) == -1),
                                     'lvg-due-date-now': ((label.labelValueTimestamp | daysDiff) == 0),
                                     'lvg-due-date-past': ((label.labelValueTimestamp | daysDiff) > 0)}">
 					<span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
 				</li>
-				<li data-ng-if="::(hasSystemLabelByName('MILESTONE', card.labels))" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
+				<li data-ng-if="::(cardFragmentCtrl.hasSystemLabelByName('MILESTONE', cardFragmentCtrl.card.labels))" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
 					<span class="fa fa-map-marker"></span> <lvg-label-val value="label"></lvg-label-val>
 				</li>
 			</ul>
 		</div>
-		<div class="card-info" data-ng-if="::(!listView && hasSystemLabelByName('ASSIGNED', card.labels))">
+		<div class="card-info" data-ng-if="::(!listView && cardFragmentCtrl.hasSystemLabelByName('ASSIGNED', card.labels))">
 			<ul class="assigned-users">
-				<li class="assigned-user" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
+				<li class="assigned-user" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
 					<div data-ng-if="::(!readOnly)">
 						<lvg-label-val value="label"></lvg-label-val>
 					</div>
@@ -81,9 +81,9 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card-labels" data-ng-if="::(hasUserLabels(card.labels))">
+		<div class="card-labels" data-ng-if="::(cardFragmentCtrl.hasUserLabels(cardFragmentCtrl.card.labels))">
 			<ul class="labels">
-				<li data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'USER'} track by label.labelValueId"
+				<li data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'USER'} track by label.labelValueId"
 					class="lavagna-label lavagna-label-no-controls"
 					data-bo-style="label.labelColor|labelBackground"
 					data-bo-class="label.labelColor|labelBackgroundClass">
