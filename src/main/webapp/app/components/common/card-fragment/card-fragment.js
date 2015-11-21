@@ -27,7 +27,7 @@
 		}
 	}
 
-	function CardFragmentController(Card) {
+	function CardFragmentController(Card, User) {
 	    var ctrl = this;
 
         ctrl.readOnly = ctrl.readOnly != undefined;
@@ -39,6 +39,10 @@
 
         //dependencies
         angular.extend(ctrl, ctrl.dependencies);
+        
+        User.currentCachedUser().then(function(user) {
+        	ctrl.currentUserId = user.id;
+        });
 
         ctrl.hasUserLabels = function(cardLabels) {
             if (cardLabels === undefined || cardLabels.length === 0) {

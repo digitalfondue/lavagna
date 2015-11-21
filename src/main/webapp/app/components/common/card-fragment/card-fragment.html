@@ -1,5 +1,5 @@
 <div data-lvg-board-card-menu
-	data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView, 'lavagna-panel' : cardFragmentCtrl.listView || cardFragmentCtrl.searchView}">
+	data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, cardFragmentCtrl.currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView, 'lavagna-panel' : cardFragmentCtrl.listView || cardFragmentCtrl.searchView}">
 	<div class="head clearfix">
 		<div class="title">
 			<div class="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
