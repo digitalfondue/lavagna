@@ -245,7 +245,7 @@
 
         ctrl.deleteActionList = function(itemId) {
             Card.deleteActionList(itemId).then(function(event) {
-                Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, function(notification) {
+                Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, true, function(notification) {
                     Card.undoDeleteActionList(event.id).then(notification.acknowledge)
                 });
             }, function(error) {
@@ -266,7 +266,7 @@
 
         ctrl.deleteActionItem = function(listId, itemId) {
             Card.deleteActionItem(itemId).then(function(event) {
-                Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, function(notification) {
+                Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, true, function(notification) {
                     Card.undoDeleteActionItem(event.id).then(notification.acknowledge);
                 });
             }, function(error) {
@@ -294,7 +294,7 @@
         };
         ctrl.deleteComment = function(comment, control) {
             Card.deleteComment(comment.id).then(function(event) {
-                Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, function(notification) {
+                Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, true, function(notification) {
                     Card.undoDeleteComment(event.id).then(notification.acknowledge)
                 });
             }, function(error) {
@@ -481,7 +481,7 @@
 
                     var maxSize = size === "" ? Math.NaN : parseInt(JSON.parse(size));
                     if(!isNaN(maxSize) && uploadingFile.file.size > maxSize) {
-                        Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, false);
+                        Notification.addNotification('error', {key : 'notification.error.file-size-too-big', parameters: {maxSize :maxSize}}, true, false);
                         processUploadingFile('failed');
                         return;
                     }
@@ -511,7 +511,7 @@
 
         ctrl.deleteFile = function(dataId) {
             Card.deleteFile(dataId).then(function(event) {
-                Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, function(notification) {
+                Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, true, function(notification) {
                     Card.undoDeleteFile(event.id).then(notification.acknowledge);
                 });
             }, function(error) {
