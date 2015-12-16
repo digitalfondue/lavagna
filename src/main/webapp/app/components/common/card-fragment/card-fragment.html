@@ -47,17 +47,18 @@
 					<span class="fa fa-comment"></span> {{::card.counts['COMMENT'].count}}
 				</li>
 				<li data-ng-if="::(card.counts['ACTION_CHECKED'].count > 0 || card.counts['ACTION_UNCHECKED'].count > 0)"
-					data-ng-class="::{'lvg-action-full': card.counts['ACTION_CHECKED'].count == card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count}">
+					data-ng-class="::{'lvg-action-full': card.counts['ACTION_CHECKED'].count == card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count,
+					                'lvg-action-not-done': card.columnDefinition == 'CLOSED' && card.counts['ACTION_CHECKED'].count != card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count}">
 					<span class="fa fa-list"></span>
 					{{::card.counts['ACTION_CHECKED'].count == null ? 0 : card.counts['ACTION_CHECKED'].count}}/{{::card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count}}
 				</li>
 				<li data-ng-if="::(card.counts['FILE'].count > 0)">
 					<span class="fa fa-file"></span> {{::card.counts['FILE'].count}}
 				</li>
-				
-				
-				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', card.labels)" 
-				    data-bindonce 
+
+
+				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', card.labels)"
+				    data-bindonce
 				    data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
 				    data-bo-class="{'lvg-due-date-tomorrow': ((label.labelValueTimestamp | daysDiff) == -1),
                                     'lvg-due-date-now': ((label.labelValueTimestamp | daysDiff) == 0),
