@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>ch.digitalfondue.npjt-extra</groupId>
 			<artifactId>npjt-extra</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.1</version>
 		</dependency>
 		<!-- -->
 		<dependency>
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.4</version>
+			<version>2.5</version>
 		</dependency>
 		<!-- -->
 		<dependency>
@@ -209,18 +209,18 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.37</version>
+			<version>5.1.38</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4-1204-jdbc42</version>
+			<version>9.4-1206-jdbc42</version>
 		</dependency>
 
 		<dependency>
         	<groupId>com.zaxxer</groupId>
         	<artifactId>HikariCP</artifactId>
-        	<version>2.4.1</version>
+        	<version>2.4.3</version>
     	</dependency>
 
 		<dependency>
@@ -261,8 +261,8 @@
 
 	<!-- -->
 	<properties>
-		<org.apache.logging.log4j.version>2.4.1</org.apache.logging.log4j.version>
-		<org.springframework.version>4.2.2.RELEASE</org.springframework.version>
+		<org.apache.logging.log4j.version>2.5</org.apache.logging.log4j.version>
+		<org.springframework.version>4.2.3.RELEASE</org.springframework.version>
 		<org.eclipse.jetty.version>9.2.13.v20150730</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
