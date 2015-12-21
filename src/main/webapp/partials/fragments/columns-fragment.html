@@ -56,10 +56,10 @@
 			<div data-ng-if="columnState[column.id].addNewCardFromTop" class="row">
 				<div class="col-xs-11">
 					<!-- TODO: move in a directive -->
-					<form data-ng-submit="createCardFromTop(columnState[column.id].cardToCreateFromTop, column)">
+					<form data-ng-submit="createCardFromTop(columnState[column.id].cardToCreateFromTop, column); columnState[column.id].cardToCreateFromTop = null;">
 						<div class="form-group">
 							<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
-								   data-lvg-to-focus="columnState[column.id].cardToCreateFromTop.name == null" required="required"
+								   data-lvg-to-focus="columnState[column.id].cardToCreateFromTop == null" required="required"
 								   data-ng-model="columnState[column.id].cardToCreateFromTop.name" class="form-control"
 								   data-lvg-on-esc="columnState[column.id].addNewCardFromTop" data-lvg-on-esc-eval="columnState[column.id].cardToCreateFromTop = null"></input>
 						</div>
@@ -89,10 +89,10 @@
 						class="fa fa-plus" title="{{'partials.fragments.columns-fragment.addCard' | translate}}"></span></li>
 			</ul>
 			<div data-ng-if="columnState[column.id].addNewCard">
-				<form data-ng-submit="createCard(columnState[column.id].cardToCreate, column)">
+				<form data-ng-submit="createCard(columnState[column.id].cardToCreate, column); columnState[column.id].cardToCreate = null;">
 					<div class="form-group">
 						<input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
-							   data-lvg-to-focus="columnState[column.id].cardToCreate.name == null" required="required"
+							   data-lvg-to-focus="columnState[column.id].cardToCreate == null" required="required"
 							   data-ng-model="columnState[column.id].cardToCreate.name" class="form-control"
 							   data-lvg-on-esc="columnState[column.id].addNewCard" data-lvg-on-esc-eval="columnState[column.id].cardToCreate = null"></input>
 					</div>

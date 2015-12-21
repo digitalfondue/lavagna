@@ -561,7 +561,9 @@
                                          data-ng-show="addLabelPanel">
                                         <form data-ng-role="form" data-ng-submit="cardCtrl.addNewLabel(labelToAdd); labelToAdd = null;">
                                             <div class="form-group">
-                                                <select class="form-control" data-ng-model="labelToAdd.label" data-ng-change="labelToAdd.value = undefined" data-ng-options="l as l.name for (n,l) in (cardCtrl.userLabels | uniqueLabels: cardCtrl.labelValues | orderObjectBy:'name')"></select>
+                                                <select class="form-control" data-ng-model="labelToAdd.label" data-ng-change="labelToAdd.value = undefined"
+                                                        data-lvg-to-focus="addLabelPanel"
+                                                        data-ng-options="l as l.name for (n,l) in (cardCtrl.userLabels | uniqueLabels: cardCtrl.labelValues | orderObjectBy:'name')"></select>
                                             </div>
                                             <div class="form-group">
                                                 <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="board.shortName"></lvg-label-picker>
@@ -691,14 +693,12 @@
                                         </ul>
                                         <div class="lavagna-card-edit content"
                                              data-ng-if="cardCtrl.actionListState[actionList.id].addItem">
-                                            <form
-                                                data-ng-submit="cardCtrl.addActionItem(actionList.id, cardCtrl.actionListState[actionList.id].itemToCreate)">
+                                            <form data-ng-submit="cardCtrl.addActionItem(actionList.id, cardCtrl.actionListState[actionList.id].itemToCreate); cardCtrl.actionListState[actionList.id].itemToCreate = null">
                                                 <div class="form-group">
-                                                    <input
-                                                        data-lvg-to-focus="cardCtrl.actionListState[actionList.id].addItem"
-                                                        placeholder="{{'card.itemName.placeholder' | translate}}"
+                                                    <input placeholder="{{'card.itemName.placeholder' | translate}}"
                                                         data-ng-model="cardCtrl.actionListState[actionList.id].itemToCreate.content"
                                                         class="form-control"
+                                                        data-lvg-to-focus="cardCtrl.actionListState[actionList.id].itemToCreate == null"
                                                         data-lvg-on-esc="cardCtrl.actionListState[actionList.id].addItem" data-lvg-on-esc-eval="cardCtrl.actionListState[actionList.id].itemToCreate = null"/>
                                                 </div>
                                                 <div>
