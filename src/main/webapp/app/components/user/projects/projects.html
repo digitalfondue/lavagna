@@ -1,0 +1,12 @@
+<div class="container auto-margin lavagna-container-top-margin">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="lavagna-panel lvg-user-projects" data-ng-repeat="ab in userCtrl.profile.activeProjects">
+                <div class="body">
+                    <span><a data-ui-sref="project({projectName: ab.project.shortName})">{{::ab.project.shortName}} - {{::ab.project.name}}</a></span>
+                    <div>{{::ab.project.description}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

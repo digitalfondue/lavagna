@@ -4,7 +4,7 @@
         <div class="board-list col-md-6">
 
             <div data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="createNewBoard">
+                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="projectCtrl.createNewBoard">
                     <span class="fa fa-plus"></span>
                     <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
                 </button>
@@ -25,10 +25,10 @@
                         </div>
                         <div class="form-group">
                             <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
-                            <div data-ng-hide="preview.show">
+                            <div data-ng-hide="projectCtrl.preview.show">
                                 <textarea class="form-control" rows="3" id="description" data-ng-model="projectCtrl.board.description" data-lvg-codemirror></textarea>
                             </div>
-                            <div data-ng-show="preview.show">
+                            <div data-ng-show="projectCtrl.preview.show">
                                 <div data-ng-bind-html="projectCtrl.board.description | markdown"></div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
             <ul class="lavagna-boards">
                 <li class="lavagna-board lavagna-panel" data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
                     <div class="body-full">
-                        <lvg-board-panel data-board="board" data-project-short-name="projectCtrl.project.projectName"></lvg-board-panel>
+                        <lvg-board-panel data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-board-panel>
                     </div>
                 </li>
             </ul>
@@ -65,8 +65,8 @@
 
         </div>
         <div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
-            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.name}}">partials.project.project.myOpenTasks</h2>
-            <ul data-ng-if="totalProjectOpenCards > 0"
+            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
+            <ul data-ng-if="projectCtrl.totalProjectOpenCards > 0"
                 class="lavagna-home-cards">
                 <li class="lavagna-home-card" data-bindonce data-ng-repeat="card in projectCtrl.userProjectCards | filter : cardFilter track by card.hash">
                     <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>

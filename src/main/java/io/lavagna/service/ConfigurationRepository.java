@@ -48,7 +48,7 @@ public class ConfigurationRepository {
 
 	public Map<Key, String> findConfigurationFor(Set<Key> keys) {
 		Set<String> s = new HashSet<>();
-		Map<Key, String> res = new EnumMap<Key, String>(Key.class);
+		Map<Key, String> res = new EnumMap<>(Key.class);
 		for (Key k : keys) {
 			s.add(k.toString());
 			res.put(k, null);

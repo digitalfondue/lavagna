@@ -66,7 +66,7 @@
 					$("body").append($('<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade"></div>'));
 					$("#cardModal,#cardModalBackdrop").addClass('in');
 					
-					var template = $compile('<div id="cardBoardMenu" data-bindonce><lvg-card-fragment data-view="board" data-read-only data-card="card" data-board="board"></lvg-card-fragment>'
+					var template = $compile('<div id="cardBoardMenu" data-bindonce><lvg-card-fragment data-view="board" data-read-only="true" data-card="card" data-board="board"></lvg-card-fragment>'
 							+ '<div id="cardBoardMenuActions">'
 							+ '<div id="cardBoardMenuClose"><button type="button" class="close" data-ng-click="close()">&times;</button></div>'
 							+ '<div data-ng-include="\'partials/fragments/board-card-menu-card-actions-fragment.html\'"></div></div>'

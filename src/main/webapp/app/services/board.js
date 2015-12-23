@@ -19,7 +19,9 @@
 			},
 
 			checkShortName: function(name) {
-				return $http.get('api/check-board-short-name', {params: {name: name.toUpperCase()}}).then(extractData).then(function(res) {return res === 'true';});
+				return $http.get('api/check-board-short-name', {params: {name: name.toUpperCase()}}).then(extractData).then(function(res) {
+				    return res === true;
+				});
 			},
 
 			update: function (board) {

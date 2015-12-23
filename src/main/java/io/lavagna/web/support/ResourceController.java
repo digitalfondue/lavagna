@@ -133,9 +133,9 @@ public class ResourceController {
 	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
-	@RequestMapping(value = { "admin", "admin/configure-login", "admin/manage-users", "admin/role",
+	@RequestMapping(value = { "admin", "admin/login", "admin/users", "admin/roles",
 			"admin/export-import", "admin/endpoint-info", "admin/parameters",
-			"admin/manage-anonymous-users-access", "admin/manage-smtp-configuration" }, method = RequestMethod.GET)
+			"admin/smtp" }, method = RequestMethod.GET)
 	public void handleIndexForAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
@@ -148,7 +148,7 @@ public class ResourceController {
 			PROJ_SHORT_NAME + "/manage/labels",//
 			PROJ_SHORT_NAME + "/manage/import",//
 			PROJ_SHORT_NAME + "/manage/milestones",//
-			PROJ_SHORT_NAME + "/manage/anonymous-users-access",//
+			PROJ_SHORT_NAME + "/manage/access",//
 			PROJ_SHORT_NAME + "/manage/status" }, method = RequestMethod.GET)
 	public void handleIndexForProjectAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
@@ -193,7 +193,7 @@ public class ResourceController {
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ServletContext context = request.getServletContext();
-		
+
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
 		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
@@ -215,11 +215,11 @@ public class ResourceController {
 
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
-			
+
 			Map<String, Object> localizationData = new HashMap<>();
 			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
 			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
-			
+
 			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
@@ -260,7 +260,7 @@ public class ResourceController {
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.11.0.min.js",//
+					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
 					"/js/df-tab-menu.min.js",//
 					"/js/df-autocomplete.js")) {
 				output(res, context, allJs, ba);

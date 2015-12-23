@@ -3,43 +3,43 @@
 	<div data-ng-switch-when="project-menu" class="menu-frame">
 		<div class="tab-menu-container">
 			<df-tab-menu data-menu-control="{{navigationState}}" data-more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-				<li menu-item="project"><a data-ng-href="#/{{project.shortName}}/"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
-				<li menu-item="projectMilestones"><a data-ng-href="#/{{project.shortName}}/milestones/"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
-				<li menu-item="projectStatistics"><a data-ng-href="#/{{project.shortName}}/statistics/"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
+				<li menu-item="project.boards"><a data-ui-sref="project.boards({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
+				<li menu-item="project.milestones"><a data-ui-sref="project.milestones({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
+				<li menu-item="project.statistics"><a data-ui-sref="project.statistics({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
 			</df-tab-menu>
 		</div>
 	</div>
 	<div data-ng-switch-when="board-menu" class="menu-frame board-menu-frame">
 		<div class="lvg-board-location">
 			<button class="lvg-navigation-button lvg-edit-button"
-					data-ng-click="sidebarHandler('ARCHIVE')"
-					data-ng-if="sideBarLocation === undefined || sideBarLocation === 'NONE'"
+					data-ng-click="boardCtrl.toggledSidebar = true"
+					data-ng-hide="boardCtrl.toggledSidebar"
 					title="{{'partials.board.showSideLocation' | translate}}">
 				<i class="fa fa-folder-o"></i>
 			</button>
 			<button class="lvg-navigation-button lvg-edit-button edit-active"
-					data-ng-click="sidebarHandler('NONE')"
-					data-ng-if="sideBarLocation !== undefined && sideBarLocation !== 'NONE'"
+                    data-ng-click="boardCtrl.toggledSidebar = false"
+                    data-ng-show="boardCtrl.toggledSidebar"
 					title="{{'partials.board.hideSideLocation' | translate}}">
 				<i class="fa fa-folder-open-o"></i>
 			</button>
 		</div>
 		<div class="lvg-board-edit">
-			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
+			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="boardCtrl.editMode" class="lvg-button-group">
+				<button class="lvg-navigation-button lvg-edit-button" data-ng-click="boardCtrl.switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
 			</div>
-			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="editMode" class="lvg-button-group">
-				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="unSelectAll(); switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
+			<div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="boardCtrl.editMode" class="lvg-button-group">
+				<button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="boardCtrl.unSelectAll(); boardCtrl.switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
 			</div>
-			<div data-ng-if="editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group">
-				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
+			<div data-ng-if="boardCtrl.editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
+				<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
-    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="selectAll()" data-translate>partials.board.selection.all</button></li>
-    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="unSelectAll()" data-translate>partials.board.selection.none</button></li>
+    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardCtrl.selectAll()" data-translate>partials.board.selection.all</button></li>
+    				<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="boardCtrl.unSelectAll()" data-translate>partials.board.selection.none</button></li>
   				</ul>
 			</div>
-			<div class="dropdown lvg-button-group" data-ng-show="selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'">
-				<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
+			<div class="dropdown lvg-button-group" data-ng-show="boardCtrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'" data-uib-dropdown>
+				<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
 				<ul class="dropdown-menu" role="menu">
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
@@ -50,15 +50,13 @@
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
-
-
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'" data-translate>partials.board.bulkop.moveArchive</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'" data-translate>partials.board.bulkop.moveBacklog</button></li>
 					<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-trash'; bulkMode.message = 'moveTrash'" data-translate>partials.board.bulkop.moveTrash</button></li>
 		 		</ul>
 
 
-		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="formatBulkRequest" selected-visible-cards-id-by-column-id="selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
+		 		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="boardCtrl.formatBulkRequest" selected-visible-cards-id-by-column-id="boardCtrl.selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
 
 				<button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
 			</div>
@@ -66,24 +64,24 @@
 	</div>
 	<div data-ng-switch-when="project-settings-menu" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="ProjectManage.projectManageHome"><a data-ng-href="#/{{project.shortName}}/manage/"><span data-translate>partials.project.fragments.nabvar.admin.project</span></a></li>
-			<li menu-item="ProjectManage.projectManageBoards"><a data-ng-href="#/{{project.shortName}}/manage/boards/"><span data-translate>partials.project.fragments.nabvar.admin.boards</span></a></li>
-			<li menu-item="ProjectManage.projectManageAnonymousUsers"><a data-ng-href="#/{{project.shortName}}/manage/anonymous-users-access/"><span data-translate>partials.project.fragments.nabvar.admin.anonymousUsersAccess</span></a></li>
-			<li menu-item="ProjectManage.projectRole"><a data-ng-href="#/{{project.shortName}}/manage/roles/"><span data-translate>partials.project.fragments.navbar.admin.roles</span></a></li>
-			<li menu-item="ProjectManage.projectManageLabels"><a data-ng-href="#/{{project.shortName}}/manage/labels/"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
-			<li menu-item="ProjectManage.projectManageMilestones"><a data-ng-href="#/{{project.shortName}}/manage/milestones/"><span data-translate>partials.project.fragments.navbar.admin.milestones</span></a></li>
-			<li menu-item="ProjectManage.projectManageColumnsStatus"><a data-ng-href="#/{{project.shortName}}/manage/status/"><span data-translate>partials.project.fragments.navbar.admin.status</span></a></li>
-			<li menu-item="ProjectManage.projectImport"><a data-ng-href="#/{{project.shortName}}/manage/import/"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
+			<li menu-item="ProjectManage.project"><a data-ui-sref="ProjectManage.project({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.project</span></a></li>
+			<li menu-item="ProjectManage.boards"><a data-ui-sref="ProjectManage.boards({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.boards</span></a></li>
+			<li menu-item="ProjectManage.access"><a data-ui-sref="ProjectManage.access({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.anonymousUsersAccess</span></a></li>
+			<li menu-item="ProjectManage.roles"><a data-ui-sref="ProjectManage.roles({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.roles</span></a></li>
+			<li menu-item="ProjectManage.labels"><a data-ui-sref="ProjectManage.labels({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
+			<li menu-item="ProjectManage.milestones"><a data-ui-sref="ProjectManage.milestones({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.milestones</span></a></li>
+			<li menu-item="ProjectManage.status"><a data-ui-sref="ProjectManage.status({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.status</span></a></li>
+			<li menu-item="ProjectManage.import"><a data-ui-sref="ProjectManage.import({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="admin-menu" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-   			<li menu-item="admin.adminShowAllParameters"><a href="#/admin/"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
-    		<li menu-item="admin.adminConfigureLogin"><a href="#/admin/configure-login/"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
-			<li menu-item="admin.adminManageSmtpConfiguration"><a href="#/admin/manage-smtp-configuration/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
-			<li menu-item="admin.adminManageUsers"><a href="#/admin/manage-users/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
-			<li menu-item="admin.adminRole"><a href="#/admin/role/"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
-    		<li menu-item="admin.adminExportImport"><a href="#/admin/export-import/"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
+   			<li menu-item="admin.home"><a data-ui-sref="admin.home"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
+    		<li menu-item="admin.login"><a data-ui-sref="admin.login"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
+			<li menu-item="admin.smtp"><a data-ui-sref="admin.smtp"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
+			<li menu-item="admin.users"><a data-ui-sref="admin.users"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
+			<li menu-item="admin.roles"><a data-ui-sref="admin.roles"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
+    		<li menu-item="admin.exportimport"><a data-ui-sref="admin.exportimport"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="search" class="menu-frame">
@@ -91,10 +89,10 @@
 	</div>
 	<div data-ng-switch-when="user" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="user"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}"><span data-translate>partials.user.tab.profile</span></a></li>
-			<li menu-item="user-projects"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/projects/"><span data-translate>partials.user.tab.projects</span></a></li>
-			<li menu-item="user-activity"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/activity/"><span data-translate>partials.user.tab.activity</span></a></li>
-			<li menu-item="account"><a href="#/me/" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
+			<li menu-item="user.dashboard"><a data-ui-sref="user.dashboard({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.profile</span></a></li>
+			<li menu-item="user.projects"><a data-ui-sref="user.projects({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.projects</span></a></li>
+			<li menu-item="user.activity"><a data-ui-sref="user.activity({provider: userResolver.provider, username: userResolver.username})"><span data-translate>partials.user.tab.activity</span></a></li>
+			<li menu-item="account"><a data-ui-sref="account" data-ng-show="userResolver.isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="about" class="menu-frame">

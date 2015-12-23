@@ -19,13 +19,14 @@
 
 	//declare all the modules here
 	angular.module('lavagna.controllers', [ 'lavagna.services' ]);
+	angular.module('lavagna.components', [ 'lavagna.services' ]);
 	angular.module('lavagna.directives', [ 'lavagna.services' ]);
 	angular.module('lavagna.filters', []);
 	angular.module('lavagna.services', []);
 	//
 
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
-			'lavagna.controllers', 'lavagna.filters', 'lavagna.directives',
+			'lavagna.controllers', 'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
 			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
 			'angularFileUpload']);
@@ -101,9 +102,6 @@
 				card : function(CardCache, $stateParams) {
 					return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
 				},
-				currentUser : function(User) {
-					return User.currentCachedUser();
-				},
 				project : function(ProjectCache, $stateParams) {
 					return ProjectCache.project($stateParams.projectName);
 				},
@@ -118,10 +116,33 @@
 			}
 		};
 
+		var boardResolver = {
+            project : function(ProjectCache, $stateParams) {
+                return ProjectCache.project($stateParams.projectName);
+            },
+            board : function(BoardCache, $stateParams) {
+                return BoardCache.board($stateParams.shortName);
+            }
+		}
+
+		var userResolver = {
+		    user: function(User, $stateParams) {
+		        return User.getUserProfile($stateParams.provider, $stateParams.username, 0);
+		    },
+		    isCurrentUser: function(User, $stateParams) {
+		        return User.isCurrentUser($stateParams.provider, $stateParams.username);
+		    }
+		}
+
+		var currentUserResolver = {
+            user: function(User) {
+                return User.currentCachedUser();
+            }
+		}
+
 		$stateProvider.state('home', {
 			url : '/',
-			templateUrl : 'partials/home.html',
-			controller : 'HomeCtrl'
+			template : '<lvg-component-dashboard></lvg-component-dashboard>'
 		})
 		.state('404', {
 			url : '/not-found/',
@@ -147,20 +168,35 @@
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
-			templateUrl : 'partials/me.html',
-			controller: 'AccountCtrl'
+			template: '<lvg-component-account></lvg-component-account>',
+			controller: function(user) {
+                this.provider = user.provider;
+                this.username = user.username;
+                this.isCurrentUser = true;
+            },
+            controllerAs: 'userResolver',
+            resolve : currentUserResolver
 		}).state('user', {
             url :'/user/:provider/:username/',
-            templateUrl : 'partials/user.html',
-            controller: 'UserCtrl'
-        }).state('user-projects', {
-        	url :'/user/:provider/:username/projects/',
-            templateUrl : 'partials/user/projects.html',
-            controller: 'UserProjectsCtrl'
-        }).state('user-activity', {
-        	url :'/user/:provider/:username/activity/',
-            templateUrl : 'partials/user/activity.html',
-            controller: 'UserActivityCtrl'
+            abstract: true,
+            template: '<lvg-component-user user="userResolver.user"></lvg-component-user>',
+            controller: function(user, isCurrentUser) {
+                this.user = user;
+                this.provider = user.user.provider;
+                this.username = user.user.username;
+                this.isCurrentUser = isCurrentUser;
+            },
+            controllerAs: 'userResolver',
+            resolve : userResolver
+		}).state('user.dashboard', {
+            url :'',
+            template : '<lvg-component-user-dashboard profile="userCtrl.profile"></lvg-component-user-dashboard>'
+        }).state('user.projects', {
+        	url :'projects/',
+            templateUrl : 'app/components/user/projects/projects.html'
+        }).state('user.activity', {
+        	url :'activity/',
+            templateUrl : 'app/components/user/activity/activity.html'
         })
 		//---- SEARCH ----
 		.state('globalSearch', {
@@ -178,35 +214,31 @@
 		.state('admin', {
 			url: '/admin/',
 			abstract: true,
-			templateUrl : 'partials/admin/admin.html',
-			controller: 'AdminCtrl'
-		}).state('admin.adminShowAllParameters', {
+			template : '<lvg-component-admin></lvg-component-admin>'
+		}).state('admin.home', {
 			url: '',
-			templateUrl: 'partials/admin/parameters.html',
-			controller: 'AdminParametersCtrl'
-		}).state('admin.adminRole', {
-			url: 'role/',
-			templateUrl : 'partials/fragments/common-manage-roles.html',
-			controller: 'ManageRoleCtrl'
-		}).state('admin.adminExportImport', {
+			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
+		}).state('admin.roles', {
+			url: 'roles/',
+			template: '<lvg-component-manage-roles></lvg-component-manage-roles>'
+		}).state('admin.exportimport', {
 			url: 'export-import/',
 			templateUrl : 'partials/admin/export-import.html',
 			controller : 'AdminExportImportCtrl'
-		}).state('admin.adminEndpointInfo', {
+		}).state('admin.endpointinfo', {
 			url: 'endpoint-info/',
 			templateUrl : 'partials/admin/endpoint-info.html',
 			controller: 'AdminEndpointInfoCtrl'
-		}).state('admin.adminManageUsers', {
-			url: 'manage-users/',
-			templateUrl : 'partials/admin/manage-users.html',
-			controller: 'AdminManageUsersCtrl'
-		}).state('admin.adminConfigureLogin', {
-			url: 'configure-login/',
+		}).state('admin.users', {
+			url: 'users/',
+			template : '<lvg-component-admin-users current-user="appCtrl.currentUser"></lvg-component-admin-users>'
+		}).state('admin.login', {
+			url: 'login/',
 			templateUrl: 'partials/admin/configure-login.html',
 			controller: 'AdminConfigureLoginCtrl',
 			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
-		}).state('admin.adminManageSmtpConfiguration', {
-			url : 'manage-smtp-configuration/',
+		}).state('admin.smtp', {
+			url : 'smtp/',
 			templateUrl : 'partials/admin/manage-smtp-configuration.html',
 			controller : 'AdminManageSmtpConfigurationCtrl'
 		})
@@ -214,114 +246,116 @@
 		//---- MANAGE PROJECT ----
 		.state('ProjectManage', {
         	url : '/:projectName/manage/',
-			templateUrl : 'partials/project/manage.html',
+			templateUrl : 'app/components/project/manage/manage.html',
 			abstract: true,
-          	controller : 'ProjectManageCtrl',
+          	controller : function(project) {
+                this.project = project;
+          	},
+          	controllerAs: 'projectResolver',
           	resolve: projectResolver
-        }).state('ProjectManage.projectRole', {
+        }).state('ProjectManage.roles', {
 			url : 'roles/',
-			templateUrl : 'partials/project/manage-roles.html',
-			controller: 'ManageRoleCtrl'
-		}).state('ProjectManage.projectImport', {
+			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
+		}).state('ProjectManage.import', {
 			url : 'import/',
-			templateUrl : 'partials/project/manage-import.html',
-			controller: 'ManageImportCtrl',
-          	resolve: projectResolver
-		}).state('ProjectManage.projectManageLabels', {
+			template : '<lvg-component-project-manage-import project="projectResolver.project"></lvg-component-project-manage-import>'
+		}).state('ProjectManage.labels', {
 			url : 'labels/',
-			templateUrl : 'partials/project/manage-labels.html',
-			controller : 'ProjectManageLabelsCtrl',
-          	resolve: projectResolver
-		}).state('ProjectManage.projectManageMilestones', {
+			template : '<lvg-component-project-manage-labels project="projectResolver.project"></lvg-component-project-manage-labels>'
+		}).state('ProjectManage.milestones', {
 			url : 'milestones/',
-			templateUrl : 'partials/project/manage-milestones.html',
-			controller : 'ProjectManageMilestonesCtrl',
-          	resolve: projectResolver
-		}).state('ProjectManage.projectManageAnonymousUsers', {
-			url : 'anonymous-users-access/',
-			templateUrl : 'partials/project/manage-anonymous-users-access.html',
-			controller : 'ProjectManageAnonymousUsersAccessCtrl',
-          	resolve: projectResolver
-		}).state('ProjectManage.projectManageColumnsStatus', {
+			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
+		}).state('ProjectManage.access', {
+			url : 'access/',
+			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
+		}).state('ProjectManage.status', {
 			url : 'status/',
-			templateUrl : 'partials/project/manage-columns-status.html',
-			controller : 'ProjectManageColumnsStatusCtrl',
-			resolve: projectResolver
-		}).state('ProjectManage.projectManageBoards', {
+			template: '<lvg-component-project-manage-status project="projectResolver.project"></lvg-component-project-manage-status>'
+		}).state('ProjectManage.boards', {
 			url : 'boards/',
-			templateUrl : 'partials/project/manage-boards.html',
-			controller : 'ProjectManageBoardsCtrl',
-			resolve: projectResolver
-		}).state('ProjectManage.projectManageHome', {
+			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
+		}).state('ProjectManage.project', {
 			url : '',
-			templateUrl : 'partials/project/manage-home.html',
-			controller : 'ProjectManageHomeCtrl',
-			resolve: projectResolver
+			template: '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>'
 		})
-
-		// ---- MILESTONES ----
-		.state('projectMilestones', {
-			url : '/:projectName/milestones/',
-			templateUrl : 'partials/project/milestones.html',
-			controller : 'ProjectMilestonesCtrl',
-			resolve : projectResolver
-		}).state('projectMilestones.card', {
-			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
-			resolve : cardCtrlResolver
-		})
-
 
 		//---- PROJECT ----
 		.state('project', {
-			url : '/:projectName/',
-			templateUrl : 'partials/project/project.html',
-			controller : 'ProjectCtrl',
-			resolve : projectResolver
-		}).state('projectStatistics', {
-			url : '/:projectName/statistics/',
-			templateUrl : 'partials/project/statistics.html',
-			controller: 'ProjectStatisticsCtrl',
-			resolve : projectResolver
-		}).state('projectSearch', {
-			url : '/:projectName/search/?q&page',
+		    abstract: true,
+		    url : '/:projectName/',
+		    templateUrl: 'app/components/project/project.html',
+		    controller: function(project) {
+                this.project = project;
+            },
+            controllerAs: 'projectResolver',
+            resolve : projectResolver
+		})
+		.state('project.boards', {
+			url: '',
+			template: '<lvg-component-project project="projectResolver.project"></lvg-component-project>'
+		}).state('project.statistics', {
+			url: 'statistics/',
+			template: '<lvg-component-project-statistics project="projectResolver.project"></lvg-component-project-statistics>'
+		}).state('project.milestones', {
+            url : 'milestones/',
+            template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
+        }).state('project.milestones.card', {
+            url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
+            template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
+            controller : function(card, project, board) {
+                this.board = board;
+                this.card = card;
+            },
+            controllerAs : 'cardCtrlResolver',
+            resolve : cardCtrlResolver
+        })
+
+        //---- PROJECT SEARCH ----
+        .state('project.search', {
+			url : 'search/?q&page',
 			templateUrl : 'partials/project/search.html',
 			controller: 'SearchCtrl',
 			reloadOnSearch: false
-		}).state('projectSearch.card', {
+		}).state('project.search.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
-			resolve : cardCtrlResolver
-		}).state('projectBoard', {
-			url : '/:projectName/{shortName:[A-Z0-9_]+}',
-			templateUrl : 'partials/board.html',
-			controller : 'BoardCtrl',
-			resolve : {
-				project : function(ProjectCache, $stateParams) {
-					return ProjectCache.project($stateParams.projectName);
-				},
-				board : function(BoardCache, $stateParams) {
-					return BoardCache.board($stateParams.shortName);
-				}
-			}
-		}).state('projectBoard.card', {
+			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
+            controller : function(card, project, board) {
+                this.board = board;
+                this.card = card;
+            },
+            controllerAs : 'cardCtrlResolver',
+            resolve : cardCtrlResolver
+		})
+
+		//---- BOARD ----
+		.state('projectBoard', {
+		    abstract : true,
+            url : '/:projectName/{shortName:[A-Z0-9_]+}',
+            templateUrl : 'app/components/board/board.html',
+            controller : function(project, board) {
+                this.project = project;
+                this.board = board;
+            },
+            controllerAs: 'boardCtrlResolver',
+            resolve : boardResolver
+		})
+		.state('projectBoard.board', {
+			url : '',
+			template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>'
+		}).state('projectBoard.board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
+			template : '<lvg-component-card project="boardCtrlResolver.project" board="boardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
+			controller : function(card, project, board) {
+			    this.card = card;
+			},
+			controllerAs : 'cardCtrlResolver',
 			resolve : cardCtrlResolver
 		});
 
 		$urlRouterProvider.otherwise('/');
 	});
 
-	//reset the title to "Lavagna" (default). The controller will override with his own value if necessary.
 	module.run(function($rootScope, $state) {
-		$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
-			$rootScope.pageTitle = 'Lavagna'
-		});
-
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $state.go(error.status.toString());
@@ -365,4 +399,4 @@
 	module.config(function($httpProvider) {
 		$httpProvider.interceptors.push('lavagnaHttpInterceptor');
 	});
-})();
+})()

@@ -4,13 +4,8 @@ This is a high level roadmap. Lavagna has currently:
 
  - a stable 1.0.x branch where small fixes and features will be added. Some of the work done in the master branch will be backported.
  - the current master (1.1) where the big features are developed
- 
- 
-## Expected for 1.0.4 (mid september - october 2015)
-
- - support gitlab oauth (gitlab.com AND other gitlab instances (self-hosted and not))
- 
-## Expected for 1.0.5 (october 2015)
+  
+## Expected for 1.0.6 (december 2015)
 
  - support for internal password protected accounts
 

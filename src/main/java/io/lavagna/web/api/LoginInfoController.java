@@ -51,7 +51,7 @@ import com.google.gson.reflect.TypeToken;
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)
 public class LoginInfoController {
-    
+
     private final ConfigurationRepository configurationRepository;
     private final OAuthLogin oauthLogin;
 
@@ -60,7 +60,7 @@ public class LoginInfoController {
         this.configurationRepository = configurationRepository;
         this.oauthLogin = oauthLogin;
     }
-    
+
     @RequestMapping(value = "/api/login/all", method = RequestMethod.GET)
     public Collection<String> getAllLoginProviders(HttpServletRequest request) {
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
@@ -71,20 +71,20 @@ public class LoginInfoController {
         Collections.sort(res);
         return res;
     }
-    
+
     @Getter
     @AllArgsConstructor
     public static class OAuthProviderInfo implements Comparable<OAuthProviderInfo> {
         private final String name;
         private final boolean hasConfigurableBaseUrl;
         private final boolean isConfigurableInstance;
-        
+
         @Override
         public int compareTo(OAuthProviderInfo o) {
             return name.compareTo(o.name);
         }
     }
-    
+
     @RequestMapping(value = "/api/login/oauth/all", method = RequestMethod.GET)
     public Collection<OAuthProviderInfo> getAllUnprefixedOauthProviders() {
         List<OAuthProviderInfo> res = new ArrayList<>();
@@ -94,21 +94,21 @@ public class LoginInfoController {
         Collections.sort(res);
         return res;
     }
-    
+
     @RequestMapping(value = "/api/login/all-base-with-activation-status", method = RequestMethod.GET)
     public Map<String, Boolean> getLoginWithActivationStatus(HttpServletRequest request) {
-        
+
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
         Map<String, Boolean> res = new HashMap<>();
         for(LoginHandler handler : ctx.getBeansOfType(LoginHandler.class).values()) {
             res.put(handler.getBaseProviderName().toUpperCase(Locale.ENGLISH), false);
         }
-        
+
         List<String> enabled = Json.GSON.fromJson(configurationRepository.getValue(Key.AUTHENTICATION_METHOD), (new TypeToken<List<String>>() {}).getType());
         for(String e : enabled) {
             res.put(e.toUpperCase(Locale.ENGLISH), true);
         }
-        
+
         return res;
     }
 

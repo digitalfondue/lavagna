@@ -1,0 +1,98 @@
+<div class="modal-header">
+    <button type="button" class="close" data-ng-click="managePermsCtrl.cancelWithConfirmation()">&times;</button>
+    <h3 class="modal-title">{{::managePermsCtrl.roleName}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('APPLICATION')">
+                <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.applicationPermissions</div></div>
+                <div class="body-full">
+                    <ul class="lvg-modal-roles">
+                        <li class="role" data-ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'APPLICATION'"
+                            data-ng-init="managePermsCtrl.assignStatus[permission] = {}"
+                            data-ng-class="{'role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}">
+                            <div class="role-checkbox">
+                                <input type="checkbox"
+                                       data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
+                                       data-ng-model="managePermsCtrl.assignStatus[permission].checked" data-ng-disabled="managePermsCtrl.roleDesc.readOnly" id="{{::permission}}">
+                            </div>
+                            <div class="role-name"><label for="{{::permission}}">{{::permission}}</label></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('PROJECT')">
+                <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.projectPermissions</div></div>
+                <div class="body-full">
+                    <ul class="lvg-modal-roles">
+                        <li class="role" data-ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'PROJECT'"
+                            data-ng-init="managePermsCtrl.assignStatus[permission] = {}"
+                            data-ng-class="{'role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}">
+                            <div class="role-checkbox">
+                                <input type="checkbox"
+                                       data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
+                                       data-ng-model="managePermsCtrl.assignStatus[permission].checked" data-ng-disabled="managePermsCtrl.roleDesc.readOnly" id="{{::permission}}">
+                            </div>
+                            <div class="role-name"><label for="{{::permission}}">{{::permission}}</label></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('BOARD')">
+                <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.boardPermissions</div></div>
+                <div class="body-full">
+                    <ul class="lvg-modal-roles">
+                        <li class="role" data-ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'BOARD'"
+                            data-ng-init="managePermsCtrl.assignStatus[permission] = {}"
+                            data-ng-class="{'role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}">
+                            <div class="role-checkbox">
+                                <input type="checkbox"
+                                       data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
+                                       data-ng-model="managePermsCtrl.assignStatus[permission].checked" data-ng-disabled="managePermsCtrl.roleDesc.readOnly" id="{{permission}}">
+                            </div>
+                            <div class="role-name"><label for="{{::permission}}">{{::permission}}</label></div>
+                    </ul>
+                </div>
+            </div>
+            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('COLUMN')">
+                <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.columnPermissions</div></div>
+                <div class="body-full">
+                    <ul class="lvg-modal-roles">
+                        <li class="role" data-ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'COLUMN'"
+                            data-ng-init="managePermsCtrl.assignStatus[permission] = {}"
+                            data-ng-class="{'role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}">
+                            <div class="role-checkbox">
+                                <input type="checkbox"
+                                       data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
+                                       data-ng-model="managePermsCtrl.assignStatus[permission].checked" data-ng-disabled="managePermsCtrl.roleDesc.readOnly" id="{{::permission}}">
+                            </div>
+                            <div class="role-name"><label for="{{::permission}}">{{::permission}}</label></div>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('CARD')">
+                <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.cardPermissions</div></div>
+                <div class="body-full">
+                    <ul class="lvg-modal-roles">
+                        <li class="role" data-ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'CARD'"
+                            data-ng-init="managePermsCtrl.assignStatus[permission] = {}"
+                            data-ng-class="{'role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}">
+                            <div class="role-checkbox">
+                                <input type="checkbox"
+                                       data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
+                                       data-ng-model="managePermsCtrl.assignStatus[permission].checked" data-ng-disabled="managePermsCtrl.roleDesc.readOnly" id="{{::permission}}">
+                            </div>
+                            <div class="role-name"><label for="{{::permission}}">{{::permission}}</label></div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="lvg-button lvg-button-submit" data-ng-click="managePermsCtrl.save()" data-translate data-ng-show="!managePermsCtrl.roleDesc.readOnly">button.save</button>
+    <button class="lvg-button lvg-button-default" data-ng-click="managePermsCtrl.cancel()">button.cancel</button>
+</div>

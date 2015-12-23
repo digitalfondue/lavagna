@@ -5,30 +5,30 @@
 	var services = angular.module('lavagna.services');
 
 	services.factory('Notification', function ($rootScope, $timeout) {
-		
+
 		$rootScope.notifications = [];
-		
+
 		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-			$rootScope.notifications.length = 0;//empty
+			$rootScope.notifications.length = 0; //empty
 		});
 
 		return {
-			addNotification: function (_type, _data, _undo, _undoFn) {
-				$rootScope.notifications.push({event: _data, type: _type, undo: _undo, undoFn : _undoFn, acknowledge : function() {
+			addNotification: function (_type, _data, _dismissable, _undo, _undoFn) {
+				$rootScope.notifications.push({event: _data, type: _type, dismissable: _dismissable, undo: _undo, undoFn : _undoFn, acknowledge : function() {
 						var index = $rootScope.notifications.indexOf(this);
 						$rootScope.notifications.splice(index, 1);
 					}
 				});
 			},
 			addAutoAckNotification: function (_type, _data, _undo) {
-				
+
 				var notification = {event: _data, type: _type, undo: _undo, acknowledge : function() {
 						var index = $rootScope.notifications.indexOf(this);
 						$rootScope.notifications.splice(index, 1);
 					}
 				};
-				
-				var length = $rootScope.notifications.push(notification);
+
+				$rootScope.notifications.push(notification);
 				$timeout(function () {
 					var index = $rootScope.notifications.indexOf(notification);
 					$rootScope.notifications.splice(index, 1);

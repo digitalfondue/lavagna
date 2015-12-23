@@ -9,15 +9,18 @@
 		return {
 			restrict: 'E',
 			scope: {
-				model: '=control'
+				model: '=control',
+				change: '='
 			},
-			template: "<div class=\"{{mainClass}}\" ng-class=\"{\'active\': model}\" ng-click=\"toggle()\"><div class=\"button\"></div></div>",
+			template: "<div class=\"{{mainClass}}\" ng-class=\"{\'active\': model}\" ng-click=\"handleChange()\"><div class=\"button\"></div></div>",
 			link: function ($scope, element, attrs) {
-
 				$scope.mainClass = attrs.switchClass;
 
-				$scope.toggle = function () {
-					$scope.model = !$scope.model;
+				$scope.handleChange = function() {
+				    $scope.model = !$scope.model;
+				    if($scope.change != undefined && $scope.change != null) {
+				        $scope.change($scope.model);
+				    }
 				}
 			}
 		};

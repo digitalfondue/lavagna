@@ -1,0 +1,702 @@
+/*
+	- contains board style such as columns, cards
+*/
+
+.lavagna-closed-board {
+	color: #999;
+}
+
+.lavagna-card-placeholder, .lavagna-column-placeholder {
+	background-color: #ccc;
+}
+
+.lavagna-column-placeholder {
+	float: left;
+	margin: 4px;
+	width: 290px;
+}
+
+.lavagna-card-placeholder {
+	display: block;
+	margin-bottom: 10px;
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+.lavagna-card-placeholder:last-child {
+	margin-bottom: 0;
+}
+
+.lavagna-card-caret-container {
+	height: 18px;
+	width: 12px;
+	cursor: pointer;
+}
+
+.lavagna-card-caret-container .fa {
+	height: 18px;
+	width: 12px;
+	cursor: pointer;
+	display: none;
+}
+
+.lavagna-board-column .panel-heading:hover .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .lavagna-card-caret-container .fa-chevron-down {
+	display: block;
+}
+
+.lavagna-board-column .panel-heading:hover .open .lavagna-card-caret-container .fa-chevron-down, .lavagna-board-card:hover .open .lavagna-card-caret-container .fa-chevron-down {
+	display: none;
+}
+
+.open .lavagna-card-caret-container .fa-chevron-down {
+	display: none;
+}
+
+.open .lavagna-card-caret-container .fa-chevron-up {
+	display: block;
+}
+
+.lavagna-board-card-checkbox {
+	display: none;
+}
+
+.lavagna-edit-mode .lavagna-board-card-checkbox {
+	display: inline;
+	cursor: pointer;
+}
+
+.lavagna-visibile-in-edit-mode {
+	display: none;
+}
+
+.lavagna-edit-mode .lavagna-visibile-in-edit-mode {
+	display: block;
+}
+
+.lavagna-board-column-holder {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+}
+
+.lavagna-board-column {
+	background-color: #f5f5f5;
+	width: 290px;
+	float: left;
+	margin: 4px;
+	border: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.lavagna-board-column .panel-heading {
+	font-weight: 700;
+	background-color: #fcfcfc;
+	border: 0;
+	word-wrap: break-word;
+	padding: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.lavagna-board-column .panel-heading .row {
+	padding: 10px 15px;
+}
+
+.lavagna-board-column .panel-heading .row .col-xs-10, .lavagna-board-column .panel-heading .row .col-xs-1 {
+	position: static;
+}
+
+.lavagna-board-column .panel-heading .column-color-header {
+	height: 2px;
+	margin-top: 5px;
+	margin-bottom: 0;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.lavagna-board-column .panel-body {
+	background-color: #fcfcfc;
+	padding: 7px;
+	border-bottom: 1px solid #ddd;
+}
+
+.lavagna-board-column .panel-footer {
+	border: 0;
+	padding: 5px 10px;
+}
+
+.lavagna-board-column .panel-footer span.fa-plus:hover {
+	cursor: pointer;
+	color: #424242;
+}
+
+.lavagna-board-cards {
+	min-height: 42px;
+	margin-bottom: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.lavagna-board-card {
+	display: block;
+	margin-bottom: 10px;
+	width:95%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.lavagna-board-card .title .col-xs-10, .lavagna-board-card .title .col-xs-1 {
+	position: static;
+}
+
+/* display cards in board UI */
+
+.lavagna-board-panel {
+	border: 1px solid #d0d0d0;
+	background-color: white;
+}
+
+
+
+.lvg-can-move-cards .lavagna-board-panel:hover, .lvg-can-move-cards .lavagna-sidebar-panel:hover {
+	box-shadow: 0 2px 10px rgba(0,0,0,0.30);
+	cursor: move;
+}
+
+#cardBoardMenu .lavagna-board-panel:hover {
+	box-shadow: none;
+	cursor: default;
+}
+
+.lavagna-board-panel .head {
+	font-size: 14px;
+	font-weight: normal;
+	word-wrap: break-word;
+}
+
+.lavagna-board-panel .head .title {
+	padding: 8px 8px 0 8px;
+}
+
+.lavagna-board-panel .head .title a {
+	word-wrap: break-word;
+	font-size: 16px;
+}
+
+.lavagna-board-panel .head .title .is-watching {
+	padding-left: 5px;
+	color: #aaaaaa;
+}
+
+.lavagna-board-panel .body {
+	clear: both;
+	display: block;
+	padding: 0 8px 8px 8px;
+	margin: 0;
+	font-size: 12px;
+}
+
+.lavagna-board-panel .body span.fa {
+	font-size: 14px;
+}
+
+div.card-data ul {
+	padding: 0;
+	margin: 0;
+}
+
+div.card-data ul.data-info li {
+	list-style-type: none;
+	display: inline-block;
+	margin-top: 8px;
+	margin-bottom: 0;
+	padding-right: 5px;
+	padding-top: 3px;
+	color: #aaaaaa;
+}
+
+div.card-data ul.data-info li.lvg-action-not-done {
+    background-color: #cf513d;
+    color: #ffffff;
+    padding-left: 5px;
+}
+
+div.card-data ul.data-info .lvg-action-not-done .fa {
+    color: #ffffff;
+}
+
+div.card-data ul.data-info li.lvg-action-full {
+	background-color: #00CC00;
+	color: #ffffff;
+	padding-left: 5px;
+}
+
+div.card-data ul.data-info .lvg-action-full .fa {
+	color: #ffffff;
+}
+
+div.card-data ul.data-info li.lvg-due-date-tomorrow {
+    background-color: #e6c60d;
+    color: #ffffff;
+    padding-left: 5px;
+}
+
+div.card-data ul.data-info li.lvg-due-date-now {
+    background-color: #cf513d;
+    color: #ffffff;
+    padding-left: 5px;
+}
+
+div.card-data ul.data-info li.lvg-due-date-past {
+    background-color: #ec9488;
+    color: #ffffff;
+    padding-left: 5px;
+}
+
+div.card-data ul.data-info .lvg-due-date-tomorrow .fa,
+div.card-data ul.data-info .lvg-due-date-now .fa,
+div.card-data ul.data-info .lvg-due-date-past .fa {
+    color: #ffffff;
+}
+
+div.card-labels {
+	margin-top: 8px;
+}
+
+div.card-labels ul.labels {
+	padding: 0;
+	margin: 0;
+}
+
+div.card-labels ul.labels li {
+	list-style-type: none;
+	display: inline-block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 11px;
+}
+
+ul.assigned-users {
+	margin: 0;
+	padding: 0;
+}
+
+ul.assigned-users li.assigned-user {
+	list-style-type: none;
+	display: block;
+	color: #aaaaaa;
+	padding: 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+ul.assigned-users li.assigned-user:first-child {
+	margin-top: 8px;
+}
+
+.lavagna-board-panel .body .card-info .fa, .lavagna-board-panel .body .card-data .fa {
+	color: #aaaaaa;
+}
+
+.lavagna-board-panel .footer {
+	background-color: #f5f5f5;
+	border-top: 1px solid #dddddd;
+	overflow: hidden;
+	width: 100%;
+}
+
+.lavagna-board-panel .footer .content {
+	padding: 3px 10px;
+	width: 100%;
+}
+
+.column-placeholder {
+	width: 256px;
+	min-height: 100px;
+	float: left;
+}
+
+.lvg-can-move-columns .lvg-column-handle {
+	cursor: move;
+}
+
+ul.board-controls {
+	margin: 0;
+	padding: 0;
+	color: #d5d5d5;
+	list-style: none;
+}
+
+ul.board-controls li.control-box {
+	padding: 5px 5px;
+	text-align: right;
+}
+
+ul.board-controls li.control-item {
+	margin-left: 25px;
+}
+
+/*
+ sidebar
+*/
+
+.lavagna-board-sidebar {
+	background-color: #c0c0c0;
+}
+
+.lavagna-sidebar-panel {
+	border: 1px solid #a0a0a0;
+	background-color: white;
+	max-width: 100%;
+	margin: auto;
+}
+
+.lavagna-sidebar-panel .head {
+	font-size: 14px;
+	word-wrap: break-word;
+}
+
+.lavagna-sidebar-panel .head .title {
+	padding: 8px 8px 0 8px;
+}
+
+.lavagna-sidebar-panel .head .title a {
+	word-wrap: break-word;
+	font-size: 16px;
+}
+
+.lavagna-sidebar-panel .body {
+	clear: both;
+	display: block;
+	padding: 0 8px 8px 8px;
+	margin: 0;
+	font-size: 12px;
+}
+
+.lavagna-board-left-sidebar {
+	left: -295px;
+	width: 295px;
+	position: fixed;
+	background-color: #e5e5e5;
+	min-height: 100%;
+}
+
+.lavagna-left-sidebar-slide-out {
+	-moz-transition: left .2s;
+	-webkit-transition: left .2s;
+	-o-transition: left .2s;
+	transition: left .2s;
+}
+
+.lavagna-board-left-sidebar-open {
+	margin-left: 295px !important;
+}
+
+.lavagna-board-left-sidebar-out {
+	left: 0;
+}
+
+.lavagna-left-sidebar-slide-open {
+	-moz-transition: margin-left .2s;
+	-webkit-transition: margin-left .2s;
+	-o-transition: margin-left .2s;
+	transition: margin-left .2s;
+}
+
+.lavagna-sidebar-column {
+	background-color: #d5d5d5;
+	width: 290px;
+	float: left;
+	margin: 4px;
+	border: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: 1px solid #aaa;
+	border-top: 2px solid #aaa;
+}
+
+.lavagna-sidebar-column .panel-heading {
+	font-weight: 700;
+	background-color: #d5d5d5;
+	border: 0;
+	word-wrap: break-word;
+	padding: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-bottom: 8px;
+}
+
+.lavagna-sidebar-column .panel-heading .row {
+	padding: 10px 15px;
+}
+
+.lavagna-sidebar-column .panel-body {
+	padding: 0 7px 0 7px;
+	margin-right: 2px;
+	overflow-y: auto;
+}
+
+.lavagna-sidebar-column .panel-footer {
+	border: 0;
+	padding-left: 5px;
+	padding-right: 5px;
+	min-height: 0;
+	background-color: #d5d5d5;
+}
+
+.lavagna-sidebar-column .panel-footer ul.pager {
+	margin-bottom: 0;
+	padding:0;
+	margin-top: 10px;
+}
+
+.lavagna-sidebar-column .panel-footer ul.pager .next,
+.lavagna-sidebar-column .panel-footer ul.pager .previous {
+	display: inline-block;
+}
+
+.lavagna-sidebar-column .panel-footer ul.pager .next {
+	float:right;
+}
+
+.lavagna-sidebar-column .panel-footer ul.pager .next a,
+.lavagna-sidebar-column .panel-footer ul.pager .previous a {
+	border-radius: 4px;
+	border: 1px solid #a0a0a0;
+	padding:4px;
+	display: inline-block;
+}
+
+.lavagna-left-sidebar {
+	left: -250px;
+	width: 250px;
+	position: fixed;
+	background-color: #f5f5f5;
+	min-height: 100%;
+}
+
+.lavagna-left-sidebar-list {
+	position: absolute;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.horizontal-slide {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	list-style: none;
+}
+
+ul.horizontal-slide li[class*="span"] {
+	display: inline-block;
+	float: none;
+}
+
+ul.horizontal-slide li[class*="span"]:first-child {
+	margin-left: 0;
+}
+
+.sidebar-dropzone {
+	background-color: rgba(0, 0, 0, 0.3);
+	position: absolute;
+	z-index: 10;
+	width: 290px;
+	min-height: 100%;
+	margin: 0;
+	margin-left: 4px;
+	margin-top: 4px;
+	padding: 0;
+}
+
+.sidebar-dropzone .lavagna-card-placeholder {
+	background-color: rgba(0, 0, 0, 0.4);
+	width: 290px;
+	min-height: 100%;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+}
+
+ul.lavagna-sidebar-cards {
+	width: 100%;
+	min-height: 60px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	margin-bottom: 10px;
+}
+
+ul.lavagna-sidebar-cards:last-of-type {
+	margin-bottom: 0;
+}
+
+.lavagna-sidebar-cards .lavagna-card-placeholder {
+	display: block;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.lavagna-is-watching {
+	background-image: url('images/triangle.gif');
+	background-repeat: no-repeat;
+	background-position: top right;
+}
+
+.lvg-board-column-menu {
+	width: 200px;
+}
+
+.lvg-board-column-menu .divider {
+	cursor: default;
+}
+
+.lvg-card-menu-dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: block;
+}
+
+.lvg-card-menu-dialog .modal-dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: block;
+	margin: 0;
+}
+
+.lvg-card-menu-dialog .modal-dialog .modal-content {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: block;
+	background-color: inherit;
+}
+
+/************************
+ CARD BOARD MENU
+*************************/
+
+#cardBoardMenu {
+	z-index: 1050;
+}
+
+#cardBoardMenu .fake-link {
+	color: #428bca;
+	text-decoration: none;
+	word-wrap: break-word;
+	font-size: 16px;
+}
+
+#cardBoardMenuClose {
+	position: absolute;
+	z-index: 1050;
+	top: -21px;
+}
+
+#cardBoardMenuClose .close {
+	margin-top: -2px;
+	padding: 0;
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	-webkit-appearance: none;
+	float: right;
+	font-size: 21px;
+	font-weight: bold;
+	line-height: 1;
+	color: #f5f5f5;
+	opacity: 0.6;
+}
+
+#cardBoardMenuClose .close:hover {
+	opacity: 1;
+}
+
+#cardBoardMenuClose .close:focus,
+#cardBoardMenuClose .close:hover,
+#cardBoardMenuClose .close:active {
+	border: 0;
+}
+
+#cardBoardMenuActions {
+	position: absolute;
+	z-index: 1050;
+	background-color: #ffffff;
+	border: 1px solid #d0d0d0;
+	padding: 0;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	background-clip: padding-box;
+}
+
+#cardBoardMenuActions .lvg-board-card-menu {
+	float: left;
+	min-width: 160px;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	font-size: 14px;
+	text-align: left;
+}
+
+#cardBoardMenuActions .lvg-board-card-menu .divider {
+	height: 1px;
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	overflow: hidden;
+	background-color: #e5e5e5;
+}
+
+#cardBoardMenuActions .lvg-board-card-menu button.lvg-dropdown-button {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	text-align: left;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+#cardBoardMenuActions .lavagna-panel {
+	border: 0;
+	margin: 0;
+}
+
+#cardBoardMenuActions .fixed-card-menu-panel {
+	width: 256px;
+}
+
+/* dropdown */
+
+.lavagna-board-sidebar button.lvg-navigation-button {
+	color:black;
+	background-color: #D5D5D5;
+	font-weight: bold;
+}
+
+.lavagna-board-sidebar button.lvg-button-dropdown-navigation {
+	background-color:white;
+	color:black;
+}
+
+.lavagna-board-sidebar button.lvg-button-dropdown-navigation:hover {
+	background-color: #EBEBEB
+}
