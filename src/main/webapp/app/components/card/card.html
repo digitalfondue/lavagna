@@ -1,9 +1,9 @@
-<div data-lvg-card-modal on-close="appCtrl.revertTitle" class="card-modal fade" id="cardModal"
+<div data-lvg-card-modal on-close="cardCtrl.close" class="card-modal fade" id="cardModal"
      tabindex="-1">
     <div class="card-modal-dialog">
         <div class="card-modal-content">
             <div class="card-modal-header modal-header" data-ng-style="cardCtrl.column.columnColor | columnColor">
-                <a class="close" data-ui-sref="^">&times;</a>
+                <a class="close" data-lvg-card-modal-close>&times;</a>
                 <div class="lavagna-card-title-info">
                     <span><a data-ui-sref="project.boards({projectName: cardCtrl.project.shortName})" data-ng-bind="cardCtrl.project.name"></a> /</span>
                     <span><a data-ui-sref="projectBoard.board({projectName: cardCtrl.project.shortName, shortName: cardCtrl.board.shortName})" data-ng-bind="cardCtrl.board.name"></a> /</span>

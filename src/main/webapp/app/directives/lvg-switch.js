@@ -10,7 +10,8 @@
 			restrict: 'E',
 			scope: {
 				model: '=control',
-				change: '='
+				change: '=',
+				identifier: '@'
 			},
 			template: "<div class=\"{{mainClass}}\" ng-class=\"{\'active\': model}\" ng-click=\"handleChange()\"><div class=\"button\"></div></div>",
 			link: function ($scope, element, attrs) {
@@ -19,7 +20,7 @@
 				$scope.handleChange = function() {
 				    $scope.model = !$scope.model;
 				    if($scope.change != undefined && $scope.change != null) {
-				        $scope.change($scope.model);
+				        $scope.change($scope.model, $scope.identifier);
 				    }
 				}
 			}

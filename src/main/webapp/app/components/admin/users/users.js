@@ -2,20 +2,13 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentAdminUsers', AdminUsersComponent);
 
-    function AdminUsersComponent(User, UsersAdministration, Admin, Permission, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                currentUser: '='
-            },
-            controller: AdminUserController,
-            controllerAs: 'adminUsersCtrl',
-            templateUrl: 'app/components/admin/users/users.html'
-        }
-    };
+    components.component('lvgComponentAdminUsers', {
+        bindings: {},
+        controller: AdminUserController,
+        controllerAs: 'adminUsersCtrl',
+        templateUrl: 'app/components/admin/users/users.html'
+    });
 
     function AdminUserController(User, UsersAdministration, Admin, Permission, Notification) {
 
@@ -27,6 +20,14 @@
                 ctrl.users = l;
             });
         }
+
+        function loadCurrentUser() {
+            User.currentCachedUser().then(function(user) {
+                ctrl.currentUser = user;
+            });
+        }
+
+        loadCurrentUser();
 
         function loadRoles() {
             Permission.findAllRolesAndRelatedPermissions().then(function(res) {

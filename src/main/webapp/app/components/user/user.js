@@ -4,20 +4,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentUser', UserComponent);
-
-    function UserComponent($filter, User) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                profile: '=user'
-            },
-            controller: UserController,
-            controllerAs: 'userCtrl',
-            templateUrl: 'app/components/user/user.html'
-        }
-    };
+    components.component('lvgComponentUser', {
+        bindings: {
+            profile: '=user'
+        },
+        controller: UserController,
+        controllerAs: 'userCtrl',
+        templateUrl: 'app/components/user/user.html'
+    });
 
     function UserController($filter, User) {
         var ctrl = this;

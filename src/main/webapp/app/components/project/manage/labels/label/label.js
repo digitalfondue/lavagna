@@ -2,21 +2,16 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentProjectManageLabel', ProjectManageLabelComponent);
 
-    function ProjectManageLabelComponent($rootScope, $filter, $modal, Notification, LabelCache, Label) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '=',
-                label: '='
-            },
-            controller: ProjectManageLabelController,
-            controllerAs: 'manageLabelCtrl',
-            templateUrl: 'app/components/project/manage/labels/label/label.html'
-        }
-    };
+    components.component('lvgComponentProjectManageLabel', {
+        bindings: {
+            project: '=',
+            label: '='
+        },
+        controller: ProjectManageLabelController,
+        controllerAs: 'manageLabelCtrl',
+        templateUrl: 'app/components/project/manage/labels/label/label.html'
+    });
 
     function ProjectManageLabelController($scope, $rootScope, $filter, $modal, Notification, LabelCache, Label) {
         var ctrl = this;

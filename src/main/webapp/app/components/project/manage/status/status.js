@@ -3,20 +3,15 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentProjectManageStatus', ProjectManageStatusComponent);
 
-    function ProjectManageStatusComponent(Project, Notification, $filter) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ProjectManageStatusController,
-            controllerAs: 'manageStatusCtrl',
-            templateUrl: 'app/components/project/manage/status/status.html'
-        }
-    };
+    components.component('lvgComponentProjectManageStatus', {
+        bindings: {
+            project: '='
+        },
+        controller: ProjectManageStatusController,
+        controllerAs: 'manageStatusCtrl',
+        templateUrl: 'app/components/project/manage/status/status.html'
+    });
 
     function ProjectManageStatusController(Project, Notification, $filter) {
 

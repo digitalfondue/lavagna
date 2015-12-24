@@ -4,28 +4,22 @@
 
 	var components = angular.module('lavagna.components');
 
-	components.directive('lvgCardFragment', CardFragmentComponent);
-
-	function CardFragmentComponent(Card) {
-		return {
-			templateUrl: 'app/components/common/card-fragment/card-fragment.html',
-			restrict: 'E',
-			scope: true,
-			bindToController: {
-				card : '=',
-				project : '=',
-				board : '=',
-				selected : '=',
-				query : '=',
-				page : '=',
-				dependencies : '=',
-				view : '@',
-				readOnly : '@'
-			},
-			controller : CardFragmentController,
-            controllerAs : 'cardFragmentCtrl'
-		}
-	}
+	components.component('lvgCardFragment', {
+        templateUrl: 'app/components/common/card-fragment/card-fragment.html',
+        bindings: {
+            card : '=',
+            project : '=',
+            board : '=',
+            selected : '=',
+            query : '=',
+            page : '=',
+            dependencies : '=',
+            view : '@',
+            readOnly : '@'
+        },
+        controller : CardFragmentController,
+        controllerAs : 'cardFragmentCtrl'
+    });
 
 	function CardFragmentController(Card, User) {
 	    var ctrl = this;
@@ -39,7 +33,7 @@
 
         //dependencies
         angular.extend(ctrl, ctrl.dependencies);
-        
+
         User.currentCachedUser().then(function(user) {
         	ctrl.currentUserId = user.id;
         });

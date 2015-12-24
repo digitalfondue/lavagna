@@ -4,20 +4,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentProjectManageBoards', ProjectManageBoardsComponent);
-
-    function ProjectManageBoardsComponent(Project, Board, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ProjectManageBoardsController,
-            controllerAs: 'manageBoardsCtrl',
-            templateUrl: 'app/components/project/manage/boards/boards.html'
-        }
-    };
+    components.component('lvgComponentProjectManageBoards', {
+        bindings: {
+            project: '='
+        },
+        controller: ProjectManageBoardsController,
+        controllerAs: 'manageBoardsCtrl',
+        templateUrl: 'app/components/project/manage/boards/boards.html'
+    });
 
     function ProjectManageBoardsController($scope, Project, Board, Notification) {
         var ctrl = this;

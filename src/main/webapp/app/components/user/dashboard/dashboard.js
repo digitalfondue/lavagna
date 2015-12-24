@@ -4,20 +4,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentUserDashboard', UserDashboardComponent);
-
-    function UserDashboardComponent() {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                profile: '='
-            },
-            controller: UserDashboardController,
-            controllerAs: 'userDashCtrl',
-            templateUrl: 'app/components/user/dashboard/dashboard.html'
-        }
-    };
+    components.component('lvgComponentUserDashboard', {
+        bindings: {
+            profile: '='
+        },
+        controller: UserDashboardController,
+        controllerAs: 'userDashCtrl',
+        templateUrl: 'app/components/user/dashboard/dashboard.html'
+    });
 
     function UserDashboardController() {
         var ctrl = this;

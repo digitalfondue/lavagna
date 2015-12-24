@@ -142,37 +142,54 @@
 
 		$stateProvider.state('home', {
 			url : '/',
-			template : '<lvg-component-dashboard></lvg-component-dashboard>'
+			template : '<lvg-component-dashboard></lvg-component-dashboard>',
+			controller: function(Title) {
+			    Title.set('title.dashboard');
+			}
 		})
 		.state('404', {
 			url : '/not-found/',
 			templateUrl : 'partials/404.html',
-			controller : 'ErrorCtrl'
+			controller: function(Title) {
+                Title.set('title.notfound');
+            }
 		})
 		.state('500', {
 			url : '/error/',
 			templateUrl : 'partials/500.html',
-			controller : 'ErrorCtrl'
+			controller: function(Title) {
+                Title.set('title.error');
+            }
 		})
 		//---- ABOUT ----
 		.state('about', {
 			url:'/about/',
-			templateUrl: 'partials/about.html',
-			controller: 'AboutLicenseCtrl'
+			abstract: true,
+			templateUrl: 'app/components/about/about.html'
 		})
-		.state('about-third-party', {
-			url:'/about/third-party/',
-			templateUrl: 'partials/about.html',
-			controller: 'AboutThirdPartyCtrl'
+		.state('about.lavagna', {
+            url: '',
+            template: '<lvg-license></lvg-license>',
+            controller: function(Title) {
+                Title.set('title.about.lavagna');
+            }
+		})
+		.state('about.third-party', {
+			url:'third-party/',
+			template: '<lvg-licenses></lvg-licenses>',
+            controller: function(Title) {
+                Title.set('title.about.thirdparty');
+            }
 		})
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
 			template: '<lvg-component-account></lvg-component-account>',
-			controller: function(user) {
+			controller: function(Title, user) {
                 this.provider = user.provider;
                 this.username = user.username;
                 this.isCurrentUser = true;
+                Title.set('title.account');
             },
             controllerAs: 'userResolver',
             resolve : currentUserResolver
@@ -180,11 +197,12 @@
             url :'/user/:provider/:username/',
             abstract: true,
             template: '<lvg-component-user user="userResolver.user"></lvg-component-user>',
-            controller: function(user, isCurrentUser) {
+            controller: function(Title, user, isCurrentUser) {
                 this.user = user;
                 this.provider = user.user.provider;
                 this.username = user.user.username;
                 this.isCurrentUser = isCurrentUser;
+                Title.set('title.user.profile', { username: user.user.username });
             },
             controllerAs: 'userResolver',
             resolve : userResolver
@@ -217,30 +235,33 @@
 			template : '<lvg-component-admin></lvg-component-admin>'
 		}).state('admin.home', {
 			url: '',
-			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
+			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>',
+			controller: function(Title) {
+			    Title.set('title.admin.home');
+			}
 		}).state('admin.roles', {
 			url: 'roles/',
 			template: '<lvg-component-manage-roles></lvg-component-manage-roles>'
 		}).state('admin.exportimport', {
 			url: 'export-import/',
-			templateUrl : 'partials/admin/export-import.html',
-			controller : 'AdminExportImportCtrl'
+			template : '<lvg-component-admin-export-import></lvg-component-admin-export-import>'
 		}).state('admin.endpointinfo', {
 			url: 'endpoint-info/',
-			templateUrl : 'partials/admin/endpoint-info.html',
-			controller: 'AdminEndpointInfoCtrl'
+			template : '<lvg-component-admin-endpoints></lvg-component-admin-endpoints>'
 		}).state('admin.users', {
 			url: 'users/',
-			template : '<lvg-component-admin-users current-user="appCtrl.currentUser"></lvg-component-admin-users>'
+			template : '<lvg-component-admin-users></lvg-component-admin-users>'
 		}).state('admin.login', {
 			url: 'login/',
-			templateUrl: 'partials/admin/configure-login.html',
-			controller: 'AdminConfigureLoginCtrl',
+			template: '<lvg-component-admin-login oauth-providers="adminLoginRslvr.oauthProviders"></lvg-component-admin-login>',
+			controller: function(oauthProviders) {
+			    this.oauthProviders = oauthProviders;
+			},
+			controllerAs: 'adminLoginRslvr',
 			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
 		}).state('admin.smtp', {
 			url : 'smtp/',
-			templateUrl : 'partials/admin/manage-smtp-configuration.html',
-			controller : 'AdminManageSmtpConfigurationCtrl'
+			template : '<lvg-component-admin-smtp></lvg-component-admin-smtp>'
 		})
 
 		//---- MANAGE PROJECT ----
@@ -248,8 +269,9 @@
         	url : '/:projectName/manage/',
 			templateUrl : 'app/components/project/manage/manage.html',
 			abstract: true,
-          	controller : function(project) {
+          	controller : function(Title, project) {
                 this.project = project;
+                Title.set('title.project.manage', { shortname: project.shortName });
           	},
           	controllerAs: 'projectResolver',
           	resolve: projectResolver
@@ -284,8 +306,9 @@
 		    abstract: true,
 		    url : '/:projectName/',
 		    templateUrl: 'app/components/project/project.html',
-		    controller: function(project) {
+		    controller: function(Title, project) {
                 this.project = project;
+                Title.set('title.project', { shortname: project.shortName, name: project.name });
             },
             controllerAs: 'projectResolver',
             resolve : projectResolver
@@ -301,10 +324,11 @@
             template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
-            controller : function(card, project, board) {
+            template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
+            controller : function(Title, card, project, board) {
                 this.board = board;
                 this.card = card;
+                Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
             controllerAs : 'cardCtrlResolver',
             resolve : cardCtrlResolver
@@ -318,35 +342,44 @@
 			reloadOnSearch: false
 		}).state('project.search.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
-            controller : function(card, project, board) {
+			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
+            controller : function(Title, card, project, board) {
                 this.board = board;
                 this.card = card;
+                Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
             controllerAs : 'cardCtrlResolver',
             resolve : cardCtrlResolver
 		})
 
 		//---- BOARD ----
-		.state('projectBoard', {
-		    abstract : true,
+		.state('board', {
             url : '/:projectName/{shortName:[A-Z0-9_]+}',
-            templateUrl : 'app/components/board/board.html',
-            controller : function(project, board) {
+            template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>',
+            controller : function(Title, project, board) {
                 this.project = project;
                 this.board = board;
             },
             controllerAs: 'boardCtrlResolver',
-            resolve : boardResolver
+            resolve : boardResolver,
+            onEnter: function(Title, project, board) {
+                console.log('enter board state');
+                Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
+            }
 		})
-		.state('projectBoard.board', {
-			url : '',
-			template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>'
-		}).state('projectBoard.board.card', {
+		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="boardCtrlResolver.project" board="boardCtrlResolver.board" card="cardCtrlResolver.card" app="appCtrl"></lvg-component-card>',
-			controller : function(card, project, board) {
+			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" close="cardCtrlResolver.revertTitle"></lvg-component-card>',
+			controller : function(Title, card, project, board) {
 			    this.card = card;
+			    this.board = board;
+			    this.project = project;
+			    Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
+
+			    this.revertTitle = function() {
+			        console.log('reverting title lol');
+                    Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
+			    };
 			},
 			controllerAs : 'cardCtrlResolver',
 			resolve : cardCtrlResolver

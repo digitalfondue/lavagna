@@ -2,20 +2,14 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentProjectManageImport', ProjectManageImportComponent);
-
-    function ProjectManageImportComponent(StompClient, Project, Admin, Notification, Board) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ProjectManageImportController,
-            controllerAs: 'manageImportCtrl',
-            templateUrl: 'app/components/project/manage/import/import.html'
-        }
-    };
+    components.component('lvgComponentProjectManageImport', {
+        bindings: {
+            project: '='
+        },
+        controller: ProjectManageImportController,
+        controllerAs: 'manageImportCtrl',
+        templateUrl: 'app/components/project/manage/import/import.html'
+    });
 
     function generateUUID(){
         var d = new Date().getTime();

@@ -2,20 +2,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentProjectMilestones', ProjectMilestonesComponent);
-
-    function ProjectMilestonesComponent(Card, User, Label, Notification, StompClient) {
-        return {
-            restrict: 'E',
-            scope: true,
-            controller: ProjectMilestonesController,
-            controllerAs: 'projectMilestonesCtrl',
-            bindToController: {
-                project: '='
-            },
-            templateUrl: 'app/components/project/milestones/project-milestones.html'
-        }
-    }
+    components.component('lvgComponentProjectMilestones', {
+        controller: ProjectMilestonesController,
+        controllerAs: 'projectMilestonesCtrl',
+        bindings: {
+            project: '='
+        },
+        templateUrl: 'app/components/project/milestones/project-milestones.html'
+    });
 
     function ProjectMilestonesController($scope, Card, User, Label, Notification, StompClient) {
         var projectMilestonesCtrl = this;

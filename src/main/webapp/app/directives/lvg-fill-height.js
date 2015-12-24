@@ -40,14 +40,14 @@
 					var wHeight = $window.innerHeight;//
 					var wWidth = $window.innerWidth;//
 					$elem.width(wWidth - (toggle ? margin : 0));
-					
+
 					var maxHeight = wHeight - $elem.position().top;
-					
+
 					$elem.height(wHeight - $elem.position().top);
-					
+
 					$timeout(function() {$scope.maxHeight = maxHeight;},0);
-					
-					
+
+
 				};
 				resizeHandler();
 
@@ -55,7 +55,7 @@
 				attrs.$observe('lvgFillHeight', resizeHandler);
 
 				$($window).resize(resizeHandler);
-				
+
 				$scope.$watch(function() {
 						return $(element).position().top;
 					}, function() {
@@ -69,17 +69,21 @@
 			}
 		};
 	});
-	
+
 	directives.directive('lvgUpdateColumnSize', function($window, $timeout) {
 		return {
 			restrict : 'A',
 			link : function($scope, element, attrs) {
-				
-				var panelHead = element.find('.panel-heading')[0];
-				var panelFooter = element.find('.panel-footer')[0];
-				
-				$scope.$watch(function() {return panelHead.offsetHeight + panelFooter.offsetHeight;}, function(v) {
-					$scope.panelHeadAndFooterSize = v;
+				$scope.$watch(function() {
+				        var heads = element.find('.panel-heading');
+				        var panelHeadHeight = heads.length > 0 ? heads[0].offsetHeight : 0;
+
+				        var footers = element.find('.panel-footer');
+                        var panelFooterHeight = footers.length > 0 ? footers[0].offsetHeight : 0;
+
+				        return panelHeadHeight + panelFooterHeight;
+				    }, function(v) {
+					    $scope.panelHeadAndFooterSize = v;
 				});
 			}
 		};

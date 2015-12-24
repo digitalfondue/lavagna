@@ -4,23 +4,17 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentCard', CardComponent);
-
-    function CardComponent(CardCache, Card, User, LabelCache, Label, StompClient, Notification, Board, BulkOperations) {
-        return {
-            restrict: 'E',
-            templateUrl: 'app/components/card/card.html',
-            scope: true,
-            bindToController: {
-                project: '=',
-                board: '=',
-                card: '=',
-                app: '='
-            },
-            controller: CardController,
-            controllerAs: 'cardCtrl'
-        }
-    }
+    components.component('lvgComponentCard', {
+        templateUrl: 'app/components/card/card.html',
+        bindings: {
+            project: '=',
+            board: '=',
+            card: '=',
+            close: '='
+        },
+        controller: CardController,
+        controllerAs: 'cardCtrl'
+    });
 
     function CardController($scope, $rootScope, $timeout, CardCache, Card, User, LabelCache, Label, StompClient,
         Notification, Board, BulkOperations) {
@@ -30,6 +24,8 @@
         var card = ctrl.card;
 
         ctrl.view = {};
+
+        console.log('card close function: %s', ctrl.close);
 
         var findAndAssignColumns = function() {
             Board.columns(board.shortName, 'BOARD').then(function(columns) {
@@ -73,10 +69,6 @@
         loadColumn(card.columnId);
         //
 
-        var refreshTitle = function() {
-            ctrl.app.setTitle('[' + board.shortName + '-' + card.sequence + '] ' + card.name + ' - Lavagna');
-        };
-        refreshTitle();
         //------------------
 
         var reloadCard = function() {

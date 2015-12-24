@@ -1,0 +1,64 @@
+<div class="col-xs-12">
+    <div class="lavagna-panel" data-ng-class="{collapsed : !adminSmtpCtrl.smtpEnabled}">
+        <form data-ng-submit="adminSmtpCtrl.saveSmtpConfig(adminSmtpCtrl.configuration)">
+            <div class="head clearfix headonly">
+                <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-smtp-configuration.title</div>
+                <div class="title-addon col-xs-3 lvg-switch-controls">
+                    <ul class="panel-controls">
+                        <li class="control-no-action">
+                            <lvg-switch
+                                switch-class="lvg-switch"
+                                control="adminSmtpCtrl.smtpEnabled"
+                                change="adminSmtpCtrl.toggleSmtp">
+                            </lvg-switch>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="body separated">
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.host</div>
+                    <input class="form-control" type="text" data-ng-model="adminSmtpCtrl.configuration.host" required>
+                </div>
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.port</div>
+                    <input class="form-control" type="number" data-ng-model="adminSmtpCtrl.configuration.port" required>
+                </div>
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.protocol</div>
+                    <select class="form-control" type="text" data-ng-model="adminSmtpCtrl.configuration.protocol" required>
+                        <option value="smtp">smtp</option>
+                        <option value="smtps">smtps</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.username</div>
+                    <input class="form-control" type="text" data-ng-model="adminSmtpCtrl.configuration.username">
+                </div>
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.password</div>
+                    <input class="form-control" type="password" data-ng-model="adminSmtpCtrl.configuration.password">
+                </div>
+
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.from</div>
+                    <input class="form-control" type="email" data-ng-model="adminSmtpCtrl.configuration.from" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.properties</div>
+                    <textarea class="form-control" data-ng-model="adminSmtpCtrl.configuration.properties"></textarea>
+                </div>
+            </div>
+            <div class="footer clearfix">
+                <div class="content">
+                    <div>
+                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.save</button>
+                        <button type="button" class="lvg-button lvg-button-default"
+                                data-ng-click="adminSmtpCtrl.openSmtpConfigModal()"><span data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</span></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

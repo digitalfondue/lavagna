@@ -4,18 +4,12 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentAccount', AccountComponent);
-
-    function AccountComponent($window, User, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {},
-            controller: AccountController,
-            controllerAs: 'accountCtrl',
-            templateUrl: 'app/components/account/account.html'
-        }
-    };
+    components.component('lvgComponentAccount', {
+        bindings: {},
+        controller: AccountController,
+        controllerAs: 'accountCtrl',
+        templateUrl: 'app/components/account/account.html'
+    });
 
     function AccountController($window, User, Notification) {
         var ctrl = this;

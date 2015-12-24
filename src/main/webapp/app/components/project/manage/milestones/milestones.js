@@ -3,20 +3,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentProjectManageMilestones', ProjectManageMilestonesComponent);
-
-    function ProjectManageMilestonesComponent(LabelCache, Label, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ProjectManageMilestonesController,
-            controllerAs: 'manageMilestonesCtrl',
-            templateUrl: 'app/components/project/manage/milestones/milestones.html'
-        }
-    };
+    components.component('lvgComponentProjectManageMilestones', {
+        bindings: {
+            project: '='
+        },
+        controller: ProjectManageMilestonesController,
+        controllerAs: 'manageMilestonesCtrl',
+        templateUrl: 'app/components/project/manage/milestones/milestones.html'
+    });
 
     function ProjectManageMilestonesController($rootScope, $scope, LabelCache, Label, Notification) {
 

@@ -2,18 +2,13 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentAdminParameters', AdminParametersComponent);
 
-    function AdminParametersComponent(Admin, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {},
+    components.component('lvgComponentAdminParameters', {
+            bindings: {},
             controller: AdminParametersController,
             controllerAs: 'adminParamsCtrl',
             templateUrl: 'app/components/admin/parameters/parameters.html'
-        }
-    };
+    });
 
     function AdminParametersController(Admin, Notification) {
         var ctrl = this;

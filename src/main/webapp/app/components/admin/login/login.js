@@ -1,0 +1,292 @@
+(function() {
+    'use strict';
+
+    var components = angular.module('lavagna.components');
+
+    components.component('lvgComponentAdminLogin', {
+        bindings: {
+            oauthProviders: '='
+        },
+        controller: AdminLoginController,
+        controllerAs: 'adminLoginCtrl',
+        templateUrl: 'app/components/admin/login/login.html'
+    });
+
+    function getPort(window) {
+        return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
+    }
+
+    function AdminLoginController($window, $modal, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
+        var ctrl = this;
+
+		ctrl.oauthNewProvider = {};
+
+		function loadConfiguration() {
+
+			return $q.all([Admin.findAllConfiguration(), Admin.findAllBaseLoginWithActivationStatus(), Admin.findAllOauthProvidersInfo()]).then(function(res) {
+
+				var conf = res[0];
+				var allBaseLogin = res[1];
+				ctrl.oauthProviders = res[2];
+
+				ctrl.currentConf = conf;
+				ctrl.authMethod = allBaseLogin;
+
+				ctrl.persona = {audience : conf['PERSONA_AUDIENCE'] || ($window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window))};
+
+				ctrl.ldap = {
+						serverUrl : conf['LDAP_SERVER_URL'],
+						managerDn : conf['LDAP_MANAGER_DN'],
+						managerPassword : conf['LDAP_MANAGER_PASSWORD'],
+						userSearchBase : conf['LDAP_USER_SEARCH_BASE'],
+						userSearchFilter: conf['LDAP_USER_SEARCH_FILTER']
+				}
+
+				var oauth = conf['OAUTH_CONFIGURATION'] && JSON.parse(conf['OAUTH_CONFIGURATION']) || { providers : []};
+
+				ctrl.oauth = {};
+
+				angular.forEach(ctrl.oauthProviders, function(p) {
+					ctrl.oauth[p.name] = {};
+				});
+
+				ctrl.oauth.baseUrl = oauth.baseUrl || CONTEXT_PATH;
+
+
+				for(var i = 0; i< oauth.providers.length;i++) {
+					ctrl.oauth[oauth.providers[i].provider] = oauth.providers[i];
+					ctrl.oauth[oauth.providers[i].provider].present = true;
+				}
+
+			});
+		}
+
+		loadConfiguration();
+
+		// -- enable providers
+
+		var updateActiveProviders = function() {
+			var toUpdate = [];
+
+			var activeAuthMethod = [];
+			for(var k in ctrl.authMethod) {
+				if(ctrl.authMethod[k]) {
+					activeAuthMethod.push(k);
+				}
+			}
+
+			toUpdate.push({first : 'AUTHENTICATION_METHOD', second : JSON.stringify(activeAuthMethod)});
+
+			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).catch(function(error) {
+				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.updateActiveProviders.error'}, false);
+			}).then(loadConfiguration);
+		}
+
+		ctrl.updateActiveProviders = function(value, identifier) {
+		    ctrl.authMethod[identifier] = value;
+		    updateActiveProviders();
+		}
+
+		// -- save providers config
+
+		ctrl.saveLdapConfig = function(ldap) {
+			var toUpdate = [];
+
+			toUpdate.push({first : 'LDAP_SERVER_URL', second : ldap.serverUrl});
+			toUpdate.push({first : 'LDAP_MANAGER_DN', second : ldap.managerDn});
+			toUpdate.push({first : 'LDAP_MANAGER_PASSWORD', second : ldap.managerPassword});
+			toUpdate.push({first : 'LDAP_USER_SEARCH_BASE', second : ldap.userSearchBase});
+			toUpdate.push({first : 'LDAP_USER_SEARCH_FILTER', second : ldap.userSearchFilter});
+
+			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
+				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveLdapConfig.success'}, false);
+			}, function(error) {
+				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveLdapConfig.error'}, false);
+			}).then(loadConfiguration);
+		};
+
+		ctrl.savePersonaConfig = function(persona) {
+			var toUpdate = [];
+
+			toUpdate.push({first : 'PERSONA_AUDIENCE', second : persona.audience});
+
+			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
+				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.savePersonaConfig.success'}, false);
+			}, function(error) {
+				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.savePersonaConfig.error'}, false);
+			}).then(loadConfiguration);
+		};
+
+		function addProviderIfPresent(list, conf, provider) {
+			if(conf && conf.present) {
+				list.push({provider: provider, apiKey: conf.apiKey, apiSecret : conf.apiSecret,
+					hasCustomBaseAndProfileUrl: conf.hasCustomBaseAndProfileUrl,
+					baseProvider: conf.baseProvider,
+					baseUrl: conf.baseUrl,
+					profileUrl: conf.profileUrl});
+			}
+		}
+
+		ctrl.saveOauthConfig = function saveOauthConfig(oauthNewProvider) {
+
+			var toUpdate = [];
+
+			var newOauthConf = {baseUrl: ctrl.oauth.baseUrl, providers : []};
+			angular.forEach(ctrl.oauthProviders, function(provider) {
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth[provider.name], provider.name);
+			});
+
+
+			if(oauthNewProvider) {
+				newOauthConf.providers.push({
+					provider: oauthNewProvider.type.name + '-'+ oauthNewProvider.name,
+					apiKey: oauthNewProvider.apiKey,
+					apiSecret: oauthNewProvider.apiSecret,
+					hasCustomBaseAndProfileUrl:true,
+					baseProvider: oauthNewProvider.type.name,
+					baseUrl: oauthNewProvider.baseUrl,
+					profileUrl: oauthNewProvider.profileUrl
+				});
+			}
+
+			toUpdate.push({first : 'OAUTH_CONFIGURATION', second : JSON.stringify(newOauthConf)});
+
+			return Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
+				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveOAuthConfig.success'}, false);
+			}, function(error) {
+				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
+			}).then(loadConfiguration);
+		}
+
+
+        //TODO: in the future, move to a separate component
+		ctrl.openOauthAddNewModal = function() {
+			$modal.open({
+				templateUrl: 'app/components/admin/login/oauth/oauth-modal.html',
+				size: 'lg',
+				controller: ['$scope', '$modalInstance', 'oauth', 'oauthProviders',
+				    function($modalScope, $modalInstance, oauth, oauthProviders) {
+				    $modalScope.oauth = oauth;
+				    $modalScope.oauthProviders = oauthProviders;
+
+					$modalScope.saveOauthConfig = function(toSave) {
+						ctrl.saveOauthConfig(toSave).then(function() {
+							$modalInstance.close('done');
+						});
+					}
+
+					$modalScope.close = function() {
+						$modalInstance.close('done');
+					}
+				}],
+				windowClass: 'lavagna-modal',
+				resolve: {
+                    oauth: function() {
+                        return ctrl.oauth;
+                    },
+                    oauthProviders: function() {
+                        return ctrl.oauthProviders;
+                    }
+				}
+			});
+		}
+
+        //TODO: in the future, move to a separate component
+		ctrl.openLdapConfigModal = function() {
+			$modal.open({
+				templateUrl: 'app/components/admin/login/ldap/ldap-modal.html',
+				controller: ['$scope', '$modalInstance', 'ldapConfig',
+                    function($modalScope, $modalInstance, ldapConfig) {
+
+                    $modalScope.ldap = ldapConfig;
+
+					$modalScope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
+						Admin.checkLdap(ldapConf, ldapCheck).then(function(r) {
+							$modalScope.ldapCheckResult = r;
+						});
+					};
+
+					$modalScope.close = function() {
+						$modalInstance.close('done');
+					}
+				}],
+				size: 'sm',
+				windowClass: 'lavagna-modal',
+				resolve: {
+					ldapConfig: function () {
+						return ctrl.ldap;
+					}
+				}
+		    });
+		}
+
+		// ------ Anonymous access
+
+		var load = function () {
+			Admin.findByKey('ENABLE_ANON_USER').then(function (res) {
+				ctrl.anonEnabled = res.second === "true";
+			});
+
+			Permission.findUsersWithRole('ANONYMOUS').then(function (res) {
+				var userHasGlobalRole = false;
+				for (var i = 0; i < res.length; i++) {
+					if (res[i].provider === 'system' && res[i].username === 'anonymous') {
+						userHasGlobalRole = true;
+					}
+				}
+				ctrl.userHasGlobalRole = userHasGlobalRole;
+			});
+
+			Permission.findAllRolesAndRelatedPermissions().then(function(res) {
+				var userHasSearchPermission = false;
+				for(var i = 0; i < res['ANONYMOUS'].roleAndPermissions.length; i++) {
+					var permission = res['ANONYMOUS'].roleAndPermissions[i];
+					if(permission.permission === 'SEARCH') {
+						userHasSearchPermission = true;
+					}
+				}
+				ctrl.userHasSearchPermission = userHasSearchPermission;
+			});
+
+		};
+
+		load();
+
+        ctrl.anonChange = function(value) {
+            if(value == undefined) {
+                return;
+            }
+
+            Admin.updateConfiguration(
+                    {toUpdateOrCreate:
+                        [{first: 'ENABLE_ANON_USER', second: value.toString()}]}
+                ).catch(function(error) {
+                    Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.updateAnonConfiguration.error'}, false);
+                }).then(load);
+        }
+
+        ctrl.globalRoleChange = function(value) {
+			if(value == undefined) {
+				return;
+			}
+			User.byProviderAndUsername('system', 'anonymous').then(function (res) {
+				if (value) {
+					Permission.addUserToRole(res.id, 'ANONYMOUS').then(load);
+				} else {
+					Permission.removeUserToRole(res.id, 'ANONYMOUS').then(load);
+				}
+			});
+		};
+
+        ctrl.searchRoleChange = function(value) {
+			if(value == undefined) {
+				return;
+			}
+
+			Permission.toggleSearchPermissionForAnonymousUsers(value).then(load);
+		};
+
+
+    };
+
+})();

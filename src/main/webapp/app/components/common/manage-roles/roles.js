@@ -3,20 +3,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentManageRoles', ManageRolesComponent);
-
-    function ManageRolesComponent(Permission, Notification, ProjectCache, StompClient, $modal, $filter) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ManageRolesController,
-            controllerAs: 'manageRolesCtrl',
-            templateUrl: 'app/components/common/manage-roles/roles.html'
-        }
-    };
+    components.component('lvgComponentManageRoles', {
+        bindings: {
+            project: '='
+        },
+        controller: ManageRolesController,
+        controllerAs: 'manageRolesCtrl',
+        templateUrl: 'app/components/common/manage-roles/roles.html'
+    });
 
     function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, $modal, $filter) {
 

@@ -37,7 +37,7 @@
 			checkLdap: function (ldap, usernameAndPwd) {
 				return $http.post('api/check-ldap/', angular.extend({}, ldap, usernameAndPwd)).then(extractData);
 			},
-			
+
 			importUsers: function(file, progressCallBack, completeCallback, failedCallback, canceledCallback) {
 				var upload = $upload.upload({
 			        url: 'api/user/bulk-insert',
@@ -48,7 +48,7 @@
 			      .xhr(function(xhr){xhr.addEventListener("abort", canceledCallback, false);});
 				return upload;
 		    },
-			
+
 			importData: function(file, overrideConfig, progressCallBack, completeCallback, failedCallback) {
 				var upload = $upload.upload({
 			        url: 'api/import/lavagna',
@@ -57,10 +57,10 @@
 				}).progress(progressCallBack)
 				.success(completeCallback)
 				.error(failedCallback);
-				
+
 				return upload;
 			},
-			
+
 			//----
 			findAllLoginHandlers : function() {
 				return $http.get('api/login/all').then(extractData);
@@ -70,6 +70,9 @@
 			},
 			findAllBaseLoginWithActivationStatus : function() {
 				return $http.get('api/login/all-base-with-activation-status').then(extractData);
+			},
+			testSmtpConfig: function(to) {
+                return $http.post('api/check-smtp/', configuration, {params: {to: to}});
 			}
 		};
 	});

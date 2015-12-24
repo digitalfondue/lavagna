@@ -2,25 +2,20 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.directive('lvgComponentManageRolePermissions', ManageRolePermissionsComponent);
 
-    function ManageRolePermissionsComponent(Permission, Notification, $modal) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                roleName: '=',
-                roleDesc: '=',
-                permissionsByCategory: '=permissions',
-                project: '=',
-                submit: '=',
-                cancel: '='
-            },
-            controller: ManageRolePermissionsController,
-            controllerAs: 'managePermsCtrl',
-            templateUrl: 'app/components/common/manage-roles/permissions/permissions.html'
-        }
-    };
+    components.component('lvgComponentManageRolePermissions', {
+        bindings: {
+            roleName: '=',
+            roleDesc: '=',
+            permissionsByCategory: '=permissions',
+            project: '=',
+            submit: '=',
+            cancel: '='
+        },
+        controller: ManageRolePermissionsController,
+        controllerAs: 'managePermsCtrl',
+        templateUrl: 'app/components/common/manage-roles/permissions/permissions.html'
+    });
 
     function ManageRolePermissionsController(Permission, Notification, $modal) {
         var ctrl = this;

@@ -3,21 +3,15 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentBoard', BoardComponent);
-
-    function BoardComponent(Board, Card, Project, LabelCache, Label, Search, StompClient, User, Notification) {
-        return {
-            restrict: 'E',
-            scope: true,
-            controller: BoardController,
-            controllerAs: 'boardCtrl',
-            bindToController: {
-                project: '=',
-                board: '='
-            },
-            templateUrl: 'app/components/board/board/board.html'
-        };
-    }
+    components.component('lvgComponentBoard', {
+        controller: BoardController,
+        controllerAs: 'boardCtrl',
+        bindings: {
+            project: '=',
+            board: '='
+        },
+        templateUrl: 'app/components/board/board/board.html'
+    });
 
     function BoardController($rootScope, $scope, $location, $filter, $log, $timeout, $http, $modal,
         Board, Card, Project, LabelCache, Label, Search, StompClient, User, Notification) {
@@ -26,7 +20,7 @@
 
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
-        
+
         User.currentCachedUser().then(function(currentUser) {
             ctrl.currentUserId = currentUser.id;
         });

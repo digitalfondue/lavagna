@@ -4,17 +4,11 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentDashboard', DashboardComponent);
-
-    function DashboardComponent(Project, User, Notification, StompClient) {
-        return {
-            restrict: 'E',
-            scope: true,
-            controller: DashboardController,
-            controllerAs: 'dashboardCtrl',
-            templateUrl: 'app/components/dashboard/dashboard.html'
-        }
-    }
+    components.component('lvgComponentDashboard', {
+        controller: DashboardController,
+        controllerAs: 'dashboardCtrl',
+        templateUrl: 'app/components/dashboard/dashboard.html'
+    });
 
     function DashboardController($scope, Project, User, Notification, StompClient) {
 

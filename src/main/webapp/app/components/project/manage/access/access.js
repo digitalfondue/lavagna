@@ -4,21 +4,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentProjectManageAccess', ProjectManageAccessComponent);
-
-    function ProjectManageAccessComponent(User, Notification, Permission) {
-        return {
-            restrict: 'E',
-            scope: true,
-            bindToController: {
-                project: '='
-            },
-            controller: ProjectManageAccessController,
-            controllerAs: 'manageAccessCtrl',
-            templateUrl: 'app/components/project/manage/access/access.html'
-        }
-
-    };
+    components.component('lvgComponentProjectManageAccess', {
+        bindings: {
+            project: '='
+        },
+        controller: ProjectManageAccessController,
+        controllerAs: 'manageAccessCtrl',
+        templateUrl: 'app/components/project/manage/access/access.html'
+    });
 
     function ProjectManageAccessController(User, Notification, Permission) {
 
