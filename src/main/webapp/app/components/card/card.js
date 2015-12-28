@@ -17,7 +17,7 @@
     });
 
     function CardController($scope, $rootScope, $timeout, CardCache, Card, User, LabelCache, Label, StompClient,
-        Notification, Board, BulkOperations) {
+        Notification, Board, BulkOperations, Title) {
         var ctrl = this;
         var board = ctrl.board;
         var project = ctrl.project;
@@ -25,7 +25,7 @@
 
         ctrl.view = {};
 
-        console.log('card close function: %s', ctrl.close);
+        Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
 
         var findAndAssignColumns = function() {
             Board.columns(board.shortName, 'BOARD').then(function(columns) {

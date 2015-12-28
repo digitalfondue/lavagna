@@ -5,8 +5,10 @@
 
     components.component('lvgLicenses', {
         bindings: {},
-        controller: function($http) {
+        controller: function($http, Title) {
             var ctrl = this;
+            Title.set('title.about.thirdparty');
+
             $http.get('about/THIRD-PARTY.txt').success(function(res) {
                 ctrl.thirdParty=res;
             });

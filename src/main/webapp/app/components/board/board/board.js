@@ -13,13 +13,15 @@
         templateUrl: 'app/components/board/board/board.html'
     });
 
-    function BoardController($rootScope, $scope, $location, $filter, $log, $timeout, $http, $modal,
-        Board, Card, Project, LabelCache, Label, Search, StompClient, User, Notification) {
+    function BoardController($rootScope, $scope, $location, $filter, $log, $timeout,
+        Board, Card, Project, LabelCache, Search, StompClient, User, Notification, Title) {
 
         var ctrl = this;
 
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
+
+        Title.set('title.board', { projectshortname: projectName, shortname: boardName, name: ctrl.board.name });
 
         User.currentCachedUser().then(function(currentUser) {
             ctrl.currentUserId = currentUser.id;

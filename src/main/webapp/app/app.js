@@ -142,10 +142,7 @@
 
 		$stateProvider.state('home', {
 			url : '/',
-			template : '<lvg-component-dashboard></lvg-component-dashboard>',
-			controller: function(Title) {
-			    Title.set('title.dashboard');
-			}
+			template : '<lvg-component-dashboard></lvg-component-dashboard>'
 		})
 		.state('404', {
 			url : '/not-found/',
@@ -169,27 +166,20 @@
 		})
 		.state('about.lavagna', {
             url: '',
-            template: '<lvg-license></lvg-license>',
-            controller: function(Title) {
-                Title.set('title.about.lavagna');
-            }
+            template: '<lvg-license></lvg-license>'
 		})
 		.state('about.third-party', {
 			url:'third-party/',
-			template: '<lvg-licenses></lvg-licenses>',
-            controller: function(Title) {
-                Title.set('title.about.thirdparty');
-            }
+			template: '<lvg-licenses></lvg-licenses>'
 		})
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
 			template: '<lvg-component-account></lvg-component-account>',
-			controller: function(Title, user) {
+			controller: function(user) {
                 this.provider = user.provider;
                 this.username = user.username;
                 this.isCurrentUser = true;
-                Title.set('title.account');
             },
             controllerAs: 'userResolver',
             resolve : currentUserResolver
@@ -197,12 +187,11 @@
             url :'/user/:provider/:username/',
             abstract: true,
             template: '<lvg-component-user user="userResolver.user"></lvg-component-user>',
-            controller: function(Title, user, isCurrentUser) {
+            controller: function(user, isCurrentUser) {
                 this.user = user;
                 this.provider = user.user.provider;
                 this.username = user.user.username;
                 this.isCurrentUser = isCurrentUser;
-                Title.set('title.user.profile', { username: user.user.username });
             },
             controllerAs: 'userResolver',
             resolve : userResolver
@@ -235,10 +224,7 @@
 			template : '<lvg-component-admin></lvg-component-admin>'
 		}).state('admin.home', {
 			url: '',
-			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>',
-			controller: function(Title) {
-			    Title.set('title.admin.home');
-			}
+			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
 		}).state('admin.roles', {
 			url: 'roles/',
 			template: '<lvg-component-manage-roles></lvg-component-manage-roles>'
@@ -267,11 +253,10 @@
 		//---- MANAGE PROJECT ----
 		.state('ProjectManage', {
         	url : '/:projectName/manage/',
-			templateUrl : 'app/components/project/manage/manage.html',
+			template : '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>',
 			abstract: true,
-          	controller : function(Title, project) {
+          	controller : function(project) {
                 this.project = project;
-                Title.set('title.project.manage', { shortname: project.shortName });
           	},
           	controllerAs: 'projectResolver',
           	resolve: projectResolver
@@ -356,16 +341,12 @@
 		.state('board', {
             url : '/:projectName/{shortName:[A-Z0-9_]+}',
             template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>',
-            controller : function(Title, project, board) {
+            controller : function(project, board) {
                 this.project = project;
                 this.board = board;
             },
             controllerAs: 'boardCtrlResolver',
-            resolve : boardResolver,
-            onEnter: function(Title, project, board) {
-                console.log('enter board state');
-                Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
-            }
+            resolve : boardResolver
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
@@ -374,11 +355,9 @@
 			    this.card = card;
 			    this.board = board;
 			    this.project = project;
-			    Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
 
 			    this.revertTitle = function() {
-			        console.log('reverting title lol');
-                    Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
+                    Title.forceSet('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
 			    };
 			},
 			controllerAs : 'cardCtrlResolver',
