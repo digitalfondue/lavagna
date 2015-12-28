@@ -7,21 +7,14 @@
 	directives.directive('lvgCardModal', function () {
 		return {
 			restrict: 'A',
-			scope: {
-			    onClose: '='
-			},
+			scope: {},
 			controller: function ($scope, $element, $state) {
 
 				$scope.goBack = function() {
-				    console.log('moving back, execute onClose function');
-					//go to parent state
-					$scope.onClose();
 					$state.go('^');
 				}
 			},
 			link: function ($scope, $element, $attrs) {
-
-			    console.log('modal on-close function: %s', $scope.onClose);
 
 				var close = function () {
 					cleanup();

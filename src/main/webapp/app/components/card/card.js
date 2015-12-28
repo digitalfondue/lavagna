@@ -9,8 +9,7 @@
         bindings: {
             project: '=',
             board: '=',
-            card: '=',
-            close: '='
+            card: '='
         },
         controller: CardController,
         controllerAs: 'cardCtrl'

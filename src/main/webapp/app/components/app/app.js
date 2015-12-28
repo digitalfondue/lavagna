@@ -5,7 +5,7 @@
 
     components.controller('LvgAppController', AppController);
 
-    function AppController($window, $rootScope, User, Title) {
+    function AppController($window, User, Title) {
         var ctrl = this;
 
         Title.set('index.lavagna'); // basic title when the app loads

@@ -350,18 +350,17 @@
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" close="cardCtrlResolver.revertTitle"></lvg-component-card>',
-			controller : function(Title, card, project, board) {
+			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
+			controller : function(card, project, board) {
 			    this.card = card;
 			    this.board = board;
 			    this.project = project;
-
-			    this.revertTitle = function() {
-                    Title.forceSet('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
-			    };
 			},
 			controllerAs : 'cardCtrlResolver',
-			resolve : cardCtrlResolver
+			resolve : cardCtrlResolver,
+            onExit: function(Title, card, project, board) {
+                Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
+            }
 		});
 
 		$urlRouterProvider.otherwise('/');

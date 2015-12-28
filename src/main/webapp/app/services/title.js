@@ -22,7 +22,7 @@
 
         // put current title in the cache
         $rootScope.$on('$locationChangeStart', function(e, n, o) {
-            console.log('location start change, new=%s, old=%s', n, o);
+            //console.log('location start change, new=%s, old=%s', n, o);
             if(n === o) { // first load yo
                 canSetTitle = true;
             } else {
@@ -32,22 +32,22 @@
 
         // get the current title from the cache
         $rootScope.$on('$locationChangeSuccess', function(e, n, o) {
-            console.log('location success change, new=%s, old=%s', n, o);
-            if(n !== o) { // emit title when the url is changed, TODO: flag for back
+            //console.log('location success change, new=%s, old=%s', n, o);
+            if(n !== o) { // emit title when the url is changed
                 canSetTitle = false;
                 emit();
             }
         });
 
         $rootScope.$on('$stateChangeStart', function(e, from, fromp, to, top) {
-            console.log('state start change, from=%s to=%s', JSON.stringify(from), JSON.stringify(to));
+            //console.log('state start change, from=%s to=%s', JSON.stringify(from), JSON.stringify(to));
             if(to.name !== "") {
                 forceEmit = false; // first state change after first load
             }
         });
 
         $rootScope.$on('$stateChangeSuccess', function(e, from, fromp, to, top) {
-            console.log('state success change, from=%s to=%s', JSON.stringify(from), JSON.stringify(to));
+            //console.log('state success change, from=%s to=%s', JSON.stringify(from), JSON.stringify(to));
             if(to.name !== "") {
                 canSetTitle = true;
             }
@@ -66,13 +66,6 @@
                         }
                     });
                 }
-            },
-            forceSet: function(_title, options) {
-                forceEmit = true;
-                this.set(_title, options);
-            },
-            get: function() {
-                return currentTitle;
             }
         }
 	});
