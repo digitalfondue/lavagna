@@ -88,10 +88,10 @@
 					class="lavagna-label lavagna-label-no-controls"
 					data-bo-style="label.labelColor|labelBackground"
 					data-bo-class="label.labelColor|labelBackgroundClass">
-					<div data-ng-if="::(!readOnly)">
+					<div data-ng-if="::(!cardFragmentCtrl.readOnly)">
 						<lvg-label value="label" name="label.labelName"></lvg-label>
 					</div>
-					<div data-ng-if="::(readOnly)">
+					<div data-ng-if="::(cardFragmentCtrl.readOnly)">
 						<lvg-label data-read-only value="label" name="label.labelName"></lvg-label>
                     </div>
                 </li>

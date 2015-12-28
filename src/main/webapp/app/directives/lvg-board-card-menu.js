@@ -60,6 +60,8 @@
 					var windowHeight = $(window).height();
 					
 					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
+					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
+					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
 					
 					$(document).bind('keyup', escapeHandler);
 					
