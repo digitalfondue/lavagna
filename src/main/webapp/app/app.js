@@ -339,10 +339,11 @@
             template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
+            template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
             controller : function(Title, card, project, board) {
                 this.board = board;
                 this.card = card;
+                this.project = project;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
             controllerAs : 'cardCtrlResolver',

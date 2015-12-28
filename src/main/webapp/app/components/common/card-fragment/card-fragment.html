@@ -4,7 +4,7 @@
 		<div class="title">
 			<div class="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
 				<div class="col-xs-10">
-					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
+					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
 					<a data-ui-sref="board.card({projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence})">
                         {{::cardFragmentCtrl.board}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
@@ -19,45 +19,45 @@
 				<div class="col-xs-10"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
 			</div>
 			<div class="row" data-ng-if="::(cardFragmentCtrl.listView)">
-				<div class="col-xs-8"><a data-ui-sref="board.card({projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence})">
-                    {{::card.boardShortName}} - {{::card.sequence}}
+				<div class="col-xs-8"><a data-ui-sref="board.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})">
+                    {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
                 </a></div>
 				<div class="col-xs-4 card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
 			</div>
 			<div class="row" data-ng-if="::(cardFragmentCtrl.searchView)">
 				<div class="col-xs-8">
-					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
+					<input type="checkbox" data-ng-model="selected[cardFragmentCtrl.card.id]" data-ng-true-value="{{cardFragmentCtrl.card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
 
-                    <a data-ui-sref="globalSearch.card({q: query, page: page, projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence})" data-ng-if="::(project == null)" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
-	                	{{::card.boardShortName}} - {{::card.sequence}}
+                    <a data-ui-sref="globalSearch.card({q: query, page: page, projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(project == null)" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
-                    <a data-ui-sref="project.search.card({q: query, page: page, projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence})" data-ng-if="::(project != null)" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
-	                	{{::card.boardShortName}} - {{::card.sequence}}
+                    <a data-ui-sref="project.search.card({q: query, page: page, projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(project != null)" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
 				</div>
-				<div class="col-xs-4 card-home-date">{{::card.lastUpdateTime|dateIncremental}}</div>
+				<div class="col-xs-4 card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
 			</div>
-			{{::card.name}}
+			{{::cardFragmentCtrl.card.name}}
 		</div>
 	</div>
 	<div class="body">
 		<div class="card-data">
 			<ul class="data-info">
-				<li  data-ng-if="::(card.counts['COMMENT'].count > 0)">
-					<span class="fa fa-comment"></span> {{::card.counts['COMMENT'].count}}
+				<li  data-ng-if="::(cardFragmentCtrl.card.counts['COMMENT'].count > 0)">
+					<span class="fa fa-comment"></span> {{::cardFragmentCtrl.card.counts['COMMENT'].count}}
 				</li>
-				<li data-ng-if="::(card.counts['ACTION_CHECKED'].count > 0 || card.counts['ACTION_UNCHECKED'].count > 0)"
-					data-ng-class="::{'lvg-action-full': card.counts['ACTION_CHECKED'].count == card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count,
-					                'lvg-action-not-done': card.columnDefinition == 'CLOSED' && card.counts['ACTION_CHECKED'].count != card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count}">
+				<li data-ng-if="::(cardFragmentCtrl.card.counts['ACTION_CHECKED'].count > 0 || cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count > 0)"
+					data-ng-class="::{'lvg-action-full': cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count,
+					                'lvg-action-not-done': cardFragmentCtrl.card.columnDefinition == 'CLOSED' && cardFragmentCtrl.card.counts['ACTION_CHECKED'].count != cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}">
 					<span class="fa fa-list"></span>
-					{{::card.counts['ACTION_CHECKED'].count == null ? 0 : card.counts['ACTION_CHECKED'].count}}/{{::card.counts['ACTION_CHECKED'].count + card.counts['ACTION_UNCHECKED'].count}}
+					{{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == null ? 0 : cardFragmentCtrl.card.counts['ACTION_CHECKED'].count}}/{{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}}
 				</li>
-				<li data-ng-if="::(card.counts['FILE'].count > 0)">
-					<span class="fa fa-file"></span> {{::card.counts['FILE'].count}}
+				<li data-ng-if="::(cardFragmentCtrl.card.counts['FILE'].count > 0)">
+					<span class="fa fa-file"></span> {{::cardFragmentCtrl.card.counts['FILE'].count}}
 				</li>
 
 
-				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', card.labels)"
+				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', cardFragmentCtrl.card.labels)"
 				    data-bindonce
 				    data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
 				    data-bo-class="{'lvg-due-date-tomorrow': ((label.labelValueTimestamp | daysDiff) == -1),
@@ -70,13 +70,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="card-info" data-ng-if="::(!listView && cardFragmentCtrl.hasSystemLabelByName('ASSIGNED', card.labels))">
+		<div class="card-info" data-ng-if="::(!cardFragmentCtrl.listView && cardFragmentCtrl.hasSystemLabelByName('ASSIGNED', cardFragmentCtrl.card.labels))">
 			<ul class="assigned-users">
 				<li class="assigned-user" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
-					<div data-ng-if="::(!readOnly)">
+					<div data-ng-if="::(!cardFragmentCtrl.readOnly)">
 						<lvg-label-val value="label"></lvg-label-val>
 					</div>
-					<div data-ng-if="::(readOnly)">
+					<div data-ng-if="::(cardFragmentCtrl.readOnly)">
 						<lvg-label-val data-read-only value="label"></lvg-label-val>
 					</div>
 				</li>
