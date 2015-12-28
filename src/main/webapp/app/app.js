@@ -107,6 +107,9 @@
 				},
 				board : function(BoardCache, $stateParams) {
 					return BoardCache.board($stateParams.shortName);
+				},
+				user: function(User) {
+					return User.currentCachedUser();
 				}
 		};
 
@@ -339,11 +342,12 @@
             template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
-            controller : function(Title, card, project, board) {
+            template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+            controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
+                this.user = user;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
             controllerAs : 'cardCtrlResolver',
@@ -358,10 +362,11 @@
 			reloadOnSearch: false
 		}).state('project.search.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
-            controller : function(Title, card, project, board) {
+			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+            controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
+                this.user = user;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
             controllerAs : 'cardCtrlResolver',
@@ -384,11 +389,12 @@
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card"></lvg-component-card>',
-			controller : function(card, project, board) {
+			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			controller : function(card, project, board, user) {
 			    this.card = card;
 			    this.board = board;
 			    this.project = project;
+			    this.user = user;
 			},
 			controllerAs : 'cardCtrlResolver',
 			resolve : cardCtrlResolver,

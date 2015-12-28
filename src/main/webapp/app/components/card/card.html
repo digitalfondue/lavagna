@@ -108,26 +108,26 @@
                                     <div class="title" data-translate>card.people</div>
                                     <ul class="panel-controls">
                                         <li class="control-item"
-                                            data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], appCtrl.currentUser.id)">
-											<span data-ng-click="cardCtrl.watchCard(appCtrl.currentUser)"
+                                            data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
+											<span data-ng-click="cardCtrl.watchCard(cardCtrl.user)"
                                                   data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-eye" title="{{'card.watch' | translate}}"></span>
                                         </li>
                                         <li class="control-item"
-                                            data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], appCtrl.currentUser.id)">
-											<span data-ng-click="cardCtrl.unWatchCard(appCtrl.currentUser)"
+                                            data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
+											<span data-ng-click="cardCtrl.unWatchCard(cardCtrl.user)"
                                                   data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-eye-slash" title="{{'card.unwatch' | translate}}"></span>
                                         </li>
                                         <li class="control-item"
-                                            data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], appCtrl.currentUser.id)">
-											<span data-ng-click="cardCtrl.assignToUser(appCtrl.currentUser)"
+                                            data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
+											<span data-ng-click="cardCtrl.assignToUser(cardCtrl.user)"
                                                   data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-hand-o-up" title="{{'card.takeCard' | translate}}"></span>
                                         </li>
                                         <li class="control-item"
-                                            data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], appCtrl.currentUser.id)">
-											<span data-ng-click="cardCtrl.removeAssignForUser(appCtrl.currentUser)"
+                                            data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
+											<span data-ng-click="cardCtrl.removeAssignForUser(cardCtrl.user)"
                                                   data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
                                         </li>
