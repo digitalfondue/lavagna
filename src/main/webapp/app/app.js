@@ -123,7 +123,7 @@
             board : function(BoardCache, $stateParams) {
                 return BoardCache.board($stateParams.shortName);
             }
-		}
+		};
 
 		var userResolver = {
 		    user: function(User, $stateParams) {
@@ -132,17 +132,26 @@
 		    isCurrentUser: function(User, $stateParams) {
 		        return User.isCurrentUser($stateParams.provider, $stateParams.username);
 		    }
-		}
+		};
 
 		var currentUserResolver = {
             user: function(User) {
                 return User.currentCachedUser();
             }
-		}
+		};
+		
+		var titleServiceResolver = {
+				Title : function(Title) {
+					return Title;
+				}
+		};
 
 		$stateProvider.state('home', {
 			url : '/',
-			template : '<lvg-component-dashboard></lvg-component-dashboard>'
+			template : '<lvg-component-dashboard></lvg-component-dashboard>',
+			onEnter: function(Title) {
+				Title.set('title.dashboard');
+			}
 		})
 		.state('404', {
 			url : '/not-found/',
@@ -166,11 +175,17 @@
 		})
 		.state('about.lavagna', {
             url: '',
-            template: '<lvg-license></lvg-license>'
+            template: '<lvg-license></lvg-license>',
+            onEnter: function(Title) {
+            	Title.set('title.about.lavagna');
+            }
 		})
 		.state('about.third-party', {
 			url:'third-party/',
-			template: '<lvg-licenses></lvg-licenses>'
+			template: '<lvg-licenses></lvg-licenses>',
+			onEnter: function(Title) {
+				Title.set('title.about.thirdparty');
+			}
 		})
 		//---- ACCOUNT ----
 		.state('account', {
@@ -182,7 +197,10 @@
                 this.isCurrentUser = true;
             },
             controllerAs: 'userResolver',
-            resolve : currentUserResolver
+            resolve : currentUserResolver,
+            onEnter: function(Title) {
+            	Title.set('title.account');
+            }
 		}).state('user', {
             url :'/user/:provider/:username/',
             abstract: true,
@@ -194,7 +212,11 @@
                 this.isCurrentUser = isCurrentUser;
             },
             controllerAs: 'userResolver',
-            resolve : userResolver
+            resolve : userResolver,
+            onEnter: function(Title, user) {
+            	console.log(user);
+            	Title.set('title.user.profile', { username: user.user.username });
+            }
 		}).state('user.dashboard', {
             url :'',
             template : '<lvg-component-user-dashboard profile="userCtrl.profile"></lvg-component-user-dashboard>'
@@ -221,7 +243,11 @@
 		.state('admin', {
 			url: '/admin/',
 			abstract: true,
-			template : '<lvg-component-admin></lvg-component-admin>'
+			template : '<lvg-component-admin></lvg-component-admin>',
+			resolve: titleServiceResolver,
+			onEnter: function(Title) {
+				Title.set('title.admin.home');
+			}
 		}).state('admin.home', {
 			url: '',
 			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
@@ -253,13 +279,16 @@
 		//---- MANAGE PROJECT ----
 		.state('ProjectManage', {
         	url : '/:projectName/manage/',
-			template : '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>',
+			templateUrl : '/app/components/project/manage/manage.html',
 			abstract: true,
           	controller : function(project) {
                 this.project = project;
           	},
           	controllerAs: 'projectResolver',
-          	resolve: projectResolver
+          	resolve: projectResolver,
+          	onEnter:function(Title, project) {
+          		Title.set('title.project.manage', { shortname: project.shortName });
+          	}
         }).state('ProjectManage.roles', {
 			url : 'roles/',
 			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
@@ -283,7 +312,8 @@
 			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
 		}).state('ProjectManage.project', {
 			url : '',
-			template: '<lvg-component-project-manage project="projectResolver.project"></lvg-component-project-manage>'
+			template: '<lvg-component-project-manage-project project="projectResolver.project"></lvg-component-project-manage-project>',
+			
 		})
 
 		//---- PROJECT ----
@@ -300,7 +330,7 @@
 		})
 		.state('project.boards', {
 			url: '',
-			template: '<lvg-component-project project="projectResolver.project"></lvg-component-project>'
+			template: '<lvg-component-project-boards project="projectResolver.project"></lvg-component-project-boards>'
 		}).state('project.statistics', {
 			url: 'statistics/',
 			template: '<lvg-component-project-statistics project="projectResolver.project"></lvg-component-project-statistics>'
@@ -346,7 +376,10 @@
                 this.board = board;
             },
             controllerAs: 'boardCtrlResolver',
-            resolve : boardResolver
+            resolve : boardResolver,
+            onEnter: function(Title, project, board) {
+            	Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
+            }
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
@@ -358,6 +391,9 @@
 			},
 			controllerAs : 'cardCtrlResolver',
 			resolve : cardCtrlResolver,
+			onEnter: function(Title, board, card) {
+				Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
+			},
             onExit: function(Title, card, project, board) {
                 Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
             }

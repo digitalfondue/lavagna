@@ -11,9 +11,8 @@
         templateUrl: 'app/components/account/account.html'
     });
 
-    function AccountController($scope, $window, User, Notification, Title) {
+    function AccountController($window, User, Notification) {
         var ctrl = this;
-        Title.set('title.account');
 
         User.currentCachedUser().then(function (user) {
             ctrl.userNameProfile = user.username;

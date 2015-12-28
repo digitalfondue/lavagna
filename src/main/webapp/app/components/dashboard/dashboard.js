@@ -10,10 +10,9 @@
         templateUrl: 'app/components/dashboard/dashboard.html'
     });
 
-    function DashboardController($scope, Project, User, Notification, StompClient, Title) {
+    function DashboardController($scope, Project, User, Notification, StompClient) {
 
         var ctrl = this;
-        Title.set('title.dashboard');
 
         ctrl.view = {};
 

@@ -13,9 +13,9 @@
         templateUrl: 'app/components/user/user.html'
     });
 
-    function UserController($filter, User, Title) {
+    function UserController($filter, User) {
         var ctrl = this;
-        Title.set('title.user.profile', { username: ctrl.profile.user.username });
+        
 
         ctrl.view = {};
 
