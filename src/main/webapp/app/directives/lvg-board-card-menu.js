@@ -51,6 +51,10 @@
 						}).then(cleanup);
 					};
 					
+					$scopeForCardMenu.moveCard = function(card, location) {
+						Card.moveAllFromColumnToLocation(card.columnId, [card.id], location).then(cleanup);
+					};
+					
 					var top = $(element).offset().top;
 					var left = $(element).offset().left;
 					var size = $(element).width() + 2;
