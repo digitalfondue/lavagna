@@ -5,7 +5,7 @@
 	var directives = angular.module('lavagna.directives');
 
 	//FIXME this directive is hacky
-	directives.directive('lvgBoardCardMenu', function ($compile, $filter, Card, Board) {
+	directives.directive('lvgBoardCardMenu', function ($compile, $filter, Card, Board, BulkOperations) {
 		return {
 			restrict: 'A',
 			link: function($scope, element, attrs) {
@@ -64,8 +64,44 @@
 					var windowHeight = $(window).height();
 					
 					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
+					
+					
+					//hacky and ugly: to refactor
 					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
 					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
+					$scopeForCardMenu.isSelfWatching = $scope.cardFragmentCtrl.isSelfWatching;
+					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
+					$scopeForCardMenu.isAssignedToCard = $scope.cardFragmentCtrl.isAssignedToCard;
+					
+					var projectShortName = $scope.cardFragmentCtrl.project;
+					
+					
+					// imported from column...
+					$scopeForCardMenu.assignToCurrentUser = function(cardId, currentUserId) {
+			            var cardByProject = {};
+			            cardByProject[projectShortName] = [cardId];
+			            BulkOperations.assign(cardByProject, {id: currentUserId});
+			        };
+			        
+			        $scopeForCardMenu.removeAssignForCurrentUser = function(cardId, currentUserId) {
+			            var cardByProject = {};
+			            cardByProject[projectShortName] = [cardId];
+			            BulkOperations.removeAssign(cardByProject, {id: currentUserId});
+			        };
+
+			        $scopeForCardMenu.watchCard = function(cardId, currentUserId) {
+			            var cardByProject = {};
+			            cardByProject[projectShortName] = [cardId];
+			            BulkOperations.watch(cardByProject, {id: currentUserId});
+			        };
+
+			        $scopeForCardMenu.unWatchCard = function(cardId, currentUserId) {
+			            var cardByProject = {};
+			            cardByProject[projectShortName] = [cardId];
+			            BulkOperations.unWatch(cardByProject, {id: currentUserId});
+			        };
+					//
+					
 					
 					$(document).bind('keyup', escapeHandler);
 					
