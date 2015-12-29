@@ -69,7 +69,7 @@
         <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : cardFilter track by card.hash" class="lavagna-board-card"
             data-ng-attr-data-lvg-card-id="{{::card.id}}" data-ng-attr-data-lavagna-card-column-id="{{::card.columnId}}">
             <lvg-card-fragment data-view="board" data-card="card"
-                               data-project="boardColumnCtrl.project.shortName" data-board="boardColumnCtrl.board.shortName" data-selected="boardColumnCtrl.selectedCards" data-dependencies="boardColumnCtrl.cardFragmentDependencies"></lvg-card-fragment>
+                               data-project="boardColumnCtrl.project.shortName" data-board="boardColumnCtrl.board.shortName" board-columns="boardColumnCtrl.boardColumns" data-selected="boardColumnCtrl.selectedCards" data-dependencies="boardColumnCtrl.cardFragmentDependencies"></lvg-card-fragment>
         </li>
     </ul>
 </div>

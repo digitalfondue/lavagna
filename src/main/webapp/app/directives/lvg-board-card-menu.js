@@ -34,7 +34,7 @@
 						cleanup();
 					}
 					
-					$scopeForCardMenu.move = function(card, toColumn) {
+					$scopeForCardMenu.move = function(toColumn) {
 						if(angular.isUndefined(toColumn)) {
 							return;
 						}
@@ -70,35 +70,35 @@
 					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
 					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
 					$scopeForCardMenu.isSelfWatching = $scope.cardFragmentCtrl.isSelfWatching;
-					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
 					$scopeForCardMenu.isAssignedToCard = $scope.cardFragmentCtrl.isAssignedToCard;
+					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
 					
 					var projectShortName = $scope.cardFragmentCtrl.project;
 					
 					
 					// imported from column...
-					$scopeForCardMenu.assignToCurrentUser = function(cardId, currentUserId) {
+					$scopeForCardMenu.assignToCurrentUser = function() {
 			            var cardByProject = {};
-			            cardByProject[projectShortName] = [cardId];
-			            BulkOperations.assign(cardByProject, {id: currentUserId});
+			            cardByProject[projectShortName] = [card.id];
+			            BulkOperations.assign(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
 			        };
 			        
-			        $scopeForCardMenu.removeAssignForCurrentUser = function(cardId, currentUserId) {
+			        $scopeForCardMenu.removeAssignForCurrentUser = function() {
 			            var cardByProject = {};
-			            cardByProject[projectShortName] = [cardId];
-			            BulkOperations.removeAssign(cardByProject, {id: currentUserId});
+			            cardByProject[projectShortName] = [card.id];
+			            BulkOperations.removeAssign(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
 			        };
 
-			        $scopeForCardMenu.watchCard = function(cardId, currentUserId) {
+			        $scopeForCardMenu.watchCard = function() {
 			            var cardByProject = {};
-			            cardByProject[projectShortName] = [cardId];
-			            BulkOperations.watch(cardByProject, {id: currentUserId});
+			            cardByProject[projectShortName] = [card.id];
+			            BulkOperations.watch(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
 			        };
 
-			        $scopeForCardMenu.unWatchCard = function(cardId, currentUserId) {
+			        $scopeForCardMenu.unWatchCard = function() {
 			            var cardByProject = {};
-			            cardByProject[projectShortName] = [cardId];
-			            BulkOperations.unWatch(cardByProject, {id: currentUserId});
+			            cardByProject[projectShortName] = [card.id];
+			            BulkOperations.unWatch(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
 			        };
 					//
 					

@@ -16,6 +16,7 @@
                 project: '=',
                 board: '=',
                 column: '=',
+                boardColumns: '=',
                 selectedCards: '='
             },
             templateUrl: 'app/components/board/column/column.html',

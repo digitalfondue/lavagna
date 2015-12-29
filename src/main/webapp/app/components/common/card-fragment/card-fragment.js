@@ -14,6 +14,7 @@
             query : '=',
             page : '=',
             dependencies : '=',
+            boardColumns: '=',
             view : '@',
             readOnly : '@'
         },

@@ -116,15 +116,6 @@ public class ResourceController {
         }
     }
 
-	private static void concatenateOutput(String directory, String fileExtension, ServletContext context,
-			OutputStream os, BeforeAfter ba) throws IOException {
-		for (String res : new TreeSet<>(context.getResourcePaths(directory))) {
-			if (res.endsWith(fileExtension)) {
-				output(res, context, os, ba);
-			}
-		}
-	}
-
 	private static void output(String file, ServletContext context, OutputStream os, BeforeAfter ba) throws IOException {
 		ba.before(file, context, os);
 		StreamUtils.copy(context.getResourceAsStream(file), os);
@@ -206,7 +197,10 @@ public class ResourceController {
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
-			data.put("inlineTemplates", prepareTemplates(context, "/app/"));
+			
+			List<String> inlineTemplates = prepareTemplates(context, "/app/");
+			inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
+			data.put("inlineTemplates", inlineTemplates);
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
 					.compile(index.toString(StandardCharsets.UTF_8.name())).execute(data)
