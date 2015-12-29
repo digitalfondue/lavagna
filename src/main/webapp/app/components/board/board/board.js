@@ -55,7 +55,7 @@
 
         //keep track of the selected cards
         ctrl.selectedCards = {};
-        ctrl.foundCards = {};
+        //ctrl.foundCards = {};
 
         ctrl.editMode = false;
         ctrl.switchEditMode = function() {
@@ -73,12 +73,11 @@
 
         var selectedVisibleCardsId = function() {
             var ids = [];
-            //FIXME uncomplete
-            angular.forEach(ctrl.selectedCards, function(v,k) {
-            	if(v) {
-            		ids.push(k);
-            	}
+            
+            angular.forEach(selectedVisibleCardsIdByColumnId(), function(val) {
+            	ids = ids.concat(val);
             });
+            
 //            console.log(ctrl.foundCards);
 //            for(var columnId in ctrl.foundCards) {
 //                if($scope.foundCards[columnId]) {
@@ -94,8 +93,22 @@
 
         var selectedVisibleCardsIdByColumnId = function() {
             var res = {};
-            for(var columnId in ctrl.foundCards) {
+            angular.forEach(ctrl.selectedCards, function(column, columnId) {
+            	angular.forEach(column, function(isSelected, cardId) {
+            		if(isSelected) {
+	            		if(!res[columnId]) {
+	            			res[columnId] = [];
+	            		}
+	            		res[columnId].push(cardId);
+            		}
+            		
+            	})
+            })
+          //FIXME uncomplete
+            
+            /*for(var columnId in ctrl.foundCards) {
                 if(ctrl.foundCards[columnId]) {
+                	//FIXME
                     angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
                         if(ctrl.selectedCards[c.id]) {
                             if(!res[c.columnId]) {
@@ -105,7 +118,7 @@
                         }
                     });
                 }
-            }
+            }*/
             return res;
         };
 

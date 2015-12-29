@@ -56,12 +56,15 @@
 
         ctrl.selectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.cardFilter), function(c) {
-                ctrl.selectedCards[c.id] = true;
+            	if(!ctrl.selectedCards[ctrl.column.id]) {
+            		ctrl.selectedCards[ctrl.column.id] = {};
+            	}
+                ctrl.selectedCards[ctrl.column.id][c.id] = true;
             })
         };
         ctrl.unSelectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.cardFilter), function(c) {
-                delete ctrl.selectedCards[c.id];
+                delete ctrl.selectedCards[ctrl.column.id];
             });
         };
         $scope.$on('selectall', ctrl.selectAllInColumn);
