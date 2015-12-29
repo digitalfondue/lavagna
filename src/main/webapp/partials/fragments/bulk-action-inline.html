@@ -33,8 +33,8 @@
 	</div>
 	
 	<div data-ng-switch-when="add-label">
-		<div class="dropdown lvg-button-group add-label">
-			<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
+		<div class="dropdown lvg-button-group add-label" data-uib-dropdown>
+			<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
 				<span data-ng-if="labelToAdd.label.name !== undefined" data-ng-bind="labelToAdd.label.name"></span>
 				<span data-ng-if="labelToAdd.label.name === undefined" data-translate>partials.fragments.bulk-action-inline.select</span>
 				 <i class="fa fa-caret-down"></i>
@@ -48,8 +48,8 @@
 	</div>
 	
 	<div data-ng-switch-when="remove-label">
-		<div class="dropdown lvg-button-group add-label" data-ng-init="toRemoveLabel = {}">
-			<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
+		<div class="dropdown lvg-button-group add-label" data-ng-init="toRemoveLabel = {}" data-uib-dropdown>
+			<button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
 				<span data-ng-if="toRemoveLabel.label.name !== undefined" data-ng-bind="toRemoveLabel.label.name"></span>
 				<span data-ng-if="toRemoveLabel.label.name === undefined" data-translate>partials.fragments.bulk-action-inline.select</span>
 				 <i class="fa fa-caret-down"></i>
