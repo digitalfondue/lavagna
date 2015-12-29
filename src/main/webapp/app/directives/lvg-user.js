@@ -29,7 +29,7 @@
 				'</div>';
 		};
 
-		var loadUser = function (userId, placeholder, providerPlaceholder, linkPlaceholder) {
+		var loadUser = function (userId, placeholder, providerPlaceholder, scope) {
 			var deferred = $q.defer();
 			UserCache.user(userId).then(function (user) {
 				placeholder.text($filter('formatUser')(user));
@@ -39,7 +39,9 @@
 					placeholder.addClass('user-disabled');
 				}
 				deferred.resolve(generateTooltipHTML(user));
-				linkPlaceholder.attr('href', "#/user/" + user.provider + "/" + user.username);
+				scope.user = user;
+				console.log(user);
+				
 			});
 			return deferred.promise;
 		};
@@ -50,7 +52,7 @@
 			scope: true,
 			template: '<span data-bindonce="readOnly">'
 				+ '<span data-bo-if="!readOnly">'
-				+	'<a data-lvg-tooltip data-lvg-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
+				+	'<a data-lvg-tooltip data-lvg-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\" ui-sref="user.dashboard({provider: user.provider, username: user.username})"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
 				+ '</span><span data-bo-if="readOnly">'
 				+	'<span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span>'
 				+ '</span></span>',
@@ -63,9 +65,9 @@
 					}
 					var placeholder = element.find('.lvg-user-placeholder');
 					var providerPlaceholder = element.find('.lvg-user-provider-placeholder');
-					var linkPlaceholder = element.find('.lvg-user-link-placeholder');
+					
 
-					loadUser(userId, placeholder, providerPlaceholder, linkPlaceholder).then(function (html) {
+					loadUser(userId, placeholder, providerPlaceholder, $scope).then(function (html) {
 						$scope.tooltipHTML = html;
 					});
 
