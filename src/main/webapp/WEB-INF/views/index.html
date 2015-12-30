@@ -14,6 +14,7 @@
 		<div class="header">
 			<a href class="lvg-navbar-brand" data-toggle="sidebar"><i class="fa fa-bars"></i></a>
 		</div>
+		<lvg-search data-lvg-has-permission="SEARCH"></lvg-search>
 		<ul class="lvg-header-right hidden-xs">
 			<li data-lvg-is-authenticated><span class="fa fa-user"></span> <span data-ng-bind="appCtrl.currentUser.username"></span></li>
 			<li data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();appCtrl.login()" data-translate>index.navbar.login</a></li>

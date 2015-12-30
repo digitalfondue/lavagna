@@ -382,7 +382,7 @@
 			
 			element.children()[0].style.width=element.parent().parent()[0].clientWidth+'px';
 			
-			var $autocompleteScope = $scope.$$prevSibling;
+			var $autocompleteScope = $scope.$parent;
 			
 			transcludeFn($autocompleteScope, function(clone, scope) {
 				element.find('div').append(clone);
@@ -399,7 +399,7 @@
 		template: '<div class="df-autocomplete-list"></div>',
 		link: function($scope, element, attrs, dfAutocomplete, transcludeFn) {
 		
-			var $autocompleteScope = $scope.$$prevSibling;
+			var $autocompleteScope = $scope.$parent;
 			var state = $autocompleteScope.dfAutocompleteInternalState;
 			
 			var listCount = function() {
