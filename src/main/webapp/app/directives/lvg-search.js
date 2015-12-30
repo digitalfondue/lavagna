@@ -41,7 +41,7 @@
     function updateSearchContext(toState, fromState, $scope) {
         if (toState.name.indexOf("board") === 0) {
             $scope.searchContext = {name: 'Board'};
-        } else if (toState.name.indexOf('project.') === 0 || toState.name.indexOf("ProjectManage.") === 0) {
+        } else if (toState.name.indexOf('project.') === 0 || toState.name.indexOf("ProjectManage.") === 0 || toState.name.indexOf("projectSearch.") === 0) {
             $scope.searchContext = {name: 'Project'};
         } else {
             $scope.searchContext = {name: 'All'};

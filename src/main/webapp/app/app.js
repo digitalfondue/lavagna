@@ -354,12 +354,12 @@
         })
 
         //---- PROJECT SEARCH ----
-        .state('project.search', {
-			url : 'search/?q&page',
+        .state('projectSearch', {
+			url : '/:projectName/search/?q&page',
 			templateUrl : 'partials/project/search.html',
 			controller: 'SearchCtrl',
 			reloadOnSearch: false
-		}).state('project.search.card', {
+		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
             controller : function(Title, card, project, board, user) {
