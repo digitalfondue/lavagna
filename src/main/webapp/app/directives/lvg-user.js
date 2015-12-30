@@ -40,8 +40,6 @@
 				}
 				deferred.resolve(generateTooltipHTML(user));
 				scope.user = user;
-				console.log(user);
-				
 			});
 			return deferred.promise;
 		};

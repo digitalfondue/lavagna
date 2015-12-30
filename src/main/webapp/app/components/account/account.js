@@ -15,6 +15,7 @@
         var ctrl = this;
 
         User.currentCachedUser().then(function (user) {
+        	ctrl.user = user;
             ctrl.userNameProfile = user.username;
             ctrl.userProvider = user.provider;
             ctrl.userUsername = user.username;

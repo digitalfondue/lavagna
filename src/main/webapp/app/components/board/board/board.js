@@ -78,7 +78,6 @@
             	ids = ids.concat(val);
             });
             
-//            console.log(ctrl.foundCards);
 //            for(var columnId in ctrl.foundCards) {
 //                if($scope.foundCards[columnId]) {
 //                    angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
@@ -296,7 +295,6 @@
         ctrl.toggledSidebar = false;
 
         ctrl.toggleSidebar = function() {
-            console.log("toggled side bar lol");
             ctrl.toggledSidebar = !ctrl.toggledSidebar;
         };
     }

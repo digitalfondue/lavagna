@@ -217,7 +217,6 @@
             controllerAs: 'userResolver',
             resolve : userResolver,
             onEnter: function(Title, user) {
-            	console.log(user);
             	Title.set('title.user.profile', { username: user.user.username });
             }
 		}).state('user.dashboard', {
