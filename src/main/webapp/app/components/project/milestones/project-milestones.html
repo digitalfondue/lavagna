@@ -80,8 +80,7 @@
 
                         <div class="lvg-milestone-card"
                              data-bindonce data-ng-repeat="card in milestone.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (milestone.currentPage -1)">
-
-                            <a data-ui-sref="project.milestones.card({projectName: projectResolver.project.shortName, shortName: card.boardShortName, seqNr: card.sequence })"
+                            <a data-ui-sref="project.milestones.card({projectName: projectMilestonesCtrl.project.shortName, shortName: card.boardShortName, seqNr: card.sequence })"
                                data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
                                 <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
                             </a>
