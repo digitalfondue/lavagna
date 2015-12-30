@@ -1,6 +1,6 @@
 <div class="lvg-board-location">
-	<div class="dropdown lvg-button-group">
-		<button type="button" data-dropdown-toggle
+	<div class="dropdown lvg-button-group" uib-dropdown>
+		<button type="button" uib-dropdown-toggle
 			class="lvg-navigation-button lvg-dropdown-toggle"
 			data-toggle="dropdown">
 			<span data-translate>partials.board.selection.select</span> <i
@@ -15,8 +15,8 @@
 					type="button" data-ng-click="deselectAllInPage()" data-translate>partials.fragments.search-result-fragment.deselectAllInPage</button></li>
 		</ul>
 	</div>
-	<div class="dropdown lvg-button-group" data-ng-show="selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'">
-		<button type="button" data-dropdown-toggle
+	<div class="dropdown lvg-button-group" data-ng-show="selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'" uib-dropdown>
+		<button type="button" uib-dropdown-toggle
 			class="lvg-navigation-button lvg-dropdown-toggle"
 			data-toggle="dropdown">
 			<span>{{'partials.board.bulkop.' + bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i>

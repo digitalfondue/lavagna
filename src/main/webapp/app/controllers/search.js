@@ -95,7 +95,7 @@
 				User.hasPermission('MANAGE_LABEL_VALUE', proj).then((function(idsToSetAsTrue, shortProjectName) {
 					return function() {
 						for(var i = 0;i<idsToSetAsTrue.length;i++) {
-							$scope.selected[idsToSetAsTrue[i]] = shortProjectName;
+							$scope.selected[idsToSetAsTrue[i]] = true;
 						}
 					}
 				})(projects[proj], proj));
