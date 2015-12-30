@@ -442,7 +442,7 @@
         ctrl.uploadingFile = null;
 
         ctrl.addFiles = function($files) {
-            $scope.$apply(function() {
+            $timeout(function() {
                 for (var i = 0; i < $files.length; i++) {
                     ctrl.filesToUpload.push({
                         xhr : null,
@@ -515,11 +515,11 @@
             });
         };
 
-        $scope.$watch('cardCtrl.filesToUpload', function() {
+        $scope.$watchCollection('cardCtrl.filesToUpload', function() {
             if(ctrl.filesToUpload.length > 0 && ctrl.uploadingFile == null) {
                 ctrl.uploadNextFile();
             }
-        }, true);
+        });
 
         //activity
         var loadActivity = function() {

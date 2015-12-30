@@ -19,7 +19,7 @@
 			return this.then(function (v) {
 				$log.log('stomp client subscribe at', path);
 				var subscription = v.subscribe(path, function (msg) {
-					scope.$apply(callback(msg));
+					scope.$apply(function() {callback(msg)});
 				}, headers);
 				scope.$on('$destroy', function () {
 					$log.log('stomp client unsubscribe from', path);
