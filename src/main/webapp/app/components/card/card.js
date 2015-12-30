@@ -17,7 +17,7 @@
     });
 
     function CardController($scope, $rootScope, $timeout, CardCache, Card, User, LabelCache, Label, StompClient,
-        Notification, Board, BulkOperations) {
+        Notification, Board, BulkOperations, Title) {
         var ctrl = this;
         var board = ctrl.board;
         var project = ctrl.project;
@@ -69,13 +69,17 @@
         //
 
         //------------------
+        
+        function refreshTitle() {
+        	Title.set('title.card', { shortname: board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
+        }
 
         var reloadCard = function() {
             CardCache.card(card.id).then(function(c) {
                 ctrl.card = c;
-                refreshTitle();
-                loadColumn(c.columnId);
                 card = ctrl.card;
+                loadColumn(c.columnId);
+                refreshTitle();
             });
             loadActivity();
         };
