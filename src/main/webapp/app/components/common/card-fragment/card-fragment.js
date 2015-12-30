@@ -16,6 +16,7 @@
             dependencies : '=',
             boardColumns: '=',
             view : '@',
+            searchType : '=',
             readOnly : '@'
         },
         controller : CardFragmentController,

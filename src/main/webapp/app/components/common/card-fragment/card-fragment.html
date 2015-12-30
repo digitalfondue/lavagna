@@ -27,11 +27,10 @@
 			<div class="row" data-ng-if="::(cardFragmentCtrl.searchView)">
 				<div class="col-xs-8">
 					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.columnId][cardFragmentCtrl.card.id]" data-ng-true-value="{{cardFragmentCtrl.card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
-
-                    <a data-ui-sref="globalSearch.card({q: query, page: page, projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(project == null)" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+                    <a data-ui-sref="globalSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
 	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
-                    <a data-ui-sref="project.search.card({q: query, page: page, projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(project != null)" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+                    <a data-ui-sref="projectSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'projectSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
 	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
 				</div>

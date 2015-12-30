@@ -237,9 +237,16 @@
 			reloadOnSearch: false
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			templateUrl : 'partials/card.html',
-			controller : 'CardCtrl',
-			resolve : cardCtrlResolver
+			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+            controller : function(Title, card, project, board, user) {
+                this.board = board;
+                this.card = card;
+                this.project = project;
+                this.user = user;
+                Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
+            },
+            controllerAs : 'cardCtrlResolver',
+            resolve : cardCtrlResolver
 		})
 		//---- ADMIN ----
 		.state('admin', {
@@ -361,10 +368,11 @@
 			reloadOnSearch: false
 		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="projectResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
             controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
+                this.project = project;
                 this.user = user;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
