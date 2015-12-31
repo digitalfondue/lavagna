@@ -6,9 +6,9 @@
 		templateUrl : 'app/components/stats/panel/stats-panel.html',
 		bindings : {
 			item: '=',
-			stats: '='
+			statsFetcher: '='
 		},
-		controller : function($scope, $filter) {
+		controller : function($filter) {
 			
 			var ctrl = this;
 
@@ -30,8 +30,8 @@
 			};
 			
 			this.chartOptions = {animation : false};
-
-			$scope.$watch('lvgStatsPanel.stats', function (stats) {
+			
+			this.statsFetcher().then(function(stats) {
 				if (stats === undefined) {
 					return;
 				}
@@ -39,7 +39,7 @@
 				if (hasTasks(stats)) {
 					ctrl.chartData = createNormalizedData(stats);
 				}
-			});
+			})
 		}
 	});
 })();
