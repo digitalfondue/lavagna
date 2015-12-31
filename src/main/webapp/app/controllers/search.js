@@ -48,9 +48,11 @@
 		
 		function selectedCardsCount() {
 			var cnt = 0;
-			for(var k in $scope.selected) {
-				if($scope.selected[k] !== false) {
-					cnt++;
+			for(var project in $scope.selected) {
+				for(var cardId in $scope.selected[project]) {
+					if($scope.selected[project][cardId]) {
+						cnt++;
+					}
 				}
 			}
 			return cnt;
@@ -95,7 +97,10 @@
 				User.hasPermission('MANAGE_LABEL_VALUE', proj).then((function(idsToSetAsTrue, shortProjectName) {
 					return function() {
 						for(var i = 0;i<idsToSetAsTrue.length;i++) {
-							$scope.selected[idsToSetAsTrue[i]] = true;
+							if(!$scope.selected[shortProjectName]) {
+								$scope.selected[shortProjectName] = {};
+							}
+							$scope.selected[shortProjectName][idsToSetAsTrue[i]] = true;
 						}
 					}
 				})(projects[proj], proj));
@@ -103,8 +108,10 @@
 		};
 
 		$scope.deselectAllInPage = function() {
-			for(var i = 0;i<$scope.found.length;i++) {
-				delete $scope.selected[$scope.found[i].id];
+			for(var project in $scope.selected) {
+				for(var i = 0;i<$scope.found.length;i++) {
+					delete $scope.selected[project][$scope.found[i].id];
+				}
 			}
 		};
 
@@ -112,16 +119,17 @@
 
 		$scope.$on('refreshSearch', function() {$scope.selected = {}; triggerSearch();});
 
-		var collectIdsByProject = function() {
+		function collectIdsByProject() {
 			var res = {};
 
-			for(var k in $scope.selected) {
-				var projectShortName = $scope.selected[k];
-				if(projectShortName !== false) {
-					if(!(projectShortName in res)) {
-						res[projectShortName] = [];
+			for(var projectShortName in $scope.selected) {
+				for(var cardId in $scope.selected[projectShortName]) {
+					if($scope.selected[projectShortName][cardId]) {
+						if(!res[projectShortName]) {
+							res[projectShortName] = [];
+						}
+						res[projectShortName].push(cardId);
 					}
-					res[projectShortName].push(k);
 				}
 			}
 			return res;

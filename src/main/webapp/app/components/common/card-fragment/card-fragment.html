@@ -26,7 +26,7 @@
 			</div>
 			<div class="row" data-ng-if="::(cardFragmentCtrl.searchView)">
 				<div class="col-xs-8">
-					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
+					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.projectShortName][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
                     <a data-ui-sref="globalSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
 	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
