@@ -1,6 +1,6 @@
-<div id="notifications" class="lavagna-notifications" data-ng-if="notifications.length > 0">
+<div id="notifications" class="lavagna-notifications" data-ng-if="lvgNotification.notifications.length > 0">
 	<ul>
-		<li class="notification {{notification.type}} clearfix" data-ng-repeat="notification in notifications">
+		<li class="notification {{notification.type}} clearfix" data-ng-repeat="notification in lvgNotification.notifications">
 			<ul data-ng-if="notification.dismissable || notification.undo" class="notification-controls">
 				<li data-ng-if="notification.dismissable" data-ng-click="notification.acknowledge()" data-translate>partials.fragments.notifications-fragment.dismiss</li>
 				<li data-ng-if="notification.undo" data-ng-click="notification.undoFn(notification)" data-translate>partials.fragments.notifications-fragment.undo</li>
