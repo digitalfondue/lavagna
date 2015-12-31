@@ -2,9 +2,7 @@
 
 	'use strict';
 
-	var directives = angular.module('lavagna.directives');
-
-	directives.component('lvgBulkActionInline', {
+	angular.module('lavagna.components').component('lvgBulkActionInline', {
 			templateUrl: 'app/components/bulk-action-inline/bulk-action-inline.html',
 			bindings: {
 				mode: '=',

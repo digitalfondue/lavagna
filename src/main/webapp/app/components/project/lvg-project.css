@@ -101,30 +101,6 @@ ul.statistics-definition li.stat {
 	margin-right: 5px;
 }
 
-.stats-tile-title {
-	text-align: center;
-}
-
-.stats-tile-title .chart-header {
-	margin: 5px 0px;
-}
-
-.stats-tile-subtitle {
-	padding: 0px 5px;
-	text-align: center;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.stats-tile-value {
-	padding: 0px 5px;
-	text-align: center;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	font-size: 48pt;
-}
 
 .stats-most-active-tile-value {
 	font-size: 29pt;

@@ -1,0 +1,24 @@
+lvg-stats-tile .stats-tile-title {
+    text-align: center;
+}
+
+lvg-stats-tile .stats-tile-title .chart-header {
+    margin: 5px 0px;
+}
+
+lvg-stats-tile .stats-tile-subtitle {
+    padding: 0px 5px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+lvg-stats-tile .stats-tile-value {
+    padding: 0px 5px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 48pt;
+}
