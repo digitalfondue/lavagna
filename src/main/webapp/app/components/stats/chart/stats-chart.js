@@ -2,23 +2,20 @@
 
 	'use strict';
 
-	var directives = angular.module('lavagna.directives');
-
-	directives.directive('lvgStatsChart', function () {
-
-		return {
-			restrict: 'E',
-			template: '<lvg-chart type="Line" data="data" options="chartOptions" height="160" class="img-responsive"></lvg-chart>',
-			scope: {
+	angular.module('lavagna.components').component('lvgStatsChart', {
+			template: '<lvg-chart type="Line" data="lvgStatsChart.data" options="lvgStatsChart.chartOptions" height="160" class="img-responsive"></lvg-chart>',
+			bindings: {
 				chartData: "="
 			},
-			link: function (scope) {
+			controller: function ($scope) {
 
-				if (scope.chartData === undefined) {
+				var ctrl = this;
+				
+				if (ctrl.chartData === undefined) {
 					return;
 				}
 
-				scope.chartOptions = {
+				ctrl.chartOptions = {
 					bezierCurve: false,
 					scaleIntegersOnly: true,
 					showTooltips: false,
@@ -37,7 +34,7 @@
 					return sortedIndexes;
 				}
 
-				scope.$watch('chartData', function () {
+				$scope.$watch('lvgStatsChart.chartData', function () {
 					var data = {
 						labels: [],
 						datasets: []
@@ -45,19 +42,19 @@
 					data.datasets.push({label: 'Created', strokeColor: '#c00', fillColor: 'rgba(204,0,0, 0.3)', pointColor: '#c00', data: []});
 					data.datasets.push({label: 'Closed', strokeColor: '#3c3', fillColor: 'rgba(51,204,51, 0.3)', pointColor: '#3c3', data: []});
 
-					var sortedCreatedClosedIndexes = getSortedIndexes(scope.chartData);
+					var sortedCreatedClosedIndexes = getSortedIndexes(ctrl.chartData);
 					for (var i = 0; i < sortedCreatedClosedIndexes.length; i++) {
 						var index = sortedCreatedClosedIndexes[i];
 						data.labels.push(new Date(index).toLocaleDateString());
 
-						data.datasets[0].data.push(scope.chartData[index]['first']);
-						data.datasets[1].data.push(scope.chartData[index]['second']);
+						data.datasets[0].data.push(ctrl.chartData[index]['first']);
+						data.datasets[1].data.push(ctrl.chartData[index]['second']);
 					}
-					scope.data = data;
+					ctrl.data = data;
 				});
 
 
 			}
 		}
-	});
+	);
 })();
