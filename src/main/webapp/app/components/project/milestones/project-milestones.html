@@ -59,7 +59,7 @@
                             <ul class="statistics-definition">
                                 <li class="stat" data-ng-repeat="item in projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value]">
                                     <span data-ng-style="projectMilestonesCtrl.statusColors[item.status]|color" class="fa fa-tasks"></span>
-                                    <span data-translate>{{item.status | capitalize}}:</span>
+                                    <span>{{item.status | capitalize}}:</span>
                                     {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
                                 </li>
                             </ul>
