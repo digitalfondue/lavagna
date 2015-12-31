@@ -1,0 +1,70 @@
+/*
+==========================================
+==== bulk action for board and search ====
+==========================================
+*/
+
+lvg-bulk-action-inline .lvg-bulk-action-inline {
+    display: inline-block;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline > div {
+    display: inline-block;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline input, 
+lvg-bulk-action-inline .lvg-bulk-action-inline select {
+    height:24px;
+    margin-right:3px;
+    box-shadow: none !important;
+    -webkit-user-select: auto !important;
+    outline: none;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline input::-webkit-input-placeholder {
+    color: white;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline input::-moz-placeholder {
+    color: white;
+}
+lvg-bulk-action-inline .lvg-bulk-action-inline input:-ms-input-placeholder {
+    color: white;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline input.form-control, 
+lvg-bulk-action-inline .lvg-bulk-action-inline select {
+    color:black;
+    display:inline-block;
+    width: auto;
+    padding:0;
+    margin:0;
+    border:0;
+    padding-left:3px;
+    padding-right:3px;
+    line-height:inherit;
+    font-size:inherit;
+    height: auto;
+    height:24px;
+    float:left;
+    margin-right:3px;
+    box-shadow: none !important;
+    -webkit-user-select: auto !important;
+    outline: none;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline input, 
+lvg-bulk-action-inline .lvg-bulk-action-inline input.form-control {
+    height: 24px;
+    color:white;
+    border:0;
+    background-color:#78909C;
+    float:left;
+}
+
+lvg-bulk-action-inline .lvg-bulk-action-inline .dropdown.lvg-button-group.add-label {
+    float:left;
+    margin-right:3px;
+}

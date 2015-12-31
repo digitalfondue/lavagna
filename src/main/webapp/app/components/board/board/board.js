@@ -79,15 +79,6 @@
             	ids = ids.concat(val);
             });
             
-//            for(var columnId in ctrl.foundCards) {
-//                if($scope.foundCards[columnId]) {
-//                    angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
-//                        if(ctrl.selectedCards[c.id]) {
-//                            ids.push(c.id);
-//                        }
-//                    });
-//                }
-//            }
             return ids;
         };
 
@@ -99,26 +90,11 @@
 	            		if(!res[columnId]) {
 	            			res[columnId] = [];
 	            		}
-	            		res[columnId].push(cardId);
+	            		res[columnId].push(parseInt(cardId,10));
             		}
             		
             	})
             })
-          //FIXME uncomplete
-            
-            /*for(var columnId in ctrl.foundCards) {
-                if(ctrl.foundCards[columnId]) {
-                	//FIXME
-                    angular.forEach($filter('filter')(ctrl.foundCards[columnId], ctrl.cardFilter), function(c) {
-                        if(ctrl.selectedCards[c.id]) {
-                            if(!res[c.columnId]) {
-                                res[c.columnId] = [];
-                            }
-                            res[c.columnId].push(c.id);
-                        }
-                    });
-                }
-            }*/
             return res;
         };
 

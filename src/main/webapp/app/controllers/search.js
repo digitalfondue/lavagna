@@ -128,7 +128,7 @@
 						if(!res[projectShortName]) {
 							res[projectShortName] = [];
 						}
-						res[projectShortName].push(cardId);
+						res[projectShortName].push(parseInt(cardId, 10));
 					}
 				}
 			}
