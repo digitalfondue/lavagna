@@ -1,0 +1,29 @@
+<div class="stats-panel-content clearfix">
+	<div class="stats-panel-description" data-ng-bind-html="lvgStatsPanel.item.description | markdown"></div>
+	<div data-ng-if="!lvgStatsPanel.item.archived && lvgStatsPanel.chartData" class="pull-right item-stats">
+		<lvg-chart type="Doughnut" data="lvgStatsPanel.chartData" options="lvgStatsPanel.chartOptions"></lvg-chart>
+	</div>
+</div>
+
+<div class="row" data-ng-if="lvgStatsPanel.statistics">
+	<div class="col-md-12">
+		<ul class="statistics-definition">
+			<li class="stat"><span data-ng-style="lvgStatsPanel.statistics.openTaskColor|color" class="fa fa-tasks"></span>
+				<span data-translate>partials.fragments.stats-panel.open</span>
+				{{lvgStatsPanel.statistics.openTaskCount}}
+			</li>
+			<li class="stat"><span data-ng-style="lvgStatsPanel.statistics.closedTaskColor|color" class="fa fa-tasks"></span>
+				<span data-translate>partials.fragments.stats-panel.closed</span>
+				{{lvgStatsPanel.statistics.closedTaskCount}}
+			</li>
+			<li class="stat"><span data-ng-style="lvgStatsPanel.statistics.backlogTaskColor|color" class="fa fa-tasks"></span>
+				<span data-translate>partials.fragments.stats-panel.backlog</span>
+				{{lvgStatsPanel.statistics.backlogTaskCount}}
+			</li>
+			<li class="stat"><span data-ng-style="lvgStatsPanel.statistics.deferredTaskColor|color" class="fa fa-tasks"></span>
+				<span data-translate>partials.fragments.stats-panel.deferred</span>
+				{{lvgStatsPanel.statistics.deferredTaskCount}}
+			</li>
+		</ul>
+	</div>
+</div>
