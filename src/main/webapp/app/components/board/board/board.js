@@ -17,6 +17,7 @@
         Board, Card, Project, LabelCache, Search, StompClient, User, Notification) {
 
         var ctrl = this;
+        ctrl.searchFilter = {};
 
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
@@ -130,7 +131,7 @@
             User.currentCachedUser().then(function(user) {
                 try {
                     Search.buildSearchFilter(searchFilter.searchFilter, ctrl.columns, user.id).then(function(filterFun) {
-                        ctrl.cardFilter = filterFun;
+                        ctrl.searchFilter.cardFilter = filterFun;
                         $timeout(function() {
                             $location.search(searchFilter.location);
                         });

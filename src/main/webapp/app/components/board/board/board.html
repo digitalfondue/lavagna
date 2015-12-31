@@ -16,7 +16,7 @@
             data-ng-repeat="column in boardCtrl.columns track by column.id"
             data-ng-attr-data-lvg-column-id="{{::column.id}}"
             data-lvg-update-column-size>
-            <lvg-component-board-column project="boardCtrl.project" board="boardCtrl.board" column="column" board-columns="boardCtrl.columns" selected-cards="boardCtrl.selectedCards"></lvg-component-board-column>
+            <lvg-component-board-column project="boardCtrl.project" board="boardCtrl.board" column="column" board-columns="boardCtrl.columns" selected-cards="boardCtrl.selectedCards" search-filter="boardCtrl.searchFilter"></lvg-component-board-column>
         </li>
         <li class="lavagna-board-column lavagna-not-sortable-board-column panel panel-default" data-lvg-has-permission="CREATE_COLUMN">
             <div class="panel-footer">

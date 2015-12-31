@@ -17,7 +17,8 @@
                 board: '=',
                 column: '=',
                 boardColumns: '=',
-                selectedCards: '='
+                selectedCards: '=',
+                searchFilter: '='
             },
             templateUrl: 'app/components/board/column/column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {
@@ -55,7 +56,7 @@
         ctrl.columnState = {};
 
         ctrl.selectAllInColumn = function() {
-            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.cardFilter), function(c) {
+            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
             	if(!ctrl.selectedCards[ctrl.column.id]) {
             		ctrl.selectedCards[ctrl.column.id] = {};
             	}
@@ -63,7 +64,7 @@
             })
         };
         ctrl.unSelectAllInColumn = function() {
-            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.cardFilter), function(c) {
+            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
                 delete ctrl.selectedCards[ctrl.column.id];
             });
         };
