@@ -1,6 +1,6 @@
-<form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="submit()">
+<form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="lvgSearchInput.submit()">
 	<div class="input-group">
-		<df-autocomplete data-ng-model="toSearch" df-autocomplete-configuration="configuration">
+		<df-autocomplete data-ng-model="lvgSearchInput.toSearch" df-autocomplete-configuration="lvgSearchInput.configuration">
 			<df-autocomplete-list>
 				<ul>
 					<li data-ng-class="{'df-autocomplete-selected' : dfAutocompleteInternalState.autocompleteSelectionIndex == $index}" data-ng-mouseover="dfAutocompleteInternalState.autocompleteSelectionIndex = $index" data-ng-repeat="elem in dfAutocompleteInternalState.autocompleteResult" data-ng-click="selected(elem)">{{elem.text}}

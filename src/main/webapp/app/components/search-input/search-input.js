@@ -18,7 +18,7 @@
         return res && res.length >= 1 && res[0] && res[0].type !== 'WHITE_SPACE';
     }
 
-    function parseAndBroadcastForBoardSearch(query, $scope, $log, $location, $rootScope, $state, Search) {
+    function parseAndBroadcastForBoardSearch(query, $log, $rootScope, Search) {
 
         var r = tryParse(query, Search, $log);
 
@@ -38,13 +38,13 @@
 
     }
 
-    function updateSearchContext(toState, fromState, $scope) {
+    function updateSearchContext(toState, fromState, ctrl) {
         if (toState.name.indexOf("board") === 0) {
-            $scope.searchContext = {name: 'Board'};
+        	ctrl.searchContext = {name: 'Board'};
         } else if (toState.name.indexOf('project.') === 0 || toState.name.indexOf("ProjectManage.") === 0 || toState.name.indexOf("projectSearch") === 0) {
-            $scope.searchContext = {name: 'Project'};
+        	ctrl.searchContext = {name: 'Project'};
         } else {
-            $scope.searchContext = {name: 'All'};
+        	ctrl.searchContext = {name: 'All'};
         }
     }
 
@@ -88,24 +88,20 @@
         }
     }
 
-    var directives = angular.module('lavagna.directives');
-    directives.directive('lvgSearch', function ($log, $location, $rootScope, $state, $stateParams, $timeout, $http, $window, $translate, $q, Search) {
-
-
-        function toParams(input, prefix) {
-            var q = input.substr(prefix.length).trim();
-            var params = {term: q};
-            if ($stateParams.projectName) {
-                params.projectName = $stateParams.projectName
-            }
-            return params;
-        }
-
-        return {
-            restrict: 'E',
-            templateUrl: 'partials/fragments/lavagna-search.html',
-            scope: {},
-            link: function ($scope) {
+    angular.module('lavagna.directives').component('lvgSearchInput', {
+            templateUrl: 'app/components/search-input/search-input.html',
+            controller: function ($scope, $log, $location, $rootScope, $state, $stateParams, $timeout, $http, $window, $translate, $q, Search) {
+            	
+            	var ctrl = this;
+            	
+            	function toParams(input, prefix) {
+                    var q = input.substr(prefix.length).trim();
+                    var params = {term: q};
+                    if ($stateParams.projectName) {
+                        params.projectName = $stateParams.projectName
+                    }
+                    return params;
+                }
 
                 function searchUser(input, prefix, data) {
                     return $http.get('api/search/user', {params: toParams(input, prefix)}).then(function (res) {
@@ -151,9 +147,9 @@
                     });
                 }
 
-                $scope.toSearch = {};
+                ctrl.toSearch = {};
 
-                $scope.configuration = {
+                ctrl.configuration = {
                     tagTemplate: '{{tag.value}} <span data-ng-click="removeTag(tag)" class="lvg-remove-tag"><i class="fa fa-times"></i></span>',
                     restoreOnBackspace: true,
                     textInputRepresentation: function (elem) {
@@ -288,7 +284,7 @@
                         return;
                     }
 
-                    updateSearchContext(toState, fromState, $scope);
+                    updateSearchContext(toState, fromState, ctrl);
 
                     if ((fromState.name === 'board.card' && toState.name === 'board') ||
                         (fromState.name === 'globalSearch.card' && toState.name === 'globalSearch') ||
@@ -315,20 +311,20 @@
                     }
                 });
 
-                $scope.$watch('toSearch.tags', function () {
-                    if ($scope.searchContext && $scope.searchContext.name === 'Board') {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery($scope.toSearch.tags), $scope, $log, $location, $rootScope, $state, Search);
+                $scope.$watch('lvgSearchInput.toSearch.tags', function () {
+                    if (ctrl.searchContext && ctrl.searchContext.name === 'Board') {
+                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
                     }
                 }, true);
 
-                $scope.submit = function () {
-                    if ($scope.searchContext.name === 'Board') {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery($scope.toSearch.tags), $scope, $log, $location, $rootScope, $state, Search);
-                    } else if ($scope.searchContext.name === 'Project') {
-                        $location.url('/' + $stateParams.projectName + '/search/?q=' + encodeURIComponent(fromTagsToQuery($scope.toSearch.tags)));
+                ctrl.submit = function () {
+                    if (ctrl.searchContext.name === 'Board') {
+                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
+                    } else if (ctrl.searchContext.name === 'Project') {
+                        $location.url('/' + $stateParams.projectName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
                         $rootScope.$broadcast('refreshSearch');
                     } else {
-                        $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery($scope.toSearch.tags)));
+                        $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
                         $rootScope.$broadcast('refreshSearch');
                     }
                 };
@@ -338,14 +334,14 @@
                 if (search && search.q) {
                     var res = tryParse(search.q, Search, $log);
                     if (queryIsNotEmpty(res)) {
-                        $scope.toSearch.tags = fromQueryToTags(res);
-                        $scope.toSearch.userInput = '';
+                    	ctrl.toSearch.tags = fromQueryToTags(res);
+                    	ctrl.toSearch.userInput = '';
                         rootSearchFilter = res;
                         locationSearch = {q: search.q};
                     }
                 }
 
             }
-        };
-    })
+    });
+    
 })();
