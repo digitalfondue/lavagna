@@ -178,14 +178,14 @@
 		})
 		.state('about.lavagna', {
             url: '',
-            template: '<lvg-license></lvg-license>',
+            template: '<lvg-about-license></lvg-about-license>',
             onEnter: function(Title) {
             	Title.set('title.about.lavagna');
             }
 		})
 		.state('about.third-party', {
 			url:'third-party/',
-			template: '<lvg-licenses></lvg-licenses>',
+			template: '<lvg-about-licenses></lvg-about-licenses>',
 			onEnter: function(Title) {
 				Title.set('title.about.thirdparty');
 			}

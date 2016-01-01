@@ -3,8 +3,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgLicense', {
-        bindings: {},
+    components.component('lvgAboutLicense', {
         controller: function($http) {
             var ctrl = this;
 
@@ -12,7 +11,6 @@
                 ctrl.license=res;
             });
         },
-        controllerAs: 'license',
         templateUrl: 'app/components/about/license/license.html'
     });
 })();
