@@ -90,7 +90,7 @@
 
     angular.module('lavagna.directives').component('lvgSearchInput', {
             templateUrl: 'app/components/search-input/search-input.html',
-            controller: function ($scope, $log, $location, $rootScope, $state, $stateParams, $timeout, $http, $window, $translate, $q, Search) {
+            controller: function ($scope, $log, $location, $rootScope, $state, $stateParams, $timeout, $http, Search) {
             	
             	var ctrl = this;
             	
