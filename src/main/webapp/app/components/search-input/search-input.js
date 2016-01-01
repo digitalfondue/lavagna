@@ -298,16 +298,16 @@
                     else if (toState.controller === 'SearchCtrl') {
                         var search = $location.search();
                         if (search && search.q) {
-                            $scope.toSearch.tags = fromQueryToTags(tryParse(search.q, Search, $log));
-                            $scope.toSearch.userInput = '';
+                        	ctrl.toSearch.tags = fromQueryToTags(tryParse(search.q, Search, $log));
+                        	ctrl.toSearch.userInput = '';
                         }
                     }
                     //first load, reset
                     else if (fromState.name !== "") {
                         rootSearchFilter = undefined;
                         locationSearch = {};
-                        $scope.toSearch.userInput = "";
-                        $scope.toSearch.tags = [];
+                        ctrl.toSearch.userInput = "";
+                        ctrl.toSearch.tags = [];
                     }
                 });
 
