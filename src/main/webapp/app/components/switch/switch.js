@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgSwitch', {
-		template: "<div class=\"{{lvgSwitch.switchClass}}\" ng-class=\"{\'active\': lvgSwitch.model}\" ng-click=\"lvgSwitch.handleChange()\"><div class=\"button\"></div></div>",
+		template: "<div class=\"{{::lvgSwitch.switchClass}}\" ng-class=\"{\'active\': lvgSwitch.model}\" ng-click=\"lvgSwitch.handleChange()\"><div class=\"button\"></div></div>",
 		bindings: {
 			model: '=control',
 			change: '=',
