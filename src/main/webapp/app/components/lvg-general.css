@@ -713,7 +713,6 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	width: 50px;
 	height: 22px;
 	border-radius: 0;
-	transition: all .5s ease;
 	opacity: 1;
 	display: inline-block;
 }
