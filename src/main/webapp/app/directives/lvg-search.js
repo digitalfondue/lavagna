@@ -283,7 +283,7 @@
                 $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 
                     //the transition search result -> card view should not modify the search bar
-                    if ((fromState.name === 'projectBoard' && toState.name === 'projectBoard.card') ||
+                    if ((fromState.name === 'board' && toState.name === 'board.card') ||
                         (fromState.name === 'projectSearch' && toState.name === 'projectSearch.card') ||
                         (fromState.name === 'globalSearch' && toState.name === 'globalSearch.card')) {
                         return;
@@ -291,7 +291,7 @@
 
                     updateSearchContext(toState, fromState, $scope);
 
-                    if ((fromState.name === 'projectBoard.card' && toState.name === 'projectBoard') ||
+                    if ((fromState.name === 'board.card' && toState.name === 'board') ||
                         (fromState.name === 'globalSearch.card' && toState.name === 'globalSearch') ||
                         (fromState.name === 'projectSearch.card' && toState.name === 'projectSearch')) {
                         $rootScope.$broadcast('refreshSearch', {
