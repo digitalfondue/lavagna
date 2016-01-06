@@ -4,4 +4,13 @@
 	<span data-translate data-translate-value-count="{{count}}">partials.fragments.search-result-fragment.foundCount</span>
 </lvg-navbar>
 
-<div data-ng-include="'partials/fragments/search-result-fragment.html'"></div>
+<lvg-search-result 
+    count="count" 
+    page="page" 
+    move-to-page="moveToPage" 
+    found="found" 
+    project="project" 
+    selected="selected" 
+    card-fragment-dependencies="cardFragmentDependencies"></lvg-search-result>
+
+<div data-ui-view data-autoscroll="false"></div>
