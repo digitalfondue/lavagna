@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5.2 (2016-01-12)
+
+ - fix file upload issue when a user don't have the a global READ role.
+ - misc minor UI/UX improvements
+
 ## 1.0.5.1 (2015-11-16)
 
  - Fix XSS issue in the file upload section (require an authenticated user)

@@ -5,18 +5,16 @@ This is a high level roadmap. Lavagna has currently:
  - a stable 1.0.x branch where small fixes and features will be added. Some of the work done in the master branch will be backported.
  - the current master (1.1) where the big features are developed
   
-## Expected for 1.0.6 (december 2015)
+## Expected for 1.0.6
 
  - support for internal password protected accounts
 
 ## Expected for 1.1 
 
- - decent i18n
  - improve the UI/UX
- - enable Content-Security-Policy
  - support commit log parsing (git, svn (?))
  - webhooks support
- - client side refactoring, porting to angular 1.4.x [wip]
+ - client side refactoring, porting to angular 1.5 [wip]
  - support internal account handling [wip]
  - refactor the authentication manager: cleanup + simplification [mostly done]
  - support gitlab oauth [done]
@@ -24,3 +22,7 @@ This is a high level roadmap. Lavagna has currently:
  - update to spring 4.2.x [done]
  - switch connection pool to hikaricp [done]
  
+## Backlog
+
+ - enable Content-Security-Policy
+ - decent i18n
