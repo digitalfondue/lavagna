@@ -19,6 +19,7 @@
                        placeholder="{{ 'partials.fragments.common-manage-roles.roleName' | translate }}" required="required"
                        data-ng-model="manageRolesCtrl.view.newRole.name" class="form-control"
                        autocomplete="off"
+                       pattern="[a-zA-Z0-9_\-\+]+"
                        data-lvg-on-esc>
 				<span class="input-group-btn">
 					<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
