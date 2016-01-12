@@ -28,7 +28,7 @@
 					}
 				};
 
-				$rootScope.notifications.push(notification);
+				notifications.push(notification);
 				$timeout(function () {
 					var index = notifications.indexOf(notification);
 					notifications.splice(index, 1);
