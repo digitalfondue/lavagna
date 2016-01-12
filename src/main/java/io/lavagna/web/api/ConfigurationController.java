@@ -17,9 +17,7 @@
 package io.lavagna.web.api;
 
 import io.lavagna.model.Key;
-import io.lavagna.model.Permission;
 import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.web.helper.ExpectPermission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Expose some configuration variables that must be visible to all users.
  */
 @RestController
-@ExpectPermission(Permission.READ)
 public class ConfigurationController {
 
 	private final ConfigurationRepository configurationRepository;
