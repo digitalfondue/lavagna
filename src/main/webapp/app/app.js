@@ -232,8 +232,7 @@
 		//---- SEARCH ----
 		.state('globalSearch', {
 			url : '/search/?q&page',
-			templateUrl : 'partials/search.html',
-			controller: 'SearchCtrl',
+			template : '<lvg-search></lvg-search>',
 			reloadOnSearch: false
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
@@ -363,8 +362,7 @@
         //---- PROJECT SEARCH ----
         .state('projectSearch', {
 			url : '/:projectName/search/?q&page',
-			templateUrl : 'partials/project/search.html',
-			controller: 'SearchCtrl',
+			template : '<lvg-search></lvg-search>',
 			reloadOnSearch: false
 		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',

@@ -2,7 +2,7 @@
 
     'use strict';
     
-    angular.module('lavagna.directives').component('lvgSearchResult', {
+    angular.module('lavagna.components').component('lvgSearchResult', {
         templateUrl: 'app/components/search-result/search-result.html',
         bindings: {
         	count: '=',

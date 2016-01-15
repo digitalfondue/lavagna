@@ -88,7 +88,7 @@
         }
     }
 
-    angular.module('lavagna.directives').component('lvgSearchInput', {
+    angular.module('lavagna.components').component('lvgSearchInput', {
             templateUrl: 'app/components/search-input/search-input.html',
             controller: function ($scope, $log, $location, $rootScope, $state, $stateParams, $timeout, $http, Search) {
             	
@@ -295,7 +295,7 @@
                         });
                     }
                     //transition to search controller -> restore the query in the input field
-                    else if (toState.controller === 'SearchCtrl') {
+                    else if (toState.name === 'globalSearch' || toState.name === 'projectSearch') {
                         var search = $location.search();
                         if (search && search.q) {
                         	ctrl.toSearch.tags = fromQueryToTags(tryParse(search.q, Search, $log));

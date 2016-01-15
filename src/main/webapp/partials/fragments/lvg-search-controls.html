@@ -9,13 +9,13 @@
 		<ul class="dropdown-menu" role="menu">
 			<li><button
 					class="lvg-dropdown-button lvg-button-dropdown-navigation"
-					type="button" data-ng-click="selectAllInPage()" data-translate>partials.fragments.search-result-fragment.selectAllInPage</button></li>
+					type="button" data-ng-click="lvgSearch.selectAllInPage()" data-translate>partials.fragments.search-result-fragment.selectAllInPage</button></li>
 			<li><button
 					class="lvg-dropdown-button lvg-button-dropdown-navigation"
-					type="button" data-ng-click="deselectAllInPage()" data-translate>partials.fragments.search-result-fragment.deselectAllInPage</button></li>
+					type="button" data-ng-click="lvgSearch.deselectAllInPage()" data-translate>partials.fragments.search-result-fragment.deselectAllInPage</button></li>
 		</ul>
 	</div>
-	<div class="dropdown lvg-button-group" data-ng-show="selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'" uib-dropdown>
+	<div class="dropdown lvg-button-group" data-ng-show="lvgSearch.selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'" uib-dropdown>
 		<button type="button" uib-dropdown-toggle
 			class="lvg-navigation-button lvg-dropdown-toggle"
 			data-toggle="dropdown">
@@ -29,12 +29,12 @@
 			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
 			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'" data-translate>partials.board.bulkop.setDueDate</button></li>
 			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'" data-translate>partials.board.bulkop.removeDueDate</button></li>
-			<li data-ng-if="inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'" data-translate>partials.board.bulkop.setMilestone</button></li>
-			<li data-ng-if="inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
-			<li data-ng-if="inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
-			<li data-ng-if="inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
+			<li data-ng-if="lvgSearch.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'" data-translate>partials.board.bulkop.setMilestone</button></li>
+			<li data-ng-if="lvgSearch.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
+			<li data-ng-if="lvgSearch.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
+			<li data-ng-if="lvgSearch.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
 		</ul>
 		
-		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="collectIdsByProject" after-bulk-completion="triggerSearch"></lvg-bulk-action-inline>
+		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="lvgSearch.collectIdsByProject" after-bulk-completion="lvgSearch.triggerSearch"></lvg-bulk-action-inline>
 	</div>
 </div>

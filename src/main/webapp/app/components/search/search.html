@@ -1,0 +1,17 @@
+<lvg-navbar data-navbar-type="search">
+	<a ui-sref="home()"><span data-translate>partials.home.title</span></a><i class="fa fa-angle-right"></i>
+	<a ui-sref="project.boards({projectName: lvgSearch.project.shortName})" ng-if="::lvgSearch.project.shortName">{{lvgSearch.project.shortName}}</a><i class="fa fa-angle-right" ng-if="::lvgSearch.project.shortName"></i>
+	<span data-translate>partials.search.title</span>
+	<span data-translate data-translate-value-count="{{lvgSearch.count}}">partials.fragments.search-result-fragment.foundCount</span>
+</lvg-navbar>
+
+<lvg-search-result 
+    count="lvgSearch.count" 
+    page="lvgSearch.page" 
+    move-to-page="lvgSearch.moveToPage" 
+    found="lvgSearch.found" 
+    project="lvgSearch.project" 
+    selected="lvgSearch.selected" 
+    card-fragment-dependencies="lvgSearch.cardFragmentDependencies"></lvg-search-result>
+
+<div data-ui-view data-autoscroll="false"></div>
