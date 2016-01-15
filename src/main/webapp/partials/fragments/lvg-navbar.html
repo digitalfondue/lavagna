@@ -85,7 +85,12 @@
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="search" class="menu-frame">
-		<lvg-search-controls></lvg-search-controls>
+		<lvg-search-controls  select-all-in-page="lvgSearch.selectAllInPage" 
+		                      deselect-all-in-page="lvgSearch.deselectAllInPage" 
+		                      selected-cards-count="lvgSearch.selectedCardsCount" 
+		                      in-project="lvgSearch.inProject" 
+		                      collect-ids-by-project="lvgSearch.collectIdsByProject" 
+		                      trigger-search="lvgSearch.triggerSearch"></lvg-search-controls>
 	</div>
 	<div data-ng-switch-when="user" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
