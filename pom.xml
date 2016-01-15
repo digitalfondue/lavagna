@@ -214,7 +214,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4-1206-jdbc42</version>
+			<version>9.4.1207.jre7</version>
 		</dependency>
 
 		<dependency>
@@ -262,7 +262,7 @@
 	<!-- -->
 	<properties>
 		<org.apache.logging.log4j.version>2.5</org.apache.logging.log4j.version>
-		<org.springframework.version>4.2.3.RELEASE</org.springframework.version>
+		<org.springframework.version>4.2.4.RELEASE</org.springframework.version>
 		<org.eclipse.jetty.version>9.2.13.v20150730</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
