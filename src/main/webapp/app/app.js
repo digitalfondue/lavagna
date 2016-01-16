@@ -18,7 +18,6 @@
     //moment.locale(locale);
 
 	//declare all the modules here
-	angular.module('lavagna.controllers', [ 'lavagna.services' ]);
 	angular.module('lavagna.components', [ 'lavagna.services' ]);
 	angular.module('lavagna.directives', [ 'lavagna.services' ]);
 	angular.module('lavagna.filters', []);
@@ -26,7 +25,7 @@
 	//
 
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
-			'lavagna.controllers', 'lavagna.components', 'lavagna.filters', 'lavagna.directives',
+			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
 			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
 			'angularFileUpload']);
