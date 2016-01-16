@@ -1,0 +1,11 @@
+<div class="lavagna-header lvg-inverted">
+    <div class="header">
+        <a href class="lvg-navbar-brand" data-ng-click="lvgNavbarDashboard.toggleSidebar()"><i class="fa fa-bars"></i></a>
+        <span class="lvg-navbar-breadcrumb-text" data-translate>partials.home.title</span>
+    </div>
+    <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+    <ul class="lvg-header-right hidden-xs">
+        <li data-lvg-is-authenticated><span class="fa fa-user"></span> <span data-ng-bind="lvgNavbarDashboard.user.username"></span></li>
+        <li data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarDashboard.login()" data-translate>index.navbar.login</a></li>
+    </ul>
+</div>
