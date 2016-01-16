@@ -318,9 +318,9 @@
                 }, true);
 
                 ctrl.submit = function () {
-                    if (ctrl.searchContext.name === 'Board') {
+                    if (ctrl.searchContext && ctrl.searchContext.name === 'Board') {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
-                    } else if (ctrl.searchContext.name === 'Project') {
+                    } else if (ctrl.searchContext && ctrl.searchContext.name === 'Project') {
                         $location.url('/' + $stateParams.projectName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
                         $rootScope.$broadcast('refreshSearch');
                     } else {
