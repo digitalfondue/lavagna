@@ -10,18 +10,11 @@
 <!--  -->
 </head>
 <body>
-	<div class="lavagna-header lvg-inverted">
-		<div class="header">
-			<a href class="lvg-navbar-brand" data-toggle="sidebar"><i class="fa fa-bars"></i></a>
-		</div>
-		<lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
-		<ul class="lvg-header-right hidden-xs">
-			<li data-lvg-is-authenticated><span class="fa fa-user"></span> <span data-ng-bind="appCtrl.currentUser.username"></span></li>
-			<li data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();appCtrl.login()" data-translate>index.navbar.login</a></li>
-		</ul>
-	</div>
-	<lvg-sidebar></lvg-sidebar>
-	<div data-ui-view class="lavagna-container"></div>
+    <header data-ui-view="header"></header>
+	<aside>
+        <lvg-sidebar></lvg-sidebar>
+    </aside>
+	<main data-ui-view="main" class="lavagna-container"></main>
 	<lvg-notification></lvg-notification>
 	{{#inlineTemplates}}{{.}}{{/inlineTemplates}}
 </body>
