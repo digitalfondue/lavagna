@@ -142,7 +142,7 @@
                 return User.currentCachedUser();
             }
 		};
-		
+
 		var titleServiceResolver = {
 				Title : function(Title) {
 					return Title;
@@ -151,7 +151,15 @@
 
 		$stateProvider.state('home', {
 			url : '/',
-			template : '<lvg-component-dashboard></lvg-component-dashboard>',
+			views: {
+			    'header': {
+			        template: '<lvg-navbar-dashboard current-user={{headerCtrl.user}}></lvg-navbar-dashboard>'
+			    },
+			    'main': {
+			        template: '<lvg-component-dashboard></lvg-component-dashboard>'
+			    }
+
+			},
 			onEnter: function(Title) {
 				Title.set('title.dashboard');
 			}
@@ -174,21 +182,18 @@
 		.state('about', {
 			url:'/about/',
 			abstract: true,
-			templateUrl: 'app/components/about/about.html'
+			templateUrl: 'app/components/about/about.html',
+            onEnter: function(Title) {
+                Title.set('title.about');
+            }
 		})
 		.state('about.lavagna', {
             url: '',
-            template: '<lvg-about-license></lvg-about-license>',
-            onEnter: function(Title) {
-            	Title.set('title.about.lavagna');
-            }
+            template: '<lvg-about-license></lvg-about-license>'
 		})
 		.state('about.third-party', {
 			url:'third-party/',
-			template: '<lvg-about-licenses></lvg-about-licenses>',
-			onEnter: function(Title) {
-				Title.set('title.about.thirdparty');
-			}
+			template: '<lvg-about-licenses></lvg-about-licenses>'
 		})
 		//---- ACCOUNT ----
 		.state('account', {
@@ -321,7 +326,7 @@
 		}).state('ProjectManage.project', {
 			url : '',
 			template: '<lvg-component-project-manage-project project="projectResolver.project"></lvg-component-project-manage-project>',
-			
+
 		})
 
 		//---- PROJECT ----
