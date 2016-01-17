@@ -1,0 +1,30 @@
+<div class="lvg-navbar lvg-inverted">
+    <div class="lvg-navbar-header">
+        <div class="lvg-navbar-icon">
+            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="lvgNavbarProject.toggleSidebar()"><i class="fa fa-bars"></i></a>
+            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+            <span class="lvg-navbar-breadcrumb-text" data-translate>{{::lvgNavbarProject.project.shortName}}</span>
+        </div>
+        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+        </div>
+        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
+            <ul class="lvg-navbar-menu-actions">
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="SEARCH"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="PROJECT_ADMINISTRATION"><a data-ui-sref="ProjectManage.project({projectName: lvgNavbarProject.project.shortName})" class="navbar-link"><span class="lvg-navbar-menu-action-big-icon fa fa-cog"></span></a></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="lvgNavbarProject.user.username"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarProject.login()" data-translate>index.navbar.login</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-menu-container">
+        <df-tab-menu data-menu-control="{{lvgNavbarProject.navigationState}}" data-more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
+            <li menu-item="project.boards"><a data-ui-sref="project.boards({projectName: lvgNavbarProject.project.shortName})"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
+            <li menu-item="project.milestones"><a data-ui-sref="project.milestones({projectName: lvgNavbarProject.project.shortName})"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
+            <li menu-item="project.statistics"><a data-ui-sref="project.statistics({projectName: lvgNavbarProject.project.shortName})"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
+        </df-tab-menu>
+    </div>
+</div>
+

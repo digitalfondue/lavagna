@@ -1,11 +1,21 @@
-<div class="lavagna-header lvg-inverted">
-    <div class="header">
-        <a href class="lvg-navbar-brand" data-ng-click="lvgNavbarDashboard.toggleSidebar()"><i class="fa fa-bars"></i></a>
-        <span class="lvg-navbar-breadcrumb-text" data-translate>partials.home.title</span>
+<div class="lvg-navbar lvg-inverted">
+    <div class="lvg-navbar-header">
+        <div class="lvg-navbar-icon">
+            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="lvgNavbarDashboard.toggleSidebar()"><i class="fa fa-bars"></i></a>
+            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+            <span class="lvg-navbar-breadcrumb-text" data-translate>partials.home.title</span>
+        </div>
+        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+        </div>
+        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
+            <ul class="lvg-navbar-menu-actions">
+                <li class="lvg-navbar-menu-action"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="lvgNavbarDashboard.user.username"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarDashboard.login()" data-translate>index.navbar.login</a></li>
+            </ul>
+        </div>
     </div>
-    <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
-    <ul class="lvg-header-right hidden-xs">
-        <li data-lvg-is-authenticated><span class="fa fa-user"></span> <span data-ng-bind="lvgNavbarDashboard.user.username"></span></li>
-        <li data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarDashboard.login()" data-translate>index.navbar.login</a></li>
-    </ul>
 </div>

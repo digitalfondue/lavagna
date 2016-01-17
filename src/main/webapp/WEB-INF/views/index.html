@@ -10,11 +10,10 @@
 <!--  -->
 </head>
 <body>
-    <header data-ui-view="header"></header>
-	<aside>
+    <aside>
         <lvg-sidebar></lvg-sidebar>
     </aside>
-	<main data-ui-view="main" class="lavagna-container"></main>
+    <div data-ui-view></div>
 	<lvg-notification></lvg-notification>
 	{{#inlineTemplates}}{{.}}{{/inlineTemplates}}
 </body>

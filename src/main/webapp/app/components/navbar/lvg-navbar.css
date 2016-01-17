@@ -1,8 +1,67 @@
-.lvg-navbar-breadcrumb-text {
-    min-height: 50px;
-    font-size: 18px;
-    font-weight: bold;
-    padding-top: 14px;
-    display: inline-block;
+.lvg-inverted, .lvg-inverted a, .lvg-inverted a:hover {
+	color: white;
 }
 
+.lvg-navbar {
+	background-color: #607d8b;
+	position: relative;
+	min-height: 50px;
+	z-index: 1000;
+}
+
+.lvg-navbar-header {
+	float: left;
+	clear: both;
+	display: block;
+	width: 100%;
+}
+
+.lvg-navbar-icon {
+    display: inline-block;
+    float: left;
+}
+
+.lvg-navbar-brand {
+	float: left;
+	padding: 15px 15px;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+.lvg-navbar-breadcrumb {
+    float: left;
+    display: inline-block;
+    min-height: 50px;
+    padding-top: 14px;
+}
+
+.lvg-navbar-breadcrumb-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.lvg-navbar-search-bar {
+    padding-left: 15px;
+}
+
+.lvg-navbar-menu {
+    float: right !important;
+    display: block;
+}
+
+.lvg-navbar-menu-actions {
+    padding: 15px 15px;
+    line-height: 20px;
+    margin: 0;
+    float: left;
+    list-style: none;
+}
+
+.lvg-navbar-menu-action {
+    display: inline;
+    padding-left: 15px;
+}
+
+.lvg-navbar-menu-action-big-icon {
+    font-size: 18px;
+}

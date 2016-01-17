@@ -8,38 +8,6 @@
 ===================================
 */
 
-.lvg-inverted, .lvg-inverted a, .lvg-inverted a:hover {
-	color: white;
-}
-
-.lavagna-header {
-	background-color: #607d8b;
-	position: relative;
-	height: 50px;
-	z-index: 1000;
-}
-
-.lavagna-header .header {
-	float: left;
-	clear: both;
-	display: block;
-}
-
-.lavagna-header a.lvg-navbar-brand {
-	float: left;
-	padding: 15px 15px;
-	font-size: 18px;
-	line-height: 20px;
-}
-
-.lavagna-header .lvg-header-right {
-	padding: 15px 15px;
-	line-height: 20px;
-	margin: 0;
-	list-style: none;
-	float: right !important;
-}
-
 .lvg-navigation-bar {
 	background-color: #607d8b;
 	position: relative;

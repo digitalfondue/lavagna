@@ -150,18 +150,15 @@
 
 		$stateProvider.state('home', {
 			url : '/',
-			views: {
-			    'header': {
-			        template: '<lvg-navbar-dashboard current-user={{headerCtrl.user}}></lvg-navbar-dashboard>'
-			    },
-			    'main': {
-			        template: '<lvg-component-dashboard></lvg-component-dashboard>'
-			    }
-
-			},
+			abstract: true,
+			templateUrl: 'app/components/home/home.html',
 			onEnter: function(Title) {
 				Title.set('title.dashboard');
 			}
+		})
+		.state('home.dashboard', {
+		    url: '',
+		    template: '<lvg-component-dashboard></lvg-component-dashboard>',
 		})
 		.state('404', {
 			url : '/not-found/',
@@ -332,13 +329,13 @@
 		.state('project', {
 		    abstract: true,
 		    url : '/:projectName/',
-		    templateUrl: 'app/components/project/project.html',
 		    controller: function(Title, project) {
                 this.project = project;
                 Title.set('title.project', { shortname: project.shortName, name: project.name });
             },
             controllerAs: 'projectResolver',
-            resolve : projectResolver
+            resolve : projectResolver,
+            templateUrl: 'app/components/project/project.html'
 		})
 		.state('project.boards', {
 			url: '',

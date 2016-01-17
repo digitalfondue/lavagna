@@ -10,30 +10,7 @@
 	margin-bottom: 8px;
 	margin-right: 0;
 	margin-left: 0;
-}
-
-@media (max-width: 550px) {
-  .lvg-search-hidden {
-    display: none !important;
-  }
-}
-
-@media (min-width: 550px) {
-	.lavagna-search {
-		width: 450px;
-	}
-}
-
-@media (min-width: 992px) {
-	.lavagna-search {
-		width: 550px;
-	}
-}
-
-@media (min-width: 1200px) {
-	.lavagna-search {
-		width: 650px;
-	}
+	width: 90%;
 }
 
 .lavagna-search df-autocomplete {
