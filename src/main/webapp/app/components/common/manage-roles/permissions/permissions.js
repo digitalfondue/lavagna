@@ -83,7 +83,6 @@
                 controllerAs: 'confirmCtrl',
                 windowClass: 'lavagna-modal',
                 size: 'sm',
-                keyboard: false,
                 resolve: {
                     roleName: function() {
                         return ctrl.roleName;

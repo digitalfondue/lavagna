@@ -147,7 +147,6 @@
                 controllerAs: 'modalResolver',
                 size: 'lg',
                 windowClass: 'lavagna-modal',
-                keyboard: false,
                 backdrop: 'static',
                 resolve: {
                     role: function () {
