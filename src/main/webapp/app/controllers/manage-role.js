@@ -7,7 +7,7 @@
 	var module = angular.module('lavagna.controllers');
 
 	module.controller('ManageRoleCtrl', function($scope, $stateParams, Permission, Notification, ProjectCache, StompClient, $modal, $filter) {
-		
+
 		//handle manage role at project level:
 		var projectName = undefined;
 		if($stateParams.projectName !== undefined) {
@@ -20,13 +20,13 @@
 
 		var reloadRoles = function() {
 			Permission.findAllRolesAndRelatedPermissions().then(function(res) {
-				
+
 				for(var roleName in res) {
 					if(res[roleName].hidden) {
 						delete res[roleName];
 					}
 				}
-				
+
 				$scope.roles = res;
 				for(var roleName in res) {
 					$scope.loadUsersWithRole(roleName);
@@ -57,7 +57,7 @@
 				$scope.usersWithRole[roleName] = users;
 			});
 		};
-		
+
 		$scope.roleState = {};
 
 		$scope.createRole = function(roleName) {
@@ -125,7 +125,6 @@
 				controller: ModalInstanceCtrl,
 				size: 'lg',
 				windowClass: 'lavagna-modal',
-				keyboard: false,
 				backdrop: 'static',
 				resolve: {
 					role: function () {
@@ -162,10 +161,10 @@
 					}, false);
 				}).then($scope.cancel);
 			};
-			
+
 			var hasChanges = function() {
 				var result = false;
-				
+
 				//perhaps slower than foreach probably, but avoid traversing the entire object
 				for(var key in $scope.assignStatus) {
 					var value = $scope.assignStatus[key];
@@ -178,45 +177,44 @@
 			$scope.cancel = function () {
 				$modalInstance.dismiss('cancel');
 			};
-			
+
 			$scope.cancelWithConfirmation = function() {
 				if(!hasChanges()) {
 					$scope.cancel();
 					return;
 				}
-				
+
 				var modal = $modal.open({
 					templateUrl: 'partials/fragments/common-manage-roles-modal-confirmation.html',
 					controller: function($scope, $modalInstance, roleName) {
 						$scope.roleName = roleName;
-						
+
 						$scope.confirm = function() {
 							$modalInstance.close('save');
 						}
-						
+
 						$scope.deny = function() {
 							$modalInstance.close('notsave');
 						}
-						
+
 						$scope.cancel = function() {
 							$modalInstance.close('cancel');
 						}
 					},
 					windowClass: 'lavagna-modal',
 					size: 'sm',
-					keyboard: false,
 					resolve: {
 						roleName: function() {
 							return $scope.roleName;
 						}
 					}
 				});
-				
+
 				modal.result.then(function(result) {
 					if(result === 'save') {
 						$scope.save();
 					}
-					
+
 					if(result === 'notsave') {
 						$scope.cancel();
 					}
@@ -224,7 +222,7 @@
 			}
 
 			$scope.assignStatus = {};
-			
+
 			$scope.hasChanged = function(permission, assignedPermissions, currentStatus) {
 				var status = $scope.hasPermission(permission, assignedPermissions);
 				return status != currentStatus;
