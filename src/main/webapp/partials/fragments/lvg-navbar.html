@@ -1,14 +1,5 @@
 <div class="lvg-navigation-bar lvg-inverted" data-ng-switch="navbarType">
 	<div class="navigation-frame" data-ng-transclude></div>
-	<div data-ng-switch-when="project-menu" class="menu-frame">
-		<div class="tab-menu-container">
-			<df-tab-menu data-menu-control="{{navigationState}}" data-more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-				<li menu-item="project.boards"><a data-ui-sref="project.boards({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
-				<li menu-item="project.milestones"><a data-ui-sref="project.milestones({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
-				<li menu-item="project.statistics"><a data-ui-sref="project.statistics({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
-			</df-tab-menu>
-		</div>
-	</div>
 	<div data-ng-switch-when="board-menu" class="menu-frame board-menu-frame">
 		<div class="lvg-board-location">
 			<button class="lvg-navigation-button lvg-edit-button"
@@ -74,36 +65,12 @@
 			<li menu-item="ProjectManage.import"><a data-ui-sref="ProjectManage.import({projectName: projectResolver.project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
 		</df-tab-menu>
 	</div>
-	<div data-ng-switch-when="admin-menu" class="menu-frame">
-		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-   			<li menu-item="admin.home"><a data-ui-sref="admin.home"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
-    		<li menu-item="admin.login"><a data-ui-sref="admin.login"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
-			<li menu-item="admin.smtp"><a data-ui-sref="admin.smtp"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
-			<li menu-item="admin.users"><a data-ui-sref="admin.users"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
-			<li menu-item="admin.roles"><a data-ui-sref="admin.roles"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
-    		<li menu-item="admin.exportimport"><a data-ui-sref="admin.exportimport"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
-		</df-tab-menu>
-	</div>
 	<div data-ng-switch-when="search" class="menu-frame">
-		<lvg-search-controls  select-all-in-page="lvgSearch.selectAllInPage" 
-		                      deselect-all-in-page="lvgSearch.deselectAllInPage" 
-		                      selected-cards-count="lvgSearch.selectedCardsCount" 
-		                      in-project="lvgSearch.inProject" 
-		                      collect-ids-by-project="lvgSearch.collectIdsByProject" 
+		<lvg-search-controls  select-all-in-page="lvgSearch.selectAllInPage"
+		                      deselect-all-in-page="lvgSearch.deselectAllInPage"
+		                      selected-cards-count="lvgSearch.selectedCardsCount"
+		                      in-project="lvgSearch.inProject"
+		                      collect-ids-by-project="lvgSearch.collectIdsByProject"
 		                      trigger-search="lvgSearch.triggerSearch"></lvg-search-controls>
-	</div>
-	<div data-ng-switch-when="user" class="menu-frame">
-		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="user.dashboard"><a data-ui-sref="user.dashboard({provider: (userCtrl || accountCtrl).user.provider, username: (userCtrl || accountCtrl).user.username})"><span data-translate>partials.user.tab.profile</span></a></li>
-			<li menu-item="user.projects"><a data-ui-sref="user.projects({provider: (userCtrl || accountCtrl).user.provider, username: (userCtrl || accountCtrl).user.username})"><span data-translate>partials.user.tab.projects</span></a></li>
-			<li menu-item="user.activity"><a data-ui-sref="user.activity({provider: (userCtrl || accountCtrl).user.provider, username: (userCtrl || accountCtrl).user.username})"><span data-translate>partials.user.tab.activity</span></a></li>
-			<li menu-item="account"><a data-ui-sref="account" data-ng-show="userResolver.isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
-		</df-tab-menu>
-	</div>
-	<div data-ng-switch-when="about" class="menu-frame">
-		<df-tab-menu menu-control="{{navigationState}}">
-			<li menu-item="about.lavagna"><a data-ui-sref="about.lavagna"><span data-translate>partials.about.license</span></a></li>
-			<li menu-item="about.third-party"><a data-ui-sref="about.third-party"><span data-translate>partials.about.third-party</span></a></li>
-		</df-tab-menu>
 	</div>
 </div>

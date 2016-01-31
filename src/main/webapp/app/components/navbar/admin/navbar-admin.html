@@ -1,0 +1,31 @@
+<div class="lvg-navbar lvg-inverted">
+    <div class="lvg-navbar-header">
+        <div class="lvg-navbar-icon">
+            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="lvgNavbarAdmin.toggleSidebar()"><i class="fa fa-bars"></i></a>
+            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+            <span class="lvg-navbar-breadcrumb-text" data-translate>partials.admin.fragments.navbar.title</span>
+        </div>
+        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+        </div>
+        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
+            <ul class="lvg-navbar-menu-actions">
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="SEARCH"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="lvgNavbarAdmin.navbarUser.username"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarAdmin.login()" data-translate>index.navbar.login</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-menu-container">
+        <df-tab-menu menu-control="{{lvgNavbarAdmin.navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
+            <li menu-item="admin.home"><a data-ui-sref="admin.home"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
+            <li menu-item="admin.login"><a data-ui-sref="admin.login"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
+            <li menu-item="admin.smtp"><a data-ui-sref="admin.smtp"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
+            <li menu-item="admin.users"><a data-ui-sref="admin.users"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
+            <li menu-item="admin.roles"><a data-ui-sref="admin.roles"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
+            <li menu-item="admin.exportimport"><a data-ui-sref="admin.exportimport"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
+        </df-tab-menu>
+    </div>
+</div>

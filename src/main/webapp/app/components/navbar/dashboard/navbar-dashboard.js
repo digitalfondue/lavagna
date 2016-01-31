@@ -7,7 +7,7 @@
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
-                 ctrl.user = u;
+                 ctrl.navbarUser = u;
              });
 
              ctrl.toggleSidebar = function() {

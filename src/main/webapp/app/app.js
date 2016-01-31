@@ -194,13 +194,12 @@
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
-			template: '<lvg-component-account></lvg-component-account>',
+			templateUrl: 'app/components/account/account-template.html',
 			controller: function(user) {
-                this.provider = user.provider;
-                this.username = user.username;
+                this.user = user;
                 this.isCurrentUser = true;
             },
-            controllerAs: 'userResolver',
+            controllerAs: 'accountResolver',
             resolve : currentUserResolver,
             onEnter: function(Title) {
             	Title.set('title.account');
@@ -208,11 +207,9 @@
 		}).state('user', {
             url :'/user/:provider/:username/',
             abstract: true,
-            template: '<lvg-component-user user="userResolver.user"></lvg-component-user>',
+            templateUrl: 'app/components/user/user.html',
             controller: function(user, isCurrentUser) {
                 this.user = user;
-                this.provider = user.user.provider;
-                this.username = user.user.username;
                 this.isCurrentUser = isCurrentUser;
             },
             controllerAs: 'userResolver',
@@ -222,13 +219,13 @@
             }
 		}).state('user.dashboard', {
             url :'',
-            template : '<lvg-component-user-dashboard profile="userCtrl.profile"></lvg-component-user-dashboard>'
+            template : '<lvg-component-user-dashboard profile="userResolver.user"></lvg-component-user-dashboard>'
         }).state('user.projects', {
         	url :'projects/',
-            templateUrl : 'app/components/user/projects/projects.html'
+            template : '<lvg-component-user-projects profile="userResolver.user"></lvg-component-user-projects>'
         }).state('user.activity', {
         	url :'activity/',
-            templateUrl : 'app/components/user/activity/activity.html'
+            template : '<lvg-component-user-activity profile="userResolver.user"></lvg-component-user-activity>'
         })
 		//---- SEARCH ----
 		.state('globalSearch', {

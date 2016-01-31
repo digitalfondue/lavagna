@@ -1,0 +1,29 @@
+<div class="lvg-navbar lvg-inverted">
+    <div class="lvg-navbar-header">
+        <div class="lvg-navbar-icon">
+            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="lvgNavbarUser.toggleSidebar()"><i class="fa fa-bars"></i></a>
+            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+            <span class="lvg-navbar-breadcrumb-text">{{::lvgNavbarUser.user.user.username}}</span>
+        </div>
+        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+        </div>
+        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
+            <ul class="lvg-navbar-menu-actions">
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="SEARCH"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="lvgNavbarUser.navbarUser.username"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();lvgNavbarUser.login()" data-translate>index.navbar.login</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-menu-container">
+        <df-tab-menu menu-control="{{lvgNavbarUser.navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
+            <li menu-item="user.dashboard"><a data-ui-sref="user.dashboard({provider: lvgNavbarUser.user.user.provider, username: lvgNavbarUser.user.user.username})"><span data-translate>partials.user.tab.profile</span></a></li>
+            <li menu-item="user.projects"><a data-ui-sref="user.projects({provider: lvgNavbarUser.user.user.provider, username: lvgNavbarUser.user.user.username})"><span data-translate>partials.user.tab.projects</span></a></li>
+            <li menu-item="user.activity"><a data-ui-sref="user.activity({provider: lvgNavbarUser.user.user.provider, username: lvgNavbarUser.user.user.username})"><span data-translate>partials.user.tab.activity</span></a></li>
+            <li menu-item="account"><a data-ui-sref="account" data-ng-show="lvgNavbarUser.isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
+        </df-tab-menu>
+    </div>
+</div>

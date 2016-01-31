@@ -4,14 +4,14 @@
             <div class="lavagna-panel">
                 <div class="body">
                     <ul class="lvg-activity-list">
-                        <li data-ng-repeat="activity in userCtrl.profile.latestActivity20" class="activity">
+                        <li data-ng-repeat="activity in userActivityCtrl.latestActivity20" class="activity">
                             <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
                         </li>
                     </ul>
                 </div>
-                <div class="footer" data-ng-show="userCtrl.page != 0 || userCtrl.hasMore">
-                    <button data-ng-show="userCtrl.page != 0" data-ng-click="userCtrl.loadFor(page - 1)" class="lvg-button lvg-button-default pull-left" data-translate>button.next</button>
-                    <button data-ng-show="userCtrl.hasMore" data-ng-click="userCtrl.loadFor(page + 1)" class="lvg-button lvg-button-default pull-right" data-translate>button.previous</button>
+                <div class="footer" data-ng-show="userActivityCtrl.page != 0 ||userActivityCtrl.hasMore">
+                    <button data-ng-show="userActivityCtrl.page != 0" data-ng-click="userActivityCtrl.loadFor(page - 1)" class="lvg-button lvg-button-default pull-left" data-translate>button.next</button>
+                    <button data-ng-show="userActivityCtrl.hasMore" data-ng-click="userActivityCtrl.loadFor(page + 1)" class="lvg-button lvg-button-default pull-right" data-translate>button.previous</button>
                     <div class="clearfix"></div>
                 </div>
             </div>

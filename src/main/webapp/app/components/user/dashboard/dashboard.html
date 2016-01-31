@@ -4,14 +4,13 @@
             <div class="lavagna-panel">
                 <div class="head clearfix headonly">
                     <div class="title"><strong data-translate>partials.user.generalInfo</strong></div>
-
                 </div>
                 <div class="body separated">
                     <div>
-                        <p><strong data-translate>partials.user.provider</strong> {{::userCtrl.profile.user.provider}} </p>
-                        <p><strong data-translate>partials.user.username</strong> {{::userCtrl.profile.user.username}}</p>
-                        <p data-ng-if="profile.user.displayName != null"><strong data-translate>partials.user.displayName</strong> {{::userCtrl.profile.user.displayName}}</p>
-                        <p><strong data-translate>partials.user.memberSince</strong> {{::userCtrl.profile.user.memberSince | date: 'MMM d, y'}} </p>
+                        <p><strong data-translate>partials.user.provider</strong> {{::userDashCtrl.userProvider}} </p>
+                        <p><strong data-translate>partials.user.username</strong> {{::userDashCtrl.userName}}</p>
+                        <p data-ng-if="userDashCtrl.profile.displayName != null"><strong data-translate>partials.user.displayName</strong> {{::userDashCtrl.profile.displayName}}</p>
+                        <p><strong data-translate>partials.user.memberSince</strong> {{::userDashCtrl.profile.memberSince | date: 'MMM d, y'}} </p>
                     </div>
                 </div>
             </div>
@@ -25,7 +24,7 @@
                 </div>
                 <div class="body separated">
                     <ul class="list-group">
-                        <li class="list-group-item" data-ng-repeat="ab in userCtrl.profile.activeProjects | limitTo: 5">
+                        <li class="list-group-item" data-ng-repeat="ab in userDashCtrl.activeProjects | limitTo: 5">
                             <div class="lavagna-card-title-info">
                                 <span><a data-ui-sref="project({projectName: ab.project.shortName})">{{::ab.project.shortName}} - {{::ab.project.name}}</a></span>
                             </div>
@@ -45,16 +44,16 @@
                         <div id="cal-heatmap" class="user-heathmap"></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 lvg-user-activity-list-item" data-ng-repeat="dateKey in userCtrl.profile.eventsGroupedByDate.keyOrder">
-                            <div data-ng-init="userCtrl.view.showList[$index] = false">{{dateKey}} : {{userCtrl.profile.eventsGroupedByDate.groupedByDate[dateKey].length}} events
-								<span class="pull-right" data-ng-click="userCtrl.view.showList[$index] = !userCtrl.view.showList[$index]">
-									<i class="fa fa-chevron-down" data-ng-hide="userCtrl.view.showList[$index]"></i>
-									<i class="fa fa-chevron-up" data-ng-show="userCtrl.view.showList[$index]"></i>
+                        <div class="col-md-12 lvg-user-activity-list-item" data-ng-repeat="dateKey in userDashCtrl.eventsGroupedByDate.keyOrder">
+                            <div data-ng-init="userDashCtrl.view.showList[$index] = false">{{dateKey}} : {{userDashCtrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events
+								<span class="pull-right" data-ng-click="userDashCtrl.view.showList[$index] = !userDashCtrl.view.showList[$index]">
+									<i class="fa fa-chevron-down" data-ng-hide="userDashCtrl.view.showList[$index]"></i>
+									<i class="fa fa-chevron-up" data-ng-show="userDashCtrl.view.showList[$index]"></i>
 								</span>
                             </div>
 
-                            <ul data-ng-show="userCtrl.view.showList[$index]" class="lvg-activity-list">
-                                <li data-ng-repeat="activity in userCtrl.profile.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="activity">
+                            <ul data-ng-show="userDashCtrl.view.showList[$index]" class="lvg-activity-list">
+                                <li data-ng-repeat="activity in userDashCtrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="activity">
                                     <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
                                 </li>
                             </ul>
