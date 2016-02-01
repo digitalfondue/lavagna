@@ -162,14 +162,14 @@
 		})
 		.state('404', {
 			url : '/not-found/',
-			templateUrl : 'partials/404.html',
+			template : '<lvg-error-404></lvg-error-404>',
 			controller: function(Title) {
                 Title.set('title.notfound');
             }
 		})
 		.state('500', {
 			url : '/error/',
-			templateUrl : 'partials/500.html',
+			template : '<lvg-error-500></lvg-error-500>',
 			controller: function(Title) {
                 Title.set('title.error');
             }
