@@ -12,7 +12,8 @@
         	project: '=',
         	selected: '=',
         	cardFragmentDependencies: '='
-        }
+        },
+        controllerAs: 'lvgSearchResult'
     });
     
 })();

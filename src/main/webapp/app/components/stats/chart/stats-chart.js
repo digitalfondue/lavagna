@@ -7,6 +7,7 @@
 			bindings: {
 				chartData: "="
 			},
+			controllerAs: 'lvgStatsChart',
 			controller: function ($scope) {
 
 				var ctrl = this;

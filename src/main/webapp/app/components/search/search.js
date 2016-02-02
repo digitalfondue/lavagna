@@ -6,6 +6,7 @@
 
     components.component('lvgSearch', {
     	controller: SearchCtrl,
+    	controllerAs: 'lvgSearch',
     	templateUrl: 'app/components/search/search.html'
     });
     

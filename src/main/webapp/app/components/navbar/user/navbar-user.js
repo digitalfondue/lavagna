@@ -7,6 +7,7 @@
             user: '=',
             isCurrentUser: '='
         },
+        controllerAs: 'lvgNavbarUser',
         controller: function($window, User, Sidebar, $rootScope, $state) {
              var ctrl = this;
 

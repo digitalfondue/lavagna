@@ -10,6 +10,7 @@
 			subtitle : "=?",
 			valueColor : "=?"
 		},
+		controllerAs: 'lvgStatsTile',
 		controller : function() {
 			if (this.valueColor === undefined) {
 				this.valueColor = 0;

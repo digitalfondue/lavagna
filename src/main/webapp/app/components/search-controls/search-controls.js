@@ -13,6 +13,7 @@
 			collectIdsByProject: '=',
 			triggerSearch: '='
 		},
+		controllerAs: 'lvgSearchControls',
 		templateUrl: 'app/components/search-controls/search-controls.html'
 	});
 })();

@@ -4,6 +4,7 @@
     components.component('lvgNavbarAbout', {
         templateUrl: 'app/components/navbar/about/navbar-about.html',
         bindings: {},
+        controllerAs: 'lvgNavbarAbout',
         controller: function($window, User, Sidebar, $rootScope, $state) {
              var ctrl = this;
 

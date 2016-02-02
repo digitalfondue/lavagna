@@ -3,6 +3,7 @@
 
     components.component('lvgNavbarProject', {
         templateUrl: 'app/components/navbar/project/navbar-project.html',
+        controllerAs: 'lvgNavbarProject',
         bindings: {
             project: '='
         },

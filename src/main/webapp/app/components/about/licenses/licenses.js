@@ -3,6 +3,7 @@
 
     angular.module('lavagna.components').component('lvgAboutLicenses', {
     	templateUrl: 'app/components/about/licenses/licenses.html',
+    	controllerAs: 'lvgAboutLicenses',
         controller: function($http) {
             var ctrl = this;
             $http.get('about/THIRD-PARTY.txt').success(function(res) {

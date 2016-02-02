@@ -10,7 +10,7 @@
 				selectedVisibleCardsIdByColumnId : '=',
 				afterBulkCompletion : '='
 			},
-			
+			controllerAs: 'lvgBulkActionInline',
 			controller: function($stateParams, Label, LabelCache, BulkOperations, Card) {
 				
 				var ctrl = this;

@@ -10,6 +10,7 @@
 			switchClass: '@',
 			identifier: '@'
 		},
+		controllerAs: 'lvgSwitch',
 		controller: function() {
 			var ctrl = this;
 			ctrl.handleChange = function() {

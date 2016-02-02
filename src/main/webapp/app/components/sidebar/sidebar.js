@@ -5,6 +5,7 @@
 
     components.component('lvgSidebar', {
         templateUrl: 'app/components/sidebar/sidebar.html',
+        controllerAs: 'lvgSidebar',
         controller: function($scope, $rootScope, $window, $http, User, StompClient, Sidebar) {
             var ctrl = this;
 

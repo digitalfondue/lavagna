@@ -8,6 +8,7 @@
 			item: '=',
 			statsFetcher: '='
 		},
+		controllerAs: 'lvgStatsPanel',
 		controller : function($filter) {
 			
 			var ctrl = this;

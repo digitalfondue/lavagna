@@ -7,6 +7,7 @@
 		bindings : {
 			project: '='
 		},
+		controllerAs: 'lvgStatsPanelProject',
 		controller : function(Project) {
 			
 			var ctrl = this;

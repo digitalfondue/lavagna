@@ -12,6 +12,7 @@
 			inMenu: '=',
 			group: '='
 		},
+		controllerAs: 'lvgLabelPicker',
 		controller: function (LabelCache, $scope) {
 			var ctrl = this;
 			
