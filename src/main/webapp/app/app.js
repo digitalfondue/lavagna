@@ -196,7 +196,8 @@
 			url :'/me/',
 			templateUrl: 'app/components/account/account-template.html',
 			controller: function(user) {
-                this.user = user;
+                this.username = user.username;
+                this.provider = user.provider;
                 this.isCurrentUser = true;
             },
             controllerAs: 'accountResolver',
@@ -210,6 +211,8 @@
             templateUrl: 'app/components/user/user.html',
             controller: function(user, isCurrentUser) {
                 this.user = user;
+                this.username = user.user.username;
+                this.provider = user.user.provider;
                 this.isCurrentUser = isCurrentUser;
             },
             controllerAs: 'userResolver',

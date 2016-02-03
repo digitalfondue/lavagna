@@ -4,10 +4,10 @@
     components.component('lvgNavbarUser', {
         templateUrl: 'app/components/navbar/user/navbar-user.html',
         bindings: {
-            user: '=',
+            username: '=',
+            provider: '=',
             isCurrentUser: '='
         },
-        controllerAs: 'lvgNavbarUser',
         controller: function($window, User, Sidebar, $rootScope, $state) {
              var ctrl = this;
 

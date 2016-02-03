@@ -9,8 +9,8 @@
                     <div>
                         <p><strong data-translate>partials.user.provider</strong> {{::userDashCtrl.userProvider}} </p>
                         <p><strong data-translate>partials.user.username</strong> {{::userDashCtrl.userName}}</p>
-                        <p data-ng-if="userDashCtrl.profile.displayName != null"><strong data-translate>partials.user.displayName</strong> {{::userDashCtrl.profile.displayName}}</p>
-                        <p><strong data-translate>partials.user.memberSince</strong> {{::userDashCtrl.profile.memberSince | date: 'MMM d, y'}} </p>
+                        <p data-ng-if="userDashCtrl.user.displayName != null"><strong data-translate>partials.user.displayName</strong> {{::userDashCtrl.user.displayName}}</p>
+                        <p><strong data-translate>partials.user.memberSince</strong> {{::userDashCtrl.user.memberSince | date: 'MMM d, y'}} </p>
                     </div>
                 </div>
             </div>
