@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectMilestonesCtrl', function ($stateParams, $scope, Card, User, Label, Notification, StompClient, project) {
+	module.controller('ProjectMilestonesCtrl', function ($stateParams, $rootScope, $scope, Card, User, Label, Notification, StompClient, project) {
 
 		$scope.sidebarOpen = true;
 		$scope.project = project;
@@ -17,18 +17,18 @@
 			}
 			return Object.keys(array).length > minLength;
 		};
-		
+
 		$scope.closeMilestone = function(val) {
 			Label.createLabelListValueMetadata(val.id, 'status', 'CLOSED');
 		};
-		
+
 		$scope.openMilestone = function(val) {
 			Label.removeLabelListValueMetadata(val.id, 'status');
 		};
 
 		$scope.orderCardByStatus = function(card) {
 			return card.columnDefinition == "CLOSED" ? 1 : 0;
-		}
+		};
 
 		var orderByStatus = function (milestone) {
 			var insertStatusIfExists = function (milestone, source, target, status) {
@@ -52,7 +52,7 @@
 				return Card.findCardsByMilestoneDetail($stateParams.projectName, milestone.labelListValue.value);
 			}).then(function (response) {
 				milestone.detail = response;
-				milestone.currentPage = page + 1; 
+				milestone.currentPage = page + 1;
 			});
 		};
 
@@ -78,6 +78,12 @@
 		StompClient.subscribe($scope, '/event/project/' + $stateParams.projectName + '/label-value', loadMilestonesInProject);
 
 		StompClient.subscribe($scope, '/event/project/' + $stateParams.projectName + '/label', loadMilestonesInProject);
+
+        var unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
+        $scope.$on('$destroy', unbindMovedEvent);
+
+        var unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
+        $scope.$on('$destroy', unbindRenamedEvent);
 
 		$scope.clearMilestoneDetail = function (milestone) {
 			milestone.detail = null;

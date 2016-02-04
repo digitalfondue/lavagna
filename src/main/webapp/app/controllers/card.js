@@ -35,7 +35,7 @@
 
 		$scope.notEmptyColumn = function(model) {
 			return model != "" && model != null;
-		}
+		};
 		//
 
 		var $scopeForColumn = undefined;
@@ -179,7 +179,7 @@
 			};
 		}, function() {
 			$scope.sortableActionListOptions = false;
-		})
+		});
 
 		User.hasPermission('MANAGE_ACTION_LIST', $stateParams.projectName).then(function() {
 			$scope.sortableActionItemsOptions = {
@@ -272,7 +272,9 @@
 
 		// -----
 		$scope.updateCardName = function(card, newName) {
-			Card.update(card.id, newName);
+            Card.update(card.id, newName).then( function() {
+                $rootScope.$emit('card.renamed.event');
+             });
 		};
 		//
 		$scope.updateComment = function(comment, commentToEdit) {
@@ -531,6 +533,7 @@
 					key: 'notification.card.moveToLocation.success',
 					parameters: { location: location }
 				}, false);
+                $rootScope.$emit('card.moved.event');
 			}, function(error) {
 				Notification.addAutoAckNotification('error', {
 					key: 'notification.card.moveToLocation.error',
@@ -559,6 +562,7 @@
 						key: 'notification.card.moveToColumn.success',
 						parameters: { columnName: toColumn.name }
 					}, false);
+                    $rootScope.$emit('card.moved.event');
 				}, function(error) {
 					Notification.addAutoAckNotification('error', {
 						key: 'notification.card.moveToColumn.error',
