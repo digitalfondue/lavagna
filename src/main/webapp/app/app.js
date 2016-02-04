@@ -196,7 +196,8 @@
 			url :'/me/',
 			templateUrl: 'app/components/account/account-template.html',
 			controller: function(user) {
-                this.user = user;
+                this.username = user.username;
+                this.provider = user.provider;
                 this.isCurrentUser = true;
             },
             controllerAs: 'accountResolver',
@@ -210,6 +211,8 @@
             templateUrl: 'app/components/user/user.html',
             controller: function(user, isCurrentUser) {
                 this.user = user;
+                this.username = user.user.username;
+                this.provider = user.user.provider;
                 this.isCurrentUser = isCurrentUser;
             },
             controllerAs: 'userResolver',
@@ -283,7 +286,7 @@
 		})
 
 		//---- MANAGE PROJECT ----
-		.state('ProjectManage', {
+		.state('projectManage', {
         	url : '/:projectName/manage/',
 			templateUrl : '/app/components/project/manage/manage.html',
 			abstract: true,
@@ -295,31 +298,30 @@
           	onEnter:function(Title, project) {
           		Title.set('title.project.manage', { shortname: project.shortName });
           	}
-        }).state('ProjectManage.roles', {
+        }).state('projectManage.roles', {
 			url : 'roles/',
 			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
-		}).state('ProjectManage.import', {
+		}).state('projectManage.import', {
 			url : 'import/',
 			template : '<lvg-component-project-manage-import project="projectResolver.project"></lvg-component-project-manage-import>'
-		}).state('ProjectManage.labels', {
+		}).state('projectManage.labels', {
 			url : 'labels/',
 			template : '<lvg-component-project-manage-labels project="projectResolver.project"></lvg-component-project-manage-labels>'
-		}).state('ProjectManage.milestones', {
+		}).state('projectManage.milestones', {
 			url : 'milestones/',
 			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
-		}).state('ProjectManage.access', {
+		}).state('projectManage.access', {
 			url : 'access/',
 			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
-		}).state('ProjectManage.status', {
+		}).state('projectManage.status', {
 			url : 'status/',
 			template: '<lvg-component-project-manage-status project="projectResolver.project"></lvg-component-project-manage-status>'
-		}).state('ProjectManage.boards', {
+		}).state('projectManage.boards', {
 			url : 'boards/',
 			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
-		}).state('ProjectManage.project', {
+		}).state('projectManage.project', {
 			url : '',
 			template: '<lvg-component-project-manage-project project="projectResolver.project"></lvg-component-project-manage-project>',
-
 		})
 
 		//---- PROJECT ----

@@ -1,12 +1,10 @@
 (function() {
     var components = angular.module('lavagna.components');
 
-    components.component('lvgNavbarUser', {
-        templateUrl: 'app/components/navbar/user/navbar-user.html',
+    components.component('lvgNavbarProjectManage', {
+        templateUrl: 'app/components/navbar/project-manage/navbar-project-manage.html',
         bindings: {
-            username: '=',
-            provider: '=',
-            isCurrentUser: '='
+            project: '='
         },
         controller: function($window, User, Sidebar, $rootScope, $state) {
              var ctrl = this;
