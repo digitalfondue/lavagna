@@ -540,7 +540,7 @@
                     key: 'notification.card.moveToLocation.success',
                     parameters: { location: location }
                 }, false);
-                $rootScope.$emit('card.movedToLocation.event');
+                $rootScope.$emit('card.moved.event');
             }, function(error) {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.card.moveToLocation.error',
@@ -569,7 +569,7 @@
                         key: 'notification.card.moveToColumn.success',
                         parameters: { columnName: toColumn.name }
                     }, false);
-                    $rootScope.$emit('card.movedToLocation.event');
+                    $rootScope.$emit('card.moved.event');
                 }, function(error) {
                     Notification.addAutoAckNotification('error', {
                         key: 'notification.card.moveToColumn.error',
