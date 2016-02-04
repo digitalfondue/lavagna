@@ -11,7 +11,7 @@
         templateUrl: 'app/components/project/milestones/project-milestones.html'
     });
 
-    function ProjectMilestonesController($scope, Card, User, Label, Notification, StompClient) {
+    function ProjectMilestonesController($rootScope, $scope, Card, User, Label, Notification, StompClient) {
         var projectMilestonesCtrl = this;
 
         projectMilestonesCtrl.milestoneOpenStatus = {};
@@ -33,7 +33,7 @@
 
         projectMilestonesCtrl.orderCardByStatus = function(card) {
             return card.columnDefinition == "CLOSED" ? 1 : 0;
-        }
+        };
 
         var orderByStatus = function (milestone) {
             var insertStatusIfExists = function (milestone, source, target, status) {
@@ -83,6 +83,13 @@
         StompClient.subscribe($scope, '/event/project/' + projectMilestonesCtrl.project.shortName + '/label-value', loadMilestonesInProject);
 
         StompClient.subscribe($scope, '/event/project/' + projectMilestonesCtrl.project.shortName + '/label', loadMilestonesInProject);
+
+        var unbindMovedEvent =  $rootScope.$on('card.movedToLocation.event', loadMilestonesInProject);
+        $scope.$on('$destroy', unbindMovedEvent);
+
+        var unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
+        $scope.$on('$destroy', unbindRenamedEvent);
+
 
         projectMilestonesCtrl.clearMilestoneDetail = function (milestone) {
             milestone.detail = null;

@@ -43,7 +43,7 @@
 
         ctrl.notEmptyColumn = function(model) {
             return model != "" && model != null;
-        }
+        };
         //
 
         var $scopeForColumn = undefined;
@@ -57,7 +57,7 @@
                 $scopeForColumn.$destroy();
             }
 
-            $scopeForColumn = $scope.$new()
+            $scopeForColumn = $scope.$new();
 
             //subscribe on any change to the column
             StompClient.subscribe($scopeForColumn, '/event/column/' + columnId, function() {
@@ -69,7 +69,7 @@
         //
 
         //------------------
-        
+
         function refreshTitle() {
         	Title.set('title.card', { shortname: board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
         }
@@ -188,7 +188,7 @@
             };
         }, function() {
             ctrl.sortableActionListOptions = false;
-        })
+        });
 
         User.hasPermission('MANAGE_ACTION_LIST', project.shortName).then(function() {
             ctrl.sortableActionItemsOptions = {
@@ -281,7 +281,9 @@
 
         // -----
         ctrl.updateCardName = function(card, newName) {
-            Card.update(card.id, newName);
+            Card.update(card.id, newName).then( function() {
+                $rootScope.$emit('card.renamed.event');
+            });
         };
         //
         ctrl.updateComment = function(comment, commentToEdit) {
@@ -309,7 +311,7 @@
                 count += labelValues[n] === undefined ? 0 : labelValues[n].length;
             }
             return count > 0;
-        }
+        };
 
         var currentCard = function() {
             var cardByProject = {};
@@ -352,7 +354,6 @@
         };
 
 
-
         ctrl.setDueDate = function(date) {
             BulkOperations.setDueDate(currentCard(), date)
         };
@@ -379,11 +380,11 @@
 
         ctrl.setMilestone = function(milestone) {
             BulkOperations.setMilestone(currentCard(), milestone);
-        }
+        };
 
         ctrl.removeMilestone = function() {
             BulkOperations.removeMilestone(currentCard());
-        }
+        };
 
         ctrl.addNewLabel = function(labelToAdd) {
             var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
@@ -428,7 +429,6 @@
             } else {
                 processUploadingFile('failed');
             }
-
         };
 
         var fileUploadFailedCallBack = function(event) {
@@ -540,6 +540,7 @@
                     key: 'notification.card.moveToLocation.success',
                     parameters: { location: location }
                 }, false);
+                $rootScope.$emit('card.movedToLocation.event');
             }, function(error) {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.card.moveToLocation.error',
@@ -568,6 +569,7 @@
                         key: 'notification.card.moveToColumn.success',
                         parameters: { columnName: toColumn.name }
                     }, false);
+                    $rootScope.$emit('card.movedToLocation.event');
                 }, function(error) {
                     Notification.addAutoAckNotification('error', {
                         key: 'notification.card.moveToColumn.error',
@@ -575,7 +577,7 @@
                     }, false);
                 })
             });
-        }
+        };
 
 
         //the /card-data has various card data related event that are pushed from the server that we must react
