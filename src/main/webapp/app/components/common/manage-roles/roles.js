@@ -3,7 +3,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentManageRoles', {
+    components.component('lvgManageRoles', {
         bindings: {
             project: '='
         },

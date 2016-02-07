@@ -2,7 +2,7 @@
     'use strict';
 
     var components = angular.module('lavagna.components');
-    components.component('lvgComponentProjectManageImport', {
+    components.component('lvgProjectManageImport', {
         bindings: {
             project: '='
         },

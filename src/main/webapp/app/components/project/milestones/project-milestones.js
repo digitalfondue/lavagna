@@ -2,7 +2,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentProjectMilestones', {
+    components.component('lvgProjectMilestones', {
         controller: ProjectMilestonesController,
         controllerAs: 'projectMilestonesCtrl',
         bindings: {

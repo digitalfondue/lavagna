@@ -4,7 +4,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentProjectManageBoards', {
+    components.component('lvgProjectManageBoards', {
         bindings: {
             project: '='
         },

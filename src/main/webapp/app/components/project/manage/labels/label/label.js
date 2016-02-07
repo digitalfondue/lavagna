@@ -3,7 +3,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentProjectManageLabel', {
+    components.component('lvgProjectManageLabelsLabel', {
         bindings: {
             project: '=',
             label: '='

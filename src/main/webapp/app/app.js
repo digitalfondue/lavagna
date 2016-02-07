@@ -262,7 +262,7 @@
 			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
 		}).state('admin.roles', {
 			url: 'roles/',
-			template: '<lvg-component-manage-roles></lvg-component-manage-roles>'
+			template: '<lvg-manage-roles></lvg-manage-roles>'
 		}).state('admin.exportimport', {
 			url: 'export-import/',
 			template : '<lvg-component-admin-export-import></lvg-component-admin-export-import>'
@@ -300,28 +300,28 @@
           	}
         }).state('projectManage.roles', {
 			url : 'roles/',
-			template: '<lvg-component-manage-roles project="projectResolver.project"></lvg-component-manage-roles>'
+			template: '<lvg-manage-roles project="projectResolver.project"></lvg-manage-roles>'
 		}).state('projectManage.import', {
 			url : 'import/',
-			template : '<lvg-component-project-manage-import project="projectResolver.project"></lvg-component-project-manage-import>'
+			template : '<lvg-project-manage-import project="projectResolver.project"></lvg-project-manage-import>'
 		}).state('projectManage.labels', {
 			url : 'labels/',
-			template : '<lvg-component-project-manage-labels project="projectResolver.project"></lvg-component-project-manage-labels>'
+			template : '<lvg-project-manage-labels project="projectResolver.project"></lvg-project-manage-labels>'
 		}).state('projectManage.milestones', {
 			url : 'milestones/',
-			template: '<lvg-component-project-manage-milestones project="projectResolver.project"></lvg-component-project-manage-milestones>'
+			template: '<lvg-project-manage-milestones project="projectResolver.project"></lvg-project-manage-milestones>'
 		}).state('projectManage.access', {
 			url : 'access/',
-			template: '<lvg-component-project-manage-access project="projectResolver.project"></lvg-component-project-manage-access>'
+			template: '<lvg-project-manage-access project="projectResolver.project"></lvg-project-manage-access>'
 		}).state('projectManage.status', {
 			url : 'status/',
-			template: '<lvg-component-project-manage-status project="projectResolver.project"></lvg-component-project-manage-status>'
+			template: '<lvg-project-manage-status project="projectResolver.project"></lvg-project-manage-status>'
 		}).state('projectManage.boards', {
 			url : 'boards/',
-			template : '<lvg-component-project-manage-boards project="projectResolver.project"></lvg-component-project-manage-boards>'
+			template : '<lvg-project-manage-boards project="projectResolver.project"></lvg-project-manage-boards>'
 		}).state('projectManage.project', {
 			url : '',
-			template: '<lvg-component-project-manage-project project="projectResolver.project"></lvg-component-project-manage-project>',
+			template: '<lvg-project-manage-project project="projectResolver.project"></lvg-project-manage-project>',
 		})
 
 		//---- PROJECT ----
@@ -338,13 +338,13 @@
 		})
 		.state('project.boards', {
 			url: '',
-			template: '<lvg-component-project-boards project="projectResolver.project"></lvg-component-project-boards>'
+			template: '<lvg-project-boards project="projectResolver.project"></lvg-project-boards>'
 		}).state('project.statistics', {
 			url: 'statistics/',
-			template: '<lvg-component-project-statistics project="projectResolver.project"></lvg-component-project-statistics>'
+			template: '<lvg-project-statistics project="projectResolver.project"></lvg-project-statistics>'
 		}).state('project.milestones', {
             url : 'milestones/',
-            template: '<lvg-component-project-milestones project="projectResolver.project"></lvg-component-project-milestones>'
+            template: '<lvg-project-milestones project="projectResolver.project"></lvg-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
