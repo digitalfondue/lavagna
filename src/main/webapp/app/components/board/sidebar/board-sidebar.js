@@ -4,7 +4,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentBoardSidebar', BoardSidebarComponent);
+    components.directive('lvgBoardSidebar', BoardSidebarComponent);
 
     function BoardSidebarComponent(Board, Card, User, StompClient) {
         return {
@@ -16,7 +16,7 @@
                 board: '=',
                 project: '='
             },
-            templateUrl: 'app/components/board/sidelocation/sidelocation.html',
+            templateUrl: 'app/components/board/sidebar/board-sidebar.html',
             link: function(scope, element, attrs, boardSidebarCtrl) {
                 $("#sidebar-drop-zone").sortable({
                     receive: function (ev, ui) {

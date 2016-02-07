@@ -381,7 +381,7 @@
 		//---- BOARD ----
 		.state('board', {
             url : '/:projectName/{shortName:[A-Z0-9_]+}',
-            template : '<lvg-component-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-component-board>',
+            template : '<lvg-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-board>',
             controller : function(project, board) {
                 this.project = project;
                 this.board = board;

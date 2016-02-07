@@ -4,7 +4,7 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgComponentBoardColumn', BoardColumnComponent);
+    components.directive('lvgBoardColumn', BoardColumnComponent);
 
     function BoardColumnComponent(Board, Card, Label, Notification, StompClient, BulkOperations) {
         return {
@@ -20,7 +20,7 @@
                 selectedCards: '=',
                 searchFilter: '='
             },
-            templateUrl: 'app/components/board/column/column.html',
+            templateUrl: 'app/components/board/column/board-column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {
                 var projectShortName = boardColumnCtrl.project.shortName;
                 var boardShortName = boardColumnCtrl.board.shortName;
@@ -49,7 +49,7 @@
 
     function BoardColumnController($scope, $filter, $modal, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
-        
+
         var boardShortName = ctrl.board.shortName;
 
         //capture all status variables

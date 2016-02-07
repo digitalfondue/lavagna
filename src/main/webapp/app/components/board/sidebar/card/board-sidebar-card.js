@@ -4,8 +4,8 @@
 
 	var components = angular.module('lavagna.components');
 
-	components.component('lvgComponentBoardSidebarCard', {
-        templateUrl: 'app/components/board/sidelocation/card/card.html',
+	components.component('lvgBoardSidebarCard', {
+        templateUrl: 'app/components/board/sidebar/card/board-sidebar-card.html',
         bindings: {
             project: '=',
             board: '=',

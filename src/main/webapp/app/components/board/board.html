@@ -1,3 +1,6 @@
+<header>
+    <lvg-navbar-board board="boardCtrl.board" project="boardCtrl.project"></lvg-navbar-board>
+</header>
 <lvg-navbar data-navbar-type="board-menu">
     <lvg-board-navigation/>
 </lvg-navbar>
@@ -5,7 +8,7 @@
 <div class="lavagna-board-sidebar lavagna-board-left-sidebar lavagna-left-sidebar-slide-out"
      data-ng-class="{'lavagna-board-left-sidebar-out':boardCtrl.toggledSidebar}">
 	<div data-ng-if="boardCtrl.toggledSidebar">
-		<lvg-component-board-sidebar project="boardCtrl.project" board="boardCtrl.board"></lvg-component-board-sidebar>
+		<lvg-board-sidebar project="boardCtrl.project" board="boardCtrl.board"></lvg-board-sidebar>
 	</div>
 </div>
 
@@ -16,7 +19,7 @@
             data-ng-repeat="column in boardCtrl.columns track by column.id"
             data-ng-attr-data-lvg-column-id="{{::column.id}}"
             data-lvg-update-column-size>
-            <lvg-component-board-column project="boardCtrl.project" board="boardCtrl.board" column="column" board-columns="boardCtrl.columns" selected-cards="boardCtrl.selectedCards" search-filter="boardCtrl.searchFilter"></lvg-component-board-column>
+            <lvg-board-column project="boardCtrl.project" board="boardCtrl.board" column="column" board-columns="boardCtrl.columns" selected-cards="boardCtrl.selectedCards" search-filter="boardCtrl.searchFilter"></lvg-board-column>
         </li>
         <li class="lavagna-board-column lavagna-not-sortable-board-column panel panel-default" data-lvg-has-permission="CREATE_COLUMN">
             <div class="panel-footer">

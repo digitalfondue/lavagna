@@ -3,14 +3,14 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentBoard', {
+    components.component('lvgBoard', {
         controller: BoardController,
         controllerAs: 'boardCtrl',
         bindings: {
             project: '=',
             board: '='
         },
-        templateUrl: 'app/components/board/board/board.html'
+        templateUrl: 'app/components/board/board.html'
     });
 
     function BoardController($rootScope, $scope, $location, $filter, $log, $timeout,
@@ -21,7 +21,7 @@
 
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
-        
+
 
         User.currentCachedUser().then(function(currentUser) {
             ctrl.currentUserId = currentUser.id;
@@ -74,11 +74,11 @@
 
         var selectedVisibleCardsId = function() {
             var ids = [];
-            
+
             angular.forEach(selectedVisibleCardsIdByColumnId(), function(val) {
             	ids = ids.concat(val);
             });
-            
+
             return ids;
         };
 
@@ -92,7 +92,7 @@
 	            		}
 	            		res[columnId].push(parseInt(cardId,10));
             		}
-            		
+
             	})
             })
             return res;

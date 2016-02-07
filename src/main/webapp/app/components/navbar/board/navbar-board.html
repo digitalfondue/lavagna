@@ -1,0 +1,23 @@
+<div class="lvg-navbar lvg-inverted">
+    <div class="lvg-navbar-header">
+        <div class="lvg-navbar-icon">
+            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="$ctrl.toggleSidebar()"><i class="fa fa-bars"></i></a>
+            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
+        </div>
+        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+            <span class="lvg-navbar-breadcrumb-text">{{::$ctrl.board.shortName}}</span>
+        </div>
+        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+        </div>
+        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
+            <ul class="lvg-navbar-menu-actions">
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="SEARCH"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-has-permission="PROJECT_ADMINISTRATION"><a data-ui-sref="projectManage.project({projectName: $ctrl.project.shortName})" class="navbar-link"><span class="lvg-navbar-menu-action-big-icon fa fa-cog"></span></a></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="$ctrl.navbarUser.username"></span></li>
+                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();$ctrl.login()" data-translate>index.navbar.login</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
