@@ -38,16 +38,6 @@
 
     }
 
-    function updateSearchContext(toState, fromState, ctrl) {
-        if (toState.name.indexOf("board") === 0) {
-        	ctrl.searchContext = {name: 'Board'};
-        } else if (toState.name.indexOf('project.') === 0 || toState.name.indexOf("ProjectManage.") === 0 || toState.name.indexOf("projectSearch") === 0) {
-        	ctrl.searchContext = {name: 'Project'};
-        } else {
-        	ctrl.searchContext = {name: 'All'};
-        }
-    }
-
     function fromTagsToQuery(tags) {
 
         if (!angular.isArray(tags)) {
@@ -89,17 +79,21 @@
     }
 
     angular.module('lavagna.components').component('lvgSearchInput', {
+            bindings: {
+                project: '=',
+                board: '='
+            },
             templateUrl: 'app/components/search-input/search-input.html',
             controllerAs: 'lvgSearchInput',
-            controller: function ($scope, $log, $location, $rootScope, $state, $stateParams, $timeout, $http, Search) {
-            	
+            controller: function ($scope, $log, $location, $rootScope, $timeout, $http, Search) {
+
             	var ctrl = this;
-            	
+
             	function toParams(input, prefix) {
                     var q = input.substr(prefix.length).trim();
                     var params = {term: q};
-                    if ($stateParams.projectName) {
-                        params.projectName = $stateParams.projectName
+                    if (ctrl.project !== undefined) {
+                        params.projectName = ctrl.project.shortName
                     }
                     return params;
                 }
@@ -285,8 +279,6 @@
                         return;
                     }
 
-                    updateSearchContext(toState, fromState, ctrl);
-
                     if ((fromState.name === 'board.card' && toState.name === 'board') ||
                         (fromState.name === 'globalSearch.card' && toState.name === 'globalSearch') ||
                         (fromState.name === 'projectSearch.card' && toState.name === 'projectSearch')) {
@@ -313,16 +305,16 @@
                 });
 
                 $scope.$watch('lvgSearchInput.toSearch.tags', function () {
-                    if (ctrl.searchContext && ctrl.searchContext.name === 'Board') {
+                    if (ctrl.board !== undefined) {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
                     }
                 }, true);
 
                 ctrl.submit = function () {
-                    if (ctrl.searchContext && ctrl.searchContext.name === 'Board') {
+                    if (ctrl.board !== undefined) {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
-                    } else if (ctrl.searchContext && ctrl.searchContext.name === 'Project') {
-                        $location.url('/' + $stateParams.projectName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
+                    } else if (ctrl.project !== undefined) {
+                        $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
                         $rootScope.$broadcast('refreshSearch');
                     } else {
                         $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
@@ -344,5 +336,5 @@
 
             }
     });
-    
+
 })();

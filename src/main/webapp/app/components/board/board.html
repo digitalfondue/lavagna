@@ -1,9 +1,17 @@
 <header>
     <lvg-navbar-board board="boardCtrl.board" project="boardCtrl.project"></lvg-navbar-board>
 </header>
-<lvg-navbar data-navbar-type="board-menu">
-    <lvg-board-navigation/>
-</lvg-navbar>
+
+<lvg-board-controls
+    toggled-sidebar="boardCtrl.toggledSidebar"
+    switch-edit-mode="boardCtrl.switchEditMode"
+    edit-mode="boardCtrl.editMode"
+    un-select-all="boardCtrl.unSelectAll"
+    select-all="boardCtrl.selectAll"
+    selected-visible-count="boardCtrl.selectedVisibleCount"
+    format-bulk-request="boardCtrl.formatBulkRequest"
+    selected-visible-cards-id-by-column-id="boardCtrl.selectedVisibleCardsIdByColumnId">
+</lvg-board-controls>
 
 <div class="lavagna-board-sidebar lavagna-board-left-sidebar lavagna-left-sidebar-slide-out"
      data-ng-class="{'lavagna-board-left-sidebar-out':boardCtrl.toggledSidebar}">

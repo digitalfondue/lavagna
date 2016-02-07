@@ -1,17 +1,20 @@
 (function() {
 
 	'use strict';
-	
+
 	var components = angular.module('lavagna.components');
 
     components.component('lvgSearch', {
+        bindings: {
+            project: '='
+        },
     	controller: SearchCtrl,
     	controllerAs: 'lvgSearch',
     	templateUrl: 'app/components/search/search.html'
     });
-    
 
-	function SearchCtrl($scope, $stateParams, $location, $http, $log, $filter, $modal, ProjectCache, Search, User, LabelCache, Card) {
+
+	function SearchCtrl($scope, $location, $http, $log, $filter, $modal, Search, User, LabelCache, Card) {
 		var ctrl = this;
 
 		function triggerSearch() {
@@ -43,7 +46,7 @@
 		}
 
 		var queryString = { params: {}};
-		
+
 		ctrl.moveToPage = function(page) {
 			$log.debug('move to page', page);
 			var loc = $location.search();
@@ -51,9 +54,9 @@
 			$location.search(loc);
 			triggerSearch();
 		};
-		
+
 		ctrl.selected = {};
-		
+
 		function selectedCardsCount() {
 			var cnt = 0;
 			for(var project in ctrl.selected) {
@@ -65,19 +68,15 @@
 			}
 			return cnt;
 		}
-		
+
 		ctrl.selectedCardsCount = selectedCardsCount;
 
-		ctrl.inProject = $stateParams.projectName !== undefined;
+		ctrl.inProject = ctrl.project !== undefined;
 
-		if($stateParams.projectName !== undefined) {
-			queryString.params.projectName = $stateParams.projectName;
+		if(ctrl.project !== undefined) {
+			queryString.params.projectName = ctrl.project.shortName;
 
-			ProjectCache.project($stateParams.projectName).then(function(p) {
-				ctrl.project = p;
-			});
-
-			LabelCache.findByProjectShortName($stateParams.projectName).then(function(res) {
+			LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(res) {
 
 				ctrl.labels = res;
 				for(var k in res) {
@@ -142,17 +141,17 @@
 			}
 			return res;
 		}
-		
+
 		ctrl.collectIdsByProject = collectIdsByProject;
-		
+
 		ctrl.triggerSearch = triggerSearch;
-		
+
 		//
 		User.currentCachedUser().then(function(currentUser) {
 			ctrl.currentUserId = currentUser.id;
 		});
 		//
-		
+
 		// dependencies for card fragment
         ctrl.cardFragmentDependencies = {};
         var cardFragmentDependenciesToCopy = ['currentUserId'];
@@ -161,9 +160,5 @@
 		}
 
 	}
-	
-	
-
-	
 
 })();

@@ -8,7 +8,7 @@
             <span class="lvg-navbar-breadcrumb-text">{{::$ctrl.project.shortName}}</span>
         </div>
         <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
-            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
+            <lvg-search-input project="$ctrl.project" data-lvg-has-permission="SEARCH"></lvg-search-input>
         </div>
         <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
             <ul class="lvg-navbar-menu-actions">
