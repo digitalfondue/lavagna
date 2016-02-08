@@ -235,7 +235,7 @@
 			url : '/search/?q&page',
 			template : '<lvg-search></lvg-search>',
 			reloadOnSearch: false,
-			controller: function() {
+			controller: function(Title) {
 			    Title.set('title.search');
 			}
 		}).state('globalSearch.card', {
