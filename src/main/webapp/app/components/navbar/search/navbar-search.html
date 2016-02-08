@@ -9,7 +9,7 @@
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> {{::$ctrl.project.shortName}}</span></span>
         </div>
-        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+        <div class="lvg-navbar-search-bar" data-ng-if="searchOpen">
             <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
         </div>
         <div class="lvg-navbar-menu" data-ng-show="!searchOpen">

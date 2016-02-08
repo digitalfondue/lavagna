@@ -7,7 +7,7 @@
         <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
             <span class="lvg-navbar-breadcrumb-text">{{::lvgNavbarUser.user.user.username}}</span>
         </div>
-        <div class="lvg-navbar-search-bar" data-ng-show="searchOpen">
+        <div class="lvg-navbar-search-bar" data-ng-if="searchOpen">
             <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
         </div>
         <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
