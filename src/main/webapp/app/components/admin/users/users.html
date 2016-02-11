@@ -91,20 +91,27 @@
             <table class="table table-striped table-bordered lvg-table">
                 <thead>
                 <tr>
-                    <th data-translate>partials.admin.manage-users.provider</th>
+                    <th data-translate width="135px">partials.admin.manage-users.provider</th>
                     <th data-translate>partials.admin.manage-users.username</th>
                     <th data-translate>partials.admin.manage-users.email</th>
                     <th data-translate>partials.admin.manage-users.displayName</th>
-                    <th data-translate>partials.admin.manage-users.enabled</th>
+                    <th data-translate width="25px">partials.admin.manage-users.roles</th>
+                    <th data-translate width="25px">partials.admin.manage-users.enabled</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList | usersPagination:20:adminUsersCtrl.view.userListPage">
                     <td data-ng-bind="u.provider"></td>
-                    <td data-ng-bind="u.username"></td>
+                    <td>
+                        <a class=\"lvg-user-link-placeholder\" ui-sref="user.dashboard({provider: u.provider, username: u.username})" data-ng-bind="u.username"></a>
+                    </td>
                     <td data-ng-bind="u.email"></td>
                     <td data-ng-bind="u.displayName"></td>
-                    <td><input data-ng-show="u.id != adminUsersCtrl.currentUser.id"
+                    <td class="text-align-center">
+                        <span class="fa fa-info-circle"
+                              data-ng-if="u.provider !== 'system'"
+                              data-ng-click="adminUsersCtrl.showUserPermissions(u)"></span></td>
+                    <td class="text-align-center"><input data-ng-show="u.id != adminUsersCtrl.currentUser.id"
                                type="checkbox" data-ng-model="u.enabled"
                                data-ng-change="adminUsersCtrl.updateUserStatus(u.id, u.enabled)"> <input
                         data-ng-show="u.id == adminUsersCtrl.currentUser.id" type="checkbox"

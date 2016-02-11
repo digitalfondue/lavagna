@@ -10,7 +10,7 @@
         templateUrl: 'app/components/admin/users/users.html'
     });
 
-    function AdminUserController(User, UsersAdministration, Admin, Permission, Notification) {
+    function AdminUserController($modal, User, UsersAdministration, Admin, Permission, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -80,7 +80,7 @@
                 }
             }
             userToAdd.roles = roles;
-            UsersAdministration.addUser(userToAdd).then(function(data) {
+            UsersAdministration.addUser(userToAdd).then(function() {
                 configureDefaultUserToAdd();
                 loadUsers();
             }, function(error) {
@@ -120,5 +120,23 @@
             ctrl.view.userListPage = page;
         };
 
-    };
+        ctrl.showUserPermissions = function(user) {
+            $modal.open({
+                templateUrl: 'app/components/admin/users/user-permissions-modal.html',
+                controller: function ($scope, $modalInstance) {
+
+                    Permission.findUserRoles(user.id).then(function(rolesByProject) {
+                        $scope.rolesByProject = rolesByProject;
+                    });
+
+                    $scope.close = function () {
+                        $modalInstance.close('done');
+                    }
+                },
+                size: 'sm',
+                windowClass: 'lavagna-modal'
+            });
+        };
+
+    }
 })();

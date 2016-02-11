@@ -19,6 +19,7 @@ package io.lavagna.query;
 import io.lavagna.model.ProjectRoleAndPermission;
 import io.lavagna.model.RoleAndMetadata;
 import io.lavagna.model.RoleAndPermission;
+import io.lavagna.model.RoleAndProject;
 import io.lavagna.model.User;
 import io.lavagna.model.UserIdentifier;
 
@@ -43,8 +44,18 @@ public interface PermissionQuery {
 			+ " INNER JOIN LA_PROJECT_ROLE ON LA_PROJECT_USER_ROLE.PROJECT_ROLE_ID_FK = PROJECT_ROLE_ID "
 			+ " LEFT JOIN LA_PROJECT_ROLE_PERMISSION ON LA_PROJECT_ROLE_PERMISSION.PROJECT_ROLE_ID_FK = PROJECT_ROLE_ID "
 			+ " WHERE USER_ID_FK = :userId AND LA_PROJECT_USER_ROLE.PROJECT_ID_FK = :projectId AND LA_PROJECT_ROLE.PROJECT_ID_FK = :projectId")
-	List<RoleAndPermission> findRoleAndPermissionByUserIdInProjectId(@Bind("userId") int userId,
-			@Bind("projectId") int projectId);
+	List<RoleAndPermission> findRoleAndPermissionByUserIdInProjectId(@Bind("userId") int userId, @Bind("projectId") int projectId);
+
+    @Query("SELECT PROJECT_ROLE_NAME AS ROLE_NAME, LA_PROJECT.PROJECT_NAME FROM LA_PROJECT_USER_ROLE "
+        + " INNER JOIN LA_PROJECT_ROLE ON LA_PROJECT_USER_ROLE.PROJECT_ROLE_ID_FK = PROJECT_ROLE_ID "
+        + " INNER JOIN LA_PROJECT ON LA_PROJECT_ROLE.PROJECT_ID_FK = LA_PROJECT.PROJECT_ID "
+        + " WHERE USER_ID_FK = :userId")
+    List<RoleAndProject> findUserRolesByProject(@Bind("userId") int userId);
+
+    @Query("SELECT ROLE_NAME, ROLE_REMOVABLE, ROLE_HIDDEN, ROLE_READONLY FROM LA_USER_ROLE "
+        + " INNER JOIN LA_ROLE ON LA_USER_ROLE.ROLE_ID_FK = ROLE_ID "
+        + " WHERE USER_ID_FK = :userId")
+    List<RoleAndMetadata> findUserRoles(@Bind("userId") int userId);
 
 	@Query("SELECT LA_PROJECT.PROJECT_ID AS PROJECT_ID, LA_PROJECT.PROJECT_SHORT_NAME AS PROJECT_SHORT_NAME, PROJECT_ROLE_NAME AS ROLE_NAME, PROJECT_ROLE_REMOVABLE AS ROLE_REMOVABLE, PERMISSION FROM LA_PROJECT_USER_ROLE "
 			+ " INNER JOIN LA_PROJECT_ROLE ON LA_PROJECT_USER_ROLE.PROJECT_ROLE_ID_FK = PROJECT_ROLE_ID "
