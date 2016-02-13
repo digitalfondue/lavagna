@@ -3,7 +3,7 @@
 		<div class="search-bar" data-ng-init="username">
 			<div class="search-user-form inner-addon left-inner-addon">
 				<i class="fa fa-search"></i>
-				<input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="username" 
+				<input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="username"
 					lvg-user-list="userList" lvg-user-list-local-model="users"/>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 	<div class="lavagna-container-bottom-margin lavagna-form-panel" data-ng-show="addNewUser">
 		<form role="form" data-ng-submit="addUser(userToAdd);">
 			<div class="form-group">
-				<label data-translate>partials.admin.manage-users.provider</label> 
+				<label data-translate>partials.admin.manage-users.provider</label>
 				<select class="form-control"
 					data-ng-model="userToAdd.provider"
 					data-ng-options="val for val in loginProviders"
@@ -37,15 +37,15 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label data-translate>partials.admin.manage-users.username</label> 
+				<label data-translate>partials.admin.manage-users.username</label>
 				<input class="form-control" data-ng-model="userToAdd.username" required>
 			</div>
 			<div class="form-group">
-				<label data-translate>partials.admin.manage-users.email</label> 
+				<label data-translate>partials.admin.manage-users.email</label>
 				<input class="form-control" data-ng-model="userToAdd.email">
 			</div>
 			<div class="form-group">
-				<label data-translate>partials.admin.manage-users.displayName</label> 
+				<label data-translate>partials.admin.manage-users.displayName</label>
 				<input class="form-control" data-ng-model="userToAdd.displayName">
 			</div>
 			<div class="form-group" data-ng-init="userToAdd.roles = {}">
@@ -57,7 +57,7 @@
 				</ul>
 			</div>
 			<div class="checkbox">
-				<label> 
+				<label>
 					<input type="checkbox" data-ng-model="userToAdd.enabled"> <span data-translate>partials.admin.manage-users.enabled</span>
 				</label>
 			</div>
@@ -85,17 +85,18 @@
 	<div class="lavagna-panel">
 		<div class="body-full">
 			<div data-ng-if="userList.length > 20">
-			<pagination ng-model="userListPage" total-items="userList.length" items-per-page="20" 
+			<pagination ng-model="userListPage" total-items="userList.length" items-per-page="20"
 				class="lvg-panel-top-pagination pagination-sm" rotate="false" ng-change="switchPage(userListPage)"></pagination>
 			</div>
 			<table class="table table-striped table-bordered lvg-table">
 				<thead>
 					<tr>
-						<th data-translate>partials.admin.manage-users.provider</th>
+						<th data-translate class="lvg-users-medium-col">partials.admin.manage-users.provider</th>
 						<th data-translate>partials.admin.manage-users.username</th>
 						<th data-translate>partials.admin.manage-users.email</th>
-						<th data-translate>partials.admin.manage-users.displayName</th>
-						<th data-translate>partials.admin.manage-users.enabled</th>
+                        <th data-translate>partials.admin.manage-users.displayName</th>
+                        <th data-translate class="lvg-users-small-col">partials.admin.manage-users.global</th>
+						<th data-translate class="lvg-users-small-col">partials.admin.manage-users.enabled</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -104,11 +105,17 @@
 						<td data-ng-bind="u.username"></td>
 						<td data-ng-bind="u.email"></td>
 						<td data-ng-bind="u.displayName"></td>
+                        <td class="text-align-center">
+                        <span class="fa fa-info-circle"
+                              data-ng-if="u.provider !== 'system'"
+                              data-ng-click="showUserPermissions(u)"></span>
+                        </td>
 						<td><input data-ng-show="u.id != currentUser.id"
 							type="checkbox" data-ng-model="u.enabled"
 							data-ng-change="updateUserStatus(u.id, u.enabled)"> <input
 							data-ng-show="u.id == currentUser.id" type="checkbox"
-							data-ng-model="u.enabled" disabled="disabled"></td>
+							data-ng-model="u.enabled" disabled="disabled">
+                        </td>
 					</tr>
 				</tbody>
 			</table>

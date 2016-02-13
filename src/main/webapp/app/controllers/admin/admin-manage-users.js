@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('AdminManageUsersCtrl', function($scope, $log, User, UsersAdministration, Admin, Permission, Notification) {
+	module.controller('AdminManageUsersCtrl', function($modal, $scope, $log, User, UsersAdministration, Admin, Permission, Notification) {
 
 		function loadUsers() {
 			User.list().then(function(l) {
@@ -109,6 +109,25 @@
 		$scope.switchPage = function(page) {
 			$scope.userListPage = page;
 		};
-	});
+
+        $scope.showUserPermissions = function(user) {
+            $modal.open({
+                templateUrl: 'partials/admin/fragments/user-permissions-modal.html',
+                controller: function ($scope, $modalInstance) {
+
+                    Permission.findUserRoles(user.id).then(function(rolesByProject) {
+                        $scope.rolesByProject = rolesByProject;
+                    });
+
+                    $scope.close = function () {
+                        $modalInstance.close('done');
+                    }
+                },
+                size: 'sm',
+                windowClass: 'lavagna-modal'
+            });
+        };
+
+    });
 
 })();
