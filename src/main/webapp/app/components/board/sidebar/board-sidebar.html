@@ -3,30 +3,6 @@
     <div class="sidebar-dropzone" id="sidebar-drop-zone"
          ></div>
     <div class="lavagna-sidebar-column" data-lvg-fill-sidebar-height="{{boardSidebarCtrl.control}}">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="dropdown" uib-dropdown>
-                        <button type="button" uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown">
-				<span data-ng-switch="boardSidebarCtrl.sideBarLocation">
-					<span data-ng-switch-when="ARCHIVE"data-translate>partials.board.archive</span>
-					<span data-ng-switch-when="BACKLOG"data-translate>partials.board.backlog</span>
-					<span data-ng-switch-when="TRASH" data-translate>partials.board.trash</span>
-				</span>
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
-                                        data-ng-click="boardSidebarCtrl.sideBarLocation = 'ARCHIVE'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.archive</button></li>
-                            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
-                                        data-ng-click="boardSidebarCtrl.sideBarLocation = 'BACKLOG'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.backlog</button></li>
-                            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
-                                        data-ng-click="boardSidebarCtrl.sideBarLocation = 'TRASH'; boardSidebarCtrl.switchLocation()" data-translate>partials.board.trash</button></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="panel-body" data-lvg-fill-sidebar-cards-height="boardSidebarCtrl.control"
              data-lvg-fill-sidebar-cards-height-has-more="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].hasMore}}"
              data-lvg-fill-sidebar-cards-height-current-page="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].currentPage}}">

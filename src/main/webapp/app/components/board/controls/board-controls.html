@@ -1,51 +1,64 @@
-<div class="lvg-board-location">
-    <button class="lvg-navigation-button lvg-edit-button"
-            data-ng-click="$ctrl.toggledSidebar = true"
-            data-ng-hide="$ctrl.toggledSidebar"
-            title="{{'partials.board.showSideLocation' | translate}}">
-        <i class="fa fa-folder-o"></i>
-    </button>
-    <button class="lvg-navigation-button lvg-edit-button edit-active"
-            data-ng-click="$ctrl.toggledSidebar = false"
-            data-ng-show="$ctrl.toggledSidebar"
-            title="{{'partials.board.hideSideLocation' | translate}}">
-        <i class="fa fa-folder-open-o"></i>
-    </button>
-</div>
-<div class="lvg-board-edit">
-    <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.editMode" class="lvg-button-group">
-        <button class="lvg-navigation-button lvg-edit-button" data-ng-click="$ctrl.switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
-    </div>
-    <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="$ctrl.editMode" class="lvg-button-group">
-        <button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="$ctrl.unSelectAll(); $ctrl.switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
-    </div>
-    <div data-ng-if="$ctrl.editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
-        <button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
-        <ul class="dropdown-menu" role="menu">
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="$ctrl.selectAll()" data-translate>partials.board.selection.all</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="$ctrl.unSelectAll()" data-translate>partials.board.selection.none</button></li>
-        </ul>
-    </div>
-    <div class="dropdown lvg-button-group" data-ng-show="$ctrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'" data-uib-dropdown>
-        <button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
-        <ul class="dropdown-menu" role="menu">
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'" data-translate>partials.board.bulkop.setDueDate</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'" data-translate>partials.board.bulkop.removeDueDate</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'" data-translate>partials.board.bulkop.setMilestone</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'" data-translate>partials.board.bulkop.moveArchive</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'" data-translate>partials.board.bulkop.moveBacklog</button></li>
-            <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-trash'; bulkMode.message = 'moveTrash'" data-translate>partials.board.bulkop.moveTrash</button></li>
-        </ul>
+<div class="lvg-board-controls">
+    <div class="lvg-board-controls__container">
+        <div class="lvg-board-controls__location">
+            <div class="dropdown" uib-dropdown>
+                <button type="button" uib-dropdown-toggle class="lvg__button lvg__button_darkgrey" data-toggle="dropdown">
+                    <span data-ng-switch="$ctrl.sideBarLocation">
+                        <span data-ng-switch-when="BOARD"data-translate>partials.board.board</span>
+                        <span data-ng-switch-when="ARCHIVE"data-translate>partials.board.archive</span>
+                        <span data-ng-switch-when="BACKLOG"data-translate>partials.board.backlog</span>
+                        <span data-ng-switch-when="TRASH" data-translate>partials.board.trash</span>
+                    </span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                data-ng-click="$ctrl.sideBarLocation = 'BOARD'; $ctrl.toggledSidebar = false; $ctrl.switchLocation()" data-translate>partials.board.board</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                data-ng-click="$ctrl.sideBarLocation = 'ARCHIVE'; $ctrl.toggledSidebar = true; $ctrl.switchLocation()" data-translate>partials.board.archive</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                data-ng-click="$ctrl.sideBarLocation = 'BACKLOG'; $ctrl.toggledSidebar = true; $ctrl.switchLocation()" data-translate>partials.board.backlog</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button"
+                                data-ng-click="$ctrl.sideBarLocation = 'TRASH'; $ctrl.toggledSidebar = true; $ctrl.switchLocation()" data-translate>partials.board.trash</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="lvg-board-edit">
+            <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.editMode" class="lvg-button-group">
+                <button class="lvg-navigation-button lvg-edit-button" data-ng-click="$ctrl.switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
+            </div>
+            <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="$ctrl.editMode" class="lvg-button-group">
+                <button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="$ctrl.unSelectAll(); $ctrl.switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
+            </div>
+            <div data-ng-if="$ctrl.editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
+                <button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="$ctrl.selectAll()" data-translate>partials.board.selection.all</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="$ctrl.unSelectAll()" data-translate>partials.board.selection.none</button></li>
+                </ul>
+            </div>
+            <div class="dropdown lvg-button-group" data-ng-show="$ctrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'" data-uib-dropdown>
+                <button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span>{{'partials.board.bulkop.'+bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'" data-translate>partials.board.bulkop.setDueDate</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'" data-translate>partials.board.bulkop.removeDueDate</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'" data-translate>partials.board.bulkop.setMilestone</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'" data-translate>partials.board.bulkop.moveArchive</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'" data-translate>partials.board.bulkop.moveBacklog</button></li>
+                    <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'move-to-trash'; bulkMode.message = 'moveTrash'" data-translate>partials.board.bulkop.moveTrash</button></li>
+                </ul>
 
 
-        <lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="$ctrl.formatBulkRequest" selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
+                <lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="$ctrl.formatBulkRequest" selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
 
-        <button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
+                <button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
+            </div>
+        </div>
     </div>
 </div>

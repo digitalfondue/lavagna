@@ -1,0 +1,21 @@
+/**
+* Board controls
+*
+* This sections styles the board specific controls
+*/
+
+.lvg-board-controls {
+    display: block;
+    border-bottom: 1px solid #bbb;
+}
+
+.lvg-board-controls__container {
+    padding: 10px 10px;
+    display: inline-block;
+}
+
+.lvg-board-controls__location {
+    border-right: 1px solid red;
+    padding-right: 5px;
+    display: inherit;
+}
