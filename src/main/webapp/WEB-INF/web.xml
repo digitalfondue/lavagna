@@ -7,11 +7,19 @@
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>
-	
+
 	<error-page>
 		<error-code>404</error-code>
 		<location>/404</location>
 	</error-page>
+
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <init-param>
+            <param-name>useFileMappedBuffer</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </servlet>
 
 	<mime-mapping>
 		<extension>eot</extension>
@@ -37,5 +45,5 @@
 		<extension>woff2</extension>
 		<mime-type>font/woff2</mime-type>
 	</mime-mapping>
- 
+
 </web-app>

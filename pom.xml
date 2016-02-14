@@ -292,15 +292,22 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/generated-webapp</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
 			</plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
-          <configuration>
-            <additionalparam>-Xdoclint:none</additionalparam>
-          </configuration>
-      </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
@@ -430,6 +437,38 @@
 				</executions>
 			</plugin>
 
+            <!-- transpile  css -->
+            <plugin>
+                <groupId>nl.geodienstencentrum.maven</groupId>
+                <artifactId>sass-maven-plugin</artifactId>
+                <version>2.14</version>
+                <executions>
+                    <execution>
+                        <id>generate-css</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>update-stylesheets</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sassOptions>
+                        <always_update>true</always_update>
+                        <style>:expanded</style>
+                        <debug_info>false</debug_info>
+                        <sourcemap>:none</sourcemap>
+                    </sassOptions>
+                    <resources>
+                        <resource>
+                            <source>
+                                <directory>${basedir}/src/main/webapp/app/components</directory>
+                            </source>
+                            <destination>${project.build.directory}/generated-webapp/css</destination>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
 			<!-- license -->
 			<plugin>
 				<groupId>com.mycila</groupId>
@@ -530,6 +569,12 @@
 						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value>
 							</systemProperty> -->
 					</systemProperties>
+                    <webApp>
+                        <resourceBases>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <directory>${project.build.directory}/generated-webapp</directory>
+                        </resourceBases>
+                    </webApp>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -597,22 +642,6 @@
 				<datasource.username>sa</datasource.username>
 				<datasource.password />
 				<spring.profiles.active>prod</spring.profiles.active>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev-c9</id>
-			<properties>
-				<fast-build>false</fast-build>
-				<jetty.port>${env.PORT}</jetty.port>
-				<jetty.host>${env.IP}</jetty.host>
-				<datasource.dialect>HSQLDB</datasource.dialect>
-				<!-- <datasource.driver>net.sf.log4jdbc.sql.jdbcapi.DriverSpy</datasource.driver> -->
-				<!-- <datasource.url>jdbc:log4jdbc:hsqldb:mem:lavagna</datasource.url> -->
-				<datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
-				<datasource.username>sa</datasource.username>
-				<datasource.password />
-				<!-- <datasource.disable.migration>true</datasource.disable.migration> -->
-				<spring.profiles.active>dev</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>
