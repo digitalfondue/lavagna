@@ -1,8 +1,6 @@
-<div class="container">
-    <div class="row lavagna-project-home">
-        <div class="col-md-3" data-lvg-is-not-authenticated></div>
-        <div class="board-list col-md-6">
-
+<div layout="column" layout-gt-xs="row">
+  
+        <div flex>
             <div data-lvg-has-permission="PROJECT_ADMINISTRATION">
                 <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="projectCtrl.createNewBoard">
                     <span class="fa fa-plus"></span>
@@ -64,7 +62,8 @@
             </div>
 
         </div>
-        <div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
+        
+        <div flex data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
             <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
             <ul data-ng-if="projectCtrl.totalProjectOpenCards > 0"
                 class="lavagna-home-cards">
@@ -81,7 +80,6 @@
                             data-ng-change="projectCtrl.fetchUserCardsInProjectPage(projectCtrl.cardProjectPage)"></pagination>
             </div>
         </div>
-    </div>
 </div>
 
 
