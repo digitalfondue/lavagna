@@ -292,13 +292,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
-                <configuration>
+                <!-- <configuration>
                     <webResources>
                         <resource>
                             <directory>${project.build.directory}/generated-webapp</directory>
                         </resource>
                     </webResources>
-                </configuration>
+                </configuration> -->
 			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -438,7 +438,7 @@
 			</plugin>
 
             <!-- transpile  css -->
-            <plugin>
+            <!-- <plugin>
                 <groupId>nl.geodienstencentrum.maven</groupId>
                 <artifactId>sass-maven-plugin</artifactId>
                 <version>2.14</version>
@@ -467,7 +467,7 @@
                         </resource>
                     </resources>
                 </configuration>
-            </plugin>
+            </plugin> -->
 
 			<!-- license -->
 			<plugin>
@@ -569,12 +569,12 @@
 						<!-- <systemProperty> <name>datasource.disable.migration</name> <value>${datasource.disable.migration}</value>
 							</systemProperty> -->
 					</systemProperties>
-                    <webApp>
+                    <!-- <webApp>
                         <resourceBases>
                             <directory>${basedir}/src/main/webapp</directory>
                             <directory>${project.build.directory}/generated-webapp</directory>
                         </resourceBases>
-                    </webApp>
+                    </webApp> -->
 				</configuration>
 			</plugin>
 		</plugins>
