@@ -47,7 +47,7 @@
 	/**
 	 * Configure angular-ui-router here...
 	 */
-	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
+	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider) {
 
 		$locationProvider.html5Mode(true);
 
@@ -421,6 +421,20 @@
 		});
 
 		$urlRouterProvider.otherwise('/');
+
+		var background = $mdThemingProvider.extendPalette('grey', {
+          'A100': 'e5e5e5'
+        });
+        $mdThemingProvider.definePalette('lavagna-background', background);
+
+		$mdThemingProvider.theme('lavagna')
+		    .primaryPalette('blue-grey')
+		    .accentPalette('light-blue')
+		    .warnPalette('red')
+		    .backgroundPalette('lavagna-background');
+
+
+		$mdThemingProvider.setDefaultTheme('lavagna');
 	});
 
 	module.run(function($rootScope, $state) {
