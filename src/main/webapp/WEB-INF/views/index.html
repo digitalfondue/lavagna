@@ -9,11 +9,11 @@
 <script src="resource/app.js"></script>
 <!--  -->
 </head>
-<body layout="row">
+<body>
     <aside>
         <lvg-sidebar></lvg-sidebar>
     </aside>
-    <div layout="column" flex role="main" data-ui-view></div>
+    <div role="main" data-ui-view></div>
 	<lvg-notification></lvg-notification>
 	{{#inlineTemplates}}{{.}}{{/inlineTemplates}}
 </body>
