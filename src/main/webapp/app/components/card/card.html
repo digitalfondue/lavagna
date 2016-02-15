@@ -32,9 +32,9 @@
                 </div>
             </div>
             <div class="card-modal-body">
-                <div class="container-liquid">
-                    <div class="row">
-                        <div class="col-md-3">
+                <div>
+                    <div layout="column" layout-gt-xs="row">
+                        <div flex="25">
                             <div class="lavagna-card-panel" data-lvg-has-permission="MOVE_CARD">
                                 <div class="footer">
                                     <form data-ng-role="form" data-ng-submit="cardCtrl.moveToColumn(cardCtrl.view.selectedColumn)">
@@ -229,7 +229,7 @@
                             </div>
                         </div>
                         <!--  description/comments starts here -->
-                        <div class="col-md-6">
+                        <div flex="50">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="lavagna-card-panel">
@@ -538,7 +538,7 @@
                             </div>
                             <!-- end of comments row -->
                         </div>
-                        <div class="col-md-3">
+                        <div flex="25">
                             <div class="lavagna-card-panel">
                                 <div class="head clearfix">
                                     <div class="title" data-translate>card.labels</div>
