@@ -41,7 +41,7 @@
                 </div>
                 <div class="body separated">
                     <div>
-                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <lvg-switch class="pull-right" switch-class="lvg-switch" control="accountCtrl.disabledFeed" change="accountCtrl.updateFeed"></lvg-switch></p>
+                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <md-switch ng-model="accountCtrl.disabledFeed" ng-change="accountCtrl.updateFeed()"></md-switch></p>
                     </div>
                     <div>
                         <label for="feedUrl" data-translate>partials.me.calendar.description</label>

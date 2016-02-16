@@ -2,33 +2,25 @@
     <div class="lavagna-panel" data-ng-class="{collapsed : !adminLoginCtrl.anonEnabled}">
         <div class="head clearfix headonly">
             <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-anonymous-users-access.title</div>
-            <div class="title-addon col-xs-3 lvg-switch-controls">
+            <div class="title-addon col-xs-3">
                 <ul class="panel-controls">
                     <li class="control-no-action">
-                        <lvg-switch
-                            switch-class="lvg-switch"
-                            control="adminLoginCtrl.anonEnabled"
-                            change="adminLoginCtrl.anonChange">
-                        </lvg-switch>
+                        <md-switch ng-model="adminLoginCtrl.anonEnabled" ng-change="adminLoginCtrl.anonChange(adminLoginCtrl.anonEnabled)"></md-switch>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="body separated">
             <div>
-                <lvg-switch
-                    switch-class="lvg-switch-sm"
-                    control="adminLoginCtrl.userHasGlobalRole"
-                    change="adminLoginCtrl.globalRoleChange">
-                </lvg-switch>
+                <md-switch 
+                    ng-model="adminLoginCtrl.userHasGlobalRole" 
+                    ng-change="adminLoginCtrl.globalRoleChange(adminLoginCtrl.userHasGlobalRole)"></md-switch>
                 <div class="lvg-switch-label"><span data-translate>partials.admin.manage-anonymous-users-access.globalAccess</span></div>
             </div>
             <div>
-                <lvg-switch
-                    switch-class="lvg-switch-sm"
-                    control="adminLoginCtrl.userHasSearchPermission"
-                    change="adminLoginCtrl.searchRoleChange">
-                </lvg-switch>
+                <md-switch
+                    ng-model="adminLoginCtrl.userHasSearchPermission"
+                    ng-change="adminLoginCtrl.searchRoleChange(adminLoginCtrl.userHasSearchPermission)"></md-switch>
                 <div class="lvg-switch-label"><span data-translate>partials.admin.manage-anonymous-users-access.enableSearch</span></div>
             </div>
         </div>
@@ -40,12 +32,9 @@
             <div class="title-addon col-xs-3 lvg-switch-controls">
                 <ul class="panel-controls">
                     <li class="control-no-action">
-                        <lvg-switch
-                            switch-class="lvg-switch"
-                            control="adminLoginCtrl.authMethod.DEMO"
-                            change="adminLoginCtrl.updateActiveProviders"
-                            identifier="DEMO">
-                        </lvg-switch>
+                        <md-switch
+                            ng-model="adminLoginCtrl.authMethod.DEMO"
+                            ng-change="adminLoginCtrl.updateActiveProviders()"></md-switch>
                     </li>
                 </ul>
             </div>
@@ -59,12 +48,9 @@
                 <div class="title-addon col-xs-3 lvg-switch-controls">
                     <ul class="panel-controls">
                         <li class="control-no-action">
-                            <lvg-switch
-                                switch-class="lvg-switch"
-                                control="adminLoginCtrl.authMethod.LDAP"
-                                change="adminLoginCtrl.updateActiveProviders"
-                                identifier="LDAP">
-                            </lvg-switch>
+                            <md-switch 
+                                ng-model="adminLoginCtrl.authMethod.LDAP"
+                                ng-change="adminLoginCtrl.updateActiveProviders()"></md-switch>
                         </li>
                     </ul>
                 </div>
@@ -110,11 +96,9 @@
                 <div class="title-addon col-xs-3 lvg-switch-controls">
                     <ul class="panel-controls">
                         <li class="control-no-action">
-                            <lvg-switch
-                                switch-class="lvg-switch"
-                                control="adminLoginCtrl.authMethod.PERSONA"
-                                change="adminLoginCtrl.updateActiveProviders"
-                                identifier="PERSONA"></lvg-switch>
+                            <md-switch
+                                ng-model="adminLoginCtrl.authMethod.PERSONA"
+                                ng-change="adminLoginCtrl.updateActiveProviders()"></md-switch>
                         </li>
                     </ul>
                 </div>
@@ -144,12 +128,9 @@
                 <div class="title-addon col-xs-3 lvg-switch-controls">
                     <ul class="panel-controls">
                         <li class="control-no-action">
-                            <lvg-switch
-                                switch-class="lvg-switch"
-                                control="adminLoginCtrl.authMethod.OAUTH"
-                                change="adminLoginCtrl.updateActiveProviders"
-                                identifier="OAUTH">
-                            </lvg-switch>
+                            <md-switch
+                                ng-model="adminLoginCtrl.authMethod.OAUTH"
+                                ng-change="adminLoginCtrl.updateActiveProviders()"></md-switch>
                         </li>
                     </ul>
                 </div>
@@ -162,7 +143,7 @@
                 <div class="lvg-oauth-provider-title" data-translate>partials.admin.configure-login.oauth.preconfigured-online-providers</div>
                 <div class="form-group" data-ng-repeat="provider in adminLoginCtrl.oauthProviders | filter: {isConfigurableInstance:false}">
                     <div>
-                        <lvg-switch switch-class="lvg-switch-sm" control="adminLoginCtrl.oauth[provider.name].present"></lvg-switch>
+                        <md-switch ng-model="adminLoginCtrl.oauth[provider.name].present"></md-switch>
                         <div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider.name"></span></div>
                     </div>
                     <div data-ng-show="adminLoginCtrl.oauth[provider.name].present" class="lvg-oauth-provider-panel">
@@ -183,7 +164,7 @@
                 <div class="lvg-oauth-provider-title" data-translate>partials.admin.configure-login.oauth.configurable-oauth-providers</div>
                 <div class="form-group" data-ng-repeat="provider in adminLoginCtrl.oauthProviders | filter: {isConfigurableInstance:true}">
                     <div>
-                        <lvg-switch switch-class="lvg-switch-sm" control="adminLoginCtrl.oauth[provider.name].present"></lvg-switch>
+                        <md-switch ng-model="adminLoginCtrl.oauth[provider.name].present"></md-switch>
                         <div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider.name"></span></div>
                     </div>
                     <div data-ng-show="adminLoginCtrl.oauth[provider.name].present" class="lvg-oauth-provider-panel">

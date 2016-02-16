@@ -31,10 +31,10 @@
 
                     <div class="head clearfix headonly" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning">
                         <div class="title col-xs-9" data-translate>partials.project.manage-import.importArchived</div>
-                        <div class="title-addon col-xs-3 lvg-switch-controls">
+                        <div class="title-addon col-xs-3">
                             <ul class="panel-controls">
                                 <li class="control-no-action">
-                                    <lvg-switch switch-class="lvg-switch" control="manageImportCtrl.importSettings.archived"></lvg-switch>
+                                    <md-switch ng-model="manageImportCtrl.importSettings.archived"></md-switch>
                                 </li>
                             </ul>
                         </div>
