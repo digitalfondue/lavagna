@@ -437,10 +437,15 @@
 		$mdThemingProvider.setDefaultTheme('lavagna');
 	});
 
-	module.run(function($rootScope, $state) {
+	module.run(function($rootScope, $state, $mdSidenav) {
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $state.go(error.status.toString());
+		});
+		
+		
+		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+			$mdSidenav('left').close()
 		});
 	})
 

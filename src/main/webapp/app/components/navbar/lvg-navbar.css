@@ -6,7 +6,7 @@
 	background-color: #607d8b;
 	position: relative;
 	min-height: 50px;
-	z-index: 1000;
+	z-index: 10;
 }
 
 .lvg-navbar-header {

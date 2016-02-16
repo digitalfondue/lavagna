@@ -7,7 +7,7 @@
             board: '=',
             project: '='
         },
-        controller: function($window, User, Sidebar) {
+        controller: function($window, User, $mdSidenav) {
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
@@ -15,7 +15,7 @@
              });
 
              ctrl.toggleSidebar = function() {
-                Sidebar.toggle();
+            	 $mdSidenav('left').toggle();
              }
 
              ctrl.login = function () {

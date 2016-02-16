@@ -8,7 +8,7 @@
             provider: '=',
             isCurrentUser: '='
         },
-        controller: function($window, User, Sidebar, $rootScope, $state) {
+        controller: function($window, User, $mdSidenav, $rootScope, $state) {
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
@@ -16,7 +16,7 @@
              });
 
              ctrl.toggleSidebar = function() {
-                Sidebar.toggle();
+            	 $mdSidenav('left').toggle();
              }
 
              ctrl.login = function () {

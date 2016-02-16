@@ -4,7 +4,7 @@
     components.component('lvgNavbarDashboard', {
         templateUrl: 'app/components/navbar/dashboard/navbar-dashboard.html',
         controllerAs: 'lvgNavbarDashboard',
-        controller: function($window, User, Sidebar) {
+        controller: function($window, User, $mdSidenav) {
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
@@ -12,7 +12,7 @@
              });
 
              ctrl.toggleSidebar = function() {
-                Sidebar.toggle();
+            	 $mdSidenav('left').toggle();
              }
 
              ctrl.login = function () {
