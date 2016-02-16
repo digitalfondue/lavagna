@@ -2,30 +2,30 @@
 	data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, cardFragmentCtrl.currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView, 'lavagna-panel' : cardFragmentCtrl.listView || cardFragmentCtrl.searchView}">
 	<div class="head clearfix">
 		<div class="title">
-			<div class="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
-				<div class="col-xs-10">
+			<div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
+				<div flex="80">
 					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.columnId][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
 					<a data-ui-sref="board.card({projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence})">
                         {{::cardFragmentCtrl.board}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
 				</div>
-				<div class="col-xs-1">
+				<div flex>
 					<div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
 						<div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu(cardFragmentCtrl.card, cardFragmentCtrl.boardColumns)"><span class="fa fa-chevron-down"></span></div>
 					</div>
 				</div>
 			</div>
-			<div class="row" data-ng-if="::(cardFragmentCtrl.boardView && cardFragmentCtrl.readOnly)">
-				<div class="col-xs-10"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
+			<div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && cardFragmentCtrl.readOnly)">
+				<div flex="80"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
 			</div>
-			<div class="row" data-ng-if="::(cardFragmentCtrl.listView)">
-				<div class="col-xs-8"><a data-ui-sref="board.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})">
+			<div layout="row" data-ng-if="::(cardFragmentCtrl.listView)">
+				<div flex="65"><a data-ui-sref="board.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})">
                     {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
                 </a></div>
-				<div class="col-xs-4 card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
+				<div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
 			</div>
-			<div class="row" data-ng-if="::(cardFragmentCtrl.searchView)">
-				<div class="col-xs-8">
+			<div layout="row" data-ng-if="::(cardFragmentCtrl.searchView)">
+				<div flex="65">
 					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.projectShortName][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
                     <a data-ui-sref="globalSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
 	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
@@ -34,7 +34,7 @@
 	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
 	            	</a>
 				</div>
-				<div class="col-xs-4 card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
+				<div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
 			</div>
 			{{::cardFragmentCtrl.card.name}}
 		</div>
