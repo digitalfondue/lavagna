@@ -6,8 +6,10 @@
         bindings: {
             project: '='
         },
-        controller: function($window, User, $mdSidenav) {
+        controller: function($window, User, $mdSidenav, $state) {
              var ctrl = this;
+             
+             ctrl.$state = $state;
 
              User.currentCachedUser().then(function (u) {
                  ctrl.navbarUser = u;
