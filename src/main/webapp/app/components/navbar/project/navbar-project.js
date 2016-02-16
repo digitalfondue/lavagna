@@ -22,10 +22,16 @@
                  $window.location.href = 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
              }
 
-             ctrl.navigationState = $state.current.name;
+             var currentTabIndex = function(_state) {
+                return tabs.indexOf(_state);
+             }
+
+             var tabs = ['project.boards','project.milestones','project.statistics'];
+
+             ctrl.navigationState = currentTabIndex($state.current.name);
              $rootScope.$on('$stateChangeSuccess',
                 function (event, toState, toParams, fromState, fromParams) {
-                    ctrl.navigationState = $state.current.name;
+                    ctrl.navigationState = currentTabIndex($state.current.name);
                 }
              );
         }
