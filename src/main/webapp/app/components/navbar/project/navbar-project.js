@@ -6,7 +6,7 @@
         bindings: {
             project: '='
         },
-        controller: function($window, User, $mdSidenav, $rootScope, $state) {
+        controller: function($window, User, $mdSidenav) {
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
@@ -21,19 +21,6 @@
                  var reqUrlWithoutContextPath = $window.location.pathname.substr($("base").attr('href').length - 1);
                  $window.location.href = 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
              }
-
-             var currentTabIndex = function(_state) {
-                return tabs.indexOf(_state);
-             }
-
-             var tabs = ['project.boards','project.milestones','project.statistics'];
-
-             ctrl.navigationState = currentTabIndex($state.current.name);
-             $rootScope.$on('$stateChangeSuccess',
-                function (event, toState, toParams, fromState, fromParams) {
-                    ctrl.navigationState = currentTabIndex($state.current.name);
-                }
-             );
         }
     });
 })();
