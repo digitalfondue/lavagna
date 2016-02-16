@@ -436,6 +436,26 @@
 
 		$mdThemingProvider.setDefaultTheme('lavagna');
 	});
+	
+	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
+		//calendar conf, TODO: configurable
+		var dateFormat = 'D.M.YYYY';
+		$mdDateLocaleProvider.firstDayOfWeek = Number.parseInt(LOCALE_FIRST_DAY_OF_WEEK) - 1;
+		$mdDateLocaleProvider.parseDate = function(dateString) {
+			if(date == null) {
+				return null;
+			}
+			var m = moment(dateString, dateFormat, true);
+		    return m.isValid() ? m.toDate() : new Date(NaN);
+		};
+		$mdDateLocaleProvider.formatDate = function(date) {
+			if(date == null) {
+				return null;
+			}
+			return moment(date).format(dateFormat);
+		};
+		//
+	});
 
 	module.run(function($rootScope, $state, $mdSidenav) {
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {

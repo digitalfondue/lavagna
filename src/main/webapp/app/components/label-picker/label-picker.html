@@ -2,7 +2,7 @@
 	<span data-ng-switch-when="NULL"></span>
 	<span data-ng-switch-when="STRING"><input type="text" class="form-control"	placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="lvgLabelPicker.model" data-lvg-on-esc required></span>
 	<span data-ng-switch-when="INT"><input type="number" class="form-control" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="lvgLabelPicker.model" data-lvg-on-esc required></span>
-	<span data-ng-switch-when="TIMESTAMP"><input type="text" class="form-control" data-lvg-datepicker placeholder="{{'partials.fragments.label-pickers.date'|translate}}" size="12" data-ng-model="lvgLabelPicker.model" required></span>
+	<span data-ng-switch-when="TIMESTAMP"><md-datepicker ng-model="lvgLabelPicker.model" required></md-datepicker></span>
 	<span data-ng-switch-when="CARD"><input type="text" class="form-control" placeholder="{{'partials.fragments.label-pickers.card'|translate}}" data-lvg-card-autocomplete="lvgLabelPicker.model" data-lvg-on-esc required></span>
 	<span data-ng-switch-when="USER"><input type="text" class="form-control" placeholder="{{'partials.fragments.label-pickers.user'|translate}}" data-lvg-user-autocomplete="lvgLabelPicker.model" data-lvg-on-esc required></span>
 	<span data-ng-switch-when="LIST">

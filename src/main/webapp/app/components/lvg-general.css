@@ -675,7 +675,7 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 1030;
+	z-index: 11;
 	background-color: #000000;
 }
 

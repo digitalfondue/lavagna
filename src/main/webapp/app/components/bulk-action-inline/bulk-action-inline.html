@@ -15,7 +15,7 @@
 	</div>
 	
 	<div data-ng-switch-when="set-due-date">
-		<input type="text" data-lvg-datepicker data-ng-model="dueDate">
+	   <md-datepicker ng-model="dueDate"></md-datepicker>
 		<button data-ng-click="lvgBulkActionInline.setDueDate(dueDate)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.set</button>
 	</div>
 	

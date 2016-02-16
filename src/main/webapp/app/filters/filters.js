@@ -212,6 +212,11 @@
 	/* expecting dueDate with format: dd.MM.yyyy and dueDateTime with format HH:mm */
 	filters.filter('extractISO8601Date', function ($filter) {
 		return function (dueDate, dueDateTime) {
+			
+			if(dueDate instanceof Date) {
+				return $filter('date')(dueDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
+			}
+			
 			try {
 
 				var isDueDateTimeUndefined = dueDateTime === undefined;
