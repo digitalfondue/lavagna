@@ -48,10 +48,8 @@
             </div>
 
             <ul class="lavagna-boards">
-                <li class="lavagna-board lavagna-panel" data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
-                    <div class="body-full">
-                        <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
-                    </div>
+                <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
+                    <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
                 </li>
             </ul>
             <div data-ng-if="projectCtrl.totalBoards > projectCtrl.boardsPerPage">

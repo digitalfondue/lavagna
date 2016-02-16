@@ -49,10 +49,8 @@
             </div>
 
             <ul class="lavagna-projects">
-                <li class="lavagna-project lavagna-panel" data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
-                    <div class="body-full">
-                        <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
-                    </div>
+                <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
+                    <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
                 </li>
             </ul>
             <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">

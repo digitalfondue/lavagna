@@ -1,7 +1,10 @@
-<div class="stats-panel">
-	<div class="stats-panel-title">
-		<a data-ui-sref="project.boards({projectName: lvgStatsPanelProject.project.shortName})">
-		{{lvgStatsPanelProject.project.shortName}} - {{lvgStatsPanelProject.project.name}}</a>
-	</div>
-	<lvg-stats-panel item="lvgStatsPanelProject.project" stats-fetcher="lvgStatsPanelProject.statsFetcher"></lvg-stats-panel>
-</div>
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <a data-ui-sref="project.boards({projectName: lvgStatsPanelProject.project.shortName})"> {{lvgStatsPanelProject.project.shortName}} - {{lvgStatsPanelProject.project.name}}</a>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <lvg-stats-panel item="lvgStatsPanelProject.project" stats-fetcher="lvgStatsPanelProject.statsFetcher"></lvg-stats-panel>
+    </md-card-content>
+</md-card>
