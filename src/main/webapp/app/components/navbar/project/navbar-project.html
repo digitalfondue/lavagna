@@ -18,7 +18,7 @@
         <button class="md-raised md-primary md-button md-ink-ripple" data-lvg-is-not-authenticated data-ng-click="$event.preventaDefault(); $ctrl.login()">
             <span data-translate>index.navbar.login</span></button>
     </div>
-    <md-tabs md-center-tabs md-selected="$ctrl.navigationState">
+    <md-tabs md-center-tabs>
         <md-tab data-ui-sref="project.boards({projectName: $ctrl.project.shortName})" md-active="$ctrl.$state.is('project.boards')">
             <md-tab-label>
                 <span data-translate>partials.project.fragments.navbar.project</span>
