@@ -17,7 +17,7 @@
             </div>
         </div>
         <div flex="20">
-            <div data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN" class="dropdown" data-uib-dropdown>
+            <div data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN">
                 <md-menu>
                     <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"><span class="fa fa-chevron-down"></md-button>
                     <md-menu-content>
@@ -26,7 +26,7 @@
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button  data-ng-click="boardColumnCtrl.unSelectAllInColumn()" data-translate>partials.fragments.columns-fragment.selectNone</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">
                             <md-menu>
-                                <md-button ng-hover="$mdOpenMenu($event)" data-translate>partials.fragments.columns-fragment.columnStatus</md-button>
+                                <md-button ng-click="$mdOpenMenu($event)" data-translate>partials.fragments.columns-fragment.columnStatus</md-button>
 	                            <md-menu-content>
 	                                <md-menu-item data-ng-repeat="definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'">
 	                                    <md-button data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="definition.color | color" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
