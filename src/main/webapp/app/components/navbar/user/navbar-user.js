@@ -8,8 +8,10 @@
             provider: '=',
             isCurrentUser: '='
         },
-        controller: function($window, User, $mdSidenav, $rootScope, $state) {
+        controller: function($window, User, $mdSidenav, $state) {
              var ctrl = this;
+             
+             ctrl.$state = $state;
 
              User.currentCachedUser().then(function (u) {
                  ctrl.navbarUser = u;
@@ -23,13 +25,6 @@
                  var reqUrlWithoutContextPath = $window.location.pathname.substr($("base").attr('href').length - 1);
                  $window.location.href = 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
              }
-
-             ctrl.navigationState = $state.current.name;
-             $rootScope.$on('$stateChangeSuccess',
-                function (event, toState, toParams, fromState, fromParams) {
-                    ctrl.navigationState = $state.current.name;
-                }
-             );
         }
     });
 })();

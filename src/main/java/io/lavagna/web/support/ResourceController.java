@@ -260,7 +260,6 @@ public class ResourceController {
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
 					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
-					"/js/df-tab-menu.min.js",//
 					"/js/df-autocomplete.js")) {
 				output(res, context, allJs, ba);
 			}
