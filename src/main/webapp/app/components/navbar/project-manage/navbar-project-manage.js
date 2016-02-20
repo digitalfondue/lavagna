@@ -6,7 +6,7 @@
         bindings: {
             project: '='
         },
-        controller: function($window, User, $mdSidenav, $state) {
+        controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
              
              ctrl.$state = $state;

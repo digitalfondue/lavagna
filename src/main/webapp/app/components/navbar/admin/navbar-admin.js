@@ -4,7 +4,7 @@
     components.component('lvgNavbarAdmin', {
         templateUrl: 'app/components/navbar/admin/navbar-admin.html',
         bindings: {},
-        controller: function($window, User, $mdSidenav, $rootScope, $state) {
+        controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
              
              ctrl.$state = $state;

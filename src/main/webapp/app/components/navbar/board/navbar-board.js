@@ -7,7 +7,7 @@
             board: '=',
             project: '='
         },
-        controller: function($window, User, $mdSidenav) {
+        controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
 
              User.currentCachedUser().then(function (u) {
