@@ -197,7 +197,7 @@ public class ResourceController {
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
-			
+
 			List<String> inlineTemplates = prepareTemplates(context, "/app/");
 			inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
 			data.put("inlineTemplates", inlineTemplates);
@@ -245,8 +245,9 @@ public class ResourceController {
 					"/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
 					//
-					"/js/angular-animate.js", "/js/angular-aria.js", 
-					"/js/angular-messages.js", "/js/angular-material.js", 
+					"/js/angular-animate.js", "/js/angular-aria.js",
+					"/js/angular-messages.js", "/js/angular-material.js",
+                    "/js/angular-sortable-view.js",
 					//
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//

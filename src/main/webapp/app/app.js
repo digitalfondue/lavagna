@@ -28,7 +28,7 @@
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
 			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
-			'angularFileUpload', 'ngMaterial']);
+			'angularFileUpload', 'ngMaterial', 'angular-sortable-view']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));
@@ -436,7 +436,7 @@
 
 		$mdThemingProvider.setDefaultTheme('lavagna');
 	});
-	
+
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
 		//calendar conf, TODO: configurable
 		var dateFormat = 'D.M.YYYY';
@@ -462,8 +462,8 @@
 		    event.preventDefault();
 		    $state.go(error.status.toString());
 		});
-		
-		
+
+
 		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 			$mdSidenav('left').close()
 		});

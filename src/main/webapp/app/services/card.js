@@ -24,7 +24,7 @@
 		}
 		return actionLists;
 	};
-	
+
 	var isInCardLabels = function(cardLabels, labelName, currentUserId) {
 		if (cardLabels === undefined || cardLabels.length === 0)
 			return false; //empty, no labels at all
@@ -90,7 +90,7 @@
 			},
 
 			addActionList: function (id, actionList) {
-				return $http.post('api/card/' + id + '/actionlist', actionList).then(extractData);
+				return $http.post('api/card/' + id + '/actionlist', {content: actionList}).then(extractData);
 			},
 
 			updateActionList: function (itemId, content) {
@@ -106,7 +106,7 @@
 			},
 
 			addActionItem: function (referenceId, actionItem) {
-				return $http.post('api/card-data/actionlist/' + referenceId + '/item', actionItem).then(extractData);
+				return $http.post('api/card-data/actionlist/' + referenceId + '/item', {content: actionItem}).then(extractData);
 			},
 			toggleActionItem: function (itemId, status) {
 				return $http.post('api/card-data/actionitem/' + itemId + '/toggle/' + status, null).then(extractData);
@@ -162,11 +162,11 @@
 			activityData: function (id) {
 				return $http.get('api/card-data/activity/' + id).then(extractData);
 			},
-			
+
 			isWatchedByUser: function(labels, userId) {
 				return isInCardLabels(labels, 'WATCHED_BY', userId);
 			},
-			
+
 			isAssignedToUser: function(labels, userId) {
 				return isInCardLabels(labels, 'ASSIGNED', userId);
 			}

@@ -145,6 +145,17 @@
         var loadActionLists = function() {
             Card.actionLists(card.id).then(function(actionLists) {
                 ctrl.actionLists = [];
+
+                for(var i = 0; i < actionLists.lists.length; i++) {
+                    var actionList = actionLists.lists[i];
+                    actionList.items = actionLists.items[actionList.id] || [];
+                    ctrl.actionLists.push(actionList);
+                }
+
+                /*
+
+
+                ctrl.actionLists = [];
                 ctrl.actionListsById = {};
                 ctrl.actionListsId = [];
                 for(var i = 0; i < actionLists.lists.length; i++) {
@@ -170,7 +181,7 @@
                         ctrl.actionItemsMap[item.id] = item;
                     }
                    ctrl.actionListsStats[currentListID] = parseInt((checkedItems/actionLists.items[currentListID].length) * 100, 10);
-                }
+                } */
             });
         };
         loadActionLists();
