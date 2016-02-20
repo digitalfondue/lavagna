@@ -291,33 +291,33 @@
                     else if (toState.name === 'globalSearch' || toState.name === 'projectSearch') {
                         var search = $location.search();
                         if (search && search.q) {
-                        	ctrl.toSearch.tags = fromQueryToTags(tryParse(search.q, Search, $log));
-                        	ctrl.toSearch.userInput = '';
+                        	ctrl.toSearch = /*fromQueryToTags(tryParse(*/search.q/*, Search, $log));*/
+                        	/*ctrl.toSearch.userInput = '';*/
                         }
                     }
                     //first load, reset
                     else if (fromState.name !== "") {
                         rootSearchFilter = undefined;
                         locationSearch = {};
-                        ctrl.toSearch.userInput = "";
-                        ctrl.toSearch.tags = [];
+                        /*ctrl.toSearch.userInput = "";
+                        ctrl.toSearch.tags = [];*/
                     }
                 });
 
-                $scope.$watch('lvgSearchInput.toSearch.tags', function () {
+                $scope.$watch('lvgSearchInput.toSearch', function () {
                     if (ctrl.board !== undefined) {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
+                        parseAndBroadcastForBoardSearch(/*fromTagsToQuery(*/ctrl.toSearch/*.tags)*/, $log, $rootScope, Search);
                     }
                 }, true);
 
                 ctrl.submit = function () {
                     if (ctrl.board !== undefined) {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.toSearch.tags), $log, $rootScope, Search);
+                        parseAndBroadcastForBoardSearch(/*fromTagsToQuery(*/ctrl.toSearch/*.tags)*/, $log, $rootScope, Search);
                     } else if (ctrl.project !== undefined) {
-                        $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
+                        $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(/*fromTagsToQuery(*/ctrl.toSearch/*.tags)*/));
                         $rootScope.$broadcast('refreshSearch');
                     } else {
-                        $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.toSearch.tags)));
+                        $location.url('/search/?q=' + encodeURIComponent(/*fromTagsToQuery(*/ctrl.toSearch/*.tags)*/));
                         $rootScope.$broadcast('refreshSearch');
                     }
                 };
@@ -327,8 +327,9 @@
                 if (search && search.q) {
                     var res = tryParse(search.q, Search, $log);
                     if (queryIsNotEmpty(res)) {
-                    	ctrl.toSearch.tags = fromQueryToTags(res);
-                    	ctrl.toSearch.userInput = '';
+                    	/*ctrl.toSearch.tags = fromQueryToTags(res);
+                    	ctrl.toSearch.userInput = '';*/
+                    	ctrl.toSearch = search.q;
                         rootSearchFilter = res;
                         locationSearch = {q: search.q};
                     }

@@ -6,7 +6,7 @@
 			</div>
 				
 			<ul class="lvg-search-result-list">
-				<li class="lavagna-home-card" data-ng-repeat="card in lvgSearchResult.found">
+				<li class="lavagna-home-card" data-ng-repeat="card in lvgSearchResult.found track by card.hash">
 					<lvg-card-fragment 
 					   data-view="search"
 					   data-project="lvgSearchResult.project" 
