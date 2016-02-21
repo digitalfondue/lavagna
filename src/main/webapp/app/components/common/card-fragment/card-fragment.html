@@ -1,99 +1,101 @@
-<div data-lvg-board-card-menu
-	data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, cardFragmentCtrl.currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView, 'lavagna-panel' : cardFragmentCtrl.listView || cardFragmentCtrl.searchView}">
-	<div class="head clearfix">
-		<div class="title">
-			<div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
-				<div flex="80">
-					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.columnId][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
-					<a data-ui-sref="board.card({projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence})">
+<md-card 
+    data-lvg-board-card-menu 
+    data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, cardFragmentCtrl.currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView }">
+
+    <md-card-title>
+        <md-card-title-text>
+            <div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
+                <div flex="80">
+                    <input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.columnId][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
+                    <a data-ui-sref="board.card({projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence})">
                         {{::cardFragmentCtrl.board}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
-				</div>
-				<div flex>
-					<div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-						<div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu(cardFragmentCtrl.card, cardFragmentCtrl.boardColumns)"><span class="fa fa-chevron-down"></span></div>
-					</div>
-				</div>
-			</div>
-			<div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && cardFragmentCtrl.readOnly)">
-				<div flex="80"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
-			</div>
-			<div layout="row" data-ng-if="::(cardFragmentCtrl.listView)">
-				<div flex="65"><a data-ui-sref="board.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})">
+                </div>
+                <div flex>
+                    <div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
+                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu(cardFragmentCtrl.card, cardFragmentCtrl.boardColumns)"><span class="fa fa-chevron-down"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && cardFragmentCtrl.readOnly)">
+                <div flex="80"><span class="fake-link">{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}</span></div>
+            </div>
+            <div layout="row" data-ng-if="::(cardFragmentCtrl.listView)">
+                <div flex="65"><a data-ui-sref="board.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})">
                     {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
                 </a></div>
-				<div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
-			</div>
-			<div layout="row" data-ng-if="::(cardFragmentCtrl.searchView)">
-				<div flex="65">
-					<input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.projectShortName][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
+                <div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
+            </div>
+            <div layout="row" data-ng-if="::(cardFragmentCtrl.searchView)">
+                <div flex="65">
+                    <input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.projectShortName][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
                     <a data-ui-sref="globalSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
-	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
-	            	</a>
+                        {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
+                    </a>
                     <a data-ui-sref="projectSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'projectSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
-	                	{{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
-	            	</a>
-				</div>
-				<div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
-			</div>
-			{{::cardFragmentCtrl.card.name}}
-		</div>
-	</div>
-	<div class="body">
-		<div class="card-data">
-			<ul class="data-info">
-				<li  data-ng-if="::(cardFragmentCtrl.card.counts['COMMENT'].count > 0)">
-					<span class="fa fa-comment"></span> {{::cardFragmentCtrl.card.counts['COMMENT'].count}}
-				</li>
-				<li data-ng-if="::(cardFragmentCtrl.card.counts['ACTION_CHECKED'].count > 0 || cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count > 0)"
-					data-ng-class="::{'lvg-action-full': cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count,
-					                'lvg-action-not-done': cardFragmentCtrl.card.columnDefinition == 'CLOSED' && cardFragmentCtrl.card.counts['ACTION_CHECKED'].count != cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}">
-					<span class="fa fa-list"></span>
-					{{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == null ? 0 : cardFragmentCtrl.card.counts['ACTION_CHECKED'].count}}/{{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}}
-				</li>
-				<li data-ng-if="::(cardFragmentCtrl.card.counts['FILE'].count > 0)">
-					<span class="fa fa-file"></span> {{::cardFragmentCtrl.card.counts['FILE'].count}}
-				</li>
+                        {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
+                    </a>
+                </div>
+                <div flex class="card-home-date">{{::cardFragmentCtrl.card.lastUpdateTime|dateIncremental}}</div>
+            </div>
+            {{::cardFragmentCtrl.card.name}}
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="card-data">
+            <ul class="data-info">
+                <li  data-ng-if="::(cardFragmentCtrl.card.counts['COMMENT'].count > 0)">
+                    <span class="fa fa-comment"></span> {{::cardFragmentCtrl.card.counts['COMMENT'].count}}
+                </li>
+                <li data-ng-if="::(cardFragmentCtrl.card.counts['ACTION_CHECKED'].count > 0 || cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count > 0)"
+                    data-ng-class="::{'lvg-action-full': cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count,
+                                    'lvg-action-not-done': cardFragmentCtrl.card.columnDefinition == 'CLOSED' && cardFragmentCtrl.card.counts['ACTION_CHECKED'].count != cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}">
+                    <span class="fa fa-list"></span>
+                    {{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count == null ? 0 : cardFragmentCtrl.card.counts['ACTION_CHECKED'].count}}/{{::cardFragmentCtrl.card.counts['ACTION_CHECKED'].count + cardFragmentCtrl.card.counts['ACTION_UNCHECKED'].count}}
+                </li>
+                <li data-ng-if="::(cardFragmentCtrl.card.counts['FILE'].count > 0)">
+                    <span class="fa fa-file"></span> {{::cardFragmentCtrl.card.counts['FILE'].count}}
+                </li>
 
-				<li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', cardFragmentCtrl.card.labels)"
-				    data-bindonce
-				    data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
-				    data-bo-class="{'lvg-due-date-tomorrow': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) == -1),
+                <li data-ng-if="cardFragmentCtrl.hasSystemLabelByName('DUE_DATE', cardFragmentCtrl.card.labels)"
+                    data-bindonce
+                    data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'DUE_DATE'} track by label.labelValueId"
+                    data-bo-class="{'lvg-due-date-tomorrow': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) == -1),
                                     'lvg-due-date-now': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) == 0),
                                     'lvg-due-date-past': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) > 0)}">
-					<span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
-				</li>
-				<li data-ng-if="::(cardFragmentCtrl.hasSystemLabelByName('MILESTONE', cardFragmentCtrl.card.labels))" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
-					<span class="fa fa-map-marker"></span> <lvg-label-val value="label"></lvg-label-val>
-				</li>
-			</ul>
-		</div>
-		<div class="card-info" data-ng-if="::(!cardFragmentCtrl.listView && cardFragmentCtrl.hasSystemLabelByName('ASSIGNED', cardFragmentCtrl.card.labels))">
-			<ul class="assigned-users">
-				<li class="assigned-user" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
-					<div data-ng-if="::(!cardFragmentCtrl.readOnly)">
-						<lvg-label-val value="label"></lvg-label-val>
-					</div>
-					<div data-ng-if="::(cardFragmentCtrl.readOnly)">
-						<lvg-label-val data-read-only value="label"></lvg-label-val>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div class="card-labels" data-ng-if="::(cardFragmentCtrl.hasUserLabels(cardFragmentCtrl.card.labels))">
-			<ul class="labels">
-				<li data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'USER'} track by label.labelValueId"
-					class="lavagna-label lavagna-label-no-controls"
-					data-bo-style="label.labelColor|labelBackground"
-					data-bo-class="label.labelColor|labelBackgroundClass">
-					<div data-ng-if="::(!cardFragmentCtrl.readOnly)">
-						<lvg-label value="label" name="label.labelName"></lvg-label>
-					</div>
-					<div data-ng-if="::(cardFragmentCtrl.readOnly)">
-						<lvg-label data-read-only value="label" name="label.labelName"></lvg-label>
+                    <span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
+                </li>
+                <li data-ng-if="::(cardFragmentCtrl.hasSystemLabelByName('MILESTONE', cardFragmentCtrl.card.labels))" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
+                    <span class="fa fa-map-marker"></span> <lvg-label-val value="label"></lvg-label-val>
+                </li>
+            </ul>
+        </div>
+        <div class="card-info" data-ng-if="::(!cardFragmentCtrl.listView && cardFragmentCtrl.hasSystemLabelByName('ASSIGNED', cardFragmentCtrl.card.labels))">
+            <ul class="assigned-users">
+                <li class="assigned-user" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
+                    <div data-ng-if="::(!cardFragmentCtrl.readOnly)">
+                        <lvg-label-val value="label"></lvg-label-val>
+                    </div>
+                    <div data-ng-if="::(cardFragmentCtrl.readOnly)">
+                        <lvg-label-val data-read-only value="label"></lvg-label-val>
                     </div>
                 </li>
             </ul>
         </div>
-    </div>
-</div>
+        <div class="card-labels" data-ng-if="::(cardFragmentCtrl.hasUserLabels(cardFragmentCtrl.card.labels))">
+            <ul class="labels">
+                <li data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'USER'} track by label.labelValueId"
+                    class="lavagna-label lavagna-label-no-controls"
+                    data-bo-style="label.labelColor|labelBackground"
+                    data-bo-class="label.labelColor|labelBackgroundClass">
+                    <div data-ng-if="::(!cardFragmentCtrl.readOnly)">
+                        <lvg-label value="label" name="label.labelName"></lvg-label>
+                    </div>
+                    <div data-ng-if="::(cardFragmentCtrl.readOnly)">
+                        <lvg-label data-read-only value="label" name="label.labelName"></lvg-label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </md-card-content>
+</md-card>
