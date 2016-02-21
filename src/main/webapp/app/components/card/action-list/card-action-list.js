@@ -38,8 +38,17 @@
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
 
-        ctrl.sortActions = function(ids) {
-            Card.updateActionItemOrder(ctrl.actionList.id, ids);
+        ctrl.sortActions = function(action, from, to, oldIndex, newIndex) {
+            ctrl.actionList.items = to.map(function(v, i) {
+                    v.order = i;
+                    return v;
+                });
+            Card.updateActionItemOrder(
+                ctrl.actionList.id,
+                to.map(function(v) { return v.id})
+                ).catch(function(err) {
+                    ctrl.actionList.items = from;
+                });
         };
 
         ctrl.saveName = function(name) {

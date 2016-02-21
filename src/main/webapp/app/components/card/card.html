@@ -575,14 +575,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="lavagna-card-actionlist-holder" sv-root="'list'" sv-part="cardCtrl.actionLists">
-                                <lvg-card-action-list ng-repeat="actionList in cardCtrl.actionLists | orderBy: 'order'"
-                                                      card="cardCtrl.card"
-                                                      action-list="actionList"
-                                                      sv-element>
-                                    <handle><md-icon md-font-icon="fa-arrows" class="fa" sv-handle></md-icon></handle>
-                                </lvg-card-action-list>
-                            </div>
+                            <md-list sv-root="'actionlist'"
+                                     sv-part="cardCtrl.actionLists"
+                                     sv-on-sort="cardCtrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+                                <md-list-item ng-repeat="actionList in cardCtrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
+                                    <lvg-card-action-list card="cardCtrl.card"
+                                                          action-list="actionList">
+                                        <handle><md-icon md-font-icon="fa-arrows" class="fa" sv-handle></md-icon></handle>
+                                    </lvg-card-action-list>
+                                </md-list-item>
+                            </md-list>
                             <div class="lavagna-card-panel" data-lvg-has-permission="MANAGE_ACTION_LIST">
                                 <div class="footer-full">
                                     <form data-ng-role="form" data-ng-submit="cardCtrl.addActionList(newActionList);">

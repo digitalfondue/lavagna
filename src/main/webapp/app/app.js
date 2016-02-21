@@ -423,7 +423,8 @@
 		$urlRouterProvider.otherwise('/');
 
 		var background = $mdThemingProvider.extendPalette('grey', {
-          'A100': 'e5e5e5'
+          //'A100': 'e5e5e5'
+          'A100': 'ffffff'
         });
         $mdThemingProvider.definePalette('lavagna-background', background);
 

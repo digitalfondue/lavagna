@@ -27,8 +27,10 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <md-list sv-root="{{alCtrl.actionList.id}}" sv-part="alCtrl.actionList.items">
-            <md-list-item data-ng-repeat="item in alCtrl.actionList.items | orderBy:'order'" sv-element>
+        <md-list sv-root="{{alCtrl.actionList.id}}"
+                 sv-part="alCtrl.actionList.items"
+                 sv-on-sort="alCtrl.sortActions($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+            <md-list-item data-ng-repeat="item in alCtrl.actionList.items | orderBy:'order' track by item.id" sv-element>
                 <md-icon data-lvg-has-permission="MANAGE_ACTION_LIST" md-font-icon="fa-arrows" class="fa" sv-handle></md-icon>
                 <md-checkbox class="md-secondary" ng-model="item.type" ng-change="alCtrl.toggleAction(item)"
                              ng-true-value="'ACTION_CHECKED'" ng-false-value="'ACTION_UNCHECKED'"></md-checkbox>
