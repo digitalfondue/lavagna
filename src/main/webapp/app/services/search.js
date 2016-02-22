@@ -54,12 +54,12 @@
 			var dateMatcherFn = function () {
 				return true;
 			}
-			
+
 			try {
 				dateMatcherFn = dateMatcher(criteria);
 			} catch (e) {
 			}
-			
+
 			var currentUserId = criteria.value.value.trim() === 'me' ? environment.currentUserId : undefined;
 
 			return function (label) {
@@ -68,7 +68,7 @@
 				} else if (label.labelType === 'INT' && !valueIsNaN) {
 					return label.value.valueInt === valueInt;
 				} else if (label.labelType === 'TIMESTAMP') {
-					return dateMatcherFn(new Date(label.value.valueTimestamp));
+					return dateMatcherFn(moment(label.value.valueTimestamp).toDate());
 				} else if (label.labelType === 'USER' && currentUserId !== undefined) {
 					return label.value.valueUser === currentUserId;
 				} else if (label.labelType === 'USER') {
@@ -86,7 +86,7 @@
 
 			return function (label) {
 				if (label.labelType === 'TIMESTAMP') {
-					return dateMatcherFn(new Date(label.value.valueTimestamp));
+					return dateMatcherFn(moment(label.value.valueTimestamp).toDate());
 				} else {
 					return false;
 				}
@@ -109,14 +109,6 @@
 
 	function sameMonth(d1, d2) {
 		return d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
-	}
-
-	function getWeek(d) {
-		return moment(d).isoWeek();
-	}
-
-	function sameWeek(d1, d1WeekNumber, d2) {
-		return d1WeekNumber === getWeek(d2) && d1.getFullYear() === d2.getFullYear();
 	}
 
 	function dateInRange(d, r1, r2) {
@@ -163,9 +155,8 @@
 				},
 				'this week': function () {
 					var today = new Date();
-					var currentWeek = getWeek(today);
 					return function (date) {
-						return sameWeek(today, currentWeek, date);
+                        return moment(today).isSame(date, 'week');
 					};
 				},
 				'this month': function () {
@@ -175,11 +166,9 @@
 					};
 				},
 				'next week': function () {
-					var nextWeek = moment().isoWeek(moment().isoWeek() + 1);
-					var weekNumber = nextWeek.isoWeek();
-					var nextWeekDate = nextWeek.toDate();
 					return function (date) {
-						return sameWeek(nextWeekDate, weekNumber, date);
+                        var nextWeek = moment().add(1, 'week');
+                        return nextWeek.isSame(date, 'week');
 					};
 				},
 				'next month': function () {
@@ -190,11 +179,9 @@
 					};
 				},
 				'previous week': function () {
-					var previousWeek = moment().isoWeek(moment().isoWeek() - 1);
-					var weekNumber = previousWeek.isoWeek();
-					var previousWeekDate = previousWeek.toDate();
 					return function (date) {
-						return sameWeek(previousWeekDate, weekNumber, date);
+                        var prevWeek = moment().add(-1, 'week');
+                        return prevWeek.isSame(date, 'week');
 					};
 				},
 				'previous month': function () {
@@ -269,7 +256,7 @@
 				for (var i = 0; i < labels.length; i++) {
 					var label = labels[i];
 					if (label.labelName === 'DUE_DATE' && label.labelDomain === 'SYSTEM') {
-						return matchingDateFunction(new Date(label.value.valueTimestamp));
+						return matchingDateFunction(moment(label.value.valueTimestamp).toDate());
 					}
 				}
 				return false;
@@ -279,7 +266,7 @@
 			var matchingDateFunction = dateMatcher(criteria);
 
 			return function (card) {
-				return matchingDateFunction(new Date(card.creationDate));
+				return matchingDateFunction(moment(card.creationDate).toDate());
 			};
 		} else if (criteria.type === 'MILESTONE') {
 			if (criteria.value.type === 'UNASSIGNED') {
@@ -371,7 +358,7 @@
 			var matchingDateFunction = dateMatcher(criteria);
 
 			return function (card) {
-				return matchingDateFunction(new Date(card.lastUpdateTime));
+				return matchingDateFunction(moment(card.lastUpdateTime).toDate());
 			};
 		} else if (criteria.type === 'FREETEXT') {
 			return function (card) {
