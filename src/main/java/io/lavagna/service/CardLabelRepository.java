@@ -115,7 +115,7 @@ public class CardLabelRepository {
 
 	/**
 	 * Return a map of label by {cardId => {CardLabel => [CardLabelValue]}}
-	 * 
+	 *
 	 * @return
 	 */
 	public Map<Integer, Map<CardLabel, List<CardLabelValue>>> findCardLabelValuesByBoardId(int boardId,
@@ -177,7 +177,7 @@ public class CardLabelRepository {
 		return updateLabel(label, cl);
 	}
 
-	public List<String> findUserLabelNameBy(String term, Integer projectId, UserWithPermission userWithPermission) {
+	public List<CardLabel> findUserLabelNameBy(String term, Integer projectId, UserWithPermission userWithPermission) {
 		Set<Integer> projectIdFilter = userWithPermission.toProjectIdsFilter(projectId);
 		return projectIdFilter.isEmpty() ? queries.findUserLabelNameBy(term) :  queries.findUserLabelNameBy(term, projectIdFilter);
 	}
@@ -186,7 +186,7 @@ public class CardLabelRepository {
 		Set<Integer> projectIdFilter = userWithPermission.toProjectIdsFilter(projectId);
 		return projectIdFilter.isEmpty() ? queries.findListValuesBy(domain.toString(), labelName, term) : queries.findListValuesBy(domain.toString(), labelName, term, projectIdFilter);
 	}
-	
+
 
 	@Transactional(readOnly = false)
 	private CardLabel updateLabel(Label label, CardLabel cl) {
@@ -260,19 +260,19 @@ public class CardLabelRepository {
 	}
 
 	/**
-	 * Return a mapping 
-	 * 
+	 * Return a mapping
+	 *
 	 * {labelListValue : {labelId : labelListValueId}}
-	 * 
+	 *
 	 * @param labelListValues
 	 * @return
 	 */
 	public Map<String, Map<Integer, Integer>> findLabelListValueMapping(List<String> labelListValues) {
-		
+
 		if(labelListValues.isEmpty()) {
 			return Collections.emptyMap();
 		}
-		
+
 		final Map<String, Map<Integer, Integer>> res = new HashMap<>();
 		jdbc.query(queries.findLabelListValueMapping(), new MapSqlParameterSource("values", labelListValues),
 				new RowCallbackHandler() {
@@ -291,16 +291,16 @@ public class CardLabelRepository {
 	public int labelUsedCount(int labelId) {
 		return queries.labelUsedCount(labelId);
 	}
-	
+
 	// ---
-	
+
 	private List<LabelListValueWithMetadata> addMetadata(List<LabelListValue> in) {
-		
+
 		Set<Integer> ids = new HashSet<>(in.size());
 		for (LabelListValue llv : in) {
 			ids.add(llv.getId());
 		}
-		
+
 		Map<Integer, Map<String, String>> grouped = new HashMap<>();
 		for(ListValueMetadata lvm : ids.isEmpty() ? Collections.<ListValueMetadata>emptyList() : listValuesMetadataQueries.findByLabelListValueIds(ids)) {
 			if(!grouped.containsKey(lvm.getLabelListValueId())) {
@@ -308,32 +308,32 @@ public class CardLabelRepository {
 			}
 			grouped.get(lvm.getLabelListValueId()).put(lvm.getKey(), lvm.getValue());
 		}
-		
+
 		List<LabelListValueWithMetadata> out = new ArrayList<>(in.size());
-		
+
 		for(LabelListValue llv : in) {
 			out.add(new LabelListValueWithMetadata(llv, grouped.get(llv.getId())));
 		}
-		
-		
-		
+
+
+
 		return out;
 	}
-	
+
 	public List<ListValueMetadata> findListValueMetadataByLabelListValueId(int labelListValueId) {
 		return listValuesMetadataQueries.findByLabelListValueId(labelListValueId);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void updateLabelListMetadata(ListValueMetadata metadata) {
 		listValuesMetadataQueries.update(metadata.getLabelListValueId(), metadata.getKey(), metadata.getValue());
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void createLabelListMetadata(int labelListValueId, String key, String value) {
 		listValuesMetadataQueries.insert(labelListValueId, key, value);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void removeLabelListMetadata(int labelListValueId, String key) {
 		listValuesMetadataQueries.delete(labelListValueId, key);
@@ -342,6 +342,6 @@ public class CardLabelRepository {
 	public int countLabeListValueUse(int labelListValueId) {
 		return listValuesMetadataQueries.countUse(labelListValueId);
 	}
-	
+
 
 }

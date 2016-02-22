@@ -149,18 +149,18 @@ public interface CardLabelQuery {
 	@Query("SELECT DISTINCT CARD_LABEL_LIST_VALUE FROM LA_CARD_LABEL_LIST_VALUE INNER JOIN LA_CARD_LABEL ON CARD_LABEL_ID_FK = CARD_LABEL_ID "
 			+ " WHERE CARD_LABEL_DOMAIN = :domain AND CARD_LABEL_NAME = :labelName AND CARD_LABEL_LIST_VALUE LIKE CONCAT(:term, '%') ORDER BY CARD_LABEL_LIST_VALUE ASC LIMIT 20")
 	List<String> findListValuesBy(@Bind("domain") String domain, @Bind("labelName") String labelName, @Bind("term") String term);
-	
+
 	@Query("SELECT DISTINCT CARD_LABEL_LIST_VALUE FROM LA_CARD_LABEL_LIST_VALUE INNER JOIN LA_CARD_LABEL ON CARD_LABEL_ID_FK = CARD_LABEL_ID "
 			+ " WHERE CARD_LABEL_PROJECT_ID_FK IN (:projectIdFilter) AND CARD_LABEL_DOMAIN = :domain AND CARD_LABEL_NAME = :labelName AND CARD_LABEL_LIST_VALUE LIKE CONCAT(:term, '%') ORDER BY CARD_LABEL_LIST_VALUE ASC LIMIT 20")
 	List<String> findListValuesBy(@Bind("domain") String domain, @Bind("labelName") String labelName, @Bind("term") String term, @Bind("projectIdFilter") Set<Integer> projectIdFilter);
 
-	@Query("SELECT DISTINCT CARD_LABEL_NAME FROM LA_CARD_LABEL "
+	@Query("SELECT DISTINCT CARD_LABEL_ID, CARD_LABEL_PROJECT_ID_FK, CARD_LABEL_UNIQUE, CARD_LABEL_TYPE, CARD_LABEL_DOMAIN, CARD_LABEL_NAME, CARD_LABEL_COLOR FROM LA_CARD_LABEL "
 			+ " WHERE CARD_LABEL_DOMAIN = 'USER' AND LOWER(CARD_LABEL_NAME) LIKE CONCAT(LOWER(:term), '%') ORDER BY CARD_LABEL_NAME ASC LIMIT 20")
-	List<String> findUserLabelNameBy(@Bind("term") String term);
-	
-	@Query("SELECT DISTINCT CARD_LABEL_NAME FROM LA_CARD_LABEL "
+	List<CardLabel> findUserLabelNameBy(@Bind("term") String term);
+
+	@Query("SELECT DISTINCT CARD_LABEL_ID, CARD_LABEL_PROJECT_ID_FK, CARD_LABEL_UNIQUE, CARD_LABEL_TYPE, CARD_LABEL_DOMAIN, CARD_LABEL_NAME, CARD_LABEL_COLOR FROM LA_CARD_LABEL "
 			+ " WHERE CARD_LABEL_PROJECT_ID_FK IN (:projectIdFilter) AND CARD_LABEL_DOMAIN = 'USER' AND LOWER(CARD_LABEL_NAME) LIKE CONCAT(LOWER(:term), '%') ORDER BY CARD_LABEL_NAME ASC LIMIT 20")
-	List<String> findUserLabelNameBy(@Bind("term") String term, @Bind("projectIdFilter") Set<Integer> projectIdFilter);
+	List<CardLabel> findUserLabelNameBy(@Bind("term") String term, @Bind("projectIdFilter") Set<Integer> projectIdFilter);
 
 	@Query(type = QueryType.TEMPLATE, value = "SELECT CARD_LABEL_LIST_VALUE, CARD_LABEL_ID_FK, CARD_LABEL_LIST_VALUE_ID FROM LA_CARD_LABEL_LIST_VALUE WHERE CARD_LABEL_LIST_VALUE IN (:values)")
 	String findLabelListValueMapping();
