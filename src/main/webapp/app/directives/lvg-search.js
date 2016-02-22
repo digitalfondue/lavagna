@@ -138,18 +138,35 @@
                 }
 
                 function searchLabel(input, prefix, data) {
-                    return $http.get('api/search/label-name', {params: toParams(input, prefix)}).then(function (res) {
+                    return $http.get('api/search/labels', {params: toParams(input, prefix)}).then(function (res) {
+                        for (var i = 0; i < res.data.length; i++) {
+                            var u = res.data[i];
+                            var text = prefix + quoteIfHasSpace(u.name);
+                            var type = "create";
+                            if (u.type !== 'NULL') {
+                                text += ':';
+                                type = "example";
+                            }
+                            data.push({value: text, text: text, type: type});
+                        }
+                        return data;
+                    });
+                }
+
+                function searchLabelValues(input, data) {
+                    return $http.get('api/search/label-values', {params: toParams(input.substring(0, input.length - 1), '#')}).then(function (res) {
                         for (var i = 0; i < res.data.length; i++) {
                             var u = res.data[i];
                             data.push({
-                                value: prefix + quoteIfHasSpace(u),
-                                text: prefix + quoteIfHasSpace(u),
+                                value: input + quoteIfHasSpace(u),
+                                text: input + quoteIfHasSpace(u),
                                 type: "create"
                             });
                         }
                         return data;
                     });
                 }
+
 
                 $scope.toSearch = {};
 
@@ -198,7 +215,6 @@
                                 res.push(v);
                             }
                         });
-                        //
 
                         if (input.indexOf("to:") === 0) {
                             res.push({value: "to:me ", text: "to:me", type: "create"});
@@ -268,7 +284,11 @@
                             res.push({value: "milestone:unassigned ", text: "milestone:unassigned", type: "create"});
                             return searchMilestone(input, "milestone:", res);
                         } else if (input.indexOf("#") === 0) {
-                            return searchLabel(input, "#", res);
+                            if (input.indexOf(":") < (input.length - 1)) {
+                                return searchLabel(input, "#", res);
+                            } else {
+                                return searchLabelValues(input, res);
+                            }
                         }
                         return res;
                     }

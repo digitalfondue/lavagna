@@ -114,10 +114,19 @@ public class SearchControllerTest {
 	public void testFindLabelNames() {
 		String term = "test";
 
-		searchController.findLabelNames("test", null, user);
+		searchController.findLabel("test", null, user);
 
 		verify(cardLabelRepository).findUserLabelNameBy(eq(term), any(Integer.class), eq(user));
 	}
+
+    @Test
+    public void testFindLabelValues() {
+        String term = "test";
+
+        searchController.findLabel("test", null, user);
+
+        verify(cardLabelRepository).findUserLabelNameBy(eq(term), any(Integer.class), eq(user));
+    }
 
 	@Test
 	public void testSearch() {
