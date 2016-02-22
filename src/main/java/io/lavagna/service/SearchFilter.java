@@ -55,7 +55,7 @@ public class SearchFilter {
 		this.value = value;
 	}
 
-	
+
 	@Getter
 	public static class SearchContext {
 		private final UserWithPermission currentUser;
@@ -190,6 +190,15 @@ public class SearchFilter {
 				return queries.findByStatus();
 			}
 		},
+
+        NOTLOCATION {
+            @Override
+            public String toBaseQuery(SearchFilter sf, SearchQuery queries, List<Object> params,
+                SearchContext context) {
+                params.add(sf.value.value);
+                return queries.findByNotLocation();
+            }
+        },
 
 		LOCATION {
 			@Override
