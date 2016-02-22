@@ -177,7 +177,10 @@ public class CardController {
 			assignedAndClosedCards = null;
 		}
 
-		SearchResults cards = searchService.find(Arrays.asList(filter), projectId, null, user);
+        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
+            BoardColumnLocation.TRASH.toString());
+
+		SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
 		return new MilestoneDetail(cards, assignedAndClosedCards);
 	}
 
