@@ -55,7 +55,7 @@ public interface SearchQuery {
 
 	@Query(type = QueryType.TEMPLATE, value = " ORDER BY LA_CARD.CARD_LAST_UPDATED DESC ")
 	String findSeventhOrderBy();
-	
+
 	@Query(type = QueryType.TEMPLATE, value = " LIMIT ? OFFSET ?")
 	String findEighthLimit();
 
@@ -99,6 +99,11 @@ public interface SearchQuery {
 			+ " INNER JOIN LA_BOARD_COLUMN_DEFINITION ON BOARD_COLUMN_DEFINITION_ID_FK = BOARD_COLUMN_DEFINITION_ID "
 			+ " WHERE BOARD_COLUMN_LOCATION = ?")
 	String findByLocation();
+
+    @Query(type = QueryType.TEMPLATE, value = "SELECT CARD_ID FROM LA_CARD INNER JOIN LA_BOARD_COLUMN ON CARD_BOARD_COLUMN_ID_FK = BOARD_COLUMN_ID "
+        + " INNER JOIN LA_BOARD_COLUMN_DEFINITION ON BOARD_COLUMN_DEFINITION_ID_FK = BOARD_COLUMN_DEFINITION_ID "
+        + " WHERE BOARD_COLUMN_LOCATION <> ?")
+    String findByNotLocation();
 
 	@Query(type = QueryType.TEMPLATE, value = "SELECT CARD_ID_FK AS CARD_ID FROM  LA_CARD_LABEL_VALUE "
 			+ " INNER JOIN LA_CARD_LABEL ON CARD_LABEL_ID = CARD_LABEL_ID_FK "
