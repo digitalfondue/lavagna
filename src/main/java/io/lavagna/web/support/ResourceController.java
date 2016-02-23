@@ -18,6 +18,7 @@ package io.lavagna.web.support;
 
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import io.lavagna.common.Json;
+import io.lavagna.common.Version;
 import io.lavagna.model.Permission;
 import io.lavagna.web.helper.ExpectPermission;
 
@@ -47,7 +48,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -71,10 +71,12 @@ public class ResourceController {
 	private final AtomicReference<byte[]> indexCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> jsCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> cssCache = new AtomicReference<>();
+	private final String version;
 
 	@Autowired
 	public ResourceController(Environment env) {
 		this.env = env;
+		this.version = Version.version();
 	}
 
 	private static List<String> prepareTemplates(ServletContext context, String initialPath) throws IOException {
@@ -195,7 +197,11 @@ public class ResourceController {
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
-			data.put("inlineTemplates", prepareTemplates(context, "/partials/"));
+			data.put("version", version);
+			
+			List<String> inlineTemplates = prepareTemplates(context, "/app/");
+			inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
+			data.put("inlineTemplates", inlineTemplates);
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
 					.compile(index.toString(StandardCharsets.UTF_8.name())).execute(data)
@@ -221,7 +227,7 @@ public class ResourceController {
 	 * @param response
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/resource/app.js", method = RequestMethod.GET)
+	@RequestMapping(value = "/resource/app-{version:.+}.js", method = RequestMethod.GET)
 	public void handleJs(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		if (contains(env.getActiveProfiles(), "dev") || jsCache.get() == null) {
@@ -288,15 +294,14 @@ public class ResourceController {
 				.toJson(fromResources(resources))).getBytes(StandardCharsets.UTF_8));
 		ba.after("i18n", context, os);
 	}
-
+	
 	private static Map<String, Map<Object, Object>> fromResources(Resource[] resources) throws IOException {
 
 		Pattern extractLanguage = Pattern.compile("^messages_(.*)\\.properties$");
-		
-		Properties buildProp = new Properties();
-		buildProp.load(new ClassPathResource("io/lavagna/build.properties").getInputStream());
 
 		Map<String, Map<Object, Object>> langs = new HashMap<>();
+		
+		String version = Version.version();
 
 		for (Resource res : resources) {
 			Matcher matcher = extractLanguage.matcher(res.getFilename());
@@ -305,12 +310,12 @@ public class ResourceController {
 			Properties p = new Properties();
 			p.load(res.getInputStream());
 			langs.put(lang, new HashMap<>(p));
-			langs.get(lang).putAll(new HashMap<>(buildProp));
+			langs.get(lang).put("build.version", version);
 		}
 		return langs;
 	}
 
-	@RequestMapping(value = "/css/all.css", method = RequestMethod.GET)
+	@RequestMapping(value = "/css/all-{version:.+}.css", method = RequestMethod.GET)
 	public void handleCss(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		if (contains(env.getActiveProfiles(), "dev") || cssCache.get() == null) {
