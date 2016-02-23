@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.lavagna.common.Json;
+import io.lavagna.common.Version;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
@@ -69,7 +70,7 @@ public class WebSecurityConfig {
                 .loginHandlerFinder(loginHandlerFinder(configurationRepository, context))
                 .sessionHandler(sessionHandler)
                 .request("/favicon.ico").permitAll()
-                .request("/css/all.css").permitAll()
+                .request("/css/**").permitAll()
                 .request("/setup/**").denyAll()
                 .request("/api/calendar/**").permitAll()
                 .request("/api/**").requireAuthenticated(false)
@@ -98,6 +99,7 @@ public class WebSecurityConfig {
             @Override
             public void generate(HttpServletRequest req, HttpServletResponse resp, Map<String, LoginHandler> handlers) throws IOException {
                 Map<String, Object> model = new HashMap<>();
+                model.put("version", Version.version());
                 for (LoginHandler lh : handlers.values()) {
                     model.putAll(lh.modelForLoginPage(req));
                 }
