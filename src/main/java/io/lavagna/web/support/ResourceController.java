@@ -199,9 +199,7 @@ public class ResourceController {
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
 			data.put("version", version);
 			
-			List<String> inlineTemplates = prepareTemplates(context, "/app/");
-			inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
-			data.put("inlineTemplates", inlineTemplates);
+			data.put("inlineTemplates", prepareTemplates(context, "/partials/"));
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
 					.compile(index.toString(StandardCharsets.UTF_8.name())).execute(data)
