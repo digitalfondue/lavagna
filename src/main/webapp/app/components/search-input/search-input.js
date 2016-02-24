@@ -134,10 +134,10 @@
                             var u = res.data[i];
                             var text = prefix + quoteIfHasSpace(u.name);
                             var type = "create";
-                            if (u.type !== 'NULL') {
+                            /*if (u.type !== 'NULL') { FIXME
                                 text += ':';
                                 type = "example";
-                            }
+                            }*/
                             data.push({value: text, text: text, type: type});
                         }
                         return data;
@@ -260,11 +260,11 @@
                         res.push({value: "milestone:unassigned ", text: "milestone:unassigned", type: "create"});
                         return searchMilestone(input, "milestone:", res);
                     } else if (input.indexOf("#") === 0) {
-                        if (input.indexOf(":") < (input.length - 1)) {
+                        //if (input.indexOf(":") < (input.length - 1)) { FIXME
                             return searchLabel(input, "#", res);
-                        } else {
-                            return searchLabelValues(input, res);
-                        }
+                        //} else {
+                            //return searchLabelValues(input, res);
+                        //}
                     }
                     return res;
                 }
