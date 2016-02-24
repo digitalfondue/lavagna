@@ -134,7 +134,8 @@
                             var u = res.data[i];
                             var text = prefix + quoteIfHasSpace(u.name);
                             var type = "create";
-                            if (u.type !== 'NULL') {
+                            console.log(u.type);
+                            if (u.type === 'LIST') {
                                 text += ':';
                                 type = "example";
                             }
