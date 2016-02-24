@@ -5,6 +5,7 @@
             md-search-text="lvgSearchInput.searchText"
             md-items="item in lvgSearchInput.querySearch(lvgSearchInput.searchText)"
             md-item-text="item.text"
+            md-no-cache="true"
             md-selected-item-change="lvgSearchInput.selectedItemChange(item)">
             <span md-highlight-text="lvgSearchInput.searchText">{{item.text}}</span>
         </md-autocomplete>
