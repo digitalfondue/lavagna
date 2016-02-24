@@ -259,8 +259,7 @@ public class ResourceController {
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
-					"/js/df-autocomplete.js")) {
+					"/js/ui-bootstrap-tpls-0.14.1.min.js")) {
 				output(res, context, allJs, ba);
 			}
 			//

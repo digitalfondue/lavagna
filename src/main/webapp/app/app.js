@@ -27,7 +27,7 @@
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
-			'pascalprecht.translate', 'digitalfondue.dfautocomplete',
+			'pascalprecht.translate',
 			'angularFileUpload', 'ngMaterial', 'angular-sortable-view']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
