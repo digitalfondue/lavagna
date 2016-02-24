@@ -3,7 +3,6 @@
 
     components.component('lvgNavbarDashboard', {
         templateUrl: 'app/components/navbar/dashboard/navbar-dashboard.html',
-        controllerAs: 'lvgNavbarDashboard',
         controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
 

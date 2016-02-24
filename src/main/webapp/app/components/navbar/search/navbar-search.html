@@ -1,23 +1,16 @@
-<div class="lvg-navbar lvg-inverted">
-    <div class="lvg-navbar-header">
-        <div class="lvg-navbar-icon">
-            <a data-ng-show="!searchOpen" href class="lvg-navbar-brand" data-ng-click="$ctrl.toggleSidebar()"><i class="fa fa-bars"></i></a>
-            <a data-ng-show="searchOpen" href class="lvg-navbar-brand" data-ng-click="searchOpen = false"><i class="fa fa-arrow-left"></i></a>
-        </div>
-        <div class="lvg-navbar-breadcrumb" data-ng-show="!searchOpen">
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <button class="md-icon-button md-button md-ink-ripple">
+            <md-icon md-font-icon="fa-bars" class="fa" data-ng-click="$ctrl.toggleSidebar()"></md-icon>
+        </button>
+        <h2>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="!$ctrl.project" data-translate>partials.search.title</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> {{::$ctrl.project.shortName}}</span></span>
-        </div>
-        <div class="lvg-navbar-search-bar" data-ng-if="searchOpen">
-            <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input>
-        </div>
-        <div class="lvg-navbar-menu" data-ng-show="!searchOpen">
-            <ul class="lvg-navbar-menu-actions">
-                <li class="lvg-navbar-menu-action" data-lvg-has-permission="SEARCH"><span class="lvg-navbar-menu-action-big-icon fa fa-search" data-ng-click="searchOpen = true"></span></li>
-                <li class="lvg-navbar-menu-action" data-lvg-is-authenticated><span class="lvg-navbar-menu-action-big-icon fa fa-user"></span> <span data-ng-bind="$ctrl.navbarUser.username"></span></li>
-                <li class="lvg-navbar-menu-action" data-lvg-is-not-authenticated><a href class="navbar-link" data-ng-click="$event.preventDefault();$ctrl.login()" data-translate>index.navbar.login</a></li>
-            </ul>
-        </div>
+        </h2>
+        <span flex class="flex"></span>
+        <!-- <lvg-search-input data-lvg-has-permission="SEARCH"></lvg-search-input> -->
+        <button class="md-icon-button md-button md-ink-ripple" data-lvg-is-authenticated><md-icon md-font-icon="fa-user" class="fa"></md-icon></button>
+        <button class="md-raised md-primary md-button md-ink-ripple" data-lvg-is-not-authenticated data-ng-click="$event.preventaDefault(); $ctrl.login()"><span data-translate>index.navbar.login</span></button>
     </div>
-</div>
+</md-toolbar>
