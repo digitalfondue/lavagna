@@ -1,5 +1,6 @@
 <form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="lvgSearchInput.submit();$event.preventDefault();">
-	<div class="input-group">
+    <input ng-model="lvgSearchInput.toSearch">
+	<!-- <div class="input-group"> -->
 		<!-- <df-autocomplete data-ng-model="lvgSearchInput.toSearch" df-autocomplete-configuration="lvgSearchInput.configuration">
 			<df-autocomplete-list>
 				<ul>
@@ -7,7 +8,7 @@
 				</ul>
 			</df-autocomplete-list>
 		</df-autocomplete> -->
-		<input ng-model="lvgSearchInput.toSearch">
-		<span class="input-group-btn"><button class="lvg-inline-button" type="submit"><span class="fa fa-search"></span></button></span>
-	</div>
+		
+		<!-- <span class="input-group-btn"><button class="lvg-inline-button" type="submit"><span class="fa fa-search"></span></button></span> -->
+	<!-- </div> -->
 </form>

@@ -4,7 +4,7 @@
             <md-icon md-font-icon="fa-bars" class="fa" data-ng-click="$ctrl.toggleSidebar()"></md-icon>
         </button>
         <h2>{{::$ctrl.board.shortName}}</h2>
-        <!-- <lvg-search-input board="$ctrl.board" project="$ctrl.project" data-lvg-has-permission="SEARCH"></lvg-search-input> -->
+        <lvg-search-input board="$ctrl.board" project="$ctrl.project" data-lvg-has-permission="SEARCH"></lvg-search-input>
         <span flex class="flex"></span>
         <button class="md-icon-button md-button md-ink-ripple" data-lvg-has-permission="PROJECT_ADMINISTRATION" data-ui-sref="projectManage.project({projectName: $ctrl.project.shortName})"><md-icon md-font-icon="fa-cog" class="fa"></md-icon></button>
         <button class="md-icon-button md-button md-ink-ripple" data-lvg-is-authenticated><md-icon md-font-icon="fa-user" class="fa"></md-icon></button>
