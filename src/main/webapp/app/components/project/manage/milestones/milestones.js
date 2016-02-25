@@ -65,6 +65,10 @@
             });
         };
 
+        ctrl.moveLabelListValue = function (id, order) {
+            Label.moveLabelListValue(ctrl.milestoneLabel.id, {first: id, second: order});
+        };
+
         ctrl.swapLabelListValues = function (first, second) {
             Label.swapLabelListValues(ctrl.milestoneLabel.id, {first: first, second: second});
         };

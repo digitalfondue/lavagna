@@ -32,14 +32,28 @@
                         <button class="lvg-button lvg-button-default"
                                 data-ng-disabled="manageMilestonesCtrl.milestoneValues.length < 2 || nValue == 0"
                                 data-ng-click="manageMilestonesCtrl.swapLabelListValues(lValue.id, manageMilestonesCtrl.milestoneValues[nValue - 1].id)">
-                            <i class="fa fa-arrow-up"></i>
+                            <i class="fa fa-angle-up"></i>
                         </button>
                     </td>
                     <td class="lavagna-icon-column" data-ng-hide="manageMilestonesCtrl.view.milestoneDeleteStatus[lValue.id]">
                         <button class="lvg-button lvg-button-default"
                                 data-ng-disabled="manageMilestonesCtrl.milestoneValues.length < 2 || manageMilestonesCtrl.milestoneValues.length == nValue + 1"
                                 data-ng-click="manageMilestonesCtrl.swapLabelListValues(lValue.id, manageMilestonesCtrl.milestoneValues[nValue + 1].id)">
-                            <i class="fa fa-arrow-down"></i>
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                    </td>
+                    <td class="lavagna-icon-column" data-ng-hide="manageMilestonesCtrl.view.milestoneDeleteStatus[lValue.id]">
+                        <button class="lvg-button lvg-button-default"
+                                data-ng-disabled="manageMilestonesCtrl.milestoneValues.length < 2 || nValue == 0"
+                                data-ng-click="manageMilestonesCtrl.moveLabelListValue(lValue.id, 1)">
+                            <i class="fa fa-angle-double-up"></i>
+                        </button>
+                    </td>
+                    <td class="lavagna-icon-column" data-ng-hide="manageMilestonesCtrl.view.milestoneDeleteStatus[lValue.id]">
+                        <button class="lvg-button lvg-button-default"
+                                data-ng-disabled="manageMilestonesCtrl.milestoneValues.length < 2 || manageMilestonesCtrl.milestoneValues.length == nValue + 1"
+                                data-ng-click="manageMilestonesCtrl.moveLabelListValue(lValue.id, manageMilestonesCtrl.milestoneValues.length)">
+                            <i class="fa fa-angle-double-down"></i>
                         </button>
                     </td>
                     <td class="lavagna-icon-column" data-ng-hide="manageMilestonesCtrl.view.milestoneDeleteStatus[lValue.id]">
