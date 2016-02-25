@@ -136,7 +136,7 @@ public class CardLabelController {
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
-	
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/count-use", method = RequestMethod.GET)
 	public int countUse(@PathVariable("labelListValueId") int labelListValueId) {
@@ -169,6 +169,18 @@ public class CardLabelController {
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 	}
 
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/label/{labelId}/label-list-values/move", method = RequestMethod.POST)
+    public void moveLabelListValueToOrder(@PathVariable("labelId") int labelId, @RequestBody SwapListValue swapListValue) {
+
+        CardLabel cl = cardLabelRepository.findLabelById(labelId);
+
+        cardLabelRepository.moveLabelListValueToOrder(swapListValue.first, swapListValue.second);
+
+        Project project = projectService.findById(cl.getProjectId());
+        eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
+    }
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}/label-list-values/swap", method = RequestMethod.POST)
 	public void swapLabelListValues(@PathVariable("labelId") int labelId, @RequestBody SwapListValue swapListValue) {
@@ -186,51 +198,51 @@ public class CardLabelController {
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
 	}
-	
-	
+
+
 	// metadata
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata", method = RequestMethod.GET)
 	public List<ListValueMetadata> findLabelListValueMetadata(@PathVariable("labelListValueId") int labelListValueId) {
 		return cardLabelRepository.findListValueMetadataByLabelListValueId(labelListValueId);
 	}
-	
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}/create", method = RequestMethod.POST)
 	public void createListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
 		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
 		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
 		Project project = projectService.findById(cl.getProjectId());
-		
+
 		cardLabelRepository.createLabelListMetadata(labelListValueId, key, value.getValue());
-		
+
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
-	
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}", method = RequestMethod.POST)
 	public void updateListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
 		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
 		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
 		Project project = projectService.findById(cl.getProjectId());
-		
+
 		cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(labelListValueId, key, value.getValue()));
-		
+
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
-	
-	
+
+
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}", method = RequestMethod.DELETE)
 	public void removeLabelListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key) {
 		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
 		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
 		Project project = projectService.findById(cl.getProjectId());
-		
+
 		cardLabelRepository.removeLabelListMetadata(labelListValueId, key);
-		
+
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}

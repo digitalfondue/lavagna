@@ -144,7 +144,7 @@ public interface CardLabelQuery {
 	LabelListValue findLastCreatedLabelListValue();
 
 	@Query(type = QueryType.TEMPLATE, value = "UPDATE LA_CARD_LABEL_LIST_VALUE SET CARD_LABEL_LIST_VALUE_ORDER = :order WHERE CARD_LABEL_LIST_VALUE_ID = :id")
-	String swapLabelListValues();
+	String updateLabelListValueOrder();
 
 	@Query("SELECT DISTINCT CARD_LABEL_LIST_VALUE FROM LA_CARD_LABEL_LIST_VALUE INNER JOIN LA_CARD_LABEL ON CARD_LABEL_ID_FK = CARD_LABEL_ID "
 			+ " WHERE CARD_LABEL_DOMAIN = :domain AND CARD_LABEL_NAME = :labelName AND CARD_LABEL_LIST_VALUE LIKE CONCAT(:term, '%') ORDER BY CARD_LABEL_LIST_VALUE ASC LIMIT 20")
