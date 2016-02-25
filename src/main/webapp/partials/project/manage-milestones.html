@@ -17,7 +17,7 @@
 				</form>
 			</div>
 		</div>
-	
+
 		<div class="col-xs-12">
 			<div class="lavagna-panel">
 					<table class="table lvg-table" data-ng-init="milestoneDeleteStatus = {}">
@@ -33,16 +33,30 @@
 								<button class="lvg-button lvg-button-default"
 										data-ng-disabled="milestoneValues.length < 2 || nValue == 0"
 										data-ng-click="swapLabelListValues(lValue.id, milestoneValues[nValue - 1].id)">
-									<i class="fa fa-arrow-up"></i>
+									<i class="fa fa-angle-up"></i>
 								</button>
 							</td>
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
 								<button class="lvg-button lvg-button-default"
 										data-ng-disabled="milestoneValues.length < 2 || milestoneValues.length == nValue + 1"
 										data-ng-click="swapLabelListValues(lValue.id, milestoneValues[nValue + 1].id)">
-									<i class="fa fa-arrow-down"></i>
+									<i class="fa fa-angle-down"></i>
 								</button>
 							</td>
+                            <td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+                                <button class="lvg-button lvg-button-default"
+                                        data-ng-disabled="milestoneValues.length < 2 || nValue == 0"
+                                        data-ng-click="moveLabelListValue(lValue.id, 1)">
+                                    <i class="fa fa-angle-double-up"></i>
+                                </button>
+                            </td>
+                            <td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+                                <button class="lvg-button lvg-button-default"
+                                        data-ng-disabled="milestoneValues.length < 2 || milestoneValues.length == nValue + 1"
+                                        data-ng-click="moveLabelListValue(lValue.id, milestoneValues.length)">
+                                    <i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </td>
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
 								<button class="lvg-button lvg-button-default" data-ng-hide="lValue.metadata.status === 'CLOSED'"
 										data-ng-click="closeMilestone(lValue)">

@@ -4,10 +4,10 @@
 
 	var module = angular.module('lavagna.controllers');
 
-	module.controller('ProjectManageMilestonesCtrl', function ($rootScope, $stateParams, $scope, $modal, $translate, LabelCache, Label, project) {
+	module.controller('ProjectManageMilestonesCtrl', function ($rootScope, $stateParams, $scope, $modal, $translate, Notification, LabelCache, Label, project) {
 
 		$scope.project = project;
-		
+
 		$scope.milestoneUseCount = {};
 
 		var loadLabel = function () {
@@ -27,7 +27,7 @@
 
 		var unbind = $rootScope.$on('refreshLabelCache-' + project.shortName, loadLabel);
 		$scope.$on('$destroy', unbind);
-		
+
 		$scope.update = function(val) {
 			Label.updateLabelListValue(val).then(function() {
 				Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.update.success'}, false);
@@ -41,12 +41,12 @@
 				$scope.newMilestoneValue = null;
 			});
 		};
-		
+
 		$scope.updateCount = function(id) {
 			Label.countLabelListValueUse(id).then(function(cnt) {
 				$scope.milestoneUseCount[id] = cnt;
 			});
-		}
+		};
 
 		$scope.removeLabelListValue = function (labelListValueId) {
 			Label.removeLabelListValue(labelListValueId).then(function() {
@@ -56,17 +56,21 @@
 			});
 		};
 
+        $scope.moveLabelListValue = function (id, order) {
+            Label.moveLabelListValue($scope.milestoneLabel.id, {first: id, second: order});
+        };
+
 		$scope.swapLabelListValues = function (first, second) {
 			Label.swapLabelListValues($scope.milestoneLabel.id, {first: first, second: second});
 		};
-		
+
 		$scope.closeMilestone = function(val) {
 			Label.createLabelListValueMetadata(val.id, 'status', 'CLOSED');
 		};
-		
+
 		$scope.openMilestone = function(val) {
 			Label.removeLabelListValueMetadata(val.id, 'status');
 		};
-		
+
 	});
 })();
