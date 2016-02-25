@@ -13,7 +13,7 @@
 			findByProjectShortName : function(shortName) {
 				return $http.get('api/project/' + shortName + '/labels').then(extractData);
 			},
-			
+
 			useCount : function(labelId) {
 				return $http.get('api/label/'+labelId+'/use-count').then(extractData);
 			},
@@ -43,19 +43,19 @@
 
 			findLabelListValues: function(labelId) {
 				return $http.get('api/label/' + labelId + '/label-list-values').then(extractData).then(function(res) {
-					
+
 					angular.forEach(res, function(labelListValue) {
 						var toAdd = {};
 						angular.forEach(labelListValue.metadata, function(value, key) {
-							toAdd[key+'Translated'] = $filter('translate')('label-list-value.metadata.' + key + '.' + value); 
+							toAdd[key+'Translated'] = $filter('translate')('label-list-value.metadata.' + key + '.' + value);
 						});
 						labelListValue.metadata = angular.extend({}, labelListValue.metadata, toAdd);
-						
+
 					});
 					return res;
 				});
 			},
-			
+
 			countLabelListValueUse : function(labelListValueId) {
 				return $http.get('api/label-list-values/' + labelListValueId + '/count-use').then(extractData).then(function(val) {
 					return parseInt(val, 10);
@@ -69,29 +69,33 @@
 			removeLabelListValue: function(labelListValueId) {
 				return $http['delete']('api/label-list-values/' + labelListValueId).then(extractData);
 			},
-			
+
 			updateLabelListValue : function(lvl) {
 				return $http.post('api/label-list-values/' + lvl.id, lvl).then(extractData);
 			},
+
+            moveLabelListValue: function(labelId, moveListValue) {
+                return $http.post('api/label/' + labelId + '/label-list-values/move', moveListValue).then(extractData);
+            },
 
 			swapLabelListValues: function(labelId, swapListValue) {
 				return $http.post('api/label/' + labelId + '/label-list-values/swap', swapListValue).then(extractData);
 			},
 			//
-			
+
 			createLabelListValueMetadata : function(labelListValueId, key, value) {
 				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key + '/create', {value : value}).then(extractData);
 			},
-			
+
 			updateLabelListValueMetadata : function(labelListValueId, key, value) {
 				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key, {value : value}).then(extractData);
 			},
-			
+
 			removeLabelListValueMetadata : function(labelListValueId, key) {
 				return $http['delete']('api/label-list-values/' + labelListValueId + '/metadata/' + key).then(extractData);
 			},
 			//
-			
+
 			extractValue : function(label, value) {
 				if(label.type === 'STRING') {
 					return this.stringVal(value.trim());
@@ -107,7 +111,7 @@
 	            	return this.listVal(value.id);
 				}
 				return this.nullVal();
-			},	
+			},
 
 			nullVal : function() {
 				return {type: 'NULL', valueString: null, valueTimestamp : null, valueInt: null, valueCard: null, valueUser: null, valueList: null};

@@ -353,7 +353,27 @@ public class CardLabelRepositoryTest {
 		Assert.assertEquals("1", values.get(1).getValue());
 	}
 
-	//
+    @Test
+    public void testMoveLabelListValueToOrder() {
+        CardLabel label = cardLabelRepository.addLabel(project.getId(), false, CardLabel.LabelType.LIST,
+            CardLabel.LabelDomain.USER, "listlabel", 0);
+
+        LabelListValue v1 = cardLabelRepository.addLabelListValue(label.getId(), "1");
+        LabelListValue v2 = cardLabelRepository.addLabelListValue(label.getId(), "2");
+        List<LabelListValueWithMetadata> values = cardLabelRepository.findListValuesByLabelId(label.getId());
+        Assert.assertEquals(1, values.get(0).getOrder());
+        Assert.assertEquals("1", values.get(0).getValue());
+        Assert.assertEquals(2, values.get(1).getOrder());
+        Assert.assertEquals("2", values.get(1).getValue());
+
+        cardLabelRepository.moveLabelListValueToOrder(v1.getId(), v2.getOrder());
+
+        values = cardLabelRepository.findListValuesByLabelId(label.getId());
+        Assert.assertEquals(1, values.get(0).getOrder());
+        Assert.assertEquals("2", values.get(0).getValue());
+        Assert.assertEquals(2, values.get(1).getOrder());
+        Assert.assertEquals("1", values.get(1).getValue());
+    }
 
 	@Test
 	public void testCountLabelListValueUse() {
