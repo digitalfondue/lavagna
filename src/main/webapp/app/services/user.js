@@ -69,6 +69,12 @@
                 }
                 return $http.get('api/search/user', opts).then(extractData);
             },
+            
+            formatName :function (user) {
+                if (user.displayName)
+                    return user.displayName + ' (' + user.provider + ':' + user.username + ')';
+                return user.provider + ':' + user.username;
+            },
 
             list: function (projectShortName) {
                 if (projectShortName !== undefined) {

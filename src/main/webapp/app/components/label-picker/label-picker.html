@@ -17,7 +17,16 @@
         </md-autocomplete>
     </span>
 	<span data-ng-switch-when="USER">
-	   <input type="text" class="form-control" placeholder="{{'partials.fragments.label-pickers.user'|translate}}" data-lvg-user-autocomplete="lvgLabelPicker.model" data-lvg-on-esc required>
+	   <md-autocomplete
+	       required
+	       placeholder="{{'partials.fragments.label-pickers.user'|translate}}"
+	       md-no-cache="true"
+	       md-selected-item="lvgLabelPicker.model"
+	       md-search-text="userSearchText"
+	       md-item-text="user.label"
+	       md-items="user in lvgLabelPicker.searchUser(userSearchText)">
+	       <md-item-template>{{user.label}}</md-item-template>
+	   </md-autocomplete>
     </span>
 	<span data-ng-switch-when="LIST">
 		<select data-ng-if="!lvgLabelPicker.inMenu && lvgLabelPicker.group === undefined" class="form-control" data-ng-model="lvgLabelPicker.model" data-ng-options="l.value for l in lvgLabelPicker.listValues" required></select>

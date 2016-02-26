@@ -13,7 +13,7 @@
 			group: '='
 		},
 		controllerAs: 'lvgLabelPicker',
-		controller: function (LabelCache, $scope, $stateParams, $http) {
+		controller: function (LabelCache, User, $scope, $stateParams, $http) {
 			var ctrl = this;
 			
 			
@@ -28,6 +28,15 @@
 						card.label = card.boardShortName + "-" + card.sequence + " " + card.name;
 					});
 					return res.data;
+				});
+			};
+			
+			ctrl.searchUser = function(text) {
+				return User.findUsers(text.trim()).then(function (res) { 
+					angular.forEach(res, function(user) {
+						user.label = User.formatName(user);
+					});
+					return res;
 				});
 			};
 			

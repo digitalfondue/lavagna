@@ -9,16 +9,10 @@
             restrict: 'A',
             link: function (scope, elem, attrs) {
 
-                var formatName = function (user) {
-                    if (user.displayName)
-                        return user.displayName + ' (' + user.provider + ':' + user.username + ')';
-                    return user.provider + ':' + user.username;
-                };
-
                 var useGlobal = attrs.lvgUserAutocompleteGlobal === 'true';
 
                 scope.$watch(attrs['lvgUserAutocomplete'], function (newVal) {
-                    $(elem).val(newVal ? formatName(newVal) : null);
+                    $(elem).val(newVal ? User.formatName(newVal) : null);
                 });
 
                 $(elem).autocomplete({
@@ -30,7 +24,7 @@
                         (useGlobal ? User.findUsersGlobally : User.findUsers)(request.term.trim()).then(function (res) {
                             response($.map(res, function (user) {
                                 return {
-                                    label: formatName(user),
+                                    label: User.formatName(user),
                                     value: user
                                 };
                             }));
