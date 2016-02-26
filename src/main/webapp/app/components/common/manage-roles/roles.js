@@ -12,7 +12,7 @@
         templateUrl: 'app/components/common/manage-roles/roles.html'
     });
 
-    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, $modal, $filter) {
+    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $modal, $filter) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -24,6 +24,15 @@
             projectName = ctrl.project.shortName;
             Permission = Permission.forProject(projectName);
         }
+        
+        ctrl.searchUser = function(text) {
+			return User.findUsersGlobally(text.trim()).then(function (res) { 
+				angular.forEach(res, function(user) {
+					user.label = User.formatName(user);
+				});
+				return res;
+			});
+		};
 
         var reloadRoles = function() {
             Permission.findAllRolesAndRelatedPermissions().then(function(res) {

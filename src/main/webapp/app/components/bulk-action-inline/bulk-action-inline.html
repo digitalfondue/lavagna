@@ -1,16 +1,37 @@
 <div data-ng-switch="lvgBulkActionInline.mode" class="lvg-bulk-action-inline">
 	<div data-ng-switch-when="assign-to">
-		<input type="text" data-lvg-user-autocomplete="toAssign">
+	   <md-autocomplete
+           md-no-cache="true"
+           md-selected-item="toAssign"
+           md-search-text="userSearchText"
+           md-item-text="user.label"
+           md-items="user in lvgBulkActionInline.searchUser(userSearchText)">
+           <md-item-template>{{user.label}}</md-item-template>
+       </md-autocomplete>
 		<button data-ng-click="lvgBulkActionInline.assign(toAssign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.assign</button>
 	</div>
 	
 	<div data-ng-switch-when="remove-assign-to">
-		<input type="text" data-lvg-user-autocomplete="toRemoveFromAssign">
+	    <md-autocomplete
+           md-no-cache="true"
+           md-selected-item="toRemoveFromAssign"
+           md-search-text="userSearchText"
+           md-item-text="user.label"
+           md-items="user in lvgBulkActionInline.searchUser(userSearchText)">
+           <md-item-template>{{user.label}}</md-item-template>
+       </md-autocomplete>
 		<button data-ng-click="lvgBulkActionInline.removeAssign(toRemoveFromAssign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.remove</button>
 	</div>
 	
 	<div data-ng-switch-when="re-assign-to">
-		<input type="text" data-lvg-user-autocomplete="toReassign">
+	   <md-autocomplete
+           md-no-cache="true"
+           md-selected-item="toReassign"
+           md-search-text="userSearchText"
+           md-item-text="user.label"
+           md-items="user in lvgBulkActionInline.searchUser(userSearchText)">
+           <md-item-template>{{user.label}}</md-item-template>
+        </md-autocomplete>
 		<button data-ng-click="lvgBulkActionInline.reassign(toReassign)" class="lvg-navigation-button" data-translate>partials.fragments.bulk-action-inline.reassign</button>
 	</div>
 	

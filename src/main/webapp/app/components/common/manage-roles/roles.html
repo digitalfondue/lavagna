@@ -79,10 +79,16 @@
             <div class="content col-xs-10 col-md-6" data-ng-show="manageRolesCtrl.view.roleState[roleName].addUser">
                 <form data-ng-submit="manageRolesCtrl.addUserToRole(manageRolesCtrl.view.roleState[roleName].newUsername, roleName); manageRolesCtrl.view.roleState[roleName].newUsername = null">
                     <div class="input-group">
-                        <input type="text" data-lvg-user-autocomplete="manageRolesCtrl.view.roleState[roleName].newUsername" data-lvg-user-autocomplete-global="true"
-                               data-lvg-to-focus="manageRolesCtrl.view.roleState[roleName].newUsername == null"
-                               placeholder="{{ 'partials.fragments.common-manage-roles.username' | translate }}" required="required"
-                               class="form-control" data-lvg-on-esc>
+                        <md-autocomplete
+                            required
+                            placeholder="{{'partials.fragments.common-manage-roles.username'|translate}}"
+                            md-no-cache="true"
+                            md-selected-item="manageRolesCtrl.view.roleState[roleName].newUsername"
+                            md-search-text="userSearchText"
+                            md-item-text="user.label"
+                            md-items="user in manageRolesCtrl.searchUser(userSearchText)">
+                            <md-item-template>{{user.label}}</md-item-template>
+                        </md-autocomplete>
 						<span class="input-group-btn">
 							<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
 						</span>

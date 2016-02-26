@@ -11,7 +11,7 @@
 				afterBulkCompletion : '='
 			},
 			controllerAs: 'lvgBulkActionInline',
-			controller: function($stateParams, Label, LabelCache, BulkOperations, Card) {
+			controller: function($stateParams, Label, LabelCache, BulkOperations, Card, User) {
 				
 				var ctrl = this;
 				
@@ -34,6 +34,16 @@
 	        		  	}
 					});
 				  }
+				
+				//TODO refactor -> move logic directly inside findUsers/findGlobalUsers
+				ctrl.searchUser = function(text) {
+					return User.findUsers(text.trim()).then(function (res) { 
+						angular.forEach(res, function(user) {
+							user.label = User.formatName(user);
+						});
+						return res;
+					});
+				};
 				  
 				  
 				ctrl.confirmMove = function(location) {
