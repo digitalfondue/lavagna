@@ -13,8 +13,25 @@
 			group: '='
 		},
 		controllerAs: 'lvgLabelPicker',
-		controller: function (LabelCache, $scope) {
+		controller: function (LabelCache, $scope, $stateParams, $http) {
 			var ctrl = this;
+			
+			
+			ctrl.searchCard = function(text) {
+				var params = {term: text.trim()};
+				if($stateParams.projectName) {
+					params.projectName = $stateParams.projectName
+				}
+				
+				return $http.get('api/search/autocomplete-card', {params: params}).then(function (res) {
+					angular.forEach(res.data, function(card) {
+						card.label = card.boardShortName + "-" + card.sequence + " " + card.name;
+					});
+					return res.data;
+				});
+			};
+			
+			
 			
 			$scope.$watch('lvgLabelPicker.label', function () {
 				ctrl.model = null;
