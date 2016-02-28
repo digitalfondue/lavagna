@@ -208,27 +208,17 @@ public class CardLabelController {
 	}
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}/create", method = RequestMethod.POST)
-	public void createListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
-		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
-		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
-		Project project = projectService.findById(cl.getProjectId());
-
-		cardLabelRepository.createLabelListMetadata(labelListValueId, key, value.getValue());
-
-		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
-		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
-	}
-
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label-list-values/{labelListValueId}/metadata/{key}", method = RequestMethod.POST)
 	public void updateListValueMetadata(@PathVariable("labelListValueId") int labelListValueId, @PathVariable("key") String key, @RequestBody Value value) {
-		LabelListValue labelListValue = cardLabelRepository.findListValueById(labelListValueId);
+        LabelListValueWithMetadata labelListValue = cardLabelRepository.findListValueById(labelListValueId);
 		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
 		Project project = projectService.findById(cl.getProjectId());
 
-		cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(labelListValueId, key, value.getValue()));
-
+        if(labelListValue.getMetadata().containsKey(key)) {
+            cardLabelRepository.updateLabelListMetadata(new ListValueMetadata(labelListValueId, key, value.getValue()));
+        } else {
+            cardLabelRepository.createLabelListMetadata(labelListValueId, key, value.getValue());
+        }
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
 		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}

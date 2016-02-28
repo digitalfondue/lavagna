@@ -16,11 +16,9 @@
  */
 package io.lavagna.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import lombok.Getter;
-
-@Getter
 public class LabelListValueWithMetadata extends LabelListValue {
 
 	private Map<String, String> metadata;
@@ -30,4 +28,7 @@ public class LabelListValueWithMetadata extends LabelListValue {
 		this.metadata = metadata;
 	}
 
+    public Map<String, String> getMetadata() {
+        return metadata != null ? metadata : (metadata = new HashMap<>());
+    }
 }
