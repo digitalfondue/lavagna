@@ -83,10 +83,6 @@
 			},
 			//
 
-			createLabelListValueMetadata : function(labelListValueId, key, value) {
-				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key + '/create', {value : value}).then(extractData);
-			},
-
 			updateLabelListValueMetadata : function(labelListValueId, key, value) {
 				return $http.post('api/label-list-values/' + labelListValueId + '/metadata/' + key, {value : value}).then(extractData);
 			},
