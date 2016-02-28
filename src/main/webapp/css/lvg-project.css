@@ -200,6 +200,10 @@ ul.lvg-admin-import .col-sm-1 {
 	list-style-type: none;
 }
 
+.lvg-fa-icon {
+    color: rgb(117, 117, 117);
+}
+
 .lvg-milestone-pagination {
 	margin: 0;
 	margin-right: 15px;
@@ -293,6 +297,10 @@ ul.lvg-admin-import .col-sm-1 {
 
 .lavagna-icon-column {
 	width: 55px;
+}
+
+.lavagna-date-column {
+    width: 125px;
 }
 
 .lavagna-confirm-column {

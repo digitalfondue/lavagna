@@ -19,7 +19,7 @@
 		};
 
 		$scope.closeMilestone = function(val) {
-			Label.createLabelListValueMetadata(val.id, 'status', 'CLOSED');
+			Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
 		};
 
 		$scope.openMilestone = function(val) {

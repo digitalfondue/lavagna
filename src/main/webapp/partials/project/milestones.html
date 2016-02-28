@@ -53,6 +53,9 @@
 					</div>
 				</div>
 				<div class="body">
+                    <div>
+                        <span data-ng-if="milestone.labelListValue.metadata['releaseDate']"><i class="fa lvg-fa-icon fa-calendar"></i> {{milestone.labelListValue.metadata['releaseDate']}}</span>
+                    </div>
 					<div data-ng-hide="milestone.totalCards > 0" data-translate>
 						partials.project.milestones.noCards
 					</div>

@@ -29,6 +29,12 @@
 									<i class="fa fa-times" data-ng-show="lValue.edit"></i>
 								</button>
 							</td>
+                            <td class="lavagna-date-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+                                <input type="text" class="form-control" size="12"
+                                       placeholder="{{'partials.fragments.label-pickers.date' | translate}}"
+                                       data-ng-change="updateReleaseDate(lValue)"
+                                       data-lvg-datepicker data-ng-model="lValue.metadata.releaseDate">
+                            </td>
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
 								<button class="lvg-button lvg-button-default"
 										data-ng-disabled="milestoneValues.length < 2 || nValue == 0"
