@@ -24,7 +24,7 @@
         };
 
         projectMilestonesCtrl.closeMilestone = function(val) {
-            Label.createLabelListValueMetadata(val.id, 'status', 'CLOSED');
+            Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
         };
 
         projectMilestonesCtrl.openMilestone = function(val) {
@@ -113,5 +113,14 @@
                 Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
             });
         };
+
+        projectMilestonesCtrl.updateMilestoneDate =function (milestoneId, newDate) {
+            if (newDate) {
+                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
+            } else {
+                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
+            }
+        }
+
     }
 })();

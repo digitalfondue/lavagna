@@ -74,12 +74,21 @@
         };
 
         ctrl.closeMilestone = function(val) {
-            Label.createLabelListValueMetadata(val.id, 'status', 'CLOSED');
+            Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
         };
 
         ctrl.openMilestone = function(val) {
             Label.removeLabelListValueMetadata(val.id, 'status');
         };
+
+        ctrl.updateReleaseDate = function (val) {
+            if (val.metadata.releaseDate) {
+                Label.updateLabelListValueMetadata(val.id, 'releaseDate', val.metadata.releaseDate);
+            } else {
+                Label.removeLabelListValueMetadata(val.id, 'releaseDate');
+            }
+        };
+
 
     };
 })();
