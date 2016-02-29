@@ -34,6 +34,7 @@ import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
@@ -149,12 +150,12 @@ public class CalendarServiceTest {
     }
 
     @Test(expected = SecurityException.class)
-    public void testGetUserCalendarWithWrongToken() throws URISyntaxException {
+    public void testGetUserCalendarWithWrongToken() throws URISyntaxException, ParseException {
         calendarService.getUserCalendar("abcd");
     }
 
     @Test
-    public void testGetUserCalendarOnEmpty() throws URISyntaxException {
+    public void testGetUserCalendarOnEmpty() throws URISyntaxException, ParseException {
         CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
 
         Calendar calendar = calendarService.getUserCalendar(ci.getToken());
@@ -164,7 +165,7 @@ public class CalendarServiceTest {
     }
 
     @Test(expected = SecurityException.class)
-    public void testGetUserCalendarOnDisabled() throws URISyntaxException {
+    public void testGetUserCalendarOnDisabled() throws URISyntaxException, ParseException {
 
         CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
         calendarService.setCalendarFeedDisabled(user, true);
@@ -173,7 +174,7 @@ public class CalendarServiceTest {
     }
 
     @Test
-    public void testGetUserCalendar() throws URISyntaxException {
+    public void testGetUserCalendar() throws URISyntaxException, ParseException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
         cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user);

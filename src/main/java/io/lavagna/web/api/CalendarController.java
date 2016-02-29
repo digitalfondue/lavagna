@@ -25,6 +25,7 @@ import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -74,7 +75,7 @@ public class CalendarController {
     @RequestMapping(value = "/api/calendar/{token}/calendar.ics",
         method = RequestMethod.GET, produces = "text/calendar")
     public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
-        throws IOException, ValidationException, URISyntaxException {
+        throws IOException, ValidationException, URISyntaxException, ParseException {
         Calendar calendar = calendarService.getUserCalendar(userToken);
         response.setContentType("text/calendar");
         CalendarOutputter output = new CalendarOutputter(false); // <- no validation on the output
