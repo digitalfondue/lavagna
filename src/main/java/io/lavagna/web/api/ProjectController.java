@@ -72,10 +72,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/api/project", method = RequestMethod.GET)
 	public List<Project> findProjects(UserWithPermission user) {
-		if (user.getBasePermissions().containsKey(Permission.READ)) {
-			return projectService.findAll();
-		}
-		return projectService.findAllForUserWithPermissionInProject(user);
+		return projectService.findAllProjects(user);
 	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
