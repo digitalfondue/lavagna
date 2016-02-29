@@ -107,5 +107,14 @@
 				Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
 			});
 		};
+
+        $scope.updateMilestoneDate =function (milestoneId, newDate) {
+            if (newDate) {
+                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
+            } else {
+                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
+            }
+        }
+
 	});
 })();

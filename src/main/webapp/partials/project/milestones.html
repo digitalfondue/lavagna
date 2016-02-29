@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<div class="head clearfix">
-					<div class="title title-bold col-xs-10 lvg-milestone-title">
+					<div class="title title-bold col-xs-9 lvg-milestone-title">
 						<span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSED'}"></span>
 						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
 							<input data-ng-model="newName">
@@ -29,9 +29,25 @@
 							<i class="fa fa-times" data-ng-show="milestone.edit"></i>
 						</span>
 					</div>
-					<div class="title-addon col-xs-2">
+					<div class="title-addon col-xs-3">
 						<ul class="panel-controls">
-							<li data-ng-if="milestone.labelListValue.id != -1" data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
+                            <li class="control-item" data-ng-if="milestone.labelListValue.metadata['releaseDate'] && milestone.labelListValue.metadata['status'] !== 'CLOSED'">
+                                <i data-ng-hide="milestone.dateEdit" class="fa lvg-fa-icon fa-calendar"></i>
+                                <span data-ng-hide="milestone.dateEdit" data-ng-bind="milestone.labelListValue.metadata['releaseDate']"></span>
+						        <span data-ng-show="milestone.dateEdit" data-ng-init="newDate = milestone.labelListValue.metadata['releaseDate']">
+                                    <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
+                                           data-lvg-datepicker data-ng-model="newDate">
+							        <span data-ng-click="updateMilestoneDate(milestone.labelListValue.id, newDate)" class="lvg-milestone-clickable">
+								        <i class="fa fa-check"></i>
+							        </span>
+						        </span>
+                                <span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable lvg-milestone-edit"
+                                      data-ng-click="milestone.dateEdit = !milestone.dateEdit">
+                                    <i class="fa fa-pencil" data-ng-hide="milestone.dateEdit || !milestone.labelListValue.metadata['releaseDate']"></i>
+                                    <i class="fa fa-times" data-ng-show="milestone.dateEdit"></i>
+                                </span>
+                            </li>
+                            <li data-ng-if="milestone.labelListValue.id != -1" data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
 								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"
 									  data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'"
 									  data-ng-click="closeMilestone(milestone.labelListValue)"
@@ -53,9 +69,6 @@
 					</div>
 				</div>
 				<div class="body">
-                    <div>
-                        <span data-ng-if="milestone.labelListValue.metadata['releaseDate']"><i class="fa lvg-fa-icon fa-calendar"></i> {{milestone.labelListValue.metadata['releaseDate']}}</span>
-                    </div>
 					<div data-ng-hide="milestone.totalCards > 0" data-translate>
 						partials.project.milestones.noCards
 					</div>
@@ -67,6 +80,7 @@
 									<span data-translate>{{item.status | capitalize}}:</span>
 									{{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
 								</li>
+
 							</ul>
 						</div>
 					</div>
