@@ -20,18 +20,23 @@ import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
+import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -63,7 +68,6 @@ import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.TimeZones;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,15 +84,20 @@ public class CalendarService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final CardDataService cardDataService;
+    private final ProjectService projectService;
+    private final CardLabelRepository cardLabelRepository;
 
     @Autowired
     public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
-        UserService userService, UserRepository userRepository, CardDataService cardDataService) {
+        UserService userService, UserRepository userRepository, CardDataService cardDataService,
+        ProjectService projectService, CardLabelRepository cardLabelRepository) {
         this.configurationRepository = configurationRepository;
         this.searchService = searchService;
         this.userRepository = userRepository;
         this.userService = userService;
         this.cardDataService = cardDataService;
+        this.projectService = projectService;
+        this.cardLabelRepository = cardLabelRepository;
     }
 
     @Transactional(readOnly = false)
@@ -132,7 +141,7 @@ public class CalendarService {
         return cache.get(userId);
     }
 
-    public Calendar getUserCalendar(String userToken) throws URISyntaxException {
+    public Calendar getUserCalendar(String userToken) throws URISyntaxException, ParseException {
         UserWithPermission user;
 
         try {
@@ -151,6 +160,52 @@ public class CalendarService {
         calendar.getProperties().add(CalScale.GREGORIAN);
         calendar.getProperties().add(Method.PUBLISH);
 
+        final String applicationUrl = StringUtils.appendIfMissing(
+            configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
+
+        final List<VEvent> events = new ArrayList<>();
+        final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
+
+        // Milestones
+        List<Project> projects = projectService.findAllProjects(user);
+        for (Project project : projects) {
+            CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
+                CardLabel.LabelDomain.SYSTEM);
+
+            Url mUrl = new Url(new URI(String.format("%s%s/milestones/", applicationUrl, project.getShortName())));
+
+            for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
+                if (m.getMetadata().containsKey("releaseDate")) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+                    java.util.Date date = formatter.parse(m.getMetadata().get("releaseDate"));
+
+                    final String name = project.getShortName() + " - " + m.getValue();
+
+                    final VEvent event = new VEvent(new Date(date.getTime()), name);
+
+                    final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
+                    event.getProperties().add(new Uid(id.toString()));
+
+                    // Reminder on milestone's date
+                    if (!m.getMetadata().containsKey("status") || m.getMetadata().get("status").equals("CLOSED")) {
+                        final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
+                        reminder.getProperties().add(Action.DISPLAY);
+                        reminder.getProperties().add(new Description(name));
+                        event.getAlarms().add(reminder);
+                    }
+
+                    TzId tzParam = new TzId(utcTimeZone);
+                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
+
+                    // Url
+                    event.getProperties().add(mUrl);
+
+                    events.add(event);
+                }
+            }
+        }
+
+        // Cards
         Map<Integer, UserDescription> usersCache = new HashMap<>();
         Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
 
@@ -169,11 +224,6 @@ public class CalendarService {
             map.put(card.getId(), card);
         }
 
-        final String applicationUrl = StringUtils.appendIfMissing(
-            configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
-
-        final List<VEvent> events = new ArrayList<>();
-        final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
         for (CardFullWithCounts card : map.values()) {
 
             Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),

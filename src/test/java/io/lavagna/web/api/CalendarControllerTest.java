@@ -29,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
@@ -107,7 +108,7 @@ public class CalendarControllerTest {
     }
 
     @Test
-    public void testUserCalendar() throws IOException, ValidationException, URISyntaxException {
+    public void testUserCalendar() throws IOException, ValidationException, URISyntaxException, ParseException {
         HttpServletResponse resp = mock(HttpServletResponse.class);
         final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
         when(resp.getOutputStream()).thenReturn(servletOutputStream);

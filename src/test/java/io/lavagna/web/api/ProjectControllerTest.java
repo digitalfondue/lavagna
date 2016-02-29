@@ -154,8 +154,7 @@ public class ProjectControllerTest {
 		UserWithPermission readProject = new UserWithPermission(user, EnumSet.of(Permission.READ),
 				Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
 		projectController.findProjects(readProject);
-		verify(projectService).findAll();
-		verify(projectService, never()).findAllForUserWithPermissionInProject(readProject);
+		verify(projectService).findAllProjects(readProject);
 
 		reset(projectService);
 
@@ -165,7 +164,7 @@ public class ProjectControllerTest {
 		projectController.findProjects(noReadProject);
 
 		verify(projectService, never()).findAll();
-		verify(projectService).findAllForUserWithPermissionInProject(noReadProject);
+        verify(projectService).findAllProjects(readProject);
 	}
 
 	@Test

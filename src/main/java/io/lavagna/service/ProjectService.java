@@ -24,6 +24,7 @@ import io.lavagna.model.Project;
 import io.lavagna.model.ProjectWithEventCounts;
 import io.lavagna.model.Role;
 import io.lavagna.model.User;
+import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.ProjectQuery;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class ProjectService {
 
 	/**
 	 * Bulk creation of projects. Will skip the project that already exists.
-	 * 
+	 *
 	 * @param projects
 	 */
 	@Transactional(readOnly = false)
@@ -147,17 +148,25 @@ public class ProjectService {
 		return queries.findByShortName(shortName);
 	}
 
+
+    public List<Project> findAllProjects(UserWithPermission user) {
+        if (user.getBasePermissions().containsKey(Permission.READ)) {
+            return findAll();
+        }
+        return findAllForUserWithPermissionInProject(user);
+    }
+
 	public List<Project> findAll() {
 		return queries.findAll();
 	}
 
 	/**
 	 * Find the projects that a user has a specific READ permission present as a _project_ level permission.
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 */
-	public List<Project> findAllForUserWithPermissionInProject(User user) {
+    public List<Project> findAllForUserWithPermissionInProject(User user) {
 		return queries.findAllForUser(user.getId(), Permission.READ.toString());
 	}
 
@@ -191,7 +200,7 @@ public class ProjectService {
 	public String findRelatedProjectShortNameByLabelId(Integer labelId) {
 		return fromProjectIdToShortName(firstOrNull(queries.findRelatedProjectIdByLabelId(labelId)));
 	}
-	
+
 	public String findRelatedProjectShortNameByLabelListValudIdPath(Integer labelListValueIdPath) {
 		return fromProjectIdToShortName(firstOrNull(queries.findRelatedProjectIdByLabelListValudIdPath(labelListValueIdPath)));
 	}
@@ -220,7 +229,7 @@ public class ProjectService {
 	public boolean existsWithShortName(String shortName) {
 		return Integer.valueOf(1).equals(queries.existsWithShortName(shortName));
 	}
-	
+
 	public List<ProjectWithEventCounts> findProjectsActivityByUserInProjects(int userId, Collection<Integer> projectIds) {
 		if (projectIds.isEmpty()) {
 			return Collections.emptyList();
