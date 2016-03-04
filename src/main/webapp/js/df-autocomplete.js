@@ -244,7 +244,7 @@
 				if($input.value != null) {
 					inputValue = $input.value.replace(/\s/g, '&nbsp;');
 				}
-				$span.innerHTML = inputValue + 'M'; //'M' -> add a little bit of additional space
+				$span.innerText = inputValue + 'M'; //'M' -> add a little bit of additional space
 				var spanWidth = element[0].querySelectorAll('.df-autocomplete-input-size')[0].clientWidth;
 				
 				$input.style.maxWidth = (state.inputMaxWidth - 5) + 'px';
