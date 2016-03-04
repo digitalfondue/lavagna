@@ -57,7 +57,10 @@
                                     'lvg-due-date-past': (card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) > 0)}">
 					<span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
 				</li>
-				<li data-ng-if="hasSystemLabelByName('MILESTONE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
+				<li data-ng-if="hasSystemLabelByName('MILESTONE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId"
+                    data-ng-class="{'lvg-due-date-tomorrow': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == -1),
+                                    'lvg-due-date-now': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == 0),
+                                    'lvg-due-date-past': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) > 0)}">
 					<span class="fa fa-map-marker"></span> <lvg-label-val value="label"></lvg-label-val>
 				</li>
 			</ul>
