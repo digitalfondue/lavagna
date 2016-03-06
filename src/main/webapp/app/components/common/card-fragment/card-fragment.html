@@ -1,5 +1,5 @@
-<md-card 
-    data-lvg-board-card-menu 
+<md-card
+    data-lvg-board-card-menu
     data-ng-class="::{'lavagna-is-watching': !cardFragmentCtrl.listView && cardFragmentCtrl.isSelfWatching(cardFragmentCtrl.card.labels, cardFragmentCtrl.currentUserId), 'lavagna-board-panel' : cardFragmentCtrl.boardView }">
 
     <md-card-title>
@@ -65,7 +65,10 @@
                                     'lvg-due-date-past': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) > 0)}">
                     <span class="fa fa-clock-o"></span> <lvg-label-val value="label"></lvg-label-val>
                 </li>
-                <li data-ng-if="::(cardFragmentCtrl.hasSystemLabelByName('MILESTONE', cardFragmentCtrl.card.labels))" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId">
+                <li data-ng-if="::(cardFragmentCtrl.hasSystemLabelByName('MILESTONE', cardFragmentCtrl.card.labels))" data-bindonce data-ng-repeat="label in cardFragmentCtrl.card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId"
+                    data-ng-class="{'lvg-due-date-tomorrow': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == -1),
+                                    'lvg-due-date-now': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == 0),
+                                    'lvg-due-date-past': (cardFragmentCtrl.card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) > 0)}">
                     <span class="fa fa-map-marker"></span> <lvg-label-val value="label"></lvg-label-val>
                 </li>
             </ul>
