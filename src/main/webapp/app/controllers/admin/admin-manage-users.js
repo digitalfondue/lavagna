@@ -123,7 +123,7 @@
                         $modalInstance.close('done');
                     }
                 },
-                size: 'sm',
+                size: 'md',
                 windowClass: 'lavagna-modal'
             });
         };
