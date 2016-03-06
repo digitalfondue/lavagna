@@ -29,12 +29,21 @@
 									<i class="fa fa-times" data-ng-show="lValue.edit"></i>
 								</button>
 							</td>
-                            <td class="lavagna-date-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
-                                <input type="text" class="form-control" size="12"
-                                       placeholder="{{'partials.fragments.label-pickers.date' | translate}}"
-                                       data-ng-change="updateReleaseDate(lValue)"
-                                       data-lvg-datepicker data-ng-model="lValue.metadata.releaseDate">
+                            <td class="vcenter lavagna-date-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+                                <span data-ng-hide="lValue.dateEdit" data-ng-bind="lValue.metadata.releaseDate"></span>
+						        <span data-ng-show="lValue.dateEdit" data-ng-init="newDate = lValue.metadata.releaseDate">
+                                    <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
+                                           data-lvg-datepicker data-ng-model="newDate">
+                                    <button class="lvg-button lvg-button-default" data-ng-click="updateReleaseDate(lValue.id, newDate)"><i class="fa fa-check"></i></button>
+						        </span>
                             </td>
+                            <td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
+                                <button class="lvg-button lvg-button-default" data-ng-click="lValue.dateEdit = !lValue.dateEdit">
+                                    <i class="fa fa-calendar" data-ng-hide="lValue.dateEdit"></i>
+                                    <i class="fa fa-times" data-ng-show="lValue.dateEdit"></i>
+                                </button>
+                            </td>
+
 							<td class="lavagna-icon-column" data-ng-hide="milestoneDeleteStatus[lValue.id]">
 								<button class="lvg-button lvg-button-default"
 										data-ng-disabled="milestoneValues.length < 2 || nValue == 0"

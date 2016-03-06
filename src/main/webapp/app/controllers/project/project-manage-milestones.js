@@ -72,11 +72,11 @@
             Label.removeLabelListValueMetadata(val.id, 'status');
         };
 
-        $scope.updateReleaseDate = function (val) {
-            if (val.metadata.releaseDate) {
-                Label.updateLabelListValueMetadata(val.id, 'releaseDate', val.metadata.releaseDate);
+        $scope.updateReleaseDate = function (milestoneId, newDate) {
+            if (newDate) {
+                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
             } else {
-                Label.removeLabelListValueMetadata(val.id, 'releaseDate');
+                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
             }
         };
 
