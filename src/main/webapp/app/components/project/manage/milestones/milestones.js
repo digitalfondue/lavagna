@@ -55,7 +55,7 @@
             Label.countLabelListValueUse(id).then(function(cnt) {
                 ctrl.milestoneUseCount[id] = cnt;
             });
-        }
+        };
 
         ctrl.removeLabelListValue = function (labelListValueId) {
             Label.removeLabelListValue(labelListValueId).then(function() {
@@ -81,14 +81,13 @@
             Label.removeLabelListValueMetadata(val.id, 'status');
         };
 
-        ctrl.updateReleaseDate = function (val) {
-            if (val.metadata.releaseDate) {
-                Label.updateLabelListValueMetadata(val.id, 'releaseDate', val.metadata.releaseDate);
+        ctrl.updateReleaseDate = function (milestoneId, newDate) {
+            if (newDate) {
+                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
             } else {
-                Label.removeLabelListValueMetadata(val.id, 'releaseDate');
+                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
             }
         };
 
-
-    };
+    }
 })();
