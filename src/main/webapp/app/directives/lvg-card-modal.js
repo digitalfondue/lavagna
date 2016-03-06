@@ -4,50 +4,50 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgCardModal', function () {
+	directives.directive('lvgCardModal', function ($mdDialog, $state) {
 		return {
-			restrict: 'A',
-			scope: {},
-			controller: function ($scope, $element, $state) {
-
-				$scope.goBack = function() {
-					$state.go('^');
-				}
-			},
+			restrict: 'E',
+            scope: {
+                project: '=',
+                board: '=',
+                card: '=',
+                user: '='
+            },
 			link: function ($scope, $element, $attrs) {
+                var goBack = function() {
+                    $state.go('^');
+                };
 
-				var close = function () {
-					cleanup();
-					$scope.goBack();
-				};
+                $mdDialog.show({
+                    controller: DialogController,
+                    template: ['<md-dialog><md-dialog-content>',
+                               '<lvg-component-card card="modalCtrl.card" board="modalCtrl.board"',
+                               'project="modalCtrl.project" user="modalCtrl.user"',
+                               'close="modalCtrl.close"></lvg-component-card>',
+                               '</md-dialog-content></md-dialog>'].join(' '),
+                    parent: angular.element(document.querySelector('#cardModalAnchor')),
+                    clickOutsideToClose: true,
+                    fullscreen: true,
+                    locals: {
+                        project: $scope.project,
+                        board: $scope.board,
+                        card: $scope.card,
+                        user: $scope.user
+                    },
+                    bindToController: true,
+                    controllerAs: 'modalCtrl',
+                    onRemoving: goBack
+                });
 
-				var escapeHandler = function (e) {
-					if (e.keyCode == 27) {
-						$scope.$apply(close);
-					}
-				};
+                function DialogController($mdDialog) {
+                    this.close = function() {
+                        $mdDialog.cancel();
+                    };
+                }
 
-				var closeHandler = function (e) {
-				    e.preventDefault();
-                    $scope.$apply(close);
-				}
-
-				var cleanup = function () {
-					$('#cardModal,#cardModalBackdrop').removeClass('in');
-					$('#cardModal,#cardModalBackdrop').remove();
-					$("body").removeClass('lvg-modal-open');
-					$(document).unbind('keyup', escapeHandler);
-					$('#cardModal a[data-lvg-card-modal-close]').unbind('click', closeHandler);
-				};
-
-				$scope.$on('$destroy', cleanup);
-				$(document).bind('keyup', escapeHandler);
-
-                $('#cardModal a[data-lvg-card-modal-close]').bind('click', closeHandler);
-
-				$("body").append($('<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade"></div>'));
-				$("body").addClass('lvg-modal-open');
-				$("#cardModal,#cardModalBackdrop").addClass('in');
+                $scope.$on('$destroy', function() {
+                    $mdDialog.cancel();
+                });
 			}
 		};
 	});

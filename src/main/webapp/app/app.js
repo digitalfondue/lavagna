@@ -403,7 +403,7 @@
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
 			controller : function(card, project, board, user) {
 			    this.card = card;
 			    this.board = board;
