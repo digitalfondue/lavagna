@@ -40,7 +40,7 @@
 						managerPassword : conf['LDAP_MANAGER_PASSWORD'],
 						userSearchBase : conf['LDAP_USER_SEARCH_BASE'],
 						userSearchFilter: conf['LDAP_USER_SEARCH_FILTER']
-				}
+				};
 
 				var oauth = conf['OAUTH_CONFIGURATION'] && JSON.parse(conf['OAUTH_CONFIGURATION']) || { providers : []};
 
@@ -80,12 +80,12 @@
 			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).catch(function(error) {
 				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.updateActiveProviders.error'}, false);
 			}).then(loadConfiguration);
-		}
+		};
 
 		ctrl.updateActiveProviders = function(value, identifier) {
 		    ctrl.authMethod[identifier] = value;
 		    updateActiveProviders();
-		}
+		};
 
 		// -- save providers config
 
@@ -156,7 +156,7 @@
 			}, function(error) {
 				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
 			}).then(loadConfiguration);
-		}
+		};
 
 
         //TODO: in the future, move to a separate component
@@ -173,7 +173,7 @@
 						ctrl.saveOauthConfig(toSave).then(function() {
 							$modalInstance.close('done');
 						});
-					}
+					};
 
 					$modalScope.close = function() {
 						$modalInstance.close('done');
@@ -189,7 +189,7 @@
                     }
 				}
 			});
-		}
+		};
 
         //TODO: in the future, move to a separate component
 		ctrl.openLdapConfigModal = function() {
@@ -218,7 +218,7 @@
 					}
 				}
 		    });
-		}
+		};
 
 		// ------ Anonymous access
 
@@ -263,7 +263,7 @@
                 ).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.updateAnonConfiguration.error'}, false);
                 }).then(load);
-        }
+        };
 
         ctrl.globalRoleChange = function(value) {
 			if(value == undefined) {
@@ -287,6 +287,6 @@
 		};
 
 
-    };
+    }
 
 })();

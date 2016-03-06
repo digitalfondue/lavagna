@@ -100,7 +100,7 @@
         ctrl.bulkImport = function() {
             Admin.importUsers(ctrl.importUserFile,
                     function(evt) { },
-                    function(data) {
+                    function() {
                         Notification.addAutoAckNotification('success', {
                             key: 'notification.admin-manage-users.bulkImport.success'
                         }, false);
@@ -133,7 +133,7 @@
                         $modalInstance.close('done');
                     }
                 },
-                size: 'sm',
+                size: 'md',
                 windowClass: 'lavagna-modal'
             });
         };
