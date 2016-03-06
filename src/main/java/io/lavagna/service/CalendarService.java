@@ -29,6 +29,7 @@ import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Project;
+import io.lavagna.model.SearchResults;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
@@ -176,12 +177,34 @@ public class CalendarService {
 
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-                    java.util.Date date = formatter.parse(m.getMetadata().get("releaseDate"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                    java.util.Date date = formatter.parse(m.getMetadata().get("releaseDate") + " 12:00");
 
-                    final String name = project.getShortName() + " - " + m.getValue();
+                    SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
+                        m.getValue());
+                    SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION,
+                        SearchFilter.ValueType.STRING, BoardColumn.BoardColumnLocation.TRASH.toString());
+                    SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), project.getId(),
+                        null, user);
+
+                    double closed = 0;
+                    double total = 0;
+                    StringBuilder descBuilder = new StringBuilder();
+                    for (CardFullWithCounts card : cards.getFound()) {
+                        if (card.getColumnDefinition() == ColumnDefinition.CLOSED) {
+                            closed++;
+                        }
+                        total++;
+                        descBuilder.append(getEventName(card));
+                        descBuilder.append("\n");
+                    }
+
+                    final String name = String.format("%s - %s (%.0f%%)", project.getShortName(), m.getValue(),
+                        total > 0 ? 100 * closed / total : 100);
 
                     final VEvent event = new VEvent(new Date(date.getTime()), name);
+
+                    event.getProperties().add(new Description(descBuilder.toString()));
 
                     final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
                     event.getProperties().add(new Uid(id.toString()));
