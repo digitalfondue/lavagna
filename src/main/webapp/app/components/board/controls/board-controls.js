@@ -6,6 +6,7 @@
     components.component('lvgBoardControls', {
         bindings: {
             toggledSidebar: '=',
+            sideBarLocation:'=',
             switchEditMode: '=',
             editMode: '=',
             unSelectAll: '=',
