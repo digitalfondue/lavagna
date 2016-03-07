@@ -7,6 +7,10 @@
 	services.factory('StompClient', function ($q, $log, $rootScope, $window, CONTEXT_PATH, User, Notification) {
 
 		var defer = $q.defer();
+		
+		var callbacks = {
+				
+		};
 
 		defer.promise.disconnect = function (f) {
 			return this.then(function (v) {
@@ -16,17 +20,39 @@
 		};
 
 		defer.promise.subscribe = function (scope, path, callback, headers) {
-			return this.then(function (v) {
-				$log.log('stomp client subscribe at', path);
-				var subscription = v.subscribe(path, function (msg) {
-					scope.$apply(function() {callback(msg)});
-				}, headers);
+			this.then(function (v) {
+				
+				
+				if(!callbacks[path] || callbacks[path].length == 0) {
+					callbacks[path] = [];
+					
+					$log.log('stomp client subscribe at', path);
+					
+					callbacks[path].subscription = v.subscribe(path, function (msg) {
+						scope.$apply(function() {
+							angular.forEach(callbacks[path], function(cb) {
+								try {
+									cb(msg);
+								} catch(e) {
+								}
+							});
+						});
+					}, headers);
+				}
+				
+				
+				$log.log('callback registered for', path);
+				callbacks[path].push(callback);
+				
+				
 				scope.$on('$destroy', function () {
-					$log.log('stomp client unsubscribe from', path);
-					v.unsubscribe(subscription);
+					$log.log('callback unregistered for', path);
+					callbacks[path].splice(callbacks[path].indexOf(callback), 1);
+					if(callbacks.length == 0) {
+						$log.log('stomp client unsubscribe from', path);
+						v.unsubscribe(callbacks[path].subscription);
+					}
 				});
-
-				return subscription;
 			});
 		};
 
