@@ -7,13 +7,10 @@
 	directives.directive('lvgSizeByVisibleColumns', function (User, $stateParams) {
 		return {
 			restrict: 'A',
-			scope: {
-				columns: '=lvgSizeByVisibleColumns'
-			},
 			link: function ($scope, element, attrs) {
 				//select all li that have no lavagna-hide class
 
-				$scope.$watch('columns.length', function (length) {
+				$scope.$watch('boardCtrl.columns.length', function (length) {
 					if(length === undefined) {
 						return;
 					}

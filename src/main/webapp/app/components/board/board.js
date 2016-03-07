@@ -159,35 +159,15 @@
 
         //-------------
 
-        User.hasPermission('MOVE_COLUMN', projectName).then(function() {
-            ctrl.sortableColumnOptions = {
-                    tolerance: "pointer",
-                    handle: '.lvg-column-handle',
-                    forceHelperSize: true,
-                    items: '> .lavagna-sortable-board-column',
-                    cancel: 'input,textarea,button,select,option,.lavagna-not-sortable-board-column,.lvg-board-column-menu',
-                    placeholder: "lavagna-column-placeholder",
-                    start : function(e, ui) {
-                        ui.placeholder.height(ui.helper.outerHeight());
-                    },
-                    stop: function(e, ui) {
-                        if(ui.item.data('hasUpdate')) {
-                            var colPos =  ui.item.parent().sortable("toArray", {attribute: 'data-lvg-column-id'}).map(function(i) {return parseInt(i, 10);});
-                            //mark the placeholder item
-                            //ui.item.addClass('lavagna-to-be-cleaned-up');
-                            Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
-                                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                            });
-                        }
-                        ui.item.removeData('hasUpdate');
-                    },
-                    update : function(e, ui) {
-                        ui.item.data('hasUpdate', true);
-                    }
-            };
-        }, function() {
-            ctrl.sortableColumnOptions = false;
-        });
+        ctrl.sortColumns = function() {
+        	var colPos = [];
+        	angular.forEach(ctrl.columns, function(col) {
+        		colPos.push(col.id);
+        	});
+        	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
+                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+            });
+        }
 
 
         User.hasPermission('MOVE_CARD', projectName).then(function() {
