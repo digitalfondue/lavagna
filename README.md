@@ -11,6 +11,8 @@ Lavagna
 
 # Latest release is 1.0.5.2 (2016-01-12) #
 
+# Note: The UI/UX of "master" is broken, as we are currently switching to angular-material. The stable branch is 1.0.x 
+
 ## About ##
 
 [Lavagna](http://lavagna.io) is a small and easy to use issue/project tracking software.
