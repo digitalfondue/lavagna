@@ -146,7 +146,6 @@
         ctrl.columnsLocation = 'BOARD';
 
         var assignToColumn = function(columns) {
-            $(".lavagna-to-be-cleaned-up").remove();
             ctrl.columns = columns;
             $rootScope.$broadcast('requestSearch');
         };
@@ -167,61 +166,28 @@
         	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });
+        };
+        
+        ctrl.sortCards = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
+        	
+        	var oldColumnId = $partFrom.columnId;
+        	var newColumnId = $partTo.columnId;
+        	var cardId = $item.id;
+        	var ids = [];
+        	angular.forEach($partTo, function(card) {
+        		ids.push(card.id);
+        	});
+
+        	if(oldColumnId === newColumnId) {
+                Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
+                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                });
+            } else {
+                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
+                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                });
+            }
         }
-
-
-        User.hasPermission('MOVE_CARD', projectName).then(function() {
-            ctrl.sortableCardOptions = {
-                    tolerance: "pointer",
-                    connectWith: ".lavagna-board-cards,.sidebar-dropzone",
-                    cancel: '.lvg-not-sortable-card',
-                    placeholder: "lavagna-card-placeholder",
-                    start : function(e, ui) {
-                        $("#sidebar-drop-zone").show();
-                        ui.placeholder.height(ui.helper.outerHeight());
-                        ui.item.data('initialColumnId', ui.item.attr('data-lavagna-card-column-id')); //use the current attribute
-                    },
-                    stop: function(e, ui) {
-                        $("#sidebar-drop-zone").hide();
-                        if(ui.item.data('hasUpdate')) {
-                            var cardId = parseInt(ui.item.attr('data-lvg-card-id'), 10);
-                            var oldColumnId = parseInt(ui.item.data('initialColumnId'), 10);
-                            var newColumnId = parseInt(ui.item.data('newColumnId'), 10);
-                            var ids = ui.item.parent().sortable("toArray", {attribute: 'data-lvg-card-id'}).map(function(i) {return parseInt(i, 10);});
-
-                            ui.item.addClass('lavagna-to-be-cleaned-up');
-                            ui.item.replaceWith(ui.item.clone());
-
-                            if(oldColumnId === newColumnId) {
-                                Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
-                                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                                });
-                            } else {
-                                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
-                                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                                });
-                            }
-                        }
-                        ui.item.removeData('hasUpdate');
-                        ui.item.removeData('initialColumnId');
-                        ui.item.removeData('newColumnId');
-                    },
-                    update : function(e, ui) {
-                        ui.item.data('newColumnId', ui.item.parents('.lavagna-sortable-board-column').attr('data-lvg-column-id'));
-                        ui.item.data('hasUpdate', true);
-                    },
-                    //http://stackoverflow.com/a/20228500
-                    over: function(e, ui) {
-                        ui.item.data('sortableItem').scrollParent = ui.placeholder.parent();
-                        ui.item.data('sortableItem').overflowOffset = ui.placeholder.parent().offset();
-                    }
-            };
-        }, function() {
-            ctrl.sortableCardOptions = false;
-        });
-
-
-
 
         //will be used as a map columnState[columnId].editColumnName = true/false
         ctrl.columnState = {};

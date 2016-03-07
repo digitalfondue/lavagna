@@ -23,12 +23,11 @@
 <div class="horizontal-slide lavagna-left-sidebar-slide-open" data-ng-class="{'lavagna-board-left-sidebar-open':boardCtrl.toggledSidebar, 'lavagna-edit-mode' : boardCtrl.editMode, 'lvg-can-move-columns' : boardCtrl.sortableColumnOptions, 'lvg-can-move-cards': boardCtrl.sortableCardOptions}"
      data-lvg-fill-height="{{boardCtrl.toggledSidebar}}" data-lvg-fill-height-margin="295">
      
-    <ul class="lavagna-board-column-holder" data-lvg-size-by-visible-columns="boardCtrl.columns" sv-root sv-part="boardCtrl.columns" sv-on-sort="boardCtrl.sortColumns()">
+    <ul class="lavagna-board-column-holder" data-lvg-size-by-visible-columns="boardCtrl.columns" sv-root="board-columns" sv-part="boardCtrl.columns" sv-on-sort="boardCtrl.sortColumns()">
         <li class="lavagna-board-column lavagna-sortable-board-column"
             data-ng-repeat="column in boardCtrl.columns track by column.id"
             sv-element
-            data-lvg-update-column-size
-            data-ng-attr-data-lvg-column-id="{{::column.id}}">
+            data-lvg-update-column-size>
             <lvg-board-column project="boardCtrl.project" board="boardCtrl.board" column="column" board-columns="boardCtrl.columns" selected-cards="boardCtrl.selectedCards" search-filter="boardCtrl.searchFilter"></lvg-board-column>
         </li>
         <li class="lavagna-board-column lavagna-not-sortable-board-column panel panel-default" data-lvg-has-permission="CREATE_COLUMN">

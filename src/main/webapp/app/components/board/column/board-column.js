@@ -30,7 +30,7 @@
 
                     var loadCards = function() {
                         Card.findByColumn(columnId).then(function(res) {
-                            $("[data-lvg-column-id="+columnId+"] .lavagna-to-be-cleaned-up").remove();
+                        	res.columnId = columnId;
                             boardColumnCtrl.cardsInColumn = res;
                             boardColumnCtrl.loaded = true;
                         });
