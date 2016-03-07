@@ -22,11 +22,7 @@
 
             $mdDialog.show({
                 controller: DialogController,
-                template: ['<md-dialog><md-dialog-content>',
-                           '<lvg-component-card card="modalCtrl.card" board="modalCtrl.board"',
-                           'project="modalCtrl.project" user="modalCtrl.user"',
-                           'close="modalCtrl.close"></lvg-component-card>',
-                           '</md-dialog-content></md-dialog>'].join(' '),
+                templateUrl: 'app/components/card-modal/card-modal.html',
                 parent: angular.element(angular.element(document.body)),
                 clickOutsideToClose: true,
                 fullscreen: true,

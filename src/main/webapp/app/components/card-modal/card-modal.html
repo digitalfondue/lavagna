@@ -1,0 +1,18 @@
+<md-dialog>
+	<md-toolbar>
+	    <div class="md-toolbar-tools">
+	        <h2>{{::modalCtrl.project.shortName}} / {{::modalCtrl.board.shortName}}-{{::modalCtrl.card.sequence}}</h2>
+	        <span flex></span>
+	        <md-button class="md-icon-button" ng-click="modalCtrl.close()">
+	            <md-icon md-font-icon="fa-times" class="fa" aria-label="Close Card"></md-icon>
+	        </md-button>
+	    </div>
+	</md-toolbar>
+	<md-dialog-content>
+        <lvg-component-card
+            card="modalCtrl.card" 
+            board="modalCtrl.board" 
+            project="modalCtrl.project" 
+            user="modalCtrl.user"></lvg-component-card>
+	</md-dialog-content>
+</md-dialog>

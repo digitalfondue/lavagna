@@ -10,8 +10,7 @@
             project: '=',
             board: '=',
             card: '=',
-            user: '=',
-            close: '='
+            user: '='
         },
         controller: CardController,
         controllerAs: 'cardCtrl'
