@@ -49,7 +49,8 @@
 				} else if (type === 'LIST') {
 					loadListValue($scope.value.labelId, value.valueList, $scope);
 					
-
+					//FIXME - use cache + callback, so we have exactly one subscription
+					//      - the cache must unregister when there are 0 callback registered
 					StompClient.subscribe($scope, '/event/label-list-values/' + value.valueList, function (message) {
 						loadListValue($scope.value.labelId, value.valueList, $scope).then(function() {
 							$element.html($compile(labelValTemplate)($scope));
