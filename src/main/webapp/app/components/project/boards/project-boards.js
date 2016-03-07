@@ -65,22 +65,22 @@
             }
             Board.suggestShortName(board.name).then(function(res) {
                 board.shortName = res.suggestion;
+                projectCtrl.checkBoardShortName(res.suggestion);
             });
         };
 
         projectCtrl.board = {};
         projectCtrl.isShortNameUsed = undefined;
-
-        //TODO: remove this crap, use ng-change
-        $scope.$watch('board.shortName', function(newVal) {
-            if(newVal !== undefined && newVal !== null) {
-                Board.checkShortName(newVal).then(function(res) {
-                    projectCtrl.checkedShortName = res;
+        
+        projectCtrl.checkBoardShortName = function(val) {
+            if(val !== undefined && val !== null) {
+            	Board.checkShortName(val).then(function(res) {
+            		projectCtrl.checkedShortName = res;
                 });
             } else {
-                projectCtrl.checkedShortName = undefined;
+            	projectCtrl.checkedShortName = undefined;
             }
-        });
+        };
 
         StompClient.subscribe($scope, '/event/project/' + projectName + '/board', loadBoardsInProject);
 

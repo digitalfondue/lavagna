@@ -2,9 +2,9 @@
 
 	'use strict';
 
-	var directives = angular.module('lavagna.directives');
+	var components = angular.module('lavagna.components');
 
-	directives.component('lvgCardModal', {
+	components.component('lvgCardModal', {
 		bindings: {
 			project: '=',
 			board: '=',
