@@ -167,6 +167,7 @@ public class CardLabelController {
 		CardLabel cl = cardLabelRepository.findLabelById(labelListValue.getCardLabelId());
 		Project project = projectService.findById(cl.getProjectId());
 		eventEmitter.emitUpdateLabel(project.getShortName(), labelListValue.getCardLabelId());
+		eventEmitter.emitUpdateLabeListValueId(labelListValueId);
 	}
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
