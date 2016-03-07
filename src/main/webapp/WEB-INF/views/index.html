@@ -11,9 +11,9 @@
 </head>
 <body>
     <aside>
-        <lvg-sidebar></lvg-sidebar>
+        <md-sidenav md-component-id="left" class="md-sidenav-left"><lvg-sidebar-content></lvg-sidebar-content></md-sidenav>
     </aside>
-    <div data-ui-view></div>
+    <div role="main" data-ui-view></div>
 	<lvg-notification></lvg-notification>
 	{{#inlineTemplates}}{{.}}{{/inlineTemplates}}
 </body>

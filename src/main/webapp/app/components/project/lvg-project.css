@@ -17,6 +17,7 @@ ul.lavagna-projects, ul.lavagna-boards {
 	margin: 0;
 	border: 0;
 	margin-top: 20px;
+	list-style-type: none;
 }
 
 ul.lavagna-projects li.lavagna-project:last-child, ul.lavagna-boards li.lavagna-board:last-child {

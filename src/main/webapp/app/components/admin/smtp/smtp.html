@@ -3,14 +3,10 @@
         <form data-ng-submit="adminSmtpCtrl.saveSmtpConfig(adminSmtpCtrl.configuration)">
             <div class="head clearfix headonly">
                 <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-smtp-configuration.title</div>
-                <div class="title-addon col-xs-3 lvg-switch-controls">
+                <div class="title-addon col-xs-3">
                     <ul class="panel-controls">
                         <li class="control-no-action">
-                            <lvg-switch
-                                switch-class="lvg-switch"
-                                control="adminSmtpCtrl.smtpEnabled"
-                                change="adminSmtpCtrl.toggleSmtp">
-                            </lvg-switch>
+                            <md-switch ng-model="adminSmtpCtrl.smtpEnabled" ng-change="adminSmtpCtrl.toggleSmtp(adminSmtpCtrl.smtpEnabled)"></md-switch>
                         </li>
                     </ul>
                 </div>

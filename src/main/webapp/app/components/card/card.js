@@ -10,7 +10,8 @@
             project: '=',
             board: '=',
             card: '=',
-            user: '='
+            user: '=',
+            close: '='
         },
         controller: CardController,
         controllerAs: 'cardCtrl'
@@ -145,138 +146,43 @@
         var loadActionLists = function() {
             Card.actionLists(card.id).then(function(actionLists) {
                 ctrl.actionLists = [];
-                ctrl.actionListsById = {};
-                ctrl.actionListsId = [];
-                for(var i = 0; i < actionLists.lists.length; i++) {
-                    ctrl.actionListsId.push(actionLists.lists[i].id);
-                    ctrl.actionListsById[actionLists.lists[i].id] = actionLists.lists[i];
-                    ctrl.actionLists.push(actionLists.lists[i]);
-                }
 
-                ctrl.actionItems = actionLists.items;
-                ctrl.actionItemsMap = {};
-                ctrl.actionListsStats = {};
-                for(var i = 0; i < ctrl.actionListsId.length; i++) {
-                    var currentListID = ctrl.actionListsId[i];
-                    //there could be a list without elements
-                    ctrl.actionListsStats[currentListID] = 0;
-                    if(actionLists.items[currentListID] === undefined)
-                        continue;
-                    var checkedItems = 0;
-                    for(var e = 0; e < actionLists.items[currentListID].length; e++) {
-                        var item = actionLists.items[currentListID][e];
-                        if(item.type === 'ACTION_CHECKED')
-                            checkedItems++;
-                        ctrl.actionItemsMap[item.id] = item;
-                    }
-                   ctrl.actionListsStats[currentListID] = parseInt((checkedItems/actionLists.items[currentListID].length) * 100, 10);
+                for(var i = 0; i < actionLists.lists.length; i++) {
+                    var actionList = actionLists.lists[i];
+                    actionList.items = actionLists.items[actionList.id] || [];
+                    ctrl.actionLists.push(actionList);
                 }
             });
         };
         loadActionLists();
 
-        User.hasPermission('MANAGE_ACTION_LIST', project.shortName).then(function() {
-            ctrl.sortableActionListOptions = {
-                    items: '> .lavagna-sortable-card-actionlist',
-                    cancel: 'input,textarea,button,select,option,.lavagna-not-sortable-card-actionlist',
-                    start : function(e, ui) {},
-                    stop : function(e, ui) {},
-                    update : function(e, ui) {
-                        var newActionListsId = ui.item.parent().sortable("toArray", {attribute: 'data-lavagna-actionlist-id'}).map(function(i) {return parseInt(i, 10);});
-                        Card.updateActionListOrder(card.id, newActionListsId);
-                    }
-            };
-        }, function() {
-            ctrl.sortableActionListOptions = false;
-        });
+        ctrl.sortActionLists = function(actionlist, from, to, oldIndex, newIndex) {
+            ctrl.actionLists = to.map(function(v, i) {
+                    v.order = i;
+                    return v;
+                });
+            Card.updateActionListOrder(
+                ctrl.card.id,
+                to.map(function(v) { return v.id})
+                ).catch(function(err) {
+                    ctrl.actionLists = from;
+                });
+        };
 
-        User.hasPermission('MANAGE_ACTION_LIST', project.shortName).then(function() {
-            ctrl.sortableActionItemsOptions = {
-                    connectWith: ".lavagna-card-actionitems",
-                    start:function(e, ui) {
-                        ui.item.data('initialActionlistId', ui.item.parent().parent().parent().attr('data-lavagna-actionlist-id'));
-                    },
-                    stop: function(e, ui) {
-                        if(ui.item.data('hasUpdate')) {
-                            var itemId = parseInt(ui.item.attr('data-lavagna-actionlistitem-id'), 10);
-                            var oldActionlistId = parseInt(ui.item.data('initialActionlistId'), 10);
-                            var newActionlistId = parseInt(ui.item.data('newActionlistId'), 10);
-                            var ids = ui.item.parent().sortable("toArray", {attribute: 'data-lavagna-actionlistitem-id'}).map(function(i) {return parseInt(i, 10);});
-                            if(oldActionlistId === newActionlistId) {
-                                Card.updateActionItemOrder(oldActionlistId, ids);
-                            } else {
-                                Card.moveActionItem(itemId, newActionlistId, {newContainer: ids});
-                            }
-                        }
-                        ui.item.removeData('hasUpdate');
-                        ui.item.removeData('initialActionlistId');
-                        ui.item.removeData('newActionlistId');
-                    },
-                    update : function(e, ui) {
-                        ui.item.data('newActionlistId', ui.item.parent().parent().parent().attr('data-lavagna-actionlist-id'));
-                        ui.item.data('hasUpdate', true);
-                    }
-            };
-        }, function() {
-            ctrl.sortableActionItemsOptions = false;
-        });
+        ctrl.addActionList = function(actionList) {
+            Card.addActionList(card.id, actionList).then(function() {
+                actionList = null;
+            });
+        };
+
         //
 
         //--------------
-
-        ctrl.actionListState = {};
 
         ctrl.addComment = function(comment) {
             Card.addComment(card.id, comment).then(function() {
                 comment.content = null;
             });
-        };
-
-        ctrl.addActionList = function(actionList) {
-            Card.addActionList(card.id, actionList).then(function() {
-                actionList.content = null;
-            });
-        };
-
-        ctrl.deleteActionList = function(itemId) {
-            Card.deleteActionList(itemId).then(function(event) {
-                Notification.addNotification('success', { key : 'notification.card.ACTION_LIST_DELETE.success'}, true, true, function(notification) {
-                    Card.undoDeleteActionList(event.id).then(notification.acknowledge)
-                });
-            }, function(error) {
-                ctrl.actionListState[listId].deleteList = false;
-                Notification.addAutoAckNotification('error', { key : 'notification.card.ACTION_LIST_DELETE.success'}, false);
-            });
-        };
-
-        ctrl.saveActionList = function(itemId, content) {
-            Card.updateActionList(itemId, content);
-        };
-
-        ctrl.addActionItem = function(listId, actionItem) {
-            Card.addActionItem(listId, actionItem).then(function() {
-                actionItem.content = null;
-            });
-        };
-
-        ctrl.deleteActionItem = function(listId, itemId) {
-            Card.deleteActionItem(itemId).then(function(event) {
-                Notification.addNotification('success', { key : 'notification.card.ACTION_ITEM_DELETE.success'}, true, true, function(notification) {
-                    Card.undoDeleteActionItem(event.id).then(notification.acknowledge);
-                });
-            }, function(error) {
-                ctrl.actionListState[listId][itemId].deleteActionItem = false;
-                ctrl.actionListState[listId][itemId].showControls = false;
-                Notification.addAutoAckNotification('error', { key : 'notification.card.ACTION_ITEM_DELETE.error'}, false);
-            });
-        };
-
-        ctrl.toggleActionItem = function(itemId) {
-            Card.toggleActionItem(itemId, (ctrl.actionItemsMap[itemId].type === 'ACTION_UNCHECKED'));
-        };
-
-        ctrl.saveActionItem = function(itemId, content) {
-            Card.updateActionItem(itemId, content);
         };
 
         // -----

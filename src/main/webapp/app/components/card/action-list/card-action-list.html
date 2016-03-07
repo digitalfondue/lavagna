@@ -1,0 +1,56 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <div class="md-headline"
+                 data-ng-hide="editListName">
+                <span ng-transclude="handle"></span>
+                <span data-lvg-has-not-permission="MANAGE_ACTION_LIST">{{actionList.content}}</span>
+                <span
+                    data-lvg-has-permission="MANAGE_ACTION_LIST"
+                    data-ng-click="editListName=true; newListName = alCtrl.actionList.content">{{alCtrl.actionList.content}}</span>
+            </div>
+            <div data-ng-show="editListName">
+                <md-input-container>
+                    <form data-ng-submit="alCtrl.saveName(newListName); editListName=false">
+                        <input data-ng-hide="previewMode"
+                               placeholder="{{'card.name.placeholder' | translate}}"
+                               data-ng-model="newListName"
+                               class="form-control"
+                               data-lvg-to-focus="editListName"
+                               data-lvg-on-esc="editListName"/>
+                        <md-button type="submit" md-no-ink class="md-primary" data-translate>button.update</md-button>
+                        <md-button type="button" md-no-ink data-ng-click="editListName=false">
+                            <span data-translate>button.cancel</span></md-button>
+                    </form>
+                </md-input-container>
+            </div>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <md-list sv-root="{{alCtrl.actionList.id}}"
+                 sv-part="alCtrl.actionList.items"
+                 sv-on-sort="alCtrl.sortActions($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+            <md-list-item data-ng-repeat="item in alCtrl.actionList.items | orderBy:'order' track by item.id" sv-element>
+                <md-icon data-lvg-has-permission="MANAGE_ACTION_LIST" md-font-icon="fa-arrows" class="fa" sv-handle></md-icon>
+                <md-checkbox class="md-secondary" ng-model="item.type" ng-change="alCtrl.toggleAction(item)"
+                             ng-true-value="'ACTION_CHECKED'" ng-false-value="'ACTION_UNCHECKED'"></md-checkbox>
+                <p> {{ item.content }} </p>
+                <md-icon data-lvg-has-permission="MANAGE_ACTION_LIST" md-font-icon="fa-trash" class="fa md-secondary" ng-click="alCtrl.deleteAction(item.id);"></md-icon>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+    <md-card-actions data-lvg-has-permission="MANAGE_ACTION_LIST">
+        <div layout="row">
+            <md-input-container>
+                <form ng-submit="alCtrl.addAction(actionName)">
+                    <label>Action {{actionName}}</label>
+                    <input ng-model="actionName">
+                    <md-buttonn type="submit" class="md-icon-button">
+                        <md-icon md-font-icon="fa-send" class="fa"></md-icon>
+                    </md-buttonn>
+                    <md-button type="button" class="md-warn" ng-click="alCtrl.deleteList();">Delete</md-button>
+                </form>
+            </md-input-container>
+        </div>
+    </md-card-actions>
+</md-card>

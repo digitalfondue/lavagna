@@ -117,10 +117,6 @@
 	opacity: 1;
 }
 
-.df-tab-menu a[dropdown-toggle] i, .df-tab-menu a[uib-dropdown-toggle] i {
-	padding-left: 5px;
-}
-
 .lvg-board-location, .lvg-board-edit {
 	display: inline-block;
 }

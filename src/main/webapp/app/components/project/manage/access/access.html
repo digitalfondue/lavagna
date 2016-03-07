@@ -3,10 +3,10 @@
         <div class="lavagna-panel">
             <div class="head clearfix headonly">
                 <div class="title title-bold col-xs-9" data-translate>partials.project.manage-anonymous-users-access.title</div>
-                <div class="title-addon col-xs-3 lvg-switch-controls">
+                <div class="title-addon col-xs-3">
                     <ul class="panel-controls">
                         <li class="control-no-action">
-                            <lvg-switch switch-class="lvg-switch" control="manageAccessCtrl.userHasRole" change="manageAccessCtrl.update"></lvg-switch>
+                            <md-switch ng-model="manageAccessCtrl.userHasRole" ng-change="manageAccessCtrl.update(manageAccessCtrl.userHasRole)"></md-switch>
                         </li>
                     </ul>
                 </div>

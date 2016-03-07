@@ -1,7 +1,5 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-3" data-lvg-is-not-authenticated></div>
-        <div class="project-list col-md-6">
+<div layout="column" layout-gt-xs="row">
+        <div flex>
             <div data-lvg-has-permission="ADMINISTRATION">
                 <button type="button" class="lvg-button lvg-button-submit" data-ng-click="dashboardCtrl.view.createNewProject = true;" data-ng-hide="dashboardCtrl.view.createNewProject">
                     <span class="fa fa-plus"></span>
@@ -51,10 +49,8 @@
             </div>
 
             <ul class="lavagna-projects">
-                <li class="lavagna-project lavagna-panel" data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
-                    <div class="body-full">
-                        <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
-                    </div>
+                <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
+                    <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
                 </li>
             </ul>
             <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">
@@ -63,7 +59,8 @@
                              class="pagination-sm" boundary-links="true" rotate="false"></pagination>
             </div>
         </div>
-        <div class="col-md-6" data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
+        
+        <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
             <h2 class="card-home" data-translate>partials.home.openTask</h2>
             <ul data-ng-if="dashboardCtrl.totalOpenCards > 0" class="lavagna-home-cards">
                 <li class="lavagna-home-card" data-ng-repeat="card in dashboardCtrl.userCards track by card.hash">
@@ -76,6 +73,5 @@
                             class="pagination-sm" boundary-links="true" rotate="false" data-ng-change="dashboardCtrl.fetchUserCardsPage(dashboardCtrl.view.cardPage)"></pagination>
             </div>
         </div>
-    </div>
-
 </div>
+ 

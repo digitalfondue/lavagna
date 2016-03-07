@@ -4,52 +4,53 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgCardModal', function () {
-		return {
-			restrict: 'A',
-			scope: {},
-			controller: function ($scope, $element, $state) {
+	directives.component('lvgCardModal', {
+		bindings: {
+			project: '=',
+			board: '=',
+			card: '=',
+			user: '='
+		}, 
+		
+		controller: function($mdDialog, $state, $scope) {
+			
+			var ctrl = this;
+			
+            var goBack = function() {
+                $state.go('^');
+            };
 
-				$scope.goBack = function() {
-					$state.go('^');
-				}
-			},
-			link: function ($scope, $element, $attrs) {
+            $mdDialog.show({
+                controller: DialogController,
+                template: ['<md-dialog><md-dialog-content>',
+                           '<lvg-component-card card="modalCtrl.card" board="modalCtrl.board"',
+                           'project="modalCtrl.project" user="modalCtrl.user"',
+                           'close="modalCtrl.close"></lvg-component-card>',
+                           '</md-dialog-content></md-dialog>'].join(' '),
+                parent: angular.element(angular.element(document.body)),
+                clickOutsideToClose: true,
+                fullscreen: true,
+                locals: {
+                    project: ctrl.project,
+                    board: ctrl.board,
+                    card: ctrl.card,
+                    user: ctrl.user
+                },
+                bindToController: true,
+                controllerAs: 'modalCtrl',
+                onRemoving: goBack
+            });
 
-				var close = function () {
-					cleanup();
-					$scope.goBack();
-				};
+            function DialogController($mdDialog) {
+                this.close = function() {
+                    $mdDialog.cancel();
+                };
+            }
 
-				var escapeHandler = function (e) {
-					if (e.keyCode == 27) {
-						$scope.$apply(close);
-					}
-				};
-
-				var closeHandler = function (e) {
-				    e.preventDefault();
-                    $scope.$apply(close);
-				}
-
-				var cleanup = function () {
-					$('#cardModal,#cardModalBackdrop').removeClass('in');
-					$('#cardModal,#cardModalBackdrop').remove();
-					$("body").removeClass('lvg-modal-open');
-					$(document).unbind('keyup', escapeHandler);
-					$('#cardModal a[data-lvg-card-modal-close]').unbind('click', closeHandler);
-				};
-
-				$scope.$on('$destroy', cleanup);
-				$(document).bind('keyup', escapeHandler);
-
-                $('#cardModal a[data-lvg-card-modal-close]').bind('click', closeHandler);
-
-				$("body").append($('<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade"></div>'));
-				$("body").addClass('lvg-modal-open');
-				$("#cardModal,#cardModalBackdrop").addClass('in');
-			}
-		};
+            $scope.$on('$destroy', function() {
+                $mdDialog.cancel();
+            });
+		}
 	});
 
 })();

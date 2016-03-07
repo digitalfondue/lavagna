@@ -199,6 +199,7 @@ public class ResourceController {
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
+
 			data.put("version", version);
 			
 			List<String> inlineTemplates = prepareTemplates(context, "/app/");
@@ -247,6 +248,11 @@ public class ResourceController {
 					"/js/sockjs.min.js", "/js/stomp.min.js",//
 					"/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
+					//
+					"/js/angular-animate.js", "/js/angular-aria.js",
+					"/js/angular-messages.js", "/js/angular-material.js",
+                    "/js/angular-sortable-view.js",
+					//
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/bindonce.min.js",//
@@ -257,9 +263,7 @@ public class ResourceController {
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.14.1.min.js",//
-					"/js/df-tab-menu.min.js",//
-					"/js/df-autocomplete.js")) {
+					"/js/ui-bootstrap-tpls-0.14.1.min.js")) {
 				output(res, context, allJs, ba);
 			}
 			//

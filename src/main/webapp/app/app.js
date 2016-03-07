@@ -27,8 +27,8 @@
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ui.sortable', 'pasvaz.bindonce', 'ui.bootstrap',
-			'pascalprecht.translate', 'digitalfondue.dftabmenu', 'digitalfondue.dfautocomplete',
-			'angularFileUpload']);
+			'pascalprecht.translate',
+			'angularFileUpload', 'ngMaterial', 'angular-sortable-view']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));
@@ -47,7 +47,7 @@
 	/**
 	 * Configure angular-ui-router here...
 	 */
-	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider) {
+	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider) {
 
 		$locationProvider.html5Mode(true);
 
@@ -403,7 +403,7 @@
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
 			controller : function(card, project, board, user) {
 			    this.card = card;
 			    this.board = board;
@@ -421,12 +421,52 @@
 		});
 
 		$urlRouterProvider.otherwise('/');
+
+		var background = $mdThemingProvider.extendPalette('grey', {
+          //'A100': 'e5e5e5'
+          'A100': 'ffffff'
+        });
+        $mdThemingProvider.definePalette('lavagna-background', background);
+
+		$mdThemingProvider.theme('lavagna')
+		    .primaryPalette('blue-grey')
+		    .accentPalette('light-blue')
+		    .warnPalette('red')
+		    .backgroundPalette('lavagna-background');
+
+
+		$mdThemingProvider.setDefaultTheme('lavagna');
 	});
 
-	module.run(function($rootScope, $state) {
+	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
+		//calendar conf, TODO: configurable
+		var dateFormat = 'D.M.YYYY';
+		$mdDateLocaleProvider.firstDayOfWeek = Number.parseInt(LOCALE_FIRST_DAY_OF_WEEK) - 1;
+		$mdDateLocaleProvider.parseDate = function(dateString) {
+			if(date == null) {
+				return null;
+			}
+			var m = moment(dateString, dateFormat, true);
+		    return m.isValid() ? m.toDate() : new Date(NaN);
+		};
+		$mdDateLocaleProvider.formatDate = function(date) {
+			if(date == null) {
+				return null;
+			}
+			return moment(date).format(dateFormat);
+		};
+		//
+	});
+
+	module.run(function($rootScope, $state, $mdSidenav) {
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $state.go(error.status.toString());
+		});
+
+
+		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+			$mdSidenav('left').close()
 		});
 	})
 

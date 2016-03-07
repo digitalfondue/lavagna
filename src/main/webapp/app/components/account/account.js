@@ -64,7 +64,6 @@
         };
 
         ctrl.updateFeed = function() {
-            ctrl.disabledFeed = !ctrl.disabledFeed;
             User.updateCalendarFeedStatus(ctrl.disabledFeed).then(createUrl);
         }
 
