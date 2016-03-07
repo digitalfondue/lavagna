@@ -14,7 +14,7 @@
         },
         controller: ManageRolePermissionsController,
         controllerAs: 'managePermsCtrl',
-        templateUrl: 'app/components/common/manage-roles/permissions/permissions.html'
+        templateUrl: 'app/components/manage-roles/permissions/permissions.html'
     });
 
     function ManageRolePermissionsController(Permission, Notification, $modal) {
@@ -64,7 +64,7 @@
             }
 
             var modal = $modal.open({
-                templateUrl: 'app/components/common/manage-roles/permissions/permissions-confirmation.html',
+                templateUrl: 'app/components/manage-roles/permissions/permissions-confirmation.html',
                 controller: function($modalInstance, roleName) {
                     this.roleName = roleName;
 

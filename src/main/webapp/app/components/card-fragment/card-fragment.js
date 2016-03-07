@@ -5,7 +5,7 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgCardFragment', {
-        templateUrl: 'app/components/common/card-fragment/card-fragment.html',
+        templateUrl: 'app/components/card-fragment/card-fragment.html',
         bindings: {
             card: '=',
             project: '=',

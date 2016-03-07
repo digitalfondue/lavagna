@@ -9,7 +9,7 @@
         },
         controller: ManageRolesController,
         controllerAs: 'manageRolesCtrl',
-        templateUrl: 'app/components/common/manage-roles/roles.html'
+        templateUrl: 'app/components/manage-roles/roles.html'
     });
 
     function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $modal, $filter) {
@@ -134,7 +134,7 @@
         //permission modal
         ctrl.open = function(roleName, roleDescriptor) {
             var modalInstance = $modal.open({
-                templateUrl: 'app/components/common/manage-roles/permissions/permissions-modal.html',
+                templateUrl: 'app/components/manage-roles/permissions/permissions-modal.html',
                 controller: function($modalInstance, role, roleDescriptor, permissionsByCategory, project) {
                     this.roleName = role;
                     this.roleDesc = roleDescriptor;

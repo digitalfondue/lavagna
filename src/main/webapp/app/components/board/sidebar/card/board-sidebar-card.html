@@ -1,15 +1,22 @@
-<div class="lavagna-sidebar-panel">
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <a data-ui-sref="board.card({projectName: $ctrl.project, shortName: $ctrl.board, seqNr: $ctrl.card.sequence})">{{::$ctrl.board}} - {{::$ctrl.card.sequence}}</a>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>{{::$ctrl.card.name}}</md-card-content>
+</md-card>
+<!-- <div class="lavagna-sidebar-panel">
 	<div class="head clearfix">
 		<div class="title">
 			<div class="row">
 				<div class="col-xs-10">
-					<a data-ui-sref="board.card({projectName: $ctrl.project, shortName: $ctrl.board, seqNr: $ctrl.card.sequence})">
-						{{::$ctrl.board}} - {{::$ctrl.card.sequence}}
-					</a>
+					
 				</div>
 			</div>
-			<span>{{::$ctrl.card.name}}</span>
+			<span></span>
 		</div>
 	</div>
 	<div class="body"></div>
 </div>
+ -->
