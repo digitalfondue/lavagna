@@ -23,7 +23,7 @@
             $mdDialog.show({
                 controller: DialogController,
                 templateUrl: 'app/components/card-modal/card-modal.html',
-                parent: angular.element(angular.element(document.body)),
+                parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 fullscreen: true,
                 locals: {
