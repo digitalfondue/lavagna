@@ -64,7 +64,7 @@
 			board: function (shortName) {
 				if (!(shortName in boardCache)) {
 					boardCache[shortName] = Board.findByShortName(shortName);
-					StompClient.subscribe($rootScope, '/event/board' + shortName, function () {
+					StompClient.subscribe($rootScope, '/event/board/' + shortName, function () {
 						BaseCache.removeFromCacheAndEmit(shortName, boardCache, 'refreshBoardCache-');
 					});
 				}
