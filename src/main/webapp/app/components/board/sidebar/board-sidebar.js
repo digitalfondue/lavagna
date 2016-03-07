@@ -18,18 +18,6 @@
             },
             templateUrl: 'app/components/board/sidebar/board-sidebar.html',
             link: function(scope, element, attrs, boardSidebarCtrl) {
-                $("#sidebar-drop-zone").sortable({
-                    receive: function (ev, ui) {
-                        var cardId = ui.item.attr('data-lvg-card-id');
-                        ui.item.data('hasUpdate', false); // disable the move card to column logic
-                        ui.item.hide();
-                        if (cardId !== undefined) {
-                            Card.moveAllFromColumnToLocation(ui.item.attr('data-lavagna-card-column-id'), [cardId], boardSidebarCtrl.sideBarLocation);
-                        }
-                    }
-                });
-
-                $("#sidebar-drop-zone").hide();
                 boardSidebarCtrl.sideBarLocation = 'ARCHIVE';
                 boardSidebarCtrl.switchLocation();
             }
@@ -71,47 +59,32 @@
                 if (res.length === 0) {
                     Board.cardsInLocationPaginated(boardShortName, ctrl.sideBarLocation, 0).then(function (res) {
                         ctrl.sidebar[ctrl.sideBarLocation] = {currentPage: 0, found: res.slice(0, 10), hasMore: res.length === 11};
+                        ctrl.sidebar[ctrl.sideBarLocation].found.sideBarLocation = ctrl.sideBarLocation;
                     });
                 } else {
                     ctrl.sidebar[ctrl.sideBarLocation] = {currentPage: ctrl.sidebar[ ctrl.sideBarLocation].currentPage + direction, found: res.slice(0, 10), hasMore: res.length === 11};
+                    ctrl.sidebar[ctrl.sideBarLocation].found.sideBarLocation = ctrl.sideBarLocation;
                 }
                 ctrl.sidebarLoaded = true;
             });
         };
-
-        User.hasPermission('MOVE_CARD', projectShortName).then(function () {
-           ctrl.sortableCardOptionsForSidebar = {
-                connectWith: ".lavagna-board-cards",
-                placeholder: "lavagna-card-placeholder",
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.helper.outerHeight());
-                    ui.item.data('initialColumnId', ui.item.attr('data-lavagna-card-column-id'));
-
-                },
-                stop: function (e, ui) {
-                    if (ui.item.data('hasUpdate')) {
-                        var cardId = parseInt(ui.item.attr('data-lvg-card-id'), 10);
-                        var oldColumnId = parseInt(ui.item.data('initialColumnId'), 10);
-                        var newColumnId = parseInt(ui.item.data('newColumnId'), 10);
-                        var ids = ui.item.parent().sortable("toArray", {attribute: 'data-lvg-card-id'}).map(function (i) {
-                            return parseInt(i, 10);
-                        });
-                        ui.item.addClass('lavagna-to-be-cleaned-up');
-                        ui.item.replaceWith(ui.item.clone());
-                        Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids});
-                    }
-                    ui.item.removeData('hasUpdate');
-                    ui.item.removeData('initialColumnId');
-                    ui.item.removeData('newColumnId');
-                },
-                update: function (e, ui) {
-                    ui.item.data('newColumnId', ui.item.parent().parent().parent().attr('data-lvg-column-id'));
-                    ui.item.data('hasUpdate', true);
-                }
-            };
-        }, function () {
-            ctrl.sortableCardOptionsForSidebar = false;
-        });
+        
+        ctrl.cardMove = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
+        	console.log(arguments);
+        	//move card from sidebar to column
+        	if($partTo.hasOwnProperty('columnId')) {
+        		
+        		var cardId = $item.id;
+        		var oldColumnId = $item.columnId;
+        		var newColumnId = $partTo.columnId;
+        		var ids = [];
+        		angular.forEach($partTo, function(card) {
+        			ids.push(card.id);
+        		});
+        		
+        		Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids});
+        	}
+        };
     }
 
 })();

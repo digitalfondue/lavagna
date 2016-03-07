@@ -257,7 +257,7 @@ public class ResourceController {
 					"/js/angular-file-upload.min.js",//
 					"/js/bindonce.min.js",//
 					"/js/angular-translate.min.js",//
-					"/js/sortable.js", //
+
 					"/js/spectrum.js", //
 					"/js/codemirror-compressed.js",//
 					"/js/peg-0.8.0.min.js",//

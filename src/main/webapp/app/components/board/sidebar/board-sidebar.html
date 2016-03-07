@@ -1,23 +1,18 @@
 
 <div class="lavagna-left-sidebar-list">
-    <div class="sidebar-dropzone" id="sidebar-drop-zone"
-         ></div>
+    
     <div class="lavagna-sidebar-column" data-lvg-fill-sidebar-height="{{boardSidebarCtrl.control}}">
         <div class="panel-body" data-lvg-fill-sidebar-cards-height="boardSidebarCtrl.control"
              data-lvg-fill-sidebar-cards-height-has-more="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].hasMore}}"
              data-lvg-fill-sidebar-cards-height-current-page="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].currentPage}}">
             <lvg-spinner data-ng-hide="boardSidebarCtrl.sidebarLoaded"></lvg-spinner>
-            <div class="clearfix">
-                <ul data-ng-repeat="card in boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found track by card.id"
-                    data-ui-sortable="boardSidebarCtrl.sortableCardOptionsForSidebar" class="lavagna-sidebar-cards list-group">
-                    <li data-ng-attr-data-lvg-card-id="{{::card.id}}"
-                        data-ng-attr-data-lavagna-card-column-id="{{::card.columnId}}" class="lavagna-board-card">
-                        <lvg-board-sidebar-card project="boardSidebarCtrl.project.shortName" board="boardSidebarCtrl.board.shortName"
-                        	card="card"></lvg-board-sidebar-card>
+            <div class="clearfix" sv-root="board-column-card" sv-part="boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found" sv-on-sort="boardSidebarCtrl.cardMove($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+                <ul data-ng-repeat="card in boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found track by card.id" class="lavagna-sidebar-cards list-group" sv-element>
+                    <li class="lavagna-board-card">
+                        <lvg-board-sidebar-card project="boardSidebarCtrl.project.shortName" board="boardSidebarCtrl.board.shortName" card="card"></lvg-board-sidebar-card>
                     </li>
                 </ul>
             </div>
-
 
         </div>
         <div class="panel-footer" data-ng-if="boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].currentPage !== 0 || boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].hasMore">
@@ -30,5 +25,4 @@
             <div class="clearfix"></div>
         </div>
     </div>
-</div>
 </div>

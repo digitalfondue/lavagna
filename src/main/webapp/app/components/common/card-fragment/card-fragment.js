@@ -70,7 +70,7 @@
         };
 
         var getMilestoneDates = function (card) {
-            for (var i = 0; i < card.labels.length; i++) {
+            for (var i = 0; card && card.labels && i < card.labels.length; i++) {
                 var label = card.labels[i];
                 if (label.labelName == 'MILESTONE' && label.labelDomain === 'SYSTEM') {
                     getMilestoneDate(label);

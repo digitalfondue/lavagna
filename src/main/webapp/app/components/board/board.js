@@ -177,12 +177,17 @@
         	angular.forEach($partTo, function(card) {
         		ids.push(card.id);
         	});
-
-        	if(oldColumnId === newColumnId) {
+        	
+        	if(newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')) {
+        		//move from board to sidebar
+        		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
+        	} else if(oldColumnId === newColumnId) {
+        		//internal reorder
                 Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
             } else {
+            	//move card from one column to another
                 Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
