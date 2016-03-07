@@ -22,12 +22,16 @@ import java.util.Properties;
 import org.springframework.core.io.ClassPathResource;
 
 public class Version {
+    
+    
+    private static final long START_DATE = System.nanoTime();
 
     public static String version() {
         try {
             Properties buildProp = new Properties();
             buildProp.load(new ClassPathResource("io/lavagna/build.properties").getInputStream());
-            return buildProp.getProperty("build.version");
+            String build = buildProp.getProperty("build.version");
+            return build.endsWith("SNAPSHOT") ? (build + "-" + START_DATE): build;
         } catch (IOException e) {
             return "dev";
         }
