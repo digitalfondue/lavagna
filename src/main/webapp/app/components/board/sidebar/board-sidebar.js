@@ -11,9 +11,10 @@
             sideBarLocation: '='
         },
         templateUrl: 'app/components/board/sidebar/board-sidebar.html',
-        controller: BoardSidebarController
+        controller: BoardSidebarController,
+        controllerAs: 'boardSidebarCtrl'
     });
-    
+
 
     function BoardSidebarController($scope, Board, Card, User, StompClient) {
 
@@ -32,7 +33,7 @@
         
         switchLocation();
         
-        $scope.$watch('$ctrl.sideBarLocation', function() {
+        $scope.$watch('boardSidebarCtrl.sideBarLocation', function() {
         	switchLocation();
         });
 
