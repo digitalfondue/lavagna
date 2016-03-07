@@ -12,6 +12,5 @@
             card: '='
         },
         controller: function(){},
-        controllerAs: 'boardSidebarCardCtrl'
     });
 })();
