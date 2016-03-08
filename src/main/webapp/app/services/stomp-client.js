@@ -48,7 +48,7 @@
 				scope.$on('$destroy', function () {
 					$log.log('callback unregistered for', path);
 					callbacks[path].splice(callbacks[path].indexOf(callback), 1);
-					if(callbacks.length == 0) {
+					if(callbacks[path].length == 0) {
 						$log.log('stomp client unsubscribe from', path);
 						v.unsubscribe(callbacks[path].subscription);
 					}
