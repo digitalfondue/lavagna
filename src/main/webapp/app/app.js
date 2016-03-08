@@ -240,7 +240,7 @@
 			}
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
@@ -350,7 +350,7 @@
             template: '<lvg-project-milestones project="projectResolver.project"></lvg-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+            template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
@@ -375,7 +375,7 @@
 			resolve: projectResolver
 		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-component-card project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-component-card>',
+			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
