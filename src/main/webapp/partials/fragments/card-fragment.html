@@ -5,7 +5,7 @@
 			<div class="row" data-bo-if="boardView && !readOnly">
 				<div class="col-xs-10">
 					<input type="checkbox" data-ng-model="selected[card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
-					<a data-bo-href="'#/' + project + '/' + board + '-' + card.sequence" data-bo-bind="board + '-' + card.sequence"></a>
+					<a ui-sref="projectBoard.card({projectName: project, shortName: board, seqNr: card.sequence})" data-bo-bind="board + '-' + card.sequence"></a>
 				</div>
 				<div class="col-xs-1">
 					<div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
@@ -17,17 +17,17 @@
 				<div class="col-xs-10"><span class="fake-link" data-bo-bind="board + '-' + card.sequence"></span></div>
 			</div>
 			<div class="row" data-bo-if="listView">
-				<div class="col-xs-8"><a data-bo-href="'#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence" data-bo-bind="card.boardShortName + '-' + card.sequence"></a></div>
+				<div class="col-xs-8"><a ui-sref="projectBoard.card({projectName: card.projectShortName shortName: card.boardShortName seqNr: card.sequence})" data-bo-bind="card.boardShortName + '-' + card.sequence"></a></div>
 				<div class="col-xs-4 card-home-date"><span data-bo-bind="card.lastUpdateTime|dateIncremental"></span></div>
 			</div>
 			<div class="row" data-bo-if="searchView">
 				<div class="col-xs-8">
 					<input type="checkbox" data-ng-model="selected[card.id]" data-ng-true-value="{{card.projectShortName}}" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{card.projectShortName}}">
 
-					<a data-bo-href="'#/search/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project == null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+					<a ui-sref="globalSearch.card({projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence, q: query, page: page})" data-bo-if="project == null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
 	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
 	            	</a>
-					<a data-bo-href="'#/' + card.projectShortName + '/search/' + card.boardShortName + '-' + card.sequence + '?q='+query + '&page=' + page" data-bo-if="project != null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+					<a ui-sref="projectSearch.card({projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence, q: query, page: page})" data-bo-if="project != null" data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
 	                	<span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
 	            	</a>
 				</div>

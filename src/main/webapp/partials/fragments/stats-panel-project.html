@@ -1,6 +1,6 @@
 <div class="stats-panel">
 	<div class="stats-panel-title">
-		<a data-ng-href="#/{{project.shortName}}/">{{project.shortName}} - {{project.name}}</a>
+		<a ui-sref="project({projectName: project.shortName})">{{project.shortName}} - {{project.name}}</a>
 	</div>
 	<lvg-stats-panel item="project" stats="stats"></lvg-stats-panel>
 </div>

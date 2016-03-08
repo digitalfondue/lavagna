@@ -39,7 +39,7 @@
 					placeholder.addClass('user-disabled');
 				}
 				deferred.resolve(generateTooltipHTML(user));
-				linkPlaceholder.attr('href', "#/user/" + user.provider + "/" + user.username);
+				linkPlaceholder.attr('href', "/user/" + user.provider + "/" + user.username);
 			});
 			return deferred.promise;
 		};

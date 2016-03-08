@@ -5,7 +5,7 @@
 			<div class="card-modal-header modal-header" data-ng-style="column.columnColor | columnColor">
 				<button type="button" class="close" data-ng-click="close()">&times;</button>
 				<div class="lavagna-card-title-info">
-					<span><a data-ng-href="#/{{project.shortName}}/" data-ng-bind="project.name"></a> /</span> <span><a data-ng-href="#/{{project.shortName}}/{{board.shortName}}" data-ng-bind="board.name"></a> /</span> <span>{{board.shortName}}-{{card.sequence}}</span>
+					<span><a ui-sref="project({projectName: project.shortName})" data-ng-bind="project.name"></a> /</span> <span><a ui-sref="projectBoard({projectName: project.shortName, shortName: board.shortName})" data-ng-bind="board.name"></a> /</span> <span>{{board.shortName}}-{{card.sequence}}</span>
 					<span class="lvg-card-in-column">
 						<span data-ng-if="column.columnLocation === 'BOARD'"><span data-translate>card.inColumn</span> <span data-ng-bind="column.columnName"></span></span>
 						<span data-ng-if="column.columnLocation !== 'BOARD'"><span data-translate>card.in</span> <span data-ng-bind="column.columnLocation"></span></span>
@@ -205,7 +205,7 @@
 									<p>
 										<span data-translate>card.partOf</span> <span
 											data-ng-repeat="milestone in labelValues[labelNameToId['MILESTONE']]">
-											<span><a data-ng-href="#/{{project.shortName}}/milestones/"><lvg-label-val value="milestone"></lvg-label-val></a>
+											<span><a ui-sref="projectMilestones({projectName: project.shortName})"><lvg-label-val value="milestone"></lvg-label-val></a>
 												<span class="fa fa-times lavagna-pointer"
 												      data-ng-click="removeMilestone()"
 												      data-lvg-has-permission="UPDATE_CARD"></span>
@@ -325,7 +325,7 @@
 																class="date" data-ng-bind="comment.time | dateIncremental"></span>
 															<ul
 																class="panel-controls">
-																<li class="control-item"><a data-ng-href="#/{{project.shortName}}/{{board.shortName}}-{{card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
+																<li class="control-item"><a data-ng-href="/{{project.shortName}}/{{board.shortName}}-{{card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
 																<li data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="comment.userId"
 																    data-ng-hide="commentControl.editComment"
 																	data-ng-click="commentControl.deleteComment = false; commentToEdit = comment.content; commentControl.editComment=true"

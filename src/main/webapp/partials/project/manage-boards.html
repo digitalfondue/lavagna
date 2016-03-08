@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div class="body" data-ng-hide="boardStatus[ab.shortName].edit" data-ng-class="{archived : ab.archived}">
-					<p><a href="#/{{project.shortName}}/{{ab.shortName}}" data-ng-bind="ab.name"></a></p>
+					<p><a ui-sref="projectBoard({projectName: project.shortName, shortName: ab.shortName})" data-ng-bind="ab.name"></a></p>
 					<p data-ng-if="ab.description.length > 0" data-ng-bind-html="ab.description | markdown"></p>
 					<p data-ng-if="ab.description == null"><i data-translate>common.no-description-available</i></p>
 				</div>

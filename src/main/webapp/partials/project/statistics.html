@@ -54,7 +54,7 @@
 					<h4 data-translate>partials.project.statistics.mostActiveCard</h4>
 				</div>
 				<div class="stats-tile-value stats-most-active-tile-value">
-					<a data-ng-href="#/{{stats.mostActiveCard.projectShortName}}/{{stats.mostActiveCard.boardShortName}}-{{stats.mostActiveCard.sequence}}"
+					<a ui-sref="projectBoard.card({projectName: stats.mostActiveCard.projectShortName, shortName: stats.mostActiveCard.boardShortName, seqNr: stats.mostActiveCard.sequence})"
 					   data-ng-class="{'lavagna-closed-card':stats.mostActiveCard.columnDefinition == 'CLOSED'}">
 						<span>{{stats.mostActiveCard.boardShortName}}-{{stats.mostActiveCard.sequence}}</span>
 					</a>

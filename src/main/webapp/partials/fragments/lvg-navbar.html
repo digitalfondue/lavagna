@@ -3,9 +3,9 @@
 	<div data-ng-switch-when="project-menu" class="menu-frame">
 		<div class="tab-menu-container">
 			<df-tab-menu data-menu-control="{{navigationState}}" data-more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-				<li menu-item="project"><a data-ng-href="#/{{project.shortName}}/"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
-				<li menu-item="projectMilestones"><a data-ng-href="#/{{project.shortName}}/milestones/"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
-				<li menu-item="projectStatistics"><a data-ng-href="#/{{project.shortName}}/statistics/"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
+				<li menu-item="project"><a ui-sref="project({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.project</span></a></li>
+				<li menu-item="projectMilestones"><a ui-sref="projectMilestones({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.milestones</span></a></li>
+				<li menu-item="projectStatistics"><a ui-sref="projectStatistics({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.statistics</span></a></li>
 			</df-tab-menu>
 		</div>
 	</div>
@@ -66,24 +66,24 @@
 	</div>
 	<div data-ng-switch-when="project-settings-menu" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="ProjectManage.projectManageHome"><a data-ng-href="#/{{project.shortName}}/manage/"><span data-translate>partials.project.fragments.nabvar.admin.project</span></a></li>
-			<li menu-item="ProjectManage.projectManageBoards"><a data-ng-href="#/{{project.shortName}}/manage/boards/"><span data-translate>partials.project.fragments.nabvar.admin.boards</span></a></li>
-			<li menu-item="ProjectManage.projectManageAnonymousUsers"><a data-ng-href="#/{{project.shortName}}/manage/anonymous-users-access/"><span data-translate>partials.project.fragments.nabvar.admin.anonymousUsersAccess</span></a></li>
-			<li menu-item="ProjectManage.projectRole"><a data-ng-href="#/{{project.shortName}}/manage/roles/"><span data-translate>partials.project.fragments.navbar.admin.roles</span></a></li>
-			<li menu-item="ProjectManage.projectManageLabels"><a data-ng-href="#/{{project.shortName}}/manage/labels/"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
-			<li menu-item="ProjectManage.projectManageMilestones"><a data-ng-href="#/{{project.shortName}}/manage/milestones/"><span data-translate>partials.project.fragments.navbar.admin.milestones</span></a></li>
-			<li menu-item="ProjectManage.projectManageColumnsStatus"><a data-ng-href="#/{{project.shortName}}/manage/status/"><span data-translate>partials.project.fragments.navbar.admin.status</span></a></li>
-			<li menu-item="ProjectManage.projectImport"><a data-ng-href="#/{{project.shortName}}/manage/import/"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
+			<li menu-item="ProjectManage.projectManageHome"><a ui-sref="ProjectManage.projectManageHome({projectName: project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.project</span></a></li>
+			<li menu-item="ProjectManage.projectManageBoards"><a ui-sref="ProjectManage.projectManageBoards({projectName: project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.boards</span></a></li>
+			<li menu-item="ProjectManage.projectManageAnonymousUsers"><a ui-sref="ProjectManage.projectManageAnonymousUsers({projectName: project.shortName})"><span data-translate>partials.project.fragments.nabvar.admin.anonymousUsersAccess</span></a></li>
+			<li menu-item="ProjectManage.projectRole"><a ui-sref="ProjectManage.projectRole({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.roles</span></a></li>
+			<li menu-item="ProjectManage.projectManageLabels"><a ui-sref="ProjectManage.projectManageLabels({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.labels</span></a></li>
+			<li menu-item="ProjectManage.projectManageMilestones"><a ui-sref="ProjectManage.projectManageMilestones({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.milestones</span></a></li>
+			<li menu-item="ProjectManage.projectManageColumnsStatus"><a ui-sref="ProjectManage.projectManageColumnsStatus({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.status</span></a></li>
+			<li menu-item="ProjectManage.projectImport"><a ui-sref="ProjectManage.projectImport({projectName: project.shortName})"><span data-translate>partials.project.fragments.navbar.admin.import</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="admin-menu" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-   			<li menu-item="admin.adminShowAllParameters"><a href="#/admin/"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
-    		<li menu-item="admin.adminConfigureLogin"><a href="#/admin/configure-login/"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
-			<li menu-item="admin.adminManageSmtpConfiguration"><a href="#/admin/manage-smtp-configuration/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
-			<li menu-item="admin.adminManageUsers"><a href="#/admin/manage-users/"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
-			<li menu-item="admin.adminRole"><a href="#/admin/role/"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
-    		<li menu-item="admin.adminExportImport"><a href="#/admin/export-import/"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
+   			<li menu-item="admin.adminShowAllParameters"><a ui-sref="admin.adminShowAllParameters"><span data-translate>partials.admin.fragments.navbar.admin.adminShowAllParameters</span></a></li>
+    		<li menu-item="admin.adminConfigureLogin"><a ui-sref="admin.adminConfigureLogin"><span data-translate>partials.admin.fragments.navbar.admin.adminConfigureLogin</span></a></li>
+			<li menu-item="admin.adminManageSmtpConfiguration"><a ui-sref="admin.adminManageSmtpConfiguration"><span data-translate>partials.admin.fragments.navbar.admin.adminManageSmtpConfiguration</span></a></li>
+			<li menu-item="admin.adminManageUsers"><a ui-sref="admin.adminManageUsers"><span data-translate>partials.admin.fragments.navbar.admin.adminManageUsers</span></a></li>
+			<li menu-item="admin.adminRole"><a ui-sref="admin.adminRole"><span data-translate>partials.admin.fragments.navbar.admin.adminRole</span></a></li>
+    		<li menu-item="admin.adminExportImport"><a ui-sref="admin.adminExportImport"><span data-translate>partials.admin.fragments.navbar.admin.adminExportImport</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="search" class="menu-frame">
@@ -91,16 +91,16 @@
 	</div>
 	<div data-ng-switch-when="user" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span data-translate>partials.lvg-tab-menu.more</span><i class='fa fa-caret-down'></i>">
-			<li menu-item="user"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}"><span data-translate>partials.user.tab.profile</span></a></li>
-			<li menu-item="user-projects"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/projects/"><span data-translate>partials.user.tab.projects</span></a></li>
-			<li menu-item="user-activity"><a data-ng-href="#/user/{{userProvider}}/{{userUsername}}/activity/"><span data-translate>partials.user.tab.activity</span></a></li>
-			<li menu-item="account"><a href="#/me/" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
+			<li menu-item="user"><a ui-sref="user({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.profile</span></a></li>
+			<li menu-item="user-projects"><a ui-sref="user-projects({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.projects</span></a></li>
+			<li menu-item="user-activity"><a ui-sref="user-activity({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.activity</span></a></li>
+			<li menu-item="account"><a ui-sref="me" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="about" class="menu-frame">
 		<df-tab-menu menu-control="{{navigationState}}">
-			<li menu-item="about"><a data-ng-href="#/about/"><span data-translate>partials.about.license</span></a></li>
-			<li menu-item="about-third-party"><a data-ng-href="#/about/third-party/"><span data-translate>partials.about.third-party</span></a></li>
+			<li menu-item="about"><a ui-sref="about"><span data-translate>partials.about.license</span></a></li>
+			<li menu-item="about-third-party"><a ui-sref="about-third-party"><span data-translate>partials.about.third-party</span></a></li>
 		</df-tab-menu>
 	</div>
 </div>

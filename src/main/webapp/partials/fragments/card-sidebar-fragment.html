@@ -2,7 +2,7 @@
 	<div class="head clearfix">
 		<div class="title">
 			<div class="row">
-				<div class="col-xs-10"><a data-bo-href="'#/' + projectName + '/' + boardName + '-' + card.sequence" data-bo-bind="boardName + '-' + card.sequence"></a></div>
+				<div class="col-xs-10"><a ui-sref="projectBoard.card({projectName: projectName, shortName: boardName, seqNr: card.sequence})" data-bo-bind="boardName + '-' + card.sequence"></a></div>
 			</div>
 			<span data-bo-bind="card.name"></span>
 		</div>

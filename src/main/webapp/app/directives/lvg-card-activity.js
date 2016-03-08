@@ -112,7 +112,7 @@
 				CardCache.card($scope.activity.cardId).then(function (card) {
 
 					var linkPlaceholder = element.find('.lvg-comment-link-placeholder');
-					linkPlaceholder.attr('href', '#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '#' + $scope.activity.dataId);
+					linkPlaceholder.attr('href', '/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence + '#' + $scope.activity.dataId);
 
 					var commentPlaceholder = element.find('.lvg-comment-placeholder');
 					commentPlaceholder.text('#' + $scope.activity.dataId);
