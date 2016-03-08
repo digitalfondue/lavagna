@@ -17,7 +17,7 @@
 				<div class="col-xs-10"><span class="fake-link" data-bo-bind="board + '-' + card.sequence"></span></div>
 			</div>
 			<div class="row" data-bo-if="listView">
-				<div class="col-xs-8"><a ui-sref="projectBoard.card({projectName: card.projectShortName shortName: card.boardShortName seqNr: card.sequence})" data-bo-bind="card.boardShortName + '-' + card.sequence"></a></div>
+				<div class="col-xs-8"><a ui-sref="projectBoard.card({projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence})" data-bo-bind="card.boardShortName + '-' + card.sequence"></a></div>
 				<div class="col-xs-4 card-home-date"><span data-bo-bind="card.lastUpdateTime|dateIncremental"></span></div>
 			</div>
 			<div class="row" data-bo-if="searchView">
