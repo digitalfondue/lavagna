@@ -10,7 +10,7 @@
 
 			var searchParams = $location.search();
 
-			$scope.query= encodeURIComponent(searchParams.q);
+			$scope.query= searchParams.q;
 			$scope.page = searchParams.page || 1;
 
 			try {
