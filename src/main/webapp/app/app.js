@@ -506,5 +506,6 @@
 
 	module.config(function($httpProvider) {
 		$httpProvider.interceptors.push('lavagnaHttpInterceptor');
+		$httpProvider.useApplyAsync(true);
 	});
 })()
