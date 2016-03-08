@@ -180,7 +180,7 @@
 			abstract: true,
 			templateUrl : 'partials/admin/admin.html',
 			controller: 'AdminCtrl'
-		}).state('admin.adminShowAllParameters', {
+		}).state('admin.		adminShowAllParameters', {
 			url: '',
 			templateUrl: 'partials/admin/parameters.html',
 			controller: 'AdminParametersCtrl'
@@ -364,5 +364,6 @@
 
 	module.config(function($httpProvider) {
 		$httpProvider.interceptors.push('lavagnaHttpInterceptor');
+		$httpProvider.useApplyAsync(true);
 	});
 })();
