@@ -399,7 +399,7 @@
 		template: '<div class="df-autocomplete-list"></div>',
 		link: function($scope, element, attrs, dfAutocomplete, transcludeFn) {
 		
-			var $autocompleteScope = $scope.$$prevSibling;
+			var $autocompleteScope = $scope.$parent;
 			var state = $autocompleteScope.dfAutocompleteInternalState;
 			
 			var listCount = function() {
