@@ -24,7 +24,7 @@
 				if (!noName) {
 					namePlaceholder.text(card.name);
 				}
-				linkPlaceholder.attr('href', '#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence);
+				linkPlaceholder.attr('href', '/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence);
 
                 deferred.resolve(generateTooltipHTML(card));
 			});
