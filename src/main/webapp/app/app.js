@@ -95,7 +95,7 @@
 		$translateProvider.preferredLanguage(locale);
 		$translateProvider.fallbackLanguage('en');
 		$translateProvider.usePostCompiling(true);
-
+        $translateProvider.useSanitizeValueStrategy('escape');
 
 		var cardCtrlResolver = {
 				card : function(CardCache, $stateParams) {
