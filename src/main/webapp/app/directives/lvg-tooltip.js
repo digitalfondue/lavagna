@@ -4,7 +4,7 @@
 
     var directives = angular.module('lavagna.directives');
 
-    directives.directive('lvgTooltip', function () {
+    directives.directive('lvgTooltip', function ($sanitize) {
         return {
             restrict: 'A',
             link: function ($scope, element, attrs) {
@@ -14,7 +14,7 @@
                     }
                     $(element).tooltip({
                         items: '[data-lvg-tooltip], [lvg-tooltip]',
-                        content: html,
+                        content: $sanitize(html),
                         show: {delay: 500},
                         close: function (event, ui) {
                             ui.tooltip.hover(
