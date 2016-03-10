@@ -4,7 +4,7 @@
         <div class="panel-body" data-lvg-fill-sidebar-cards-height="boardSidebarCtrl.control"
              data-lvg-fill-sidebar-cards-height-has-more="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].hasMore}}"
              data-lvg-fill-sidebar-cards-height-current-page="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].currentPage}}">
-            <lvg-spinner data-ng-hide="boardSidebarCtrl.sidebarLoaded"></lvg-spinner>
+             <md-progress-circular md-mode="indeterminate" ng-hide="boardSidebarCtrl.sidebarLoaded"></md-progress-circular>
             <div class="clearfix" sv-root="board-column-card" sv-part="boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found" sv-on-sort="boardSidebarCtrl.cardMove($item, $partFrom, $partTo, $indexFrom, $indexTo)">
                 <ul data-ng-repeat="card in boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found track by card.id" class="lavagna-sidebar-cards list-group" sv-element>
                     <li class="lavagna-board-card">
