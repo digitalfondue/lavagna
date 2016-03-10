@@ -14,10 +14,10 @@
 		};
 		
 		var labelValTemplate = '<span data-bindonce="type" data-bindonce="readOnly">'
-			+ '<span data-bo-if="!readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="!readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
+			+ '<span data-bo-if="!readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user-tooltip="displayValue"></span></span>'
+			+ '<span data-bo-if="readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user-tooltip="displayValue" data-read-only></span></span>'
+			+ '<span data-bo-if="!readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue"></span></span>'
+			+ '<span data-bo-if="readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue" data-read-only></span></span>'
 			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';
 
 		return {

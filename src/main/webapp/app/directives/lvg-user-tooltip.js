@@ -4,7 +4,7 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgUser', function ($filter, $q, $rootScope, UserCache) {
+	directives.directive('lvgUserTooltip', function ($filter, $q, $rootScope, UserCache) {
 
 		var providerMap = {
 			'demo': 'fa-laptop',
@@ -67,7 +67,7 @@
 			link: function ($scope, element, attrs) {
 				$scope.readOnly = attrs.readOnly != undefined;
 
-				var unregister = $scope.$watch(attrs.lvgUser, function (userId) {
+				var unregister = $scope.$watch(attrs.lvgUserTooltip, function (userId) {
 					if (userId == undefined) {
 						return;
 					}

@@ -77,7 +77,7 @@
                                     <div class="body">
                                         <p data-translate data-translate-value-date="{{cardCtrl.card.createTime | date: 'medium' }}">card.created</p>
                                         <p data-translate data-translate-value-date="{{cardCtrl.card.lastUpdateTime | date: 'medium' }}">card.lastUpdated</p>
-                                        <p><span data-translate>card.lastUpdatedBy</span> <span data-lvg-user="cardCtrl.card.lastUpdateUserId"></span></p>
+                                        <p><span data-translate>card.lastUpdatedBy</span> <span data-lvg-user-tooltip="cardCtrl.card.lastUpdateUserId"></span></p>
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0]">
                                             <span data-translate data-translate-value-date="{{cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0].value.valueTimestamp | date: 'MMM d, y'}}">card.dueDate</span>
 									    <span class="fa fa-times lavagna-pointer"
@@ -141,11 +141,11 @@
                                         </ul>
                                     </div>
                                     <div class="body">
-                                        <p><span data-translate>card.createdBy</span> <span data-lvg-user="cardCtrl.card.userId"></span></p>
+                                        <p><span data-translate>card.createdBy</span> <span data-lvg-user-tooltip="cardCtrl.card.userId"></span></p>
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">
                                             <span data-translate>card.assignedTo</span> <span
                                             data-ng-repeat="assigned in cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">
-											<span data-lvg-user="assigned.value.valueUser">
+											<span data-lvg-user-tooltip="assigned.value.valueUser">
 											</span>
 											<span class="fa fa-times lavagna-pointer"
                                                   data-ng-click="cardCtrl.removeAssignForUser({id: assigned.value.valueUser})"
@@ -155,7 +155,7 @@
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
                                             <span data-translate>card.watchedBy</span> <span
                                             data-ng-repeat="watchedBy in cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
-											<span data-lvg-user="watchedBy.value.valueUser"></span>
+											<span data-lvg-user-tooltip="watchedBy.value.valueUser"></span>
 										</span>
                                         </p>
                                     </div>
@@ -246,7 +246,7 @@
                                                     <div class="content-update"
                                                          data-ng-show="cardCtrl.description.updatedCount == 0">
                                                         <span data-translate>card.createdBy</span>
-                                                        <span class="user" data-lvg-user="cardCtrl.description.updateUser"></span>
+                                                        <span class="user" data-lvg-user-tooltip="cardCtrl.description.updateUser"></span>
                                                         <span data-translate>card.onDate</span>
                                                         <span class="date" data-ng-bind="cardCtrl.description.updateDate | dateIncremental"></span>
                                                     </div>
@@ -255,7 +255,7 @@
                                                         <span data-translate>card.updateCount</span>
                                                         -
                                                         <span data-translate>card.lastUpdatedBy</span>
-                                                        <span class="user" data-lvg-user="cardCtrl.description.updateUser"></span>
+                                                        <span class="user" data-lvg-user-tooltip="cardCtrl.description.updateUser"></span>
                                                         <span data-translate>card.onDate</span>
                                                         <span class="date" data-ng-bind="cardCtrl.description.updateDate | dateIncremental"></span>
                                                     </div>
@@ -264,7 +264,7 @@
                                                         <span data-translate data-translate-value-count="{{cardCtrl.description.updatedCount}}">card.updateCounts</span>
                                                         -
                                                         <span data-translate>card.lastUpdatedBy</span>
-                                                        <span class="user" data-lvg-user="cardCtrl.description.updateUser"></span>
+                                                        <span class="user" data-lvg-user-tooltip="cardCtrl.description.updateUser"></span>
                                                         <span data-translate>card.onDate</span>
                                                         <span class="date" data-ng-bind="cardCtrl.description.updateDate | dateIncremental"></span>
                                                     </div>
@@ -317,7 +317,7 @@
                                                         <li data-ng-repeat="comment in cardCtrl.comments | orderBy: 'time' track by comment.id "
                                                             class="comment" data-bo-attr data-bo-attr-id="comment.id" data-bindonce data-lvg-scroll-to-comment="comment.id">
                                                             <div class="header">
-                                                                <span class="user" data-lvg-user="comment.userId"></span>&nbsp;<span
+                                                                <span class="user" data-lvg-user-tooltip="comment.userId"></span>&nbsp;<span
                                                                 class="date" data-ng-bind="comment.time | dateIncremental"></span>
                                                                 <ul
                                                                     class="panel-controls">
@@ -358,7 +358,7 @@
                                                                 <span data-translate>card.updateCount</span>
                                                                 -
                                                                 <span data-translate>card.lastUpdatedBy</span>
-                                                                <span class="user" data-lvg-user="comment.updateUser"></span>
+                                                                <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
                                                                 <span data-translate>card.onDate</span>
                                                                 <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
                                                             </div>
@@ -367,7 +367,7 @@
                                                                 <span data-translate data-translate-value-count="{{comment.updatedCount}}">card.updateCounts</span>
                                                                 -
                                                                 <span data-translate>card.lastUpdatedBy</span>
-                                                                <span class="user" data-lvg-user="comment.updateUser"></span>
+                                                                <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
                                                                 <span data-translate>card.onDate</span>
                                                                 <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
                                                             </div>
@@ -439,7 +439,7 @@
                                                             </div>
                                                             <div class="lavagna-file-info">
                                                                 <ul>
-                                                                    <li class="file-info"><span class="username" data-lvg-user="file.userId"></span>
+                                                                    <li class="file-info"><span class="username" data-lvg-user-tooltip="file.userId"></span>
                                                                         <span class="date" data-ng-bind="file.time | dateIncremental"></span></li>
                                                                     <li class="file-info"><a
                                                                         data-ng-href="api/card-data/file/{{file.cardDataId}}/{{file.name}}" target="_blank">{{file.name}}</a></li>
@@ -519,7 +519,7 @@
                                                         <li data-ng-repeat="activity in cardCtrl.activities | orderBy: '-id' track by activity.id"
                                                             class="activity">
                                                             <div class="header">
-                                                                <span class="user" data-lvg-user="activity.userId"></span>&nbsp;<span
+                                                                <span class="user" data-lvg-user-tooltip="activity.userId"></span>&nbsp;<span
                                                                 class="date" data-ng-bind="activity.time | dateIncremental"></span>
                                                             </div>
                                                             <lvg-card-activity></lvg-card-activity>

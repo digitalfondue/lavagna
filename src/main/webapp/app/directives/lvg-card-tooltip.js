@@ -4,7 +4,7 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgCard', function ($rootScope, $q, CardCache) {
+	directives.directive('lvgCardTooltip', function ($rootScope, $q, CardCache) {
 		
 		//TODO: this is a temporary fix
 		function escapeHtml(unsafe) {
@@ -34,7 +34,7 @@
 				if (!noName) {
 					namePlaceholder.text(card.name);
 				}
-				linkPlaceholder.attr('href', '#/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence);
+				linkPlaceholder.attr('href', '/' + card.projectShortName + '/' + card.boardShortName + '-' + card.sequence);
 
                 deferred.resolve(generateTooltipHTML(card));
 			});
@@ -54,7 +54,7 @@
 			link: function ($scope, element, attrs) {
 				$scope.readOnly = attrs.readOnly != undefined;
 
-				var unregister = $scope.$watch(attrs.lvgCard, function (cardId) {
+				var unregister = $scope.$watch(attrs.lvgCardTooltip, function (cardId) {
 					if (cardId == undefined) {
 						return;
 					}
