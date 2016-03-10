@@ -15,16 +15,26 @@
 			'oauth.github': 'fa-github',
 			'oauth.twitter': 'fa-twitter'
 		};
+		
+		//TODO: this is a temporary fix
+		function escapeHtml(unsafe) {
+		    return unsafe
+		         .replace(/&/g, "&amp;")
+		         .replace(/</g, "&lt;")
+		         .replace(/>/g, "&gt;")
+		         .replace(/"/g, "&quot;")
+		         .replace(/'/g, "&#039;");
+		 }
 
 		var generateTooltipHTML = function (user) {
 			var userDisplayText = $filter('formatUser')(user);
 			var userProviderClass = providerMap[user.provider] || 'fa-laptop';
 			return '<div class=\"lavagna-tooltip\">' +
 				'<div class=\"provider\"><i class=\"fa ' + userProviderClass + '\"></i></div>' +
-				'<div class=\"name\">' + userDisplayText + '</div>' +
+				'<div class=\"name\">' + escapeHtml(userDisplayText) + '</div>' +
 				'<div class=\"user-info\"><ul>' +
-				'<li><i class=\"fa fa-user\"></i>' + user.username + '</li>' +
-				(user.email != null ? '<li><i class=\"fa fa-envelope\"></i><a href="mailto:' + user.email + '">' + user.email + '</a></li>' : '') +
+				'<li><i class=\"fa fa-user\"></i>' + escapeHtml(user.username) + '</li>' +
+				(user.email != null ? '<li><i class=\"fa fa-envelope\"></i><a href="mailto:' + escapeHtml(user.email) + '">' + escapeHtml(user.email) + '</a></li>' : '') +
 				'</ul></div>' +
 				'</div>';
 		};

@@ -5,10 +5,20 @@
 	var directives = angular.module('lavagna.directives');
 
 	directives.directive('lvgCard', function ($rootScope, $q, CardCache) {
+		
+		//TODO: this is a temporary fix
+		function escapeHtml(unsafe) {
+		    return unsafe
+		         .replace(/&/g, "&amp;")
+		         .replace(/</g, "&lt;")
+		         .replace(/>/g, "&gt;")
+		         .replace(/"/g, "&quot;")
+		         .replace(/'/g, "&#039;");
+		 }
 
         var generateTooltipHTML = function (card) {
             return '<div class=\"lavagna-tooltip\">' +
-                '<div class=\"name\">' + card.name + '</div>' +
+                '<div class=\"name\">' + escapeHtml(card.name) + '</div>' +
                 '</div>';
         };
 
