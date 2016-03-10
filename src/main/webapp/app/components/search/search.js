@@ -21,7 +21,7 @@
 
 			var searchParams = $location.search();
 
-			ctrl.query= encodeURIComponent(searchParams.q);
+			ctrl.query= searchParams.q;
 			ctrl.page = searchParams.page || 1;
 
 			try {

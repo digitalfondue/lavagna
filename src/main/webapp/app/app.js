@@ -389,7 +389,8 @@
 
 		//---- BOARD ----
 		.state('board', {
-            url : '/:projectName/{shortName:[A-Z0-9_]+}',
+            url : '/:projectName/{shortName:[A-Z0-9_]+}?q',
+            reloadOnSearch: false,
             template : '<lvg-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-board>',
             controller : function(project, board) {
                 this.project = project;

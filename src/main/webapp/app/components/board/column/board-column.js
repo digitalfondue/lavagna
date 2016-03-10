@@ -18,7 +18,8 @@
                 column: '=',
                 boardColumns: '=',
                 selectedCards: '=',
-                searchFilter: '='
+                searchFilter: '=',
+                query:'='
             },
             templateUrl: 'app/components/board/column/board-column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {

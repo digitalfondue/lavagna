@@ -7,7 +7,7 @@
             <div layout="row" data-ng-if="::(cardFragmentCtrl.boardView && !cardFragmentCtrl.readOnly)">
                 <div flex="80">
                     <input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.columnId][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input>
-                    <a data-ui-sref="board.card({projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence})">
+                    <a ui-state="'board.card'" ui-state-params="{projectName: cardFragmentCtrl.project, shortName: cardFragmentCtrl.board, seqNr: cardFragmentCtrl.card.sequence, q: cardFragmentCtrl.query}">
                         {{::cardFragmentCtrl.board}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
                 </div>
@@ -29,10 +29,10 @@
             <div layout="row" data-ng-if="::(cardFragmentCtrl.searchView)">
                 <div flex="65">
                     <input type="checkbox" data-ng-model="cardFragmentCtrl.selected[cardFragmentCtrl.card.projectShortName][cardFragmentCtrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{cardFragmentCtrl.card.projectShortName}}">
-                    <a data-ui-sref="globalSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+                    <a ui-state="'globalSearch.card'" ui-state-params="{projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence, q:  cardFragmentCtrl.query, page: cardFragmentCtrl.page}" data-ng-if="::(cardFragmentCtrl.searchType == 'globalSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
                         {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
-                    <a data-ui-sref="projectSearch.card({projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence})" data-ng-if="::(cardFragmentCtrl.searchType == 'projectSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
+                    <a ui-state="'projectSearch.card'" ui-state-params="{projectName: cardFragmentCtrl.card.projectShortName, shortName: cardFragmentCtrl.card.boardShortName, seqNr: cardFragmentCtrl.card.sequence, q:  cardFragmentCtrl.query, page: cardFragmentCtrl.page}" data-ng-if="::(cardFragmentCtrl.searchType == 'projectSearch')" data-ng-class="{'lavagna-closed-card':cardFragmentCtrl.card.columnDefinition == 'CLOSED'}">
                         {{::cardFragmentCtrl.card.boardShortName}} - {{::cardFragmentCtrl.card.sequence}}
                     </a>
                 </div>

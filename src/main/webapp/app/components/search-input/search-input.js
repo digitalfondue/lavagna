@@ -298,38 +298,6 @@
                     $rootScope.$broadcast('refreshSearch', {searchFilter: rootSearchFilter, location: locationSearch});
                 });
 
-
-                $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-
-                    //the transition search result -> card view should not modify the search bar
-                    if ((fromState.name === 'board' && toState.name === 'board.card') ||
-                        (fromState.name === 'projectSearch' && toState.name === 'projectSearch.card') ||
-                        (fromState.name === 'globalSearch' && toState.name === 'globalSearch.card')) {
-                        return;
-                    }
-
-                    if ((fromState.name === 'board.card' && toState.name === 'board') ||
-                        (fromState.name === 'globalSearch.card' && toState.name === 'globalSearch') ||
-                        (fromState.name === 'projectSearch.card' && toState.name === 'projectSearch')) {
-                        $rootScope.$broadcast('refreshSearch', {
-                            searchFilter: rootSearchFilter,
-                            location: locationSearch
-                        });
-                    }
-                    //transition to search controller -> restore the query in the input field
-                    else if (toState.name === 'globalSearch' || toState.name === 'projectSearch') {
-                        var search = $location.search();
-                        if (search && search.q) {
-                        	ctrl.selected = fromQueryToTags(tryParse(search.q, Search, $log));
-                        }
-                    }
-                    //first load, reset
-                    else if (fromState.name !== "") {
-                        rootSearchFilter = undefined;
-                        locationSearch = {};
-                    }
-                });
-
                 $scope.$watch('lvgSearchInput.toSearch', function () {
                     if (ctrl.board !== undefined) {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, $rootScope, Search);
@@ -340,10 +308,10 @@
                     if (ctrl.board !== undefined) {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, $rootScope, Search);
                     } else if (ctrl.project !== undefined) {
-                        $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected)));
+                        $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected))+"&page=1");
                         $rootScope.$broadcast('refreshSearch');
                     } else {
-                        $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected)));
+                        $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected))+"&page=1");
                         $rootScope.$broadcast('refreshSearch');
                     }
                 };

@@ -7,6 +7,7 @@
         bindings: {
         	count: '=',
         	page: '=',
+        	query: '=',
         	moveToPage: '=',
         	found: '=',
         	project: '=',

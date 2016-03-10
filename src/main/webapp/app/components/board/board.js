@@ -108,6 +108,7 @@
                 try {
                     Search.buildSearchFilter(searchFilter.searchFilter, ctrl.columns, user.id).then(function(filterFun) {
                         ctrl.searchFilter.cardFilter = filterFun;
+                        ctrl.query = searchFilter.location.q;
                         $timeout(function() {
                             $location.search(searchFilter.location);
                         });
