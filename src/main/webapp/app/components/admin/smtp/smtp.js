@@ -10,7 +10,7 @@
         templateUrl: 'app/components/admin/smtp/smtp.html'
     })
 
-    function AdminSmtpController($modal, Admin, Notification) {
+    function AdminSmtpController($mdDialog, Admin, Notification) {
         var ctrl = this;
 
         var loadConfiguration = function () {
@@ -54,9 +54,9 @@
 		};
 
 		ctrl.openSmtpConfigModal = function () {
-			$modal.open({
+			$mdDialog.show({
 				templateUrl: 'app/components/admin/smtp/smtp-modal.html',
-				controller: function ($scope, $modalInstance, configuration, User, Notification) {
+				controller: function ($scope, configuration, User, Notification) {
 
 					User.currentCachedUser().then(function (user) {
 						if (user.emailNotification) {
@@ -75,11 +75,9 @@
 					};
 
 					$scope.close = function () {
-						$modalInstance.close('done');
+						$mdDialog.hide();
 					}
 				},
-				size: 'sm',
-				windowClass: 'lavagna-modal',
 				resolve: {
 					configuration: function () {
 						return ctrl.configuration;
