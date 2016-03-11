@@ -1,10 +1,13 @@
-<div class="lavagna-panel">
-    <div class="head clearfix headonly">
-        <div class="title title-bold"><span data-translate>partials.about.lavagna-version</span><span data-translate>build.version</span></div>
-    </div>
-    <div class="body separated text-align-center">
-        <div class="inline-block">
-            <pre data-ng-bind="lvgAboutLicense.license" class="inline-block text-align-left"></pre>
-        </div>
-    </div>
-</div>
+<md-card>
+	<md-card-title>
+		<md-card-title-text>
+			<span>
+				<span data-translate>partials.about.lavagna-version</span>
+				<span data-translate>build.version</span>
+			</span>
+		</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+		<pre data-ng-bind="lvgAboutLicense.license"></pre>
+	</md-card-content>
+</md-card>
