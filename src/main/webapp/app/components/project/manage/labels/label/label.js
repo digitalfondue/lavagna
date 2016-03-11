@@ -120,58 +120,6 @@
                 },
                 fullscreen: true
         	});
-            /*$modal.open({
-                templateUrl: 'app/components/project/manage/labels/label/edit-label-values.html',
-                windowClass: 'lavagna-modal',
-                controller: function ($rootScope, $scope, LabelCache, Label, label, labelListValues) {
-                    var ctrl = this;
-                    ctrl.label = label;
-                    ctrl.labelListValues = labelListValues;
-
-                    ctrl.labelListValueUseCount = {};
-
-                    ctrl.swapLabelListValues = function (first, second) {
-                        Label.swapLabelListValues(ctrl.label.id, {first: first, second: second});
-                    };
-
-                    ctrl.addLabelListValue = function (val) {
-                        Label.addLabelListValue(ctrl.label.id, {value: val});
-                    };
-
-                    ctrl.removeLabelListValue = function (labelListValueId) {
-                        Label.removeLabelListValue(labelListValueId);
-                    };
-
-                    ctrl.updateCount = function(id) {
-                        Label.countLabelListValueUse(id).then(function(cnt) {
-                            ctrl.labelListValueUseCount[id] = cnt;
-                        });
-                    };
-
-                    //handle refresh event
-                    var loadListValues = function () {
-                        if (ctrl.label.type === 'LIST') {
-                            LabelCache.findLabelListValues(ctrl.label.id).then(function (listValues) {
-                                ctrl.labelListValues = listValues;
-                            });
-                        }
-                    };
-
-                    var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadListValues);
-                    $scope.$on('$destroy', unbind);
-                },
-                controllerAs: 'manageLabelValuesCtrl',
-                resolve: {
-                    label: function() {
-                        return ctrl.label;
-                    },
-                    labelListValues: function() {
-                        return ctrl.labelListValues;
-                    }
-                },
-                size: 'lg'
-            });*/
-
         };
 
     };
