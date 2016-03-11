@@ -10,7 +10,7 @@
         templateUrl: 'app/components/admin/users/users.html'
     });
 
-    function AdminUserController($modal, User, UsersAdministration, Admin, Permission, Notification) {
+    function AdminUserController($mdDialog, User, UsersAdministration, Admin, Permission, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -121,20 +121,18 @@
         };
 
         ctrl.showUserPermissions = function(user) {
-            $modal.open({
+            $mdDialog.show({
                 templateUrl: 'app/components/admin/users/user-permissions-modal.html',
-                controller: function ($scope, $modalInstance) {
+                controller: function ($scope) {
 
                     Permission.findUserRoles(user.id).then(function(rolesByProject) {
                         $scope.rolesByProject = rolesByProject;
                     });
 
                     $scope.close = function () {
-                        $modalInstance.close('done');
+                    	$mdDialog.hide('done');
                     }
-                },
-                size: 'md',
-                windowClass: 'lavagna-modal'
+                }
             });
         };
 

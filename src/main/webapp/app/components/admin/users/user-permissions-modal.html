@@ -1,35 +1,39 @@
-<div class="modal-header">
-    <h3 class="modal-title">
-        <span data-translate>partials.admin.manage-users.roles</span>
-    </h3>
-</div>
-<div class="modal-body">
+<md-dialog>
 
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+      		<h2 data-translate>partials.admin.manage-users.roles</h2>
+      	</div>
+    </md-toolbar>
 
-    <div class="lavagna-panel" data-ng-if="rolesByProject.globalRoles.length > 0">
-        <div class="head clearfix headonly">
-            <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-users.global</div>
-
-        </div>
-        <div class="body separated">
-            <div class="form-group" data-ng-repeat="role in rolesByProject.globalRoles">
-                {{role}}
-                </div>
-            </div>
-    </div>
-
-    <div class="lavagna-panel" data-ng-repeat="(name, roles) in rolesByProject.rolesByProject">
-        <div class="head clearfix headonly">
-            <div class="title title-bold col-xs-9"> {{name}}</div>
-
-        </div>
-        <div class="body separated">
-            <div class="form-group" data-ng-repeat="role in roles">
-                {{role}}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal-footer">
-    <button data-ng-click="close()" class="lvg-button lvg-button-default" data-translate>button.close</button>
-</div>
+	<md-dialog-content>
+		<div class="md-dialog-content">
+			<div class="lavagna-panel" data-ng-if="rolesByProject.globalRoles.length > 0">
+		        <div class="head clearfix headonly">
+		            <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-users.global</div>
+		
+		        </div>
+		        <div class="body separated">
+		            <div class="form-group" data-ng-repeat="role in rolesByProject.globalRoles">
+		                {{role}}
+		                </div>
+		            </div>
+		    </div>
+		
+		    <div class="lavagna-panel" data-ng-repeat="(name, roles) in rolesByProject.rolesByProject">
+		        <div class="head clearfix headonly">
+		            <div class="title title-bold col-xs-9"> {{name}}</div>
+		
+		        </div>
+		        <div class="body separated">
+		            <div class="form-group" data-ng-repeat="role in roles">
+		                {{role}}
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions>
+		<md-button ng-click="close()"><span data-translate>button.close</span></md-button>
+	</md-dialog-actions>
+</md-dialog>
