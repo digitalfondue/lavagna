@@ -12,7 +12,7 @@
         templateUrl: 'app/components/manage-roles/roles.html'
     });
 
-    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $modal, $filter) {
+    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $mdDialog, $filter) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -133,30 +133,28 @@
 
         //permission modal
         ctrl.open = function(roleName, roleDescriptor) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
+            	autoWrap:false,
                 templateUrl: 'app/components/manage-roles/permissions/permissions-modal.html',
-                controller: function($modalInstance, role, roleDescriptor, permissionsByCategory, project) {
+                controller: function(role, roleDescriptor, permissionsByCategory, project) {
                     this.roleName = role;
                     this.roleDesc = roleDescriptor;
                     this.perms = permissionsByCategory;
                     this.project = project;
 
                     this.submit = function() {
-                        $modalInstance.close();
+                    	$mdDialog.hide();
                     }
 
                     this.close = function() {
-                        $modalInstance.close();
+                    	$mdDialog.hide();
                     }
 
                     this.cancel = function() {
-                        $modalInstance.close();
+                    	$mdDialog.hide();
                     }
                 },
                 controllerAs: 'modalResolver',
-                size: 'lg',
-                windowClass: 'lavagna-modal',
-                backdrop: 'static',
                 resolve: {
                     role: function () {
                         return roleName;

@@ -1,11 +1,22 @@
-<div class="modal-header">
-    <button type="button" class="close" data-ng-click="managePermsCtrl.cancelWithConfirmation()">&times;</button>
-    <h3 class="modal-title">{{::managePermsCtrl.roleName}}</h3>
-</div>
-<div class="modal-body">
+
+
+<md-toolbar>
+   	<div class="md-toolbar-tools">
+		<h2>{{::managePermsCtrl.roleName}}</h2>
+		<span flex></span>
+		<md-button class="md-icon-button" ng-click="managePermsCtrl.cancelWithConfirmation()">
+			<md-icon md-font-icon="fa-times" class="fa"></md-icon>
+    	</md-button>
+    </div>
+</md-toolbar>
+
+<md-dialog-content>
+	<div class="md-dialog-content">
+
+
     <div class="row">
         <div class="col-md-6">
-            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('APPLICATION')">
+            <div data-ng-if="managePermsCtrl.hasCategory('APPLICATION')">
                 <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.applicationPermissions</div></div>
                 <div class="body-full">
                     <ul class="lvg-modal-roles">
@@ -21,7 +32,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('PROJECT')">
+            <div data-ng-if="managePermsCtrl.hasCategory('PROJECT')">
                 <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.projectPermissions</div></div>
                 <div class="body-full">
                     <ul class="lvg-modal-roles">
@@ -37,7 +48,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('BOARD')">
+            <div  data-ng-if="managePermsCtrl.hasCategory('BOARD')">
                 <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.boardPermissions</div></div>
                 <div class="body-full">
                     <ul class="lvg-modal-roles">
@@ -72,7 +83,7 @@
 
         </div>
         <div class="col-md-6">
-            <div class="lavagna-card-panel" data-ng-if="managePermsCtrl.hasCategory('CARD')">
+            <div data-ng-if="managePermsCtrl.hasCategory('CARD')">
                 <div class="head clearfix"><div class="title" data-translate>partials.fragments.common-manage-roles-modal.cardPermissions</div></div>
                 <div class="body-full">
                     <ul class="lvg-modal-roles">
@@ -91,8 +102,17 @@
         </div>
     </div>
 
-</div>
-<div class="modal-footer">
-    <button class="lvg-button lvg-button-submit" data-ng-click="managePermsCtrl.save()" data-translate data-ng-show="!managePermsCtrl.roleDesc.readOnly">button.save</button>
-    <button class="lvg-button lvg-button-default" data-ng-click="managePermsCtrl.cancel()" data-translate>button.cancel</button>
-</div>
+
+
+	</div>
+</md-dialog-content>
+
+<md-dialog-actions>
+	<md-button ng-click="managePermsCtrl.save()" ng-show="!managePermsCtrl.roleDesc.readOnly">
+		<span translate>button.save</span>
+	</md-button>
+   	<md-button ng-click="managePermsCtrl.cancel()">
+   		<span translate>button.cancel</span>
+   	</md-button>
+
+</md-dialog-actions>

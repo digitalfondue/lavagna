@@ -17,7 +17,7 @@
         templateUrl: 'app/components/manage-roles/permissions/permissions.html'
     });
 
-    function ManageRolePermissionsController(Permission, Notification, $modal) {
+    function ManageRolePermissionsController(Permission, Notification) {
         var ctrl = this;
         ctrl.view = {};
 
@@ -58,47 +58,7 @@
         };
 
         ctrl.cancelWithConfirmation = function() {
-            if(!hasChanges()) {
-                ctrl.cancel();
-                return;
-            }
-
-            var modal = $modal.open({
-                templateUrl: 'app/components/manage-roles/permissions/permissions-confirmation.html',
-                controller: function($modalInstance, roleName) {
-                    this.roleName = roleName;
-
-                    this.confirm = function() {
-                        $modalInstance.close('save');
-                    }
-
-                    this.deny = function() {
-                        $modalInstance.close('notsave');
-                    }
-
-                    this.cancel = function() {
-                        $modalInstance.close('cancel');
-                    }
-                },
-                controllerAs: 'confirmCtrl',
-                windowClass: 'lavagna-modal',
-                size: 'sm',
-                resolve: {
-                    roleName: function() {
-                        return ctrl.roleName;
-                    }
-                }
-            });
-
-            modal.result.then(function(result) {
-                if(result === 'save') {
-                    ctrl.save();
-                }
-
-                if(result === 'notsave') {
-                    ctrl.cancel();
-                }
-            })
+           ctrl.cancel();
         }
 
         ctrl.assignStatus = {};

@@ -130,7 +130,7 @@
                     });
 
                     $scope.close = function () {
-                    	$mdDialog.hide('done');
+                    	$mdDialog.hide();
                     }
                 }
             });
