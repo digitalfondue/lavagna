@@ -14,7 +14,7 @@
     });
 
 
-	function SearchCtrl($scope, $location, $http, $log, $filter, $modal, Search, User, LabelCache, Card) {
+	function SearchCtrl($scope, $location, $http, $log, $filter, Search, User, LabelCache, Card) {
 		var ctrl = this;
 
 		function triggerSearch() {

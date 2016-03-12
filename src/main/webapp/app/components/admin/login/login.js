@@ -16,7 +16,7 @@
         return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
     }
 
-    function AdminLoginController($window, $modal, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
+    function AdminLoginController($window, $mdDialog, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
         var ctrl = this;
 
 		ctrl.oauthNewProvider = {};
@@ -161,25 +161,23 @@
 
         //TODO: in the future, move to a separate component
 		ctrl.openOauthAddNewModal = function() {
-			$modal.open({
+			$mdDialog.show({
 				templateUrl: 'app/components/admin/login/oauth/oauth-modal.html',
-				size: 'lg',
-				controller: ['$scope', '$modalInstance', 'oauth', 'oauthProviders',
-				    function($modalScope, $modalInstance, oauth, oauthProviders) {
+				controller: ['$scope', 'oauth', 'oauthProviders',
+				    function($modalScope, oauth, oauthProviders) {
 				    $modalScope.oauth = oauth;
 				    $modalScope.oauthProviders = oauthProviders;
 
 					$modalScope.saveOauthConfig = function(toSave) {
 						ctrl.saveOauthConfig(toSave).then(function() {
-							$modalInstance.close('done');
+							$mdDialog.hide();
 						});
 					};
 
 					$modalScope.close = function() {
-						$modalInstance.close('done');
+						$mdDialog.hide();
 					}
 				}],
-				windowClass: 'lavagna-modal',
 				resolve: {
                     oauth: function() {
                         return ctrl.oauth;
@@ -193,10 +191,10 @@
 
         //TODO: in the future, move to a separate component
 		ctrl.openLdapConfigModal = function() {
-			$modal.open({
+			$mdDialog.show({
 				templateUrl: 'app/components/admin/login/ldap/ldap-modal.html',
-				controller: ['$scope', '$modalInstance', 'ldapConfig',
-                    function($modalScope, $modalInstance, ldapConfig) {
+				controller: ['$scope', 'ldapConfig',
+                    function($modalScope, ldapConfig) {
 
                     $modalScope.ldap = ldapConfig;
 
@@ -207,11 +205,9 @@
 					};
 
 					$modalScope.close = function() {
-						$modalInstance.close('done');
+						$mdDialog.hide();
 					}
 				}],
-				size: 'sm',
-				windowClass: 'lavagna-modal',
 				resolve: {
 					ldapConfig: function () {
 						return ctrl.ldap;
