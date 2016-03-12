@@ -48,7 +48,7 @@
         }
     }
 
-    function BoardColumnController($scope, $filter, $modal, Board, Card, Label, Notification, StompClient, BulkOperations) {
+    function BoardColumnController($scope, $filter, $mdDialog, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
 
         var boardShortName = ctrl.board.shortName;
@@ -117,18 +117,19 @@
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
 
-            $modal.open({
-                templateUrl: 'partials/fragments/confirm-modal-fragment.html',
+            $mdDialog.show({
+                templateUrl: 'app/components/board/column/confirm-modal-fragment.html',
                 controller: function($scope) {
                     $scope.title = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location.title');
                     $scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
                     $scope.confirm = function() {
                         confirmAction();
-                        $scope.$close();
+                        $mdDialog.hide();
                     };
-                },
-                size: 'md',
-                windowClass: 'lavagna-modal'
+                    $scope.cancel = function() {
+                    	$mdDialog.hide();
+                    }
+                }
             });
 
 
@@ -141,8 +142,8 @@
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
 
-            $modal.open({
-                templateUrl: 'partials/fragments/confirm-modal-fragment.html',
+            $mdDialog.show({
+                templateUrl: 'app/components/board/column/confirm-modal-fragment.html',
                 controller: function($scope) {
                     $scope.title =  $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location.title');
                     $scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location',
@@ -150,11 +151,13 @@
 
                     $scope.confirm = function() {
                         confirmAction();
-                        $scope.$close();
+                        $mdDialog.hide();
                     };
-                },
-                size: 'md',
-                windowClass: 'lavagna-modal'
+                    
+                    $scope.cancel = function() {
+                    	$mdDialog.hide();
+                    }
+                }
             });
         }
 

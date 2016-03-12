@@ -26,7 +26,7 @@
 
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
-			'ngSanitize', 'pasvaz.bindonce', 'ui.bootstrap',
+			'ngSanitize', 'pasvaz.bindonce',
 			'pascalprecht.translate',
 			'angularFileUpload', 'ngMaterial', 'angular-sortable-view']);
 

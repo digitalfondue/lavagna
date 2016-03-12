@@ -1,0 +1,21 @@
+<md-dialog>
+	<md-toolbar>
+	    <div class="md-toolbar-tools">
+	    	<h2 ng-bind="title"></h2>
+	    </div>
+	</md-toolbar>
+	
+	<md-dialog-content>
+		<div class="md-dialog-content">
+			<span data-ng-bind="operation"></span>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions>
+		<md-button data-ng-click="cancel()">
+			<span data-translate>partials.fragments.confirm-modal-fragment.cancel</span>
+		</md-button>
+		<md-button data-ng-click="confirm()">
+			<span data-translate>partials.fragments.confirm-modal-fragment.confirm</span>
+		</md-button>
+	</md-dialog-actions>
+</md-dialog>

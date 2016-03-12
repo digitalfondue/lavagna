@@ -262,8 +262,7 @@ public class ResourceController {
 					"/js/codemirror-compressed.js",//
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
-					"/js/Chart.min.js",//
-					"/js/ui-bootstrap-tpls-0.14.1.min.js")) {
+					"/js/Chart.min.js")) {
 				output(res, context, allJs, ba);
 			}
 			//

@@ -164,17 +164,17 @@
 			$mdDialog.show({
 				templateUrl: 'app/components/admin/login/oauth/oauth-modal.html',
 				controller: ['$scope', 'oauth', 'oauthProviders',
-				    function($modalScope, oauth, oauthProviders) {
-				    $modalScope.oauth = oauth;
-				    $modalScope.oauthProviders = oauthProviders;
+				    function($scope, oauth, oauthProviders) {
+					$scope.oauth = oauth;
+					$scope.oauthProviders = oauthProviders;
 
-					$modalScope.saveOauthConfig = function(toSave) {
+					$scope.saveOauthConfig = function(toSave) {
 						ctrl.saveOauthConfig(toSave).then(function() {
 							$mdDialog.hide();
 						});
 					};
 
-					$modalScope.close = function() {
+					$scope.close = function() {
 						$mdDialog.hide();
 					}
 				}],
@@ -194,17 +194,17 @@
 			$mdDialog.show({
 				templateUrl: 'app/components/admin/login/ldap/ldap-modal.html',
 				controller: ['$scope', 'ldapConfig',
-                    function($modalScope, ldapConfig) {
+                    function($scope, ldapConfig) {
 
-                    $modalScope.ldap = ldapConfig;
+					$scope.ldap = ldapConfig;
 
-					$modalScope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
+					$scope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
 						Admin.checkLdap(ldapConf, ldapCheck).then(function(r) {
-							$modalScope.ldapCheckResult = r;
+							$scope.ldapCheckResult = r;
 						});
 					};
 
-					$modalScope.close = function() {
+					$scope.close = function() {
 						$mdDialog.hide();
 					}
 				}],
