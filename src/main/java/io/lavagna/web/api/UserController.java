@@ -71,12 +71,6 @@ public class UserController {
         userRepository.clearAllTokens(currentUser);
     }
 
-    @RequestMapping(value = "/api/self/feed/{page}", method = RequestMethod.GET)
-    // user is resolved through UserArgumentResolver
-    public List<Event> userFeed(@PathVariable("page") int page, UserWithPermission user) {
-        return eventRepository.getUserFeedByPage(user.getId(), page);
-    }
-
     @ExpectPermission(Permission.UPDATE_PROFILE)
     @RequestMapping(value = "/api/self", method = RequestMethod.POST)
     public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
@@ -99,22 +93,26 @@ public class UserController {
 
         final List<EventsCount> dailyActivity;
         final List<ProjectWithEventCounts> activeProjects;
-        final List<Event> latestActivity;
-        Date fromDate = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
+        final List<Event> lastWeekActivity;
+        final List<Event> activitiesByPage;
+        Date lastYear = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
+        Date lastWeek = DateUtils.addMonths(new Date(), -7);
         if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
-            dailyActivity = eventRepository.getUserActivity(user.getId(), fromDate);
+            dailyActivity = eventRepository.getUserActivity(user.getId(), lastYear);
             activeProjects = projectService.findProjectsActivityByUser(user.getId());
-            latestActivity = eventRepository.getLatestActivityByPage(user.getId(), page);
+            lastWeekActivity = eventRepository.getLatestActivity(user.getId(), lastWeek);
+            activitiesByPage= eventRepository.getLatestActivityByPage(user.getId(), page);
         } else {
             Collection<Integer> visibleProjectsIds = currentUser.projectsIdWithPermission(Permission.READ);
 
-            dailyActivity = eventRepository.getUserActivityForProjects(user.getId(), fromDate, visibleProjectsIds);
+            dailyActivity = eventRepository.getUserActivityForProjects(user.getId(), lastYear, visibleProjectsIds);
             activeProjects = projectService.findProjectsActivityByUserInProjects(user.getId(),
                 visibleProjectsIds);
-            latestActivity = eventRepository.getLatestActivityByPageAndProjects(user.getId(), page, visibleProjectsIds);
+            lastWeekActivity = eventRepository.getLatestActivityByProjects(user.getId(), lastWeek, visibleProjectsIds);
+            activitiesByPage= eventRepository.getLatestActivityByPageAndProjects(user.getId(), page, visibleProjectsIds);
         }
 
-        return new UserPublicProfile(user, dailyActivity, activeProjects, latestActivity);
+        return new UserPublicProfile(user, dailyActivity, activeProjects, lastWeekActivity, activitiesByPage);
     }
 
     @RequestMapping(value = "/api/user/{provider}/{name}", method = RequestMethod.GET)
@@ -153,16 +151,19 @@ public class UserController {
         private final User user;
         private final List<EventsCount> dailyActivity;
         private final List<ProjectWithEventCounts> activeProjects;
-        private final List<Event> latestActivity;
+        private final List<Event> lastWeekActivity;
+        private final List<Event> latestActivityByPage;
 
         public UserPublicProfile(User user, List<EventsCount> dailyActivity,
-            List<ProjectWithEventCounts> activeProjects, List<Event> latestActivity) {
+            List<ProjectWithEventCounts> activeProjects, List<Event> lastWeekActivity,
+            List<Event> latestActivityByPage) {
             // we remove the email
             this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
                 user.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications());
             this.activeProjects = activeProjects;
             this.dailyActivity = dailyActivity;
-            this.latestActivity = latestActivity;
+            this.lastWeekActivity = lastWeekActivity;
+            this.latestActivityByPage = latestActivityByPage;
         }
     }
 }

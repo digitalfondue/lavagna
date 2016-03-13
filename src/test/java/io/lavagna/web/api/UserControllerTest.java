@@ -128,7 +128,7 @@ public class UserControllerTest {
             Mockito.<Collection<Integer>>any());
         verify(projectService).findProjectsActivityByUserInProjects(eq(testUser.getId()),
             Mockito.<Collection<Integer>>any());
-        verify(eventRepository).getLatestActivityByPageAndProjects(eq(testUser.getId()), eq(1),
+        verify(eventRepository).getLatestActivityByProjects(eq(testUser.getId()), Mockito.<Date>any(),
             Mockito.<Collection<Integer>>any());
     }
 
@@ -149,7 +149,7 @@ public class UserControllerTest {
         verify(user, Mockito.never()).projectsWithPermission(Permission.READ);
         verify(eventRepository).getUserActivity(eq(testUser.getId()), Mockito.<Date>any());
         verify(projectService).findProjectsActivityByUser(eq(testUser.getId()));
-        verify(eventRepository).getLatestActivityByPage(eq(testUser.getId()), eq(1));
+        verify(eventRepository).getLatestActivity(eq(testUser.getId()), Mockito.<Date>any());
     }
 
     @Test

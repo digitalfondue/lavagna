@@ -168,11 +168,11 @@ public class EventRepositoryTest {
 		// simulate CardDataService here, user1 deletes user2 comment
 		Event event = eventRepository.insertCardDataEvent(comment.getId(), comment.getCardId(),
 				EventType.COMMENT_DELETE, user.getId(), comment.getId(), oneDayAgo);
-		
+
 		Event eventBis = eventRepository.getEventById(event.getId());
-		
+
 		Assert.assertEquals(event, eventBis);
-		
+
 		cardDataRepo.softDelete(comment.getId(), of(CardType.COMMENT));
 
 		CardFull cardBeforeUpdate = cardRepository.findFullBy(card1.getId());
@@ -209,11 +209,27 @@ public class EventRepositoryTest {
 		Assert.assertEquals(0, activity.size());
 	}
 
-	@Test
-	public void testGetUserFeedByPage() {
-		List<Event> events = eventRepository.getUserFeedByPage(user.getId(), 0);
-		Assert.assertEquals(1, events.size());
-	}
+    @Test
+    public void testGetLatestActivity() {
+        Date yesterday = DateUtils.addDays(new Date(), -1);
+        List<Event> events = eventRepository.getLatestActivity(user.getId(), yesterday);
+        Assert.assertEquals(1, events.size());
+    }
+
+    @Test
+    public void testGetLatestActivityByProjects() {
+        Date yesterday = DateUtils.addDays(new Date(), -1);
+        List<Event> events = eventRepository.getLatestActivityByProjects(user.getId(), yesterday,
+            Arrays.asList(project.getId()));
+        Assert.assertEquals(1, events.size());
+    }
+
+    @Test
+    public void testGetLatestActivityByProjectsOnFakeProject() {
+        List<Event> events = eventRepository.getLatestActivityByProjects(user.getId(), DateUtils.addDays(new Date(), 1),
+            Arrays.asList(-1));
+        Assert.assertEquals(0, events.size());
+    }
 
 	@Test
 	public void testGetLatestActivityByPage() {
