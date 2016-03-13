@@ -150,13 +150,15 @@ public class EventRepository {
 		queries.remove(id, cardId, event.toString());
 	}
 
-	// feed
-
-	public List<Event> getUserFeedByPage(int userId, int page) {
-		return queries.getUserFeedByPage(userId, FEED_SIZE + 1, page * FEED_SIZE);
-	}
-
 	// profile
+
+    public List<Event> getLatestActivity(int userId, Date fromDate) {
+        return queries.getLatestActivity(userId, fromDate);
+    }
+
+    public List<Event> getLatestActivityByProjects(int userId, Date fromDate, Collection<Integer> projects) {
+        return queries.getLatestActivityByProjects(userId, projects, fromDate);
+    }
 
 	public List<Event> getLatestActivityByPage(int userId, int page) {
 		return queries.getLatestActivityByPage(userId, FEED_SIZE + 1, page * FEED_SIZE);

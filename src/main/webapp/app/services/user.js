@@ -158,10 +158,6 @@
                 });
             },
 
-            feed: function (page) {
-                return $http.get('api/self/feed/' + page).then(extractData);
-            },
-
             cards: function (page) {
                 return $http.get('api/self/cards/' + page).then(extractData);
             },
