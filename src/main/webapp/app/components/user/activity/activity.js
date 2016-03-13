@@ -19,10 +19,10 @@
             ctrl.profile = profile;
             ctrl.user = profile.user;
 
-            ctrl.hasMore = profile.latestActivity.length > 20;
+            ctrl.hasMore = profile.latestActivityByPage.length > 20;
             ctrl.activeProjects = profile.activeProjects;
 
-            ctrl.latestActivity20 = profile.latestActivity.slice(0, 20);
+            ctrl.latestActivity20 = profile.latestActivityByPage.slice(0, 20);
         };
 
         ctrl.userProvider = ctrl.profile.user.provider;
