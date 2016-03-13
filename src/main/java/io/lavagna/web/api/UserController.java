@@ -96,7 +96,7 @@ public class UserController {
         final List<Event> lastWeekActivity;
         final List<Event> activitiesByPage;
         Date lastYear = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
-        Date lastWeek = DateUtils.addMonths(new Date(), -7);
+        Date lastWeek = DateUtils.addDays(new Date(), -7);
         if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
             dailyActivity = eventRepository.getUserActivity(user.getId(), lastYear);
             activeProjects = projectService.findProjectsActivityByUser(user.getId());
