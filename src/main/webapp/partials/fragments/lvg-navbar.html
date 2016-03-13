@@ -94,7 +94,7 @@
 			<li menu-item="user"><a ui-sref="user({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.profile</span></a></li>
 			<li menu-item="user-projects"><a ui-sref="user-projects({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.projects</span></a></li>
 			<li menu-item="user-activity"><a ui-sref="user-activity({provider: userProvider, username: userUsername})"><span data-translate>partials.user.tab.activity</span></a></li>
-			<li menu-item="account"><a ui-sref="me" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
+			<li menu-item="account"><a ui-sref="account" data-ng-show="isCurrentUser"><span data-translate>partials.user.tab.edit-profile</span></a></li>
 		</df-tab-menu>
 	</div>
 	<div data-ng-switch-when="about" class="menu-frame">
