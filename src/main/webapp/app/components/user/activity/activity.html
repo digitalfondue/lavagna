@@ -10,8 +10,8 @@
                     </ul>
                 </div>
                 <div class="footer" data-ng-show="userActivityCtrl.page != 0 ||userActivityCtrl.hasMore">
-                    <button data-ng-show="userActivityCtrl.page != 0" data-ng-click="userActivityCtrl.loadFor(page - 1)" class="lvg-button lvg-button-default pull-left" data-translate>button.next</button>
-                    <button data-ng-show="userActivityCtrl.hasMore" data-ng-click="userActivityCtrl.loadFor(page + 1)" class="lvg-button lvg-button-default pull-right" data-translate>button.previous</button>
+                    <button data-ng-show="userActivityCtrl.page != 0" data-ng-click="userActivityCtrl.loadFor(userActivityCtrl.page - 1)" class="lvg-button lvg-button-default pull-left" data-translate>button.next</button>
+                    <button data-ng-show="userActivityCtrl.hasMore" data-ng-click="userActivityCtrl.loadFor(userActivityCtrl.page + 1)" class="lvg-button lvg-button-default pull-right" data-translate>button.previous</button>
                     <div class="clearfix"></div>
                 </div>
             </div>
