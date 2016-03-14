@@ -140,6 +140,13 @@ When adding new file, remember to add the license header with:
 mvn com.mycila:license-maven-plugin:format
 ```
 
+### Angular perfs ###
+
+Use the following stats for keeping an eye on the performances:
+
+ - https://github.com/kentcdodds/ng-stats has a bookmarklet
+ - https://github.com/mrdoob/stats.js/ has a bookrmarklet
+
 ### Documentation ###
 
 The documentation is written using stampo (see https://github.com/digitalfondue/stampo).
