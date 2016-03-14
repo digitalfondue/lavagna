@@ -15,5 +15,5 @@
 -- along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
 --
 
-CREATE INDEX "LA_EVENT_EVENT_TIME_IDX" ON LA_EVENT(EVENT_TIME);
+CREATE INDEX LA_EVENT_EVENT_TIME_IDX ON LA_EVENT(EVENT_TIME);
 
