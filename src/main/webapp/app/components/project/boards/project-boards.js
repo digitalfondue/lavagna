@@ -13,7 +13,7 @@
         templateUrl: 'app/components/project/boards/project-boards.html'
     });
 
-    function ProjectController($scope, Project, Board, User, Notification, StompClient) {
+    function ProjectController($scope, $mdDialog, Project, Board, User, Notification, StompClient) {
         var projectCtrl = this;
 
         var projectName = projectCtrl.project.shortName;
@@ -58,44 +58,60 @@
             loadUserCardsInProject(page - 1);
         };
 
-
-        projectCtrl.suggestBoardShortName = function(board) {
-            if(board == null ||board.name == null || board.name == "") {
-                return;
-            }
-            Board.suggestShortName(board.name).then(function(res) {
-                board.shortName = res.suggestion;
-                projectCtrl.checkBoardShortName(res.suggestion);
-            });
-        };
-
-        projectCtrl.board = {};
-        projectCtrl.isShortNameUsed = undefined;
         
-        projectCtrl.checkBoardShortName = function(val) {
-            if(val !== undefined && val !== null) {
-            	Board.checkShortName(val).then(function(res) {
-            		projectCtrl.checkedShortName = res;
-                });
-            } else {
-            	projectCtrl.checkedShortName = undefined;
-            }
-        };
+        projectCtrl.showBoardDialog = function($event) {
+		    $mdDialog.show({
+		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
+		    	targetEvent: $event,
+		    	fullscreen:true,
+		    	controllerAs: 'boardDialogCtrl',
+		    	controller: function() {
+		    		var ctrl = this;
+		    		
+		    		ctrl.board = {};
+		            ctrl.isShortNameUsed = undefined;
+		    		
+		    		ctrl.suggestBoardShortName = function(board) {
+		                if(board == null ||board.name == null || board.name == "") {
+		                    return;
+		                }
+		                Board.suggestShortName(board.name).then(function(res) {
+		                    board.shortName = res.suggestion;
+		                    ctrl.checkBoardShortName(res.suggestion);
+		                });
+		            };
+		            
+		            ctrl.checkBoardShortName = function(val) {
+		                if(val !== undefined && val !== null) {
+		                	Board.checkShortName(val).then(function(res) {
+		                		ctrl.checkedShortName = res;
+		                    });
+		                } else {
+		                	ctrl.checkedShortName = undefined;
+		                }
+		            };
+		            
+		            ctrl.createBoard = function(board) {
+		                board.shortName = board.shortName.toUpperCase();
+		                Project.createBoard(projectName, board).then(function() {
+		                    board.name = null;
+		                    board.description = null;
+		                    board.shortName = null;
+		                    ctrl.checkedShortName = undefined;
+		                    Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
+		                }, function(error) {
+		                    Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
+		                });
+		            };
+		            
+		            ctrl.close = function() {
+                    	$mdDialog.hide();
+                    }
+		    	}
+		    });
+        }
 
         StompClient.subscribe($scope, '/event/project/' + projectName + '/board', loadBoardsInProject);
-
-        projectCtrl.createBoard = function(board) {
-            board.shortName = board.shortName.toUpperCase();
-            Project.createBoard(projectName, board).then(function() {
-                board.name = null;
-                board.description = null;
-                board.shortName = null;
-                projectCtrl.checkedShortName = undefined;
-                Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
-            }, function(error) {
-                Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
-            });
-        };
     }
 
 })();

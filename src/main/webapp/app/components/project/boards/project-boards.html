@@ -1,54 +1,7 @@
 <div layout="column" layout-gt-xs="row">
   
         <div flex>
-            <div data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="projectCtrl.createNewBoard = true;" data-ng-hide="projectCtrl.createNewBoard">
-                    <span class="fa fa-plus"></span>
-                    <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
-                </button>
-
-                <div class="lavagna-form-panel" data-ng-show="projectCtrl.createNewBoard" >
-                    <form data-ng-submit="projectCtrl.createBoard(board); projectCtrl.board={};projectCtrl.preview.show = false;projectCtrl.checkedShortName = undefined; projectCtrl.createNewBoard = false;"
-                          data-ng-init="projectCtrl.board={}; projectCtrl.preview.show = false;">
-                        <div class="form-group">
-                            <label for="name" data-translate>partials.fragments.create-board-fragment.name</label>
-                            <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off"
-                                   data-ng-model="projectCtrl.board.name" data-ng-keyup="projectCtrl.suggestBoardShortName(projectCtrl.board)" maxlength="128">
-                        </div>
-                        <div class="form-group has-feedback"  data-ng-class="{'has-error': projectCtrl.checkedShortName === false}">
-                            <label for="shortName" data-translate>partials.fragments.create-board-fragment.shortName</label>
-                            <input type="text" autocomplete="off" class="form-control uppercase" id="shortName" placeholder=""
-                                   required="required" data-ng-model="projectCtrl.board.shortName" maxlength="8"
-                                   ng-change="projectCtrl.checkBoardShortName(projectCtrl.board.shortName)">
-                            <i class="fa form-control-feedback"  data-ng-class="{'fa-times' : projectCtrl.checkedShortName === false, 'fa-check' : projectCtrl.checkedShortName === true}"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
-                            <div data-ng-hide="projectCtrl.preview.show">
-                                <textarea class="form-control" rows="3" id="description" data-ng-model="projectCtrl.board.description" data-lvg-codemirror></textarea>
-                            </div>
-                            <div data-ng-show="projectCtrl.preview.show">
-                                <div data-ng-bind-html="projectCtrl.board.description | markdown"></div>
-                            </div>
-                        </div>
-                        <button type="submit" class="lvg-button lvg-button-submit"
-                                data-ng-disabled="projectCtrl.board.name == null || projectCtrl.board.shortName == null || projectCtrl.checkedShortName === undefined || projectCtrl.checkedShortName === false">
-                            <span class="fa fa-plus"></span>
-                            <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
-                        </button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate
-                                data-ng-click="projectCtrl.preview.show = true" data-ng-hide="projectCtrl.preview.show">button.preview</button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate
-                                data-ng-click="projectCtrl.preview.show = false" data-ng-show="projectCtrl.preview.show">button.closePreview</button>
-                        <button type="button" class="lvg-button lvg-button-default"
-                                data-ng-click="projectCtrl.board = {}; projectCtrl.checkedShortName = undefined; projectCtrl.createNewBoard = false; projectCtrl.preview.show = false">
-                            <span data-translate>partials.fragments.create-board-fragment.cancel</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <ul class="lavagna-boards">
+             <ul class="lavagna-boards">
                 <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
                     <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
                 </li>
@@ -83,3 +36,7 @@
 
 
 <div data-autoscroll="false"></div>
+
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="projectCtrl.showBoardDialog($event)" aria-label="{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+    <md-icon md-svg-src="/svg/ic_add_white_48px.svg"></md-icon>
+</md-button>
