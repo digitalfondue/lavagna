@@ -33,7 +33,7 @@
 			},
 
 			checkShortName: function(name) {
-				return $http.get('api/check-project-short-name', {params: {name: name.toUpperCase()}}).then(extractData).then(function(res) {return res === 'true';});
+				return $http.get('api/check-project-short-name', {params: {name: name.toUpperCase()}}).then(extractData).then(function(res) {return res;});
 			},
 
 			findByShortName: function (shortName) {
