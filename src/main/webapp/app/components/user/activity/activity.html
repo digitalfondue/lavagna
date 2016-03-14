@@ -5,7 +5,7 @@
                 <div class="body">
                     <ul class="lvg-activity-list">
                         <li data-ng-repeat="activity in userActivityCtrl.latestActivity20" class="activity">
-                            <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
+                            <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card-tooltip="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
                         </li>
                     </ul>
                 </div>

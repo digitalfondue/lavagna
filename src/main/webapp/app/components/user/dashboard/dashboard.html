@@ -54,7 +54,7 @@
 
                             <ul data-ng-if="userDashCtrl.view.showList[$index]" class="lvg-activity-list">
                                 <li data-ng-repeat="activity in userDashCtrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="activity">
-                                    <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
+                                    <div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card-tooltip="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
                                 </li>
                             </ul>
                         </div>
