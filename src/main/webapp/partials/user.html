@@ -55,7 +55,7 @@
 								</span>
 							</div>
 
-							<ul data-ng-show="showList" class="lvg-activity-list">
+							<ul data-ng-if="showList" class="lvg-activity-list">
 								<li data-ng-repeat="activity in profile.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="activity">
 									<div class="header"><span class="date" data-ng-bind="activity.time | dateIncremental"></span>: <span data-lvg-card="activity.cardId"></span></div> <lvg-card-activity></lvg-card-activity>
 								</li>

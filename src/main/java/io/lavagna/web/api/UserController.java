@@ -85,34 +85,48 @@ public class UserController {
         return userRepository.findById(userId);
     }
 
+    @RequestMapping(value = "/api/user/activity/{provider}/{name}", method = RequestMethod.GET)
+    public List<Event> getUserActivity(@PathVariable("provider") String provider,
+        @PathVariable("name") String name, UserWithPermission currentUser) {
+
+        User user = userRepository.findUserByName(provider, name);
+
+        Date lastWeek = DateUtils.setMinutes(DateUtils.setHours(DateUtils.addDays(new Date(), -6), 0), 0);
+        if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
+            return eventRepository.getLatestActivity(user.getId(), lastWeek);
+        } else {
+            Collection<Integer> visibleProjectsIds = currentUser.projectsIdWithPermission(Permission.READ);
+            return eventRepository.getLatestActivityByProjects(user.getId(), lastWeek, visibleProjectsIds);
+        }
+
+    }
+
     @RequestMapping(value = "/api/user/profile/{provider}/{name}", method = RequestMethod.GET)
     public UserPublicProfile getUserProfile(@PathVariable("provider") String provider,
         @PathVariable("name") String name, UserWithPermission currentUser,
         @RequestParam(value = "page", defaultValue = "0") int page) {
+
         User user = userRepository.findUserByName(provider, name);
 
         final List<EventsCount> dailyActivity;
         final List<ProjectWithEventCounts> activeProjects;
-        final List<Event> lastWeekActivity;
         final List<Event> activitiesByPage;
         Date lastYear = DateUtils.setDays(DateUtils.addMonths(new Date(), -11), 1);
-        Date lastWeek = DateUtils.addDays(new Date(), -7);
         if (currentUser.getBasePermissions().containsKey(Permission.READ)) {
             dailyActivity = eventRepository.getUserActivity(user.getId(), lastYear);
             activeProjects = projectService.findProjectsActivityByUser(user.getId());
-            lastWeekActivity = eventRepository.getLatestActivity(user.getId(), lastWeek);
-            activitiesByPage= eventRepository.getLatestActivityByPage(user.getId(), page);
+            activitiesByPage = eventRepository.getLatestActivityByPage(user.getId(), page);
         } else {
             Collection<Integer> visibleProjectsIds = currentUser.projectsIdWithPermission(Permission.READ);
 
             dailyActivity = eventRepository.getUserActivityForProjects(user.getId(), lastYear, visibleProjectsIds);
             activeProjects = projectService.findProjectsActivityByUserInProjects(user.getId(),
                 visibleProjectsIds);
-            lastWeekActivity = eventRepository.getLatestActivityByProjects(user.getId(), lastWeek, visibleProjectsIds);
-            activitiesByPage= eventRepository.getLatestActivityByPageAndProjects(user.getId(), page, visibleProjectsIds);
+            activitiesByPage = eventRepository.getLatestActivityByPageAndProjects(user.getId(), page,
+                visibleProjectsIds);
         }
 
-        return new UserPublicProfile(user, dailyActivity, activeProjects, lastWeekActivity, activitiesByPage);
+        return new UserPublicProfile(user, dailyActivity, activeProjects, activitiesByPage);
     }
 
     @RequestMapping(value = "/api/user/{provider}/{name}", method = RequestMethod.GET)
@@ -151,18 +165,15 @@ public class UserController {
         private final User user;
         private final List<EventsCount> dailyActivity;
         private final List<ProjectWithEventCounts> activeProjects;
-        private final List<Event> lastWeekActivity;
         private final List<Event> latestActivityByPage;
 
         public UserPublicProfile(User user, List<EventsCount> dailyActivity,
-            List<ProjectWithEventCounts> activeProjects, List<Event> lastWeekActivity,
-            List<Event> latestActivityByPage) {
+            List<ProjectWithEventCounts> activeProjects, List<Event> latestActivityByPage) {
             // we remove the email
             this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
                 user.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications());
             this.activeProjects = activeProjects;
             this.dailyActivity = dailyActivity;
-            this.lastWeekActivity = lastWeekActivity;
             this.latestActivityByPage = latestActivityByPage;
         }
     }

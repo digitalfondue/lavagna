@@ -22,14 +22,14 @@
         return {groupedByDate: groupedByDate, keyOrder: keyOrder};
     };
 
-    var loadUser = function (profile, $scope, $filter) {
+    var loadUser = function (profile, $scope) {
         $scope.profile = profile;
         $scope.user = profile.user;
 
         $scope.hasMore = profile.latestActivityByPage.length > 20;
 
         $scope.profile.latestActivity20 = profile.latestActivityByPage.slice(0, 20);
-        $scope.profile.eventsGroupedByDate = groupByDate($scope.profile.lastWeekActivity, $filter);
+
         return profile;
     };
 
@@ -84,10 +84,13 @@
 
         User.getUserProfile($stateParams.provider, $stateParams.username, 0)
             .then(function (profile) {
-                return loadUser(profile, $scope, $filter);
+                return loadUser(profile, $scope);
             })
             .then(function (profile) {
-                showCalHeatMap(profile, $scope)
+                showCalHeatMap(profile, $scope);
+                User.getUserActivity(profile.user.provider, profile.user.username).then(function(activities) {
+                    $scope.profile.eventsGroupedByDate = groupByDate(activities, $filter);
+                });
             });
     });
 
@@ -107,7 +110,7 @@
         $scope.loadFor = function (page) {
             User.getUserProfile($stateParams.provider, $stateParams.username, page)
                 .then(function (profile) {
-                    return loadUser(profile, $scope, $filter);
+                    return loadUser(profile, $scope);
                 })
                 .then(function (profile) {
                     showCalHeatMap(profile, $scope)

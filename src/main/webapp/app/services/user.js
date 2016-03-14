@@ -86,6 +86,10 @@
                 return $http.get('api/user/profile/' + provider + '/' + username, {params: {page: page}}).then(extractData);
             },
 
+            getUserActivity: function (provider, username) {
+                return $http.get('api/user/activity/' + provider + '/' + username).then(extractData);
+            },
+
             byProviderAndUsername: function (provider, username) {
                 return $http.get('api/user/' + provider + '/' + username).then(extractData);
             },
