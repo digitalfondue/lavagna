@@ -192,7 +192,9 @@ public class ResourceController {
 
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
-		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
+		    try (InputStream is = context.getResourceAsStream("/WEB-INF/views/index-top.html")) {
+		        StreamUtils.copy(is, indexTop);
+		    }
 		    indexTopTemplate.set(Mustache.compiler().escapeHTML(false).compile(indexTop.toString(StandardCharsets.UTF_8.name())));
 		}
 
@@ -316,7 +318,9 @@ public class ResourceController {
 			matcher.find();
 			String lang = matcher.group(1);
 			Properties p = new Properties();
-			p.load(res.getInputStream());
+			try (InputStream is = res.getInputStream()) {
+			    p.load(is);
+			}
 			langs.put(lang, new HashMap<>(p));
 			langs.get(lang).put("build.version", version);
 		}
