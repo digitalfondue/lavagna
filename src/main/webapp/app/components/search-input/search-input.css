@@ -1,0 +1,38 @@
+lvg-search-input {
+	background-color:#78909c;
+	color: white;
+}
+
+lvg-search-input {
+	margin-left:10px;
+	margin-right:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+
+lvg-search-input md-chips.md-lavagna-theme .md-chips,
+lvg-search-input md-chips.md-lavagna-theme .md-chips.md-focused {
+    box-shadow: 0 0;
+}
+
+lvg-search-input input {
+	color: white;
+}
+
+/* from http://stackoverflow.com/a/2610741 */
+
+lvg-search-input ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
+}
+
+lvg-search-input ::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: white;
+   opacity:  1;
+}
+lvg-search-input :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: white;
+}
+lvg-search-input :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color: white;
+}
