@@ -36,5 +36,6 @@
 <div data-autoscroll="false"></div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="projectCtrl.showBoardDialog($event)" aria-label="{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
-    <md-icon md-svg-src="/svg/ic_add_white_48px.svg"></md-icon>
+    <md-tooltip md-direction="top">{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="add"></md-icon>
 </md-button>

@@ -1,8 +1,8 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <button class="md-icon-button md-button md-ink-ripple">
-            <md-icon md-font-icon="fa-bars" class="fa" data-ng-click="$ctrl.toggleSidebar()"></md-icon>
-        </button>
+        <md-button class="md-icon-button">
+            <md-icon md-svg-icon="menu" data-ng-click="$ctrl.toggleSidebar()"></md-icon>
+        </md-button>
         <h2>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="!$ctrl.project" data-translate>partials.search.title</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
