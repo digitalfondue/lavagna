@@ -441,8 +441,9 @@
 		
 		//FIXME use a svg icon set
 		$mdIconProvider
-			.icon('add', 'svg/ic_add_white_48px.svg')
-			.icon('menu', 'svg/ic_menu_white_48px.svg')
+			.icon('add', 		'svg/ic_add_white_48px.svg')
+			.icon('menu', 		'svg/ic_menu_white_48px.svg')
+			.icon('settings', 	'svg/ic_settings_white_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
