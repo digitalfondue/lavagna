@@ -128,7 +128,7 @@ public class UserControllerTest {
             Mockito.<Collection<Integer>>any());
         verify(projectService).findProjectsActivityByUserInProjects(eq(testUser.getId()),
             Mockito.<Collection<Integer>>any());
-        verify(eventRepository).getLatestActivityByProjects(eq(testUser.getId()), Mockito.<Date>any(),
+        verify(eventRepository, Mockito.never()).getLatestActivityByProjects(eq(testUser.getId()), Mockito.<Date>any(),
             Mockito.<Collection<Integer>>any());
     }
 
@@ -149,7 +149,7 @@ public class UserControllerTest {
         verify(user, Mockito.never()).projectsWithPermission(Permission.READ);
         verify(eventRepository).getUserActivity(eq(testUser.getId()), Mockito.<Date>any());
         verify(projectService).findProjectsActivityByUser(eq(testUser.getId()));
-        verify(eventRepository).getLatestActivity(eq(testUser.getId()), Mockito.<Date>any());
+        verify(eventRepository, Mockito.never()).getLatestActivity(eq(testUser.getId()), Mockito.<Date>any());
     }
 
     @Test
@@ -158,5 +158,30 @@ public class UserControllerTest {
         userController.clearAllTokens(user);
 
         verify(userRepository).clearAllTokens(eq(user));
+    }
+
+    @Test
+    public void testGetUserActivity() {
+        User testUser = mock(User.class);
+        when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
+
+        userController.getUserActivity("test", "test", user);
+
+        verify(eventRepository).getLatestActivityByProjects(eq(testUser.getId()), Mockito.<Date>any(),
+            Mockito.<Collection<Integer>>any());
+    }
+
+    @Test
+    public void testGetUserActivityWithGlobalRead() {
+        User testUser = mock(User.class);
+        when(userRepository.findUserByName("test", "test")).thenReturn(testUser);
+
+        Map<Permission, Permission> permission = new EnumMap<>(Permission.class);
+        permission.put(Permission.READ, Permission.READ);
+        when(user.getBasePermissions()).thenReturn(permission);
+
+        userController.getUserActivity("test", "test", user);
+
+        verify(eventRepository).getLatestActivity(eq(testUser.getId()), Mockito.<Date>any());
     }
 }
