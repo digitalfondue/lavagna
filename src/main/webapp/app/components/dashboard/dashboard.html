@@ -1,30 +1,30 @@
-<div layout="column" layout-gt-xs="row">
-        <div flex>
-            <ul class="lavagna-projects">
-                <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
-                    <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
-                </li>
-            </ul>
-            <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">
-                <pagination  total-items="dashboardCtrl.totalProjects" data-ng-model="dashboardCtrl.view.projectPage" items-per-page="dashboardCtrl.view.projectsPerPage"
-                             max-size="dashboardCtrl.view.maxVisibleProjectPages" data-ng-change="dashboardCtrl.switchProjectPage(dashboardCtrl.view.projectPage)"
-                             class="pagination-sm" boundary-links="true" rotate="false"></pagination>
-            </div>
-        </div>
+<div layout="column" layout-gt-sm="row" class="lvg-content">
+	<div flex>
+	    <ul class="lavagna-projects">
+	        <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
+	            <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
+	        </li>
+	    </ul>
+	    <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">
+	        <pagination  total-items="dashboardCtrl.totalProjects" data-ng-model="dashboardCtrl.view.projectPage" items-per-page="dashboardCtrl.view.projectsPerPage"
+	                     max-size="dashboardCtrl.view.maxVisibleProjectPages" data-ng-change="dashboardCtrl.switchProjectPage(dashboardCtrl.view.projectPage)"
+	                     class="pagination-sm" boundary-links="true" rotate="false"></pagination>
+	    </div>
+	</div>
         
-        <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
-            <h2 class="card-home" data-translate>partials.home.openTask</h2>
-            <ul data-ng-if="dashboardCtrl.totalOpenCards > 0" class="lavagna-home-cards">
-                <li class="lavagna-home-card" data-ng-repeat="card in dashboardCtrl.userCards track by card.hash">
-                    <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
-                </li>
-            </ul>
-            <span data-ng-if="dashboardCtrl.totalOpenCards == 0" data-translate>partials.home.noTask</span>
-            <div data-ng-if="dashboardCtrl.totalOpenCards > dashboardCtrl.view.cardsPerPage">
-                <pagination total-items="dashboardCtrl.totalOpenCards" data-ng-model="dashboardCtrl.view.cardPage" items-per-page="dashboardCtrl.view.cardsPerPage" max-size="dashboardCtrl.view.maxVisibleCardPages"
-                            class="pagination-sm" boundary-links="true" rotate="false" data-ng-change="dashboardCtrl.fetchUserCardsPage(dashboardCtrl.view.cardPage)"></pagination>
-            </div>
+    <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
+        <h2 class="card-home" data-translate>partials.home.openTask</h2>
+        <ul data-ng-if="dashboardCtrl.totalOpenCards > 0" class="lavagna-home-cards">
+            <li class="lavagna-home-card" data-ng-repeat="card in dashboardCtrl.userCards track by card.hash">
+                <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
+            </li>
+        </ul>
+        <span data-ng-if="dashboardCtrl.totalOpenCards == 0" data-translate>partials.home.noTask</span>
+        <div data-ng-if="dashboardCtrl.totalOpenCards > dashboardCtrl.view.cardsPerPage">
+            <pagination total-items="dashboardCtrl.totalOpenCards" data-ng-model="dashboardCtrl.view.cardPage" items-per-page="dashboardCtrl.view.cardsPerPage" max-size="dashboardCtrl.view.maxVisibleCardPages"
+                        class="pagination-sm" boundary-links="true" rotate="false" data-ng-change="dashboardCtrl.fetchUserCardsPage(dashboardCtrl.view.cardPage)"></pagination>
         </div>
+    </div>
 </div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="dashboardCtrl.showProjectDialog($event)" aria-label="{{'partials.home.createNewProject' | translate}}" data-lvg-has-permission="ADMINISTRATION">

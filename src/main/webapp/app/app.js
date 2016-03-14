@@ -291,7 +291,7 @@
 		//---- MANAGE PROJECT ----
 		.state('projectManage', {
         	url : '/:projectName/manage/',
-			templateUrl : '/app/components/project/manage/manage.html',
+			templateUrl : 'app/components/project/manage/manage.html',
 			abstract: true,
           	controller : function(project) {
                 this.project = project;

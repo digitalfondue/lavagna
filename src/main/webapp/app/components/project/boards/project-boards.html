@@ -1,37 +1,36 @@
-<div layout="column" layout-gt-xs="row">
+<div layout="column" layout-gt-sm="row" class="lvg-content">
   
-        <div flex>
-             <ul class="lavagna-boards">
-                <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
-                    <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
-                </li>
-            </ul>
-            <div data-ng-if="projectCtrl.totalBoards > projectCtrl.boardsPerPage">
-                <pagination total-items="projectCtrl.totalBoards" data-ng-model="projectCtrl.boardPage"
-                            items-per-page="projectCtrl.boardsPerPage" max-size="projectCtrl.maxVisibleBoardPages"
-                            class="pagination-sm" boundary-links="true" rotate="false"
-                            data-ng-change="projectCtrl.switchBoardPage(projectCtrl.boardPage)"></pagination>
-            </div>
-
-        </div>
+	<div flex>
+	     <ul class="lavagna-boards">
+	        <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.currentBoards">
+	            <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
+	        </li>
+	    </ul>
+	    <div data-ng-if="projectCtrl.totalBoards > projectCtrl.boardsPerPage">
+	        <pagination total-items="projectCtrl.totalBoards" data-ng-model="projectCtrl.boardPage"
+	                    items-per-page="projectCtrl.boardsPerPage" max-size="projectCtrl.maxVisibleBoardPages"
+	                    class="pagination-sm" boundary-links="true" rotate="false"
+	                    data-ng-change="projectCtrl.switchBoardPage(projectCtrl.boardPage)"></pagination>
+	    </div>
+	</div>
         
-        <div flex data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
-            <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
-            <ul data-ng-if="projectCtrl.totalProjectOpenCards > 0"
-                class="lavagna-home-cards">
-                <li class="lavagna-home-card" data-bindonce data-ng-repeat="card in projectCtrl.userProjectCards track by card.hash">
-                    <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
-                </li>
-            </ul>
-            <span data-ng-if="projectCtrl.totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>
-            <div data-ng-if="projectCtrl.totalProjectOpenCards > projectCtrl.projectCardsPerPage">
-                <pagination total-items="projectCtrl.totalProjectOpenCards"
-                            data-ng-model="projectCtrl.cardProjectPage" items-per-page="projectCtrl.projectCardsPerPage"
-                            max-size="projectCtrl.maxVisibleCardProjectPages" class="pagination-sm"
-                            boundary-links="true" rotate="false"
-                            data-ng-change="projectCtrl.fetchUserCardsInProjectPage(projectCtrl.cardProjectPage)"></pagination>
-            </div>
-        </div>
+	<div flex data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
+	    <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
+	    <ul data-ng-if="projectCtrl.totalProjectOpenCards > 0"
+	        class="lavagna-home-cards">
+	        <li class="lavagna-home-card" data-bindonce data-ng-repeat="card in projectCtrl.userProjectCards track by card.hash">
+	            <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
+	        </li>
+	    </ul>
+	    <span data-ng-if="projectCtrl.totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>
+	    <div data-ng-if="projectCtrl.totalProjectOpenCards > projectCtrl.projectCardsPerPage">
+	        <pagination total-items="projectCtrl.totalProjectOpenCards"
+	                    data-ng-model="projectCtrl.cardProjectPage" items-per-page="projectCtrl.projectCardsPerPage"
+	                    max-size="projectCtrl.maxVisibleCardProjectPages" class="pagination-sm"
+	                    boundary-links="true" rotate="false"
+	                    data-ng-change="projectCtrl.fetchUserCardsInProjectPage(projectCtrl.cardProjectPage)"></pagination>
+	    </div>
+	</div>
 </div>
 
 

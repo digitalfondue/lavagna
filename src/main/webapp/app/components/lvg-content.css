@@ -1,0 +1,22 @@
+/*
+
+ Define various max-size for the content.
+
+*/
+
+.lvg-content {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 768px) {
+    .lvg-content {width: 750px;}
+}
+
+@media (min-width: 992px) {
+    .lvg-content {width: 970px;}
+}
+
+@media (min-width: 1200px) {
+    .lvg-content {width: 1170px;}
+}
