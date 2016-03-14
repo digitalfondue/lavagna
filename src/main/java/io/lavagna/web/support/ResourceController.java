@@ -24,6 +24,7 @@ import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -118,7 +119,9 @@ public class ResourceController {
 
 	private static void output(String file, ServletContext context, OutputStream os, BeforeAfter ba) throws IOException {
 		ba.before(file, context, os);
-		StreamUtils.copy(context.getResourceAsStream(file), os);
+		try (InputStream is = context.getResourceAsStream(file)) {
+		    StreamUtils.copy(is, os);
+		}
 		ba.after(file, context, os);
 		os.flush();
 	}
@@ -187,7 +190,9 @@ public class ResourceController {
 		
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
-		    StreamUtils.copy(context.getResourceAsStream("/WEB-INF/views/index-top.html"), indexTop);
+		    try (InputStream is = context.getResourceAsStream("/WEB-INF/views/index-top.html")) {
+		        StreamUtils.copy(is, indexTop);
+		    }
 		    indexTopTemplate.set(Mustache.compiler().escapeHTML(false).compile(indexTop.toString(StandardCharsets.UTF_8.name())));
 		}
 
@@ -306,7 +311,9 @@ public class ResourceController {
 			matcher.find();
 			String lang = matcher.group(1);
 			Properties p = new Properties();
-			p.load(res.getInputStream());
+			try (InputStream is = res.getInputStream()) {
+			    p.load(is);
+			}
 			langs.put(lang, new HashMap<>(p));
 			langs.get(lang).put("build.version", version);
 		}
