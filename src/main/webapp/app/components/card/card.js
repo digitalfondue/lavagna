@@ -87,20 +87,6 @@
         var unbindCardCache = $rootScope.$on('refreshCardCache-' + card.id, reloadCard);
         $scope.$on('$destroy', unbindCardCache);
 
-        var loadDescription = function() {
-            Card.description(card.id).then(function(description) {
-                ctrl.description = description;
-            });
-        };
-
-        loadDescription();
-
-        ctrl.updateDescription = function(description) {
-            Card.updateDescription(card.id, description).then(function() {
-                description.content = null;
-            });
-        };
-
         var loadComments = function() {
             Card.comments(card.id).then(function(comments) {
                 ctrl.comments = comments;
@@ -184,12 +170,6 @@
             });
         };
 
-        // -----
-        ctrl.updateCardName = function(card, newName) {
-            Card.update(card.id, newName).then( function() {
-                $rootScope.$emit('card.renamed.event');
-            });
-        };
         //
         ctrl.updateComment = function(comment, commentToEdit) {
             Card.updateComment(comment.id, commentToEdit);

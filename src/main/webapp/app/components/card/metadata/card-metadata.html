@@ -1,0 +1,112 @@
+<md-card>
+    <md-card-content>
+        <div layout="row">
+            <div data-ng-hide="editCardName">
+                <h4 class="card-modal-title">
+                    <span data-lvg-has-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name" data-ng-click="editCardName=true; cardNameToEdit = $ctrl.card.name"></span>
+                    <span data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"></span>
+                </h4>
+            </div>
+            <div class="lavagna-card-title-main" data-ng-show="editCardName">
+                <form data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
+                    <div class="form-group">
+                        <input class="form-control" data-ng-model="cardNameToEdit" data-lvg-on-esc="editCardName" data-lvg-to-focus="editCardName"/>
+                    </div>
+                    <div>
+                        <button class="lvg-button lvg-button-submit" type="submit" data-translate>button.save</button>
+                        <button class="lvg-button lvg-button-default" data-ng-click="editCardName=false" type="button"><span data-translate>button.cancel</span></button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div layout="column" layout-gt-sm="row">
+            <div flex="33" flex-order="2" flex-order-gt-sm="1">
+                <div class="lvg-card-metadata__title">
+                    <span data-translate>card.metadata</span>
+                </div>
+                <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
+                    <div flex="50">
+                        <span class="lvg-card-metadata__item-name" data-translate>card.metadata.status</span>
+                    </div>
+                    <div flex="50">
+                        <span data-ng-if="$ctrl.column.columnLocation === 'BOARD'">
+                            <span class="lvg-card-metadata__status"
+                                  data-ng-style="$ctrl.column.columnColor|labelBackground"
+                                  data-ng-class="$ctrl.column.columnColor|labelBackgroundClass">{{::$ctrl.column.columnName}}</span>
+                        </span>
+                        <span data-ng-if="$ctrl.column.columnLocation !== 'BOARD'">
+                            <span class="lvg-card-metadata__status"
+                                  data-ng-style="$ctrl.column.columnColor|labelBackground"
+                                  data-ng-class="$ctrl.column.columnColor|labelBackgroundClass" data-translate="{{'card.metadata.status.' + $ctrl.column.columnLocation}}"></span>
+                        </span>
+
+                    </div>
+                </div>
+
+            </div>
+            <div flex="66" flex-order="1" flex-order-gt-sm="2">
+                <div class="lvg-card-metadata__title">
+                    <span data-translate>card.description</span>
+                    <span data-lvg-has-permission="UPDATE_CARD"
+                          data-ng-click="descriptionToEdit = $ctrl.description.content; editDescription = true;"
+                          data-ng-hide="editDescription" class="fa fa-pencil"></span>
+                </div>
+                <div data-ng-hide="editDescription">
+                    <div class="lvg-card-metadata__description_content"
+                         data-ng-bind-html="$ctrl.description.content | markdown"></div>
+                    <div class="lvg-card-metadata__description_updated"
+                         data-ng-show="$ctrl.description.updatedCount == 0">
+                        <span data-translate>card.createdBy</span>
+                        <span class="lvg-card-metadata__description_updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                        <span data-translate>card.onDate</span>
+                        <span class="lvg-card-metadata__description_updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
+                    </div>
+                    <div class="lvg-card-metadata__description_updated"
+                         data-ng-show="$ctrl.description.updatedCount == 1">
+                        <span data-translate>card.updateCount</span>
+                        -
+                        <span data-translate>card.lastUpdatedBy</span>
+                        <span class="lvg-card-metadata__description_updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                        <span data-translate>card.onDate</span>
+                        <span class="lvg-card-metadata__description_updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
+                    </div>
+                    <div class="lvg-card-metadata__description_updated"
+                         data-ng-show="$ctrl.description.updatedCount > 1">
+                        <span data-translate data-translate-value-count="{{$ctrl.description.updatedCount}}">card.updateCounts</span>
+                        -
+                        <span data-translate>card.lastUpdatedBy</span>
+                        <span class="lvg-card-metadata__description_updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                        <span data-translate>card.onDate</span>
+                        <span class="lvg-card-metadata__description_updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
+                    </div>
+                </div>
+                <form data-ng-role="form"
+                      data-ng-submit="editDescription = false; editDescriptionPreviewMode = false; $ctrl.updateDescription(descriptionToEdit);">
+                    <div class="form-group" data-ng-show="editDescription">
+                        <div data-ng-hide="editDescriptionPreviewMode">
+                            <textarea
+                                data-codemirror-placeholder="card.description.placeholder"
+                                data-ng-model="descriptionToEdit" class="form-control"
+                                data-lvg-codemirror
+                            ></textarea>
+                        </div>
+                        <div data-ng-show="editDescriptionPreviewMode"
+                             data-ng-bind-html="descriptionToEditPreview | markdown"></div>
+                    </div>
+                    <span data-ng-show="editDescription">
+                        <button class="lvg-button lvg-button-submit" type="submit" data-translate>button.update</button>
+                        <button class="lvg-button lvg-button-default"
+                                data-ng-hide="editDescriptionPreviewMode"
+                                data-ng-click="descriptionToEditPreview = descriptionToEdit; editDescriptionPreviewMode = true" type="button"><span data-translate>button.preview</span></button>
+                        <button class="lvg-button lvg-button-default"
+                                data-ng-show="editDescriptionPreviewMode"
+                                data-ng-click="editDescriptionPreviewMode = false" type="button"><span data-translate>button.closePreview</span></button>
+                        <button class="lvg-button lvg-button-default"
+                                data-ng-click="editDescriptionPreviewMode = false; editDescription = false" type="button"><span data-translate>button.cancel</span></button>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>

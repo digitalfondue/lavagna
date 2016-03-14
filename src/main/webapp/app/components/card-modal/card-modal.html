@@ -1,4 +1,4 @@
-<md-dialog>
+<md-dialog flex="90">
 	<md-toolbar>
 	    <div class="md-toolbar-tools">
 	        <h2>{{::modalCtrl.project.shortName}} / {{::modalCtrl.board.shortName}}-{{::modalCtrl.card.sequence}}</h2>
@@ -10,9 +10,9 @@
 	</md-toolbar>
 	<md-dialog-content>
         <lvg-component-card
-            card="modalCtrl.card" 
-            board="modalCtrl.board" 
-            project="modalCtrl.project" 
+            card="modalCtrl.card"
+            board="modalCtrl.board"
+            project="modalCtrl.project"
             user="modalCtrl.user"></lvg-component-card>
 	</md-dialog-content>
 </md-dialog>
