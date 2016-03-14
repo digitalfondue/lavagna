@@ -13,13 +13,13 @@
             controllerAs: 'boardColumnCtrl',
             scope: true,
             bindToController: {
-                project: '=',
-                board: '=',
-                column: '=',
-                boardColumns: '=',
+                project: '<',
+                board: '<',
+                column: '<',
+                boardColumns: '<',
                 selectedCards: '=',
-                searchFilter: '=',
-                query:'='
+                searchFilter: '<',
+                query:'<'
             },
             templateUrl: 'app/components/board/column/board-column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {

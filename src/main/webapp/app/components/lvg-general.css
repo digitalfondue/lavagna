@@ -8,7 +8,7 @@
 ===================================
 */
 
-body {
+html, body {
 	font-family: sans-serif;
 	font-style: normal;
 	font-variant: normal;
@@ -38,10 +38,6 @@ body {
 
 .inline-block {
 	display: inline-block;
-}
-
-p {
-	margin: 0 0 10px;
 }
 
 .lavagna-container-top-margin {
@@ -610,87 +606,6 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 
 /*
 ===================================
-==== Modal ========================
-===================================
-*/
-
-.lavagna-modal .modal-dialog {
-	z-index: 1050;
-	padding: 10px 10px 10px 10px;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.lavagna-modal .modal-dialog .modal-content {
-	position: relative;
-	background-color: #eee;
-	border: 1px solid #999999;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 0;
-	outline: none;
-	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-	background-clip: padding-box;
-}
-
-.lavagna-modal .modal-dialog .modal-header {
-	min-height: 16.428571429px;
-	padding: 15px;
-	border-bottom: 1px solid #e5e5e5;
-}
-
-.modal-header .close {
-	margin-top: -2px;
-	padding: 0;
-	cursor: pointer;
-	background: transparent;
-	border: 0;
-	-webkit-appearance: none;
-	float: right;
-	font-size: 21px;
-	font-weight: bold;
-	line-height: 1;
-	color: #000000;
-	text-shadow: 0 1px 0 #ffffff;
-	opacity: 0.2;
-}
-
-.modal-header .close:hover {
-	opacity: 0.5;
-}
-
-.modal-header .close:focus,
-.modal-header .close:hover,
-.modal-header .close:active {
-	border: 0;
-}
-
-.lvg-modal-open {
-	overflow: hidden;
-}
-
-.lvg-modal-overlay {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 11;
-	background-color: #000000;
-}
-
-.lvg-modal-overlay-fade {
-	opacity: 0;
-	-webkit-transition: opacity 0.15s linear;
-	transition: opacity 0.15s linear;
-}
-
-.lvg-modal-overlay-fade.in {
-	opacity: 0.5;
-}
-
-/*
-===================================
 ==== misc =========================
 ===================================
 */
@@ -724,19 +639,6 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 .uppercase {
 	text-transform: uppercase;
 }
-
-/* override jquery ui default */
-
-.ui-autocomplete {
-	z-index: 2000;
-	border-radius: 0;
-}
-
-.ui-corner-all {
-	border-radius: 0;
-}
-
-
 
 /* --------- */
 
@@ -778,17 +680,6 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 
 .archived {
 	opacity: 0.5;
-}
-
-/* override modal animation*/
-.modal.fade {
-  opacity: 1;
-}
-
-.modal.fade .modal-dialog, .modal.in .modal-dialog {
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
 }
 
 
