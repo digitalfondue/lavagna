@@ -21,9 +21,9 @@
 			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';
 
 		return {
-			restrict: 'EA',
+			restrict: 'E',
 			scope: {
-				value: '='
+				value: '<'
 			},
 			template: labelValTemplate,
 			link: function ($scope, $element, $attrs) {

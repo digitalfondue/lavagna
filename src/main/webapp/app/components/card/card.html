@@ -541,7 +541,7 @@
                                     <div class="body" data-ng-if="cardCtrl.hasUserLabels(cardCtrl.userLabels, cardCtrl.labelValues)">
 									<span data-ng-repeat="(n,l) in cardCtrl.userLabels">
 										<span data-ng-repeat="val in cardCtrl.labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
-											<span data-lvg-label data-name="cardCtrl.userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="cardCtrl.removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></span>
+											<lvg-label data-name="cardCtrl.userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="cardCtrl.removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></lvg-label>
 										</span>
 									</span>
                                     </div>
