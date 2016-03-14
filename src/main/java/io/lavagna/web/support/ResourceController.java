@@ -24,6 +24,7 @@ import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -120,7 +121,9 @@ public class ResourceController {
 
 	private static void output(String file, ServletContext context, OutputStream os, BeforeAfter ba) throws IOException {
 		ba.before(file, context, os);
-		StreamUtils.copy(context.getResourceAsStream(file), os);
+        try (InputStream is = context.getResourceAsStream(file)) {
+            StreamUtils.copy(is, os);
+        }
 		ba.after(file, context, os);
 		os.flush();
 	}
