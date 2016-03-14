@@ -166,6 +166,8 @@ public class CalendarService {
 
         final List<VEvent> events = new ArrayList<>();
         final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
+        
+        final SimpleDateFormat releaseDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
         // Milestones
         List<Project> projects = projectService.findAllProjects(user);
@@ -177,8 +179,8 @@ public class CalendarService {
 
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                    java.util.Date date = formatter.parse(m.getMetadata().get("releaseDate") + " 12:00");
+                    
+                    java.util.Date date = releaseDateFormatter.parse(m.getMetadata().get("releaseDate") + " 12:00");
 
                     SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
                         m.getValue());
