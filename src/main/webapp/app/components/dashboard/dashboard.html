@@ -1,53 +1,5 @@
 <div layout="column" layout-gt-xs="row">
         <div flex>
-            <div data-lvg-has-permission="ADMINISTRATION">
-                <button type="button" class="lvg-button lvg-button-submit" data-ng-click="dashboardCtrl.view.createNewProject = true;" data-ng-hide="dashboardCtrl.view.createNewProject">
-                    <span class="fa fa-plus"></span>
-                    <span data-translate>partials.home.createNewProject</span>
-                </button>
-
-                <div class="lavagna-form-panel" data-ng-show="dashboardCtrl.view.createNewProject" >
-                    <form data-ng-role="form"
-                          data-ng-submit="dashboardCtrl.createProject(dashboardCtrl.view.project); dashboardCtrl.view.project = {}; dashboardCtrl.view.preview.show = false; dashboardCtrl.view.createNewProject = false; dashboardCtrl.view.checkedShortName=undefined;"
-                          data-ng-init="dashboardCtrl.view.project= {}; dashboardCtrl.view.preview.show = false">
-                        <div class="form-group">
-                            <label for="name" data-translate>partials.home.newProjectForm.name</label> <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off"
-                                                                                                              data-ng-model="dashboardCtrl.view.project.name" data-ng-keyup="dashboardCtrl.suggestProjectShortName(dashboardCtrl.view.project)" maxlength="128">
-                        </div>
-                        <div class="form-group has-feedback" data-ng-class="{'has-error': dashboardCtrl.view.checkedShortName === false}">
-                            <label for="name" data-translate>partials.home.newProjectForm.shortName</label>
-                            <input type="text" class="form-control uppercase" id="name" placeholder="" required="required" autocomplete="off"
-                                   data-ng-model="dashboardCtrl.view.project.shortName"
-                                   data-ng-change="dashboardCtrl.checkProjectShortName(dashboardCtrl.view.project.shortName)" maxlength="8">
-                            <i class="fa form-control-feedback" data-ng-class="{'fa-times' : dashboardCtrl.view.checkedShortName === false, 'fa-check' : dashboardCtrl.view.checkedShortName === true}"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" data-translate>partials.home.newProjectForm.description</label>
-                            <div data-ng-hide="dashboardCtrl.view.preview.show">
-                                <textarea class="form-control" rows="3" id="description" data-ng-model="dashboardCtrl.view.project.description" data-lvg-codemirror></textarea>
-                            </div>
-                            <div data-ng-show="dashboardCtrl.view.preview.show">
-                                <div data-ng-bind-html="dashboardCtrl.view.project.description | markdown"></div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="lvg-button lvg-button-submit"
-                                data-ng-disabled="dashboardCtrl.view.project.name == NULL || dashboardCtrl.view.checkedShortName === undefined || dashboardCtrl.view.checkedShortName === false">
-                            <span class="fa fa-plus"></span>
-                            <span data-translate>partials.home.newProjectForm.create</span>
-                        </button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate
-                                data-ng-click="dashboardCtrl.view.preview.show = true" data-ng-hide="dashboardCtrl.view.preview.show">button.preview</button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate
-                                data-ng-click="dashboardCtrl.view.preview.show = false" data-ng-show="dashboardCtrl.view.preview.show">button.closePreview</button>
-                        <button type="button" class="lvg-button lvg-button-default"
-                                data-ng-click="dashboardCtrl.view.project = null; dashboardCtrl.view.createNewProject = false; dashboardCtrl.view.checkedShortName=undefined; dashboardCtrl.view.preview.show = false">
-                            <span data-translate>partials.home.newProjectForm.cancel</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
             <ul class="lavagna-projects">
                 <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
                     <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
@@ -73,5 +25,9 @@
                             class="pagination-sm" boundary-links="true" rotate="false" data-ng-change="dashboardCtrl.fetchUserCardsPage(dashboardCtrl.view.cardPage)"></pagination>
             </div>
         </div>
+        
+    <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="dashboardCtrl.showProjectDialog($event)" aria-label="{{'partials.home.createNewProject' | translate}}" data-lvg-has-permission="ADMINISTRATION">
+        <md-icon md-svg-src="/svg/ic_add_white_48px.svg"></md-icon>
+    </md-button>
 </div>
  

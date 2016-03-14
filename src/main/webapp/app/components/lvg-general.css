@@ -62,6 +62,29 @@ select {
 	border-radius: 0; /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
 }
 
+/* overlay used by card menu */ 
+
+      
+.lvg-modal-overlay {      
+  position: fixed;        
+  top: 0;     
+  right: 0;       
+  bottom: 0;      
+  left: 0;        
+  z-index: 11;        
+  background-color: #000000;      
+}     
+      
+.lvg-modal-overlay-fade {     
+  opacity: 0;     
+  -webkit-transition: opacity 0.15s linear;       
+  transition: opacity 0.15s linear;       
+}     
+      
+.lvg-modal-overlay-fade.in {      
+  opacity: 0.5;       
+}
+
 /*
 ===================================
 ==== buttons and inputs ===========

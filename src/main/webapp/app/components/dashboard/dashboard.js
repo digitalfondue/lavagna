@@ -10,7 +10,7 @@
         templateUrl: 'app/components/dashboard/dashboard.html'
     });
 
-    function DashboardController($scope, Project, User, Notification, StompClient) {
+    function DashboardController($scope, $mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
 
@@ -56,36 +56,52 @@
 
         StompClient.subscribe($scope, '/event/project', loadProjects);
 
-        ctrl.suggestProjectShortName = function(project) {
-            if(project == null ||project.name == null || project.name == "") {
-                return;
-            }
-            Project.suggestShortName(project.name).then(function(res) {
-                project.shortName = res.suggestion;
-                ctrl.checkProjectShortName(res.suggestion);
+        
+        
+        ctrl.showProjectDialog = function($event) {
+        	$mdDialog.show({
+            	templateUrl: 'app/components/dashboard/add-project-dialog.html',
+            	targetEvent: $event,
+            	fullscreen:true,
+            	controllerAs: 'projectDialogCtrl',
+            	controller: function() {
+            		var ctrl = this;
+            		ctrl.createProject = function(project) {
+                        project.shortName = project.shortName.toUpperCase();
+                        Project.create(project).then(function() {
+                            ctrl.view.project = {};
+                            ctrl.view.checkedShortName = undefined;
+                            Notification.addAutoAckNotification('success', {key: 'notification.project.creation.success'}, false);
+                        }, function(error) {
+                            Notification.addAutoAckNotification('error', {key: 'notification.project.creation.error'}, false);
+                        });
+                    };
+                    
+                    ctrl.checkProjectShortName = function(val) {
+                        if(val !== undefined && val !== null) {
+                            Project.checkShortName(val).then(function(res) {
+                                ctrl.view.checkedShortName = res;
+                            });
+                        } else {
+                            ctrl.view.checkedShortName = undefined;
+                        }
+                    };
+                    
+                    ctrl.suggestProjectShortName = function(project) {
+                        if(project == null ||project.name == null || project.name == "") {
+                            return;
+                        }
+                        Project.suggestShortName(project.name).then(function(res) {
+                            project.shortName = res.suggestion;
+                            ctrl.checkProjectShortName(res.suggestion);
+                        });
+                    };
+                    
+                    ctrl.close = function() {
+                    	$mdDialog.hide();
+                    }
+            	}
             });
-        };
-
-        ctrl.checkProjectShortName = function(val) {
-            if(val !== undefined && val !== null) {
-                Project.checkShortName(val).then(function(res) {
-                    ctrl.view.checkedShortName = res;
-                });
-            } else {
-                ctrl.view.checkedShortName = undefined;
-            }
-        };
-
-
-        ctrl.createProject = function(project) {
-            project.shortName = project.shortName.toUpperCase();
-            Project.create(project).then(function() {
-                ctrl.view.project = {};
-                ctrl.view.checkedShortName = undefined;
-                Notification.addAutoAckNotification('success', {key: 'notification.project.creation.success'}, false);
-            }, function(error) {
-                Notification.addAutoAckNotification('error', {key: 'notification.project.creation.error'}, false);
-            });
-        };
+        }
     }
 })();
