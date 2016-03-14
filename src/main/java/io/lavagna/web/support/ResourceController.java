@@ -241,8 +241,7 @@ public class ResourceController {
 
 			//
 			for (String res : Arrays.asList("/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
-					"/js/jquery.min.js", "/js/jquery-ui.min.js",//
-					"/js/jquery.ui.touch-punch.min.js",//
+					"/js/jquery.min.js",//
 					"/js/highlight.pack.js",//
 					"/js/marked.js",//
 					"/js/sockjs.min.js", "/js/stomp.min.js",//

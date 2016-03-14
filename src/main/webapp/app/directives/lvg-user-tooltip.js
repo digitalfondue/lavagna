@@ -6,7 +6,7 @@
 
 	directives.directive('lvgUserTooltip', function ($filter, $q, $rootScope, UserCache) {
 
-		var providerMap = {
+		/*var providerMap = {
 			'demo': 'fa-laptop',
 			'ldap': 'fa-book',
 			'persona': 'fa-user',
@@ -24,10 +24,11 @@
 		         .replace(/>/g, "&gt;")
 		         .replace(/"/g, "&quot;")
 		         .replace(/'/g, "&#039;");
-		 }
+		 }*/
 
 		var generateTooltipHTML = function (user) {
-			var userDisplayText = $filter('formatUser')(user);
+			return '';
+			/*var userDisplayText = $filter('formatUser')(user);
 			var userProviderClass = providerMap[user.provider] || 'fa-laptop';
 			return '<div class=\"lavagna-tooltip\">' +
 				'<div class=\"provider\"><i class=\"fa ' + userProviderClass + '\"></i></div>' +
@@ -36,7 +37,7 @@
 				'<li><i class=\"fa fa-user\"></i>' + escapeHtml(user.username) + '</li>' +
 				(user.email != null ? '<li><i class=\"fa fa-envelope\"></i><a href="mailto:' + escapeHtml(user.email) + '">' + escapeHtml(user.email) + '</a></li>' : '') +
 				'</ul></div>' +
-				'</div>';
+				'</div>';*/
 		};
 
 		var loadUser = function (userId, placeholder, providerPlaceholder, scope) {
@@ -56,16 +57,16 @@
 
 		return {
 			restrict: 'A',
-			transclude: true,
 			scope: true,
-			template: '<span data-bindonce="readOnly">'
-				+ '<span data-bo-if="!readOnly">'
-				+	'<a data-lvg-tooltip data-lvg-tooltip-html=\"{{tooltipHTML}}\" class=\"lvg-user-link-placeholder\" ui-sref="user.dashboard({provider: user.provider, username: user.username})"><span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span></a>'
-				+ '</span><span data-bo-if="readOnly">'
-				+	'<span class=\"lvg-user-placeholder\"></span><span data-ng-transclude></span>'
-				+ '</span></span>',
+			template: function($element, $attrs) {
+				var readOnly = $attrs.readOnly != undefined;
+				if(readOnly) {
+					return '<span class="lvg-user-placeholder"></span></span>';
+				} else {
+					return '<a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: user.provider, username: user.username})"><span class="lvg-user-placeholder"></span></span></a>'
+				}
+			},
 			link: function ($scope, element, attrs) {
-				$scope.readOnly = attrs.readOnly != undefined;
 
 				var unregister = $scope.$watch(attrs.lvgUserTooltip, function (userId) {
 					if (userId == undefined) {
@@ -76,12 +77,12 @@
 					
 
 					loadUser(userId, placeholder, providerPlaceholder, $scope).then(function (html) {
-						$scope.tooltipHTML = html;
+						//$scope.tooltipHTML = html;
 					});
 
 					var unbind = $rootScope.$on('refreshUserCache-' + userId, function () {
 						loadUser(userId, placeholder, providerPlaceholder, linkPlaceholder).then(function (html) {
-							$scope.tooltipHTML = html;
+							//$scope.tooltipHTML = html;
 						});
 					});
 					$scope.$on('$destroy', unbind);

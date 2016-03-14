@@ -7,19 +7,20 @@
 	directives.directive('lvgCardTooltip', function ($rootScope, $q, CardCache) {
 		
 		//TODO: this is a temporary fix
-		function escapeHtml(unsafe) {
+		/*function escapeHtml(unsafe) {
 		    return unsafe
 		         .replace(/&/g, "&amp;")
 		         .replace(/</g, "&lt;")
 		         .replace(/>/g, "&gt;")
 		         .replace(/"/g, "&quot;")
 		         .replace(/'/g, "&#039;");
-		 }
+		 }*/
 
         var generateTooltipHTML = function (card) {
-            return '<div class=\"lavagna-tooltip\">' +
+        	return '';
+            /*return '<div class=\"lavagna-tooltip\">' +
                 '<div class=\"name\">' + escapeHtml(card.name) + '</div>' +
-                '</div>';
+                '</div>';*/
         };
 
 		var loadCard = function (cardId, linkPlaceholder, shortNamePlaceholder, namePlaceholder, noName) {
@@ -43,16 +44,22 @@
 
 		return {
 			restrict: 'A',
-			transclude: true,
 			scope: true,
-			template: '<span data-bindonce="readOnly" data-lvg-tooltip data-lvg-tooltip-html="{{tooltipHTML}}">'
-				+ '<span data-bo-if="!readOnly">'
-				+	'<a class="lavagna-card-link-placeholder"><span class="lavagna-card-short-placeholder"></span><span data-ng-transclude></span></a> <span class="lavagna-card-name-placeholder"></span>'
-				+ '</span><span data-bo-if="readOnly">'
-				+	'<span class="lavagna-card-short-placeholder"></span><span data-ng-transclude></span> <span class="lavagna-card-name-placeholder"></span>'
-				+ '</span></span>',
+			template: function($element, $attrs) {
+				var readOnly = $attrs.readOnly != undefined;
+				if(readOnly) {
+					return '<span>'
+					+ '<span class="lavagna-card-short-placeholder"></span> <span class="lavagna-card-name-placeholder"></span>'
+					+ '</span>'
+				} else {
+					return '<span>'
+					+	'<a class="lavagna-card-link-placeholder"><span class="lavagna-card-short-placeholder"></span></a> <span class="lavagna-card-name-placeholder"></span>'
+					+ '</span>'
+				}
+				
+				
+			},
 			link: function ($scope, element, attrs) {
-				$scope.readOnly = attrs.readOnly != undefined;
 
 				var unregister = $scope.$watch(attrs.lvgCardTooltip, function (cardId) {
 					if (cardId == undefined) {
@@ -64,12 +71,12 @@
 
 					var noName = 'noName' in attrs;
 					loadCard(cardId, linkPlaceholder, shortNamePlaceholder, namePlaceholder, noName).then(function (html) {
-                        $scope.tooltipHTML = html;
+                        //$scope.tooltipHTML = html;
                     });
 
 					var unbind = $rootScope.$on('refreshCardCache-' + cardId, function () {
 						loadCard(cardId, linkPlaceholder, shortNamePlaceholder, namePlaceholder, noName).then(function (html) {
-                            $scope.tooltipHTML = html;
+                            //$scope.tooltipHTML = html;
                         });
 					});
 					$scope.$on('$destroy', unbind);
