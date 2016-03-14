@@ -13,12 +13,18 @@
 			});
 		};
 		
-		var labelValTemplate = '<span data-bindonce="type" data-bindonce="readOnly">'
-			+ '<span data-bo-if="!readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user-tooltip="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user-tooltip="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="!readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';
+		var labelValTemplate = function($element, $attrs) {
+			
+			var readOnly = $attrs.readOnly != undefined;
+			
+			function addReadOnlyAttr() {
+				return readOnly ? ' data-read-only ' : ''
+			}
+			
+			return '<span ng-if="::(type === \'USER\')" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"><span '+addReadOnlyAttr()+' data-lvg-user-tooltip="displayValue"></span></span>'
+				 + '<span ng-if="::(type === \'CARD\')" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue" ' + addReadOnlyAttr() + '></span></span>'
+				 + '<span ng-if="::(type != \'USER\' && type != \'CARD\')" ng-bind="::displayValue" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';			
+		}
 
 		return {
 			restrict: 'E',
@@ -32,8 +38,6 @@
 					return;
 				}
 				
-				$scope.readOnly = $attrs.readOnly != undefined;
-
 				$scope.type = $scope.value.labelValueType || $scope.value.type || $scope.value.labelType;
 
 				var type = $scope.type;
@@ -52,7 +56,7 @@
 
 					StompClient.subscribe($scope, '/event/label-list-values/' + value.valueList, function (message) {
 						loadListValue($scope.value.labelId, value.valueList, $scope).then(function() {
-							$element.html($compile(labelValTemplate)($scope));
+							$element.html($compile(labelValTemplate($element, $attrs))($scope));
 						})
 					});
 					
