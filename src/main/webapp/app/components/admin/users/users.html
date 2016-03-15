@@ -8,7 +8,7 @@
         </div>
     </div>
 </div>
-
+<!-- 
 
 <div>
     <div class="lavagna-container-bottom-margin lavagna-transpartent-panel" data-ng-hide="adminUsersCtrl.view.addNewUser || adminUsersCtrl.view.bulkUserImport">
@@ -24,62 +24,18 @@
         </div>
     </div>
 </div>
-
+ 
 <div class="col-sm-6 col-xs-12">
     <div class="lavagna-container-bottom-margin lavagna-form-panel" data-ng-show="adminUsersCtrl.view.addNewUser">
-        <form role="form" data-ng-submit="adminUsersCtrl.addUser(adminUsersCtrl.view.userToAdd);">
-            <div class="form-group">
-                <label data-translate>partials.admin.manage-users.provider</label>
-                <select class="form-control"
-                        data-ng-model="adminUsersCtrl.view.userToAdd.provider"
-                        data-ng-options="val for val in adminUsersCtrl.loginProviders"
-                        required>
-                </select>
-            </div>
-            <div class="form-group">
-                <label data-translate>partials.admin.manage-users.username</label>
-                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.username" required>
-            </div>
-            <div class="form-group">
-                <label data-translate>partials.admin.manage-users.email</label>
-                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.email">
-            </div>
-            <div class="form-group">
-                <label data-translate>partials.admin.manage-users.displayName</label>
-                <input class="form-control" data-ng-model="adminUsersCtrl.view.userToAdd.displayName">
-            </div>
-            <div class="form-group" data-ng-init="adminUsersCtrl.view.userToAdd.roles = {}">
-                <label data-translate>partials.admin.manage-users.roles</label>
-                <ul class="lvg-roles-panel-list">
-                    <li data-ng-repeat="role in roles">
-                        <label><input data-ng-model="adminUsersCtrl.view.userToAdd.roles[role]" type="checkbox"><span>{{::role}}</span></label>
-                    </li>
-                </ul>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" data-ng-model="adminUsersCtrl.view.userToAdd.enabled"> <span data-translate>partials.admin.manage-users.enabled</span>
-                </label>
-            </div>
-            <button type="submit" class="lvg-button lvg-button-submit"><span class="fa fa-plus"></span> <span data-translate>partials.admin.manage-users.addUser</span></button>
-            <button type="button" class="lvg-button lvg-button-default" data-ng-click="adminUsersCtrl.view.addNewUser = false"><span data-translate>partials.admin.manage-users.cancel</span></button>
-        </form>
+        
     </div>
 </div>
 
 <div class="col-sm-6 col-xs-12">
     <div class="lavagna-container-bottom-margin lavagna-form-panel" data-ng-show="adminUsersCtrl.view.bulkUserImport">
-        <form role="form" data-ng-submit="adminUsersCtrl.bulkImport()">
-            <div class="form-group">
-                <div class="lvg-button lvg-button-submit" ng-file-select="adminUsersCtrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
-                <div data-ng-if="adminUsersCtrl.importUserFile != null">{{adminUsersCtrl.importUserFile.name}}</div>
-                <div data-ng-if="adminUsersCtrl.importUserFile == null" data-translate>common.no-files-selected</div>
-            </div>
-            <button type="submit" class="lvg-button lvg-button-submit" data-translate data-ng-disabled="adminUsersCtrl.importUserFile == null">partials.admin.manage-users.import</button>
-            <button type="button" class="lvg-button lvg-button-default" data-ng-click="adminUsersCtrl.importUserFile = null; adminUsersCtrl.view.bulkUserImport = false"><span data-translate>button.cancel</span></button>
-        </form>
+        
     </div>
-</div>
+</div>-->
 
 <div class="col-md-12 col-xs-12">
     <div class="lavagna-panel">
@@ -103,7 +59,7 @@
                 <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList | usersPagination:20:adminUsersCtrl.view.userListPage">
                     <td data-ng-bind="u.provider"></td>
                     <td>
-                        <a class=\"lvg-user-link-placeholder\" ui-sref="user.dashboard({provider: u.provider, username: u.username})" data-ng-bind="u.username"></a>
+                        <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" data-ng-bind="u.username"></a>
                     </td>
                     <td data-ng-bind="u.email"></td>
                     <td data-ng-bind="u.displayName"></td>
@@ -122,19 +78,23 @@
         </div>
     </div>
 </div>
-
-<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="adminUsersCtrl.isOpen">
-    <md-fab-trigger>
-        <md-button class="md-fab md-primary">
-            <md-icon md-svg-icon="add"></md-icon>
-        </md-button>
-    </md-fab-trigger>
-    <md-fab-actions>
-        <md-button class="md-fab md-mini md-raised">
-            <md-icon md-svg-icon="person_add_black"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-mini md-raised">
-            <md-icon md-svg-icon="group_add_black"></md-icon>
-        </md-button>
-    </md-fab-actions>
-</md-fab-speed-dial>
+<!-- ng-cloak required as speed dial use -->
+<div ng-cloak>
+	<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="adminUsersCtrl.isOpen">
+	    <md-fab-trigger>
+	        <md-button class="md-fab md-primary">
+	            <md-icon md-svg-icon="add"></md-icon>
+	        </md-button>
+	    </md-fab-trigger>
+	    <md-fab-actions>
+	        <md-button class="md-fab md-mini md-raised" ng-click="adminUsersCtrl.showAddUserDialog($event)">
+	            <md-icon md-svg-icon="person_add_black"></md-icon>
+	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.addUser' | translate}}</md-tooltip>
+	        </md-button>
+	        <md-button class="md-fab md-mini md-raised" ng-click="adminUsersCtrl.showImportDialog($event)">
+	            <md-icon md-svg-icon="group_add_black"></md-icon>
+	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.import' | translate}}</md-tooltip>
+	        </md-button>
+	    </md-fab-actions>
+	</md-fab-speed-dial>
+</div>

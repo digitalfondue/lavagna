@@ -1,0 +1,8 @@
+[
+ {
+ provider : "demo",
+ username : "muh-user",
+ enabled : true,
+ roles : ['ADMIN']
+ }
+]

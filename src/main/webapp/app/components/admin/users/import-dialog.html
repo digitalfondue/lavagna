@@ -1,0 +1,15 @@
+<md-dialog>
+	<form role="form" data-ng-submit="importDialogCtrl.bulkImport()">
+	   <md-dialog-content>
+			<div class="md-dialog-content">
+			    <div class="lvg-button lvg-button-submit" ng-file-select="importDialogCtrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
+			    <div data-ng-if="importDialogCtrl.importUserFile != null">{{importDialogCtrl.importUserFile.name}}</div>
+			    <div data-ng-if="importDialogCtrl.importUserFile == null" data-translate>common.no-files-selected</div>
+			</div>
+		</md-dialog-content>
+		<md-dialog-actions>
+		  <md-button type="submit" data-ng-disabled="importDialogCtrl.importUserFile == null"><span data-translate>partials.admin.manage-users.import</span></md-button>
+		  <md-button type="button" data-ng-click="importDialogCtrl.importUserFile = null;importDialogCtrl.close()"><span data-translate>button.cancel</span></md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>
