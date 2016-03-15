@@ -63,7 +63,11 @@
 			description: function (id) {
 				return $http.get('api/card/' + id + '/description').then(extractData);
 			},
-			updateDescription: function (id, description) {
+            clone: function (cardId, columnId) {
+                return $http.post('api/card/' + cardId + '/clone/' + columnId).then(extractData);
+            },
+
+            updateDescription: function (id, description) {
 				return $http.post('api/card/' + id + '/description', {content: description}).then(extractData);
 			},
 			comments: function (id) {

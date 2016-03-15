@@ -94,7 +94,7 @@
             		}
 
             	})
-            })
+            });
             return res;
         };
 
@@ -168,9 +168,9 @@
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });
         };
-        
+
         ctrl.sortCards = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
-        	
+
         	var oldColumnId = $partFrom.columnId;
         	var newColumnId = $partTo.columnId;
         	var cardId = $item.id;
@@ -178,7 +178,7 @@
         	angular.forEach($partTo, function(card) {
         		ids.push(card.id);
         	});
-        	
+
         	if(newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')) {
         		//move from board to sidebar
         		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);

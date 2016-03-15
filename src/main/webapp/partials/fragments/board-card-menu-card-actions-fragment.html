@@ -28,6 +28,10 @@
 			<li data-lvg-has-permission="UPDATE_CARD" data-ng-if="isAssignedToCard(card.labels, currentUserId)">
 				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="removeAssignForCurrentUser(); close();" data-ng-bind="'partials.fragments.card-fragment.surrender' | translate"></button>
 			</li>
+            <li class="divider" data-lvg-has-permission="CREATE_CARD"></li>
+            <li data-lvg-has-permission="CREATE_CARD">
+                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="cloneCard(card); close();" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
+            </li>
 		</ul>
 	</div>
 	<div data-ng-show="moveColumnFlag" class="fixed-card-menu-panel">
