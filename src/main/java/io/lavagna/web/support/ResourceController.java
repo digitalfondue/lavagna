@@ -253,8 +253,8 @@ public class ResourceController {
 					"/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
 					//
-					"/js/angular-animate.js", "/js/angular-aria.js",
-					"/js/angular-messages.js", "/js/angular-material.js",
+					"/js/angular-animate.min.js", "/js/angular-aria.min.js",
+					"/js/angular-messages.min.js", "/js/angular-material.min.js",
                     "/js/angular-sortable-view.js",
 					//
 					"/js/angular-ui-router.min.js",//
