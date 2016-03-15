@@ -429,22 +429,24 @@
         });
         $mdThemingProvider.definePalette('lavagna-background', background);
 
-		$mdThemingProvider.theme('lavagna')
+		$mdThemingProvider.theme('default')
 		    .primaryPalette('blue-grey')
 		    .accentPalette('light-blue')
 		    .warnPalette('red')
 		    .backgroundPalette('lavagna-background');
 
 
-		$mdThemingProvider.setDefaultTheme('lavagna');
+		$mdThemingProvider.setDefaultTheme('default');
 		
 		
 		//FIXME use a svg icon set
 		$mdIconProvider
-			.icon('add', 		'svg/ic_add_white_48px.svg')
-			.icon('menu', 		'svg/ic_menu_white_48px.svg')
-			.icon('settings', 	'svg/ic_settings_white_48px.svg')
-			.icon('person', 	'svg/ic_person_white_48px.svg')
+			.icon('add', 				'svg/ic_add_white_48px.svg')
+			.icon('menu', 				'svg/ic_menu_white_48px.svg')
+			.icon('settings', 			'svg/ic_settings_white_48px.svg')
+			.icon('person', 			'svg/ic_person_white_48px.svg')
+			.icon('group_add_black', 	'svg/ic_group_add_black_48px.svg')
+			.icon('person_add_black', 	'svg/ic_person_add_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

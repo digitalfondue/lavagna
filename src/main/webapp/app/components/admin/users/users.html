@@ -1,16 +1,16 @@
-<div class="lavagna-container-bottom-margin col-sm-6 col-xs-12">
-    <div class="lavagna-form-panel">
-        <div class="search-bar" data-ng-init="adminUsersCtrl.view.username">
-            <div class="search-user-form inner-addon left-inner-addon">
-                <i class="fa fa-search"></i>
-                <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="adminUsersCtrl.view.username"
-                       lvg-user-list="adminUsersCtrl.view.userList" lvg-user-list-local-model="adminUsersCtrl.users"/>
-            </div>
+
+<div class="lavagna-form-panel">
+    <div class="search-bar" data-ng-init="adminUsersCtrl.view.username">
+        <div class="search-user-form inner-addon left-inner-addon">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="adminUsersCtrl.view.username"
+                   lvg-user-list="adminUsersCtrl.view.userList" lvg-user-list-local-model="adminUsersCtrl.users"/>
         </div>
     </div>
 </div>
 
-<div class="col-sm-6 col-xs-12">
+
+<div>
     <div class="lavagna-container-bottom-margin lavagna-transpartent-panel" data-ng-hide="adminUsersCtrl.view.addNewUser || adminUsersCtrl.view.bulkUserImport">
         <div class="form-group pull-right">
             <button type="button" class="lvg-button lvg-button-submit" data-ng-click="adminUsersCtrl.view.addNewUser = true">
@@ -122,3 +122,19 @@
         </div>
     </div>
 </div>
+
+<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="adminUsersCtrl.isOpen">
+    <md-fab-trigger>
+        <md-button class="md-fab md-primary">
+            <md-icon md-svg-icon="add"></md-icon>
+        </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button class="md-fab md-mini md-raised">
+            <md-icon md-svg-icon="person_add_black"></md-icon>
+        </md-button>
+        <md-button class="md-fab md-mini md-raised">
+            <md-icon md-svg-icon="group_add_black"></md-icon>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>

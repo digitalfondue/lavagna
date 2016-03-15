@@ -14,6 +14,7 @@
 
         var ctrl = this;
         ctrl.view = {};
+        ctrl.isOpen = false
 
         function loadUsers() {
             User.list().then(function(l) {
