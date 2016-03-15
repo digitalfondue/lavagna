@@ -11,28 +11,28 @@ lvg-search-input {
 }
 
 
-lvg-search-input md-chips.md-lavagna-theme .md-chips,
-lvg-search-input md-chips.md-lavagna-theme .md-chips.md-focused {
+lvg-search-input md-chips .md-chips,
+lvg-search-input md-chips .md-chips.md-focused {
     box-shadow: 0 0;
 }
 
-lvg-search-input input {
-	color: white;
+lvg-search-input md-chips input {
+	color: white!important;
 }
 
 /* from http://stackoverflow.com/a/2610741 */
 
 lvg-search-input ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: white;
+    color: white!important;
 }
 
 lvg-search-input ::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color: white;
+   color: white!important;
    opacity:  1;
 }
 lvg-search-input :-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color: white;
+   color: white!important;
 }
 lvg-search-input :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
-  color: white;
+  color: white!important;
 }
