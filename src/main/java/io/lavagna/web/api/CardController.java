@@ -215,6 +215,13 @@ public class CardController {
 		emitCreateCard(columnId, createdCard);
 	}
 
+    @ExpectPermission(Permission.CREATE_CARD)
+    @RequestMapping(value = "/api/card/{cardId}/clone/{columnId}", method = RequestMethod.POST)
+    public void clone(@PathVariable("cardId") int cardId, @PathVariable("columnId") int columnId, User user) {
+        Card clonedCard = cardService.cloneCard(cardId, columnId, user);
+        emitCreateCard(columnId, clonedCard);
+    }
+
 	@ExpectPermission(Permission.CREATE_CARD)
 	@RequestMapping(value = "/api/column/{columnId}/card-top", method = RequestMethod.POST)
 	public void createCardFromTop(@PathVariable("columnId") int columnId, @RequestBody CardData card, User user) {
