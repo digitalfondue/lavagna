@@ -15,7 +15,7 @@
         var ctrl = this;
         ctrl.view = {};
         ctrl.isOpen = false
-
+        
         function loadUsers() {
             User.list().then(function(l) {
                 ctrl.users = l;
@@ -72,47 +72,84 @@
             });
         };
 
-        ctrl.addUser = function(userToAdd) {
-            var rawRoles = userToAdd.roles;
-            var roles = [];
-            for(var r in rawRoles) {
-                if(rawRoles[r]) {
-                    roles.push(r);
-                }
-            }
-            userToAdd.roles = roles;
-            UsersAdministration.addUser(userToAdd).then(function() {
-                configureDefaultUserToAdd();
-                loadUsers();
-            }, function(error) {
-                Notification.addAutoAckNotification('error', {
-                    key: 'notification.admin-manage-users.add.error'
-                }, false);
-            });
+        ctrl.showAddUserDialog = function($event) {
+        	$mdDialog.show({
+        		templateUrl: 'app/components/admin/users/add-user-dialog.html',
+        		controller: function() {        			
+        			var ctrl = this;
+        			
+        			ctrl.close = function () {
+                    	$mdDialog.hide();
+                    }
+        			
+        			ctrl.addUser = function(userToAdd) {
+        	            var rawRoles = userToAdd.roles;
+        	            var roles = [];
+        	            for(var r in rawRoles) {
+        	                if(rawRoles[r]) {
+        	                    roles.push(r);
+        	                }
+        	            }
+        	            userToAdd.roles = roles;
+        	            UsersAdministration.addUser(userToAdd).then(function() {
+        	                configureDefaultUserToAdd();
+        	                loadUsers();
+        	            }, function(error) {
+        	                Notification.addAutoAckNotification('error', {
+        	                    key: 'notification.admin-manage-users.add.error'
+        	                }, false);
+        	            });
+        	        };
+        		},
+        		controllerAs: 'addUserDialogCtrl',
+        		bindToController: true,
+        		locals: {
+        			roles: ctrl.roles,
+        			loginProviders : ctrl.loginProviders
+        		},
+        		targetEvent: $event
+        	});
+        };
+        
+        ctrl.showImportDialog = function($event) {
+        	$mdDialog.show({
+        		templateUrl: 'app/components/admin/users/import-dialog.html',
+        		controller: function() {
+        			var ctrl = this;
+        			
+        			ctrl.importUserFile = null;
+
+        	        ctrl.onFileSelect = function($files) {
+        	            ctrl.importUserFile = $files[0]; //single file
+        	        };
+        			
+        			ctrl.close = function () {
+                    	$mdDialog.hide();
+                    }
+        			
+        			//TODO: progress bar, abort
+        	        ctrl.bulkImport = function() {
+        	            Admin.importUsers(ctrl.importUserFile,
+        	                    function(evt) { },
+        	                    function() {
+        	                        Notification.addAutoAckNotification('success', {
+        	                            key: 'notification.admin-manage-users.bulkImport.success'
+        	                        }, false);
+        	                    },
+        	                    function() {
+        	                        Notification.addAutoAckNotification('error', {
+        	                            key: 'notification.admin-manage-users.bulkImport.error'
+        	                        }, false);
+        	                    },
+        	                    function() { }).then(loadUsers);
+        	        };
+        		},
+        		controllerAs: 'importDialogCtrl',
+        		targetEvent: $event
+        	});
         };
 
-        ctrl.importUserFile = null;
-
-        ctrl.onFileSelect = function($files) {
-            ctrl.importUserFile = $files[0]; //single file
-        };
-
-        //TODO: progress bar, abort
-        ctrl.bulkImport = function() {
-            Admin.importUsers(ctrl.importUserFile,
-                    function(evt) { },
-                    function() {
-                        Notification.addAutoAckNotification('success', {
-                            key: 'notification.admin-manage-users.bulkImport.success'
-                        }, false);
-                    },
-                    function() {
-                        Notification.addAutoAckNotification('error', {
-                            key: 'notification.admin-manage-users.bulkImport.error'
-                        }, false);
-                    },
-                    function() { }).then(loadUsers);
-        };
+        
 
         // ------- user pagination
         ctrl.view.userListPage = 1;

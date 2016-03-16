@@ -1,0 +1,48 @@
+<md-dialog>
+
+	<form role="form" data-ng-submit="addUserDialogCtrl.addUser(addUserDialogCtrl.userToAdd);">
+	
+	    <md-dialog-content>
+	       <div class="md-dialog-content">
+				<div class="form-group">
+				    <label data-translate>partials.admin.manage-users.provider</label>
+				    <select class="form-control"
+				            data-ng-model="addUserDialogCtrl.userToAdd.provider"
+				            data-ng-options="val for val in addUserDialogCtrl.loginProviders"
+				            required>
+				    </select>
+				</div>
+				<div class="form-group">
+				    <label data-translate>partials.admin.manage-users.username</label>
+				    <input class="form-control" data-ng-model="addUserDialogCtrl.userToAdd.username" required>
+				</div>
+				<div class="form-group">
+				    <label data-translate>partials.admin.manage-users.email</label>
+				    <input class="form-control" data-ng-model="addUserDialogCtrl.userToAdd.email">
+				</div>
+				<div class="form-group">
+				    <label data-translate>partials.admin.manage-users.displayName</label>
+				    <input class="form-control" data-ng-model="addUserDialogCtrl.userToAdd.displayName">
+				</div>
+				<div class="form-group" data-ng-init="addUserDialogCtrl.userToAdd.roles = {}">
+				    <label data-translate>partials.admin.manage-users.roles</label>
+				    <ul class="lvg-roles-panel-list">
+				        <li data-ng-repeat="role in addUserDialogCtrl.roles">
+				            <label><input data-ng-model="addUserDialogCtrl.userToAdd.roles[role]" type="checkbox"><span>{{::role}}</span></label>
+				        </li>
+				    </ul>
+				</div>
+				<div class="checkbox">
+				    <label>
+				        <input type="checkbox" data-ng-model="addUserDialogCtrl.userToAdd.enabled"> <span data-translate>partials.admin.manage-users.enabled</span>
+				    </label>
+				</div>
+			</div>
+	    </md-dialog-content>
+	    <md-dialog-actions>
+		   <md-button type="submit"><span data-translate>partials.admin.manage-users.addUser</span></md-button>
+		   <md-button type="button" data-ng-click="addUserDialogCtrl.close()"><span data-translate>partials.admin.manage-users.cancel</span></md-button>
+	    </md-dialog-actions>
+	</form>
+
+</md-dialog>
