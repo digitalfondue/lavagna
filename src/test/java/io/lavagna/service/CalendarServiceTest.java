@@ -177,7 +177,7 @@ public class CalendarServiceTest {
     public void testGetUserCalendar() throws URISyntaxException, ParseException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
-        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user.getId());
 
         Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
 

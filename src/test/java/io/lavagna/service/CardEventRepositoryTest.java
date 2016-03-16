@@ -95,7 +95,7 @@ public class CardEventRepositoryTest {
 
 	@Test
 	public void findUsersIdFor() {
-		CardData cd = cardDataService.createComment(card1.getId(), "test", new Date(), user);
+		CardData cd = cardDataService.createComment(card1.getId(), "test", new Date(), user.getId());
 
 		Set<Integer> res1 = eventRepository.findUsersIdFor(cd.getId(), EventType.COMMENT_CREATE);
 		Assert.assertTrue(res1.size() == 1);

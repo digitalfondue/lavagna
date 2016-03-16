@@ -113,7 +113,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/description", method = RequestMethod.POST)
     @ResponseBody
     public int updateDescription(@PathVariable("cardId") int cardId, @RequestBody Content content, User user) {
-        int result = cardDataService.updateDescription(cardId, content.content, new Date(), user);
+        int result = cardDataService.updateDescription(cardId, content.content, new Date(), user.getId());
         eventEmitter.emitUpdateDescription(cardRepository.findBy(cardId).getColumnId(), cardId);
         return result;
     }
@@ -163,7 +163,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/comment", method = RequestMethod.POST)
     @ResponseBody
     public CardData createComment(@PathVariable("cardId") int cardId, @RequestBody Content commentData, User user) {
-        CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user);
+        CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user.getId());
         eventEmitter.emitCreateComment(cardRepository.findBy(cardId).getColumnId(), cardId);
         return comment;
     }
@@ -203,7 +203,8 @@ public class CardDataController {
     @ResponseBody
     public CardData createActionList(@PathVariable("cardId") int cardId, @RequestBody Content actionListData,
         User user) {
-        CardData actionList = cardDataService.createActionList(cardId, actionListData.content, user, new Date());
+        CardData actionList = cardDataService.createActionList(cardId, actionListData.content, user.getId(),
+            new Date());
         eventEmitter.emitCreateActionList(cardId);
         return actionList;
     }
@@ -246,8 +247,8 @@ public class CardDataController {
     public CardData createActionItem(@PathVariable("actionListId") int actionListId,
         @RequestBody Content actionItemData, User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionListId).getCardId();
-        CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content, user,
-            new Date());
+        CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content,
+            user.getId(), new Date());
         eventEmitter.emitCreateActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
         return actionItem;
     }
@@ -282,7 +283,7 @@ public class CardDataController {
     public int toggleActionItem(@PathVariable("actionItemId") int actionItemId, @PathVariable("status") Boolean status,
         User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
-        int res = cardDataService.toggleActionItem(actionItemId, status, user, new Date());
+        int res = cardDataService.toggleActionItem(actionItemId, status, user.getId(), new Date());
         eventEmitter.emitToggleActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
         return res;
     }
@@ -379,7 +380,7 @@ public class CardDataController {
         }
         return true;
     }
-    
+
     private static Set<String> WHITE_LIST_MIME_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(//
             "image/gif", "image/jpeg", "image/png", "image/webp", "image/bmp",// images
             "video/webm", "video/ogg", "video/mp4",//

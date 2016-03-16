@@ -119,8 +119,8 @@ public class CardDataServiceTest {
 
     @Test
     public void findByIds() {
-        cardDataService.createComment(card1.getId(), "hello world1", new Date(), user);
-        cardDataService.createComment(card1.getId(), "hello world2", new Date(), user);
+        cardDataService.createComment(card1.getId(), "hello world1", new Date(), user.getId());
+        cardDataService.createComment(card1.getId(), "hello world2", new Date(), user.getId());
         List<CardData> created = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.COMMENT);
         assertTrue(created.size() == 2);
         Map<Integer, String> resById = cardDataRepo.findDataByIds(Arrays.asList(created.get(0).getId(), created.get(1)
@@ -134,7 +134,8 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllCommentsByCardId(card1.getId()).isEmpty());
         // when updating a card that has no description, a fresh one is created
         String newCardDescription = "test-update-description";
-        cardDataService.updateDescription(card1.getId(), newCardDescription, DateUtils.addHours(new Date(), -3), user);
+        cardDataService.updateDescription(card1.getId(), newCardDescription, DateUtils.addHours(new Date(), -3),
+            user.getId());
         assertEquals(cardDataService.findDescriptionByCardId(card1.getId()).size(), 1);
         assertEquals(newCardDescription, cardDataService.findLatestDescriptionByCardId(card1.getId()).getContent());
 
@@ -143,7 +144,8 @@ public class CardDataServiceTest {
         CardData cardData1 = cardDataRepo.getUndeletedDataLightById(cardData.get(0).getId());
         assertEquals(CardType.DESCRIPTION, cardData1.getType());
 
-        cardDataService.updateDescription(card1.getId(), "test-update-description-after-update", new Date(), user);
+        cardDataService.updateDescription(card1.getId(), "test-update-description-after-update", new Date(),
+            user.getId());
         List<CardData> updatedCardData = cardDataRepo.findAllDataLightByCardId(card1.getId());
         assertEquals(2, updatedCardData.size());
         assertEquals(1, cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.DESCRIPTION_HISTORY)
@@ -152,7 +154,7 @@ public class CardDataServiceTest {
 
         assertEquals(cardData1.getId(), updatedCardData.get(0).getId());
         assertEquals("test-update-description-after-update", updatedCardData.get(0).getContent());
-        
+
         assertEquals("test-update-description-after-update", cardDataService.findLatestDescriptionByCardId(card1.getId()).getContent());
     }
 
@@ -162,7 +164,8 @@ public class CardDataServiceTest {
 
         assertTrue(cardDataRepo.findCountsByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD).isEmpty());
 
-        assertEquals("test-comment", cardDataService.createComment(card1.getId(), "test-comment", new Date(), user)
+        assertEquals("test-comment", cardDataService.createComment(card1.getId(), "test-comment", new Date(),
+            user.getId())
             .getContent());
         assertEquals(cardDataService.findAllCommentsByCardId(card1.getId()).size(), 1);
 
@@ -180,7 +183,7 @@ public class CardDataServiceTest {
     public void TestUpdateComment() {
         assertTrue(cardDataService.findAllCommentsByCardId(card1.getId()).isEmpty());
         assertEquals("test-update-comment",
-            cardDataService.createComment(card1.getId(), "test-update-comment", new Date(), user).getContent());
+            cardDataService.createComment(card1.getId(), "test-update-comment", new Date(), user.getId()).getContent());
         assertEquals(cardDataService.findAllCommentsByCardId(card1.getId()).size(), 1);
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardId(card1.getId());
@@ -203,7 +206,7 @@ public class CardDataServiceTest {
         assertTrue(cardDataRepo.findCountsByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD).isEmpty());
 
         assertEquals("test-update-comment",
-            cardDataService.createComment(card1.getId(), "test-update-comment", new Date(), user).getContent());
+            cardDataService.createComment(card1.getId(), "test-update-comment", new Date(), user.getId()).getContent());
         assertEquals(cardDataService.findAllCommentsByCardId(card1.getId()).size(), 1);
         assertEquals(1, cardDataRepo.findCountsByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD).size());
 
@@ -225,7 +228,7 @@ public class CardDataServiceTest {
     public void TestActionListAndItems() {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
 
-        assertEquals("test-list", cardDataService.createActionList(card1.getId(), "test-list", user, new Date())
+        assertEquals("test-list", cardDataService.createActionList(card1.getId(), "test-list", user.getId(), new Date())
             .getContent());
         assertEquals(1, cardDataRepo.findAllDataByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
@@ -238,7 +241,7 @@ public class CardDataServiceTest {
 
         // add action item
         assertEquals("test-unchecked",
-            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-unchecked", user, new Date())
+            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-unchecked", user.getId(), new Date())
                 .getContent());
 
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
@@ -249,7 +252,7 @@ public class CardDataServiceTest {
         assertEquals(CardType.ACTION_UNCHECKED, item1.getType());
 
         assertEquals("test-order",
-            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-order", user, new Date())
+            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-order", user.getId(), new Date())
                 .getContent());
 
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
@@ -264,7 +267,7 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
 
         assertEquals("test-list-update",
-            cardDataService.createActionList(card1.getId(), "test-list-update", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-update", user.getId(), new Date()).getContent());
         assertEquals(1, cardDataRepo.findAllDataByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
@@ -285,7 +288,7 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
 
         assertEquals("test-list-toggle",
-            cardDataService.createActionList(card1.getId(), "test-list-toggle", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-toggle", user.getId(), new Date()).getContent());
         assertEquals(1, cardDataRepo.findAllDataByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
@@ -298,7 +301,7 @@ public class CardDataServiceTest {
         // add action item
         assertEquals(
             "test-toggle-unchecked",
-            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-toggle-unchecked", user,
+            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-toggle-unchecked", user.getId(),
                 new Date()).getContent());
 
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
@@ -306,14 +309,14 @@ public class CardDataServiceTest {
         assertEquals(1, cardData.size());
         CardData item1 = cardDataRepo.getUndeletedDataLightById(cardData.get(0).getId());
 
-        cardDataService.toggleActionItem(item1.getId(), true, user, new Date());
+        cardDataService.toggleActionItem(item1.getId(), true, user.getId(), new Date());
         item1 = cardDataRepo.getUndeletedDataLightById(item1.getId());
         assertEquals(CardType.ACTION_CHECKED, item1.getType());
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
             of(CardType.ACTION_CHECKED, CardType.ACTION_UNCHECKED));
         assertEquals(1, cardData.size());
 
-        cardDataService.toggleActionItem(item1.getId(), false, user, new Date());
+        cardDataService.toggleActionItem(item1.getId(), false, user.getId(), new Date());
         item1 = cardDataRepo.getUndeletedDataLightById(item1.getId());
         assertEquals(CardType.ACTION_UNCHECKED, item1.getType());
     }
@@ -323,7 +326,7 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
 
         assertEquals("test-list-update",
-            cardDataService.createActionList(card1.getId(), "test-list-update", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-update", user.getId(), new Date()).getContent());
         assertEquals(1, cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
@@ -332,7 +335,7 @@ public class CardDataServiceTest {
 
         // add action item
         assertEquals("test-update",
-            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-update", user, new Date())
+            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-update", user.getId(), new Date())
                 .getContent());
 
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
@@ -353,7 +356,7 @@ public class CardDataServiceTest {
     public void TestDeleteActionItemAndUndo() {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
         assertEquals("test-list-delete",
-            cardDataService.createActionList(card1.getId(), "test-list-delete", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-delete", user.getId(), new Date()).getContent());
         assertEquals(1, cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
@@ -362,7 +365,7 @@ public class CardDataServiceTest {
 
         // add action item
         assertEquals("test-delete",
-            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-delete", user, new Date())
+            cardDataService.createActionItem(card1.getId(), list1.getId(), "test-delete", user.getId(), new Date())
                 .getContent());
 
         cardData = cardDataRepo.findAllDataLightByCardIdAndTypes(card1.getId(),
@@ -387,10 +390,12 @@ public class CardDataServiceTest {
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
 
         assertEquals("test-list-reorder1",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user.getId(),
+                new Date()).getContent());
         assertEquals(1, cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
         assertEquals("test-list-reorder2",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user.getId(),
+                new Date()).getContent());
         assertEquals(2, cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST).size());
 
         List<CardData> cardData = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
@@ -421,7 +426,8 @@ public class CardDataServiceTest {
 
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
         assertEquals("test-list-reorder1",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user.getId(),
+                new Date()).getContent());
 
         List<CardData> actionLists = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
         assertEquals(1, actionLists.size());
@@ -430,7 +436,7 @@ public class CardDataServiceTest {
         // add action item
         for (int i = 1; i < numberOfActionItems + 1; i++) {
             assertEquals(i,
-                cardDataService.createActionItem(card1.getId(), list1.getId(), "test-order-" + i, user, new Date())
+                cardDataService.createActionItem(card1.getId(), list1.getId(), "test-order-" + i, user.getId(), new Date())
                     .getOrder());
         }
 
@@ -461,9 +467,11 @@ public class CardDataServiceTest {
 
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
         assertEquals("test-list-reorder1",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user.getId(),
+                new Date()).getContent());
         assertEquals("test-list-reorder2",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user.getId(),
+                new Date()).getContent());
 
         List<CardData> actionLists = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
         assertEquals(2, actionLists.size());
@@ -478,7 +486,7 @@ public class CardDataServiceTest {
                 assertEquals(
                     i,
                     cardDataService.createActionItem(card1.getId(), actionLists.get(l).getId(), "test-move-" + i,
-                        user, new Date()).getOrder());
+                        user.getId(), new Date()).getOrder());
             }
         }
 
@@ -522,9 +530,11 @@ public class CardDataServiceTest {
 
         assertTrue(cardDataService.findAllActionListsAndItemsByCardId(card1.getId()).isEmpty());
         assertEquals("test-list-reorder1",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder1", user.getId(),
+                new Date()).getContent());
         assertEquals("test-list-reorder2",
-            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user, new Date()).getContent());
+            cardDataService.createActionList(card1.getId(), "test-list-reorder2", user.getId(),
+                new Date()).getContent());
 
         List<CardData> actionLists = cardDataRepo.findAllDataLightByCardIdAndType(card1.getId(), CardType.ACTION_LIST);
         assertEquals(2, actionLists.size());
@@ -539,7 +549,7 @@ public class CardDataServiceTest {
                 assertEquals(
                     i,
                     cardDataService.createActionItem(card1.getId(), actionLists.get(l).getId(), "test-move-" + i,
-                        user, new Date()).getOrder());
+                        user.getId(), new Date()).getOrder());
             }
         }
 
@@ -680,7 +690,7 @@ public class CardDataServiceTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void testCheckEnsureReferenceIdConstraints() {
-        CardData list = cardDataService.createActionList(card1.getId(), "name", user, new Date());
+        CardData list = cardDataService.createActionList(card1.getId(), "name", user.getId(), new Date());
         cardDataRepo.createDataWithReferenceOrder(card1.getId(), list.getId(), CardType.COMMENT, "content");
     }
 }

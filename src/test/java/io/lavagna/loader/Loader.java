@@ -16,21 +16,6 @@
  */
 package io.lavagna.loader;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.commons.lang3.RandomUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -53,6 +38,21 @@ import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.config.TestServiceConfig;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.apache.commons.lang3.RandomUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * <p>
  * Run this class for loading data in the default database configured in {@link TestServiceConfig}.
@@ -61,7 +61,7 @@ import io.lavagna.service.config.TestServiceConfig;
  * <p/>
  * NOTES: for logging the slow queries with mysql:
  * <p/>
- * 
+ *
  * <pre>
  * [mysqld]
  * slow_query_log = 1
@@ -217,7 +217,7 @@ public class Loader {
 
 	/**
 	 * 30 card for column in board.
-	 * 
+	 *
 	 * @param bc
 	 * @param ac
 	 */
@@ -256,11 +256,11 @@ public class Loader {
 			CardLabelRepository clr = ac.getBean(CardLabelRepository.class);
 
 			for (int ic = 0; ic < 20; ic++) {
-				cds.createComment(c.getId(), commentGen(), new Date(), randomUser(users));
+				cds.createComment(c.getId(), commentGen(), new Date(), randomUser(users).getId());
 			}
 
 			// description
-			cds.updateDescription(c.getId(), commentGen(), new Date(), randomUser(users));
+			cds.updateDescription(c.getId(), commentGen(), new Date(), randomUser(users).getId());
 
 			// milestone
 			CardLabel clMilestone = clr.findLabelByName(p.getId(), "MILESTONE", LabelDomain.SYSTEM);
@@ -293,11 +293,13 @@ public class Loader {
 			}
 
 			// action list
-			CardData actionList1 = cds.createActionList(c.getId(), "action list 1", randomUser(users), new Date());
-			CardData actionList2 = cds.createActionList(c.getId(), "action list 2", randomUser(users), new Date());
+			CardData actionList1 = cds.createActionList(c.getId(), "action list 1", randomUser(users).getId(),
+                new Date());
+			CardData actionList2 = cds.createActionList(c.getId(), "action list 2", randomUser(users).getId(),
+                new Date());
 			for (int ia = 0; ia < 5; ia++) {
-				cds.createActionItem(c.getId(), actionList1.getId(), "item" + ia, randomUser(users), new Date());
-				cds.createActionItem(c.getId(), actionList2.getId(), "item" + ia, randomUser(users), new Date());
+				cds.createActionItem(c.getId(), actionList1.getId(), "item" + ia, randomUser(users).getId(), new Date());
+				cds.createActionItem(c.getId(), actionList2.getId(), "item" + ia, randomUser(users).getId(), new Date());
 			}
 
 			createdCardCounter.incrementAndGet();

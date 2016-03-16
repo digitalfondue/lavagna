@@ -36,7 +36,7 @@ class ActionListCreate extends AbstractProcessEvent {
 
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
-		CardData cd = cardDataService.createActionList(cardId(e), e.getContent(), user, time);
+		CardData cd = cardDataService.createActionList(cardId(e), e.getContent(), user.getId(), time);
 		context.getActionListId().put(event.getDataId(), cd.getId());
 	}
 

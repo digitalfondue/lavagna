@@ -158,7 +158,8 @@ public class EventRepositoryTest {
 		Date oneDayAgo = DateUtils.addDays(now, -1);
 		Date twoDaysAgo = DateUtils.addDays(now, -2);
 
-		CardData comment = cardDataService.createComment(card1.getId(), "test-update-comment", twoDaysAgo, userAlt);
+		CardData comment = cardDataService.createComment(card1.getId(), "test-update-comment", twoDaysAgo,
+            userAlt.getId());
 		assertEquals(1, cardDataService.findAllCommentsByCardId(card1.getId()).size());
 
 		CardFull initialCardStatus = cardRepository.findFullBy(card1.getId());
