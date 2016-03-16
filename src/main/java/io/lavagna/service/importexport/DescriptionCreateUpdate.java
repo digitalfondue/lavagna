@@ -36,7 +36,7 @@ class DescriptionCreateUpdate extends AbstractProcessEvent {
 
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
-		cardDataService.updateDescription(cardId(e), e.getContent(), time, user);
+		cardDataService.updateDescription(cardId(e), e.getContent(), time, user.getId());
 	}
 
 }

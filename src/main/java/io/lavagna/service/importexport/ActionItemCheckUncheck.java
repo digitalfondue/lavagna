@@ -37,7 +37,7 @@ class ActionItemCheckUncheck extends AbstractProcessEvent {
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
 		boolean toggled = event.getEvent() == EventType.ACTION_ITEM_CHECK;
-		cardDataService.toggleActionItem(context.getActionItemId().get(event.getDataId()), toggled, user, time);
+		cardDataService.toggleActionItem(context.getActionItemId().get(event.getDataId()), toggled, user.getId(), time);
 	}
 
 }

@@ -98,7 +98,7 @@ public class ProjectServiceFindRelatedTest {
 
 		card = cardService.createCard("test", column.getId(), new Date(), user);
 
-		cardData = cardDataService.createComment(card.getId(), "comment", new Date(), user);
+		cardData = cardDataService.createComment(card.getId(), "comment", new Date(), user.getId());
 
 		cardLabel = cardLabelRepository.addLabel(project.getId(), false, LabelType.STRING, LabelDomain.USER, "test",
 				0xffffff);
@@ -106,7 +106,7 @@ public class ProjectServiceFindRelatedTest {
 		cardLabelRepository.addLabelValueToCard(cardLabel, card.getId(), new LabelValue("test"));
 		cardLabelValue = cardLabelRepository.findCardLabelValuesByBoardId(board.getId(), BoardColumnLocation.BOARD)
 				.get(card.getId()).get(cardLabel).get(0);
-		
+
 		cardLabelList = cardLabelRepository.addLabel(project.getId(), true, LabelType.LIST, LabelDomain.USER, "list", 0);
 		labelListValue = cardLabelRepository.addLabelListValue(cardLabelList.getId(), "value1");
 	}
@@ -152,22 +152,22 @@ public class ProjectServiceFindRelatedTest {
 	public void testFindRelatedProjectShortNameByLabelValueId() {
 		Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByLabelValueId(cardLabelValue.getCardLabelValueId()));
 	}
-	
+
 	@Test
     public void testFindRelatedProjectShortNameByEventId() {
 	    int eventId = cardRepository.fetchAllActivityByCardId(card.getId()).get(0).getId();
 	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByEventId(eventId));
 	}
-	
+
 
 	@Test
     public void testFindRelatedProjectShortNameByLabelListValudIdPath() {
 	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByLabelListValudIdPath(labelListValue.getId()));
 	}
-	
+
 	@Test
     public void testFindRelatedProjectShortNameByColumnDefinitionId() {
 	    Assert.assertEquals(project.getShortName(), projectService.findRelatedProjectShortNameByColumnDefinitionId(column.getDefinitionId()));
 	}
-	
+
 }

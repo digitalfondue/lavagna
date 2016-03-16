@@ -17,6 +17,7 @@
 package io.lavagna.service;
 
 import io.lavagna.model.Card;
+import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataCount;
 import io.lavagna.model.CardDataFull;
 import io.lavagna.model.CardDataHistory;
@@ -25,6 +26,7 @@ import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardFullWithCountsHolder;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
 import io.lavagna.model.LabelAndValue;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -165,17 +168,34 @@ public class CardService {
             }
         }
 
-        // TODO
-        // checklists
-        // use the right user for desc, comments and checklists
-
+        // Copy the description
         CardDataHistory desc = cardDataService.findLatestDescriptionByCardId(cardToCopyId);
-        if(desc != null) {
-            cardDataService.updateDescription(newCard.getId(), desc.getContent(), new Date(), user);
+        if (desc != null) {
+            cardDataService.updateDescription(newCard.getId(), desc.getContent(), desc.getTime(), desc.getUserId());
         }
 
-        for (CardDataFull cardData : cardDataService.findAllCommentsByCardId(cardToCopyId)) {
-            cardDataService.createComment(newCard.getId(), cardData.getContent(), new Date(), user);
+        // Copy comments
+        for (CardDataFull cData : cardDataService.findAllCommentsByCardId(cardToCopyId)) {
+            cardDataService.createComment(newCard.getId(), cData.getContent(), cData.getTime(), cData.getUserId());
+        }
+
+        // Copy action lists
+        Map<Integer, Integer> actionListsNewIds = new HashMap<>();
+        for (CardData iData : cardDataService.findAllActionListsAndItemsByCardId(cardToCopyId)) {
+
+            if (iData.getType().equals(CardType.ACTION_LIST)) {
+                CardData actionList = cardDataService
+                    .createActionList(newCard.getId(), iData.getContent(), user.getId(), new Date());
+
+                actionListsNewIds.put(iData.getId(), actionList.getId());
+            } else {
+                CardData actionItem = cardDataService.createActionItem(newCard.getId(),
+                    actionListsNewIds.get(iData.getReferenceId()), iData.getContent(), user.getId(), new Date());
+
+                if (iData.getType().equals(CardType.ACTION_CHECKED)) {
+                    cardDataService.toggleActionItem(actionItem.getId(), true, user.getId(), new Date());
+                }
+            }
         }
 
         return newCard;

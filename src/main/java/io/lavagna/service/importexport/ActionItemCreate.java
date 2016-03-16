@@ -38,7 +38,7 @@ class ActionItemCreate extends AbstractProcessEvent {
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
 		CardData cd = cardDataService.createActionItem(cardId(e),
-				context.getActionListId().get(event.getPreviousDataId()), e.getContent(), user, time);
+				context.getActionListId().get(event.getPreviousDataId()), e.getContent(), user.getId(), time);
 		context.getActionItemId().put(event.getDataId(), cd.getId());
 	}
 

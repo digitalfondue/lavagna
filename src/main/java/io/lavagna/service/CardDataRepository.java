@@ -29,7 +29,6 @@ import io.lavagna.model.CardIdAndContent;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event.EventType;
 import io.lavagna.model.FileDataLight;
-import io.lavagna.model.User;
 import io.lavagna.query.CardDataQuery;
 
 import java.io.IOException;
@@ -187,7 +186,7 @@ public class CardDataRepository {
 
 	/**
 	 * Order the action list. Additionally, the ids are filtered.
-	 * 
+	 *
 	 * @param cardId
 	 * @param data
 	 */
@@ -215,7 +214,7 @@ public class CardDataRepository {
 
 	/**
 	 * Order the action item inside a action list. Additionally, the ids are filtered.
-	 * 
+	 *
 	 * @param cardId
 	 * @param newReferenceId
 	 * @param newDataOrder
@@ -247,7 +246,7 @@ public class CardDataRepository {
 	}
 
 	@Transactional(readOnly = false)
-	public int updateType(int id, Set<CardType> oldTypes, CardType newType, User user) {
+	public int updateType(int id, Set<CardType> oldTypes, CardType newType) {
 		LOG.debug("updateType: {item: {}, type: {}}", id, newType);
 		return queries.updateType(newType.toString(), id, toStringList(oldTypes));
 	}
