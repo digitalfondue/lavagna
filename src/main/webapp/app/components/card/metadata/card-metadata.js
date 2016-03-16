@@ -33,9 +33,7 @@
         loadDescription();
 
         ctrl.updateDescription = function(description) {
-            Card.updateDescription(ctrl.card.id, description).then(function() {
-                description.content = null;
-            });
+            Card.updateDescription(ctrl.card.id, description);
         };
 
         var loadColumn = function(columnId) {
