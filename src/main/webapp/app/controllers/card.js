@@ -87,9 +87,7 @@
 		loadDescription();
 
 		$scope.updateDescription = function(description) {
-			Card.updateDescription(card.id, description).then(function() {
-				description.content = null;
-			});
+			Card.updateDescription(card.id, description);
 		};
 
 		var loadComments = function() {
