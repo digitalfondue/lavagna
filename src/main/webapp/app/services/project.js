@@ -74,7 +74,11 @@
 
 			updateColumnDefinition: function (shortName, definition, color) {
 				return $http.put('api/project/' + shortName + '/definition', {definition: definition, color: color}).then(extractData);
-			}
+			},
+
+            findAllColumns: function (shortName) {
+                return $http.get('api/project/' + shortName + '/columns-in/').then(extractData);
+            }
 		};
 	});
 

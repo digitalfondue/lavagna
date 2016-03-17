@@ -52,8 +52,8 @@
 			BulkOperations.removeAssign(cardByProject, {id: currentUserId});
 		};
 
-        $scope.cloneCard  = function(card) {
-            Card.clone(card.id, card.columnId);
+        $scope.cloneCard  = function(card, clonetoColumn) {
+            Card.clone(card.id, clonetoColumn.columnId);
         };
 
 		$scope.watchCard = function(cardId, currentUserId) {
@@ -89,7 +89,7 @@
 	        	size: 'md',
 	        	windowClass: 'lavagna-modal'
 	        });
-        }
+        };
 
         // dependencies for card fragment
         $scope.cardFragmentDependencies = {};
