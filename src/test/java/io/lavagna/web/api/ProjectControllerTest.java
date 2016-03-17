@@ -28,6 +28,7 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.service.EventEmitter;
@@ -64,6 +65,8 @@ public class ProjectControllerTest {
 	StatisticsService statisticsService;
 	@Mock
 	private User user;
+	@Mock
+	BoardColumnRepository boardColumnRepository;
 
 	private ProjectController projectController;
 
@@ -74,7 +77,7 @@ public class ProjectControllerTest {
 	@Before
 	public void prepare() {
 		projectController = new ProjectController(projectService, boardRepository, eventEmitter, statisticsService,
-				searchService);
+				searchService, boardColumnRepository);
 
 		project = new Project(0, "test", projectShortName, "Test Project", false);
 	}
