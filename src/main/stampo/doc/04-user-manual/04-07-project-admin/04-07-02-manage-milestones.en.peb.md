@@ -8,7 +8,9 @@ To create a new milestone, type the name in the **New Milestone** form, and then
 
 To edit a milestone name, click <i class="fa fa-pencil"></i>, enter the new name, and save with <i class="fa fa-check"></i>. To cancel the operation, click <i class="fa fa-times"></i>.
 
-The order of the milestones can be changed using <i class="fa fa-arrow-up"></i> and <i class="fa fa-arrow-down"></i>.
+A date can be assigned to the milestone using <i class="fa fa-calendar"></i> so it'll show up in the calendar feed (ICS).
+
+The order of the milestones can be changed using <i class="fa fa-angle-up"></i>, <i class="fa fa-angle-down"></i>, <i class="fa fa-angle-double-up"></i> and <i class="fa fa-angle-double-down"></i>.
 
 A milestone can be closed clicking <i class="fa fa-square-o"></i>, and reopen using <i class="fa fa-check-square"></i>.
 
