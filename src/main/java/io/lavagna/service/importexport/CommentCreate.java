@@ -36,7 +36,7 @@ class CommentCreate extends AbstractProcessEvent {
 
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
-		CardData cd = cardDataService.createComment(cardId(e), e.getContent(), time, user);
+		CardData cd = cardDataService.createComment(cardId(e), e.getContent(), time, user.getId());
 		context.getCommentsId().put(event.getDataId(), cd.getId());
 	}
 

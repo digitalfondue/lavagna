@@ -331,7 +331,7 @@ public class ImportService {
 			Map<String, CardLabel> lavagnaLabels, CardLabel dueDateLabel, CardLabel assignedLabel) {
 		int cardId = cardService.createCard(card.getName(), boardColumnId, new Date(), user).getId();
 		if (StringUtils.isNotEmpty(card.getDesc())) {
-			cardDataService.updateDescription(cardId, card.getDesc(), new Date(), user);
+			cardDataService.updateDescription(cardId, card.getDesc(), new Date(), user.getId());
 		}
 
 		// Due date
@@ -342,12 +342,12 @@ public class ImportService {
 
 		// Checklists
 		for (TrelloChecklist checklist : card.checklists) {
-			CardData data = cardDataService.createActionList(cardId, checklist.getName(), user, new Date());
+			CardData data = cardDataService.createActionList(cardId, checklist.getName(), user.getId(), new Date());
 			for (Integer pos : checklist.items.keySet()) {
 				TrelloChecklistItem item = checklist.items.get(pos);
-				CardData itemData = cardDataService.createActionItem(cardId, data.getId(), item.name, user, new Date());
+				CardData itemData = cardDataService.createActionItem(cardId, data.getId(), item.name, user.getId(), new Date());
 				if (item.isChecked) {
-					cardDataService.toggleActionItem(itemData.getId(), true, user, new Date());
+					cardDataService.toggleActionItem(itemData.getId(), true, user.getId(), new Date());
 				}
 			}
 		}
@@ -355,7 +355,7 @@ public class ImportService {
 		// Comments
 		for (TrelloComment comment : card.comments) {
 			cardDataService.createComment(cardId, comment.getText(), comment.getDate(),
-					comment.getUser() != null ? comment.getUser() : user);
+                (comment.getUser() != null ? comment.getUser() : user).getId());
 		}
 
 		// Archive if closed

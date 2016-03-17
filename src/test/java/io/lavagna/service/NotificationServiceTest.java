@@ -139,7 +139,7 @@ public class NotificationServiceTest {
 	    labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
                 null, null, null, user.getId(), null), user, new Date());
 
-	    cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
+	    cardDataService.createComment(card1.getId(), "first comment", new Date(), user.getId());
 
 	    notificationService.check(DateUtils.addDays(new Date(), 1));
 	    Assert.assertTrue(notificationService.check(DateUtils.addDays(new Date(), 2)).contains(user.getId()));
@@ -153,9 +153,9 @@ public class NotificationServiceTest {
 		labelService.addLabelValueToCard(watchedLabel.getId(), card2.getId(), new CardLabelValue.LabelValue(null, null,
 				null, null, user.getId(), null), user, new Date());
 
-		cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
+		cardDataService.createComment(card1.getId(), "first comment", new Date(), user.getId());
 
-		cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), user);
+		cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), user.getId());
 
 		MailConfig mc = mock(MailConfig.class);
 		when(mc.isMinimalConfigurationPresent()).thenReturn(true);
@@ -178,9 +178,9 @@ public class NotificationServiceTest {
         labelService.addLabelValueToCard(watchedLabel.getId(), card2.getId(), new CardLabelValue.LabelValue(null, null,
             null, null, user.getId(), null), user, new Date());
 
-        cardDataService.createComment(card1.getId(), "first comment", new Date(), user);
+        cardDataService.createComment(card1.getId(), "first comment", new Date(), user.getId());
 
-        cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), otherUser);
+        cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), otherUser.getId());
 
         MailConfig mc = mock(MailConfig.class);
         when(mc.isMinimalConfigurationPresent()).thenReturn(true);

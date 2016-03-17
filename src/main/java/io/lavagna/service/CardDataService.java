@@ -90,34 +90,34 @@ public class CardDataService {
     }
 
     @Transactional(readOnly = false)
-    private CardData createDescription(int cardId, String content, Date time, User user) {
+    private CardData createDescription(int cardId, String content, Date time, int userId) {
         CardData description = cardDataRepository.createData(cardId, CardType.DESCRIPTION, content);
-        eventRepository.insertCardDataEvent(description.getId(), cardId, EventType.DESCRIPTION_CREATE, user.getId(),
+        eventRepository.insertCardDataEvent(description.getId(), cardId, EventType.DESCRIPTION_CREATE, userId,
             description.getId(), time);
         return description;
     }
 
     @Transactional(readOnly = false)
-    public CardData createComment(int cardId, String content, Date time, User user) {
+    public CardData createComment(int cardId, String content, Date time, int userId) {
         CardData comment = cardDataRepository.createData(cardId, CardType.COMMENT, content);
-        eventRepository.insertCardDataEvent(comment.getId(), cardId, EventType.COMMENT_CREATE, user.getId(),
+        eventRepository.insertCardDataEvent(comment.getId(), cardId, EventType.COMMENT_CREATE, userId,
             comment.getId(), time);
         return comment;
     }
 
     @Transactional(readOnly = false)
-    public CardData createActionList(int cardId, String name, User user, Date time) {
+    public CardData createActionList(int cardId, String name, int userId, Date time) {
         CardData actionList = cardDataRepository.createData(cardId, CardType.ACTION_LIST, name);
-        eventRepository.insertCardDataEvent(actionList.getId(), cardId, EventType.ACTION_LIST_CREATE, user.getId(),
+        eventRepository.insertCardDataEvent(actionList.getId(), cardId, EventType.ACTION_LIST_CREATE, userId,
             actionList.getId(), time);
         return actionList;
     }
 
     @Transactional(readOnly = false)
-    public CardData createActionItem(int cardId, int actionListId, String name, User user, Date time) {
+    public CardData createActionItem(int cardId, int actionListId, String name, int userId, Date time) {
         CardData actionItem = cardDataRepository.createDataWithReferenceOrder(cardId, actionListId,
             CardType.ACTION_UNCHECKED, name);
-        eventRepository.insertCardDataEvent(actionItem.getId(), cardId, EventType.ACTION_ITEM_CREATE, user.getId(),
+        eventRepository.insertCardDataEvent(actionItem.getId(), cardId, EventType.ACTION_ITEM_CREATE, userId,
             actionItem.getReferenceId(), time);
         return actionItem;
     }
@@ -162,12 +162,12 @@ public class CardDataService {
     }
 
     @Transactional(readOnly = false)
-    public int toggleActionItem(int actionitemId, boolean status, User user, Date time) {
+    public int toggleActionItem(int actionitemId, boolean status, int userId, Date time) {
         CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionitemId);
         eventRepository.insertCardDataEvent(actionitemId, actionItem.getCardId(), status ? EventType.ACTION_ITEM_CHECK
-            : EventType.ACTION_ITEM_UNCHECK, user.getId(), actionItem.getReferenceId(), time);
+            : EventType.ACTION_ITEM_UNCHECK, userId, actionItem.getReferenceId(), time);
         return cardDataRepository.updateType(actionitemId, of(CardType.ACTION_CHECKED, CardType.ACTION_UNCHECKED),
-            status ? CardType.ACTION_CHECKED : CardType.ACTION_UNCHECKED, user);
+            status ? CardType.ACTION_CHECKED : CardType.ACTION_UNCHECKED);
     }
 
     @Transactional(readOnly = false)
@@ -194,11 +194,11 @@ public class CardDataService {
     }
 
     @Transactional(readOnly = false)
-    public int updateDescription(int cardId, String content, Date time, User user) {
+    public int updateDescription(int cardId, String content, Date time, int userId) {
         // if no data is returned, then create the description
         List<CardData> descriptions = cardDataRepository.findAllDataLightByCardIdAndType(cardId, CardType.DESCRIPTION);
         if (descriptions.isEmpty()) {
-            return createDescription(cardId, content, time, user).getId();
+            return createDescription(cardId, content, time, userId).getId();
         }
 
         // there can (should) be only one
@@ -210,7 +210,7 @@ public class CardDataService {
             description.getId(), CardType.DESCRIPTION_HISTORY, description.getContent());
         // insert new data
         eventRepository.insertCardDataEvent(description.getId(), description.getCardId(), EventType.DESCRIPTION_UPDATE,
-            user.getId(), historyDescription.getId(), time);
+            userId, historyDescription.getId(), time);
         return cardDataRepository.updateContent(description.getId(), of(CardType.DESCRIPTION), content);
     }
 

@@ -39,25 +39,29 @@
 		};
 		$scope.$on('selectall', $scope.selectAllInColumn);
 		$scope.$on('unselectall', $scope.unSelectAllInColumn);
-		
+
 		$scope.assignToCurrentUser = function(cardId, currentUserId) {
 			var cardByProject = {};
 			cardByProject[$stateParams.projectName] = [cardId];
 			BulkOperations.assign(cardByProject, {id: currentUserId});
 		};
-		
+
 		$scope.removeAssignForCurrentUser = function(cardId, currentUserId) {
 			var cardByProject = {};
 			cardByProject[$stateParams.projectName] = [cardId];
 			BulkOperations.removeAssign(cardByProject, {id: currentUserId});
 		};
-		
+
+        $scope.cloneCard  = function(card, clonetoColumn) {
+            Card.clone(card.id, clonetoColumn.columnId);
+        };
+
 		$scope.watchCard = function(cardId, currentUserId) {
 			var cardByProject = {};
 			cardByProject[$stateParams.projectName] = [cardId];
 			BulkOperations.watch(cardByProject, {id: currentUserId});
 		};
-		
+
 		$scope.unWatchCard = function(cardId, currentUserId) {
 			var cardByProject = {};
 			cardByProject[$stateParams.projectName] = [cardId];
@@ -85,13 +89,13 @@
 	        	size: 'md',
 	        	windowClass: 'lavagna-modal'
 	        });
-        }
-        
+        };
+
         // dependencies for card fragment
         $scope.cardFragmentDependencies = {};
         var cardFragmentDependenciesToCopy = ['labelNameToId',
-		                      'moveCard', 'currentUserId', 'columns', 
-		                      'watchCard', 'unWatchCard', 'assignToCurrentUser', 'removeAssignForCurrentUser'];
+		                      'moveCard', 'currentUserId', 'columns',
+		                      'watchCard', 'unWatchCard', 'assignToCurrentUser', 'removeAssignForCurrentUser', 'cloneCard'];
 		for(var k in cardFragmentDependenciesToCopy) {
 			$scope.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = $scope[cardFragmentDependenciesToCopy[k]];
 		}
@@ -151,7 +155,7 @@
 		//keep track of the selected cards
 		$scope.selectedCards = {};
 		$scope.foundCards = {};
-		
+
 		$scope.editMode = false;
 		$scope.switchEditMode = function() {
 			$scope.editMode = !$scope.editMode;
@@ -411,24 +415,24 @@
 	    	r[projectName] = selectedVisibleCardsId();
 	    	return r;
 	    };
-	    
+
 	    $scope.formatBulkRequest = formatBulkRequest;
 	    $scope.selectedVisibleCardsIdByColumnId = selectedVisibleCardsIdByColumnId;
 
 	    //-----------------------------------------------------------------------------------------------------
-	    
+
 	    //some sidebar controls
 	    $scope.sideBarLocation = undefined;
 	    $scope.toggledSidebar = false;
-	    
+
 	    $scope.sidebarHandler = function(location) {
 	    	 $scope.sideBarLocation = location;
-	    	 
+
 	    	// shall we close the sidebar?
 			if(location === 'NONE' && $scope.toggledSidebar) {
 				$scope.toggledSidebar = false;
 			};
-				
+
 			// shall we open the sidebar?
 			if(location !== 'NONE' && !$scope.toggledSidebar) {
 				$scope.toggledSidebar = true;
