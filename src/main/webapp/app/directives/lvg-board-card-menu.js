@@ -63,7 +63,7 @@
 					var windowWidth = $(window).width();
 					var windowHeight = $(window).height();
 
-                    Project.findAllColumns($scope.project).then(function(columns) {
+                    Project.findAllColumns($scope.cardFragmentCtrl.project).then(function(columns) {
                         $scopeForCardMenu.projectColumns = columns;
                     });
 
