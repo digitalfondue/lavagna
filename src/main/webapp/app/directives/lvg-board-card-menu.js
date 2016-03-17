@@ -5,7 +5,7 @@
 	var directives = angular.module('lavagna.directives');
 
 	//FIXME this directive is hacky
-	directives.directive('lvgBoardCardMenu', function ($compile, $filter, Card, Board, BulkOperations) {
+	directives.directive('lvgBoardCardMenu', function ($compile, $filter, Card, Board, Project, BulkOperations) {
 		return {
 			restrict: 'A',
 			link: function($scope, element, attrs) {
@@ -63,6 +63,10 @@
 					var windowWidth = $(window).width();
 					var windowHeight = $(window).height();
 
+                    Project.findAllColumns($scope.project).then(function(columns) {
+                        $scopeForCardMenu.projectColumns = columns;
+                    });
+
 					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
 
 
@@ -89,7 +93,12 @@
 			            BulkOperations.removeAssign(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
 			        };
 
-			        $scopeForCardMenu.watchCard = function() {
+                    $scopeForCardMenu.cloneCard  = function(card, clonetoColumn) {
+                        Card.clone(card.id, clonetoColumn.columnId);
+                    };
+
+
+                    $scopeForCardMenu.watchCard = function() {
 			            var cardByProject = {};
 			            cardByProject[projectShortName] = [card.id];
 			            BulkOperations.watch(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});

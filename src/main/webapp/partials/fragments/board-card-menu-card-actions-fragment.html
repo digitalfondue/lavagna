@@ -1,5 +1,5 @@
-<div data-ng-init="moveColumnFlag = false">
-	<div data-ng-hide="moveColumnFlag">
+<div data-ng-init="moveColumnFlag = false; cloneCardFlag = false;">
+	<div data-ng-hide="moveColumnFlag || cloneCardFlag">
 		<ul class="lvg-board-card-menu">
 			<li data-lvg-has-permission="MOVE_CARD">
 				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveColumnFlag = true;" data-ng-bind="'partials.fragments.card-fragment.moveToColumn' | translate"></button>
@@ -30,10 +30,27 @@
 			</li>
             <li class="divider" data-lvg-has-permission="CREATE_CARD"></li>
             <li data-lvg-has-permission="CREATE_CARD">
-                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="cloneCard(card); close();" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
+                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="cloneCardFlag = true;" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
             </li>
 		</ul>
 	</div>
+    <div data-ng-show="cloneCardFlag" class="fixed-card-menu-panel">
+        <form data-ng-role="form" data-ng-submit="cloneCard(card, clonetoColumn); close();">
+            <div class="lavagna-panel">
+                <div class="body-full">
+                    <div class="form-group">
+                        <select class="form-control" required data-ng-options="col.columnName group by col.board for col in projectColumns | orderBy:['board','columnName']" data-ng-model="clonetoColumn"></select>
+                    </div>
+                </div>
+                <div class="footer clearfix">
+                    <div>
+                        <button type="submit" class="lvg-button lvg-button-submit" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
+                        <button type="button" data-ng-click="cloneCardFlag = false;" class="lvg-button lvg-button-default" data-ng-bind="'partials.fragments.move-card-to-column-modal-fragment.cancel' | translate"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 	<div data-ng-show="moveColumnFlag" class="fixed-card-menu-panel">
 		<form data-ng-role="form" data-ng-submit="move(toColumn);">
 			<div class="lavagna-panel">
