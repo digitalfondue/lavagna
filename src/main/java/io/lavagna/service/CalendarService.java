@@ -155,6 +155,10 @@ public class CalendarService {
             throw new SecurityException("Calendar feed disabled");
         }
 
+        final String utcTimeZone = TimeZones.getUtcTimeZone().getID();
+        final TzId tzParam = new TzId(utcTimeZone);
+
+
         final Calendar calendar = new Calendar();
         calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
         calendar.getProperties().add(Version.VERSION_2_0);
@@ -165,8 +169,7 @@ public class CalendarService {
             configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
 
         final List<VEvent> events = new ArrayList<>();
-        final String utcTimeZone = TimeZones.getUtcTimeZone().getDisplayName();
-        
+
         final SimpleDateFormat releaseDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
         // Milestones
@@ -179,7 +182,7 @@ public class CalendarService {
 
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
-                    
+
                     java.util.Date date = releaseDateFormatter.parse(m.getMetadata().get("releaseDate") + " 12:00");
 
                     SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
@@ -219,7 +222,6 @@ public class CalendarService {
                         event.getAlarms().add(reminder);
                     }
 
-                    TzId tzParam = new TzId(utcTimeZone);
                     event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
                     // Url
@@ -275,7 +277,6 @@ public class CalendarService {
                     event.getAlarms().add(reminder);
                 }
 
-                TzId tzParam = new TzId(utcTimeZone);
                 event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
                 // Organizer
