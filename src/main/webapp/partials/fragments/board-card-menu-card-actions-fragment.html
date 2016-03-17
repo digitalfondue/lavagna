@@ -4,6 +4,10 @@
 			<li data-lvg-has-permission="MOVE_CARD">
 				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveColumnFlag = true;" data-ng-bind="'partials.fragments.card-fragment.moveToColumn' | translate"></button>
 			</li>
+            <li class="divider" data-lvg-has-permission="CREATE_CARD"></li>
+            <li data-lvg-has-permission="CREATE_CARD">
+                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="cloneCardFlag = true;" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
+            </li>
 			<li class="divider" data-lvg-has-permission="MOVE_CARD"></li>
 			<li data-lvg-has-permission="MOVE_CARD">
 				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'ARCHIVE'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToArchive' | translate"></button>
@@ -28,10 +32,6 @@
 			<li data-lvg-has-permission="UPDATE_CARD" data-ng-if="isAssignedToCard(card.labels, currentUserId)">
 				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="removeAssignForCurrentUser(card.id, currentUserId); close();" data-ng-bind="'partials.fragments.card-fragment.surrender' | translate"></button>
 			</li>
-            <li class="divider" data-lvg-has-permission="CREATE_CARD"></li>
-            <li data-lvg-has-permission="CREATE_CARD">
-                <button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="cloneCardFlag = true;" data-ng-bind="'partials.fragments.card-fragment.clone' | translate"></button>
-            </li>
 		</ul>
 	</div>
     <div data-ng-show="cloneCardFlag" class="fixed-card-menu-panel">
