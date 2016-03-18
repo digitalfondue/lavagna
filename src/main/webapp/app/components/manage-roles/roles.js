@@ -74,13 +74,6 @@
             });
         };
 
-        ctrl.createRole = function(roleName) {
-            Permission.createRole(roleName).catch(function() {
-                Notification.addAutoAckNotification('error', {
-                    key: 'notification.manage-role.createRole.error'
-                }, false);
-            });
-        };
 
         ctrl.deleteRole = function(roleName) {
             Permission.deleteRole(roleName).catch(function() {
@@ -133,7 +126,7 @@
 
         //permission modal
         ctrl.open = function(roleName, roleDescriptor) {
-            var modalInstance = $mdDialog.show({
+            $mdDialog.show({
             	autoWrap:false,
                 templateUrl: 'app/components/manage-roles/permissions/permissions-modal.html',
                 controller: function(role, roleDescriptor, permissionsByCategory, project) {
@@ -144,15 +137,15 @@
 
                     this.submit = function() {
                     	$mdDialog.hide();
-                    }
+                    };
 
                     this.close = function() {
                     	$mdDialog.hide();
-                    }
+                    };
 
                     this.cancel = function() {
                     	$mdDialog.hide();
-                    }
+                    };
                 },
                 controllerAs: 'modalResolver',
                 resolve: {
@@ -171,5 +164,30 @@
                 }
             });
         }
+        
+        //
+        ctrl.showAddRoleDialog = function($event) {
+        	$mdDialog.show({
+        		templateUrl: 'app/components/manage-roles/add-role-dialog.html',
+        		targetEvent: $event,
+        		controller: function() {
+        			var ctrl = this;
+        			ctrl.createRole = createRole;
+        			
+        			ctrl.close = function() {
+                    	$mdDialog.hide();
+                    };
+        		},
+        		controllerAs: 'addRoleDialogCtrl'
+        	});
+        }
+        
+        function createRole(roleName) {
+            Permission.createRole(roleName).catch(function() {
+                Notification.addAutoAckNotification('error', {
+                    key: 'notification.manage-role.createRole.error'
+                }, false);
+            });
+        };
     };
 })();

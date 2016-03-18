@@ -11,23 +11,6 @@
     </div>
 </div>
 
-<div class="col-md-offset-5 col-md-3">
-    <div class="lavagna-form-panel lavagna-container-bottom-margin">
-        <form data-ng-submit="manageRolesCtrl.createRole(manageRolesCtrl.view.newRole.name);manageRolesCtrl.view.newRole = null">
-            <div class="input-group">
-                <input type="text"
-                       placeholder="{{ 'partials.fragments.common-manage-roles.roleName' | translate }}" required="required"
-                       data-ng-model="manageRolesCtrl.view.newRole.name" class="form-control"
-                       autocomplete="off"
-                       pattern="[a-zA-Z0-9_\-\+]+"
-                       data-lvg-on-esc>
-				<span class="input-group-btn">
-					<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
-				</span>
-            </div>
-        </form>
-    </div>
-</div>
 
 <div class="col-xs-12" data-ng-repeat="(roleName, roleDescriptor) in manageRolesCtrl.roles"
      data-ng-init="manageRolesCtrl.view.roleState[roleName] = {}">
@@ -111,3 +94,8 @@
         </div>
     </div>
 </div>
+
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="manageRolesCtrl.showAddRoleDialog($event)">
+    <md-tooltip md-direction="top">{{'partials.fragments.common-manage-roles.addNewRole' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="add"></md-icon>
+</md-button>
