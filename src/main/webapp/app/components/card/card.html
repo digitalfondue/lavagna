@@ -27,14 +27,11 @@
                                         </ul>
                                     </div>
                                     <div class="body">
-                                        <p data-translate data-translate-value-date="{{cardCtrl.card.createTime | date: 'medium' }}">card.created</p>
-                                        <p data-translate data-translate-value-date="{{cardCtrl.card.lastUpdateTime | date: 'medium' }}">card.lastUpdated</p>
-                                        <p><span data-translate>card.lastUpdatedBy</span> <span data-lvg-user-tooltip="cardCtrl.card.lastUpdateUserId"></span></p>
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0]">
                                             <span data-translate data-translate-value-date="{{cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0].value.valueTimestamp | date: 'MMM d, y'}}">card.dueDate</span>
-									    <span class="fa fa-times lavagna-pointer"
-                                              data-ng-click="cardCtrl.removeDueDate()"
-                                              data-lvg-has-permission="UPDATE_CARD"></span>
+									        <span class="fa fa-times lavagna-pointer"
+                                                data-ng-click="cardCtrl.removeDueDate()"
+                                                data-lvg-has-permission="UPDATE_CARD"></span>
                                         </p>
                                     </div>
                                     <div class="footer" data-ng-show="cardCtrl.view.editMetadataDates">
@@ -93,7 +90,6 @@
                                         </ul>
                                     </div>
                                     <div class="body">
-                                        <p><span data-translate>card.createdBy</span> <span data-lvg-user-tooltip="cardCtrl.card.userId"></span></p>
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">
                                             <span data-translate>card.assignedTo</span> <span
                                             data-ng-repeat="assigned in cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">

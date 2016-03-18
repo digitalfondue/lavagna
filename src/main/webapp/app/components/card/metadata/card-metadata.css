@@ -4,11 +4,15 @@
 }
 
 .lvg-card-metadata__item {
-    margin-top:10px;
+    margin-top:5px;
 }
 
 .lvg-card-metadata__status {
     display: inline-block;
+    padding: 3px 2px;
+}
+
+.lvg-card-metadata__item-padded {
     padding: 3px 2px;
 }
 

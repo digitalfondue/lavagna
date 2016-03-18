@@ -26,10 +26,10 @@
                     <span data-translate>card.metadata</span>
                 </div>
                 <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
-                    <div flex="50">
+                    <div flex="30" flex-md="45" class="lvg-card-metadata__item-padded">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.status</span>
                     </div>
-                    <div flex="50">
+                    <div flex="70" flex-md="55">
                         <span data-ng-if="$ctrl.column.columnLocation === 'BOARD'">
                             <span class="lvg-card-metadata__status"
                                   data-ng-style="$ctrl.column.columnColor|labelBackground"
@@ -41,6 +41,24 @@
                                   data-ng-class="$ctrl.column.columnColor|labelBackgroundClass" data-translate="{{'card.metadata.status.' + $ctrl.column.columnLocation}}"></span>
                         </span>
 
+                    </div>
+                </div>
+
+                <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
+                    <div flex="30" flex-md="45">
+                        <span class="lvg-card-metadata__item-name" data-translate>card.metadata.created</span>
+                    </div>
+                    <div flex="70" flex-md="55">
+                        <span>{{::$ctrl.card.createTime | date: 'medium' }}</span> <span data-translate>common.by</span> <span data-lvg-user-tooltip="$ctrl.card.userId"></span>
+                    </div>
+                </div>
+
+                <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item" data-ng-if="$ctrl.card.createTime != $ctrl.card.lastUpdateTime">
+                    <div flex="30" flex-md="45">
+                        <span class="lvg-card-metadata__item-name" data-translate>card.metadata.lastUpdated</span>
+                    </div>
+                    <div flex="70" flex-md="55">
+                        <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span> <span data-translate>common.by</span> <span data-lvg-user-tooltip="$ctrl.card.lastUpdateUserId"></span>
                     </div>
                 </div>
 
