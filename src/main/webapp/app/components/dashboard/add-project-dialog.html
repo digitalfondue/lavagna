@@ -17,7 +17,7 @@
 		        <div class="form-group">
 		            <label for="description" data-translate>partials.home.newProjectForm.description</label>
 		                <div data-ng-hide="projectDialogCtrl.view.preview.show">
-		                    <textarea class="form-control" rows="3" id="description" data-ng-model="projectDialogCtrl.view.project.description" data-lvg-codemirror></textarea>
+		                    <textarea class="form-control" rows="3" id="description" data-ng-model="projectDialogCtrl.view.project.description"></textarea>
 		                </div>
 		                <div data-ng-show="projectDialogCtrl.view.preview.show">
 		                    <div data-ng-bind-html="projectDialogCtrl.view.project.description | markdown"></div>

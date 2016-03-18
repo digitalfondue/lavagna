@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
                         <div data-ng-hide="boardDialogCtrl.preview.show">
-                            <textarea class="form-control" rows="3" id="description" data-ng-model="boardDialogCtrl.board.description" data-lvg-codemirror></textarea>
+                            <textarea class="form-control" rows="3" id="description" data-ng-model="boardDialogCtrl.board.description"></textarea>
                         </div>
                         <div data-ng-show="boardDialogCtrl.preview.show">
                             <div data-ng-bind-html="boardDialogCtrl.board.description | markdown"></div>

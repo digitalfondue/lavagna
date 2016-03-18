@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label for="description" data-translate>partials.project.manage-home.description</label>
                         <div data-ng-if="!manageBoardsCtrl.view.boardStatus[ab.shortName].preview">
-                            <textarea class="form-control" rows="3" id="description" data-ng-model="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.description" data-lvg-codemirror></textarea>
+                            <textarea class="form-control" rows="3" id="description" data-ng-model="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.description"></textarea>
                         </div>
                         <div data-ng-if="manageBoardsCtrl.view.boardStatus[ab.shortName].preview">
                             <div data-ng-bind-html="manageBoardsCtrl.view.boardStatus[ab.shortName].itemToUpdate.description | markdown"></div>

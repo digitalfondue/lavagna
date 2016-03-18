@@ -253,8 +253,7 @@
                                                                 <div class="form-group">
                                                                     <div data-ng-hide="commentControl.editCommentPreviewMode">
 																	<textarea
-                                                                        data-ng-model="commentToEdit" class="form-control"
-                                                                        data-lvg-codemirror></textarea>
+                                                                        data-ng-model="commentToEdit" class="form-control"></textarea>
                                                                     </div>
                                                                     <div data-ng-show="commentControl.editCommentPreviewMode" data-ng-bind-html="commentToEditPreview | markdown"></div>
                                                                 </div>
@@ -280,8 +279,7 @@
                                                             <div class="form-group">
                                                                 <div data-ng-hide="previewMode">
 																<textarea
-                                                                    data-lvg-codemirror
-                                                                    id="comment" data-codemirror-placeholder="card.comment.placeholder"
+                                                                    id="comment"
                                                                     data-ng-model="comment.content" class="form-control"></textarea>
                                                                 </div>
                                                                 <div class="panel panel-default"

@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label for="description" data-translate>partials.project.manage-home.description</label>
                         <div data-ng-if="!projectManageCtrl.view.preview">
-                            <textarea class="form-control" rows="3" id="description" data-ng-model="projectManageCtrl.view.itemToUpdate.description" data-lvg-codemirror></textarea>
+                            <textarea class="form-control" rows="3" id="description" data-ng-model="projectManageCtrl.view.itemToUpdate.description"></textarea>
                         </div>
                         <div data-ng-if="projectManageCtrl.view.preview">
                             <div data-ng-bind-html="projectManageCtrl.view.itemToUpdate.description | markdown"></div>

@@ -263,7 +263,6 @@ public class ResourceController {
 					"/js/angular-translate.min.js",//
 
 					"/js/spectrum.js", //
-					"/js/codemirror-compressed.js",//
 					"/js/peg-0.8.0.min.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js")) {
