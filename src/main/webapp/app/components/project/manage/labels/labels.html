@@ -1,60 +1,8 @@
-<div class="row">
-    <div class="lavagna-container-bottom-margin col-md-6">
-        <button type="button" class="lvg-button lvg-button-submit"
-                data-ng-click="manageLabelsCtrl.view.createNewLabel = true;" data-ng-hide="manageLabelsCtrl.view.createNewLabel">
-            <span class="fa fa-plus"></span>
-            <span data-translate>partials.project.manage-labels.createLabel</span>
-        </button>
-
-        <div class="lavagna-form-panel" data-ng-show="manageLabelsCtrl.view.createNewLabel" >
-            <form data-ng-role="form"
-                  data-ng-init="manageLabelsCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique: true}"
-                  data-ng-submit="manageLabelsCtrl.addNewLabel(manageLabelsCtrl.view.labelToAdd);manageLabelsCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique:true}">
-
-                <div class="form-group">
-                    <label data-translate>partials.project.manage-labels.name</label>
-                    <input type="text" class="form-control" placeholder="{{'partials.project.manage-labels.labelName.placeholder' | translate}}"
-                           data-ng-model="manageLabelsCtrl.view.labelToAdd.name" required>
-                </div>
-
-                <div class="form-group">
-                    <label data-translate>partials.project.manage-labels.type</label>
-                    <select class="form-control" data-ng-model="manageLabelsCtrl.view.labelToAdd.type"
-                            data-ng-options="l.type as l.name for l in manageLabelsCtrl.view.labelOptions"></select>
-                </div>
-
-
-                <div class="form-group">
-                    <label data-translate>partials.project.manage-labels.color</label>
-
-                    <div class="input-group">
-                        <span class="input-group-btn"><lvg-colorpicker data-ng-model="manageLabelsCtrl.view.labelToAdd.color"></lvg-colorpicker></span>
-                        <input class="form-control" type="text" data-ng-model="manageLabelsCtrl.view.labelToAdd.color">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"
-                               data-ng-model="manageLabelsCtrl.view.labelToAdd.unique"> <span data-translate>partials.project.manage-labels.unique</span>
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="lvg-button lvg-button-submit" data-ng-disabled="manageLabelsCtrl.view.labelToAdd.name == NULL">
-                    <span class="fa fa-plus"></span>
-                    <span data-translate>partials.project.manage-labels.addLabel</span>
-                </button>
-                <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageLabelsCtrl.view.createNewLabel = false;">
-                    <span data-translate>button.cancel</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="col-md-12" data-ng-repeat="(n,l) in manageLabelsCtrl.userLabels | orderObjectBy:'name' track by l.name">
-        <lvg-project-manage-labels-label project="manageLabelsCtrl.project" label="l"></lvg-project-manage-labels-label>
-    </div>
-
+<div data-ng-repeat="(n,l) in manageLabelsCtrl.userLabels | orderObjectBy:'name' track by l.name">
+    <lvg-project-manage-labels-label project="manageLabelsCtrl.project" label="l"></lvg-project-manage-labels-label>
 </div>
+
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="manageLabelsCtrl.showAddLabelDialog($event)">
+    <md-tooltip md-direction="top">{{'partials.project.manage-labels.createLabel' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="add"></md-icon>
+</md-button>

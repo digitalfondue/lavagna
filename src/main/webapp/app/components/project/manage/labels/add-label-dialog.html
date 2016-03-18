@@ -1,0 +1,49 @@
+<md-dialog>
+	<form data-ng-role="form"
+	    data-ng-init="addLabelDialogCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique: true}"
+	    data-ng-submit="addLabelDialogCtrl.addNewLabel(addLabelDialogCtrl.view.labelToAdd);addLabelDialogCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique:true}">
+	
+	   <md-dialog-content>
+	       <div class="md-dialog-content">
+				<div class="form-group">
+				    <label data-translate>partials.project.manage-labels.name</label>
+				    <input type="text" class="form-control" placeholder="{{'partials.project.manage-labels.labelName.placeholder' | translate}}"
+				           data-ng-model="addLabelDialogCtrl.view.labelToAdd.name" required>
+				</div>
+				
+				<div class="form-group">
+				    <label data-translate>partials.project.manage-labels.type</label>
+				    <select class="form-control" data-ng-model="addLabelDialogCtrl.view.labelToAdd.type"
+				            data-ng-options="l.type as l.name for l in addLabelDialogCtrl.view.labelOptions"></select>
+				</div>
+				
+				
+				<div class="form-group">
+				    <label data-translate>partials.project.manage-labels.color</label>
+				
+				    <div class="input-group">
+				        <span class="input-group-btn"><lvg-colorpicker data-ng-model="addLabelDialogCtrl.view.labelToAdd.color"></lvg-colorpicker></span>
+				        <input class="form-control" type="text" data-ng-model="addLabelDialogCtrl.view.labelToAdd.color">
+				    </div>
+				</div>
+				
+				<div class="form-group">
+				    <div class="checkbox">
+				        <label>
+				            <input type="checkbox"
+				               data-ng-model="addLabelDialogCtrl.view.labelToAdd.unique"> <span data-translate>partials.project.manage-labels.unique</span>
+				        </label>
+				    </div>
+				</div>
+            </div>
+		</md-dialog-content>
+        <md-dialog-actions>
+			<md-button type="submit" data-ng-disabled="addLabelDialogCtrl.view.labelToAdd.name == NULL">
+			    <span data-translate>partials.project.manage-labels.addLabel</span>
+			</md-button>
+			<md-button type="button" data-ng-click="addLabelDialogCtrl.close();">
+			    <span data-translate>button.cancel</span>
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>
