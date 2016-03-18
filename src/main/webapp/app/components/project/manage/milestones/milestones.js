@@ -12,7 +12,7 @@
         templateUrl: 'app/components/project/manage/milestones/milestones.html'
     });
 
-    function ProjectManageMilestonesController($rootScope, $scope, LabelCache, Label, Notification) {
+    function ProjectManageMilestonesController($rootScope, $scope, $mdDialog,LabelCache, Label, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -47,9 +47,6 @@
             });
         };
 
-        ctrl.addLabelListValue = function (val) {
-            Label.addLabelListValue(ctrl.milestoneLabel.id, {value: val});
-        };
 
         ctrl.updateCount = function(id) {
             Label.countLabelListValueUse(id).then(function(cnt) {
@@ -88,6 +85,25 @@
                 Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
             }
         };
-
+        
+        ctrl.showAddMilestoneDialog = function showAddMilestoneDialog($event) {
+        	$mdDialog.show({
+        		templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
+        		targetEvent: $event,
+        		controller: function() {
+        			var ctrl = this;
+        			ctrl.view = {};
+        			ctrl.addLabelListValue = addLabelListValue;
+        			ctrl.close = function() {
+                    	$mdDialog.hide();
+                    };
+        		},
+        		controllerAs: 'addMilestoneDialogCtrl'
+        	});
+        }
+        
+        function addLabelListValue(val) {
+            Label.addLabelListValue(ctrl.milestoneLabel.id, {value: val});
+        };
     }
 })();

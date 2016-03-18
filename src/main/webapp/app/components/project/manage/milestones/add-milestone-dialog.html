@@ -1,0 +1,18 @@
+<md-dialog>
+    <form data-ng-submit="addMilestoneDialogCtrl.addLabelListValue(newMilestoneValue);newMilestoneValue = null">
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <input type="text" class="form-control"
+                    placeholder="{{'partials.project.manage-milestones.newMilestone' | translate}}"
+		            data-ng-model="newMilestoneValue"
+		            required="required"
+		            autocomplete="off"
+		            data-lvg-on-esc>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button type="submit"><span translate>button.add</span></md-button>
+            <md-button type="button" data-ng-click="addMilestoneDialogCtrl.close();"><span translate>button.cancel</span></md-button>
+        </md-dialog-actions>
+	</form>
+</md-dialog>

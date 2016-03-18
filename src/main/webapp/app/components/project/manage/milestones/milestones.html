@@ -1,22 +1,4 @@
 <div class="row">
-    <div class="col-sm-6 col-xs-12">
-        <div class="lavagna-form-panel lavagna-container-bottom-margin">
-            <form data-ng-submit="manageMilestonesCtrl.addLabelListValue(manageMilestonesCtrl.view.newMilestoneValue);manageMilestonesCtrl.view.newMilestoneValue = null">
-                <div class="input-group">
-                    <input type="text" class="form-control"
-                           placeholder="{{'partials.project.manage-milestones.newMilestone' | translate}}"
-                           data-ng-model="manageMilestonesCtrl.view.newMilestoneValue"
-                           required="required"
-                           autocomplete="off"
-                           data-lvg-on-esc>
-                    <span class="input-group-btn">
-                        <button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
-                    </span>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="col-xs-12">
         <div class="lavagna-panel">
             <table class="table lvg-table" data-ng-init="manageMilestonesCtrl.view.milestoneDeleteStatus = {}">
@@ -99,3 +81,8 @@
         </div>
     </div>
 </div>
+
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="manageMilestonesCtrl.showAddMilestoneDialog($event)">
+    <md-tooltip md-direction="top">{{'partials.project.manage-milestones.addNewMilestone' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="add"></md-icon>
+</md-button>
