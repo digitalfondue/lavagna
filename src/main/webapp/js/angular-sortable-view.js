@@ -367,20 +367,25 @@
 						handle.on('mousedown touchstart', onMousedown);
 					}
 				});
-
+				
+				//CUSTOMIZATION
 				var helper;
+				var placeholder;
+				/*
+				
 				$scope.$watch('$ctrl.helper', function(customHelper){
 					if(customHelper){
 						helper = customHelper;
 					}
 				});
-
-				var placeholder;
+				
 				$scope.$watch('$ctrl.placeholder', function(customPlaceholder){
 					if(customPlaceholder){
 						placeholder = customPlaceholder;
 					}
 				});
+				*/
+				//END CUSTOMIZATION
 
 				var body = angular.element(document.body);
 				var html = angular.element(document.documentElement);
