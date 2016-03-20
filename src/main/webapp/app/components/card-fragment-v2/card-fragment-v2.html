@@ -3,7 +3,11 @@
         <md-card-title-text>
             <div layout="row" data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">
                 <div flex="80">
-                    {{::($ctrl.shortCardName)}}
+                    <lvg-card-fragment-link
+                        target-state="board.card"
+                        project-name="{{::$ctrl.projectShortName}}" 
+                        board-short-name="{{::$ctrl.boardShortName}}"
+                        sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
                     <!-- <input type="checkbox" data-ng-model="$ctrl.selected[$ctrl.card.columnId][$ctrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input> --> 
                     <!--<a ui-state="'board.card'" ui-state-params="{projectName: $ctrl.project, shortName: $ctrl.board, seqNr: $ctrl.card.sequence, q: $ctrl.query}">
                         

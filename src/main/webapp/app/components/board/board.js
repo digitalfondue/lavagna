@@ -111,6 +111,7 @@
                         ctrl.query = searchFilter.location.q;
                         $timeout(function() {
                             $location.search(searchFilter.location);
+                            $scope.$broadcast('updatedQueryOrPage', searchFilter);
                         });
                     });
 

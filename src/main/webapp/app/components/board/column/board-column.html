@@ -66,12 +66,12 @@
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" sv-root="board-column-card" sv-part="boardColumnCtrl.cardsInColumn" sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)">
         <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by card.hash" class="lavagna-board-card" sv-element>
-            <!-- <lvg-card-fragment-v2
+            <!--<lvg-card-fragment-v2
                 view="board"
                 card-reference="::card"
                 board-short-name="{{::boardColumnCtrl.board.shortName}}"
-                project-short-name="{{::boardColumnCtrl.project.shortName}}"></lvg-card-fragment-v2> -->
-            <lvg-card-fragment view="board" 
+                project-short-name="{{::boardColumnCtrl.project.shortName}}"></lvg-card-fragment-v2>-->
+             <lvg-card-fragment view="board" 
                                card="card"
                                project="boardColumnCtrl.project.shortName" 
                                board="boardColumnCtrl.board.shortName" 
@@ -79,7 +79,6 @@
                                selected="boardColumnCtrl.selectedCards"
                                dependencies="boardColumnCtrl.cardFragmentDependencies"
                                query="boardColumnCtrl.query"></lvg-card-fragment>
-                                
         </li>
     </ul>
 </div>
@@ -93,7 +92,7 @@
     <div data-ng-if="boardColumnCtrl.columnState.addNewCard">
         <form data-ng-submit="boardColumnCtrl.createCard(boardColumnCtrl.columnState.cardToCreate)">
             <div class="form-group">
-                <input placeholder="::({{'partials.fragments.columns-fragment.cardName.placeholder' | translate}})"
+                <input placeholder="{{::('partials.fragments.columns-fragment.cardName.placeholder' | translate)}})"
                        data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreate.name == null" required="required"
                        data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"
                        data-lvg-on-esc="boardColumnCtrl.columnState.addNewCard" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreate = null"></input>
