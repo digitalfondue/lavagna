@@ -9,7 +9,8 @@
 				projectName: '@',
 				boardShortName: '@',
 				sequenceNumber: '@',
-				targetState: '@'
+				targetState: '@',
+				dynamicLink: '@'
 			},
 			link: function($scope, $element, $attrs) {
 				
@@ -28,10 +29,11 @@
 				
 				$a.attr('href', updateUrl($location.search().q, null));
 				
-				
-				$scope.$on('updatedQueryOrPage', function(ev, searchFilter) {
-					$a.attr('href', updateUrl(searchFilter.location ? searchFilter.location.q : null, null))
-				});
+				if(ctrl.dynamicLink === 'true') {
+					$scope.$on('updatedQueryOrPage', function(ev, searchFilter) {
+						$a.attr('href', updateUrl(searchFilter.location ? searchFilter.location.q : null, null))
+					});
+				}
 			},
 			bindToController: true,
 			controllerAs: '$ctrl',

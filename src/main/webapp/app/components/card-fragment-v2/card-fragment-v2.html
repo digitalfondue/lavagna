@@ -3,15 +3,13 @@
         <md-card-title-text>
             <div layout="row" data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">
                 <div flex="80">
+                    <!-- <input type="checkbox" data-ng-model="$ctrl.selected[$ctrl.card.columnId][$ctrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input> -->
                     <lvg-card-fragment-link
+                        dynamic-link="true"
                         target-state="board.card"
                         project-name="{{::$ctrl.projectShortName}}" 
                         board-short-name="{{::$ctrl.boardShortName}}"
                         sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
-                    <!-- <input type="checkbox" data-ng-model="$ctrl.selected[$ctrl.card.columnId][$ctrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox"></input> --> 
-                    <!--<a ui-state="'board.card'" ui-state-params="{projectName: $ctrl.project, shortName: $ctrl.board, seqNr: $ctrl.card.sequence, q: $ctrl.query}">
-                        
-                    </a>-->
                 </div>
                 <div flex>
                     <div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
@@ -20,23 +18,27 @@
                 </div>
             </div>
             <div layout="row" data-ng-if="::($ctrl.boardView && $ctrl.readOnly)">
-                <div flex="80"><span class="fake-link"> {{::$ctrl.shortCardName}}}</span></div>
+                <div flex="80"><span class="fake-link">{{::$ctrl.shortCardName}}}</span></div>
             </div>
             <div layout="row" data-ng-if="::($ctrl.listView)">
-                <div flex="65"><a data-ui-sref="board.card({projectName: $ctrl.card.projectShortName, shortName: $ctrl.card.boardShortName, seqNr: $ctrl.card.sequence})">
-                    {{::($ctrl.shortCardName)}}
-                </a></div>
+                <div flex="65">
+                    <lvg-card-fragment-link
+                        target-state="board.card"
+                        project-name="{{::$ctrl.projectShortName}}" 
+                        board-short-name="{{::$ctrl.boardShortName}}"
+                        sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
+                </div>
                 <div flex class="card-home-date">{{::$ctrl.card.lastUpdateTime|dateIncremental}}</div>
             </div>
             <div layout="row" data-ng-if="::($ctrl.searchView)">
                 <div flex="65">
-                    <input type="checkbox" data-ng-model="$ctrl.selected[$ctrl.card.projectShortName][$ctrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{$ctrl.card.projectShortName}}">
-                    <a data-ng-if="::($ctrl.searchType == 'globalSearch')" ui-state="'globalSearch.card'" ui-state-params="{projectName: $ctrl.card.projectShortName, shortName: $ctrl.card.boardShortName, seqNr: $ctrl.card.sequence, q:  $ctrl.query, page: $ctrl.page}" data-ng-class="{'lavagna-closed-card':$ctrl.card.columnDefinition == 'CLOSED'}">
-                        {{::($ctrl.shortCardName)}}
-                    </a>
-                    <a data-ng-if="::($ctrl.searchType == 'projectSearch')" ui-state="'projectSearch.card'" ui-state-params="{projectName: $ctrl.card.projectShortName, shortName: $ctrl.card.boardShortName, seqNr: $ctrl.card.sequence, q:  $ctrl.query, page: $ctrl.page}" data-ng-class="{'lavagna-closed-card':$ctrl.card.columnDefinition == 'CLOSED'}">
-                        {{::($ctrl.shortCardName)}}
-                    </a>
+                    <!-- <input type="checkbox" data-ng-model="$ctrl.selected[$ctrl.card.projectShortName][$ctrl.card.id]" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{$ctrl.card.projectShortName}}"> -->
+                    <lvg-card-fragment-link
+                        dynamic-link="true"
+                        target-state="{{::($ctrl.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card')}}"
+                        project-name="{{::$ctrl.projectShortName}}" 
+                        board-short-name="{{::$ctrl.boardShortName}}"
+                        sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
                 </div>
                 <div flex class="card-home-date">{{::($ctrl.card.lastUpdateTime|dateIncremental)}}</div>
             </div>
@@ -58,11 +60,19 @@
                 <li ng-if="::$ctrl.hasFiles">
                     <span class="fa fa-file"></span> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
-                
                 <li ng-if="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
                     <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="::$ctrl.dueDateLabel"></lvg-label-val-v2>
                 </li>
-                
+                <li ng-if="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
+                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="::$ctrl.milestoneLabel"></lvg-label-val-v2>
+                </li>
+            </ul>
+        </div>
+        <div class="card-info" data-ng-if="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
+            <ul class="assigned-users">
+                <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">
+                    <lvg-label-val-v2 value-ref="::value"></lvg-label-val-v2>
+                </li>
             </ul>
         </div>
     </md-card-content>

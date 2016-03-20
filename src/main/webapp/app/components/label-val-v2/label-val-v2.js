@@ -23,13 +23,13 @@
 			} else if (type === 'INT') {
 				ctrl.displayValue = value.valueInt;
 			} else if (type === 'USER') {
-				ctrl.displayValue = '__USER__';
+				ctrl.displayValue = '__USER__' + value.valueUser;
 				//FIXME
 			} else if (type === 'CARD') {
-				ctrl.displayValue = '__CARD__';
+				ctrl.displayValue = '__CARD__' + value.valueCard;
 				//FIXME
 			} else if (type === 'LIST') {
-				ctrl.displayValue = '__LIST__';
+				ctrl.displayValue = '__LIST__' + ctrl.value.labelId + '__' + value.valueList;
 				//FIXME
 			} else if (type === 'TIMESTAMP') {
 				ctrl.displayValue = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
