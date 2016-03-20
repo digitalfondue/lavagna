@@ -11,8 +11,8 @@
                            data-ng-model="boardColumnCtrl.columnState.newColumnName" data-lvg-on-esc="boardColumnCtrl.columnState.editColumnName">
                 </div>
                 <div>
-                    <button class="lvg-button lvg-button-submit" data-ng-click="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false"><span data-translate>partials.fragments.columns-fragment.save</span></button>
-                    <button class="lvg-button lvg-button-default" data-ng-click="boardColumnCtrl.columnState.editColumnName=false"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+                    <button class="lvg-button lvg-button-submit" data-ng-click="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false">{{::('partials.fragments.columns-fragment.save' | translate)}}</button>
+                    <button class="lvg-button lvg-button-default" data-ng-click="boardColumnCtrl.columnState.editColumnName=false">{{::('partials.fragments.columns-fragment.cancel' | translate)}}</button>
                 </div>
             </div>
         </div>
@@ -21,12 +21,12 @@
                 <md-menu>
                     <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"><span class="fa fa-chevron-down"></md-button>
                     <md-menu-content>
-                        <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="boardColumnCtrl.columnState.addNewCardFromTop = true"><span data-translate>partials.fragments.columns-fragment.addCard</span></md-button></md-menu-item>                        
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="boardColumnCtrl.selectAllInColumn()"><span data-translate>partials.fragments.columns-fragment.selectAll</span></md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button  data-ng-click="boardColumnCtrl.unSelectAllInColumn()"><span data-translate>partials.fragments.columns-fragment.selectNone</span></md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="boardColumnCtrl.columnState.addNewCardFromTop = true">{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-button></md-menu-item>                        
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="boardColumnCtrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="boardColumnCtrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">
                             <md-menu>
-                                <md-button ng-click="$mdOpenMenu($event)"><span data-translate>partials.fragments.columns-fragment.columnStatus</span></md-button>
+                                <md-button ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
 	                            <md-menu-content>
 	                                <md-menu-item data-ng-repeat="definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'">
 	                                    <md-button data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="definition.color | color" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
@@ -34,12 +34,12 @@
 	                            </md-menu-content>
                             </md-menu>
                         </md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'ARCHIVE')"><span data-translate>partials.fragments.columns-fragment.moveAllToArchive</span>s</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'BACKLOG')"><span data-translate>partials.fragments.columns-fragment.moveAllToBacklog</span></md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'TRASH')"><span data-translate>partials.fragments.columns-fragment.moveAllToTrash</span></md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('ARCHIVE')"><span data-translate>partials.fragments.columns-fragment.moveColumnToArchive</span></md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('BACKLOG')"><span data-translate>partials.fragments.columns-fragment.moveColumnToBacklog</span></md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('TRASH')"><span data-translate>partials.fragments.columns-fragment.moveColumnToTrash</span></md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'ARCHIVE')">{{::('partials.fragments.columns-fragment.moveAllToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'BACKLOG')">{{::('partials.fragments.columns-fragment.moveAllToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'TRASH')">{{::('partials.fragments.columns-fragment.moveAllToTrash' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('ARCHIVE')">{{::('partials.fragments.columns-fragment.moveColumnToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('BACKLOG')">{{::('partials.fragments.columns-fragment.moveColumnToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('TRASH')">{{::('partials.fragments.columns-fragment.moveColumnToTrash' | translate)}}</md-button></md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
@@ -56,8 +56,8 @@
                            data-lvg-on-esc="boardColumnCtrl.columnState.addNewCardFromTop" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreateFromTop = null"></input>
                 </div>
                 <div>
-                    <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
-                    <button type="button" data-ng-click="boardColumnCtrl.columnState.cardToCreateFromTop = null; boardColumnCtrl.columnState.addNewCardFromTop = false" class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+                    <button type="submit" class="lvg-button lvg-button-submit">{{::('button.add' | translate)}}</button>
+                    <button type="button" data-ng-click="boardColumnCtrl.columnState.cardToCreateFromTop = null; boardColumnCtrl.columnState.addNewCardFromTop = false" class="lvg-button lvg-button-default">{{::('partials.fragments.columns-fragment.cancel' | translate)}}</span></button>
                 </div>
             </form>
         </div>
@@ -66,14 +66,20 @@
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" sv-root="board-column-card" sv-part="boardColumnCtrl.cardsInColumn" sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)">
         <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by card.hash" class="lavagna-board-card" sv-element>
+            <!-- <lvg-card-fragment-v2
+                view="board"
+                card-reference="::card"
+                board-short-name="{{::boardColumnCtrl.board.shortName}}"
+                project-short-name="{{::boardColumnCtrl.project.shortName}}"></lvg-card-fragment-v2> -->
             <lvg-card-fragment view="board" 
                                card="card"
                                project="boardColumnCtrl.project.shortName" 
                                board="boardColumnCtrl.board.shortName" 
                                board-columns="boardColumnCtrl.boardColumns" 
-                               selected="boardColumnCtrl.selectedCards" 
+                               selected="boardColumnCtrl.selectedCards"
                                dependencies="boardColumnCtrl.cardFragmentDependencies"
                                query="boardColumnCtrl.query"></lvg-card-fragment>
+                                
         </li>
     </ul>
 </div>
@@ -87,15 +93,15 @@
     <div data-ng-if="boardColumnCtrl.columnState.addNewCard">
         <form data-ng-submit="boardColumnCtrl.createCard(boardColumnCtrl.columnState.cardToCreate)">
             <div class="form-group">
-                <input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+                <input placeholder="::({{'partials.fragments.columns-fragment.cardName.placeholder' | translate}})"
                        data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreate.name == null" required="required"
                        data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"
                        data-lvg-on-esc="boardColumnCtrl.columnState.addNewCard" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreate = null"></input>
             </div>
             <div>
-                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
+                <button type="submit" class="lvg-button lvg-button-submit">{{::('button.add' | translate)}}</button>
                 <button type="button" data-ng-click="boardColumnCtrl.columnState.cardToCreate = null; boardColumnCtrl.columnState.addNewCard = false"
-                        class="lvg-button lvg-button-default"><span data-translate>partials.fragments.columns-fragment.cancel</span></button>
+                        class="lvg-button lvg-button-default">{{::('partials.fragments.columns-fragment.cancel' | translate)}}</button>
             </div>
         </form>
     </div>
