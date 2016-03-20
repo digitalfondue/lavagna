@@ -5,6 +5,8 @@
 		return {
 			restrict: 'A',
 		    transclude: 'element',
+		    priority: 1000,
+		    terminal: true,
 		    scope: {
 		    	lvgCardFragmentLabelRepeat:'&'
 		    },

@@ -80,6 +80,13 @@
         //
         
         
+        // user labels
+        var userCreatedLabels = $filter('filter')(ctrl.card.labels, {labelDomain:'USER'});
+        ctrl.hasUserCreatedLabels = userCreatedLabels.length;
+        ctrl.userCreatedLabels = userCreatedLabels;
+        //
+        
+        
         function hasCountGreaterThanZero(name) {
         	return getCountOrZero(name) > 0;
         }

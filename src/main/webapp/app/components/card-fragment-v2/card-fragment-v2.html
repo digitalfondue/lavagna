@@ -70,9 +70,18 @@
         </div>
         <div class="card-info" data-ng-if="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">
-                <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">
+                <li class="assigned-user" lvg-card-fragment-label-repeat="::$ctrl.assignedLabels">
                     <lvg-label-val-v2 value-ref="::value"></lvg-label-val-v2>
                 </li>
+            </ul>
+        </div>
+        
+        <div class="card-labels" ng-if="::$ctrl.hasUserCreatedLabels">
+            <ul class="labels">
+                <li class="lavagna-label lavagna-label-no-controls" 
+                    ng-style="::(value.labelColor|labelBackground)"
+                    ng-class="::(label.labelColor|labelBackgroundClass)" 
+                    lvg-card-fragment-label-repeat="::$ctrl.userCreatedLabels"><lvg-label-val-v2 value-ref="::value"></lvg-label-val-v2></li>
             </ul>
         </div>
     </md-card-content>
