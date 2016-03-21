@@ -8,16 +8,18 @@
 			projectShortName: '@',
 			readOnly: '@',
 			view: '@',
-			cardReference:'&'
+			cardReference:'&',
+			userReference:'&'
 		},
 		controller: CardFragmentV2Controller
 	});
 	
 	
-	function CardFragmentV2Controller($filter) {
+	function CardFragmentV2Controller($filter, Card) {
 		var ctrl = this;
 		
 		ctrl.card = ctrl.cardReference();
+		ctrl.user = ctrl.userReference();
 		
 		ctrl.readOnly = ctrl.readOnly != undefined;
         ctrl.listView = ctrl.view != undefined && ctrl.view == 'list';
@@ -34,6 +36,10 @@
         	var uncheckedCount = getCountOrZero('ACTION_UNCHECKED');
         	ctrl.actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
         }
+        //
+        
+        //
+        ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id)
         //
         
         

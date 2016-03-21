@@ -1,4 +1,5 @@
-<md-card>
+<md-card
+    data-ng-class="::{'lavagna-is-watching': !$ctrl.listView && $ctrl.isSelfWatching, 'lavagna-board-panel' : $ctrl.boardView }">
     <md-card-title>
         <md-card-title-text>
             <div layout="row" data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">

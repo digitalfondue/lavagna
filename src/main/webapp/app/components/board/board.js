@@ -8,7 +8,8 @@
         controllerAs: 'boardCtrl',
         bindings: {
             project: '=',
-            board: '='
+            board: '=',
+            userReference: '&'
         },
         templateUrl: 'app/components/board/board.html'
     });
@@ -22,10 +23,9 @@
         var boardName = ctrl.board.shortName;
         var projectName = ctrl.project.shortName;
 
-
-        User.currentCachedUser().then(function(currentUser) {
-            ctrl.currentUserId = currentUser.id;
-        });
+        ctrl.user = ctrl.userReference();
+        ctrl.currentUserId = ctrl.user.id;
+        
 
         ctrl.moveCard = function(card, location) {
             Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);

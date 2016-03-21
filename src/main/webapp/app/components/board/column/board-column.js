@@ -19,7 +19,8 @@
                 boardColumns: '<',
                 selectedCards: '=',
                 searchFilter: '<',
-                query:'<'
+                query:'<',
+                userReference:'&'
             },
             templateUrl: 'app/components/board/column/board-column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {
@@ -55,6 +56,8 @@
 
         //capture all status variables
         ctrl.columnState = {};
+        
+        ctrl.user = ctrl.userReference();
 
         ctrl.selectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {

@@ -124,6 +124,9 @@
             },
             board : function(BoardCache, $stateParams) {
                 return BoardCache.board($stateParams.shortName);
+            },
+            user : function(User) {
+            	return User.currentCachedUser();
             }
 		};
 
@@ -391,10 +394,11 @@
 		.state('board', {
             url : '/:projectName/{shortName:[A-Z0-9_]+}?q',
             reloadOnSearch: false,
-            template : '<lvg-board project="boardCtrlResolver.project" board="boardCtrlResolver.board"></lvg-board>',
-            controller : function(project, board) {
+            template : '<lvg-board project="boardCtrlResolver.project" board="boardCtrlResolver.board" user-reference="::boardCtrlResolver.user"></lvg-board>',
+            controller : function(project, board, user) {
                 this.project = project;
                 this.board = board;
+                this.user = user;
             },
             controllerAs: 'boardCtrlResolver',
             resolve : boardResolver,
