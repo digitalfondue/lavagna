@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -246,6 +247,17 @@ public class CardLabelRepository {
     public List<LabelListValueWithMetadata> findListValuesByLabelIdAndValue(int labelId, String value) {
         List<LabelListValue> res = queries.findListValuesByLabelIdAndValue(labelId, value);
         return addMetadata(res);
+    }
+    
+    public Map<Integer, Map<Integer, LabelListValueWithMetadata>> findLabeListValueAggregatedByCardLabelId(int projectId) {
+        Map<Integer,  Map<Integer, LabelListValueWithMetadata>> m = new TreeMap<>();
+        for (LabelListValueWithMetadata l : addMetadata(queries.findListValueByProjectId(projectId))) {
+            if(!m.containsKey(l.getCardLabelId())) {
+                m.put(l.getCardLabelId(), new TreeMap<Integer, LabelListValueWithMetadata>());
+            }
+            m.get(l.getCardLabelId()).put(l.getId(), l);
+        }
+        return m;
     }
 
     public LabelListValueWithMetadata findListValueById(int labelListValueId) {
