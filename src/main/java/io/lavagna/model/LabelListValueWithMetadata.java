@@ -16,8 +16,9 @@
  */
 package io.lavagna.model;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class LabelListValueWithMetadata extends LabelListValue {
 
@@ -25,10 +26,10 @@ public class LabelListValueWithMetadata extends LabelListValue {
 
 	public LabelListValueWithMetadata(LabelListValue llv, Map<String, String> metadata) {
 		super(llv.getId(), llv.getCardLabelId(), llv.getOrder(), llv.getValue());
-		this.metadata = metadata;
+		this.metadata = metadata == null ? Collections.<String, String>emptyMap() : new TreeMap<>(metadata);
 	}
 
     public Map<String, String> getMetadata() {
-        return metadata != null ? metadata : (metadata = new HashMap<>());
+        return metadata;
     }
 }

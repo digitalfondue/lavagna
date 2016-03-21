@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -247,13 +248,13 @@ public class ProjectService {
 	}
 
     public ProjectMetadata getMetadata(String shortName) {
-        Map<Integer, CardLabel> res = new TreeMap<>();
+        SortedMap<Integer, CardLabel> res = new TreeMap<>();
         Project project = findByShortName(shortName);
         for (CardLabel cl : cardLabelRepository.findLabelsByProject(project.getId())) {
             res.put(cl.getId(), cl);
         }
         
-        Map<Integer, Map<Integer, LabelListValueWithMetadata>> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
+        SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
         
         Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(project.getId());
         

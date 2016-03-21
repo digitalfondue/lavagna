@@ -16,6 +16,9 @@
  */
 package io.lavagna.model;
 
+import static io.lavagna.model.util.DataOutputStreamUtils.writeEnum;
+import static io.lavagna.model.util.DataOutputStreamUtils.writeInts;
+import static io.lavagna.model.util.DataOutputStreamUtils.writeNotNull;
 import io.lavagna.model.CardLabel.LabelType;
 
 import java.io.ByteArrayInputStream;
@@ -29,127 +32,91 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
+
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.springframework.cglib.core.CollectionUtils;
+import org.springframework.cglib.core.Predicate;
 
 @Getter
 public class CardFullWithCounts extends CardFull {
 
-	private final Integer creationUser;
-	private final Date creationDate;
-	private final Map<String, CardDataCount> counts;
-	private final List<LabelAndValue> labels;
-	private final String hash;
+    private final Integer creationUser;
+    private final Date creationDate;
+    private final Map<String, CardDataCount> counts;
+    private final List<LabelAndValue> labels;
+    private final String hash;
 
-	public CardFullWithCounts(CardFull cardInfo, Map<String, CardDataCount> counts, List<LabelAndValue> labels) {
-		super(cardInfo.getId(), cardInfo.getName(), cardInfo.getSequence(), cardInfo.getOrder(),
-				cardInfo.getColumnId(), cardInfo.getUserId(), cardInfo.getCreateTime(), cardInfo.getLastUpdateUserId(),
-				cardInfo.getLastUpdateTime(), cardInfo.getColumnDefinition(), cardInfo.getBoardShortName(), cardInfo
-						.getProjectShortName());
-		this.counts = counts;
-		this.labels = labels == null ? Collections.<LabelAndValue> emptyList() : labels;
-		// FIXME: this data is already contained in CardFull, leaving it here for retrocompatibility
-		this.creationUser = cardInfo.getUserId();
-		this.creationDate = cardInfo.getCreateTime();
+    public CardFullWithCounts(CardFull cardInfo, Map<String, CardDataCount> counts, List<LabelAndValue> labels) {
+        super(cardInfo.getId(), cardInfo.getName(), cardInfo.getSequence(), cardInfo.getOrder(), cardInfo.getColumnId(), cardInfo.getUserId(), cardInfo.getCreateTime(), cardInfo
+                .getLastUpdateUserId(), cardInfo.getLastUpdateTime(), cardInfo.getColumnDefinition(), cardInfo.getBoardShortName(), cardInfo.getProjectShortName());
+        this.counts = counts;
+        this.labels = labels == null ? Collections.<LabelAndValue> emptyList() : labels;
+        // FIXME: this data is already contained in CardFull, leaving it here
+        // for retrocompatibility
+        this.creationUser = cardInfo.getUserId();
+        this.creationDate = cardInfo.getCreateTime();
 
-		hash = hash(this);
-	}
+        hash = hash(this);
+    }
 
     public List<LabelAndValue> getLabelsWithType(final LabelType type) {
         List<LabelAndValue> filteredValues = new ArrayList<>(labels);
-        CollectionUtils.filter(filteredValues, new Predicate<LabelAndValue>() {
-            @Override 
-            public boolean evaluate(LabelAndValue o) {
-                return o.getLabelType().equals(type);
+        CollectionUtils.filter(filteredValues, new Predicate() {
+            @Override
+            public boolean evaluate(Object o) {
+                return ((LabelAndValue) o).getLabelType().equals(type);
             }
         });
         return filteredValues;
     }
 
-	private static String hash(CardFullWithCounts cwc) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream daos = new DataOutputStream(baos);
+    private static String hash(CardFullWithCounts cwc) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream daos = new DataOutputStream(baos);
 
-		try {
-			// card
-			daos.writeChars(Integer.toString(cwc.getId()));
+        try {
+            // card
+            daos.writeChars(Integer.toString(cwc.getId()));
 
-			writeNotNull(daos, cwc.getName());
-			writeInts(daos, cwc.getSequence(), cwc.getOrder(), cwc.getColumnId(), cwc.getUserId());
-			// end card
-			writeNotNull(daos, cwc.creationUser);
-			writeNotNull(daos, cwc.creationDate);
+            writeNotNull(daos, cwc.getName());
+            writeInts(daos, cwc.getSequence(), cwc.getOrder(), cwc.getColumnId(), cwc.getUserId());
+            // end card
+            writeNotNull(daos, cwc.creationUser);
+            writeNotNull(daos, cwc.creationDate);
 
-			if (cwc.counts != null) {
-				for (Map.Entry<String, CardDataCount> count : cwc.counts.entrySet()) {
-					writeNotNull(daos, count.getKey());
-					CardDataCount dataCount = count.getValue();
-					daos.writeChars(Integer.toString(dataCount.getCardId()));
-					if (dataCount.getCount() != null) {
-						daos.writeChars(Long.toString(dataCount.getCount().longValue()));
-					}
-					writeNotNull(daos, dataCount.getType());
-				}
-			}
-			for (LabelAndValue lv : cwc.labels) {
-				//
-				writeInts(daos, lv.getLabelId(), lv.getLabelProjectId());
-				writeNotNull(daos, lv.getLabelName());
-				daos.writeChars(Integer.toString(lv.getLabelColor()));
-				writeEnum(daos, lv.getLabelType());
-				writeEnum(daos, lv.getLabelDomain());
-				//
-				writeInts(daos, lv.getLabelValueId(), lv.getLabelValueCardId(), lv.getLabelValueLabelId());
-				writeNotNull(daos, lv.getLabelValueUseUniqueIndex());
-				writeEnum(daos, lv.getLabelValueType());
-				writeNotNull(daos, lv.getLabelValueString());
-				writeNotNull(daos, lv.getLabelValueTimestamp());
-				writeNotNull(daos, lv.getLabelValueInt());
-				writeNotNull(daos, lv.getLabelValueCard());
-				writeNotNull(daos, lv.getLabelValueUser());
-			}
-			daos.flush();
+            if (cwc.counts != null) {
+                for (Map.Entry<String, CardDataCount> count : cwc.counts.entrySet()) {
+                    writeNotNull(daos, count.getKey());
+                    CardDataCount dataCount = count.getValue();
+                    daos.writeChars(Integer.toString(dataCount.getCardId()));
+                    if (dataCount.getCount() != null) {
+                        daos.writeChars(Long.toString(dataCount.getCount().longValue()));
+                    }
+                    writeNotNull(daos, dataCount.getType());
+                }
+            }
+            for (LabelAndValue lv : cwc.labels) {
+                //
+                writeInts(daos, lv.getLabelId(), lv.getLabelProjectId());
+                writeNotNull(daos, lv.getLabelName());
+                writeInts(daos, lv.getLabelColor());
+                writeEnum(daos, lv.getLabelType());
+                writeEnum(daos, lv.getLabelDomain());
+                //
+                writeInts(daos, lv.getLabelValueId(), lv.getLabelValueCardId(), lv.getLabelValueLabelId());
+                writeNotNull(daos, lv.getLabelValueUseUniqueIndex());
+                writeEnum(daos, lv.getLabelValueType());
+                writeNotNull(daos, lv.getLabelValueString());
+                writeNotNull(daos, lv.getLabelValueTimestamp());
+                writeNotNull(daos, lv.getLabelValueInt());
+                writeNotNull(daos, lv.getLabelValueCard());
+                writeNotNull(daos, lv.getLabelValueUser());
+            }
+            daos.flush();
 
-			return DigestUtils.sha256Hex(new ByteArrayInputStream(baos.toByteArray()));
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	private static void writeInts(DataOutputStream daos, int... e) throws IOException {
-		for (int i : e) {
-			daos.writeChars(Integer.toString(i));
-		}
-	}
-
-	private static void writeNotNull(DataOutputStream daos, Boolean s) throws IOException {
-		if (s != null) {
-			daos.writeChars(Boolean.toString(s));
-		}
-	}
-
-	private static void writeNotNull(DataOutputStream daos, Date s) throws IOException {
-		if (s != null) {
-			daos.writeChars(Long.toString(s.getTime()));
-		}
-	}
-
-	private static void writeNotNull(DataOutputStream daos, String s) throws IOException {
-		if (s != null) {
-			daos.writeChars(s);
-		}
-	}
-
-	private static void writeNotNull(DataOutputStream daos, Integer val) throws IOException {
-		if (val != null) {
-			daos.writeChars(Integer.toString(val));
-		}
-	}
-
-	private static <T extends Enum<T>> void writeEnum(DataOutputStream daos, T e) throws IOException {
-		if (e != null) {
-			daos.writeChars(e.toString());
-		}
-	}
+            return DigestUtils.sha256Hex(new ByteArrayInputStream(baos.toByteArray()));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
