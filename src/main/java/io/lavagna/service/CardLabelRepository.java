@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.Validate;
@@ -249,8 +250,8 @@ public class CardLabelRepository {
         return addMetadata(res);
     }
     
-    public Map<Integer, Map<Integer, LabelListValueWithMetadata>> findLabeListValueAggregatedByCardLabelId(int projectId) {
-        Map<Integer,  Map<Integer, LabelListValueWithMetadata>> m = new TreeMap<>();
+    public SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> findLabeListValueAggregatedByCardLabelId(int projectId) {
+        SortedMap<Integer,  SortedMap<Integer, LabelListValueWithMetadata>> m = new TreeMap<>();
         for (LabelListValueWithMetadata l : addMetadata(queries.findListValueByProjectId(projectId))) {
             if(!m.containsKey(l.getCardLabelId())) {
                 m.put(l.getCardLabelId(), new TreeMap<Integer, LabelListValueWithMetadata>());
