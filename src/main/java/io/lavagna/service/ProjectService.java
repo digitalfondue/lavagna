@@ -254,7 +254,7 @@ public class ProjectService {
             res.put(cl.getId(), cl);
         }
         
-        SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
+        SortedMap<Integer, LabelListValueWithMetadata> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
         
         Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(project.getId());
         

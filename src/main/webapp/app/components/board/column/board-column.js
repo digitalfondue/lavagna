@@ -19,7 +19,6 @@
                 boardColumns: '<',
                 selectedCards: '=',
                 searchFilter: '<',
-                query:'<',
                 userReference:'&'
             },
             templateUrl: 'app/components/board/column/board-column.html',
@@ -72,6 +71,12 @@
                 delete ctrl.selectedCards[ctrl.column.id];
             });
         };
+        
+        
+        ctrl.hashOf = function hashOf(cardHash) {
+        	return cardHash + (ctrl.projectMetadata ? ctrl.projectMetadata.hash : '');
+        }
+        
         $scope.$on('selectall', ctrl.selectAllInColumn);
         $scope.$on('unselectall', ctrl.unSelectAllInColumn);
 

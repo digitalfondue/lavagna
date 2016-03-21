@@ -8,9 +8,10 @@
 			projectShortName: '@',
 			readOnly: '@',
 			view: '@',
-			cardReference:'&',
-			userReference:'&',
-			boardColumnsReference: '&'
+			cardRef:'&',
+			userRef:'&',
+			boardColumnsRef: '&',
+			projectMetadataRef: '&'
 		},
 		controller: CardFragmentV2Controller
 	});
@@ -19,8 +20,9 @@
 	function CardFragmentV2Controller($filter, Card) {
 		var ctrl = this;
 		
-		ctrl.card = ctrl.cardReference();
-		ctrl.user = ctrl.userReference();
+		ctrl.card = ctrl.cardRef();
+		ctrl.user = ctrl.userRef();
+		ctrl.projectMetadata = ctrl.projectMetadataRef();
 		
 		ctrl.readOnly = ctrl.readOnly != undefined;
         ctrl.listView = ctrl.view != undefined && ctrl.view == 'list';
@@ -76,7 +78,17 @@
         ctrl.milestoneClasses = {};
         if (ctrl.hasMilestoneLabel) {
         	ctrl.milestoneLabel = milestoneLabels[0];
-        	//FIXME milestoneClasses: we need to have the full metadata!
+        	
+//        	try {
+//        		var releaseDate = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
+//        		var daysDiff = $filter('daysDiff')(releaseDate);
+//        		ctrl.milestoneClasses = {
+//            			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
+//            			'lvg-due-date-now': (notClosed && daysDiff == 0),
+//            			'lvg-due-date-past': (notClosed && daysDiff > 0)
+//        		};
+//        	} catch(e) {
+//        	}
         }
         //
         

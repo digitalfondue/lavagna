@@ -35,11 +35,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 @Getter
 public class ProjectMetadata {
     private final SortedMap<Integer, CardLabel> labels;
-    private final SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> labelListValues;
+    private final SortedMap<Integer, LabelListValueWithMetadata> labelListValues;
     private final Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition;
     private final String hash;
 
-    public ProjectMetadata(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> labelListValues,
+    public ProjectMetadata(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
             Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition) {
         this.labels = labels;
         this.labelListValues = labelListValues;
@@ -47,7 +47,7 @@ public class ProjectMetadata {
         this.hash = hash(labels, labelListValues, columnsDefinition);
     }
 
-    private static String hash(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> labelListValues,
+    private static String hash(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
             Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -59,10 +59,8 @@ public class ProjectMetadata {
                 hash(daos, cl);
             }
 
-            for (SortedMap<Integer, LabelListValueWithMetadata> v : labelListValues.values()) {
-                for (LabelListValueWithMetadata l : v.values()) {
-                    hash(daos, l);
-                }
+            for (LabelListValueWithMetadata l : labelListValues.values()) {
+                hash(daos, l);
             }
 
             for (BoardColumnDefinition b : columnsDefinition.values()) {

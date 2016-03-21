@@ -65,21 +65,23 @@
 </div>
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" sv-root="board-column-card" sv-part="boardColumnCtrl.cardsInColumn" sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by card.hash" class="lavagna-board-card" sv-element>
-            <!--<lvg-card-fragment-v2
+        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+'-'+boardColumnCtrl.project.metadata.hash)" class="lavagna-board-card" sv-element>
+            <lvg-card-fragment-v2
                 view="board"
-                card-reference="::card"
-                user-reference="::boardColumnCtrl.user"
+                card-ref="::card"
+                user-ref="::boardColumnCtrl.user"
+                project-metadata-ref="::boardColumnCtrl.project.metadata"
+                board-columns-ref="::boardColumnCtrl.boardColumns"
                 board-short-name="{{::boardColumnCtrl.board.shortName}}"
-                project-short-name="{{::boardColumnCtrl.project.shortName}}"></lvg-card-fragment-v2>-->
-             <lvg-card-fragment view="board" 
+                project-short-name="{{::boardColumnCtrl.project.shortName}}"></lvg-card-fragment-v2>
+             <!--<lvg-card-fragment view="board" 
                                card="card"
                                project="boardColumnCtrl.project.shortName" 
                                board="boardColumnCtrl.board.shortName" 
                                board-columns="boardColumnCtrl.boardColumns" 
                                selected="boardColumnCtrl.selectedCards"
                                dependencies="boardColumnCtrl.cardFragmentDependencies"
-                               query="boardColumnCtrl.query"></lvg-card-fragment>
+                               query="boardColumnCtrl.query"></lvg-card-fragment>-->
         </li>
     </ul>
 </div>

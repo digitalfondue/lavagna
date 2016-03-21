@@ -15,7 +15,7 @@
                 </div>
                 <div flex>
                     <div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu($ctrl.card, $ctrl.boardColumnsReference())"><span class="fa fa-chevron-down"></span></div>
+                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu($ctrl.card, $ctrl.boardColumnsRef())"><span class="fa fa-chevron-down"></span></div>
                     </div>
                 </div>
             </div>
@@ -63,17 +63,17 @@
                     <span class="fa fa-file"></span> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
                 <li ng-if="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
-                    <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="::$ctrl.dueDateLabel"></lvg-label-val-v2>
+                    <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="::$ctrl.dueDateLabel" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
                 <li ng-if="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
-                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="::$ctrl.milestoneLabel"></lvg-label-val-v2>
+                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="::$ctrl.milestoneLabel" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>
         <div class="card-info" data-ng-if="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">
                 <li class="assigned-user" lvg-card-fragment-label-repeat="::$ctrl.assignedLabels">
-                    <lvg-label-val-v2 value-ref="::value"></lvg-label-val-v2>
+                    <lvg-label-val-v2 value-ref="::value" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>

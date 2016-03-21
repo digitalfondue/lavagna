@@ -250,13 +250,10 @@ public class CardLabelRepository {
         return addMetadata(res);
     }
     
-    public SortedMap<Integer, SortedMap<Integer, LabelListValueWithMetadata>> findLabeListValueAggregatedByCardLabelId(int projectId) {
-        SortedMap<Integer,  SortedMap<Integer, LabelListValueWithMetadata>> m = new TreeMap<>();
+    public SortedMap<Integer, LabelListValueWithMetadata> findLabeListValueAggregatedByCardLabelId(int projectId) {
+        SortedMap<Integer, LabelListValueWithMetadata> m = new TreeMap<>();
         for (LabelListValueWithMetadata l : addMetadata(queries.findListValueByProjectId(projectId))) {
-            if(!m.containsKey(l.getCardLabelId())) {
-                m.put(l.getCardLabelId(), new TreeMap<Integer, LabelListValueWithMetadata>());
-            }
-            m.get(l.getCardLabelId()).put(l.getId(), l);
+            m.put(l.getId(), l);
         }
         return m;
     }
