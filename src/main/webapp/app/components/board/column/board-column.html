@@ -65,7 +65,7 @@
 </div>
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" sv-root="board-column-card" sv-part="boardColumnCtrl.cardsInColumn" sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+'-'+boardColumnCtrl.project.metadata.hash)" class="lavagna-board-card" sv-element>
+        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.project.metadata.hash)" class="lavagna-board-card" sv-element>
             <lvg-card-fragment-v2
                 view="board"
                 card-ref="::card"
