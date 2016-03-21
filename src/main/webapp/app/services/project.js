@@ -63,6 +63,10 @@
 			statistics: function (shortName, days) {
 				return $http.get('api/project/' + shortName + '/statistics/' + days).then(extractData);
 			},
+			
+			getMetadata: function(shortName) {
+				return $http.get('api/project/' + shortName + '/metadata').then(extractData);
+			},
 
 			getAvailableTrelloBoards: function (trello) {
 				return $http.post('/api/import/trello/boards', trello).then(extractData);

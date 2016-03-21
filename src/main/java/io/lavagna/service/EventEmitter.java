@@ -295,27 +295,7 @@ public class EventEmitter {
 	}
 
 	// ------------
-	public void emitAddLabelValueToCard(String projectShortName, int columnId, int cardId) {
-		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.ADD_LABEL_VALUE_TO_CARD));
-		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.ADD_LABEL_VALUE_TO_CARD));
-		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label-value",
-				event(LavagnaEvent.ADD_LABEL_VALUE_TO_CARD));
-	}
-
-	public void emitUpdateLabelValue(String projectShortName, int columnId, int cardId) {
-		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_LABEL_VALUE));
-		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_LABEL_VALUE));
-		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label-value",
-				event(LavagnaEvent.UPDATE_LABEL_VALUE));
-	}
-
-	public void emitRemoveLabelValue(String projectShortName, int columnId, int cardId) {
-		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.REMOVE_LABEL_VALUE));
-		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.REMOVE_LABEL_VALUE));
-		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label-value",
-				event(LavagnaEvent.REMOVE_LABEL_VALUE));
-	}
-
+	
 	private static Triple<Set<Integer>, Set<Integer>, Set<String>> extractFrom(List<CardFull> l) {
 		Set<Integer> cardIds = new HashSet<>();
 		Set<Integer> columnIds = new HashSet<>();
@@ -355,18 +335,18 @@ public class EventEmitter {
 	}
 
 	public void emitAddLabel(String projectShortName) {
-		messagingTemplate
-				.convertAndSend("/event/project/" + projectShortName + "/label", event(LavagnaEvent.ADD_LABEL));
+		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label", event(LavagnaEvent.ADD_LABEL));
+		emitProjectMetadataHasChanged(projectShortName);
 	}
 
 	public void emitUpdateLabel(String projectShortName, int labelId) {
-		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label",
-				event(LavagnaEvent.UPDATE_LABEL, labelId));
+		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label", event(LavagnaEvent.UPDATE_LABEL, labelId));
+		emitProjectMetadataHasChanged(projectShortName);
 	}
 
 	public void emitDeleteLabel(String projectShortName, int labelId) {
-		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label",
-				event(LavagnaEvent.DELETE_LABEL, labelId));
+		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label", event(LavagnaEvent.DELETE_LABEL, labelId));
+		emitProjectMetadataHasChanged(projectShortName);
 	}
 	
 
@@ -378,6 +358,11 @@ public class EventEmitter {
 	public void emitUpdateUserProfile(int userId) {
 		messagingTemplate.convertAndSend("/event/user", event(LavagnaEvent.UPDATE_USER, userId));
 	}
+	
+	
+	private void emitProjectMetadataHasChanged(String projectShortName) {
+        messagingTemplate.convertAndSend("/event/project/" + projectShortName, LavagnaEvent.PROJECT_METADATA_HAS_CHANGED);
+    }
 
 	private enum LavagnaEvent {
 		CREATE_PROJECT, CREATE_BOARD, //
@@ -385,6 +370,10 @@ public class EventEmitter {
 		CREATE_COLUMN, UPDATE_COLUMN, UPDATE_COLUMN_POSITION, //
 		CREATE_CARD, UPDATE_CARD, //
 		UPDATE_CARD_POSITION, //
+		
+		//
+		PROJECT_METADATA_HAS_CHANGED,
+		//
 
 		// role and permission
 		CREATE_ROLE, DELETE_ROLE, UPDATE_PERMISSION_TO_ROLE, ASSIGN_ROLE_TO_USERS, REMOVE_ROLE_TO_USERS,

@@ -279,7 +279,7 @@ public class ProjectServiceTest {
 	    Assert.assertEquals(1, metadata2.getLabelListValues().size());
 	    
 	    
-	    LabelListValueWithMetadata llval = metadata2.getLabelListValues().get(milestoneLabel.getId()).values().iterator().next();
+	    LabelListValueWithMetadata llval = metadata2.getLabelListValues().values().iterator().next();
 	    Assert.assertEquals("1.0.0", llval.getValue());
 	    Assert.assertTrue(llval.getMetadata().isEmpty());
 	    
@@ -289,7 +289,7 @@ public class ProjectServiceTest {
 	    
 	    ProjectMetadata metadata3 = projectService.getMetadata("TEST");
 	    
-	    LabelListValueWithMetadata llval3 = metadata3.getLabelListValues().get(milestoneLabel.getId()).get(llval.getId());
+	    LabelListValueWithMetadata llval3 = metadata3.getLabelListValues().get(llval.getId());
         Assert.assertFalse(llval3.getMetadata().isEmpty());
         Assert.assertEquals("perfs", llval3.getMetadata().get("muh"));
 	    
