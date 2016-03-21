@@ -53,7 +53,11 @@
 		};
 
         $scope.cloneCard  = function(card, clonetoColumn) {
-            Card.clone(card.id, clonetoColumn.columnId);
+            Card.clone(card.id, clonetoColumn.columnId).then(function() {
+                Notification.addAutoAckNotification('success', { key : 'partials.fragments.card-fragment.clone-done'}, false);
+            }).catch(function(error) {
+                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+            });
         };
 
 		$scope.watchCard = function(cardId, currentUserId) {
