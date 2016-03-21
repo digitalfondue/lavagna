@@ -9,7 +9,8 @@
 			readOnly: '@',
 			view: '@',
 			cardReference:'&',
-			userReference:'&'
+			userReference:'&',
+			boardColumnsReference: '&'
 		},
 		controller: CardFragmentV2Controller
 	});
@@ -39,7 +40,8 @@
         //
         
         //
-        ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id)
+        ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
+        ctrl.isAssignedToCard = Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
         //
         
         

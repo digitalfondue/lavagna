@@ -65,12 +65,23 @@
 					
 
 					//hacky and ugly: to refactor
-					var projectShortName = $scope.cardFragmentCtrl.project;
-					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
-					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
-					$scopeForCardMenu.isSelfWatching = $scope.cardFragmentCtrl.isSelfWatching;
-					$scopeForCardMenu.isAssignedToCard = $scope.cardFragmentCtrl.isAssignedToCard;
-					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
+					var projectShortName;
+					
+					$scopeForCardMenu.isSelfWatching = Card.isWatchedByUser;
+					$scopeForCardMenu.isAssignedToCard = Card.isAssignedToUser;
+					
+					//FIXME to be removed, now support card-fragment v1 and v2
+					if($scope.cardFragmentCtrl) {
+						projectShortName = $scope.cardFragmentCtrl.project;
+						$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
+						$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
+						$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
+					} else {
+						projectShortName = $scope.$ctrl.boardShortName;
+						$scopeForCardMenu.card = $scope.$ctrl.card;
+						$scopeForCardMenu.board = $scope.$ctrl.boardShortName;
+						$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
+					}
 					//
 					
 
