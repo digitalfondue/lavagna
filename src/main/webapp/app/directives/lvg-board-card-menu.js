@@ -62,14 +62,14 @@
 
 					var windowWidth = $(window).width();
 					var windowHeight = $(window).height();
-					
+
 
 					//hacky and ugly: to refactor
 					var projectShortName;
-					
+
 					$scopeForCardMenu.isSelfWatching = Card.isWatchedByUser;
 					$scopeForCardMenu.isAssignedToCard = Card.isAssignedToUser;
-					
+
 					//FIXME to be removed, now support card-fragment v1 and v2
 					if($scope.cardFragmentCtrl) {
 						projectShortName = $scope.cardFragmentCtrl.project;
@@ -83,7 +83,7 @@
 						$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
 					}
 					//
-					
+
 
                     Project.findAllColumns(projectShortName).then(function(columns) {
                         $scopeForCardMenu.projectColumns = columns;
@@ -92,7 +92,7 @@
 					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
 
 
-					
+
 
 
 
@@ -110,9 +110,12 @@
 			        };
 
                     $scopeForCardMenu.cloneCard  = function(card, clonetoColumn) {
-                        Card.clone(card.id, clonetoColumn.columnId);
+                        Card.clone(card.id, clonetoColumn.columnId).then(function() {
+                            Notification.addAutoAckNotification('success', { key : 'partials.fragments.card-fragment.clone-done'}, false);
+                        }).catch(function(error) {
+                            Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                        });
                     };
-
 
                     $scopeForCardMenu.watchCard = function() {
 			            var cardByProject = {};

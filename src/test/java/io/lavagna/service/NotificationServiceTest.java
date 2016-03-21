@@ -81,9 +81,6 @@ public class NotificationServiceTest {
 	private CardDataService cardDataService;
 
 	@Autowired
-	private CardDataRepository cardDataRepo;
-
-	@Autowired
 	private NotificationService notificationService;
 
 	@Autowired
