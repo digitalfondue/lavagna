@@ -10,13 +10,13 @@
             </li>
 			<li class="divider" data-lvg-has-permission="MOVE_CARD"></li>
 			<li data-lvg-has-permission="MOVE_CARD">
-				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard('ARCHIVE'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToArchive' | translate"></button>
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'ARCHIVE'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToArchive' | translate"></button>
 			</li>
 			<li data-lvg-has-permission="MOVE_CARD">
-				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard('BACKLOG'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToBacklog' | translate"></button>
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'BACKLOG'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToBacklog' | translate"></button>
 			</li>
 			<li data-lvg-has-permission="MOVE_CARD">
-				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard('TRASH'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToTrash' | translate"></button>
+				<button class="lvg-dropdown-button lvg-button-white-bg" data-ng-click="moveCard(card, 'TRASH'); close();" data-ng-bind="'partials.fragments.card-fragment.moveToTrash' | translate"></button>
 			</li>
 			<li class="divider" data-lvg-has-permission="UPDATE_CARD"></li>
 			<li data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-if="!isSelfWatching(card.labels, currentUserId)">

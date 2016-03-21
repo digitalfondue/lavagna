@@ -62,35 +62,40 @@
 
 					var windowWidth = $(window).width();
 					var windowHeight = $(window).height();
+					
 
-                    Project.findAllColumns($scope.cardFragmentCtrl.project).then(function(columns) {
+					//hacky and ugly: to refactor
+					var projectShortName = $scope.cardFragmentCtrl.project;
+					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
+					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
+					$scopeForCardMenu.isSelfWatching = $scope.cardFragmentCtrl.isSelfWatching;
+					$scopeForCardMenu.isAssignedToCard = $scope.cardFragmentCtrl.isAssignedToCard;
+					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
+					//
+					
+
+                    Project.findAllColumns(projectShortName).then(function(columns) {
                         $scopeForCardMenu.projectColumns = columns;
                     });
 
 					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
 
 
-					//hacky and ugly: to refactor
-					$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
-					$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
-					$scopeForCardMenu.isSelfWatching = $scope.cardFragmentCtrl.isSelfWatching;
-					$scopeForCardMenu.isAssignedToCard = $scope.cardFragmentCtrl.isAssignedToCard;
-					$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
+					
 
-					var projectShortName = $scope.cardFragmentCtrl.project;
 
 
 					// imported from column...
 					$scopeForCardMenu.assignToCurrentUser = function() {
 			            var cardByProject = {};
 			            cardByProject[projectShortName] = [card.id];
-			            BulkOperations.assign(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
+			            BulkOperations.assign(cardByProject, {id: $scopeForCardMenu.currentUserId});
 			        };
 
 			        $scopeForCardMenu.removeAssignForCurrentUser = function() {
 			            var cardByProject = {};
 			            cardByProject[projectShortName] = [card.id];
-			            BulkOperations.removeAssign(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
+			            BulkOperations.removeAssign(cardByProject, {id: $scopeForCardMenu.currentUserId});
 			        };
 
                     $scopeForCardMenu.cloneCard  = function(card, clonetoColumn) {
@@ -101,13 +106,13 @@
                     $scopeForCardMenu.watchCard = function() {
 			            var cardByProject = {};
 			            cardByProject[projectShortName] = [card.id];
-			            BulkOperations.watch(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
+			            BulkOperations.watch(cardByProject, {id: $scopeForCardMenu.currentUserId});
 			        };
 
 			        $scopeForCardMenu.unWatchCard = function() {
 			            var cardByProject = {};
 			            cardByProject[projectShortName] = [card.id];
-			            BulkOperations.unWatch(cardByProject, {id: $scope.cardFragmentCtrl.currentUserId});
+			            BulkOperations.unWatch(cardByProject, {id: $scopeForCardMenu.currentUserId});
 			        };
 					//
 
