@@ -44,11 +44,12 @@
                         <p><strong data-translate>partials.me.calendar.disableFeed</strong> <md-switch ng-model="accountCtrl.disabledFeed" ng-change="accountCtrl.updateFeed()"></md-switch></p>
                     </div>
                     <div>
-                        <label for="feedUrl" data-translate>partials.me.calendar.description</label>
+                        <label data-translate>partials.me.calendar.description</label>
                         <div>
-                            <input type="text" id="feedUrl" class="form-control" value="{{accountCtrl.calendarFeedUrl}}" readonly disabled></input>
+                            <span>{{accountCtrl.calendarFeedUrl}}</span>
                         </div>
                     </div>
+
                 </div>
                 <div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
                     <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="accountCtrl.clearCalendarToken()">partials.me.clearCalendarToken</button>
