@@ -11,3 +11,5 @@ Every card assigned or watched by the user with a due date or custom date label 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_edit_user_calendar.png" alt="User's calendar feed">
 
 Every event will contain the card's name, status, description, creator and URL.
+
+The feed will also contain any milestone that has a date associated with it, for each milestone the event will list the name, status and every card linked to it.
