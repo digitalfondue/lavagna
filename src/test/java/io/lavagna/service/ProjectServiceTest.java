@@ -20,9 +20,13 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
+import io.lavagna.model.ProjectMetadata;
 import io.lavagna.model.ProjectWithEventCounts;
 import io.lavagna.model.Role;
 import io.lavagna.model.User;
@@ -73,6 +77,9 @@ public class ProjectServiceTest {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private CardLabelRepository cardLabelRepository;
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
@@ -245,5 +252,46 @@ public class ProjectServiceTest {
 	    
 	    projectService.create("PROJECT", "PROJECT", "desc");
 	    Assert.assertTrue(projectService.existsWithShortName("PROJECT"));
+	}
+	
+	@Test
+	public void testProjectMetadata() {
+	    projectService.create("test", "TEST", "desc");
+	    ProjectMetadata metadata = projectService.getMetadata("TEST");
+	    
+	    Assert.assertEquals(4, metadata.getColumnsDefinition().size());
+	    
+	    //4 system labels
+	    Assert.assertEquals(4, metadata.getLabels().size());
+	    
+	    CardLabel milestoneLabel = null;
+        for (CardLabel cl : metadata.getLabels().values()) {
+            if ("MILESTONE".equals(cl.getName()) && cl.getDomain() == LabelDomain.SYSTEM) {
+                milestoneLabel = cl;
+            }
+        }
+	    Assert.assertTrue(metadata.getLabelListValues().isEmpty());
+	    
+	    cardLabelRepository.addLabelListValue(milestoneLabel.getId(), "1.0.0");
+	    
+	    ProjectMetadata metadata2 = projectService.getMetadata("TEST");
+	    
+	    Assert.assertEquals(1, metadata2.getLabelListValues().size());
+	    
+	    
+	    LabelListValueWithMetadata llval = metadata2.getLabelListValues().get(milestoneLabel.getId()).values().iterator().next();
+	    Assert.assertEquals("1.0.0", llval.getValue());
+	    Assert.assertTrue(llval.getMetadata().isEmpty());
+	    
+	    
+	    cardLabelRepository.createLabelListMetadata(llval.getId(), "muh", "perfs");
+	    
+	    
+	    ProjectMetadata metadata3 = projectService.getMetadata("TEST");
+	    
+	    LabelListValueWithMetadata llval3 = metadata3.getLabelListValues().get(milestoneLabel.getId()).get(llval.getId());
+        Assert.assertFalse(llval3.getMetadata().isEmpty());
+        Assert.assertEquals("perfs", llval3.getMetadata().get("muh"));
+	    
 	}
 }

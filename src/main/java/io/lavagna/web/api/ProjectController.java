@@ -22,6 +22,7 @@ import io.lavagna.model.BoardInfo;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
+import io.lavagna.model.ProjectMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.ShortNameGenerator;
 import io.lavagna.service.BoardColumnRepository;
@@ -46,6 +47,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -118,6 +120,12 @@ public class ProjectController {
     public List<BoardInfo> findBoards(@PathVariable("projectShortName") String shortName) {
         Project project = projectService.findByShortName(shortName);
         return boardRepository.findBoardInfo(project.getId());
+    }
+    
+    @ExpectPermission(Permission.READ)
+    @RequestMapping(value = "/api/project/{projectShortName}/metadata", method = RequestMethod.GET)
+    public ProjectMetadata getMetadata(@PathVariable("projectShortName") String shortName) {
+        return projectService.getMetadata(shortName);
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)

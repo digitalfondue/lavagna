@@ -71,6 +71,12 @@ public interface CardLabelQuery {
 
 	@Query("SELECT * FROM LA_CARD_LABEL_VALUE WHERE CARD_LABEL_VALUE_ID = :labelValueId")
 	CardLabelValue findLabelValueById(@Bind("labelValueId") int labelValueId);
+	
+	 
+	@Query("SELECT LA_CARD_LABEL_LIST_VALUE.* FROM LA_CARD_LABEL_LIST_VALUE "
+	        + " inner join LA_CARD_LABEL on CARD_LABEL_ID_FK = CARD_LABEL_ID where "
+	        + " CARD_LABEL_PROJECT_ID_FK = :projectId ORDER BY CARD_LABEL_ID_FK, CARD_LABEL_LIST_VALUE_ORDER")
+	List<LabelListValue> findListValueByProjectId(@Bind("projectId") int projectId);
 
 	@Query("SELECT * FROM LA_CARD_LABEL_LIST_VALUE WHERE CARD_LABEL_ID_FK = :labelId ORDER BY CARD_LABEL_LIST_VALUE_ORDER")
 	List<LabelListValue> findListValuesByLabelId(@Bind("labelId") int labelId);

@@ -18,9 +18,12 @@ package io.lavagna.service;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
+import io.lavagna.model.ProjectMetadata;
 import io.lavagna.model.ProjectWithEventCounts;
 import io.lavagna.model.Role;
 import io.lavagna.model.User;
@@ -37,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,4 +245,18 @@ public class ProjectService {
 	public List<ProjectWithEventCounts> findProjectsActivityByUser(int userId) {
 		return queries.findProjectsByUserActivity(userId);
 	}
+
+    public ProjectMetadata getMetadata(String shortName) {
+        Map<Integer, CardLabel> res = new TreeMap<>();
+        Project project = findByShortName(shortName);
+        for (CardLabel cl : cardLabelRepository.findLabelsByProject(project.getId())) {
+            res.put(cl.getId(), cl);
+        }
+        
+        Map<Integer, Map<Integer, LabelListValueWithMetadata>> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
+        
+        Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(project.getId());
+        
+        return new ProjectMetadata(res, labelListValues, columnsDefinition);
+    }
 }
