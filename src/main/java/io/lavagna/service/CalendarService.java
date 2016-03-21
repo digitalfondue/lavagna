@@ -56,7 +56,7 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.Cn;
-import net.fortuna.ical4j.model.parameter.TzId;
+import net.fortuna.ical4j.model.parameter.Value;
 import net.fortuna.ical4j.model.property.Action;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Created;
@@ -68,7 +68,6 @@ import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
-import net.fortuna.ical4j.util.TimeZones;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +135,7 @@ public class CalendarService {
         if (!cache.containsKey(userId)) {
             User u = userRepository.findById(userId);
             String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
-            String email = String.format("mail:%s", firstNonNull(u.getEmail(), "no-e-mail"));
+            String email = String.format("MAILTO:%s", firstNonNull(u.getEmail(),  "unknown@unknown.com"));
             cache.put(userId, new UserDescription(name, email));
         }
         return cache.get(userId);
@@ -154,10 +153,6 @@ public class CalendarService {
         if (userRepository.isCalendarFeedDisabled(user)) {
             throw new SecurityException("Calendar feed disabled");
         }
-
-        final String utcTimeZone = TimeZones.getUtcTimeZone().getID();
-        final TzId tzParam = new TzId(utcTimeZone);
-
 
         final Calendar calendar = new Calendar();
         calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
@@ -208,6 +203,7 @@ public class CalendarService {
                         total > 0 ? 100 * closed / total : 100);
 
                     final VEvent event = new VEvent(new Date(date.getTime()), name);
+                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
 
                     event.getProperties().add(new Description(descBuilder.toString()));
 
@@ -221,8 +217,6 @@ public class CalendarService {
                         reminder.getProperties().add(new Description(name));
                         event.getAlarms().add(reminder);
                     }
-
-                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
                     // Url
                     event.getProperties().add(mUrl);
@@ -262,6 +256,8 @@ public class CalendarService {
                 String name = getEventName(card);
 
                 final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
+                event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
+
                 event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
                 event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
 
@@ -276,8 +272,6 @@ public class CalendarService {
                     reminder.getProperties().add(new Description(name));
                     event.getAlarms().add(reminder);
                 }
-
-                event.getProperties().getProperty(Property.DTSTART).getParameters().add(tzParam);
 
                 // Organizer
                 UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
