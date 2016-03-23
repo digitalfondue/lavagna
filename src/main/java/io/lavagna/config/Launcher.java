@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
-import java.security.ProtectionDomain;
 
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -99,8 +98,7 @@ public class Launcher {
     }
     
     private static String war() throws UnsupportedEncodingException {
-        ProtectionDomain domain = Launcher.class.getProtectionDomain();
-        String file = domain.getCodeSource().getLocation().toExternalForm();
+        String file = Launcher.class.getProtectionDomain().getCodeSource().getLocation().toExternalForm();
         //has form jar:file:/path/to/war/lavagna-jetty-console.war!/WEB-INF/classes!/
         return new File(URLDecoder.decode(file.substring(file.indexOf("file:")+ "file:".length(), file.indexOf("!")), "utf-8")).getAbsolutePath();
     }
