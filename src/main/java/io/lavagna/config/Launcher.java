@@ -18,9 +18,7 @@ package io.lavagna.config;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.security.ProtectionDomain;
 
 import org.eclipse.jetty.annotations.AnnotationConfiguration;
 import org.eclipse.jetty.server.Server;
@@ -54,9 +52,7 @@ public class Launcher {
     }
     
     private static String war() throws UnsupportedEncodingException {
-        ProtectionDomain domain = Launcher.class.getProtectionDomain();
-        URL location = domain.getCodeSource().getLocation();
-        String file = location.toExternalForm();
+        String file = Launcher.class.getProtectionDomain().getCodeSource().getLocation().toExternalForm();
         //has form jar:file:/path/to/war/lavagna-jetty-console.war!/WEB-INF/classes!/
         return new File(URLDecoder.decode(file.substring(file.indexOf("file:")+ "file:".length(), file.indexOf("!")), "utf-8")).getAbsolutePath();
     }
