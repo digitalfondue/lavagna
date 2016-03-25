@@ -369,28 +369,6 @@
                     </execution>
                 </executions>
             </plugin>
-			<!--  <plugin>
-				<groupId>org.simplericity.jettyconsole</groupId>
-				<artifactId>jetty-console-maven-plugin</artifactId>
-				<version>1.58</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>createconsole</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<additionalDependencies>
-						<dependency>
-							<groupId>org.eclipse.jetty.websocket</groupId>
-							<artifactId>websocket-server</artifactId>
-							<version>${org.eclipse.jetty.version}</version>
-						</dependency>
-					</additionalDependencies>
-				</configuration>
-			</plugin>-->
-
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.3</version>
