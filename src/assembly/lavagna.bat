@@ -42,6 +42,19 @@ rem or
 rem -Dspring.profiles.active=dev
 rem
 rem You will likely want to use prod (as in production) mode.
+rem
+rem
+rem Hostname/contextPath/port/temporary directory:
+rem ----------------------------------
+rem You can set port and others options too:
+rem
+rem Options:
+rem --port n            - Create an HTTP listener on port n (default 8080)
+rem --bindAddress addr  - Accept connections only on address addr (default: accept on any address)
+rem --contextPath /path - Set context path (default: /)
+rem --tmpDir /path      - Temporary directory, default is /tmp
+rem
+rem example: java -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
 
 
 java ^
@@ -50,4 +63,4 @@ java ^
 	-Ddatasource.username=sa ^
 	-Ddatasource.password= ^
 	-Dspring.profiles.active=dev ^
-	-jar %~dp0/../lavagna/lavagna-jetty-console.war --headless
+	-jar %~dp0/../lavagna/lavagna-jetty-console.war
