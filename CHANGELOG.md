@@ -7,6 +7,8 @@
  - misc. minor UI/UX improvements
  - improved performances
  - updated libraries 
+ 
+ (note: the 1.0.6 release has been skipped due to an error in the dependencies).
 
 ## 1.0.5.2 (2016-01-12)
 
