@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.6.1 (2016-01-25)
+
+ - Clone card functionality
+ - Milestones can have a release date
+ - misc. minor UI/UX improvements
+ - improved performances
+ - updated libraries 
+
 ## 1.0.5.2 (2016-01-12)
 
  - fix file upload issue when a user don't have a global READ role.
