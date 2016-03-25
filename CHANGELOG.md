@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.6.1 (2016-01-25)
+## 1.0.6.1 (2016-03-25)
 
  - Clone card functionality
  - Milestones can have a release date
