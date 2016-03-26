@@ -456,7 +456,7 @@
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
 		//calendar conf, TODO: configurable
 		var dateFormat = 'D.M.YYYY';
-		$mdDateLocaleProvider.firstDayOfWeek = Number.parseInt(LOCALE_FIRST_DAY_OF_WEEK) - 1;
+		$mdDateLocaleProvider.firstDayOfWeek = Number.parseInt(LOCALE_FIRST_DAY_OF_WEEK);
 		$mdDateLocaleProvider.parseDate = function(dateString) {
 			if(date == null) {
 				return null;
