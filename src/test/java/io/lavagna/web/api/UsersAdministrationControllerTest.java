@@ -24,6 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.User;
 import io.lavagna.model.UserToCreate;
+import io.lavagna.service.EventEmitter;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
 import io.lavagna.web.api.UsersAdministrationController.Update;
@@ -34,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonParseException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,12 +52,15 @@ public class UsersAdministrationControllerTest {
 
 	@Mock
 	private UserService userService;
+	
+	@Mock
+	private EventEmitter eventEmitter;
 
 	private UsersAdministrationController usersAdministrationController;
 
 	@Before
 	public void prepare() {
-		usersAdministrationController = new UsersAdministrationController(userRepository, userService);
+		usersAdministrationController = new UsersAdministrationController(userRepository, userService, eventEmitter);
 	}
 
 	@Test

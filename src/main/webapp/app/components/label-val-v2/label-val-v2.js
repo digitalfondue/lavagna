@@ -6,13 +6,13 @@
 
 	components.component('lvgLabelValV2', {
 		template: '<span ng-bind="::$ctrl.displayValue" ng-if="::($ctrl.type != \'CARD\' && $ctrl.type != \'USER\')"></span>' +
-					'<a ng-href="{{::$ctrl.cardLink}}" ng-if="::($ctrl.type == \'CARD\')" class="lvg-label-val-v2-card" ng-bind="::$ctrl.displayValue"></a>' + 
-					'<a href="" ng-if="::($ctrl.type == \'USER\')" class="lvg-label-val-v2-user"></a>',
+					'<a ng-href="{{::$ctrl.cardLink}}" ng-if="::($ctrl.type == \'CARD\')" ng-bind="::$ctrl.displayValue"></a>' + 
+					'<a ng-href="{{::$ctrl.userLink}}" ng-if="::($ctrl.type == \'USER\')"></a>',
 		bindings: {
 			valueRef: '&',
 			projectMetadataRef:'&'
 		},
-		controller: function($filter, $element, $rootScope, $state, CardCache) {
+		controller: function($filter, $element, $rootScope, $state, CardCache, UserCache) {
 			var ctrl = this;
 			ctrl.value = ctrl.valueRef();
 			
@@ -28,8 +28,7 @@
 			} else if (type === 'INT') {
 				ctrl.displayValue = value.valueInt;
 			} else if (type === 'USER') {
-				ctrl.displayValue = '__USER__' + value.valueUser;
-				//FIXME
+				handleUser(value.valueUser);
 			} else if (type === 'CARD') {
 				handleCard(value.valueCard);
 			} else if (type === 'LIST' && metadata && metadata.labelListValues[value.valueList]) {
@@ -37,8 +36,37 @@
 			} else if (type === 'TIMESTAMP') {
 				ctrl.displayValue = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
 			}
-			//
 			
+			//-------------
+			
+			function handleUser(userId) {
+				UserCache.user(userId).then(function (user) {
+					ctrl.userLink = $state.href('user.dashboard', {provider: user.provider, username: user.username});
+					var element = $element.find("a");
+					updateUser(user, element);
+					
+					var toDismiss = $rootScope.$on('refreshUserCache-' + userId, function () {
+						UserCache.user(userId).then(function(user) {
+							updateUser(user, element);
+						})
+					});
+					
+					ctrl.$onDestroy = function onDestroy() {
+						toDismiss();
+					};
+				});
+			}
+			
+			function updateUser(user, element) {
+				//CHECK
+				element.text($filter('formatUser')(user));
+				if (user.enabled) {
+					element.removeClass('user-disabled');
+				} else {
+					element.addClass('user-disabled');
+				}
+			}
+			//-------------
 			
 			function handleCard(cardId) {
 				CardCache.card(cardId).then(function (card) {

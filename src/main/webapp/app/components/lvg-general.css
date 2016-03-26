@@ -532,7 +532,11 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	text-decoration: underline;
 }
 
-.lavagna-label.white a .lavagna-closed-card, .lavagna-label.white a.lavagna-closed-card {
+.lavagna-label.white a .lavagna-closed-card, 
+.lavagna-label.white a.lavagna-closed-card,
+.lavagna-label.white a .user-disabled,
+.lavagna-label.white a.user-disabled 
+ {
 	color: white;
 	text-decoration: underline line-through;
 }
@@ -542,7 +546,10 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	text-decoration: underline;
 }
 
-.lavagna-label.black a .lavagna-closed-card, .lavagna-label.black a.lavagna-closed-card {
+.lavagna-label.black a .lavagna-closed-card, 
+.lavagna-label.black a.lavagna-closed-card,
+.lavagna-label.black a .user-disabled,
+.lavagna-label.black a.user-disabled  {
 	text-decoration: underline line-through;
 }
 
