@@ -115,6 +115,9 @@
 		var projectResolver = {
 			project : function(ProjectCache, $stateParams) {
 				return ProjectCache.project($stateParams.projectName);
+			},
+			user: function(User) {
+				return User.currentCachedUser();
 			}
 		};
 
@@ -334,8 +337,9 @@
 		.state('project', {
 		    abstract: true,
 		    url : '/:projectName/',
-		    controller: function(Title, project) {
+		    controller: function(Title, project, user) {
                 this.project = project;
+                this.user = user;
                 Title.set('title.project', { shortname: project.shortName, name: project.name });
             },
             controllerAs: 'projectResolver',
@@ -344,7 +348,7 @@
 		})
 		.state('project.boards', {
 			url: '',
-			template: '<lvg-project-boards project="projectResolver.project"></lvg-project-boards>'
+			template: '<lvg-project-boards project="projectResolver.project" user="projectResolver.user"></lvg-project-boards>'
 		}).state('project.statistics', {
 			url: 'statistics/',
 			template: '<lvg-project-statistics project="projectResolver.project"></lvg-project-statistics>'

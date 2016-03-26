@@ -4,8 +4,6 @@
 	angular.module('lavagna.components').component('lvgCardFragmentV2', {
 		templateUrl: 'app/components/card-fragment-v2/card-fragment-v2.html',
 		bindings: {
-			boardShortName: '@',
-			projectShortName: '@',
 			readOnly: '@',
 			view: '@',
 			cardRef:'&',
@@ -20,7 +18,13 @@
 	function CardFragmentV2Controller($filter, Card) {
 		var ctrl = this;
 		
+		
+		
 		ctrl.card = ctrl.cardRef();
+		//
+		ctrl.boardShortName = ctrl.card.boardShortName,
+		ctrl.projectShortName = ctrl.card.projectShortName,
+		//
 		ctrl.user = ctrl.userRef();
 		ctrl.projectMetadata = ctrl.projectMetadataRef();
 		

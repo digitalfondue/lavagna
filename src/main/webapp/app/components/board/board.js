@@ -26,21 +26,7 @@
         ctrl.user = ctrl.userReference();
         ctrl.currentUserId = ctrl.user.id;
         
-        
-        function loadProjectMetadata() {
-        	Project.getMetadata(boardName).then(function(metadata) {
-            	ctrl.project.metadata = metadata;
-            });
-        }
-        
-        loadProjectMetadata();
-        
-        StompClient.subscribe($scope, '/event/project/' + projectName, function(ev) {
-        	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
-        		loadProjectMetadata();
-        	}
-        });
-        
+        Project.loadMetadataAndSubscribe(projectName, ctrl.project, $scope);
 
         ctrl.moveCard = function(card, location) {
             Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);

@@ -8,7 +8,7 @@
 		return data.data;
 	};
 
-	services.factory('Project', function ($http, $filter) {
+	services.factory('Project', function ($http, $filter, StompClient) {
 		return {
 
 			//ordered by archived, name
@@ -84,6 +84,25 @@
 
             findAllColumns: function (shortName) {
                 return $http.get('api/project/' + shortName + '/columns-in/').then(extractData);
+            },
+            
+            loadMetadataAndSubscribe: function(shortName, targetObject, $scope) {
+            	
+            	var Project = this;
+            	
+            	function loadProjectMetadata() {
+                	Project.getMetadata(shortName).then(function(metadata) {
+                		targetObject.metadata = metadata;
+                    });
+                }
+                
+                loadProjectMetadata();
+                
+                StompClient.subscribe($scope, '/event/project/' + shortName, function(ev) {
+                	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
+                		loadProjectMetadata();
+                	}
+                });
             }
 		};
 	});

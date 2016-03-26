@@ -8,7 +8,8 @@
         controller: ProjectController,
         controllerAs: 'projectCtrl',
         bindings: {
-            project: '='
+            project: '=',
+            user: '='
         },
         templateUrl: 'app/components/project/boards/project-boards.html'
     });
@@ -17,6 +18,11 @@
         var projectCtrl = this;
 
         var projectName = projectCtrl.project.shortName;
+        
+        
+        Project.loadMetadataAndSubscribe(projectName, projectCtrl, $scope);
+        
+        //
 
         projectCtrl.boardPage = 1;
         projectCtrl.boardsPerPage = 10;

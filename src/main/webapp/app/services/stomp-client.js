@@ -4,7 +4,7 @@
 
 	var services = angular.module('lavagna.services');
 
-	services.factory('StompClient', function ($q, $log, $rootScope, $window, CONTEXT_PATH, User, Notification) {
+	services.factory('StompClient', function ($q, $log, $rootScope, $window, $timeout, CONTEXT_PATH, User, Notification) {
 
 		var defer = $q.defer();
 		
@@ -29,20 +29,15 @@
 					$log.log('stomp client subscribe at', path);
 					
 					callbacks[path].subscription = v.subscribe(path, function (msg) {
-						scope.$apply(function() {
-							angular.forEach(callbacks[path], function(cb) {
-								try {
-									cb(msg);
-								} catch(e) {
-								}
-							});
+						angular.forEach(callbacks[path], function(cb) {
+							cb.scope.$applyAsync(function() {cb.callback(msg);});
 						});
 					}, headers);
 				}
 				
 				
 				$log.log('callback registered for', path);
-				callbacks[path].push(callback);
+				callbacks[path].push({callback: callback, scope: scope});
 				
 				
 				scope.$on('$destroy', function () {

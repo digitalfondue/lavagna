@@ -81,9 +81,9 @@
         <div class="card-labels" ng-if="::$ctrl.hasUserCreatedLabels">
             <ul class="labels">
                 <li class="lavagna-label lavagna-label-no-controls" 
-                    ng-style="::(value.labelColor|labelBackground)"
-                    ng-class="::(value.labelColor|labelBackgroundClass)" 
-                    lvg-card-fragment-label-repeat="::$ctrl.userCreatedLabels" project-metadata-ref="::$ctrl.projectMetadata"><lvg-label-v2 name-ref="::value.labelName" value-ref="::value" project-metadata-ref="::projectMetadata"></lvg-label-val-v2></li>
+                    ng-style="::($ctrl.projectMetadata.labels[value.labelId].color|labelBackground)"
+                    ng-class="::($ctrl.projectMetadata.labels[value.labelId].color|labelBackgroundClass)" 
+                    lvg-card-fragment-label-repeat="::$ctrl.userCreatedLabels" project-metadata-ref="::$ctrl.projectMetadata"><lvg-label-v2 value-ref="::value" project-metadata-ref="::projectMetadata"></lvg-label-val-v2></li>
             </ul>
         </div>
     </md-card-content>
