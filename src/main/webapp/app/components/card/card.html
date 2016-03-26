@@ -7,44 +7,6 @@
                     <div>
                         <div layout="column" layout-gt-xs="row">
                             <div flex="25">
-                                <div class="lavagna-card-panel">
-                                    <div class="head clearfix">
-                                        <div class="title" data-translate>card.dates</div>
-                                        <ul class="panel-controls">
-                                            <li class="control-item"
-                                                data-ng-hide="cardCtrl.view.editMetadataDates">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataDates = true;"
-                                                class="fa fa-calendar" title="{{'card.setDueDate' | translate}}"
-                                                data-lvg-has-permission="UPDATE_CARD"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-show="cardCtrl.view.editMetadataDates">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataDates = false;"
-                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0]">
-                                            <span data-translate data-translate-value-date="{{cardCtrl.labelValues[cardCtrl.labelNameToId['DUE_DATE']][0].value.valueTimestamp | date: 'MMM d, y'}}">card.dueDate</span>
-									        <span class="fa fa-times lavagna-pointer"
-                                                data-ng-click="cardCtrl.removeDueDate()"
-                                                data-lvg-has-permission="UPDATE_CARD"></span>
-                                        </p>
-                                    </div>
-                                    <div class="footer" data-ng-show="cardCtrl.view.editMetadataDates">
-                                        <div class="content">
-                                            <form class="form-inline" data-ng-role="form" data-ng-submit="cardCtrl.setDueDate(cardCtrl.view.dueDate); cardCtrl.view.dueDate = null;">
-                                                <div class="form-group">
-                                                    <lvg-label-picker label="cardCtrl.labels[cardCtrl.labelNameToId['DUE_DATE']]" data-ng-model="cardCtrl.view.dueDate" board="cardCtrl.board.shortName"></lvg-label-picker>
-                                                </div>
-                                                <button type="submit" class="lvg-button lvg-button-submit" data-translate>card.setDueDate</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="lavagna-card-panel">
                                     <div class="head clearfix">
@@ -74,53 +36,15 @@
                                                   data-lvg-has-permission="UPDATE_CARD"
                                                   class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
                                             </li>
-                                            <li class="control-item"
-                                                data-ng-hide="cardCtrl.view.editMetadataPeople">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataPeople = true;"
-                                                data-lvg-has-permission="UPDATE_CARD"
-                                                class="fa fa-user" title="{{'card.assign' | translate}}"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-show="cardCtrl.view.editMetadataPeople">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataPeople = false;"
-                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="body">
-                                        <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">
-                                            <span data-translate>card.assignedTo</span> <span
-                                            data-ng-repeat="assigned in cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']]">
-											<span data-lvg-user-tooltip="assigned.value.valueUser">
-											</span>
-											<span class="fa fa-times lavagna-pointer"
-                                                  data-ng-click="cardCtrl.removeAssignForUser({id: assigned.value.valueUser})"
-                                                  data-lvg-has-permission="UPDATE_CARD"></span>
-										</span>
-                                        </p>
                                         <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
                                             <span data-translate>card.watchedBy</span> <span
                                             data-ng-repeat="watchedBy in cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
 											<span data-lvg-user-tooltip="watchedBy.value.valueUser"></span>
 										</span>
                                         </p>
-                                    </div>
-                                    <div class="footer" data-ng-show="cardCtrl.view.editMetadataPeople">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <form data-ng-role="form"
-                                                      data-ng-submit="cardCtrl.assignToUser(cardCtrl.view.assignedUser); cardCtrl.view.assignedUser=null;">
-                                                    <div class="content input-group">
-                                                        <lvg-label-picker label="cardCtrl.labels[cardCtrl.labelNameToId['ASSIGNED']]" data-ng-model="cardCtrl.view.assignedUser" board="cardCtrl.board.shortName"></lvg-label-picker>
-                                                    <span class="input-group-btn">
-														<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>card.assign</button>
-													</span>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 

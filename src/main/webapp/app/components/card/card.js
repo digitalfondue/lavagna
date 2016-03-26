@@ -238,29 +238,12 @@
             return false;
         };
 
-
-        ctrl.setDueDate = function(date) {
-            BulkOperations.setDueDate(currentCard(), date)
-        };
-
-        ctrl.removeDueDate = function() {
-            BulkOperations.removeDueDate(currentCard())
-        };
-
         ctrl.watchCard = function(user) {
             BulkOperations.watch(currentCard(), user);
         };
 
         ctrl.unWatchCard = function(user) {
             BulkOperations.unWatch(currentCard(), user);
-        };
-
-        ctrl.assignToUser = function(user) {
-            BulkOperations.assign(currentCard(), user);
-        };
-
-        ctrl.removeAssignForUser = function(user) {
-            BulkOperations.removeAssign(currentCard(), user);
         };
 
         ctrl.setMilestone = function(milestone) {
@@ -468,10 +451,7 @@
         //the /card-data has various card data related event that are pushed from the server that we must react
         StompClient.subscribe($scope, '/event/card/' + card.id + '/card-data', function(e) {
             var type = JSON.parse(e.body).type;
-            if(type === 'UPDATE_DESCRIPTION') {
-                loadDescription();
-                reloadCard();
-            } else if(type.match(/COMMENT/g) !== null) {
+            if(type.match(/COMMENT/g) !== null) {
                 loadComments();
                 reloadCard();
             } else if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {

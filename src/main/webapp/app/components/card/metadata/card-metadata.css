@@ -4,16 +4,14 @@
 }
 
 .lvg-card-metadata__item {
-    margin-top:5px;
+    margin-top:10px;
+    min-height: 28px;
 }
 
 .lvg-card-metadata__status {
     display: inline-block;
-    padding: 3px 2px;
-}
-
-.lvg-card-metadata__item-padded {
-    padding: 3px 2px;
+    padding: 0px 3px;
+    font-weight: bold;
 }
 
 .lvg-card-metadata__item-name {
@@ -34,4 +32,32 @@
 .lvg-card-metadata__description_updated_date {
     color: #aaaaaa;
     font-size: 12px;
+}
+
+.lvg-card-metadata__assigned-users .md-readonly md-chips-wrap {
+    box-shadow: none !important;
+}
+
+/** custom date picker */
+.lvg-card-metadata__item .md-datepicker-button {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: 24px !important;
+    max-width: 24px !important;
+    min-height: 24px !important;
+    min-width: 24px !important;
+    height: 24px !important;
+    width: 24px !important;
+}
+
+.lvg-card-metadata__item .md-datepicker-triangle-button {
+    display: none !important;
+}
+
+.lvg-card-metadata__item md-datepicker {
+    background: white !important;
+}
+
+.lvg-card-metadata__item .md-datepicker-input-container {
+    display: none !important;
 }
