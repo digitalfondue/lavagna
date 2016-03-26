@@ -180,14 +180,5 @@
                 Notification.addAutoAckNotification('error', { key : 'notification.board.redefine-column.error'}, false);
             });
         };
-
-        // dependencies for card fragment
-        ctrl.cardFragmentDependencies = {};
-        var cardFragmentDependenciesToCopy = ['labelNameToId',
-                              'moveCard', 'currentUserId', 'columns',
-                              'watchCard', 'unWatchCard', 'assignToCurrentUser', 'removeAssignForCurrentUser'];
-        for(var k in cardFragmentDependenciesToCopy) {
-            ctrl.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = $scope[cardFragmentDependenciesToCopy[k]];
-        }
     }
 })();

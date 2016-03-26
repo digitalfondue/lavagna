@@ -37,24 +37,6 @@
             ctrl.sideBarLocation=undefined;
         };
 
-        ctrl.labelNameToId = {};
-        var loadLabel = function() {
-            LabelCache.findByProjectShortName(projectName).then(function(labels) {
-                ctrl.labelNameToId = {};
-                for(var k in labels) {
-                    ctrl.labelNameToId[labels[k].name] = k;
-                }
-            });
-        };
-        loadLabel();
-
-
-        var unbind = $rootScope.$on('refreshLabelCache-' + projectName, function() {
-            loadLabel();
-            $scope.$broadcast('loadcards');
-        });
-        $scope.$on('$destroy', unbind);
-
         //keep track of the selected cards
         ctrl.selectedCards = {};
         //ctrl.foundCards = {};
