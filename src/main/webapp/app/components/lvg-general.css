@@ -532,13 +532,18 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	text-decoration: underline;
 }
 
-.lavagna-label.white a .lavagna-closed-card {
+.lavagna-label.white a .lavagna-closed-card, .lavagna-label.white a.lavagna-closed-card {
 	color: white;
+	text-decoration: underline line-through;
 }
 
 .lavagna-label.black a {
 	color: black;
 	text-decoration: underline;
+}
+
+.lavagna-label.black a .lavagna-closed-card, .lavagna-label.black a.lavagna-closed-card {
+	text-decoration: underline line-through;
 }
 
 .lavagna-label-no-controls {

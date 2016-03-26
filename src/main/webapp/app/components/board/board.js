@@ -35,7 +35,7 @@
         
         loadProjectMetadata();
         
-        StompClient.subscribe($scope, '/event/project/'+projectName+'', function(ev) {
+        StompClient.subscribe($scope, '/event/project/' + projectName, function(ev) {
         	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
         		loadProjectMetadata();
         	}
