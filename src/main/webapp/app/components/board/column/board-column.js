@@ -13,13 +13,13 @@
             controllerAs: 'boardColumnCtrl',
             scope: true,
             bindToController: {
-                project: '<',
-                board: '<',
-                column: '<',
-                boardColumns: '<',
+                projectRef: '&',
+                boardRef: '&',
+                columnRef: '&',
+                boardColumnsRef: '&',
                 selectedCards: '=',
-                searchFilter: '<',
-                userReference:'&'
+                searchFilterRef: '&',
+                userRef:'&'
             },
             templateUrl: 'app/components/board/column/board-column.html',
             link: function($scope, $elements, $attrs, boardColumnCtrl) {
@@ -50,13 +50,20 @@
 
     function BoardColumnController($scope, $filter, $mdDialog, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
+        
+        ctrl.user = ctrl.userRef();
+        ctrl.searchFilter = ctrl.searchFilterRef();
+        ctrl.project = ctrl.projectRef();
+        ctrl.board = ctrl.boardRef();
+        ctrl.column = ctrl.columnRef();
+        ctrl.boardColumns = ctrl.boardColumnsRef();
 
         var boardShortName = ctrl.board.shortName;
 
         //capture all status variables
         ctrl.columnState = {};
         
-        ctrl.user = ctrl.userReference();
+        
 
         ctrl.selectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {

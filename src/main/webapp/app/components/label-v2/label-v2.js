@@ -8,7 +8,7 @@
     	template: '<span>'
 			+'<span ng-bind="::$ctrl.name"></span>'
 			+'<span ng-if="::($ctrl.type !== \'NULL\')">: </span>'
-			+'<lvg-label-val-v2 value-ref="::$ctrl.value" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>'
+			+'<lvg-label-val-v2 value-ref="$ctrl.value" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>'
 			+'</span>',
     	bindings: {
     		valueRef: '&',

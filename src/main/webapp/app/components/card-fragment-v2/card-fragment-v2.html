@@ -63,17 +63,17 @@
                     <span class="fa fa-file"></span> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
                 <li ng-if="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
-                    <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="::$ctrl.dueDateLabel" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
+                    <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
                 <li ng-if="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
-                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="::$ctrl.milestoneLabel" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
+                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>
         <div class="card-info" data-ng-if="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">
-                <li class="assigned-user" lvg-card-fragment-label-repeat="::$ctrl.assignedLabels">
-                    <lvg-label-val-v2 value-ref="::value" project-metadata-ref="::$ctrl.projectMetadata"></lvg-label-val-v2>
+                <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">
+                    <lvg-label-val-v2 value-ref="value"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>
@@ -83,7 +83,7 @@
                 <li class="lavagna-label lavagna-label-no-controls" 
                     ng-style="::($ctrl.projectMetadata.labels[value.labelId].color|labelBackground)"
                     ng-class="::($ctrl.projectMetadata.labels[value.labelId].color|labelBackgroundClass)" 
-                    lvg-card-fragment-label-repeat="::$ctrl.userCreatedLabels" project-metadata-ref="::$ctrl.projectMetadata"><lvg-label-v2 value-ref="::value" project-metadata-ref="::projectMetadata"></lvg-label-val-v2></li>
+                    lvg-card-fragment-label-repeat="$ctrl.userCreatedLabels" project-metadata-ref="$ctrl.projectMetadata"><lvg-label-v2 value-ref="value" project-metadata-ref="projectMetadata"></lvg-label-val-v2></li>
             </ul>
         </div>
     </md-card-content>
