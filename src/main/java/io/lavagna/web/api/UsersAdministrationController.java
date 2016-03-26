@@ -20,6 +20,7 @@ import io.lavagna.common.Json;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserToCreate;
+import io.lavagna.service.EventEmitter;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
 import io.lavagna.web.helper.ExpectPermission;
@@ -55,17 +56,20 @@ public class UsersAdministrationController {
 
 	private final UserRepository userRepository;
 	private final UserService userService;
+	private final EventEmitter eventEmitter;
 
 	@Autowired
-	public UsersAdministrationController(UserRepository userRepository, UserService userService) {
+	public UsersAdministrationController(UserRepository userRepository, UserService userService, EventEmitter eventEmitter) {
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.eventEmitter = eventEmitter;
 	}
 
 	@RequestMapping(value = "/api/user/{userId}/enable", method = RequestMethod.POST)
 	public void toggle(@PathVariable("userId") int userId, User user, @RequestBody Update status) {
 		Validate.isTrue(user.getId() != userId, "cannot update the status");
 		userRepository.toggle(userId, status.enabled);
+		eventEmitter.emitUpdateUserProfile(userId);
 	}
 
 	@RequestMapping(value = "/api/user/insert", method = RequestMethod.POST)
