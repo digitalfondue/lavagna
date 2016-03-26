@@ -69,7 +69,7 @@
                 }
                 return $http.get('api/search/user', opts).then(extractData);
             },
-            
+
             formatName :function (user) {
                 if (user.displayName)
                     return user.displayName + ' (' + user.provider + ':' + user.username + ')';
@@ -126,6 +126,21 @@
 
             hasPermission: function (permissionToCheck, projectName) {
                 return this.hasAllPermissions([permissionToCheck], projectName);
+            },
+
+            hasPermissions: function(permissionsToCheck, projectName) {
+                return this.currentCachedUser().then(function (currentUser) {
+                    var deferred = $q.defer();
+                    var permissions = {};
+
+                    for (var i = 0; i < permissionsToCheck.length; i++) {
+                        permissions[permissionsToCheck[i].trim()] =
+                            checkPermission(currentUser, permissionsToCheck[i].trim(), projectName);
+                    }
+
+                    deferred.resolve(permissions);
+                    return deferred.promise;
+                });
             },
 
             hasAtLeastOnePermission: function (permissionsToCheck, projectName) {
