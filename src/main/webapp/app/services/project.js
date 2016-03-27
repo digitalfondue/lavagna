@@ -86,13 +86,17 @@
                 return $http.get('api/project/' + shortName + '/columns-in/').then(extractData);
             },
             
-            loadMetadataAndSubscribe: function(shortName, targetObject, $scope) {
+            loadMetadataAndSubscribe: function(shortName, targetObject, $scope, assignToMap) {
             	
             	var Project = this;
             	
             	function loadProjectMetadata() {
                 	Project.getMetadata(shortName).then(function(metadata) {
-                		targetObject.metadata = metadata;
+                		if(assignToMap) {
+                			targetObject[shortName] = metadata;
+                		} else {
+                			targetObject.metadata = metadata;
+                		}
                     });
                 }
                 

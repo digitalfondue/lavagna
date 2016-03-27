@@ -32,6 +32,19 @@
         ctrl.searchFilter = ctrl.searchFilterRef();
         
         //
+        var r = [];
+        ctrl.getMetadataHash = function getMetadataHash() {
+        	var hash = '';
+        	var metadata = ctrl.metadataRef();
+        	if(metadata) {
+        		hash = metadata.hash;
+        	}
+        	r[0] = hash;
+        	return r;
+        }
+        //
+        
+        //
         var initializeColumn = function() {
         	
             var columnId = ctrl.column.id;

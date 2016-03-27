@@ -31,7 +31,7 @@
 				handleUser(value.valueUser);
 			} else if (type === 'CARD') {
 				handleCard(value.valueCard);
-			} else if (type === 'LIST' && metadata && metadata.labelListValues[value.valueList]) {
+			} else if (type === 'LIST' && metadata && metadata.labelListValues && metadata.labelListValues[value.valueList]) {
 				ctrl.displayValue = metadata.labelListValues[value.valueList].value;
 			} else if (type === 'TIMESTAMP') {
 				ctrl.displayValue = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');

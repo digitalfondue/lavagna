@@ -42,31 +42,6 @@
         ctrl.view.maxVisibleCardPages = 3;
         
         ctrl.metadatas = {};
-        
-        ctrl.checkMetadatas = function checkMetadatas(metadatas) {
-        	if(!metadatas) {
-        		return null;
-        	}
-        	var hash = '';
-        	angular.forEach(metadatas, function(v, k) {
-        		hash+= v.metadata ? v.metadata.hash : '';
-        	});
-        	return hash;
-        };
-        
-        ctrl.wrapMetadatas = function wrapMetadatas(metadatas) {
-        	if(!metadatas) {
-        		return [];
-        	}
-        	
-        	for(var k in metadatas) {
-        		if(!metadatas[k].metadata) {
-        			return [];
-        		}
-        	}
-        	return [metadatas];
-        };
-        
 
         var loadUserCards = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
@@ -79,7 +54,7 @@
                     	var projectShortName = cards.cards[i].projectShortName;
                     	if(!ctrl.metadatas[projectShortName]) {
                     		ctrl.metadatas[projectShortName] = {};
-                    		Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas[projectShortName], $scope);
+                    		Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas, $scope, true);
                     	}
                     }
                 });
@@ -91,6 +66,20 @@
         ctrl.fetchUserCardsPage = function(page) {
             loadUserCards(page - 1);
         };
+        
+        // 
+        var r = []
+        ctrl.getMetadatasHash = function getMetadatasHash() {
+        	var hash = '';
+        	for(var k in ctrl.metadatas) {
+        		if(ctrl.metadatas[k].hash) {
+        			hash+=ctrl.metadatas[k].hash;
+        		}
+        	}
+        	r[0] = hash;
+        	return r;
+        }
+        //
 
         StompClient.subscribe($scope, '/event/project', loadProjects);
 

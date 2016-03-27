@@ -69,13 +69,13 @@
         sv-root="board-column-card" 
         sv-part="boardColumnCtrl.cardsInColumn" 
         sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)"
-        ng-repeat="metadata in [boardColumnCtrl.metadataRef()] track by metadata.hash">
-        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+metadata.hash)" class="lavagna-board-card" sv-element>
+        ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash">
+        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" class="lavagna-board-card" sv-element>
              <lvg-card-fragment-v2
                 view="board"
-                card-ref="::card"
-                user-ref="::boardColumnCtrl.user"
-                project-metadata-ref="::metadata"></lvg-card-fragment-v2>
+                card-ref="card"
+                user-ref="boardColumnCtrl.user"
+                project-metadata-ref="boardColumnCtrl.metadataRef()"></lvg-card-fragment-v2>
         </li>
     </ul>
 </div>

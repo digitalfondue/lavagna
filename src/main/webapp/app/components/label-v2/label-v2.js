@@ -19,7 +19,7 @@
     		ctrl.value = ctrl.valueRef();
     		ctrl.projectMetadata = ctrl.projectMetadataRef();
     		ctrl.type = ctrl.value.labelValueType || ctrl.value.type;
-    		ctrl.name = ctrl.projectMetadata ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
+    		ctrl.name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
     	}
     })
 })();
