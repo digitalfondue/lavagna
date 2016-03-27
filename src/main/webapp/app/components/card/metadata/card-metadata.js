@@ -122,7 +122,6 @@
         ctrl.userPermissions = {};
         function loadUserPermissions() {
             User.hasPermissions(COMPONENT_PERMISSIONS, ctrl.project.shortName).then(function(permissions) {
-                console.log('(/D&(&DJHSBHUJDBHSBDBDHJBSJHBDHJBS permissions = ' + JSON.stringify(permissions));
                 ctrl.userPermissions = permissions;
             });
         }

@@ -30,8 +30,9 @@
             sv-element
             data-lvg-update-column-size>
             <lvg-board-column 
-                project-ref="boardCtrl.project" 
-                board-ref="boardCtrl.board" 
+                project-short-name="{{::boardCtrl.project.shortName}}" 
+                board-short-name="{{::boardCtrl.board.shortName}}"
+                metadata-ref="boardCtrl.getMetadata()"
                 column="column" 
                 selected-cards="boardCtrl.selectedCards" 
                 search-filter-ref="boardCtrl.searchFilter"

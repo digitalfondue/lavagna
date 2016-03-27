@@ -6,44 +6,22 @@
 
     components.directive('lvgBoardColumn', BoardColumnComponent);
 
-    function BoardColumnComponent(Board, Card, Label, Notification, StompClient, BulkOperations) {
+    function BoardColumnComponent() {
         return {
             restrict: 'E',
             controller: BoardColumnController,
             controllerAs: 'boardColumnCtrl',
             scope: true,
             bindToController: {
-                projectRef: '&',
-                boardRef: '&',
+                projectShortName: '@',
+                metadataRef: '&',
+                boardShortName:'@',
                 column: '=',
                 selectedCards: '=',
                 searchFilterRef: '&',
                 userRef:'&'
             },
-            templateUrl: 'app/components/board/column/board-column.html',
-            link: function($scope, $elements, $attrs, boardColumnCtrl) {
-                var projectShortName = boardColumnCtrl.project.shortName;
-                var boardShortName = boardColumnCtrl.board.shortName;
-                var columnId = boardColumnCtrl.column.id;
-
-                var initializeColumn = function() {
-
-                    var loadCards = function() {
-                        Card.findByColumn(columnId).then(function(res) {
-                        	res.columnId = columnId;
-                            boardColumnCtrl.cardsInColumn = res;
-                            boardColumnCtrl.loaded = true;
-                        });
-                    };
-                    StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
-
-                    $scope.$on('loadcards', loadCards);
-
-                    loadCards();
-                };
-
-                initializeColumn();
-            }
+            templateUrl: 'app/components/board/column/board-column.html'
         }
     }
 
@@ -52,11 +30,33 @@
         
         ctrl.user = ctrl.userRef();
         ctrl.searchFilter = ctrl.searchFilterRef();
-        ctrl.project = ctrl.projectRef();
-        ctrl.board = ctrl.boardRef();
+        
+        //
+        var initializeColumn = function() {
+        	
+            var columnId = ctrl.column.id;
+
+            var loadCards = function() {
+                Card.findByColumn(columnId).then(function(res) {
+                	res.columnId = columnId;
+                	ctrl.cardsInColumn = res;
+                	ctrl.loaded = true;
+                });
+            };
+            StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
+
+            $scope.$on('loadcards', loadCards);
+
+            loadCards();
+        };
+
+        initializeColumn();
+        
+        //
         
 
-        var boardShortName = ctrl.board.shortName;
+        var boardShortName = ctrl.boardShortName;
+        var projectShortName = ctrl.projectShortName;
 
         //capture all status variables
         ctrl.columnState = {};
@@ -77,10 +77,6 @@
             });
         };
         
-        
-        ctrl.hashOf = function hashOf(cardHash) {
-        	return cardHash + (ctrl.projectMetadata ? ctrl.projectMetadata.hash : '');
-        }
         
         $scope.$on('selectall', ctrl.selectAllInColumn);
         $scope.$on('unselectall', ctrl.unSelectAllInColumn);

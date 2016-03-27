@@ -34,7 +34,6 @@
         };
 
         ctrl.toggleAction = function(action) {
-            console.log(action.type);
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
 

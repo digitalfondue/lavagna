@@ -26,7 +26,12 @@
         ctrl.user = ctrl.userReference();
         ctrl.currentUserId = ctrl.user.id;
         
-        Project.loadMetadataAndSubscribe(projectName, ctrl.project, $scope);
+        ctrl.metadatas = {};
+        
+        Project.loadMetadataAndSubscribe(projectName, ctrl.metadatas, $scope);
+        ctrl.getMetadata = function() {
+        	return ctrl.metadatas.metadata;
+        }
 
         ctrl.moveCard = function(card, location) {
             Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);
