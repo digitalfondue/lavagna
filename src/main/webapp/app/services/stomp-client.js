@@ -4,7 +4,7 @@
 
 	var services = angular.module('lavagna.services');
 
-	services.factory('StompClient', function ($q, $log, $rootScope, $window, $timeout, CONTEXT_PATH, User, Notification) {
+	services.factory('StompClient', function ($q, $log, $rootScope, $window, CONTEXT_PATH, User, Notification) {
 
 		
 		var cnt = 0;
@@ -26,7 +26,6 @@
 			this.then(function (v) {
 				
 				var identifier = '__id__'+(cnt++);
-				//FIXME use counter...
 				if(!callbacks[path] || callbacks[path].count == 0) {
 					callbacks[path] = {count:0};
 					
@@ -43,15 +42,16 @@
 				}
 				
 				
-				$log.log('callback registered for', path);
+				$log.log('callback with id ' + identifier + ' registered for', path);
 				callbacks[path][identifier] = {callback: callback, scope: scope};
 				callbacks[path].count++;
 				
 				
 				scope.$on('$destroy', function () {
-					$log.log('callback unregistered for', path);
+					$log.log('callback with id ' + identifier + ' unregistered for', path);
 					delete callbacks[path][identifier]
 					callbacks[path].count--;
+					$log.log('count for path ' + path, callbacks[path].count);
 					if(callbacks[path].count == 0) {
 						$log.log('stomp client unsubscribe from', path);
 						callbacks[path].subscription.unsubscribe();
