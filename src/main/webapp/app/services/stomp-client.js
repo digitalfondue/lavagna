@@ -45,7 +45,7 @@
 					callbacks[path].splice(callbacks[path].indexOf(callback), 1);
 					if(callbacks[path].length == 0) {
 						$log.log('stomp client unsubscribe from', path);
-						v.unsubscribe(callbacks[path].subscription);
+						callbacks[path].subscription.unsubscribe();
 					}
 				});
 			});
