@@ -6,6 +6,9 @@
 
 	services.factory('StompClient', function ($q, $log, $rootScope, $window, $timeout, CONTEXT_PATH, User, Notification) {
 
+		
+		var cnt = 0;
+		
 		var defer = $q.defer();
 		
 		var callbacks = {
@@ -22,28 +25,34 @@
 		defer.promise.subscribe = function (scope, path, callback, headers) {
 			this.then(function (v) {
 				
-				
-				if(!callbacks[path] || callbacks[path].length == 0) {
-					callbacks[path] = [];
+				var identifier = '__id__'+(cnt++);
+				//FIXME use counter...
+				if(!callbacks[path] || callbacks[path].count == 0) {
+					callbacks[path] = {count:0};
 					
 					$log.log('stomp client subscribe at', path);
 					
 					callbacks[path].subscription = v.subscribe(path, function (msg) {
-						angular.forEach(callbacks[path], function(cb) {
-							cb.scope.$applyAsync(function() {cb.callback(msg);});
+						angular.forEach(callbacks[path], function(cb, key) {
+							if(key.indexOf('__id__') === 0) {
+								cb.scope.$applyAsync(function() {cb.callback(msg);});
+							}
+							
 						});
 					}, headers);
 				}
 				
 				
 				$log.log('callback registered for', path);
-				callbacks[path].push({callback: callback, scope: scope});
+				callbacks[path][identifier] = {callback: callback, scope: scope};
+				callbacks[path].count++;
 				
 				
 				scope.$on('$destroy', function () {
 					$log.log('callback unregistered for', path);
-					callbacks[path].splice(callbacks[path].indexOf(callback), 1);
-					if(callbacks[path].length == 0) {
+					delete callbacks[path][identifier]
+					callbacks[path].count--;
+					if(callbacks[path].count == 0) {
 						$log.log('stomp client unsubscribe from', path);
 						callbacks[path].subscription.unsubscribe();
 					}
