@@ -117,6 +117,10 @@
 
 	filters.filter('labelBackground', function ($filter, $cacheFactory) {
 		return decorateCache(function (color) {
+			if (color === undefined || color === null) {
+				return '';
+			}
+			
 			var lpad = function (value, padding) {
 				var zeroes = "0";
 				for (var i = 0; i < padding; i++) {

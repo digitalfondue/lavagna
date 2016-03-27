@@ -14,9 +14,9 @@
         
     <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
         <h2 class="card-home" data-translate>partials.home.openTask</h2>
-        <ul data-ng-if="dashboardCtrl.totalOpenCards > 0" class="lavagna-home-cards">
-            <li class="lavagna-home-card" data-ng-repeat="card in dashboardCtrl.userCards track by card.hash">
-                <lvg-card-fragment data-view="list" data-card="card"></lvg-card-fragment>
+        <ul data-ng-if="dashboardCtrl.totalOpenCards > 0" class="lavagna-home-cards" ng-repeat="metadatas in dashboardCtrl.wrapMetadatas(dashboardCtrl.metadatas) track by dashboardCtrl.checkMetadatas(metadatas)">
+            <li class="lavagna-home-card" ng-repeat="card in dashboardCtrl.userCards track by (card.hash+metadatas[card.projectShortName].metadata.hash)">
+                <lvg-card-fragment-v2 view="list" card-ref="::card" user-ref="::dashboardCtrl.user" project-metadata-ref="::metadatas[card.projectShortName].metadata"></lvg-card-fragment-v2>
             </li>
         </ul>
         <span data-ng-if="dashboardCtrl.totalOpenCards == 0" data-translate>partials.home.noTask</span>

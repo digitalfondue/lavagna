@@ -5,6 +5,9 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgComponentDashboard', {
+    	bindings: {
+    		user:'<'
+    	},
         controller: DashboardController,
         controllerAs: 'dashboardCtrl',
         templateUrl: 'app/components/dashboard/dashboard.html'
@@ -37,6 +40,33 @@
 
         ctrl.view.cardPage = 1;
         ctrl.view.maxVisibleCardPages = 3;
+        
+        ctrl.metadatas = {};
+        
+        ctrl.checkMetadatas = function checkMetadatas(metadatas) {
+        	if(!metadatas) {
+        		return null;
+        	}
+        	var hash = '';
+        	angular.forEach(metadatas, function(v, k) {
+        		hash+= v.metadata ? v.metadata.hash : '';
+        	});
+        	return hash;
+        };
+        
+        ctrl.wrapMetadatas = function wrapMetadatas(metadatas) {
+        	if(!metadatas) {
+        		return [];
+        	}
+        	
+        	for(var k in metadatas) {
+        		if(!metadatas[k].metadata) {
+        			return [];
+        		}
+        	}
+        	return [metadatas];
+        };
+        
 
         var loadUserCards = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
@@ -44,6 +74,14 @@
                     ctrl.userCards = cards.cards;
                     ctrl.totalOpenCards = cards.totalCards;
                     ctrl.cardsPerPage = cards.itemsPerPage;
+                    
+                    for(var i = 0;i < cards.cards.length; i++) {
+                    	var projectShortName = cards.cards[i].projectShortName;
+                    	if(!ctrl.metadatas[projectShortName]) {
+                    		ctrl.metadatas[projectShortName] = {};
+                    		Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas[projectShortName], $scope);
+                    	}
+                    }
                 });
             });
         };

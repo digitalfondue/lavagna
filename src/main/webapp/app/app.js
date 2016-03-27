@@ -164,7 +164,12 @@
 		})
 		.state('home.dashboard', {
 		    url: '',
-		    template: '<lvg-component-dashboard></lvg-component-dashboard>',
+		    template: '<lvg-component-dashboard user="userResolver.user"></lvg-component-dashboard>',
+		    resolve : currentUserResolver,
+		    controller: function(user) {
+                this.user = user;
+            },
+            controllerAs: 'userResolver',
 		})
 		.state('404', {
 			url : '/not-found/',
