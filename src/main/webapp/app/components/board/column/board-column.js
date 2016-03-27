@@ -15,8 +15,7 @@
             bindToController: {
                 projectRef: '&',
                 boardRef: '&',
-                columnRef: '&',
-                boardColumnsRef: '&',
+                column: '=',
                 selectedCards: '=',
                 searchFilterRef: '&',
                 userRef:'&'
@@ -55,8 +54,7 @@
         ctrl.searchFilter = ctrl.searchFilterRef();
         ctrl.project = ctrl.projectRef();
         ctrl.board = ctrl.boardRef();
-        ctrl.column = ctrl.columnRef();
-        ctrl.boardColumns = ctrl.boardColumnsRef();
+        
 
         var boardShortName = ctrl.board.shortName;
 

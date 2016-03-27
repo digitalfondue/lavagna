@@ -8,7 +8,6 @@
 			view: '@',
 			cardRef:'&',
 			userRef:'&',
-			boardColumnsRef: '&',
 			projectMetadataRef: '&'
 		},
 		controller: CardFragmentV2Controller

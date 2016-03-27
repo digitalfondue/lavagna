@@ -10,7 +10,7 @@
 			restrict: 'A',
 			link: function($scope, element, attrs) {
 
-				$scope.openCardMenu = function(card, columns) {
+				$scope.openCardMenu = function(card) {
 
 					//we create a specific scope for the card menu, as the current $scope can be destroyed at any time
 					var $scopeForCardMenu = $scope.$new();
@@ -65,35 +65,27 @@
 
 
 					//hacky and ugly: to refactor
-					var projectShortName;
+					
 
 					$scopeForCardMenu.isSelfWatching = Card.isWatchedByUser;
 					$scopeForCardMenu.isAssignedToCard = Card.isAssignedToUser;
 
-					//FIXME to be removed, now support card-fragment v1 and v2
-					if($scope.cardFragmentCtrl) {
-						projectShortName = $scope.cardFragmentCtrl.project;
-						$scopeForCardMenu.card = $scope.cardFragmentCtrl.card;
-						$scopeForCardMenu.board = $scope.cardFragmentCtrl.board;
-						$scopeForCardMenu.currentUserId = $scope.cardFragmentCtrl.currentUserId;
-					} else {
-						projectShortName = $scope.$ctrl.boardShortName;
-						$scopeForCardMenu.card = $scope.$ctrl.card;
-						$scopeForCardMenu.board = $scope.$ctrl.boardShortName;
-						$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
-					}
+					//
+					var projectShortName = $scope.$ctrl.projectShortName;
+					$scopeForCardMenu.card = $scope.$ctrl.card;
+					$scopeForCardMenu.board = $scope.$ctrl.boardShortName;
+					$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
+					
 					//
 
 
                     Project.findAllColumns(projectShortName).then(function(columns) {
                         $scopeForCardMenu.projectColumns = columns;
                     });
-
-					$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
-
-
-
-
+                    
+                    Board.columns($scopeForCardMenu.board, 'BOARD').then(function(columns) {
+                    	$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
+                    })
 
 
 					// imported from column...
