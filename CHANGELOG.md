@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6.2 (2016-03-28)
+
+ - fix unsubscribe mechanism in stomp-client wrapper
+
 ## 1.0.6.1 (2016-03-25)
 
  - Clone card functionality
