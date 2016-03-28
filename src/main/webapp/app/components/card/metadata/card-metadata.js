@@ -61,7 +61,7 @@
             if(angular.isUndefined(column)) {
                 return;
             }
-            if(column.id === card.columnId) {
+            if(column.id === ctrl.card.columnId) {
                 return;
             }
 
