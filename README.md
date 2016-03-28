@@ -9,7 +9,7 @@ Lavagna
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
 
 
-# Latest release is 1.0.6.1 (2016-03-25) #
+# Latest release is 1.0.6.2 (2016-03-28) #
 
 # Note: The UI/UX of "master" is broken, as we are currently switching to angular-material. The stable branch is 1.0.x 
 
@@ -42,9 +42,9 @@ See the documentation at http://help.lavagna.io
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0.6.1/lavagna-1.0.6.1-distribution.zip
-unzip lavagna-1.0.6.1-distribution.zip
-./lavagna-1.0.6.1/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0.6.2/lavagna-1.0.6.2-distribution.zip
+unzip lavagna-1.0.6.2-distribution.zip
+./lavagna-1.0.6.2/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
