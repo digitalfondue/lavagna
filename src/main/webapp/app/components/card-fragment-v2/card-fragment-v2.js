@@ -4,8 +4,9 @@
 	angular.module('lavagna.components').component('lvgCardFragmentV2', {
 		templateUrl: 'app/components/card-fragment-v2/card-fragment-v2.html',
 		bindings: {
-			readOnly: '@',
-			view: '@',
+			readOnly: '@', /* true | false (default) */
+			view: '@', /* list | board | search */
+			searchType: '@', /* globalSearch | projectSearch (default) */
 			cardRef:'&',
 			userRef:'&',
 			projectMetadataRef: '&'

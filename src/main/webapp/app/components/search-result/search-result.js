@@ -9,12 +9,19 @@
         	page: '=',
         	query: '=',
         	moveToPage: '=',
-        	found: '=',
+        	found: '<',
         	project: '=',
         	selected: '=',
-        	cardFragmentDependencies: '='
+        	user: '<'
         },
-        controllerAs: 'lvgSearchResult'
+        controllerAs: 'lvgSearchResult',
+        controller: function() {
+        	var ctrl = this;
+        	
+        	ctrl.$onChanges = function(changesObj) {
+        		console.log(changesObj);
+        	}
+        }
     });
     
 })();

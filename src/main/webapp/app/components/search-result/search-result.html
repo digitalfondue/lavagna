@@ -7,15 +7,7 @@
 				
 			<ul class="lvg-search-result-list">
 				<li class="lavagna-home-card" data-ng-repeat="card in lvgSearchResult.found track by card.hash">
-					<lvg-card-fragment 
-					   data-view="search"
-					   data-project="lvgSearchResult.project" 
-					   data-card="card" 
-					   data-query="lvgSearchResult.query" 
-					   data-page="lvgSearchResult.page" 
-					   data-selected="lvgSearchResult.selected" 
-					   search-type="lvgSearchResult.project ? 'projectSearch' : 'globalSearch'" 
-					   data-dependencies="lvgSearchResult.cardFragmentDependencies"></lvg-card-fragment>
+				    <lvg-card-fragment-v2 card-ref="card" search-type="{{::(lvgSearchResult.project ? 'projectSearch' : 'globalSearch')}}" user-ref="lvgSearchResult.user" view="search"></lvg-card-fragment-v2>
 				</li>
 			</ul>
 			

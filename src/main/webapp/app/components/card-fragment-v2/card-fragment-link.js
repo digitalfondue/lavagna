@@ -27,11 +27,11 @@
 						page: page});
 				}
 				
-				$a.attr('href', updateUrl($location.search().q, null));
+				$a.attr('href', updateUrl($location.search().q, $location.search().page));
 				
 				if(ctrl.dynamicLink === 'true') {
 					$scope.$on('updatedQueryOrPage', function(ev, searchFilter) {
-						$a.attr('href', updateUrl(searchFilter.location ? searchFilter.location.q : null, null))
+						$a.attr('href', updateUrl(searchFilter.location ? searchFilter.location.q : null, $location.search().page))
 					});
 				}
 			},

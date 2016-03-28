@@ -6,7 +6,8 @@
 
     components.component('lvgSearch', {
         bindings: {
-            project: '='
+            project: '=',
+            user:'<'
         },
     	controller: SearchCtrl,
     	controllerAs: 'lvgSearch',
@@ -147,18 +148,6 @@
 		ctrl.triggerSearch = triggerSearch;
 
 		//
-		User.currentCachedUser().then(function(currentUser) {
-			ctrl.currentUserId = currentUser.id;
-		});
-		//
-
-		// dependencies for card fragment
-        ctrl.cardFragmentDependencies = {};
-        var cardFragmentDependenciesToCopy = ['currentUserId'];
-		for(var k in cardFragmentDependenciesToCopy) {
-			ctrl.cardFragmentDependencies[cardFragmentDependenciesToCopy[k]] = ctrl[cardFragmentDependenciesToCopy[k]];
-		}
-
 	}
 
 })();

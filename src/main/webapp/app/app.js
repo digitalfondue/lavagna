@@ -244,10 +244,13 @@
 		//---- SEARCH ----
 		.state('globalSearch', {
 			url : '/search/?q&page',
-			template : '<lvg-search></lvg-search>',
+			template : '<lvg-search user="globalSearchResolver.user"></lvg-search>',
 			reloadOnSearch: false,
-			controller: function(Title) {
+			controllerAs : 'globalSearchResolver',
+			resolve : currentUserResolver,
+			controller: function(Title, user) {
 			    Title.set('title.search');
+			    this.user = user;
 			}
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
@@ -377,10 +380,11 @@
         //---- PROJECT SEARCH ----
         .state('projectSearch', {
 			url : '/:projectName/search/?q&page',
-			template : '<lvg-search project="searchResolver.project"></lvg-search>',
+			template : '<lvg-search project="searchResolver.project" user="searchResolver.user"></lvg-search>',
 			reloadOnSearch: false,
-			controller: function(Title, project) {
+			controller: function(Title, project, user) {
 			    this.project = project;
+			    this.user = user;
 			    Title.set('title.project', { shortname: project.shortName, name: project.name });
 			},
 			controllerAs: 'searchResolver',
