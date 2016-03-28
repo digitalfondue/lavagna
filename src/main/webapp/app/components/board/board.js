@@ -25,9 +25,9 @@
 
         ctrl.user = ctrl.userReference();
         ctrl.currentUserId = ctrl.user.id;
-        
+
         ctrl.metadatas = {};
-        
+
         Project.loadMetadataAndSubscribe(projectName, ctrl.metadatas, $scope);
         ctrl.getMetadata = function() {
         	return ctrl.metadatas.metadata;
@@ -141,10 +141,10 @@
         };
 
         StompClient.subscribe($scope, '/event/board/'+boardName+'/location/BOARD/column', function() {
-            Board.columns(boardName, ctrl.columnsLocation).then(assignToColumn);
+            Board.columnsByLocation(boardName, ctrl.columnsLocation).then(assignToColumn);
         });
 
-        Board.columns(boardName, 'BOARD').then(assignToColumn);
+        Board.columnsByLocation(boardName, 'BOARD').then(assignToColumn);
 
         //-------------
 

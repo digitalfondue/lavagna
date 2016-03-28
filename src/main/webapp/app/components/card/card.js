@@ -25,49 +25,6 @@
 
         ctrl.view = {};
 
-
-        var findAndAssignColumns = function() {
-            Board.columns(board.shortName, 'BOARD').then(function(columns) {
-                ctrl.columns = columns;
-            });
-        };
-
-        StompClient.subscribe($scope, '/event/board/'+board.shortName+'/location/BOARD/column', findAndAssignColumns);
-
-        findAndAssignColumns();
-        //
-
-        ctrl.notSameColumn = function(col) {
-            return col.id != ctrl.card.columnId;
-        };
-
-        ctrl.notEmptyColumn = function(model) {
-            return model != "" && model != null;
-        };
-        //
-
-        var $scopeForColumn = undefined;
-
-        var loadColumn = function(columnId) {
-            Board.column(columnId).then(function(col) {
-                ctrl.column = col;
-            });
-
-            if($scopeForColumn) {
-                $scopeForColumn.$destroy();
-            }
-
-            $scopeForColumn = $scope.$new();
-
-            //subscribe on any change to the column
-            StompClient.subscribe($scopeForColumn, '/event/column/' + columnId, function() {
-                loadColumn(columnId);
-            });
-
-        };
-        loadColumn(card.columnId);
-        //
-
         //------------------
 
         function refreshTitle() {
@@ -78,7 +35,6 @@
             CardCache.card(card.id).then(function(c) {
                 ctrl.card = c;
                 card = ctrl.card;
-                loadColumn(c.columnId);
                 refreshTitle();
             });
             loadActivity();
@@ -400,51 +356,6 @@
 
         ctrl.hasActivity = function() {
             return (ctrl.comments !== undefined && ctrl.actionLists !== undefined && ctrl.actionItems !== undefined && ctrl.files !== undefined);
-        };
-
-        ctrl.moveCard = function(location) {
-            Card.moveAllFromColumnToLocation(card.columnId, [card.id], location).then(reloadCard).then(function() {
-                Notification.addAutoAckNotification('success', {
-                    key: 'notification.card.moveToLocation.success',
-                    parameters: { location: location }
-                }, false);
-                $rootScope.$emit('card.moved.event');
-            }, function(error) {
-                Notification.addAutoAckNotification('error', {
-                    key: 'notification.card.moveToLocation.error',
-                    parameters: { location: location }
-                }, false);
-            });
-        };
-
-        ctrl.moveToColumn = function(toColumn) {
-            if(angular.isUndefined(toColumn)) {
-                return;
-            }
-
-            Card.findByColumn(toColumn.id).then(function(cards) {
-                var ids = [];
-                for (var i = 0;i<cards.length;i++) {
-                    ids.push(cards[i].id);
-                }
-
-                ids.push(card.id);
-
-                return ids;
-            }).then(function(ids) {
-                Board.moveCardToColumn(card.id, card.columnId, toColumn.id, {newContainer: ids}).then(function() {
-                    Notification.addAutoAckNotification('success', {
-                        key: 'notification.card.moveToColumn.success',
-                        parameters: { columnName: toColumn.name }
-                    }, false);
-                    $rootScope.$emit('card.moved.event');
-                }, function(error) {
-                    Notification.addAutoAckNotification('error', {
-                        key: 'notification.card.moveToColumn.error',
-                        parameters: { columnName: toColumn.name }
-                    }, false);
-                })
-            });
         };
 
 

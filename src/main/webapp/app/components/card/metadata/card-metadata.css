@@ -10,8 +10,7 @@
 
 .lvg-card-metadata__status {
     display: inline-block;
-    padding: 0px 3px;
-    font-weight: bold;
+    padding: 8px 2px 4px 2px;
 }
 
 .lvg-card-metadata__item-name {
@@ -69,4 +68,8 @@
 
 .lvg-card-metadata__item .md-datepicker-input-container input, .lvg-card-metadata__item .md-datepicker-input-container button {
     display: none !important;
+}
+
+.lvg-card-metadata__item md-select {
+    margin: 0 !important;
 }

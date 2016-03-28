@@ -65,7 +65,7 @@
 
 
 					//hacky and ugly: to refactor
-					
+
 
 					$scopeForCardMenu.isSelfWatching = Card.isWatchedByUser;
 					$scopeForCardMenu.isAssignedToCard = Card.isAssignedToUser;
@@ -75,15 +75,15 @@
 					$scopeForCardMenu.card = $scope.$ctrl.card;
 					$scopeForCardMenu.board = $scope.$ctrl.boardShortName;
 					$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
-					
+
 					//
 
 
                     Project.findAllColumns(projectShortName).then(function(columns) {
                         $scopeForCardMenu.projectColumns = columns;
                     });
-                    
-                    Board.columns($scopeForCardMenu.board, 'BOARD').then(function(columns) {
+
+                    Board.columnsByLocation($scopeForCardMenu.board, 'BOARD').then(function(columns) {
                     	$scopeForCardMenu.moveColumns = $filter('filter')(columns, function(col) {return col.id != card.columnId});
                     })
 

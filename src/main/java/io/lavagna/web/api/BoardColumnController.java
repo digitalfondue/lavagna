@@ -77,6 +77,13 @@ public class BoardColumnController {
 		return boardColumnRepository.findAllColumnsFor(boardId, location);
 	}
 
+    @ExpectPermission(Permission.READ)
+    @RequestMapping(value = "/api/board/{shortName}/columns-in", method = RequestMethod.GET)
+    public List<BoardColumn> fetchAll(@PathVariable("shortName") String shortName) {
+        int boardId = boardRepository.findBoardIdByShortName(shortName);
+        return boardColumnRepository.findAllColumnsFor(boardId);
+    }
+
 	@ExpectPermission(Permission.CREATE_COLUMN)
 	@RequestMapping(value = "/api/board/{shortName}/column", method = RequestMethod.POST)
 	public void create(@PathVariable("shortName") String shortName, @RequestBody BoardColumnToCreate column) {

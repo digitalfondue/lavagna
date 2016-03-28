@@ -15,7 +15,7 @@
     var COMPONENT_PERMISSIONS = ['UPDATE_CARD'];
 
     function CardMetadataController($rootScope, $scope, CardCache, Card, User, LabelCache, Label, StompClient,
-        Notification, Board, BulkOperations, Search) {
+        Notification, Board, BulkOperations, Project, Search) {
         var ctrl = this;
 
         // return the current card in a bulk operation friendly data structure
@@ -24,6 +24,79 @@
             cardByProject[ctrl.project.shortName] = [ctrl.card.id];
             return cardByProject;
         };
+        //
+
+        var findAndAssignColumns = function() {
+            Board.columns(ctrl.board.shortName).then(function(cols) {
+                var locations = [];
+                var columns = [];
+                var column = null;
+                for(var i = 0; i < cols.length; i++) {
+                    var col = cols[i];
+                    if(col.location === 'BOARD') {
+                        columns.push(col);
+                    } else {
+                        if(col.name === 'ARCHIVE' || col.name === 'BACKLOG' || col.name === 'TRASH') {
+                            locations.push(col);
+                        }
+                    }
+
+                    if(col.id === ctrl.card.columnId) {
+                        column = col;
+                    }
+                }
+
+                ctrl.locations = locations;
+                ctrl.columns = columns;
+                ctrl.column = column;
+            });
+        };
+
+        StompClient.subscribe($scope, '/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
+
+        findAndAssignColumns();
+        //
+
+        ctrl.moveCard = function(column) {
+            if(angular.isUndefined(column)) {
+                return;
+            }
+            if(column.id === card.columnId) {
+                return;
+            }
+
+            if(column.location === 'BOARD') {
+                Board.moveCardToColumnEnd(ctrl.card.id, ctrl.card.columnId, column.id).then(function() {
+                    Notification.addAutoAckNotification('success', {
+                        key: 'notification.card.moveToColumn.success',
+                        parameters: { columnName: column.name }
+                    }, false);
+                    $rootScope.$emit('card.moved.event');
+                }, function(error) {
+                    findAndAssignColumns();
+                    Notification.addAutoAckNotification('error', {
+                        key: 'notification.card.moveToColumn.error',
+                        parameters: { columnName: column.name }
+                    }, false);
+                });
+
+            } else {
+                Card.moveAllFromColumnToLocation(ctrl.card.columnId, [ctrl.card.id], column.location).then(function() {
+                    Notification.addAutoAckNotification('success', {
+                        key: 'notification.card.moveToLocation.success',
+                        parameters: { location: column.location }
+                    }, false);
+                    $rootScope.$emit('card.moved.event');
+                }, function(error) {
+                    findAndAssignColumns();
+                    Notification.addAutoAckNotification('error', {
+                        key: 'notification.card.moveToLocation.error',
+                        parameters: { location: column.location }
+                    }, false);
+                })
+            }
+        };
+        //
 
         // -----
         ctrl.updateCardName = function(newName) {
@@ -71,13 +144,6 @@
         ctrl.updateDescription = function(description) {
             Card.updateDescription(ctrl.card.id, description);
         };
-
-        var loadColumn = function(columnId) {
-            Board.column(columnId).then(function(col) {
-                ctrl.column = col;
-            });
-        };
-        loadColumn(ctrl.card.columnId);
 
         ctrl.searchUser = function(text) {
             return User.findUsers(text.trim()).then(function (res) {

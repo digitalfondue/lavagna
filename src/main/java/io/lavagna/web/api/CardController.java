@@ -292,6 +292,23 @@ public class CardController {
 		return event;
 	}
 
+    @ExpectPermission(Permission.MOVE_CARD)
+    @RequestMapping(value = "/api/card/{cardId}/from-column/{previousColumnId}/to-column-end/{newColumnId}", method = RequestMethod.POST)
+    public Event moveCardToColumn(@PathVariable("cardId") int id,
+                                  @PathVariable("previousColumnId") int previousColumnId, @PathVariable("newColumnId") int newColumnId,
+                                  User user) {
+        List<CardFullWithCounts> cards = cardService.fetchAllInColumn(newColumnId);
+        List<Integer> order = new ArrayList<>();
+        for(CardFullWithCounts card: cards) {
+            order.add(card.getId());
+        }
+        order.add(id);
+        ColumnOrders orders = new ColumnOrders();
+        orders.setNewContainer(order);
+
+        return moveCardToColumn(id, previousColumnId, newColumnId, orders, user);
+    }
+
 	@ExpectPermission(Permission.MOVE_CARD)
 	@RequestMapping(value = "/api/column/{columnId}/order", method = RequestMethod.POST)
 	public boolean updateCardOrder(@PathVariable("columnId") int columnId, @RequestBody List<Number> cardIds) {

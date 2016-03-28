@@ -30,51 +30,76 @@
                     <span data-translate>card.metadata</span>
                 </div>
                 <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
-                    <div flex="30" flex-md="45">
+                    <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.status</span>
                     </div>
                     <div flex="70" flex-md="55">
-                        <span data-ng-if="$ctrl.column.columnLocation === 'BOARD'">
-                            <span class="lvg-card-metadata__status"
-                                  data-ng-style="$ctrl.column.columnColor|labelBackground"
-                                  data-ng-class="$ctrl.column.columnColor|labelBackgroundClass">{{::$ctrl.column.columnName}}</span>
-                        </span>
-                        <span data-ng-if="$ctrl.column.columnLocation !== 'BOARD'">
-                            <span class="lvg-card-metadata__status"
-                                  data-ng-style="$ctrl.column.columnColor|labelBackground"
-                                  data-ng-class="$ctrl.column.columnColor|labelBackgroundClass"
-                                  data-translate="{{'card.metadata.status.' + $ctrl.column.columnLocation}}"></span>
+                        <md-select data-lvg-has-permission="UPDATE_CARD"
+                                   ng-model="$ctrl.column"
+                                   ng-change="$ctrl.moveCard($ctrl.column);"
+                                   ng-disabled="!$ctrl.userPermissions['UPDATE_CARD']"
+                                   data-ng-style="$ctrl.column.color|labelBackground"
+                                   data-ng-class="$ctrl.column.color|labelBackgroundClass">
+                            <md-optgroup label="Special">
+                                <md-option data-ng-style="location.color|labelBackground"
+                                           data-ng-class="location.color|labelBackgroundClass"
+                                           ng-value="location"
+                                           ng-repeat="location in $ctrl.locations | orderBy:'name'">
+                                    {{location.name}}
+                                </md-option>
+                            </md-optgroup>
+                            <md-optgroup label="Column">
+                                <md-option ng-value="column"
+                                           ng-repeat="column in $ctrl.columns"
+                                           data-ng-style="column.color|labelBackground"
+                                           data-ng-class="column.color|labelBackgroundClass">
+                                    {{column.name}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                        <span data-lvg-has-not-permission="UPDATE_CARD">
+                            <span data-ng-if="$ctrl.column.location === 'BOARD'">
+                                <span class="lvg-card-metadata__status"
+                                      data-ng-style="$ctrl.column.color|labelBackground"
+                                      data-ng-class="$ctrl.column.color|labelBackgroundClass">{{::$ctrl.column.name}}</span>
+                            </span>
+                            <span data-ng-if="$ctrl.column.location !== 'BOARD'">
+                                <span class="lvg-card-metadata__status"
+                                      data-ng-style="$ctrl.column.color|labelBackground"
+                                      data-ng-class="$ctrl.column.color|labelBackgroundClass"
+                                      data-translate="{{'card.metadata.status.' + $ctrl.column.location}}"></span>
+                            </span>
                         </span>
                     </div>
                 </div>
 
                 <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
-                    <div flex="30" flex-md="45">
+                    <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.created</span>
                     </div>
-                    <div flex="70" flex-md="55">
-                        <span>{{::$ctrl.card.createTime | date: 'medium' }}</span>
-                        <span data-translate>common.by</span>
+                    <div flex="70" flex-md="55" layout="row" layout-align="start center">
+                        <span>{{::$ctrl.card.createTime | date: 'medium' }}</span>&nbsp;
+                        <span data-translate>common.by</span>&nbsp;
                         <span data-lvg-user-tooltip="$ctrl.card.userId"></span>
                     </div>
                 </div>
 
                 <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item" data-ng-if="$ctrl.card.createTime != $ctrl.card.lastUpdateTime">
-                    <div flex="30" flex-md="45">
+                    <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.lastUpdated</span>
                     </div>
-                    <div flex="70" flex-md="55">
-                        <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span>
-                        <span data-translate>common.by</span>
+                    <div flex="70" flex-md="55" layout="row" layout-align="start center">
+                        <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span>&nbsp;
+                        <span data-translate>common.by</span>&nbsp;
                         <span data-lvg-user-tooltip="$ctrl.card.lastUpdateUserId"></span>
                     </div>
                 </div>
 
                 <div layout="column" layout-gt-sm="row" class="lvg-card-metadata__item">
-                    <div flex="30" flex-md="45">
+                    <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.due.by</span>
                     </div>
-                    <div flex="70" flex-md="55">
+                    <div flex="70" flex-md="55" layout="row" layout-align="start center">
                         <span data-lvg-has-permission="UPDATE_CARD">
                             <md-datepicker
                                 ng-model="dueDate"
@@ -95,7 +120,7 @@
                 </div>
 
                 <div layout="column" layouot-gt-sm="row" class="lvg-card-metadata__item">
-                    <div flex="30" flex-md="45">
+                    <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>Assigned to:</span>
                     </div>
                     <div flex="70" flex-md="55" class="lvg-card-metadata__assigned-users">

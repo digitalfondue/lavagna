@@ -38,7 +38,11 @@
 				return $http.post('api/column/' + id + '/to-location/' + location).then(extractData);
 			},
 
-			columns: function (shortName, location) {
+			columns: function (shortName) {
+                return $http.get('api/board/' + shortName + '/columns-in').then(extractData);
+            },
+
+			columnsByLocation: function (shortName, location) {
 				return $http.get('api/board/' + shortName + '/columns-in/' + location).then(extractData);
 			},
 
@@ -82,6 +86,11 @@
 				return $http.post('api/card/' + cardId + '/from-column/' + previousColumnId + '/to-column/' + newColumnId, columnOrders)
 					.then(extractData);
 			},
+
+			moveCardToColumnEnd: function (cardId, previousColumnId, newColumnId) {
+                return $http.post('api/card/' + cardId + '/from-column/' + previousColumnId + '/to-column-end/' + newColumnId)
+                    .then(extractData);
+            },
 
 			//FIXME remove shortName parameter
 			updateCardOrder: function (shortName, columnId, cardIds) {
