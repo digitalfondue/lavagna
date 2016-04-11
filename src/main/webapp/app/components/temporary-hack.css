@@ -1,3 +1,7 @@
 .lvg-board-controls__container {
 	display:none!important;
 }
+
+md-icon svg {
+  fill: inherit !important;
+}

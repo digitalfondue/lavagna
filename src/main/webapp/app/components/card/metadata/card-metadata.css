@@ -17,6 +17,20 @@
     color: #aaaaaa;
 }
 
+.lvg-card-metadata__item-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.lvg-card-metadata__item-status-select[disabled="disabled"] md-select-value {
+    color: inherit !important;
+
+}
+
+.lvg-card-metadata__item-status-select[disabled="disabled"] ._md-select-icon {
+    visibility: hidden !important;
+}
+
 .lvg-card-metadata__description_updated {
     font-size: 12px;
     font-style: italic;

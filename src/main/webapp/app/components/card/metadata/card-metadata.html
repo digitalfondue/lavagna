@@ -33,43 +33,29 @@
                     <div flex="30" flex-md="45" layout="row" layout-align="start center">
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.status</span>
                     </div>
-                    <div flex="70" flex-md="55">
-                        <md-select data-lvg-has-permission="UPDATE_CARD"
-                                   ng-model="$ctrl.column"
-                                   ng-change="$ctrl.moveCard($ctrl.column);"
-                                   ng-disabled="!$ctrl.userPermissions['UPDATE_CARD']"
-                                   data-ng-style="$ctrl.column.color|labelBackground"
-                                   data-ng-class="$ctrl.column.color|labelBackgroundClass">
-                            <md-optgroup label="Special">
-                                <md-option data-ng-style="location.color|labelBackground"
-                                           data-ng-class="location.color|labelBackgroundClass"
-                                           ng-value="location"
-                                           ng-repeat="location in $ctrl.locations | orderBy:'name'">
-                                    {{location.name}}
-                                </md-option>
-                            </md-optgroup>
-                            <md-optgroup label="Column">
-                                <md-option ng-value="column"
-                                           ng-repeat="column in $ctrl.columns"
-                                           data-ng-style="column.color|labelBackground"
-                                           data-ng-class="column.color|labelBackgroundClass">
-                                    {{column.name}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                        <span data-lvg-has-not-permission="UPDATE_CARD">
-                            <span data-ng-if="$ctrl.column.location === 'BOARD'">
-                                <span class="lvg-card-metadata__status"
-                                      data-ng-style="$ctrl.column.color|labelBackground"
-                                      data-ng-class="$ctrl.column.color|labelBackgroundClass">{{::$ctrl.column.name}}</span>
-                            </span>
-                            <span data-ng-if="$ctrl.column.location !== 'BOARD'">
-                                <span class="lvg-card-metadata__status"
-                                      data-ng-style="$ctrl.column.color|labelBackground"
-                                      data-ng-class="$ctrl.column.color|labelBackgroundClass"
-                                      data-translate="{{'card.metadata.status.' + $ctrl.column.location}}"></span>
-                            </span>
-                        </span>
+                    <div flex="70" flex-md="55" layout="row">
+                        <md-input-container class="lvg-card-metadata__item-container">
+                            <md-select flex
+                                       class="lvg-card-metadata__item-status-select"
+                                       ng-model="$ctrl.column"
+                                       ng-change="$ctrl.moveCard($ctrl.column);"
+                                       ng-disabled="!$ctrl.userPermissions['UPDATE_CARD']"
+                                       data-ng-style="$ctrl.column.color|labelBackground"
+                                       data-ng-class="$ctrl.column.color|labelBackgroundClass">
+                                <md-optgroup label="Special">
+                                    <md-option ng-value="location"
+                                               ng-repeat="location in $ctrl.locations | orderBy:'name'">
+                                        <md-icon md-svg-icon="circle" ng-style="{'fill': ( location.color | parseIntColor )}"></md-icon> {{location.name}}
+                                    </md-option>
+                                </md-optgroup>
+                                <md-optgroup label="Column">
+                                    <md-option ng-value="column"
+                                               ng-repeat="column in $ctrl.columns">
+                                        <md-icon md-svg-icon="circle" ng-style="{'fill': ( column.color | parseIntColor )}"></md-icon> {{column.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
                     </div>
                 </div>
 
@@ -100,13 +86,6 @@
                         <span class="lvg-card-metadata__item-name" data-translate>card.metadata.due.by</span>
                     </div>
                     <div flex="70" flex-md="55" layout="row" layout-align="start center">
-                        <span data-lvg-has-permission="UPDATE_CARD">
-                            <md-datepicker
-                                ng-model="dueDate"
-                                ng-change="$ctrl.setDueDate(dueDate)"
-                                md-min-date="$ctrl.minDueDate">
-                            </md-datepicker>
-                        </span>
                         <span data-ng-if="!$ctrl.labelValues[$ctrl.labelNameToId['DUE_DATE']][0]">
                             <i data-translate>common.not-set</i>
                         </span>
@@ -115,6 +94,13 @@
                             <span class="fa fa-times lavagna-pointer"
                                   data-ng-click="$ctrl.removeDueDate(); dueDate = null"
                                   data-lvg-has-permission="UPDATE_CARD"></span>
+                        </span>
+                        <span data-lvg-has-permission="UPDATE_CARD">
+                            <md-datepicker
+                                ng-model="dueDate"
+                                ng-change="$ctrl.setDueDate(dueDate)"
+                                md-min-date="$ctrl.minDueDate">
+                            </md-datepicker>
                         </span>
                     </div>
                 </div>
