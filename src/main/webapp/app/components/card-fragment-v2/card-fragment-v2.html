@@ -15,12 +15,12 @@
                 </div>
                 <div flex>
                     <div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu($ctrl.card)"><span class="fa fa-chevron-down"></span></div>
+                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu($ctrl.card, $ctrl.projectMetadataRef())"><span class="fa fa-chevron-down"></span></div>
                     </div>
                 </div>
             </div>
             <div layout="row" data-ng-if="::($ctrl.boardView && $ctrl.readOnly)">
-                <div flex="80"><span class="fake-link">{{::$ctrl.shortCardName}}}</span></div>
+                <div flex="80"><span class="fake-link">{{::$ctrl.shortCardName}}</span></div>
             </div>
             <div layout="row" data-ng-if="::($ctrl.listView)">
                 <div flex="65">

@@ -10,7 +10,7 @@
 			restrict: 'A',
 			link: function($scope, element, attrs) {
 
-				$scope.openCardMenu = function(card) {
+				$scope.openCardMenu = function(card, metadata) {
 
 					//we create a specific scope for the card menu, as the current $scope can be destroyed at any time
 					var $scopeForCardMenu = $scope.$new();
@@ -75,6 +75,8 @@
 					$scopeForCardMenu.card = $scope.$ctrl.card;
 					$scopeForCardMenu.board = $scope.$ctrl.boardShortName;
 					$scopeForCardMenu.currentUserId = $scope.$ctrl.user.id;
+					$scopeForCardMenu.user = $scope.$ctrl.user;
+					$scopeForCardMenu.metadata = metadata;
 
 					//
 
@@ -126,7 +128,7 @@
 
 					var template = $compile(
                               '<div id="cardModalBackdrop" class="lvg-modal-overlay lvg-modal-overlay-fade" data-ng-click="close()"></div>'
-                            + '<div id="cardBoardMenu" data-bindonce><lvg-card-fragment data-view="board" data-read-only="true" data-card="card" data-board="board"></lvg-card-fragment>'
+                            + '<div id="cardBoardMenu" data-bindonce><lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata"></lvg-card-fragment-v2>'
 							+ '<div id="cardBoardMenuActions">'
 							+ '<div id="cardBoardMenuClose"><button type="button" class="close" data-ng-click="close()">&times;</button></div>'
 							+ '<div data-ng-include="\'partials/fragments/board-card-menu-card-actions-fragment.html\'"></div></div>'
