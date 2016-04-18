@@ -83,16 +83,17 @@
         if (ctrl.hasMilestoneLabel) {
         	ctrl.milestoneLabel = milestoneLabels[0];
         	
-//        	try {
-//        		var releaseDate = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
-//        		var daysDiff = $filter('daysDiff')(releaseDate);
-//        		ctrl.milestoneClasses = {
-//            			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
-//            			'lvg-due-date-now': (notClosed && daysDiff == 0),
-//            			'lvg-due-date-past': (notClosed && daysDiff > 0)
-//        		};
-//        	} catch(e) {
-//        	}
+        	try {
+        		var releaseDateStr = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
+        		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
+        		var daysDiff = $filter('daysDiff')(releaseDate);
+        		ctrl.milestoneClasses = {
+            			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
+            			'lvg-due-date-now': (notClosed && daysDiff == 0),
+            			'lvg-due-date-past': (notClosed && daysDiff > 0)
+        		};
+        	} catch(e) {
+        	}
         }
         //
         
