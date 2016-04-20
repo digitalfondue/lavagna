@@ -4,13 +4,18 @@
 			<div data-ng-if="lvgSearchResult.totalPages > 1">
 				<pagination total-items="lvgSearchResult.count" data-ng-model="lvgSearchResult.page" items-per-page="50" max-size="10"  class="pagination-sm" boundary-links="true" data-ng-change="lvgSearchResult.moveToPage(page)"></pagination>
 			</div>
-				
 			<ul class="lvg-search-result-list">
-				<li class="lavagna-home-card" data-ng-repeat="card in lvgSearchResult.found track by card.hash">
-				    <lvg-card-fragment-v2 card-ref="card" search-type="{{::(lvgSearchResult.project ? 'projectSearch' : 'globalSearch')}}" user-ref="lvgSearchResult.user" view="search"></lvg-card-fragment-v2>
+				<li class="lavagna-home-card" ng-repeat="card in lvgSearchResult.found">
+				    <div ng-repeat="metadata in [lvgSearchResult.metadatas[card.projectShortName]] track by (card.hash+metadata.hash)">
+					    <lvg-card-fragment-v2
+					        card-ref="card" 
+					        search-type="{{::(lvgSearchResult.project ? 'projectSearch' : 'globalSearch')}}" 
+					        user-ref="lvgSearchResult.user"
+					        project-metadata-ref="metadata" 
+					        view="search"></lvg-card-fragment-v2>
+                    </div>
 				</li>
 			</ul>
-			
 			<div data-ng-if="lvgSearchResult.totalPages > 1">
 				<pagination total-items="lvgSearchResult.count" data-ng-model="lvgSearchResult.page" items-per-page="50" max-size="10"  class="pagination-sm" boundary-links="true" data-ng-change="lvgSearchResult.moveToPage(page)"></pagination>
 			</div>

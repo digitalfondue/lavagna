@@ -15,11 +15,22 @@
         	user: '<'
         },
         controllerAs: 'lvgSearchResult',
-        controller: function() {
+        controller: function(Project, $scope) {
         	var ctrl = this;
         	
+        	
+        	var projects = {};
+        	
+        	ctrl.metadatas = {};
+        	
         	ctrl.$onChanges = function(changesObj) {
-        		console.log(changesObj);
+        		for(var i = 0; i < ctrl.found.length;i++) {
+        			var card = ctrl.found[i];
+        			if(!projects[card.projectShortName]) {
+        				projects[card.projectShortName] = true;
+        				Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, $scope, true);
+        			}
+        		}
         	}
         }
     });
