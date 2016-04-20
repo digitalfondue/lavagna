@@ -83,8 +83,13 @@
         if (ctrl.hasMilestoneLabel) {
         	ctrl.milestoneLabel = milestoneLabels[0];
         	
+        	var releaseDateStr = undefined;
         	try {
-        		var releaseDateStr = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
+        		releaseDateStr = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
+        	} catch(e) {
+        	}	
+        	
+        	if(releaseDateStr) {
         		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
         		var daysDiff = $filter('daysDiff')(releaseDate);
         		ctrl.milestoneClasses = {
@@ -92,7 +97,6 @@
             			'lvg-due-date-now': (notClosed && daysDiff == 0),
             			'lvg-due-date-past': (notClosed && daysDiff > 0)
         		};
-        	} catch(e) {
         	}
         }
         //
