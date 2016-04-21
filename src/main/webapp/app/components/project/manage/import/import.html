@@ -55,12 +55,12 @@
                         data-ng-click="manageImportCtrl.connectToTrello()"
                         data-ng-disabled="manageImportCtrl.view.connectingToTrello"
                         data-ng-if="manageImportCtrl.availableOrganizations.length <= 0">
-                    <span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.connect</span>
+                    <span data-translate>partials.project.manage-import.connect</span>
                 </button>
                 <button type="submit" class="lvg-button lvg-button-submit"
                         data-ng-if="manageImportCtrl.availableOrganizations.length > 0"
                         data-ng-disabled="manageImportCtrl.view.trelloImportIsRunning || manageImportCtrl.boardsToImport < 1">
-                    <span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.import</span>
+                    <span data-translate>partials.project.manage-import.import</span>
                 </button>
                 <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageImportCtrl.cancel()" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning" data-translate>button.cancel</button>
             </div>
