@@ -14,8 +14,10 @@
     <div class="lavagna-panel">
         <div class="body-full">
             <div data-ng-if="adminUsersCtrl.view.userList.length > 20">
-                <pagination ng-model="adminUsersCtrl.view.userListPage" total-items="adminUsersCtrl.view.userList.length" items-per-page="20"
-                            class="lvg-panel-top-pagination pagination-sm" rotate="false" ng-change="adminUsersCtrl.switchPage(adminUsersCtrl.view.userListPage)"></pagination>
+                <lvg-pagination ng-model="adminUsersCtrl.view.userListPage" 
+                    total-items="adminUsersCtrl.view.userList.length" 
+                    items-per-page="20"
+                    ng-change="adminUsersCtrl.switchPage(adminUsersCtrl.view.userListPage)"></lvg-pagination>
             </div>
             <table class="table table-striped table-bordered lvg-table">
                 <thead>

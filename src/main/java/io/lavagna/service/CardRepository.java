@@ -91,15 +91,6 @@ public class CardRepository {
 		return ids.isEmpty() ? Collections.<CardFull> emptyList() : queries.findAllByIds(ids);
 	}
 
-	public List<CardFull> fetchAllOpenCardsByUserId(int userId, int page, int pageSize) {
-		return queries.fetchAllOpenCardsByUserId(userId, pageSize + 1, page * pageSize);
-	}
-
-	public List<CardFull> fetchAllOpenCardsByProjectAndUserId(String projectShortName, int userId, int page,
-			int pageSize) {
-		return queries.fetchAllOpenCardsByProjectIdAndUserId(userId, projectShortName, pageSize + 1, page * pageSize);
-	}
-
 	public List<Card> findCards(int boardId, String criteria) {
 		return queries.findCards(boardId, criteria);
 	}
@@ -326,14 +317,6 @@ public class CardRepository {
 		} else {
 		    return queries.findCardBy(term, maybeBoardShortName, maybeSequenceNumber, projectIds);
 		}
-	}
-
-	public int getOpenCardsCountByUserId(int id) {
-		return queries.getOpenCardsCountByUserId(id);
-	}
-
-	public int getOpenCardsCountByProjectAndUserId(String projectShortName, int id) {
-		return queries.getOpenCardsCountByProjectAndUserId(projectShortName, id);
 	}
 
 	public int updateCardOrder(int cardId, int order) {

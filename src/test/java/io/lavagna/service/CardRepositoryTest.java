@@ -20,7 +20,6 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
@@ -357,25 +356,6 @@ public class CardRepositoryTest {
 		Assert.assertTrue(cardRepository.findCardBy(null, Collections.<Integer>emptySet()).isEmpty());
 	}
 	
-	@Test
-	public void testGetOpenCardsCount() {
-	    Assert.assertEquals(0, cardRepository.getOpenCardsCountByUserId(user.getId()));
-	    Assert.assertEquals(0, cardRepository.getOpenCardsCountByProjectAndUserId(project.getShortName(), user.getId()));
-
-	    // open cards
-	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
-	    Card c2 = cardService.createCard("card2", col1.getId(), new Date(), user);
-	    // closed cards
-	    Card c3 = cardService.createCard("card3", col2.getId(), new Date(), user);
-	    Card c4 = cardService.createCard("card4", col2.getId(), new Date(), user);
-	    
-	    LabelValue toUser = new LabelValue(null, null, null, null, user.getId(), null);
-	    
-	    bulkOperationService.assign(project.getShortName(), Arrays.asList(c1.getId(), c2.getId(), c3.getId(), c4.getId()), toUser, user);
-	    
-	    Assert.assertEquals(2, cardRepository.getOpenCardsCountByUserId(user.getId()));
-        Assert.assertEquals(2, cardRepository.getOpenCardsCountByProjectAndUserId(project.getShortName(), user.getId()));
-	}
 	
 	@Test
 	public void testFetchAllActivityByCardId() {

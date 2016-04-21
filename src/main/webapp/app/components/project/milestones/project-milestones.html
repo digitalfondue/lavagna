@@ -104,10 +104,13 @@
                         </div>
 
                         <div data-ng-if="milestone.detail.cards.found.length > 50" class="pull-right">
-                            <pagination total-items="milestone.detail.cards.count" data-ng-model="milestone.currentPage"
-                                        items-per-page="50" max-size="10"
-                                        class="pagination-sm lvg-milestone-pagination" boundary-links="true"
-                                        data-ng-change="projectMilestonesCtrl.moveDetailToPage(milestone, milestone.currentPage - 1)"></pagination>
+                            <lvg-pagination 
+                                total-items="milestone.detail.cards.count" 
+                                data-ng-model="milestone.currentPage"
+                                items-per-page="50"
+                                max-size="10"
+                                boundary-links="true"
+                                data-ng-change="projectMilestonesCtrl.moveDetailToPage(milestone, milestone.currentPage - 1)"></lvg-pagination>
                         </div>
                     </div>
                 </div>

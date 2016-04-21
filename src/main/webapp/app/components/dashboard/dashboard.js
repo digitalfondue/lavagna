@@ -46,12 +46,15 @@
         var loadUserCards = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
                 User.cards(page).then(function(cards) {
-                    ctrl.userCards = cards.cards;
-                    ctrl.totalOpenCards = cards.totalCards;
-                    ctrl.cardsPerPage = cards.itemsPerPage;
                     
-                    for(var i = 0;i < cards.cards.length; i++) {
-                    	var projectShortName = cards.cards[i].projectShortName;
+                	
+                	ctrl.userCards = cards.found.slice(0, cards.countPerPage);
+                    ctrl.totalOpenCards = cards.count;
+                    ctrl.cardsCurrentPage = cards.currentPage+1;
+					ctrl.cardsTotalPages = cards.totalPages;
+                    
+                    for(var i = 0;i < ctrl.userCards.length; i++) {
+                    	var projectShortName = ctrl.userCards[i].projectShortName;
                     	if(!ctrl.metadatas[projectShortName]) {
                     		ctrl.metadatas[projectShortName] = {};
                     		Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas, $scope, true);

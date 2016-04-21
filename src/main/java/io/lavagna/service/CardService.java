@@ -23,7 +23,6 @@ import io.lavagna.model.CardDataFull;
 import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardFullWithCountsHolder;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardType;
@@ -92,42 +91,7 @@ public class CardService {
         return res;
     }
 
-    public CardFullWithCountsHolder getAllOpenCards(User user, int page, int pageSize) {
-
-        List<CardFull> cards = cardRepository.fetchAllOpenCardsByUserId(user.getId(), page, pageSize);
-        if (cards.isEmpty()) {
-            return new CardFullWithCountsHolder(Collections.<CardFullWithCounts>emptyList(), 0, 0);
-        }
-        List<CardFullWithCounts> res = fetchCardFull(cards);
-
-        int totalItems = 0;
-        if ((page == 0 && cards.size() > pageSize) || (page > 0 && !cards.isEmpty())) {
-            totalItems = cardRepository.getOpenCardsCountByUserId(user.getId());
-        } else {
-            totalItems = cards.size();
-        }
-
-        return new CardFullWithCountsHolder(res, totalItems, pageSize);
-    }
-
-    public CardFullWithCountsHolder getAllOpenCardsByProject(String projectShortName, User user, int page,
-        int pageSize) {
-        List<CardFull> cards = cardRepository.fetchAllOpenCardsByProjectAndUserId(projectShortName, user.getId(), page,
-            pageSize);
-        if (cards.isEmpty()) {
-            return new CardFullWithCountsHolder(Collections.<CardFullWithCounts>emptyList(), 0, 0);
-        }
-        List<CardFullWithCounts> res = fetchCardFull(cards);
-
-        int totalItems = 0;
-        if ((page == 0 && cards.size() > pageSize) || (page > 0 && !cards.isEmpty())) {
-            totalItems = cardRepository.getOpenCardsCountByProjectAndUserId(projectShortName, user.getId());
-        } else {
-            totalItems = cards.size();
-        }
-
-        return new CardFullWithCountsHolder(res, totalItems, pageSize);
-    }
+    
 
     List<CardFullWithCounts> fetchCardFull(List<CardFull> cards) {
         List<Integer> ids = fetchIds(cards);

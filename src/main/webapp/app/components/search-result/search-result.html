@@ -2,7 +2,12 @@
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
 			<div data-ng-if="lvgSearchResult.totalPages > 1">
-				<pagination total-items="lvgSearchResult.count" data-ng-model="lvgSearchResult.page" items-per-page="50" max-size="10"  class="pagination-sm" boundary-links="true" data-ng-change="lvgSearchResult.moveToPage(page)"></pagination>
+				<lvg-pagination 
+				    total-pages="lvgSearchResult.totalPages"
+				    current-page="lvgSearchResult.currentPage"
+				    max-size="10"
+				    boundary-links="true"
+				    change-page="lvgSearchResult.moveToPage"></lvg-pagination>
 			</div>
 			<ul class="lvg-search-result-list">
 				<li class="lavagna-home-card" ng-repeat="card in lvgSearchResult.found">
@@ -17,7 +22,12 @@
 				</li>
 			</ul>
 			<div data-ng-if="lvgSearchResult.totalPages > 1">
-				<pagination total-items="lvgSearchResult.count" data-ng-model="lvgSearchResult.page" items-per-page="50" max-size="10"  class="pagination-sm" boundary-links="true" data-ng-change="lvgSearchResult.moveToPage(page)"></pagination>
+				<lvg-pagination 
+				    total-pages="lvgSearchResult.totalPages"
+                    current-page="lvgSearchResult.currentPage"
+				    max-size="10"
+				    boundary-links="true" 
+				    change-page="lvgSearchResult.moveToPage"></lvg-pagination>
 			</div>
 		</div>
 	</div>

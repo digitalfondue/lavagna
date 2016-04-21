@@ -26,7 +26,6 @@ import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardFullWithCountsHolder;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event;
@@ -48,6 +47,7 @@ import io.lavagna.service.CardService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchFilter;
+import io.lavagna.service.SearchFilter.SearchFilterValue;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.web.api.model.MilestoneDetail;
@@ -80,7 +80,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CardController {
 
-	private static final int CARDS_PER_PAGE = 20;
 	private final CardRepository cardRepository;
 	private final CardService cardService;
 	private final CardLabelRepository cardLabelRepository;
@@ -348,19 +347,21 @@ public class CardController {
 		eventEmitter.emitCardHasMoved(projectService.findRelatedProjectShortNameByBoardShortname(boardShortName),
 				boardShortName, cardIds.cardIds);
 	}
+	
+	private static final List<SearchFilter> TO_ME_STATUS_OPEN = Arrays.asList(new SearchFilter(FilterType.ASSIGNED, "to", new SearchFilterValue(ValueType.CURRENT_USER, "me")), SearchFilter.filter(FilterType.STATUS, ValueType.STRING, "OPEN"));
 
 	@ExpectPermission(Permission.SEARCH)
 	@RequestMapping(value = "/api/self/cards/{page}", method = RequestMethod.GET)
-	public CardFullWithCountsHolder getOpenCards(@PathVariable(value = "page") int page, User user) {
-		return cardService.getAllOpenCards(user, page, CARDS_PER_PAGE);
+	public SearchResults getOpenCards(@PathVariable(value = "page") int page, UserWithPermission user) {
+	    return searchService.find(TO_ME_STATUS_OPEN, null, null, user, page);
 	}
 
 	@ExpectPermission(Permission.SEARCH)
 	@RequestMapping(value = "/api/self/project/{projectShortName}/cards/{page}", method = RequestMethod.GET)
-	public CardFullWithCountsHolder getOpenCardsByProjectShortName(
+	public SearchResults getOpenCardsByProjectShortName(
 			@PathVariable(value = "projectShortName") String shortName, @PathVariable(value = "page") int page,
-			User user) {
-		return cardService.getAllOpenCardsByProject(shortName, user, page, CARDS_PER_PAGE);
+			UserWithPermission user) {
+	    return searchService.find(TO_ME_STATUS_OPEN, projectService.findByShortName(shortName).getId(), null, user, page);
 	}
 
 	@Getter

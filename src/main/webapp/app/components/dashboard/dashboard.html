@@ -6,9 +6,13 @@
 	        </li>
 	    </ul>
 	    <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">
-	        <pagination  total-items="dashboardCtrl.totalProjects" data-ng-model="dashboardCtrl.view.projectPage" items-per-page="dashboardCtrl.view.projectsPerPage"
-	                     max-size="dashboardCtrl.view.maxVisibleProjectPages" data-ng-change="dashboardCtrl.switchProjectPage(dashboardCtrl.view.projectPage)"
-	                     class="pagination-sm" boundary-links="true" rotate="false"></pagination>
+	        <lvg-pagination
+	           total-items="dashboardCtrl.totalProjects" 
+	           data-ng-model="dashboardCtrl.view.projectPage" 
+	           items-per-page="dashboardCtrl.view.projectsPerPage" 
+	           max-size="dashboardCtrl.view.maxVisibleProjectPages" 
+	           data-ng-change="dashboardCtrl.switchProjectPage(dashboardCtrl.view.projectPage)"
+	           boundary-links="true"></lvg-pagination>
 	    </div>
 	</div>
         
@@ -20,9 +24,13 @@
             </li>
         </ul>
         <span data-ng-if="dashboardCtrl.totalOpenCards == 0" data-translate>partials.home.noTask</span>
-        <div data-ng-if="dashboardCtrl.totalOpenCards > dashboardCtrl.view.cardsPerPage">
-            <pagination total-items="dashboardCtrl.totalOpenCards" data-ng-model="dashboardCtrl.view.cardPage" items-per-page="dashboardCtrl.view.cardsPerPage" max-size="dashboardCtrl.view.maxVisibleCardPages"
-                        class="pagination-sm" boundary-links="true" rotate="false" data-ng-change="dashboardCtrl.fetchUserCardsPage(dashboardCtrl.view.cardPage)"></pagination>
+        <div data-ng-if="dashboardCtrl.cardsTotalPages > 1">
+            <lvg-pagination
+                total-pages="dashboardCtrl.cardsTotalPages"
+                current-page="dashboardCtrl.cardsCurrentPage"
+                max-size="10"
+                boundary-links="true" 
+                change-page="dashboardCtrl.fetchUserCardsPage"></lvg-pagination>
         </div>
     </div>
 </div>

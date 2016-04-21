@@ -62,9 +62,10 @@
         var loadUserCardsInProject = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
                 User.cardsByProject(projectName, page).then(function(cards) {
-                    projectCtrl.userProjectCards = cards.cards;
-                    projectCtrl.totalProjectOpenCards = cards.totalCards;
-                    projectCtrl.projectCardsPerPage = cards.itemsPerPage;
+                	projectCtrl.totalProjectOpenCards = cards.count;
+                	projectCtrl.cardsCurrentPage = cards.currentPage+1;
+                	projectCtrl.cardsTotalPages = cards.totalPages;
+                	projectCtrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
                 });
             });
         };

@@ -8,11 +8,14 @@
         	count: '=',
         	page: '=',
         	query: '=',
-        	moveToPage: '=',
+        	moveToPage: '<',
         	found: '<',
         	project: '=',
         	selected: '=',
-        	user: '<'
+        	user: '<',
+        	totalPages: '<',
+        	countPerPage:'<',
+        	currentPage:'<'
         },
         controllerAs: 'lvgSearchResult',
         controller: function(Project, $scope) {
