@@ -44,20 +44,13 @@
                 return Project.findBoardsInProject(projectName);
             }).then(function(b) {
                 projectCtrl.boards = b;
-                projectCtrl.totalBoards = b.length;
-                projectCtrl.switchBoardPage(projectCtrl.boardPage);
             });
-        };
-
-        projectCtrl.switchBoardPage = function(page) {
-            projectCtrl.currentBoards = projectCtrl.boards.slice((page - 1) * projectCtrl.boardsPerPage,
-                    ((page - 1) * projectCtrl.boardsPerPage) + projectCtrl.boardsPerPage);
         };
 
         loadBoardsInProject();
 
         projectCtrl.cardProjectPage = 1;
-        projectCtrl.maxVisibleCardProjectPages = 3;
+        
 
         var loadUserCardsInProject = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {

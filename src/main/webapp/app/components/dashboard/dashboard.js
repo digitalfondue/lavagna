@@ -26,20 +26,14 @@
         var loadProjects = function() {
             Project.list().then(function(projects) {
                 ctrl.projects = projects;
-                ctrl.totalProjects = projects.length;
-                ctrl.switchProjectPage(ctrl.view.projectPage);
             });
         };
 
         loadProjects();
 
-        ctrl.switchProjectPage = function(page) {
-            ctrl.currentProjects = ctrl.projects.slice((page - 1) * ctrl.view.projectsPerPage,
-                    ((page - 1) * ctrl.view.projectsPerPage) + ctrl.view.projectsPerPage);
-        };
 
         ctrl.view.cardPage = 1;
-        ctrl.view.maxVisibleCardPages = 3;
+        
         
         ctrl.metadatas = {};
 

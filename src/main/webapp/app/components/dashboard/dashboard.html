@@ -1,19 +1,10 @@
 <div layout="column" layout-gt-sm="row" class="lvg-content">
 	<div flex>
 	    <ul class="lavagna-projects">
-	        <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.currentProjects">
+	        <li data-ng-class="{archived : project.archived}" data-ng-repeat="project in dashboardCtrl.projects">
 	            <lvg-stats-panel-project project="project"></lvg-stats-panel-project>
 	        </li>
 	    </ul>
-	    <div data-ng-if="dashboardCtrl.totalProjects > dashboardCtrl.view.projectsPerPage">
-	        <lvg-pagination
-	           total-items="dashboardCtrl.totalProjects" 
-	           data-ng-model="dashboardCtrl.view.projectPage" 
-	           items-per-page="dashboardCtrl.view.projectsPerPage" 
-	           max-size="dashboardCtrl.view.maxVisibleProjectPages" 
-	           data-ng-change="dashboardCtrl.switchProjectPage(dashboardCtrl.view.projectPage)"
-	           boundary-links="true"></lvg-pagination>
-	    </div>
 	</div>
         
     <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
@@ -29,7 +20,6 @@
                 total-pages="dashboardCtrl.cardsTotalPages"
                 current-page="dashboardCtrl.cardsCurrentPage"
                 max-size="10"
-                boundary-links="true" 
                 change-page="dashboardCtrl.fetchUserCardsPage"></lvg-pagination>
         </div>
     </div>
