@@ -57,7 +57,6 @@
                 return Card.findCardsByMilestoneDetail(projectMilestonesCtrl.project.shortName, milestone.labelListValue.value);
             }).then(function (response) {
                 milestone.detail = response;
-                milestone.currentPage = page + 1;
             });
         };
 
