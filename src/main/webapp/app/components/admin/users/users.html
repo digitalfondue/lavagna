@@ -13,12 +13,6 @@
 <div class="col-md-12 col-xs-12">
     <div class="lavagna-panel">
         <div class="body-full">
-            <div data-ng-if="adminUsersCtrl.view.userList.length > 20">
-                <lvg-pagination ng-model="adminUsersCtrl.view.userListPage" 
-                    total-items="adminUsersCtrl.view.userList.length" 
-                    items-per-page="20"
-                    ng-change="adminUsersCtrl.switchPage(adminUsersCtrl.view.userListPage)"></lvg-pagination>
-            </div>
             <table class="table table-striped table-bordered lvg-table">
                 <thead>
                 <tr>
@@ -31,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList | usersPagination:20:adminUsersCtrl.view.userListPage">
+                <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList">
                     <td data-ng-bind="u.provider"></td>
                     <td>
                         <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" data-ng-bind="u.username"></a>

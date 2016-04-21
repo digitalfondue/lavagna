@@ -152,12 +152,6 @@
         
 
         // ------- user pagination
-        ctrl.view.userListPage = 1;
-
-        ctrl.switchPage = function(page) {
-            ctrl.view.userListPage = page;
-        };
-
         ctrl.showUserPermissions = function(user) {
             $mdDialog.show({
                 templateUrl: 'app/components/admin/users/user-permissions-modal.html',
