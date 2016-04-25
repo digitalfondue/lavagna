@@ -82,12 +82,14 @@
             		ctrl.selectedCards[ctrl.column.id] = {};
             	}
                 ctrl.selectedCards[ctrl.column.id][c.id] = true;
-            })
+            });
+            $scope.$broadcast('updatecheckbox');
         };
         ctrl.unSelectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
                 delete ctrl.selectedCards[ctrl.column.id];
             });
+            $scope.$broadcast('updatecheckbox');
         };
         
         

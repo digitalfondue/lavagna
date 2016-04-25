@@ -9,7 +9,8 @@
 			searchType: '@', /* globalSearch | projectSearch (default) */
 			cardRef:'&',
 			userRef:'&',
-			projectMetadataRef: '&'
+			projectMetadataRef: '&',
+			selectedRef:'&'
 		},
 		controller: CardFragmentV2Controller
 	});
@@ -27,6 +28,8 @@
 		//
 		ctrl.user = ctrl.userRef();
 		ctrl.projectMetadata = ctrl.projectMetadataRef();
+		//
+		ctrl.selected = ctrl.selectedRef();
 		
 		ctrl.readOnly = ctrl.readOnly != undefined;
         ctrl.listView = ctrl.view != undefined && ctrl.view == 'list';
