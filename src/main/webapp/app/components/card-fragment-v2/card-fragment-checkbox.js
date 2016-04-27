@@ -41,6 +41,8 @@
         				}
         			}
         			
+        			updateCheckbox();
+        			
     			} else {
     				
     			}

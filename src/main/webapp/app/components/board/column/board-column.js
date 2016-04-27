@@ -54,6 +54,28 @@
                 	res.columnId = columnId;
                 	ctrl.cardsInColumn = res;
                 	ctrl.loaded = true;
+                	
+                	// sync selection, in case of a moved selected card
+                	// not optimal, but it should be good enough
+                	if(ctrl.selectedCards[ctrl.column.id]) {
+                		for(var key in ctrl.selectedCards[ctrl.column.id]) {
+                			if(ctrl.selectedCards[ctrl.column.id][key] && !idExist(parseInt(key))) {
+                				delete ctrl.selectedCards[ctrl.column.id][key];
+                			}
+                		}
+                	}
+                	
+                	
+                	function idExist(id) {
+                		for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
+                			if(ctrl.cardsInColumn[i].id === id) {
+                				return true;
+                			}
+                		}
+                		return false;
+                	}
+                	
+                	//
                 });
             };
             StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
