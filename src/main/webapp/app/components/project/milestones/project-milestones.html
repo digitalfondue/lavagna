@@ -1,11 +1,11 @@
 <div>
-    <div class="row" data-bindonce data-ng-repeat="milestone in projectMilestonesCtrl.cardsByMilestone"
+    <div class="row" data-ng-repeat="milestone in projectMilestonesCtrl.cardsByMilestone"
          data-ng-init="milestone.detail = null">
         <div class="col-xs-12 lavagna-container-top-margin">
             <div class="lavagna-panel">
                 <div class="progress lvg-progress" data-ng-if="projectMilestonesCtrl.showArray(milestone.cardsCountByStatus, 0)"
                      data-ng-style="{'background-color': (projectMilestonesCtrl.statusColors[projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
-                    <div class="progress-bar" data-bindonce
+                    <div class="progress-bar"
                          data-ng-repeat="item in projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"
                          data-ng-style="{'width': (item.count * 100.0 / milestone.totalCards  | number:2) + '%', 'background-color': (projectMilestonesCtrl.statusColors[item.status] | color).color}">
                     </div>

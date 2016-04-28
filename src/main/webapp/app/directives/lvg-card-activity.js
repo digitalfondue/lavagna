@@ -41,7 +41,7 @@
 
 	directives.directive('lvgActivityActionList', function (CardCache) {
 		return {
-			template: '<span data-bindonce=\"value\" data-bo-text=\"value.content\"></span>',
+			template: '<span ng-bind="::value.content"></span>',
 			restrict: 'A',
 			scope: {
 				actionlist: '=lvgActivityActionList',
@@ -61,7 +61,7 @@
 
 	directives.directive('lvgActivityActionItem', function (CardCache) {
 		return {
-			template: '<span data-bindonce=\"value\" data-bo-text="value.content"></span>',
+			template: '<span ng-bind="::value.content"></span>',
 			restrict: 'A',
 			scope: {
 				actionitem: '=lvgActivityActionItem',
@@ -81,7 +81,7 @@
 
 	directives.directive('lvgActivityFile', function () {
 		return {
-			template: '<span data-bindonce=\"value\" data-bo-text="value.name"></span>',
+			template: '<span ng-bind="::value.name"></span>',
 			restrict: 'A',
 			scope: {
 				file: '=lvgActivityFile',
@@ -100,7 +100,7 @@
 
 	directives.directive('lvgActivityComment', function (CardCache) {
 		return {
-			template: '<a class=\"lvg-comment-link-placeholder\"><span class=\"lvg-comment-placeholder\"></span></a>',
+			template: '<a class="lvg-comment-link-placeholder"><span class="lvg-comment-placeholder"></span></a>',
 			restrict: 'A',
 			scope: {
 				activity: '=lvgActivityComment'

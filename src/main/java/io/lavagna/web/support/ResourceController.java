@@ -259,7 +259,6 @@ public class ResourceController {
 					//
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
-					"/js/bindonce.min.js",//
 					"/js/angular-translate.min.js",//
 
 					"/js/spectrum.js", //
