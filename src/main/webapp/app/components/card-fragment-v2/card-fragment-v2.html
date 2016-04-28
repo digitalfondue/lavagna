@@ -5,7 +5,6 @@
         <md-card-title-text>
             <div layout="row" data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">
                 <div flex="80">
-                    <!-- data-ng-model="$ctrl.selected[$ctrl.card.columnId][$ctrl.card.id]" -->
                     <input type="checkbox"  data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" 
                         lvg-card-fragment-checkbox></input>
                     <lvg-card-fragment-link
@@ -36,8 +35,8 @@
             </div>
             <div layout="row" data-ng-if="::($ctrl.searchView)">
                 <div flex="65">
-                    <!-- data-ng-model="$ctrl.selected[$ctrl.card.projectShortName][$ctrl.card.id]"  -->
-                    <input type="checkbox" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{$ctrl.card.projectShortName}}">
+                    <input type="checkbox" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{$ctrl.card.projectShortName}}"
+                        lvg-card-fragment-checkbox>
                     <lvg-card-fragment-link
                         dynamic-link="true"
                         target-state="{{::($ctrl.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card')}}"

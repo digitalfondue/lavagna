@@ -110,9 +110,11 @@
 							}
 							ctrl.selected[shortProjectName][idsToSetAsTrue[i]] = true;
 						}
+						
+						$scope.$broadcast('updatecheckbox');
 					}
 				})(projects[proj], proj));
-			}
+			};
 		};
 
 		ctrl.deselectAllInPage = function() {
@@ -121,6 +123,7 @@
 					delete ctrl.selected[project][ctrl.found[i].id];
 				}
 			}
+			$scope.$broadcast('updatecheckbox');
 		};
 
 		triggerSearch();

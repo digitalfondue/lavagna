@@ -14,37 +14,44 @@
     		scope:false,
     		link: function($scope, $element, $attrs, lvgCardFragmentV2Ctrl) {
     			
+    			var card = lvgCardFragmentV2Ctrl.card;
+    			
+    			var selected = lvgCardFragmentV2Ctrl.selected;
+    			
+    			function isSelected() {
+    				try  {
+    					return lvgCardFragmentV2Ctrl.boardView ? (selected[card.columnId][card.id] === true) : (selected[card.projectShortName][card.id] === true);
+    				} catch(e) {
+    					return false;
+    				}
+    			};
+    			
+    			function updateCheckbox() {
+    				$element.prop('checked', isSelected());
+    			};
+    			
+    			updateCheckbox();
+    			
+    			$scope.$on('updatecheckbox', updateCheckbox);
+    			
     			if(lvgCardFragmentV2Ctrl.boardView) {
-    				
-    				var card = lvgCardFragmentV2Ctrl.card;
     				
     				$element.on('click', function() {
         				//$ctrl.selected[$ctrl.card.columnId][$ctrl.card.id]
     					$scope.$applyAsync(function() {
-        					lvgCardFragmentV2Ctrl.selected[card.columnId] = lvgCardFragmentV2Ctrl.selected[card.columnId] || {};
-        					lvgCardFragmentV2Ctrl.selected[card.columnId][card.id] = !lvgCardFragmentV2Ctrl.selected[card.columnId][card.id]
+    						selected[card.columnId] = selected[card.columnId] || {};
+    						selected[card.columnId][card.id] = !selected[card.columnId][card.id]
     					});
         			});
         			
-        			
-        			$scope.$on('updatecheckbox', updateCheckbox);
-        			
-        			function updateCheckbox() {
-        				$element.prop('checked', isSelected());
-        			}
-        			
-        			function isSelected() {
-        				try  {
-        					return lvgCardFragmentV2Ctrl.selected[card.columnId][card.id]
-        				} catch(e) {
-        					return false;
-        				}
-        			}
-        			
-        			updateCheckbox();
-        			
     			} else {
-    				
+    				$element.on('click', function() {
+    					//$ctrl.selected[$ctrl.card.projectShortName][$ctrl.card.id]
+    					$scope.$applyAsync(function() {
+    						selected[card.projectShortName] = selected[card.projectShortName] || {};
+    						selected[card.projectShortName][card.id] = !selected[card.projectShortName][card.id]
+    					});
+    				});
     			}
     		}
     	}
