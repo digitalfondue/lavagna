@@ -97,7 +97,7 @@
                         <div class="lvg-milestone-card" data-ng-repeat="card in milestone.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
                             <a data-ui-sref="project.milestones.card({projectName: projectMilestonesCtrl.project.shortName, shortName: card.boardShortName, seqNr: card.sequence })"
                                data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
-                                <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+                                <span ng-bind="::(card.boardShortName + '-' + card.sequence)"></span>
                             </a>
                             <span> {{card.name}}</span>
                         </div>
