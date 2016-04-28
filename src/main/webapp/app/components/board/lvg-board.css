@@ -56,22 +56,6 @@
 	display: block;
 }
 
-.lavagna-board-card-checkbox {
-	display: none;
-}
-
-.lavagna-edit-mode .lavagna-board-card-checkbox {
-	display: inline;
-	cursor: pointer;
-}
-
-.lavagna-visibile-in-edit-mode {
-	display: none;
-}
-
-.lavagna-edit-mode .lavagna-visibile-in-edit-mode {
-	display: block;
-}
 
 .lavagna-board-column-holder {
 	margin: 0;

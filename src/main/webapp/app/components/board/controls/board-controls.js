@@ -7,8 +7,6 @@
         bindings: {
             toggledSidebar: '=',
             sideBarLocation:'=',
-            switchEditMode: '=',
-            editMode: '=',
             unSelectAll: '=',
             selectAll: '=',
             selectedVisibleCount: '=',

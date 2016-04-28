@@ -46,11 +46,6 @@
         ctrl.selectedCards = {};
         //ctrl.foundCards = {};
 
-        ctrl.editMode = false;
-        ctrl.switchEditMode = function() {
-            ctrl.editMode = !ctrl.editMode;
-        };
-
 
         ctrl.selectAll = function() {
             $scope.$broadcast('selectall');

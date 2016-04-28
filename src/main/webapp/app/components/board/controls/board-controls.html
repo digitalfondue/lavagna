@@ -24,13 +24,7 @@
             </div>
         </div>
         <div class="lvg-board-edit">
-            <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.editMode" class="lvg-button-group">
-                <button class="lvg-navigation-button lvg-edit-button" data-ng-click="$ctrl.switchEditMode()" title="{{'partials.board.enableBulkOp' | translate}}"><i class="fa fa-square-o"></i></button>
-            </div>
-            <div data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-show="$ctrl.editMode" class="lvg-button-group">
-                <button class="lvg-navigation-button lvg-edit-button edit-active" data-ng-click="$ctrl.unSelectAll(); $ctrl.switchEditMode()" title="{{'partials.board.disableBulkOp' | translate}}"><i class="fa fa-check-square-o"></i></button>
-            </div>
-            <div data-ng-if="$ctrl.editMode" data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
+            <div data-lvg-has-permission="MANAGE_LABEL_VALUE" class="dropdown lvg-button-group" data-uib-dropdown>
                 <button type="button" data-uib-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle" data-toggle="dropdown"><span data-translate>partials.board.selection.select</span> <i class="fa fa-caret-down"></i></button>
                 <ul class="dropdown-menu" role="menu">
                     <li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="$ctrl.selectAll()" data-translate>partials.board.selection.all</button></li>
