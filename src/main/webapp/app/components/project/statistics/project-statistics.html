@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <div class="row" data-ng-if="showCardsByLabel">
+    <div class="row" data-ng-if="projectStatsCtrl.showCardsByLabel">
         <div class="col-md-12">
             <div class="lavagna-panel lavagna-container-top-margin">
                 <div class="head clearfix">
@@ -156,10 +156,9 @@
                                         <lvg-label value="label" name="label.labelName"></lvg-label>
                                     </td>
                                     <td class="bar">
-                                        <div class="inner-bar" data-bindonce
-                                             data-bo-style="label|labelChartBar: cardsByLabelMax"
-                                             data-bo-class="label.labelColor|labelBackgroundClass">
-                                            {{label.count}}
+                                        <div class="inner-bar"
+                                             data-ng-style="::(label|labelChartBar: cardsByLabelMax)"
+                                             data-ng-class="::(label.labelColor|labelBackgroundClass)" ng-bind="::label.count">
                                         </div>
                                     </td>
                                 </tr>
