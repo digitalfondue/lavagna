@@ -112,13 +112,13 @@
                                                 <div class="body-full" data-ng-if="cardCtrl.comments.length > 0">
                                                     <ul class="lavagna-comments">
                                                         <li data-ng-repeat="comment in cardCtrl.comments | orderBy: 'time' track by comment.id "
-                                                            class="comment" data-bo-attr data-bo-attr-id="comment.id" data-bindonce data-lvg-scroll-to-comment="comment.id">
+                                                            class="comment" id="{{::comment.id}}" data-lvg-scroll-to-comment="comment.id">
                                                             <div class="header">
                                                                 <span class="user" data-lvg-user-tooltip="comment.userId"></span>&nbsp;<span
                                                                 class="date" data-ng-bind="comment.time | dateIncremental"></span>
                                                                 <ul
                                                                     class="panel-controls">
-                                                                    <li class="control-item"><a data-ng-href="#/{{project.shortName}}/{{board.shortName}}-{{card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
+                                                                    <li class="control-item"><a data-ng-href="#/{{cardCtrl.project.shortName}}/{{cardCtrl.board.shortName}}-{{cardCtrl.card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
                                                                     <li data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="comment.userId"
                                                                         data-ng-hide="commentControl.editComment"
                                                                         data-ng-click="commentControl.deleteComment = false; commentToEdit = comment.content; commentControl.editComment=true"
