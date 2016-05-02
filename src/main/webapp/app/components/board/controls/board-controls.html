@@ -17,7 +17,10 @@
     </md-menu>
     
     <md-menu data-ng-show="$ctrl.selectedVisibleCount() > 0">
-    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);"><md-icon md-svg-icon="folder-move"></md-icon></md-button>
+    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    		<md-icon md-svg-icon="folder-move"></md-icon>
+    		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.move' | translate}}</md-tooltip>
+		</md-button>
     	<md-menu-content>
     		<md-button ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'"><span translate>partials.board.bulkop.moveArchive</span></md-button>
     		<md-button ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'"><span translate>partials.board.bulkop.moveBacklog</span></md-button>
@@ -26,7 +29,10 @@
     </md-menu>
     
     <md-menu data-ng-show="$ctrl.selectedVisibleCount() > 0">
-    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);"><md-icon md-svg-icon="person"></md-icon></md-button>
+    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    		<md-icon md-svg-icon="person"></md-icon>
+    		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.handleAssign' | translate}}</md-tooltip>
+		</md-button>
     	<md-menu-content>
     		<md-button ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'"><span translate>partials.board.bulkop.assignTo</span></md-button>
     		<md-button ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'"><span translate>partials.board.bulkop.removeAssign</span></md-button>
@@ -35,7 +41,10 @@
     </md-menu> 
     
 	<md-menu data-ng-show="$ctrl.selectedVisibleCount() > 0">
-    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);"><md-icon md-svg-icon="calendar"></md-icon></md-button>
+    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    		<md-icon md-svg-icon="calendar"></md-icon>
+    		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.handleDueDate' | translate}}</md-tooltip>
+		</md-button>
     	<md-menu-content>
     		<md-button ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'"><span translate>partials.board.bulkop.setDueDate</span></md-button>
     		<md-button ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'"><span translate>partials.board.bulkop.removeDueDate</span></md-button>
@@ -44,7 +53,10 @@
 	
 	
 	<md-menu data-ng-show="$ctrl.selectedVisibleCount() > 0">
-    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);"><md-icon md-svg-icon="milestone"></md-icon></md-button>
+    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    		<md-icon md-svg-icon="milestone"></md-icon>
+    		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.handleMilestone' | translate}}</md-tooltip>
+		</md-button>
     	<md-menu-content>
     		<md-button ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'"><span translate>partials.board.bulkop.setMilestone</span></md-button>
     		<md-button ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'"><span translate>partials.board.bulkop.removeMilestone</span></md-button>
@@ -52,7 +64,10 @@
 	</md-menu>
 	
 	<md-menu data-ng-show="$ctrl.selectedVisibleCount() > 0">
-    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);"><md-icon md-svg-icon="label"></md-icon></md-button>
+    	<md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    		<md-icon md-svg-icon="label"></md-icon>
+    		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.handleLabels' | translate}}</md-tooltip>
+		</md-button>
     	<md-menu-content>
     		<md-button ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'"><span translate>partials.board.bulkop.addLabel</span></md-button>
     		<md-button ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'"><span translate>partials.board.bulkop.removeLabel</span></md-button>
