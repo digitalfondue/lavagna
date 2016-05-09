@@ -24,9 +24,9 @@
     		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.move' | translate}}</md-tooltip>
 		</button>
     	<md-menu-content width="2">
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'move-to-archive'; bulkMode.message = 'moveArchive'"><span translate>partials.board.bulkop.moveArchive</span></md-button></md-menu-item>
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'move-to-backlog'; bulkMode.message = 'moveBacklog'"><span translate>partials.board.bulkop.moveBacklog</span></md-button></md-menu-item>
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'move-to-trash'; bulkMode.message = 'moveTrash'"><span translate>partials.board.bulkop.moveTrash</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.moveToArchive($ctrl.selectedVisibleCardsIdByColumnId())"><span translate>partials.board.bulkop.moveArchive</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.moveToBacklog($ctrl.selectedVisibleCardsIdByColumnId())"><span translate>partials.board.bulkop.moveBacklog</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.moveToTrash($ctrl.selectedVisibleCardsIdByColumnId())"><span translate>partials.board.bulkop.moveTrash</span></md-button></md-menu-item>
     	</md-menu-content>
     </md-menu>
     

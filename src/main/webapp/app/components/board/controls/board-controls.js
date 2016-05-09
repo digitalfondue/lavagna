@@ -14,9 +14,10 @@
             selectedVisibleCardsIdByColumnId: '='
         },
         templateUrl: 'app/components/board/controls/board-controls.html',
-        controller:function() {
+        controller:function(BulkOperationModal) {
         	var ctrl = this;
         	
+        	ctrl.bulkOperationModal = BulkOperationModal;
         	ctrl.sideBarLocation = 'BOARD';
         	ctrl.selectForSidebar = function() {
         		ctrl.toggledSidebar = ctrl.sideBarLocation !== 'BOARD';
