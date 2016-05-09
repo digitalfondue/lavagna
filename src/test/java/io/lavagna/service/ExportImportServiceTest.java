@@ -42,15 +42,6 @@ public class ExportImportServiceTest {
 	@Autowired
 	private ExportImportService exportImportService;
 
-	@Autowired
-	private ProjectService projectService;
-
-	@Autowired
-	private BoardRepository boardRepository;
-
-	@Autowired
-	private BoardColumnRepository boardColumnRepository;
-
 	@Test
 	public void testImportAndExport() throws IOException {
 		Path tmp = Files.createTempFile(null, null);

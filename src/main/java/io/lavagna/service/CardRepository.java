@@ -107,7 +107,7 @@ public class CardRepository {
 	 * @param page
 	 * @return
 	 */
-	public List<Card> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
+	public List<Integer> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
 		return queries.fetchPaginatedByBoardIdAndLocation(boardId, location.toString(), 11, page * 10);
 	}
 

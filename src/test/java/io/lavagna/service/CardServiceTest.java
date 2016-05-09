@@ -56,10 +56,6 @@ public class CardServiceTest {
     @Autowired
     private BoardColumnRepository boardColumnRepository;
     @Autowired
-    private LabelService labelService;
-    @Autowired
-    private CardLabelRepository cardLabelRepository;
-    @Autowired
     private CardService cardService;
     @Autowired
     private CardRepository cardRepository;

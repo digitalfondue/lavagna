@@ -75,13 +75,13 @@ public interface CardQuery {
 	
 	//----------------------
 
-	@Query("SELECT CARD_ID, CARD_NAME, CARD_BOARD_COLUMN_ID_FK, CARD_ORDER, CARD_SEQ_NUMBER, CARD_USER_ID_FK FROM LA_CARD "
+	@Query("SELECT CARD_ID FROM LA_CARD "
 			+ " INNER JOIN LA_BOARD_COLUMN ON CARD_BOARD_COLUMN_ID_FK = BOARD_COLUMN_ID  "
 			+ " WHERE "
 			+ " BOARD_COLUMN_BOARD_ID_FK = :boardId AND "
 			+ " BOARD_COLUMN_LOCATION = :location "
 			+ " ORDER BY CARD_LAST_UPDATED DESC " + " LIMIT :amount OFFSET :offset ")
-	List<Card> fetchPaginatedByBoardIdAndLocation(@Bind("boardId") int boardId, @Bind("location") String location,
+	List<Integer> fetchPaginatedByBoardIdAndLocation(@Bind("boardId") int boardId, @Bind("location") String location,
 			@Bind("amount") int amount, @Bind("offset") int offset);
 
 	@Query("SELECT * FROM LA_CARD_FULL WHERE CARD_BOARD_COLUMN_ID_FK = :columnId ORDER BY CARD_ORDER ASC, CARD_NAME ASC")

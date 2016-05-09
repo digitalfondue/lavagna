@@ -45,9 +45,6 @@ public class BoardRepositoryTest {
 	private static final String TEST_BOARD = "TEST-BRD";
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
 	private BoardRepository boardRepository;
 
 	@Autowired
@@ -55,9 +52,6 @@ public class BoardRepositoryTest {
 
 	@Autowired
 	private BoardColumnRepository boardColumnRepository;
-
-	@Autowired
-	private CardService cardService;
 
 	private Board board;
 

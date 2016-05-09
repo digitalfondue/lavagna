@@ -194,10 +194,10 @@ public class CardController {
 	 */
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/board/{shortName}/cards-in/{location}/{page}", method = RequestMethod.GET)
-	public List<Card> fetchPaginatedIn(@PathVariable("shortName") String shortName,
+	public List<CardFullWithCounts> fetchPaginatedIn(@PathVariable("shortName") String shortName,
 			@PathVariable("location") BoardColumnLocation location, @PathVariable("page") int page) {
 		int boardId = boardRepository.findBoardIdByShortName(shortName);
-		return cardRepository.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
+		return cardService.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
 	}
 
 	private void emitCreateCard(int columnId, Card createdCard) {

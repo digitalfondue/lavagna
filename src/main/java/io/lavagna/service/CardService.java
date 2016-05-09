@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataCount;
@@ -104,8 +105,23 @@ public class CardService {
         }
         return res;
     }
+    
+    public List<CardFullWithCounts> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
+    	List<Integer> ids = cardRepository.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
+    	Map<Integer, CardFull> cardFullById = aggregateCardFullByCardId(cardRepository.findAllByIds(ids));
+    	Map<Integer, Map<String, CardDataCount>> counts = aggregateByCardId(cardDataRepository.findCountsByCardIds(ids));
+    	Map<Integer, List<LabelAndValue>> labels = cardLabelRepository.findCardLabelValuesByCardIds(ids);
+    	List<CardFullWithCounts> res = new ArrayList<>(ids.size());
+		for (int id : ids) {
+			CardFull card = cardFullById.get(id);
+			res.add(new CardFullWithCounts(card, counts.get(card.getId()), labels.get(card.getId())));
+		}
+    	return res;
+	}
 
-    @Transactional(readOnly = false)
+    
+
+	@Transactional(readOnly = false)
     public void moveCardsToColumn(List<Integer> cardIds, int previousColumnId, int columnId, int userId,
         EventType boardEventType, Date time) {
         List<Integer> updated = cardRepository.moveCardsToColumn(cardIds, previousColumnId, columnId, userId);
@@ -208,5 +224,15 @@ public class CardService {
 
         return r;
     }
+    
+    private static Map<Integer, CardFull> aggregateCardFullByCardId(List<CardFull> cards) {
+		Map<Integer, CardFull> res = new HashMap<>();
+		for(CardFull card : cards) {
+			res.put(card.getId(), card);
+		}
+		return res;
+	}
+
+	
 
 }

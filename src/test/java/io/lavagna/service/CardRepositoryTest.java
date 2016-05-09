@@ -66,9 +66,6 @@ public class CardRepositoryTest {
 	private CardRepository cardRepository;
 	
 	@Autowired
-	private BulkOperationService bulkOperationService;
-
-	@Autowired
 	private ProjectService projectService;
 
 	private Project project;

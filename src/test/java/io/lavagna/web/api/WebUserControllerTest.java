@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import io.lavagna.config.WebConfig;
-import io.lavagna.service.PermissionService;
 import io.lavagna.web.config.ServiceConf;
 import io.lavagna.web.config.TestWebConf;
 
@@ -41,9 +40,6 @@ public class WebUserControllerTest {
 
 	@Autowired
 	private WebApplicationContext wac;
-
-	@Autowired
-	private PermissionService permissionService;
 
 	private MockMvc mockMvc;
 
