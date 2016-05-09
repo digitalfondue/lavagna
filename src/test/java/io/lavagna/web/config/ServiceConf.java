@@ -24,6 +24,7 @@ import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CalendarService;
+import io.lavagna.service.MilestoneExportService;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.service.BulkOperationService;
 import io.lavagna.service.CardDataRepository;
@@ -73,6 +74,11 @@ public class ServiceConf {
 	public StatisticsService getBoardStatisticsService() {
 		return mock(StatisticsService.class);
 	}
+
+    @Bean
+    public MilestoneExportService getMilestoneExportService() {
+        return mock(MilestoneExportService.class);
+    }
 
 	@Bean
 	public ExportImportService getExportImportService2() {

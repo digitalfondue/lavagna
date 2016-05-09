@@ -30,10 +30,10 @@ import io.lavagna.model.User;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CardLabelRepository;
+import io.lavagna.service.MilestoneExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.StatisticsService;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.api.model.MilestoneInfo;
 import io.lavagna.web.api.model.Milestones;
 
@@ -63,7 +63,7 @@ public class MilestoneControllerTest {
     @Mock
     private SearchService searchService;
     @Mock
-    private UserRepository userRepository;
+    private MilestoneExportService milestoneExportService;
     @Mock
     private Card card;
     @Mock
@@ -79,8 +79,8 @@ public class MilestoneControllerTest {
 
     @Before
     public void prepare() {
-        milestoneController = new MilestoneController(boardColumnRepository, cardLabelRepository, projectService,
-            statisticsService, searchService, userRepository);
+        milestoneController = new MilestoneController(cardLabelRepository, projectService,
+            statisticsService, searchService, milestoneExportService);
 
         ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
             project.getDescription(), project.isArchived(), board.getId(), board.getShortName(), board.getName(),

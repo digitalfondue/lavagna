@@ -18,13 +18,9 @@
 package io.lavagna.web.api;
 
 import static io.lavagna.service.SearchFilter.filter;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.BoardColumnInfo;
-import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
@@ -33,15 +29,13 @@ import io.lavagna.model.Pair;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.CardLabelRepository;
+import io.lavagna.service.MilestoneExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchFilter;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.StatisticsService;
-import io.lavagna.service.UserRepository;
 import io.lavagna.web.api.model.MilestoneDetail;
 import io.lavagna.web.api.model.MilestoneInfo;
 import io.lavagna.web.api.model.Milestones;
@@ -60,9 +54,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,23 +64,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MilestoneController {
 
-    private final BoardColumnRepository boardColumnRepository;
     private final CardLabelRepository cardLabelRepository;
     private final ProjectService projectService;
     private final StatisticsService statisticsService;
     private final SearchService searchService;
-    private final UserRepository userRepository;
+    private final MilestoneExportService milestoneExportService;
 
     @Autowired
-    public MilestoneController(BoardColumnRepository boardColumnRepository, CardLabelRepository cardLabelRepository,
-        ProjectService projectService, StatisticsService statisticsService, SearchService searchService,
-        UserRepository userRepository) {
-        this.boardColumnRepository = boardColumnRepository;
+    public MilestoneController(CardLabelRepository cardLabelRepository, ProjectService projectService,
+        StatisticsService statisticsService, SearchService searchService,
+        MilestoneExportService milestoneExportService) {
         this.cardLabelRepository = cardLabelRepository;
         this.projectService = projectService;
         this.statisticsService = statisticsService;
         this.searchService = searchService;
-        this.userRepository = userRepository;
+        this.milestoneExportService = milestoneExportService;
     }
 
     @ExpectPermission(Permission.READ)
@@ -134,78 +124,16 @@ public class MilestoneController {
         }
     }
 
-    private LabelListValueWithMetadata getMilestone(int projectId, String milestone) {
-        CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
-        List<LabelListValueWithMetadata> listValues = cardLabelRepository
-            .findListValuesByLabelIdAndValue(label.getId(), milestone);
-        return listValues.size() > 0 ? listValues.get(0) : null;
-    }
-
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/export-milestone/{milestone}", method = RequestMethod.GET)
     public void exportMilestoneToExcel(@PathVariable("projectShortName") String projectShortName,
         @PathVariable("milestone") String milestone, UserWithPermission user, HttpServletResponse response)
         throws IOException {
 
-        int projectId = projectService.findByShortName(projectShortName).getId();
-        LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
-        if (ms == null)
-            throw new IllegalArgumentException();
+        HSSFWorkbook wb = milestoneExportService.exportMilestoneToExcel(projectShortName, milestone, user);
 
-        CardLabel assigned = cardLabelRepository.findLabelByName(projectId, "ASSIGNED", CardLabel.LabelDomain.SYSTEM);
-
-        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
-        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
-            BoardColumn.BoardColumnLocation.TRASH.toString());
-        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
-
-        HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet(milestone);
-
-        Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("ID");
-        header.createCell(1).setCellValue("Name");
-        header.createCell(2).setCellValue("Column");
-        header.createCell(3).setCellValue("Status");
-        header.createCell(4).setCellValue("Assignees");
-        // TODO add custom labels, due date, assigned and created / modified date
-
-        int rowPos = 1;
-        for (CardFullWithCounts card : cards.getFound()) {
-
-            Map<CardLabel, List<CardLabelValue>> labels = cardLabelRepository.findCardLabelValuesByCardId(card.getId());
-
-            Row row = sheet.createRow(rowPos++);
-            // ID
-            row.createCell(0).setCellValue(String.format("%s-%s", card.getBoardShortName(), card.getSequence()));
-            // Name
-            row.createCell(1).setCellValue(card.getName());
-            // Column
-            // TODO cache this search
-            BoardColumnInfo col = boardColumnRepository.getColumnInfoById(card.getColumnId());
-            row.createCell(2).setCellValue(col.getColumnName());
-            // ColumnDefinition
-            row.createCell(3).setCellValue(card.getColumnDefinition().toString());
-            // Assigned
-            if (labels.containsKey(assigned)) {
-                StringBuilder sb = new StringBuilder();
-                for (CardLabelValue lav : labels.get(assigned)) {
-                    // TODO cache this search
-                    User assignee = userRepository.findById(lav.getValue().getValueUser());
-                    String name = firstNonNull(assignee.getDisplayName(), assignee.getUsername());
-                    sb.append(name);
-                    sb.append(", ");
-                }
-                if (sb.length() > 0) {
-                    sb.delete(sb.length() - 2, 2);
-                }
-                row.createCell(4).setCellValue(sb.toString());
-            }
-        }
-
-        response.setHeader("Content-disposition", "attachment; filename=milestone.xls");
+        response.setHeader("Content-disposition", "attachment; filename=" + milestone + ".xls");
         wb.write(response.getOutputStream());
-
     }
 
     @ExpectPermission(Permission.READ)
@@ -214,7 +142,7 @@ public class MilestoneController {
         @PathVariable("milestone") String milestone, UserWithPermission user) {
 
         int projectId = projectService.findByShortName(projectShortName).getId();
-        LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
+        LabelListValueWithMetadata ms = milestoneExportService.getMilestone(projectId, milestone);
 
         SearchFilter filter;
         Map<Long, Pair<Long, Long>> assignedAndClosedCards;
