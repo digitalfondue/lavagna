@@ -103,7 +103,16 @@
 			},
 			
 			setMilestone: function(cards, applyIfPresent) {
-				
+				applyIfPresent = applyIfPresent || angular.noop;
+				$mdDialog.show({
+					template: '<lvg-dialog-select-milestone flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-milestone>',
+					controller: function($scope) {
+						$scope.title = 'SELECT MILESTONE';
+						$scope.action = function(milestone) {
+							BulkOperations.setMilestone(cards, milestone).then(applyIfPresent);
+						}
+					}
+				});				
 			},
 			
 			removeMilestone: function(cards, applyIfPresent) {
