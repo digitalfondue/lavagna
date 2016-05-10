@@ -48,8 +48,8 @@
     		<md-tooltip md-direction="bottom">{{'partials.board.bulkop.handleDueDate' | translate}}</md-tooltip>
 		</button>
     	<md-menu-content width="2">
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'"><span translate>partials.board.bulkop.setDueDate</span></md-button></md-menu-item>
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'"><span translate>partials.board.bulkop.removeDueDate</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setDueDate($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.setDueDate</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeDueDate($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.removeDueDate</span></md-button></md-menu-item>
 		</md-menu-content>
 	</md-menu>
 	

@@ -1,0 +1,10 @@
+<md-dialog-content class="md-dialog-content">
+	<h2 class="md-title">{{$ctrl.dialogTitle}}</h2>
+	<p>
+		<md-datepicker ng-model="dueDate"></md-datepicker>
+	</p>
+</md-dialog-content>
+<md-dialog-actions> 
+	<md-button ng-click="$ctrl.cancel()" class="md-primary">FIXME Cancel</md-button>
+	<md-button ng-click="$ctrl.ok(dueDate)" class="md-primary">FIXME Confirm</md-button> 
+</md-dialog-actions>
