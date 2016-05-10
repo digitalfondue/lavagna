@@ -108,6 +108,9 @@ public class CardService {
     
     public List<CardFullWithCounts> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
     	List<Integer> ids = cardRepository.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
     	Map<Integer, CardFull> cardFullById = aggregateCardFullByCardId(cardRepository.findAllByIds(ids));
     	Map<Integer, Map<String, CardDataCount>> counts = aggregateByCardId(cardDataRepository.findCountsByCardIds(ids));
     	Map<Integer, List<LabelAndValue>> labels = cardLabelRepository.findCardLabelValuesByCardIds(ids);
