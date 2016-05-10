@@ -3,7 +3,7 @@
 	
 	var services = angular.module('lavagna.services');
 	
-	services.factory('BulkOperationModal', function ($mdDialog, Card) {
+	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations) {
 		
 		function moveTo(toMove, location) {
 			var confirm = $mdDialog.confirm().title('FIXME MOVE TO ' + location)
@@ -19,7 +19,6 @@
 			}, function() {});
 		}
 		
-		
 		return {
 			moveToArchive : function(toMove) {
 				moveTo(toMove, 'ARCHIVE');
@@ -29,6 +28,50 @@
 			},
 			moveToTrash : function(toMove) {
 				moveTo(toMove, 'TRASH');
+			},
+			
+			assignTo: function(cards, applyIfPresent) {
+				
+				applyIfPresent = applyIfPresent || angular.noop;
+				
+				$mdDialog.show({
+					template: '<lvg-dialog-select-user flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-user>',
+					controller: function($scope) {
+						$scope.title = 'ASSIGN';
+						$scope.action = function(user) {
+							BulkOperations.assign(cards, user).then(applyIfPresent);
+						}
+					}
+				});
+			},
+			
+			removeAssignTo: function(cards, applyIfPresent) {
+				applyIfPresent = applyIfPresent || angular.noop;
+				
+				$mdDialog.show({
+					template: '<lvg-dialog-select-user flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-user>',
+					controller: function($scope) {
+						$scope.title = 'REMOVE ASSIGN';
+						$scope.action = function(user) {
+							BulkOperations.removeAssign(cards, user).then(applyIfPresent);
+						}
+					}
+				});
+			},
+			
+			reAssignTo: function(cards, applyIfPresent) {
+				
+				applyIfPresent = applyIfPresent || angular.noop;
+				
+				$mdDialog.show({
+					template: '<lvg-dialog-select-user flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-user>',
+					controller: function($scope) {
+						$scope.title = 'REASSIGN';
+						$scope.action = function(user) {
+							BulkOperations.reassign(cards, user).then(applyIfPresent);
+						}
+					}
+				});
 			}
 		};
 	})
