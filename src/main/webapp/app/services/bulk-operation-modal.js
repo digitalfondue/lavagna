@@ -100,6 +100,23 @@
 					applyIfPresent = applyIfPresent || angular.noop;
 					BulkOperations.removeDueDate(cards).then(applyIfPresent);
 				}, function() {});
+			},
+			
+			setMilestone: function(cards, applyIfPresent) {
+				
+			},
+			
+			removeMilestone: function(cards, applyIfPresent) {
+				var confirm = $mdDialog.confirm().title('FIXME REMOVE MILESTONE')
+		          .textContent('FIXME REMOVE MILESTONE')
+		          .ariaLabel('FIXME REMOVE MILESTONE')
+		          .ok('FIXME OK')
+		          .cancel('FIXME CANCEL');
+				
+				$mdDialog.show(confirm).then(function() {
+					applyIfPresent = applyIfPresent || angular.noop;
+					BulkOperations.removeMilestone(cards).then(applyIfPresent);
+				}, function() {});
 			}
 		};
 	})
