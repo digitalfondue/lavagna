@@ -75,7 +75,7 @@
 		</button>
     	<md-menu-content width="2">
     		<md-menu-item><md-button ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
 		</md-menu-content>
 	</md-menu>
 	

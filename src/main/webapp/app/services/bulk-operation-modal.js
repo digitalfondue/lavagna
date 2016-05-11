@@ -126,6 +126,19 @@
 					applyIfPresent = applyIfPresent || angular.noop;
 					BulkOperations.removeMilestone(cards).then(applyIfPresent);
 				}, function() {});
+			},
+			
+			removeLabel: function(cards, applyIfPresent) {
+				applyIfPresent = applyIfPresent || angular.noop;
+				$mdDialog.show({
+					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-label>',
+					controller: function($scope) {
+						$scope.title = 'FIXME SELECT LABEL TO REMOVE';
+						$scope.action = function(labelToRemove) {
+							BulkOperations.removeLabel(cards, labelToRemove).then(applyIfPresent);
+						}
+					}
+				});
 			}
 		};
 	})
