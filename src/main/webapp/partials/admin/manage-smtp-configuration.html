@@ -11,50 +11,71 @@
 			</div>
 		</div>
 		<div class="body separated">
+		<form name="smtpForm" data-ng-submit="smtpForm.$valid && saveSmtpConfig(configuration)" novalidate>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.host</div> 
-				<input class="form-control" type="text" data-ng-model="configuration.host" required>
+				<input class="form-control" type="text" name="host" data-ng-model="configuration.host" required>
+				 <div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.host.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.host.$error.required" data-translate >partials.admin.manage-smtp-configuration.host.validationMessage</span>
+                 </div>
 			</div>
+			  
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.port</div> 
-				<input class="form-control" type="number" data-ng-model="configuration.port" required>
+				<input class="form-control" type="number" name="port" data-ng-model="configuration.port" required>
+				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.port.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.port.$error.required" data-translate>partials.admin.manage-smtp-configuration.port.validationMessage</span>
+                 </div>
 			</div>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.protocol</div> 
-				<select class="form-control" type="text" data-ng-model="configuration.protocol" required>
+				<select class="form-control" type="text" name="protocol" data-ng-model="configuration.protocol" required>
 					<option value="smtp">smtp</option>
 					<option value="smtps">smtps</option>
 				</select>
+				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.protocol.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.protocol.$error.required" data-translate>partials.admin.manage-smtp-configuration.protocol.validationMessage</span>
+                 </div>
 			</div>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.username</div> 
-				<input class="form-control" type="text" data-ng-model="configuration.username">
+				<input class="form-control" type="text" data-ng-model="configuration.username" name="username" required>
+				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.username.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.username.$error.required" data-translate>partials.admin.manage-smtp-configuration.username.validationMessage</span>
+                 </div>
 			</div>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.password</div>
-				<input class="form-control" type="password" data-ng-model="configuration.password">
+				<input class="form-control" type="password" data-ng-model="configuration.password" name="password" required>
+				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.password.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.password.$error.required" data-translate>partials.admin.manage-smtp-configuration.password.validationMessage</span>
+                 </div>
 			</div>
 	
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.from</div>
-				<input class="form-control" type="email" data-ng-model="configuration.from" required>
+				<input class="form-control" type="email" name="from" data-ng-model="configuration.from" required>
+				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.from.$touched">
+                      <span class="help-block" data-ng-show="smtpForm.from.$error.required" data-translate>partials.admin.manage-smtp-configuration.from.validationMessage</span>
+                 </div>
 			</div>
 	
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.properties</div>
 				<textarea class="form-control" data-ng-model="configuration.properties"></textarea>
 			</div>
-		</div>
-		<div class="footer clearfix">
+	 
+	 
+	 <div class="footer clearfix">
 			<div class="content">
-				<form data-ng-submit="saveSmtpConfig(configuration)">
 					<div>
 						<button type="submit" class="lvg-button lvg-button-submit" data-translate>button.save</button>
 						<button type="button" class="lvg-button lvg-button-default"
 							data-ng-click="openSmtpConfigModal()"><span data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</span></button>
 					</div>
-				</form>
 			</div>
-		</div>
+	</div>
+	</form>
+		</div>		
 	</div>
 </div>
