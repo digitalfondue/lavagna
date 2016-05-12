@@ -16,7 +16,7 @@
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.host</div> 
 				<input class="form-control" type="text" name="host" data-ng-model="configuration.host" required>
 				 <div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.host.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.host.$error.required">host is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.host.$error.required" data-translate >partials.admin.manage-smtp-configuration.host.validationMessage</span>
                  </div>
 			</div>
 			  
@@ -24,7 +24,7 @@
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.port</div> 
 				<input class="form-control" type="number" name="port" data-ng-model="configuration.port" required>
 				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.port.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.port.$error.required">port is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.port.$error.required" data-translate>partials.admin.manage-smtp-configuration.port.validationMessage</span>
                  </div>
 			</div>
 			<div class="form-group">
@@ -34,21 +34,21 @@
 					<option value="smtps">smtps</option>
 				</select>
 				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.protocol.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.protocol.$error.required">protocol is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.protocol.$error.required" data-translate>partials.admin.manage-smtp-configuration.protocol.validationMessage</span>
                  </div>
 			</div>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.username</div> 
 				<input class="form-control" type="text" data-ng-model="configuration.username" name="username" required>
 				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.username.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.username.$error.required">username is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.username.$error.required" data-translate>partials.admin.manage-smtp-configuration.username.validationMessage</span>
                  </div>
 			</div>
 			<div class="form-group">
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.password</div>
 				<input class="form-control" type="password" data-ng-model="configuration.password" name="password" required>
 				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.password.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.password.$error.required">password is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.password.$error.required" data-translate>partials.admin.manage-smtp-configuration.password.validationMessage</span>
                  </div>
 			</div>
 	
@@ -56,7 +56,7 @@
 				<div class="lvg-form-label" data-translate>partials.admin.manage-smtp-configuration.from</div>
 				<input class="form-control" type="email" name="from" data-ng-model="configuration.from" required>
 				<div class="has-error" data-ng-show="smtpForm.$submitted || smtpForm.from.$touched">
-                      <span class="help-block" data-ng-show="smtpForm.from.$error.required">from E-Mail is required !.</span>
+                      <span class="help-block" data-ng-show="smtpForm.from.$error.required" data-translate>partials.admin.manage-smtp-configuration.from.validationMessage</span>
                  </div>
 			</div>
 	
