@@ -3,41 +3,8 @@
 	//FIXME REFACTOR
 	'use strict';
 
-	//http://pegjs.majda.cz/documentation#using-the-parser
 
-	var RULE =
-		"\
-		start = (user_label / assigned_to / created_by / created / watched_by / milestone / due_date / status / location / updated / updated_by / separator / freetext)+ \
-		\
-		user_label = label_name:label_name separator* value:(date_as_identifier / value)?       {return {type: 'USER_LABEL', name: label_name, value:value};} \
-		assigned_to = 'to' separator* value:(current_user / unassigned / value)                 {return {type: 'ASSIGNED', name: 'to', value : value};} \
-		created_by = 'by' separator* value:(current_user / value)                               {return {type: 'CREATED_BY', name : 'by', value : value};} \
-		created = 'created' separator* value:(date_as_identifier / value)                       {return {type: 'CREATED', name : 'created', value : value};} \
-		updated_by = 'updated_by' separator * value:(current_user / value)                      {return {type: 'UPDATED_BY', name : 'updated_by', value : value};} \
-		updated = 'updated' separator* value:(date_as_identifier / value)                       {return {type: 'UPDATED', name : 'updated', value : value};} \
-		watched_by = 'watched' separator* value:(current_user / unassigned / value)             {return {type: 'WATCHED_BY', name : 'watched', value : value};} \
-		status = 'status' separator* ':' separator* value:(status_identifier)                   {return {type: 'STATUS', name: 'status', value : {type : 'STRING', originalValue: value, value: value}};} \
-		location = 'location' separator* ':' separator* value:(location_identifier)             {return {type: 'LOCATION', name: 'location', value: {type: 'STRING', originalValue: value, value: value}};} \
-		milestone = 'milestone' separator* value:(unassigned / value)                           {return {type: 'MILESTONE', name : 'milestone', value : value};} \
-		due_date = 'due' separator* value:(date_as_identifier / value)                          {return {type: 'DUE_DATE', name : 'due', value : value};} \
-		date_as_identifier = ':' separator* identifier:date_identifier                          {return {type: 'DATE_IDENTIFIER', value : identifier};} \
-		freetext = value:(quoted_string / simple_string)                                        {return {type: 'FREETEXT', value : {type: 'STRING', value: value}};} \
-		\
-		status_identifier = 'OPEN' / 'CLOSED' / 'BACKLOG' / 'DEFERRED' \
-		location_identifier = 'BOARD' / 'ARCHIVE' / 'BACKLOG' / 'TRASH' \
-		date_identifier = 'late' / 'today' / 'yesterday' /'tomorrow' / 'this week' / 'this month' / 'next week' / 'next month' / 'previous week' / 'previous month' / 'last week' / 'last month' \
-		unassigned = ':' separator* 'unassigned'                                                {return {type:'UNASSIGNED', originalValue: 'unassigned', value : 'UNASSIGNED'};} \
-		current_user = ':' separator* 'me'                                                      {return {type: 'CURRENT_USER', value : 'me'};} \
-		 \
-		separator = ' '+                                                                        {return {type: 'WHITE_SPACE'}} \
-		label_name = '#' label_name:(label_name_string / quoted_string)                         {return label_name;} \
-		label_name_string = value:[^'\\' :']i+                                                  {return value.join('');} \
-		value = ':' separator* value:(quoted_string / simple_string)                            {return {type : 'STRING', value : value};} \
-		simple_string = value:[^'\\' ']i+                                                       {return value.join('');} \
-		quoted_string =  '\\'' value:[^'\\'']* '\\''                                            {return value.join('');} \
-		"
-
-	var parser = PEG.buildParser(RULE);
+	var parser = SEARCH_PARSER;
 
 	function labelValueMatcher(criteria, environment) {
 		if (criteria.value === undefined || criteria.value === null) {

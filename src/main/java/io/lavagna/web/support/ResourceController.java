@@ -262,7 +262,7 @@ public class ResourceController {
 					"/js/angular-translate.min.js",//
 
 					"/js/spectrum.js", //
-					"/js/peg-0.8.0.min.js",//
+					"/js/search-parser.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js")) {
 				output(res, context, allJs, ba);
