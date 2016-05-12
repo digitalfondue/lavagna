@@ -255,7 +255,7 @@ public class ResourceController {
 					"/js/sortable.js", //
 					"/js/spectrum.js", //
 					"/js/codemirror-compressed.js",//
-					"/js/peg-0.8.0.min.js",//
+					"/js/search-parser.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js",//
 					"/js/ui-bootstrap-tpls-0.11.0.min.js",//
