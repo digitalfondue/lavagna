@@ -3,7 +3,7 @@
 	
 	var services = angular.module('lavagna.services');
 	
-	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations) {
+	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations, Label) {
 		
 		function moveTo(toMove, location) {
 			var confirm = $mdDialog.confirm().title('FIXME MOVE TO ' + location)
@@ -18,8 +18,6 @@
 				}
 			}, function() {});
 		}
-		
-		
 		
 		return {
 			moveToArchive : function(toMove) {
@@ -126,6 +124,20 @@
 					applyIfPresent = applyIfPresent || angular.noop;
 					BulkOperations.removeMilestone(cards).then(applyIfPresent);
 				}, function() {});
+			},
+			
+			addLabel: function(cards, applyIfPresent) {
+				applyIfPresent = applyIfPresent || angular.noop;
+				$mdDialog.show({
+					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action" with-label-value-picker="true"></lvg-dialog-select-label>',
+					controller: function($scope) {
+						$scope.title = 'FIXME SELECT LABEL TO ADD';
+						$scope.action = function(labelToAdd, labelValueToAdd) {
+							var labelValueToAdd = Label.extractValue(labelToAdd, labelValueToAdd);
+							BulkOperations.addLabel(cards, labelToAdd, labelValueToAdd).then(applyIfPresent);
+						}
+					}
+				});
 			},
 			
 			removeLabel: function(cards, applyIfPresent) {

@@ -1,14 +1,17 @@
 <md-dialog-content class="md-dialog-content">
 	<h2 class="md-title">{{$ctrl.dialogTitle}}</h2>
 	<p>
-		<md-select ng-model="label">
+		<md-select ng-model="$ctrl.selectedLabel.label">
           <md-option ng-value="m" ng-repeat="m in $ctrl.userLabels">
             {{m.name}}
           </md-option>
         </md-select>
 	</p>
+	<p ng-if="$ctrl.withLabelValuePicker">
+		<lvg-label-picker label="$ctrl.selectedLabel.label" ng-model="$ctrl.selectedLabel.value"></lvg-label-picker>
+	</p>
 </md-dialog-content>
 <md-dialog-actions> 
 	<md-button ng-click="$ctrl.cancel()" class="md-primary">FIXME Cancel</md-button>
-	<md-button ng-click="$ctrl.ok(label)" class="md-primary">FIXME Confirm</md-button> 
+	<md-button ng-click="$ctrl.ok($ctrl.selectedLabel.label, $ctrl.selectedLabel.value)" class="md-primary">FIXME Confirm</md-button> 
 </md-dialog-actions>

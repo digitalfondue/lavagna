@@ -8,9 +8,12 @@
 			bindings: {
 				dialogTitle: '<',
 				action: '=',
+				withLabelValuePicker: '<'
 			},
 			controller: function($stateParams, $mdDialog, LabelCache) {
 				var ctrl = this;
+				
+				ctrl.selectedLabel = {};
 				
 				LabelCache.findByProjectShortName($stateParams.projectName).then(function(res) {
 					ctrl.userLabels = [];
@@ -25,8 +28,8 @@
 					$mdDialog.hide();
 				}
 				
-				ctrl.ok = function(date) {
-					if(ctrl.action) {ctrl.action(date);}
+				ctrl.ok = function(label, value) {
+					if(ctrl.action) {ctrl.action(label, value);}
 					$mdDialog.hide();
 				}
 			}

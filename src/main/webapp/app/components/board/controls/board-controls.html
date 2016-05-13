@@ -74,7 +74,7 @@
     		<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleLabels' | translate)}}</md-tooltip>
 		</button>
     	<md-menu-content width="2">
-    		<md-menu-item><md-button ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
+    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
     		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
 		</md-menu-content>
 	</md-menu>
@@ -82,11 +82,5 @@
 	</span>
 	
 </md-menu-bar>    
-    
-    <div class="lvg-board-edit">
-        <div class="dropdown lvg-button-group" data-ng-show="$ctrl.selectedVisibleCount() > 0" data-ng-init="bulkMode.mode = undefined;bulkMode.message = 'do'" data-uib-dropdown>
-            <lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="$ctrl.formatBulkRequest" selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId"></lvg-bulk-action-inline>
-            <button class="lvg-navigation-button" data-ng-show="bulkMode.message != 'do'" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button>
-        </div>
-    </div>
+
 </div>
