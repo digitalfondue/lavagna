@@ -109,9 +109,45 @@
                     Notification.addAutoAckNotification('success', {key: 'notification.project-manage-import.importFromTrello.success'}, false);
                 });
             };
+            
+            //
+            // 
+            // http://stackoverflow.com/a/14174028
+            function requireTrelloScript(callback){
+                var head = document.getElementsByTagName("head")[0];
+                var script = document.createElement('script');
+                script.src = ctrl.trelloClientUrl;
+                script.type = 'text/javascript';
+                script.onload = callback;
+                //Internet explorer
+                script.onreadystatechange = function() {
+                    if (this.readyState == 'complete') {
+                        callback();
+                    }
+                }
+                head.appendChild(script);
+            }
+            
+            //
+            
+            ctrl.loadTrello = function() {
+            	if(!window.Trello) {
+	            	requireTrelloScript(function() {
+	            		$scope.$applyAsync(function() {
+	            			ctrl.trelloLoaded = true;
+	            		})
+	            	});
+            	} else {
+            		ctrl.trelloLoaded = true;
+            	}
+            }
+            
+            ctrl.connectToTrello = function() {
+            	authorizeToTrello();
+            }
 
-            ctrl.connectToTrello = function () {
-                ctrl.view.connectingToTrello = true;
+            function authorizeToTrello() {
+            	//
                 Trello.authorize({
                     type: "popup",
                     name: "Lavagna",
@@ -119,6 +155,7 @@
                     persist: false,
                     scope: {read: true, write: false, account: true},
                     success: function () {
+                    	ctrl.view.connectingToTrello = true;
                         trelloSecret = Trello.token();
                         Project.getAvailableTrelloBoards({
                             apiKey: trelloApiKey,
@@ -129,8 +166,10 @@
                         });
                     },
                     error: function () {
-                        ctrl.view.connectingToTrello = false;
-                        Notification.addAutoAckNotification('error', {key: 'notification.project-manage-import.importFromTrello.error'}, false);
+                    	$scope.$applyAsync(function() {
+                    		ctrl.view.connectingToTrello = false;
+                    		Notification.addAutoAckNotification('error', {key: 'notification.project-manage-import.importFromTrello.error'}, false);
+                    	});
                     }
                 });
             }

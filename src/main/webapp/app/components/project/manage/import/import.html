@@ -7,7 +7,6 @@
             <div class="body separated">
                 <div data-ng-if="manageImportCtrl.hasApiKey">
                     <p data-translate>partials.project.manage-import.notes</p>
-                    <span data-lvg-load-script="{{manageImportCtrl.trelloClientUrl}}"><span data-translate>partials.project.manage-import.failedImport</span></span>
 
                     <ul class="lvg-admin-import" data-ng-hide="manageImportCtrl.view.trelloImportIsRunning">
                         <li data-ng-repeat="organization in manageImportCtrl.availableOrganizations | orderBy: 'name'">
@@ -51,10 +50,15 @@
                 <div data-ng-if="!manageImportCtrl.hasApiKey" data-translate>partials.project.manage-import.noKeySet</div>
             </div>
             <div class="footer" data-ng-if="manageImportCtrl.hasApiKey">
+            	<button type="button" class="lvg-button lvg-button-submit"
+            			data-ng-click="manageImportCtrl.loadTrello()"
+            			ng-if="!manageImportCtrl.trelloLoaded">
+            			<span data-translate>partials.project.manage-import.load-trello-connector</span>
+            		</button>
                 <button type="button" class="lvg-button lvg-button-submit"
                         data-ng-click="manageImportCtrl.connectToTrello()"
                         data-ng-disabled="manageImportCtrl.view.connectingToTrello"
-                        data-ng-if="manageImportCtrl.availableOrganizations.length <= 0">
+                        data-ng-if="manageImportCtrl.trelloLoaded && manageImportCtrl.availableOrganizations.length <= 0">
                     <span data-translate>partials.project.manage-import.connect</span>
                 </button>
                 <button type="submit" class="lvg-button lvg-button-submit"
