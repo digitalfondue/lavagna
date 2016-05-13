@@ -27,12 +27,14 @@
         	ctrl.metadatas = {};
         	
         	ctrl.$onChanges = function(changesObj) {
-        		for(var i = 0; i < ctrl.found.length;i++) {
-        			var card = ctrl.found[i];
-        			if(!projects[card.projectShortName]) {
-        				projects[card.projectShortName] = true;
-        				Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, $scope, true);
-        			}
+        		if(ctrl.found && ctrl.found.length) {
+	        		for(var i = 0; i < ctrl.found.length;i++) {
+	        			var card = ctrl.found[i];
+	        			if(!projects[card.projectShortName]) {
+	        				projects[card.projectShortName] = true;
+	        				Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, $scope, true);
+	        			}
+	        		}
         		}
         	}
         }
