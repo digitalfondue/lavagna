@@ -5,6 +5,8 @@ If a Trello API key has ben configured then you can import any board directly in
 To configure the Trello API key look at the <a href="{{relativeRootPath}}/03-configuration-and-administration/03-01-config-parameters.html">Configuration Parameters</a> documentation.
 Please note that currently it will import only some part of your boards (columns, cards, comments, checklists, members, due date) and the creator will be the user used for the import.
 
+First to enable the connection to trello you will need to click the "Load Trello connector": on success the "Connect to Trello" button will appear:
+
 <img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_import.png" alt="Trello import">
 
 On connect you'll be asked to authorize Lavagna.

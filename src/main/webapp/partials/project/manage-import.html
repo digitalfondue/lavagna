@@ -8,7 +8,6 @@
 				<div class="body separated">
 					<div data-ng-if="hasApiKey">
 						<p data-translate>partials.project.manage-import.notes</p>
-						<span data-lvg-load-script="{{trelloClientUrl}}"><span data-translate>partials.project.manage-import.failedImport</span></span>
 
 						<ul class="lvg-admin-import" data-ng-hide="trelloImportIsRunning">
 							<li data-ng-repeat="organization in availableOrganizations | orderBy: 'name'">
@@ -53,9 +52,14 @@
 				</div>
 				<div class="footer" data-ng-if="hasApiKey">
 					<button type="button" class="lvg-button lvg-button-submit"
+             			data-ng-click="loadTrello()"
+             			ng-if="!trelloLoaded">
+             			<span data-translate>partials.project.manage-import.load-trello-connector</span>
+             		</button>
+					<button type="button" class="lvg-button lvg-button-submit"
 								data-ng-click="connectToTrello()"
 								data-ng-disabled="connectingToTrello"
-								data-ng-if="availableOrganizations.length <= 0">
+								data-ng-if="trelloLoaded && availableOrganizations.length <= 0">
 							<span class="fa fa-trello"></span> <span data-translate>partials.project.manage-import.connect</span>
 					</button>
 					<button type="submit" class="lvg-button lvg-button-submit"

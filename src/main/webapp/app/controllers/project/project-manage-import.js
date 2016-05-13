@@ -81,6 +81,35 @@
 					Notification.addAutoAckNotification('success', {key: 'notification.project-manage-import.importFromTrello.success'}, false);
 				});
 			};
+			
+			function requireTrelloScript(callback){
+                var head = document.getElementsByTagName("head")[0];
+                var script = document.createElement('script');
+                script.src = $scope.trelloClientUrl;
+                script.type = 'text/javascript';
+                script.onload = callback;
+                //Internet explorer
+                script.onreadystatechange = function() {
+                    if (this.readyState == 'complete') {
+                        callback();
+                    }
+                }
+                head.appendChild(script);
+            }
+            
+            //
+            
+			$scope.loadTrello = function() {
+            	if(!window.Trello) {
+	            	requireTrelloScript(function() {
+	            		$scope.$applyAsync(function() {
+	            			$scope.trelloLoaded = true;
+	            		})
+	            	});
+            	} else {
+            		$scope.trelloLoaded = true;
+            	}
+            }
 
 			$scope.connectToTrello = function () {
 				$scope.connectingToTrello = true;
