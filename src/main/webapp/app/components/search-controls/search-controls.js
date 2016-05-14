@@ -5,6 +5,7 @@
 	
 
 	angular.module('lavagna.components').component('lvgSearchControls', {
+		templateUrl: 'app/components/search-controls/search-controls.html',
 		bindings: {
 			selectAllInPage: '=',
 			deselectAllInPage: '=',
@@ -13,7 +14,10 @@
 			collectIdsByProject: '=',
 			triggerSearch: '='
 		},
-		controllerAs: 'lvgSearchControls',
-		templateUrl: 'app/components/search-controls/search-controls.html'
+		controller: function(BulkOperationModal) {
+			var ctrl = this;
+			ctrl.bulkOperationModal = BulkOperationModal;
+		}
+		
 	});
 })();

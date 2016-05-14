@@ -1,40 +1,57 @@
-<div class="lvg-board-location">
-	<div class="dropdown lvg-button-group" uib-dropdown>
-		<button type="button" uib-dropdown-toggle
-			class="lvg-navigation-button lvg-dropdown-toggle"
-			data-toggle="dropdown">
-			<span data-translate>partials.board.selection.select</span> <i
-				class="fa fa-caret-down"></i>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><button
-					class="lvg-dropdown-button lvg-button-dropdown-navigation"
-					type="button" data-ng-click="lvgSearchControls.selectAllInPage()" data-translate>partials.fragments.search-result-fragment.selectAllInPage</button></li>
-			<li><button
-					class="lvg-dropdown-button lvg-button-dropdown-navigation"
-					type="button" data-ng-click="lvgSearchControls.deselectAllInPage()" data-translate>partials.fragments.search-result-fragment.deselectAllInPage</button></li>
-		</ul>
-	</div>
-	<div class="dropdown lvg-button-group" data-ng-show="lvgSearchControls.selectedCardsCount() > 0"  data-ng-init="bulkMode.mode = undefined; bulkMode.message = 'do'" uib-dropdown>
-		<button type="button" uib-dropdown-toggle
-			class="lvg-navigation-button lvg-dropdown-toggle"
-			data-toggle="dropdown">
-			<span>{{'partials.board.bulkop.' + bulkMode.message | translate}}</span> <i class="fa fa-caret-down"></i>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'do'; bulkMode.message = 'do'; bulkMode.message = 'do'" data-translate>partials.board.bulkop.cancel</button></li>
-			
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'assign-to'; bulkMode.message = 'assignTo'" data-translate>partials.board.bulkop.assignTo</button></li>
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-assign-to'; bulkMode.message = 'removeAssign'" data-translate>partials.board.bulkop.removeAssign</button></li>
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 're-assign-to'; bulkMode.message = 'reassign'" data-translate>partials.board.bulkop.reassign</button></li>
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-due-date'; bulkMode.message = 'setDueDate'" data-translate>partials.board.bulkop.setDueDate</button></li>
-			<li><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-due-date'; bulkMode.message = 'removeDueDate'" data-translate>partials.board.bulkop.removeDueDate</button></li>
-			<li data-ng-if="lvgSearchControls.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'set-milestone'; bulkMode.message = 'setMilestone'" data-translate>partials.board.bulkop.setMilestone</button></li>
-			<li data-ng-if="lvgSearchControls.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-milestone'; bulkMode.message = 'removeMilestone'" data-translate>partials.board.bulkop.removeMilestone</button></li>
-			<li data-ng-if="lvgSearchControls.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'add-label'; bulkMode.message = 'addLabel'" data-translate>partials.board.bulkop.addLabel</button></li>
-			<li data-ng-if="lvgSearchControls.inProject"><button class="lvg-dropdown-button lvg-button-dropdown-navigation" type="button" data-ng-click="bulkMode.mode = 'remove-label'; bulkMode.message = 'removeLabel'" data-translate>partials.board.bulkop.removeLabel</button></li>
-		</ul>
+<md-menu-bar>
+	<md-menu>
+		<button ng-click="$mdOpenMenu($event);"><span translate>partials.board.selection.select</span></button>
+		<md-menu-content width="2">
+            <md-menu-item><md-button ng-click="$ctrl.selectAllInPage()"><span translate>partials.fragments.search-result-fragment.selectAllInPage</span></md-button></md-menu-item>
+            <md-menu-item><md-button ng-click="$ctrl.deselectAllInPage()"><span translate>partials.fragments.search-result-fragment.deselectAllInPage</span></md-button></md-menu-item>
+        </md-menu-content>
+	</md-menu>
+	
+	<span ng-show="$ctrl.selectedCardsCount() > 0">
+		<md-menu>
+    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    			<md-icon md-svg-icon="person"></md-icon>
+    			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleAssign' | translate)}}</md-tooltip>
+			</button>
+    		<md-menu-content width="2">
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.assignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.assignTo</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeAssign</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.reAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.reassign</span></md-button></md-menu-item>
+    		</md-menu-content>
+    	</md-menu>
+    	
+    	
+    	<md-menu>
+    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    			<md-icon md-svg-icon="calendar"></md-icon>
+    			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleDueDate' | translate)}}</md-tooltip>
+			</button>
+    		<md-menu-content width="2">
+	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.setDueDate</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeDueDate</span></md-button></md-menu-item>
+			</md-menu-content>
+		</md-menu>
 		
-		<lvg-bulk-action-inline mode="bulkMode.mode" format-bulk-request="lvgSearchControls.collectIdsByProject" after-bulk-completion="lvgSearchControls.triggerSearch"></lvg-bulk-action-inline>
-	</div>
-</div>
+		<md-menu ng-if="$ctrl.inProject">
+    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    			<md-icon md-svg-icon="milestone"></md-icon>
+    			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleMilestone' | translate)}}</md-tooltip>
+			</button>
+    		<md-menu-content width="4">
+	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.setMilestone</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeMilestone</span></md-button></md-menu-item>
+			</md-menu-content>
+		</md-menu>
+		
+		<md-menu>
+    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
+    			<md-icon md-svg-icon="label"></md-icon>
+    			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleLabels' | translate)}}</md-tooltip>
+			</button>
+    		<md-menu-content width="2">
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</span>
+</md-menu-bar>
