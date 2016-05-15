@@ -84,7 +84,6 @@
                 board: '='
             },
             templateUrl: 'app/components/search-input/search-input.html',
-            controllerAs: 'lvgSearchInput',
             controller: function ($scope, $log, $location, $rootScope, $timeout, $http, Search) {
 
             	var ctrl = this;
@@ -298,7 +297,7 @@
                     $rootScope.$broadcast('refreshSearch', {searchFilter: rootSearchFilter, location: locationSearch});
                 });
 
-                $scope.$watch('lvgSearchInput.toSearch', function () {
+                $scope.$watch('$ctrl.toSearch', function () {
                     if (ctrl.board !== undefined) {
                         parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, $rootScope, Search);
                     }

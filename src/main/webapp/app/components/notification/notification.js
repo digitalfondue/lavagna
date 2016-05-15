@@ -6,7 +6,6 @@
     
     components.component('lvgNotification', {
     	templateUrl: 'app/components/notification/notification.html',
-    	controllerAs: 'lvgNotification',
     	controller: function(Notification) {
 			this.notifications = Notification.getNotifications();
 		}

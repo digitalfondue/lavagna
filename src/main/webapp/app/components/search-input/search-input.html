@@ -1,13 +1,13 @@
-<form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="lvgSearchInput.submit();$event.preventDefault();" layout="row">    
-    <md-chips ng-model="lvgSearchInput.selected" md-autocomplete-snap md-transform-chip="lvgSearchInput.transformChip($chip)" flex>
+<form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="$ctrl.submit();$event.preventDefault();" layout="row">    
+    <md-chips ng-model="$ctrl.selected" md-autocomplete-snap md-transform-chip="$ctrl.transformChip($chip)" flex>
         <md-autocomplete placeholder="Search"
-            md-selected-item="lvgSearchInput.selectedItem"
-            md-search-text="lvgSearchInput.searchText"
-            md-items="item in lvgSearchInput.querySearch(lvgSearchInput.searchText)"
+            md-selected-item="$ctrl.selectedItem"
+            md-search-text="$ctrl.searchText"
+            md-items="item in $ctrl.querySearch($ctrl.searchText)"
             md-item-text="item.text"
             md-no-cache="true"
-            md-selected-item-change="lvgSearchInput.selectedItemChange(item)">
-            <span md-highlight-text="lvgSearchInput.searchText">{{item.text}}</span>
+            md-selected-item-change="$ctrl.selectedItemChange(item)">
+            <span md-highlight-text="$ctrl.searchText">{{item.text}}</span>
         </md-autocomplete>
         <md-chip-template>
           {{$chip.value}}

@@ -1,32 +1,32 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
-			<div data-ng-if="lvgSearchResult.totalPages > 1">
+			<div data-ng-if="$ctrl.totalPages > 1">
 				<lvg-pagination 
-				    total-pages="lvgSearchResult.totalPages"
-				    current-page="lvgSearchResult.currentPage"
+				    total-pages="$ctrl.totalPages"
+				    current-page="$ctrl.currentPage"
 				    max-size="10"
-				    change-page="lvgSearchResult.moveToPage"></lvg-pagination>
+				    change-page="$ctrl.moveToPage"></lvg-pagination>
 			</div>
 			<ul class="lvg-search-result-list">
-				<li class="lavagna-home-card" ng-repeat="card in lvgSearchResult.found">
-				    <div ng-repeat="metadata in [lvgSearchResult.metadatas[card.projectShortName]] track by (card.hash+metadata.hash)">
+				<li class="lavagna-home-card" ng-repeat="card in $ctrl.found">
+				    <div ng-repeat="metadata in [$ctrl.metadatas[card.projectShortName]] track by (card.hash+metadata.hash)">
 					    <lvg-card-fragment-v2
 					        card-ref="card" 
-					        search-type="{{::(lvgSearchResult.project ? 'projectSearch' : 'globalSearch')}}" 
-					        user-ref="lvgSearchResult.user"
+					        search-type="{{::($ctrl.project ? 'projectSearch' : 'globalSearch')}}" 
+					        user-ref="$ctrl.user"
 					        project-metadata-ref="metadata"
-					        selected-ref="lvgSearchResult.selected"
+					        selected-ref="$ctrl.selected"
 					        view="search"></lvg-card-fragment-v2>
                     </div>
 				</li>
 			</ul>
-			<div data-ng-if="lvgSearchResult.totalPages > 1">
+			<div data-ng-if="$ctrl.totalPages > 1">
 				<lvg-pagination 
-				    total-pages="lvgSearchResult.totalPages"
-                    current-page="lvgSearchResult.currentPage"
+				    total-pages="$ctrl.totalPages"
+                    current-page="$ctrl.currentPage"
 				    max-size="10"
-				    change-page="lvgSearchResult.moveToPage"></lvg-pagination>
+				    change-page="$ctrl.moveToPage"></lvg-pagination>
 			</div>
 		</div>
 	</div>

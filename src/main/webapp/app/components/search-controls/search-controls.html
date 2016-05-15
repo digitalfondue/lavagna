@@ -43,7 +43,7 @@
 			</md-menu-content>
 		</md-menu>
 		
-		<md-menu>
+		<md-menu ng-if="$ctrl.inProject">
     		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
     			<md-icon md-svg-icon="label"></md-icon>
     			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleLabels' | translate)}}</md-tooltip>

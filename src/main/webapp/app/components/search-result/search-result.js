@@ -17,7 +17,6 @@
         	countPerPage:'<',
         	currentPage:'<'
         },
-        controllerAs: 'lvgSearchResult',
         controller: function(Project, $scope) {
         	var ctrl = this;
         	
