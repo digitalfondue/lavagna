@@ -1,0 +1,21 @@
+<form data-ng-submit="$ctrl.createColumn($ctrl.columnToCreate);" flex="column" layout="column">
+	<md-dialog-content class="md-dialog-content">
+		<h2 class="md-title">FIXME add column</h2>
+		<p><input 
+			type="text" placeholder="{{'partials.fragments.columns-fragment.columnName.placeholder' | translate}}"
+			ng-model="$ctrl.columnToCreate.name"
+			autocomplete="off" required>
+		</p>
+		<p>
+			<md-select ng-model="$ctrl.columnToCreate.definition" required>
+	          <md-option ng-value="definition.id" ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'">
+	            {{definition.value | capitalize}}
+	          </md-option>
+	        </md-select>
+		</p>
+	</md-dialog-content>
+	<md-dialog-actions> 
+		<md-button ng-click="$ctrl.cancel()" class="md-primary"><span translate>button.cancel</span></md-button>
+		<md-button type="submit" class="md-primary"><span translate>button.confirm</span></md-button> 
+	</md-dialog-actions>
+</form>

@@ -1,4 +1,13 @@
 lvg-board-controls {		
  	height:45px;		
  	line-height:45px;
-} 
+}
+
+lvg-board-controls .new-column-button {
+	text-transform: none;
+	
+}
+
+lvg-board-controls .new-column-button span {
+	color: black;
+}

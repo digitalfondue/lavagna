@@ -3,6 +3,8 @@
 </header>
 
 <lvg-board-controls
+	board="boardCtrl.board" 
+	project="boardCtrl.project"
     toggled-sidebar="boardCtrl.toggledSidebar"
     side-bar-location="boardCtrl.sidebarLocation"
     un-select-all="boardCtrl.unSelectAll"
@@ -35,24 +37,6 @@
                 selected-cards="boardCtrl.selectedCards" 
                 search-filter-ref="boardCtrl.searchFilter"
                 user-ref="boardCtrl.user"></lvg-board-column>
-        </li>
-        <li class="lavagna-board-column lavagna-not-sortable-board-column panel panel-default" data-lvg-has-permission="CREATE_COLUMN">
-            <div class="panel-footer">
-                <form data-ng-submit="boardCtrl.createColumn(boardCtrl.columnToCreate);">
-                    <div class="form-group">
-                        <input type="text" id="column" placeholder="{{'partials.fragments.columns-fragment.columnName.placeholder' | translate}}" data-ng-model="boardCtrl.columnToCreate.name" class="form-control"
-                               autocomplete="off" required>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control"
-                                data-ng-model="boardCtrl.columnToCreate.definition"
-                                data-ng-options="definition.id as (definition.value | capitalize) for definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'" required></select>
-                    </div>
-                    <div>
-                        <button class="lvg-button lvg-button-submit" data-ng-disabled="boardCtrl.columnToCreate.definition == null || boardCtrl.columnToCreate.name == null" type="submit" data-translate>partials.fragments.columns-fragment.add</button>
-                    </div>
-                </form>
-            </div>
         </li>
     </ul>
 </div>

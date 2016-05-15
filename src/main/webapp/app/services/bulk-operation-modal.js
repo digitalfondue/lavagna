@@ -3,14 +3,14 @@
 	
 	var services = angular.module('lavagna.services');
 	
-	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations, Label) {
+	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations, Label, $translate) {
 		
 		function moveTo(toMove, location) {
 			var confirm = $mdDialog.confirm().title('FIXME MOVE TO ' + location)
 	          .textContent('FIXME MOVE TO ' + location)
 	          .ariaLabel('FIXME MOVE TO ' + location)
-	          .ok('FIXME OK')
-	          .cancel('FIXME CANCEL');
+	          .ok($translate.instant('button.confirm'))
+	          .cancel($translate.instant('button.cancel'));
 			
 			$mdDialog.show(confirm).then(function() {
 				for(var columnId in toMove) {
@@ -91,8 +91,8 @@
 				var confirm = $mdDialog.confirm().title('FIXME REMOVE DUE DATE')
 		          .textContent('FIXME REMOVE DUE DATE')
 		          .ariaLabel('FIXME REMOVE DUE DATE')
-		          .ok('FIXME OK')
-		          .cancel('FIXME CANCEL');
+		          .ok($translate.instant('button.confirm'))
+		          .cancel($translate.instant('button.cancel'));
 				
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;
@@ -117,8 +117,8 @@
 				var confirm = $mdDialog.confirm().title('FIXME REMOVE MILESTONE')
 		          .textContent('FIXME REMOVE MILESTONE')
 		          .ariaLabel('FIXME REMOVE MILESTONE')
-		          .ok('FIXME OK')
-		          .cancel('FIXME CANCEL');
+		          .ok($translate.instant('button.confirm'))
+		          .cancel($translate.instant('button.cancel'));
 				
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;

@@ -182,14 +182,7 @@
         //will be used as a map columnState[columnId].editColumnName = true/false
         ctrl.columnState = {};
 
-        ctrl.createColumn = function(columnToCreate) {
-            Board.createColumn(boardName, columnToCreate).then(function() {
-                columnToCreate.name = null;
-                columnToCreate.definition = null;
-            }).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.board.create-column.error'}, false);
-            });
-        };
+        
 
         //-----------------------------------------------------------------------------------------------------
 
