@@ -2,8 +2,6 @@
 
 	'use strict';
 
-	
-
 	angular.module('lavagna.components').component('lvgSearchControls', {
 		templateUrl: 'app/components/search-controls/search-controls.html',
 		bindings: {
@@ -12,12 +10,12 @@
 			selectedCardsCount: '=',
 			inProject: '=',
 			collectIdsByProject: '=',
-			triggerSearch: '='
+			triggerSearch: '=',
+			project: '<'
 		},
 		controller: function(BulkOperationModal) {
 			var ctrl = this;
 			ctrl.bulkOperationModal = BulkOperationModal;
 		}
-		
 	});
 })();

@@ -1,26 +1,27 @@
-<lvg-navbar-search project="lvgSearch.project"></lvg-navbar-search>
+<lvg-navbar-search project="$ctrl.project"></lvg-navbar-search>
 
 <div class="lvg-content">
 
-    <lvg-search-controls  select-all-in-page="lvgSearch.selectAllInPage"
-                      deselect-all-in-page="lvgSearch.deselectAllInPage"
-                      selected-cards-count="lvgSearch.selectedCardsCount"
-                      in-project="lvgSearch.inProject"
-                      collect-ids-by-project="lvgSearch.collectIdsByProject"
-                      trigger-search="lvgSearch.triggerSearch"></lvg-search-controls>
+    <lvg-search-controls  select-all-in-page="$ctrl.selectAllInPage"
+                      deselect-all-in-page="$ctrl.deselectAllInPage"
+                      selected-cards-count="$ctrl.selectedCardsCount"
+                      in-project="$ctrl.inProject"
+                      collect-ids-by-project="$ctrl.collectIdsByProject"
+                      trigger-search="$ctrl.triggerSearch"
+                      project="$ctrl.project"></lvg-search-controls>
 
     <lvg-search-result
-	    count="lvgSearch.count"
-	    query="lvgSearch.query"
-	    page="lvgSearch.page"
-	    count-per-page="lvgSearch.countPerPage"
-	    total-pages="lvgSearch.totalPages"
-	    current-page="lvgSearch.currentPage"
-	    move-to-page="lvgSearch.moveToPage"
-	    found="lvgSearch.found"
-	    project="lvgSearch.project"
-	    selected="lvgSearch.selected"
-	    user="lvgSearch.user"></lvg-search-result>
+	    count="$ctrl.count"
+	    query="$ctrl.query"
+	    page="$ctrl.page"
+	    count-per-page="$ctrl.countPerPage"
+	    total-pages="$ctrl.totalPages"
+	    current-page="$ctrl.currentPage"
+	    move-to-page="$ctrl.moveToPage"
+	    found="$ctrl.found"
+	    project="$ctrl.project"
+	    selected="$ctrl.selected"
+	    user="$ctrl.user"></lvg-search-result>
 </div>
 
 <div data-ui-view data-autoscroll="false"></div>

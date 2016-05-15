@@ -38,7 +38,7 @@
     			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleMilestone' | translate)}}</md-tooltip>
 			</button>
     		<md-menu-content width="4">
-	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.setMilestone</span></md-button></md-menu-item>
+	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setMilestone($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>partials.board.bulkop.setMilestone</span></md-button></md-menu-item>
     			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeMilestone</span></md-button></md-menu-item>
 			</md-menu-content>
 		</md-menu>
@@ -49,8 +49,8 @@
     			<md-tooltip md-direction="bottom">{{::('partials.board.bulkop.handleLabels' | translate)}}</md-tooltip>
 			</button>
     		<md-menu-content width="2">
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>partials.board.bulkop.addLabel</span></md-button></md-menu-item>
+    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>partials.board.bulkop.removeLabel</span></md-button></md-menu-item>
 			</md-menu-content>
 		</md-menu>
 	</span>

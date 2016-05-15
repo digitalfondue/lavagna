@@ -8,11 +8,12 @@
 			bindings: {
 				dialogTitle: '<',
 				action: '=',
+				projectName: '<'
 			},
-			controller: function($stateParams, $mdDialog, LabelCache) {
+			controller: function($mdDialog, LabelCache) {
 				var ctrl = this;
 				
-				LabelCache.findByProjectShortName($stateParams.projectName).then(function(res) {						
+				LabelCache.findByProjectShortName(ctrl.projectName).then(function(res) {						
 					for(var k in res) {
 	  					if(res[k].domain === 'SYSTEM' && res[k].name === 'MILESTONE') {
 	  						return res[k];

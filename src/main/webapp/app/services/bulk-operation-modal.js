@@ -100,12 +100,13 @@
 				}, function() {});
 			},
 			
-			setMilestone: function(cards, applyIfPresent) {
+			setMilestone: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-milestone flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-milestone>',
+					template: '<lvg-dialog-select-milestone flex="column" layout="column" dialog-title="title" action="action"  project-name="projectName"></lvg-dialog-select-milestone>',
 					controller: function($scope) {
 						$scope.title = 'SELECT MILESTONE';
+						$scope.projectName = projectName;
 						$scope.action = function(milestone) {
 							BulkOperations.setMilestone(cards, milestone).then(applyIfPresent);
 						}
@@ -126,12 +127,13 @@
 				}, function() {});
 			},
 			
-			addLabel: function(cards, applyIfPresent) {
+			addLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action" with-label-value-picker="true"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action" project-name="projectName" with-label-value-picker="true"></lvg-dialog-select-label>',
 					controller: function($scope) {
 						$scope.title = 'FIXME SELECT LABEL TO ADD';
+						$scope.projectName = projectName;
 						$scope.action = function(labelToAdd, labelValueToAdd) {
 							var labelValueToAdd = Label.extractValue(labelToAdd, labelValueToAdd);
 							BulkOperations.addLabel(cards, labelToAdd, labelValueToAdd).then(applyIfPresent);
@@ -140,12 +142,13 @@
 				});
 			},
 			
-			removeLabel: function(cards, applyIfPresent) {
+			removeLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label flex="column" layout="column" dialog-title="title" action="action" project-name="projectName"></lvg-dialog-select-label>',
 					controller: function($scope) {
 						$scope.title = 'FIXME SELECT LABEL TO REMOVE';
+						$scope.projectName = projectName;
 						$scope.action = function(labelToRemove) {
 							BulkOperations.removeLabel(cards, labelToRemove).then(applyIfPresent);
 						}

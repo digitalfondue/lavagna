@@ -8,14 +8,15 @@
 			bindings: {
 				dialogTitle: '<',
 				action: '=',
-				withLabelValuePicker: '<'
+				withLabelValuePicker: '<',
+				projectName: '<'
 			},
-			controller: function($stateParams, $mdDialog, LabelCache) {
+			controller: function($mdDialog, LabelCache) {
 				var ctrl = this;
 				
 				ctrl.selectedLabel = {};
 				
-				LabelCache.findByProjectShortName($stateParams.projectName).then(function(res) {
+				LabelCache.findByProjectShortName(ctrl.projectName).then(function(res) {
 					ctrl.userLabels = [];
 					for(var k in res) {
         		  		if(res[k].domain === 'USER') {
