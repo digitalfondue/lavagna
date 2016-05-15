@@ -83,7 +83,7 @@
                                         <form data-ng-role="form"
                                               data-ng-submit="cardCtrl.setMilestone(cardCtrl.view.milestone); cardCtrl.view.milestone = null;">
                                             <div class="content input-group">
-                                                <lvg-label-picker label="cardCtrl.labels[cardCtrl.labelNameToId['MILESTONE']]" data-ng-model="cardCtrl.view.milestone" board="cardCtrl.board.shortName" group="'statusTranslated'"></lvg-label-picker>
+                                                <lvg-label-picker label="cardCtrl.labels[cardCtrl.labelNameToId['MILESTONE']]" data-ng-model="cardCtrl.view.milestone" board="cardCtrl.board.shortName" group="'statusTranslated'" project-name="cardCtrl.project.shortName"></lvg-label-picker>
 											<span class="input-group-btn">
 												<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.set</button>
 											</span>
@@ -356,7 +356,7 @@
                                                             data-ng-options="l as l.name for (n,l) in (cardCtrl.userLabels | uniqueLabels: cardCtrl.labelValues | orderObjectBy:'name')"></select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="board.shortName"></lvg-label-picker>
+                                                    <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="board.shortName" project-name="cardCtrl.project.shortName"></lvg-label-picker>
                                                 </div>
                                                 <button class="lvg-button lvg-button-submit" type="submit" data-ng-disabled="labelToAdd.label == NULL" data-translate>card.addLabel</button>
                                                 <button type="button" class="lvg-button lvg-button-default"

@@ -9,19 +9,17 @@
 			model: '=ngModel',
 			label: '=',
 			board: '=',
-			inMenu: '=',
-			group: '='
+			group: '=',
+			projectName: '<'
 		},
-		controllerAs: 'lvgLabelPicker',
-		controller: function (LabelCache, User, $scope, $stateParams, $http) {
+		controller: function (LabelCache, User, $scope, $http) {
 			var ctrl = this;
 			
 			
 			ctrl.searchCard = function(text) {
 				var params = {term: text.trim()};
-				if($stateParams.projectName) {
-					params.projectName = $stateParams.projectName
-				}
+				params.projectName = $ctrl.projectName
+				
 				
 				return $http.get('api/search/autocomplete-card', {params: params}).then(function (res) {
 					angular.forEach(res.data, function(card) {
@@ -42,7 +40,7 @@
 			
 			
 			
-			$scope.$watch('lvgLabelPicker.label', function () {
+			$scope.$watch('$ctrl.label', function () {
 				ctrl.model = null;
 				ctrl.listValues = null;
 				if (ctrl.label && ctrl.label.type === 'LIST') {
