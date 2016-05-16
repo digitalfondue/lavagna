@@ -17,7 +17,7 @@
 <div class="lavagna-board-sidebar lavagna-board-left-sidebar lavagna-left-sidebar-slide-out"
      data-ng-class="{'lavagna-board-left-sidebar-out':boardCtrl.toggledSidebar}">
 	<div data-ng-if="boardCtrl.toggledSidebar">
-		<lvg-board-sidebar project="boardCtrl.project" board="boardCtrl.board" side-bar-location="boardCtrl.sidebarLocation"></lvg-board-sidebar>
+		<lvg-board-sidebar project="boardCtrl.project" user="boardCtrl.user" board="boardCtrl.board" metadata-ref="boardCtrl.getMetadata()" side-bar-location="boardCtrl.sidebarLocation"></lvg-board-sidebar>
 	</div>
 </div>
 

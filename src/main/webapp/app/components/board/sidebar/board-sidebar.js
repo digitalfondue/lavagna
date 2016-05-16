@@ -8,7 +8,9 @@
     	bindings: {
             board: '=',
             project: '=',
-            sideBarLocation: '='
+            sideBarLocation: '=',
+            user: '=',
+            metadataRef:'&'
         },
         templateUrl: 'app/components/board/sidebar/board-sidebar.html',
         controller: BoardSidebarController,
@@ -16,7 +18,7 @@
     });
 
 
-    function BoardSidebarController($scope, Board, Card, User, StompClient) {
+    function BoardSidebarController($scope, Board, Card, StompClient) {
 
         var ctrl = this;
         
@@ -24,6 +26,20 @@
         var projectShortName = ctrl.project.shortName;
 
         var subscriptionScope;
+        
+        /* uglyness imported from board-column, FIXME*/
+        //
+        var r = [];
+        ctrl.getMetadataHash = function getMetadataHash() {
+        	var hash = '';
+        	var metadata = ctrl.metadataRef();
+        	if(metadata) {
+        		hash = metadata.hash;
+        	}
+        	r[0] = hash;
+        	return r;
+        }
+        //
         
         
 

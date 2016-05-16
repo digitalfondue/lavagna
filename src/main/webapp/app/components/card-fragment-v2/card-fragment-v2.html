@@ -5,7 +5,7 @@
         <md-card-title-text>
             <div layout="row" data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">
                 <div flex="80">
-                    <input type="checkbox"  data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" 
+                    <input ng-if="::($ctrl.hideSelect !== 'true')" type="checkbox"  data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" 
                         lvg-card-fragment-checkbox></input>
                     <lvg-card-fragment-link
                         dynamic-link="true"

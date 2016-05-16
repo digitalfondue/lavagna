@@ -6,11 +6,18 @@
              data-lvg-fill-sidebar-cards-height-current-page="{{boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].currentPage}}">
              <md-progress-circular md-mode="indeterminate" ng-hide="boardSidebarCtrl.sidebarLoaded"></md-progress-circular>
             <div class="clearfix" sv-root="board-column-card" sv-part="boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found" sv-on-sort="boardSidebarCtrl.cardMove($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-                <ul data-ng-repeat="card in boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found track by card.id" class="lavagna-sidebar-cards list-group" sv-element>
-                    <li class="lavagna-board-card">
-                        <lvg-board-sidebar-card project="boardSidebarCtrl.project.shortName" board="boardSidebarCtrl.board.shortName" card="card"></lvg-board-sidebar-card>
-                    </li>
-                </ul>
+            	<div ng-repeat="hash in boardSidebarCtrl.getMetadataHash() track by hash">
+	                <ul data-ng-repeat="card in boardSidebarCtrl.sidebar[boardSidebarCtrl.sideBarLocation].found track by (card.hash+boardSidebarCtrl.metadataRef().hash)" class="lavagna-sidebar-cards list-group" sv-element>
+	                	<li>
+	                		<lvg-card-fragment-v2 
+	                			view="board" 
+	                			hide-select="true" 
+	                			card-ref="card" 
+	                			user-ref="boardSidebarCtrl.user"
+	                			project-metadata-ref="boardSidebarCtrl.metadataRef()"></lvg-card-fragment-v2>
+	                    </li>
+	                </ul>
+                </div>
             </div>
 
         </div>

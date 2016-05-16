@@ -6,6 +6,7 @@
 		bindings: {
 			readOnly: '@', /* true | false (default) */
 			view: '@', /* list | board | search */
+			hideSelect: '@', /* "true" | ... */
 			searchType: '@', /* globalSearch | projectSearch (default) */
 			cardRef:'&',
 			userRef:'&',
@@ -37,6 +38,10 @@
         ctrl.searchView = ctrl.view != undefined && ctrl.view == 'search';
         
         ctrl.shortCardName = ctrl.card.boardShortName + ' - ' + ctrl.card.sequence;
+        
+        if(ctrl.hideSelect === undefined) {
+        	ctrl.hideSelect = false;
+        }
         
         // action list
         ctrl.hasActionListWithItems = hasCountGreaterThanZero('ACTION_CHECKED') || hasCountGreaterThanZero('ACTION_UNCHECKED');
