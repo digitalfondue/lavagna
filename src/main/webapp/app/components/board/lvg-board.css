@@ -667,20 +667,3 @@ ul.lavagna-sidebar-cards:last-of-type {
 #cardBoardMenuActions .fixed-card-menu-panel {
 	width: 256px;
 }
-
-/* dropdown */
-
-.lavagna-board-sidebar button.lvg-navigation-button {
-	color:black;
-	background-color: #D5D5D5;
-	font-weight: bold;
-}
-
-.lavagna-board-sidebar button.lvg-button-dropdown-navigation {
-	background-color:white;
-	color:black;
-}
-
-.lavagna-board-sidebar button.lvg-button-dropdown-navigation:hover {
-	background-color: #EBEBEB
-}
