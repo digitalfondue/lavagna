@@ -265,13 +265,36 @@
 			templateUrl : 'partials/project/milestones.html',
 			controller : 'ProjectMilestonesCtrl',
 			resolve : projectResolver
-		}).state('projectMilestones.card', {
+		}).state('projectMilestone', {
+            url : '/:projectName/milestone/:milestone/',
+            templateUrl : 'partials/project/milestone.html',
+            controller : 'ProjectMilestoneCtrl',
+            resolve : {
+                project : function(ProjectCache, $stateParams) {
+                    return ProjectCache.project($stateParams.projectName);
+                },
+                milestone : function(LabelCache, $stateParams) {
+                    return LabelCache.findByProjectShortName($stateParams.projectName).then(function(labels) {
+                        for(var k in labels) {
+                            if(labels[k].domain === 'SYSTEM' && labels[k].name === 'MILESTONE') {
+                                return LabelCache.findLabelListValues(labels[k].id).then(function (values) {
+                                    for(var lv in values) {
+                                        if(values[lv].value === $stateParams.milestone) {
+                                            return values[lv];
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        }).state('projectMilestone.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			templateUrl : 'partials/card.html',
 			controller : 'CardCtrl',
 			resolve : cardCtrlResolver
 		})
-
 
 		//---- PROJECT ----
 		.state('project', {

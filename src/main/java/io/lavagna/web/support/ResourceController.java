@@ -153,20 +153,20 @@ public class ResourceController {
 	public void handleIndexForMe(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		handleIndex(request, response);
 	}
-	
-	@RequestMapping("/not-found") 
+
+	@RequestMapping("/not-found")
 	public void notFound(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		handleIndex(request, response);
 	}
-	
+
 	@RequestMapping("/error")
 	public void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		handleIndex(request, response);
 	}
-	
-	@RequestMapping("/404") 
+
+	@RequestMapping("/404")
 	public String handle404() {
 		return "redirect:/not-found";
 	}
@@ -181,13 +181,14 @@ public class ResourceController {
 			PROJ_SHORT_NAME + "/search/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,// /
 			PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME,//
 			PROJ_SHORT_NAME + "/statistics",//
-			PROJ_SHORT_NAME + "/milestones",//
-			PROJ_SHORT_NAME + "/milestones/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
+            PROJ_SHORT_NAME + "/milestones",//
+            PROJ_SHORT_NAME + "/milestone/{milestone}",
+			PROJ_SHORT_NAME + "/milestone/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
 			PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ }, method = RequestMethod.GET)
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ServletContext context = request.getServletContext();
-		
+
 		if(contains(env.getActiveProfiles(), "dev") || indexTopTemplate.get() == null) {
 		    ByteArrayOutputStream indexTop = new ByteArrayOutputStream();
 		    try (InputStream is = context.getResourceAsStream("/WEB-INF/views/index-top.html")) {
@@ -203,7 +204,7 @@ public class ResourceController {
 			Map<String, Object> data = new HashMap<>();
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
 			data.put("version", version);
-			
+
 			data.put("inlineTemplates", prepareTemplates(context, "/partials/"));
 
 			indexCache.set(Mustache.compiler().escapeHTML(false)
@@ -213,11 +214,11 @@ public class ResourceController {
 
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
-			
+
 			Map<String, Object> localizationData = new HashMap<>();
 			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
 			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
-			
+
 			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
@@ -297,13 +298,13 @@ public class ResourceController {
 				.toJson(fromResources(resources))).getBytes(StandardCharsets.UTF_8));
 		ba.after("i18n", context, os);
 	}
-	
+
 	private static Map<String, Map<Object, Object>> fromResources(Resource[] resources) throws IOException {
 
 		Pattern extractLanguage = Pattern.compile("^messages_(.*)\\.properties$");
 
 		Map<String, Map<Object, Object>> langs = new HashMap<>();
-		
+
 		String version = Version.version();
 
 		for (Resource res : resources) {
