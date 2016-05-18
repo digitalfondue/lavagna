@@ -171,20 +171,6 @@
             },
             controllerAs: 'userResolver',
 		})
-		.state('404', {
-			url : '/not-found/',
-			template : '<lvg-error-404></lvg-error-404>',
-			controller: function(Title) {
-                Title.set('title.notfound');
-            }
-		})
-		.state('500', {
-			url : '/error/',
-			template : '<lvg-error-500></lvg-error-500>',
-			controller: function(Title) {
-                Title.set('title.error');
-            }
-		})
 		//---- ABOUT ----
 		.state('about', {
 			url:'/about/',
@@ -491,10 +477,11 @@
 		//
 	});
 
-	module.run(function($rootScope, $state, $mdSidenav) {
+	module.run(function($rootScope, $state, $mdSidenav, $log) {
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
-		    $state.go(error.status.toString());
+		    $log.debug(error);
+		    //FIXME
 		});
 
 

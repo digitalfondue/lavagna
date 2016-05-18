@@ -156,23 +156,6 @@ public class ResourceController {
 		handleIndex(request, response);
 	}
 
-	@RequestMapping("/not-found")
-	public void notFound(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		handleIndex(request, response);
-	}
-
-	@RequestMapping("/error")
-	public void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		handleIndex(request, response);
-	}
-
-	@RequestMapping("/404")
-	public String handle404() {
-		return "redirect:/not-found";
-	}
-
 	@RequestMapping(value = { "/",//
 			"user/{provider}/{username}", "user/{provider}/{username}/projects/", "user/{provider}/{username}/activity/",//
 			"about", "about/third-party",//
