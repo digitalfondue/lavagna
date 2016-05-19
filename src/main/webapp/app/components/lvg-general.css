@@ -85,6 +85,10 @@ select {
   opacity: 0.5;       
 }
 
+.lvg-container-bg {
+	background-color: white;
+}
+
 /*
 ===================================
 ==== buttons and inputs ===========

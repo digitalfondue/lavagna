@@ -7,8 +7,6 @@
         bindings: {
             profile: '='
         },
-        controller: function() { var ctrl = this; },
-        controllerAs: 'userProjectsCtrl',
         templateUrl: 'app/components/user/projects/projects.html'
     });
 
