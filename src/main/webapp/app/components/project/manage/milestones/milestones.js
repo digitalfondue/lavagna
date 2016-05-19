@@ -5,14 +5,13 @@
 
     components.component('lvgProjectManageMilestones', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageMilestonesController,
-        controllerAs: 'manageMilestonesCtrl',
         templateUrl: 'app/components/project/manage/milestones/milestones.html'
     });
 
-    function ProjectManageMilestonesController($rootScope, $scope, $mdDialog,LabelCache, Label, Notification) {
+    function ProjectManageMilestonesController($rootScope, $mdDialog,LabelCache, Label, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -37,7 +36,9 @@
         loadLabel();
 
         var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabel);
-        $scope.$on('$destroy', unbind);
+        ctrl.$onDestroy = function() {
+        	unbind();
+        }
 
         ctrl.update = function(val) {
             Label.updateLabelListValue(val).then(function() {

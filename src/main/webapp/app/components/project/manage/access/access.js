@@ -6,7 +6,7 @@
 
     components.component('lvgProjectManageAccess', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageAccessController,
         controllerAs: 'manageAccessCtrl',

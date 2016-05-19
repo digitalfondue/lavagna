@@ -6,14 +6,13 @@
 
     components.component('lvgProjectManageBoards', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageBoardsController,
-        controllerAs: 'manageBoardsCtrl',
         templateUrl: 'app/components/project/manage/boards/boards.html'
     });
 
-    function ProjectManageBoardsController($scope, Project, Board, Notification) {
+    function ProjectManageBoardsController(Project, Board, Notification) {
         var ctrl = this;
         ctrl.view = {};
         ctrl.view.boardStatus = {};

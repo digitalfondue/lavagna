@@ -6,10 +6,9 @@
 
     components.component('lvgProjectManageStatus', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageStatusController,
-        controllerAs: 'manageStatusCtrl',
         templateUrl: 'app/components/project/manage/status/status.html'
     });
 

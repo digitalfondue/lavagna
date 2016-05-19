@@ -6,14 +6,13 @@
 
     components.component('lvgProjectManageProject', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageController,
-        controllerAs: 'projectManageCtrl',
         templateUrl: 'app/components/project/manage/project/project.html'
     });
 
-    function ProjectManageController($scope, $rootScope, Project, ProjectCache, Notification) {
+    function ProjectManageController($rootScope, Project, ProjectCache, Notification) {
         var ctrl = this;
         ctrl.view = {};
 
@@ -24,7 +23,11 @@
                 ctrl.project = p;
             });
         });
-        $scope.$on('$destroy', unbind);
+        
+        ctrl.$onDestroy = function() {
+        	unbind();
+        }
+        
 
         ctrl.update = function (project) {
             Project.update(project).then(function() {
