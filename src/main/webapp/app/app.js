@@ -191,7 +191,7 @@
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
-			templateUrl: 'app/components/account/account-template.html',
+			template: '<lvg-account username="accountResolver.username" provider="accountResolver.provider" is-current-user="accountResolver.isCurrentUser"></lvg-account>',
 			controller: function(user) {
                 this.username = user.username;
                 this.provider = user.provider;

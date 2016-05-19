@@ -4,10 +4,13 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentAccount', {
-        bindings: {},
+    components.component('lvgAccount', {
+        bindings: {
+        	username: '<',
+        	provider: '<',
+        	isCurrentUser: '<'
+        },
         controller: AccountController,
-        controllerAs: 'accountCtrl',
         templateUrl: 'app/components/account/account.html'
     });
 

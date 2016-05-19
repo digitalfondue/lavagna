@@ -1,25 +1,31 @@
+<lvg-navbar-user
+    data-username="$ctrl.username"
+    data-provider="$ctrl.provider"
+    data-is-current-user="$ctrl.isCurrentUser">
+</lvg-navbar-user>
+
 <div class="lvg-content lavagna-container-top-margin">
     <div class="row">
         <div class="col-xs-12">
             <div class="lavagna-panel">
-                <form role="form" data-ng-submit="accountCtrl.update(accountCtrl.profile)" data-lvg-has-permission="UPDATE_PROFILE">
+                <form role="form" data-ng-submit="$ctrl.update($ctrl.profile)" data-lvg-has-permission="UPDATE_PROFILE">
                     <div class="body">
                         <div class="form-group">
                             <label for="display-name" data-translate>partials.me.displayName</label>
                             <div>
                                 <input type="text" class="form-control" id="display-name"
-                                       placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="accountCtrl.profile.displayName"></input>
+                                       placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="$ctrl.profile.displayName"></input>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email" data-translate>partials.me.email</label>
                             <div>
                                 <input type="email" class="form-control" id="email"
-                                       placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="accountCtrl.profile.email"></input>
+                                       placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="$ctrl.profile.email"></input>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="accountCtrl.profile.emailNotification"></input></label>
+                            <label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="$ctrl.profile.emailNotification"></input></label>
                         </div>
                         <div class="form-group">
                             <label><span data-translate>partials.me.enableSkipOwnNotifications</span> <input type="checkbox" data-ng-model="profile.skipOwnNotifications"></input></label>
@@ -27,7 +33,7 @@
                     </div>
                     <div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
                         <button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.me.update</button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="accountCtrl.clearAllTokens()">partials.me.clearAllTokens</button>
+                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.clearAllTokens()">partials.me.clearAllTokens</button>
                     </div>
                 </form>
             </div>
@@ -41,18 +47,18 @@
                 </div>
                 <div class="body separated">
                     <div>
-                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <md-switch ng-model="accountCtrl.disabledFeed" ng-change="accountCtrl.updateFeed()"></md-switch></p>
+                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <md-switch ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"></md-switch></p>
                     </div>
                     <div>
                         <label data-translate>partials.me.calendar.description</label>
                         <div>
-                            <span>{{accountCtrl.calendarFeedUrl}}</span>
+                            <span>{{$ctrl.calendarFeedUrl}}</span>
                         </div>
                     </div>
 
                 </div>
                 <div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
-                    <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="accountCtrl.clearCalendarToken()">partials.me.clearCalendarToken</button>
+                    <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.clearCalendarToken()">partials.me.clearCalendarToken</button>
                 </div>
             </div>
         </div>
