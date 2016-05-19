@@ -1,26 +1,26 @@
 <div layout="column" layout-gt-sm="row">
 	<div flex>
 	     <ul class="lavagna-boards">
-	        <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in projectCtrl.boards">
-	            <lvg-stats-panel-board data-board="board" data-project-short-name="projectCtrl.project.shortName"></lvg-stats-panel-board>
+	        <li data-ng-class="{archived : board.archived}" data-ng-repeat="board in $ctrl.boards">
+	            <lvg-stats-panel-board data-board="board" data-project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
 	        </li>
 	    </ul>
 	</div>
         
 	<div flex data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
-	    <h2 class="card-home" data-translate data-translate-value-name="{{::projectCtrl.project.name}}">partials.project.project.myOpenTasks</h2>
-	    <ul data-ng-if="projectCtrl.totalProjectOpenCards > 0" class="lavagna-home-cards" ng-repeat="hash in projectCtrl.getMetadataHash() track by hash">
-	        <li class="lavagna-home-card" ng-repeat="card in projectCtrl.userProjectCards track by card.hash+project.metadata.hash">
-	            <lvg-card-fragment-v2 view="list" card-ref="::card" user-ref="::projectCtrl.user" project-metadata-ref="::projectCtrl.metadata"></lvg-card-fragment-v2>
+	    <h2 class="card-home" data-translate data-translate-value-name="{{::$ctrl.project.name}}">partials.project.project.myOpenTasks</h2>
+	    <ul data-ng-if="$ctrl.totalProjectOpenCards > 0" class="lavagna-home-cards" ng-repeat="hash in $ctrl.getMetadataHash() track by hash">
+	        <li class="lavagna-home-card" ng-repeat="card in $ctrl.userProjectCards track by card.hash+project.metadata.hash">
+	            <lvg-card-fragment-v2 view="list" card-ref="::card" user-ref="::$ctrl.user" project-metadata-ref="::$ctrl.metadata"></lvg-card-fragment-v2>
 	        </li>
 	    </ul>
-	    <span data-ng-if="projectCtrl.totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>
-	    <div data-ng-if="projectCtrl.cardsTotalPages > 1">
+	    <span data-ng-if="$ctrl.totalProjectOpenCards == 0" data-translate>partials.project.project.noTask</span>
+	    <div data-ng-if="$ctrl.cardsTotalPages > 1">
 	        <lvg-pagination 
-	           total-pages="projectCtrl.cardsTotalPages"
-	           current-page="projectCtrl.cardsCurrentPage"
+	           total-pages="$ctrl.cardsTotalPages"
+	           current-page="$ctrl.cardsCurrentPage"
 	           max-size="10"
-	           change-page="projectCtrl.fetchUserCardsInProjectPage"></lvg-pagination>
+	           change-page="$ctrl.fetchUserCardsInProjectPage"></lvg-pagination>
 	    </div>
 	</div>
 </div>
@@ -28,7 +28,7 @@
 
 <div data-autoscroll="false"></div>
 
-<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="projectCtrl.showBoardDialog($event)" aria-label="{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showBoardDialog($event)" aria-label="{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
     <md-tooltip md-direction="top">{{'partials.fragments.create-board-fragment.createNewBoard' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>

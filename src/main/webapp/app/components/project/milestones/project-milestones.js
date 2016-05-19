@@ -4,9 +4,8 @@
 
     components.component('lvgProjectMilestones', {
         controller: ProjectMilestonesController,
-        controllerAs: 'projectMilestonesCtrl',
         bindings: {
-            project: '='
+            project: '<'
         },
         templateUrl: 'app/components/project/milestones/project-milestones.html'
     });

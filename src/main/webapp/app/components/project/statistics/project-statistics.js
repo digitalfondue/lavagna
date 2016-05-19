@@ -6,21 +6,20 @@
 
 	components.component('lvgProjectStatistics', {
         controller: ProjectStatisticsController,
-        controllerAs: 'projectStatsCtrl',
         bindings: {
-            project: '='
+            project: '<'
         },
         templateUrl: 'app/components/project/statistics/project-statistics.html'
     });
 
 	function ProjectStatisticsController($translate, $filter, Project, Board) {
-	    var projectStatsCtrl = this;
+	    var ctrl = this;
 
-        projectStatsCtrl.showCreatedAndClosedCards = false;
-        projectStatsCtrl.showCardsHistory = false;
-        projectStatsCtrl.showCardsByLabel = false;
+        ctrl.showCreatedAndClosedCards = false;
+        ctrl.showCardsHistory = false;
+        ctrl.showCardsByLabel = false;
 
-        projectStatsCtrl.cardsHistoryChartOptions = {
+        ctrl.cardsHistoryChartOptions = {
             pointDot: false,
             bezierCurve: false,
             scaleIntegersOnly: true,
@@ -34,7 +33,7 @@
             scaleStartValue : 0
         };
 
-        projectStatsCtrl.cardsByLabelChartOptions = {
+        ctrl.cardsByLabelChartOptions = {
             responsive: true,
             maintainAspectRatio: false,
             animation : false
@@ -91,73 +90,73 @@
 
             //scale for the chart
             var maxValue = Math.max.apply(Math, cardsHistory.datasets[0].data);
-            projectStatsCtrl.cardsHistoryChartOptions.scaleStepWidth = maxValue > 4 ? Math.ceil(Math.max(maxValue) / 4) : 1;
+            ctrl.cardsHistoryChartOptions.scaleStepWidth = maxValue > 4 ? Math.ceil(Math.max(maxValue) / 4) : 1;
 
-            projectStatsCtrl.stats = stats;
+            ctrl.stats = stats;
 
-            projectStatsCtrl.totalCards = stats.openTaskCount + stats.closedTaskCount + stats.deferredTaskCount + stats.backlogTaskCount;
+            ctrl.totalCards = stats.openTaskCount + stats.closedTaskCount + stats.deferredTaskCount + stats.backlogTaskCount;
 
-            projectStatsCtrl.chartCardsHistoryData = cardsHistory;
-            projectStatsCtrl.showCardsHistory = cardsHistory.labels.length > 1;
+            ctrl.chartCardsHistoryData = cardsHistory;
+            ctrl.showCardsHistory = cardsHistory.labels.length > 1;
 
             // cards by label
-            projectStatsCtrl.cardsByLabelMax = 1;
+            ctrl.cardsByLabelMax = 1;
             for (var i = 0; i < stats.cardsByLabel.length; i++) {
                 var label = stats.cardsByLabel[i];
-                projectStatsCtrl.cardsByLabelMax = Math.max(projectStatsCtrl.cardsByLabelMax, label.count);
+                ctrl.cardsByLabelMax = Math.max(ctrl.cardsByLabelMax, label.count);
             }
-            projectStatsCtrl.showCardsByLabel = stats.cardsByLabel.length > 0;
+            ctrl.showCardsByLabel = stats.cardsByLabel.length > 0;
 
             // created vs closed
-            projectStatsCtrl.openedThisPeriod = 0;
-            projectStatsCtrl.closedThisPeriod = 0;
+            ctrl.openedThisPeriod = 0;
+            ctrl.closedThisPeriod = 0;
 
             for (var index in stats.createdAndClosedCards) {
                 var pair = stats.createdAndClosedCards[index];
-                projectStatsCtrl.openedThisPeriod += pair['first'];
-                projectStatsCtrl.closedThisPeriod += pair['second'];
+                ctrl.openedThisPeriod += pair['first'];
+                ctrl.closedThisPeriod += pair['second'];
             }
-            projectStatsCtrl.showCreatedAndClosedCards = Object.keys(stats.createdAndClosedCards).length > 1;
+            ctrl.showCreatedAndClosedCards = Object.keys(stats.createdAndClosedCards).length > 1;
         };
 
-        projectStatsCtrl.availableDateRanges = [];
+        ctrl.availableDateRanges = [];
 
         $translate('partials.project.statistics.last30Days').then(function (translatedValue) {
-            projectStatsCtrl.availableDateRanges.push({name: translatedValue, value: moment().day(-30).toDate()});
+            ctrl.availableDateRanges.push({name: translatedValue, value: moment().day(-30).toDate()});
         });
         $translate('partials.project.statistics.last14Days').then(function (translatedValue) {
             var range = {name: translatedValue, value: moment().day(-14).toDate()};
-            projectStatsCtrl.availableDateRanges.push(range);
-            projectStatsCtrl.dateRange = range;
+            ctrl.availableDateRanges.push(range);
+            ctrl.dateRange = range;
         });
         $translate('partials.project.statistics.last7Days').then(function (translatedValue) {
-            projectStatsCtrl.availableDateRanges.push({name: translatedValue, value: moment().day(-7).toDate()});
+            ctrl.availableDateRanges.push({name: translatedValue, value: moment().day(-7).toDate()});
         });
         $translate('partials.project.statistics.thisMonth').then(function (translatedValue) {
-            projectStatsCtrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('month').toDate()});
+            ctrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('month').toDate()});
         });
         $translate('partials.project.statistics.thisWeek').then(function (translatedValue) {
-            projectStatsCtrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('week').toDate()});
+            ctrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('week').toDate()});
         });
 
-        projectStatsCtrl.filterByBoard = function (board) {
-            if (projectStatsCtrl.boards[0] == board) {
-                Project.statistics(projectStatsCtrl.project.shortName, projectStatsCtrl.dateRange.value).then(generateDashboard);
+        ctrl.filterByBoard = function (board) {
+            if (ctrl.boards[0] == board) {
+                Project.statistics(ctrl.project.shortName, ctrl.dateRange.value).then(generateDashboard);
             } else {
-                Board.statistics(board.shortName, projectStatsCtrl.dateRange.value).then(generateDashboard);
+                Board.statistics(board.shortName, ctrl.dateRange.value).then(generateDashboard);
             }
         };
 
-        projectStatsCtrl.changeDateRange = function (range) {
-            projectStatsCtrl.dateRange = range;
-            projectStatsCtrl.filterByBoard(projectStatsCtrl.boardToFilter);
+        ctrl.changeDateRange = function (range) {
+            ctrl.dateRange = range;
+            ctrl.filterByBoard(ctrl.boardToFilter);
         };
 
-        Project.findBoardsInProject(projectStatsCtrl.project.shortName).then(function (boards) {
+        Project.findBoardsInProject(ctrl.project.shortName).then(function (boards) {
             boards.unshift({name: "All", archived: false});
-            projectStatsCtrl.boards = boards;
-            projectStatsCtrl.boardToFilter = boards[0];
-            projectStatsCtrl.filterByBoard(projectStatsCtrl.boardToFilter);
+            ctrl.boards = boards;
+            ctrl.boardToFilter = boards[0];
+            ctrl.filterByBoard(ctrl.boardToFilter);
         });
 	}
 

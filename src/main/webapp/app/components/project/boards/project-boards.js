@@ -6,7 +6,6 @@
 
 	components.component('lvgProjectBoards', {
         controller: ProjectController,
-        controllerAs: 'projectCtrl',
         bindings: {
             project: '=',
             user: '='

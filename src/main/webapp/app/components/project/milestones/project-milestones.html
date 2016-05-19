@@ -1,13 +1,13 @@
 <div>
-    <div class="row" data-ng-repeat="milestone in projectMilestonesCtrl.cardsByMilestone"
+    <div class="row" data-ng-repeat="milestone in $ctrl.cardsByMilestone"
          data-ng-init="milestone.detail = null">
         <div class="col-xs-12 lavagna-container-top-margin">
             <div class="lavagna-panel">
-                <div class="progress lvg-progress" data-ng-if="projectMilestonesCtrl.showArray(milestone.cardsCountByStatus, 0)"
-                     data-ng-style="{'background-color': (projectMilestonesCtrl.statusColors[projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
+                <div class="progress lvg-progress" data-ng-if="$ctrl.showArray(milestone.cardsCountByStatus, 0)"
+                     data-ng-style="{'background-color': ($ctrl.statusColors[$ctrl.cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
                     <div class="progress-bar"
-                         data-ng-repeat="item in projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"
-                         data-ng-style="{'width': (item.count * 100.0 / milestone.totalCards  | number:2) + '%', 'background-color': (projectMilestonesCtrl.statusColors[item.status] | color).color}">
+                         data-ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"
+                         data-ng-style="{'width': (item.count * 100.0 / milestone.totalCards  | number:2) + '%', 'background-color': ($ctrl.statusColors[item.status] | color).color}">
                     </div>
                 </div>
                 <div class="head clearfix">
@@ -15,7 +15,7 @@
                         <span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSED'}"></span>
 						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
 							<input data-ng-model="newName">
-							<span data-ng-click="projectMilestonesCtrl.updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
+							<span data-ng-click="$ctrl.updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
 								<i class="fa fa-check"></i>
 							</span>
 						</span>
@@ -33,7 +33,7 @@
 						        <span data-ng-show="milestone.dateEdit" data-ng-init="newDate = milestone.labelListValue.metadata['releaseDate']">
                                     <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
                                            data-lvg-datepicker data-ng-model="newDate">
-							        <span data-ng-click="projectMilestonesCtrl.updateMilestoneDate(milestone.labelListValue.id, newDate)" class="lvg-milestone-clickable">
+							        <span data-ng-click="$ctrl.updateMilestoneDate(milestone.labelListValue.id, newDate)" class="lvg-milestone-clickable">
 								        <i class="fa fa-check"></i>
 							        </span>
 						        </span>
@@ -46,21 +46,21 @@
                             <li data-ng-if="milestone.labelListValue.id != -1" data-lvg-has-permission="PROJECT_ADMINISTRATION" class="control-item">
 								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"
                                       data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] !== 'CLOSED'"
-                                      data-ng-click="projectMilestonesCtrl.closeMilestone(milestone.labelListValue)"
+                                      data-ng-click="$ctrl.closeMilestone(milestone.labelListValue)"
                                       title="{{'partials.project.milestones.hint.close' | translate}}">
 									</span>
 								<span class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"
                                       data-ng-if="milestone.labelListValue.id != -1 && milestone.labelListValue.metadata['status'] === 'CLOSED'"
-                                      data-ng-click="projectMilestonesCtrl.openMilestone(milestone.labelListValue)"
+                                      data-ng-click="$ctrl.openMilestone(milestone.labelListValue)"
                                       title="{{'partials.project.milestones.hint.open' | translate}}">
 									</span>
                             </li>
-                            <li class="control-item" data-ng-show="milestone.totalCards > 0 && projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value]"
-                                data-ng-click="projectMilestonesCtrl.toggleMilestoneOpenStatus(milestone)">
+                            <li class="control-item" data-ng-show="milestone.totalCards > 0 && $ctrl.milestoneOpenStatus[milestone.labelListValue.value]"
+                                data-ng-click="$ctrl.toggleMilestoneOpenStatus(milestone)">
                                 <span class="fa fa-chevron-up" title="{{'partials.project.milestones.hint.hideCards' | translate}}"></span>
                             </li>
-                            <li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value]"
-                                data-ng-click="projectMilestonesCtrl.toggleMilestoneOpenStatus(milestone)">
+                            <li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && $ctrl.milestoneOpenStatus[milestone.labelListValue.value]"
+                                data-ng-click="$ctrl.toggleMilestoneOpenStatus(milestone)">
                                 <span class="fa fa-chevron-down" title="{{'partials.project.milestones.hint.showCards' | translate}}"></span>
                             </li>
                         </ul>
@@ -73,29 +73,29 @@
                     <div class="row" data-ng-hide="milestone.totalCards == 0">
                         <div class="col-md-12">
                             <ul class="statistics-definition">
-                                <li class="stat" data-ng-repeat="item in projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value]">
-                                    <span data-ng-style="projectMilestonesCtrl.statusColors[item.status]|color" class="fa fa-tasks"></span>
+                                <li class="stat" data-ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.value]">
+                                    <span data-ng-style="$ctrl.statusColors[item.status]|color" class="fa fa-tasks"></span>
                                     <span>{{item.status | capitalize}}:</span>
                                     {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="row" data-ng-if="projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value]">
+                    <div class="row" data-ng-if="$ctrl.milestoneOpenStatus[milestone.labelListValue.value]">
                         <div class="lvg-milestone-card-title"
-                             data-ng-if="projectMilestonesCtrl.showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
+                             data-ng-if="$ctrl.showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
                             partials.project.milestones.assignedAndClosedCards
                         </div>
-                        <div data-ng-if="projectMilestonesCtrl.showArray(milestone.detail.assignedAndClosedCards, 1)" class="lvg-milestone-chart">
+                        <div data-ng-if="$ctrl.showArray(milestone.detail.assignedAndClosedCards, 1)" class="lvg-milestone-chart">
                             <lvg-stats-chart chart-data="milestone.detail.assignedAndClosedCards"></lvg-stats-chart>
                         </div>
                         <div class="lvg-milestone-card-title"
-                             data-ng-if="projectMilestonesCtrl.showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
+                             data-ng-if="$ctrl.showArray(milestone.detail.assignedAndClosedCards, 1)" data-translate>
                             partials.project.milestones.cards
                         </div>
 
                         <div class="lvg-milestone-card" data-ng-repeat="card in milestone.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
-                            <a data-ui-sref="project.milestones.card({projectName: projectMilestonesCtrl.project.shortName, shortName: card.boardShortName, seqNr: card.sequence })"
+                            <a data-ui-sref="project.milestones.card({projectName: $ctrl.project.shortName, shortName: card.boardShortName, seqNr: card.sequence })"
                                data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
                                 <span ng-bind="::(card.boardShortName + '-' + card.sequence)"></span>
                             </a>
