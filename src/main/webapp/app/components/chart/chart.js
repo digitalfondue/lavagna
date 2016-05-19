@@ -7,8 +7,8 @@
 	components.component('lvgChart', {
 		template: '<canvas></canvas>',
 		bindings: {
-			data: "=",
-			options: "=",
+			data: "<",
+			options: "<",
 			type: "@",
 			width: "@",
 			height: "@"
