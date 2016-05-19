@@ -4,12 +4,11 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentDashboard', {
+    components.component('lvgDashboard', {
     	bindings: {
     		user:'<'
     	},
         controller: DashboardController,
-        controllerAs: 'dashboardCtrl',
         templateUrl: 'app/components/dashboard/dashboard.html'
     });
 

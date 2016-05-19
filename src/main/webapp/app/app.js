@@ -164,7 +164,7 @@
 		})
 		.state('home.dashboard', {
 		    url: '',
-		    template: '<lvg-component-dashboard user="userResolver.user"></lvg-component-dashboard>',
+		    template: '<lvg-dashboard user="userResolver.user"></lvg-dashboard>',
 		    resolve : currentUserResolver,
 		    controller: function(user) {
                 this.user = user;

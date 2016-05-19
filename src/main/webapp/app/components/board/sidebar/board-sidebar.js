@@ -14,7 +14,6 @@
         },
         templateUrl: 'app/components/board/sidebar/board-sidebar.html',
         controller: BoardSidebarController,
-        controllerAs: 'boardSidebarCtrl'
     });
 
 
@@ -49,7 +48,7 @@
         
         switchLocation();
         
-        $scope.$watch('boardSidebarCtrl.sideBarLocation', function() {
+        $scope.$watch('$ctrl.sideBarLocation', function() {
         	switchLocation();
         });
 
