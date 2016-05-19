@@ -3,11 +3,10 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgStatsChart', {
-			template: '<lvg-chart type="Line" data="lvgStatsChart.data" options="lvgStatsChart.chartOptions" height="160" class="img-responsive"></lvg-chart>',
+			template: '<lvg-chart type="Line" data="$ctrl.data" options="$ctrl.chartOptions" height="160"></lvg-chart>',
 			bindings: {
 				chartData: "="
 			},
-			controllerAs: 'lvgStatsChart',
 			controller: function ($scope) {
 
 				var ctrl = this;
@@ -35,7 +34,7 @@
 					return sortedIndexes;
 				}
 
-				$scope.$watch('lvgStatsChart.chartData', function () {
+				$scope.$watch('$ctrl.chartData', function () {
 					var data = {
 						labels: [],
 						datasets: []
