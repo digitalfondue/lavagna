@@ -3,12 +3,11 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentAdminLogin', {
+    components.component('lvgAdminLogin', {
         bindings: {
             oauthProviders: '='
         },
         controller: AdminLoginController,
-        controllerAs: 'adminLoginCtrl',
         templateUrl: 'app/components/admin/login/login.html'
     });
 

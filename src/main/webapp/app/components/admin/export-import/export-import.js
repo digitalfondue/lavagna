@@ -3,11 +3,10 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentAdminExportImport', {
+    components.component('lvgAdminExportImport', {
+    	templateUrl: 'app/components/admin/export-import/export-import.html',
         bindings: {},
-        controller: AdminExportImportController,
-        controllerAs: 'adminExpImpCtrl',
-        templateUrl: 'app/components/admin/export-import/export-import.html'
+        controller: AdminExportImportController
     });
 
     function AdminExportImportController($window, Notification, Admin) {

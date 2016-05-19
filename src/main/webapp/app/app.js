@@ -268,16 +268,16 @@
 			template: '<lvg-manage-roles></lvg-manage-roles>'
 		}).state('admin.exportimport', {
 			url: 'export-import/',
-			template : '<lvg-component-admin-export-import></lvg-component-admin-export-import>'
+			template : '<lvg-admin-export-import></lvg-admin-export-import>'
 		}).state('admin.endpointinfo', {
 			url: 'endpoint-info/',
-			template : '<lvg-component-admin-endpoints></lvg-component-admin-endpoints>'
+			template : '<lvg-admin-endpoints></lvg-admin-endpoints>'
 		}).state('admin.users', {
 			url: 'users/',
 			template : '<lvg-component-admin-users></lvg-component-admin-users>'
 		}).state('admin.login', {
 			url: 'login/',
-			template: '<lvg-component-admin-login oauth-providers="adminLoginRslvr.oauthProviders"></lvg-component-admin-login>',
+			template: '<lvg-admin-login oauth-providers="adminLoginRslvr.oauthProviders"></lvg-admin-login>',
 			controller: function(oauthProviders) {
 			    this.oauthProviders = oauthProviders;
 			},

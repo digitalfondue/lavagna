@@ -4,7 +4,7 @@
             <div class="title title-bold" data-translate>partials.admin.export-import.export</div>
         </div>
         <div class="body separated">
-            <form data-ng-submit="adminExpImpCtrl.doExport()">
+            <form data-ng-submit="$ctrl.doExport()">
                 <button type="submit" class="lvg-button lvg-button-submit">
                     <span data-translate>partials.admin.export-import.exportButton</span>
                 </button>
@@ -19,19 +19,19 @@
             <div class="title title-bold" data-translate>partials.admin.export-import.import</div>
         </div>
         <div class="body separated">
-            <form class="form" role="form" data-ng-submit="adminExpImpCtrl.doImport()">
+            <form class="form" role="form" data-ng-submit="$ctrl.doImport()">
                 <div class="form-group">
-                    <div class="lvg-button lvg-button-submit" data-ng-file-select="adminExpImpCtrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
-                    <div data-ng-if="adminExpImpCtrl.importFile != null">{{adminExpImpCtrl.importFile.name}}</div>
-                    <div data-ng-if="adminExpImpCtrl.importFile == null" data-translate>common.no-files-selected</div>
+                    <div class="lvg-button lvg-button-submit" data-ng-file-select="$ctrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
+                    <div data-ng-if="$ctrl.importFile != null">{{$ctrl.importFile.name}}</div>
+                    <div data-ng-if="$ctrl.importFile == null" data-translate>common.no-files-selected</div>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="overrideConfiguration" data-ng-model="adminExpImpCtrl.overrideConfiguration">
+                        <input type="checkbox" name="overrideConfiguration" data-ng-model="$ctrl.overrideConfiguration">
                         <span data-translate>partials.admin.export-import.overrideConf</span>
                     </label>
                 </div>
-                <button type="submit" class="lvg-button lvg-button-submit" data-ng-disabled="adminExpImpCtrl.importing || adminExpImpCtrl.importFile == null">
+                <button type="submit" class="lvg-button lvg-button-submit" data-ng-disabled="$ctrl.importing || $ctrl.importFile == null">
                     <span data-translate>partials.admin.export-import.importButton</span>
                 </button>
             </form>

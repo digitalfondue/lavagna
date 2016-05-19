@@ -5,9 +5,9 @@
         </div>
         <div class="body separated">
             <ul class="lvg-endpoint-info list-group">
-                <li class="list-group-item" data-translate data-translate-value-count="{{ (adminEndpointCtrl.endpointInfo.endpointsInfo | filter : {'permission':null}).length }}">partials.admin.endpoint-info.withoutPermissions</li>
+                <li class="list-group-item" data-translate data-translate-value-count="{{ ($ctrl.endpointInfo.endpointsInfo | filter : {'permission':null}).length }}">partials.admin.endpoint-info.withoutPermissions</li>
                 <li class="list-group-item"
-                    data-ng-repeat="info in adminEndpointCtrl.endpointInfo.endpointsInfo">
+                    data-ng-repeat="info in $ctrl.endpointInfo.endpointsInfo">
                     <p data-ng-repeat="pattern in info.patterns">
                         <span data-ng-repeat="method in info.methods">{{method}} </span> <span data-ng-if="info.methods.length == 0" class="label label-warning" data-translate>partials.admin.endpoint-info.noMethodSpecified</span> {{pattern}}
                     </p>
@@ -29,8 +29,8 @@
         <div class="body separated">
             <ul class="lvg-endpoint-info list-group">
                 <li class="list-group-item"
-                    data-ng-repeat="idPathVar in adminEndpointCtrl.endpointInfo.idsPathVariable">{{idPathVar}}
-                    <span class="label label-warning" data-ng-if="adminEndpointCtrl.endpointInfo.matchedUrlPath[idPathVar] == null" data-translate>partials.admin.endpoint-info.missingPathCheck</span>
+                    data-ng-repeat="idPathVar in $ctrl.endpointInfo.idsPathVariable">{{idPathVar}}
+                    <span class="label label-warning" data-ng-if="$ctrl.endpointInfo.matchedUrlPath[idPathVar] == null" data-translate>partials.admin.endpoint-info.missingPathCheck</span>
                 </li>
             </ul>
         </div>
