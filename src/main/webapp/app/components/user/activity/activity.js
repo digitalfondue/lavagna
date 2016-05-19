@@ -3,27 +3,17 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentUserActivity', {
+    components.component('lvgUserActivity', {
         bindings: {
-            profile: '='
+            profile: '<'
         },
         controller: UserActivityController,
-        controllerAs: 'userActivityCtrl',
         templateUrl: 'app/components/user/activity/activity.html'
     });
 
     function UserActivityController(User) {
         var ctrl = this;
 
-        var loadUser = function (profile) {
-            ctrl.profile = profile;
-            ctrl.user = profile.user;
-
-            ctrl.hasMore = profile.latestActivityByPage.length > 20;
-            ctrl.activeProjects = profile.activeProjects;
-
-            ctrl.latestActivity20 = profile.latestActivityByPage.slice(0, 20);
-        };
 
         ctrl.userProvider = ctrl.profile.user.provider;
         ctrl.userName = ctrl.profile.user.username;
@@ -42,6 +32,17 @@
 
         //init
         loadUser(ctrl.profile);
+        
+        
+        function loadUser (profile) {
+            ctrl.profile = profile;
+            ctrl.user = profile.user;
+
+            ctrl.hasMore = profile.latestActivityByPage.length > 20;
+            ctrl.activeProjects = profile.activeProjects;
+
+            ctrl.latestActivity20 = profile.latestActivityByPage.slice(0, 20);
+        };
     }
 
 })();

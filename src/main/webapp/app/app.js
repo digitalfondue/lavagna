@@ -222,10 +222,10 @@
             template : '<lvg-component-user-dashboard profile="userResolver.user"></lvg-component-user-dashboard>'
         }).state('user.projects', {
         	url :'projects/',
-            template : '<lvg-component-user-projects profile="userResolver.user"></lvg-component-user-projects>'
+            template : '<lvg-user-projects profile="userResolver.user"></lvg-user-projects>'
         }).state('user.activity', {
         	url :'activity/',
-            template : '<lvg-component-user-activity profile="userResolver.user"></lvg-component-user-activity>'
+            template : '<lvg-user-activity profile="userResolver.user"></lvg-user-activity>'
         })
 		//---- SEARCH ----
 		.state('globalSearch', {

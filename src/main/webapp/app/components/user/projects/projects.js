@@ -3,9 +3,9 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentUserProjects', {
+    components.component('lvgUserProjects', {
         bindings: {
-            profile: '='
+            profile: '<'
         },
         templateUrl: 'app/components/user/projects/projects.html'
     });
