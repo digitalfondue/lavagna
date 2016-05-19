@@ -1,7 +1,7 @@
 <div class="lavagna-panel">
 	<div class="stats-tile-title">
-		<h4>{{lvgStatsTile.tileTitle}}</h4>
+		<h4>{{$ctrl.tileTitle}}</h4>
 	</div>
-	<div class="stats-tile-value" data-ng-style="lvgStatsTile.valueColor|color">{{lvgStatsTile.value}}</div>
-	<div class="stats-tile-subtitle"><h5>{{lvgStatsTile.subtitle}}</h5></div>
+	<div class="stats-tile-value" ng-style="$ctrl.valueColor|color">{{$ctrl.value}}</div>
+	<div class="stats-tile-subtitle"><h5>{{$ctrl.subtitle}}</h5></div>
 </div>

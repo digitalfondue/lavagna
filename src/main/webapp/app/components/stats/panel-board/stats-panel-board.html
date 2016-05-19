@@ -1,11 +1,11 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-		  <a data-ui-sref="board({projectName: lvgStatsPanelBoard.projectShortName, shortName: lvgStatsPanelBoard.board.shortName})">
-		  {{lvgStatsPanelBoard.board.shortName}} - {{lvgStatsPanelBoard.board.name}}</a>
+		  <a data-ui-sref="board({projectName: $ctrl.projectShortName, shortName: $ctrl.board.shortName})">
+		  {{$ctrl.board.shortName}} - {{$ctrl.board.name}}</a>
         </md-card-title-text>
     </md-card-title>
 	<md-card-content>
-	   <lvg-stats-panel item="lvgStatsPanelBoard.board" stats-fetcher="lvgStatsPanelBoard.statsFetcher"></lvg-stats-panel>
+	   <lvg-stats-panel item="$ctrl.board" stats-fetcher="$ctrl.statsFetcher"></lvg-stats-panel>
     </md-card-content>
 </md-card>

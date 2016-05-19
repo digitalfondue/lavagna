@@ -8,7 +8,6 @@
 			board: '=',
 			projectShortName: '='
 		},
-		controllerAs: 'lvgStatsPanelBoard',
 		controller : function(Board) {
 			
 			var ctrl = this;
