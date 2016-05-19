@@ -2,7 +2,7 @@
 	<md-list md-whiteframe="1" class="lvg-container-bg">
 		<md-list-item class="md-2-line" ng-repeat="ab in $ctrl.profile.activeProjects">
 			<div class="md-list-item-text">
-          		<h3><a ui-sref="project({projectName: ab.project.shortName})">{{::ab.project.shortName}} - {{::ab.project.name}}</a></h3>
+          		<h3><a ui-sref="project.boards({projectName: ab.project.shortName})">{{::ab.project.shortName}} - {{::ab.project.name}}</a></h3>
           		<p ng-bind="::ab.project.description"></p>
         	</div>
         	<md-divider ng-if="!$last"></md-divider>

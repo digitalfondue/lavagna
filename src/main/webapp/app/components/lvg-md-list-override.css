@@ -1,0 +1,19 @@
+/** 
+ Specify the color of the links in a md-list-item
+ */
+md-list-item a:not(.md-button) {
+	color: #428bca;
+	text-decoration: none;
+}
+
+md-list-item a:not(.md-button):hover,
+md-list-item a:not(.md-button):focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+
+md-list-item a:not(.md-button):focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
