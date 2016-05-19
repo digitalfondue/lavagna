@@ -219,7 +219,7 @@
             }
 		}).state('user.dashboard', {
             url :'',
-            template : '<lvg-component-user-dashboard profile="userResolver.user"></lvg-component-user-dashboard>'
+            template : '<lvg-user-dashboard profile="userResolver.user"></lvg-user-dashboard>'
         }).state('user.projects', {
         	url :'projects/',
             template : '<lvg-user-projects profile="userResolver.user"></lvg-user-projects>'
