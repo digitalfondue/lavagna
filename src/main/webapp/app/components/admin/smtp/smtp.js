@@ -3,11 +3,10 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentAdminSmtp', {
+    components.component('lvgAdminSmtp', {
+    	templateUrl: 'app/components/admin/smtp/smtp.html',
         bindings: {},
-        controller: AdminSmtpController,
-        controllerAs: 'adminSmtpCtrl',
-        templateUrl: 'app/components/admin/smtp/smtp.html'
+        controller: AdminSmtpController
     })
 
     function AdminSmtpController($mdDialog, Admin, Notification) {

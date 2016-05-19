@@ -3,11 +3,10 @@
 
     var components = angular.module('lavagna.components');
 
-    components.component('lvgComponentAdminUsers', {
+    components.component('lvgAdminUsers', {
+    	templateUrl: 'app/components/admin/users/users.html',
         bindings: {},
-        controller: AdminUserController,
-        controllerAs: 'adminUsersCtrl',
-        templateUrl: 'app/components/admin/users/users.html'
+        controller: AdminUserController
     });
 
     function AdminUserController($mdDialog, User, UsersAdministration, Admin, Permission, Notification) {

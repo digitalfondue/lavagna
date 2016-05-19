@@ -3,10 +3,9 @@
 
     var components =  angular.module('lavagna.components');
 
-    components.component('lvgComponentAdmin', {
+    components.component('lvgAdmin', {
         bindings: {},
         controller: AdminController,
-        controllerAs: 'adminCtrl',
         templateUrl: 'app/components/admin/admin.html'
     });
 

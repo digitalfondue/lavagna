@@ -1,12 +1,12 @@
-<div class="col-md-6 lavagna-container-bottom-margin" data-ng-repeat="(k,v) in adminParamsCtrl.configurable">
+<div class="col-md-6 lavagna-container-bottom-margin" data-ng-repeat="(k,v) in $ctrl.configurable">
     <div class="lavagna-form-panel">
-        <form role="form" data-ng-submit="adminParamsCtrl.updateConfiguration(k,v);">
+        <form role="form" data-ng-submit="$ctrl.updateConfiguration(k,v);">
             <div class="form-group">
                 <label>{{k}}</label>
                 <input data-ng-model="v" type="text" class="form-control">
             </div>
             <button type="submit" data-ng-disabled="!v" class="lvg-button lvg-button-submit" data-translate>button.save</button>
-            <button type="button" data-ng-disabled="!v" data-ng-click="adminParamsCtrl.deleteConfiguration(k)" class="lvg-button lvg-button-warning" data-translate>button.delete</button>
+            <button type="button" data-ng-disabled="!v" data-ng-click="$ctrl.deleteConfiguration(k)" class="lvg-button lvg-button-warning" data-translate>button.delete</button>
         </form>
     </div>
 </div>
@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="(k,v) in adminParamsCtrl.conf">
+                <tr data-ng-repeat="(k,v) in $ctrl.conf">
                     <td data-ng-bind="k"></td>
                     <td class="lavagna-wbr">{{ k === 'LDAP_MANAGER_PASSWORD' ? (v | mask) : v  }}</td>
                 </tr>

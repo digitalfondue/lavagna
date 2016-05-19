@@ -3,10 +3,10 @@
 </md-toolbar>
 
 
-<div class="alert alert-danger" data-ng-if="adminCtrl.httpsConfigurationCheck.length > 0">
+<div class="alert alert-danger" data-ng-if="$ctrl.httpsConfigurationCheck.length > 0">
     <h3 data-translate>partials.admin.admin.httpsRelatedProblems</h3>
 
-    <p data-ng-repeat="desc in adminCtrl.httpsConfigurationCheck">{{::desc}}</p>
+    <p data-ng-repeat="desc in $ctrl.httpsConfigurationCheck">{{::desc}}</p>
 </div>
 
 <div layout-fill layout="column" data-ui-view data-autoscroll="false" class="lvg-content lavagna-container-top-margin"></div>

@@ -255,14 +255,14 @@
 		.state('admin', {
 			url: '/admin/',
 			abstract: true,
-			template : '<lvg-component-admin></lvg-component-admin>',
+			template : '<lvg-admin></lvg-admin>',
 			resolve: titleServiceResolver,
 			onEnter: function(Title) {
 				Title.set('title.admin.home');
 			}
 		}).state('admin.home', {
 			url: '',
-			template: '<lvg-component-admin-parameters></lvg-component-admin-parameters>'
+			template: '<lvg-admin-parameters></lvg-admin-parameters>'
 		}).state('admin.roles', {
 			url: 'roles/',
 			template: '<lvg-manage-roles></lvg-manage-roles>'
@@ -274,7 +274,7 @@
 			template : '<lvg-admin-endpoints></lvg-admin-endpoints>'
 		}).state('admin.users', {
 			url: 'users/',
-			template : '<lvg-component-admin-users></lvg-component-admin-users>'
+			template : '<lvg-admin-users></lvg-admin-users>'
 		}).state('admin.login', {
 			url: 'login/',
 			template: '<lvg-admin-login oauth-providers="adminLoginRslvr.oauthProviders"></lvg-admin-login>',
@@ -285,7 +285,7 @@
 			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
 		}).state('admin.smtp', {
 			url : 'smtp/',
-			template : '<lvg-component-admin-smtp></lvg-component-admin-smtp>'
+			template : '<lvg-admin-smtp></lvg-admin-smtp>'
 		})
 
 		//---- MANAGE PROJECT ----

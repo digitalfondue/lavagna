@@ -1,10 +1,10 @@
 
 <div class="lavagna-form-panel">
-    <div class="search-bar" data-ng-init="adminUsersCtrl.view.username">
+    <div class="search-bar" data-ng-init="$ctrl.view.username">
         <div class="search-user-form inner-addon left-inner-addon">
             <i class="fa fa-search"></i>
-            <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="adminUsersCtrl.view.username"
-                   lvg-user-list="adminUsersCtrl.view.userList" lvg-user-list-local-model="adminUsersCtrl.users"/>
+            <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}" class="form-control" data-ng-model="$ctrl.view.username"
+                   lvg-user-list="$ctrl.view.userList" lvg-user-list-local-model="$ctrl.users"/>
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="u in adminUsersCtrl.users | usersInList:adminUsersCtrl.view.userList">
+                <tr data-ng-repeat="u in $ctrl.users | usersInList:$ctrl.view.userList">
                     <td data-ng-bind="u.provider"></td>
                     <td>
                         <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" data-ng-bind="u.username"></a>
@@ -35,11 +35,11 @@
                     <td class="text-align-center">
                         <span class="fa fa-info-circle"
                               data-ng-if="u.provider !== 'system'"
-                              data-ng-click="adminUsersCtrl.showUserPermissions(u)"></span></td>
-                    <td class="text-align-center"><input data-ng-show="u.id != adminUsersCtrl.currentUser.id"
+                              data-ng-click="$ctrl.showUserPermissions(u)"></span></td>
+                    <td class="text-align-center"><input data-ng-show="u.id != $ctrl.currentUser.id"
                                type="checkbox" data-ng-model="u.enabled"
-                               data-ng-change="adminUsersCtrl.updateUserStatus(u.id, u.enabled)"> <input
-                        data-ng-show="u.id == adminUsersCtrl.currentUser.id" type="checkbox"
+                               data-ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"> <input
+                        data-ng-show="u.id == $ctrl.currentUser.id" type="checkbox"
                         data-ng-model="u.enabled" disabled="disabled"></td>
                 </tr>
                 </tbody>
@@ -49,18 +49,18 @@
 </div>
 <!-- ng-cloak required as speed dial use -->
 <div ng-cloak>
-	<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="adminUsersCtrl.isOpen">
+	<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="$ctrl.isOpen">
 	    <md-fab-trigger>
 	        <md-button class="md-fab md-primary">
 	            <md-icon md-svg-icon="add"></md-icon>
 	        </md-button>
 	    </md-fab-trigger>
 	    <md-fab-actions>
-	        <md-button class="md-fab md-mini md-raised" ng-click="adminUsersCtrl.showAddUserDialog($event)">
+	        <md-button class="md-fab md-mini md-raised" ng-click="$ctrl.showAddUserDialog($event)">
 	            <md-icon md-svg-icon="person_add_black"></md-icon>
 	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.addUser' | translate}}</md-tooltip>
 	        </md-button>
-	        <md-button class="md-fab md-mini md-raised" ng-click="adminUsersCtrl.showImportDialog($event)">
+	        <md-button class="md-fab md-mini md-raised" ng-click="$ctrl.showImportDialog($event)">
 	            <md-icon md-svg-icon="group_add_black"></md-icon>
 	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.import' | translate}}</md-tooltip>
 	        </md-button>
