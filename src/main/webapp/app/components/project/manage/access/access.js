@@ -9,7 +9,6 @@
             project: '<'
         },
         controller: ProjectManageAccessController,
-        controllerAs: 'manageAccessCtrl',
         templateUrl: 'app/components/project/manage/access/access.html'
     });
 

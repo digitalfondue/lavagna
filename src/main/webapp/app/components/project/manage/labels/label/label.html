@@ -1,64 +1,64 @@
 <div class="lavagna-panel">
-    <div class="head clearfix headonly" data-ng-style="manageLabelCtrl.label.color|columnColor">
+    <div class="head clearfix headonly" data-ng-style="$ctrl.label.color|columnColor">
         <div class="title title-bold col-xs-9">
-            {{manageLabelCtrl.label.name}}
+            {{$ctrl.label.name}}
         </div>
         <div class="title-addon col-xs-3">
             <ul class="panel-controls" data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                <li class="control-item" data-ng-hide="manageLabelCtrl.view.delete || manageLabelCtrl.view.useCount > 0" data-ng-click="manageLabelCtrl.view.edit = false; manageLabelCtrl.view.delete = true;">
+                <li class="control-item" data-ng-hide="$ctrl.view.delete || $ctrl.view.useCount > 0" data-ng-click="$ctrl.view.edit = false; $ctrl.view.delete = true;">
                     <span class="pull-right"><i class="fa fa-trash-o" title="{{'button.delete' | translate }}"></i></span>
                 </li>
-                <li class="control-item active-control" data-ng-show="manageLabelCtrl.view.delete" data-ng-click="manageLabelCtrl.view.delete = false;">
+                <li class="control-item active-control" data-ng-show="$ctrl.view.delete" data-ng-click="$ctrl.view.delete = false;">
                     <span class="pull-right"><i class="fa fa-times" title="{{'button.cancel' | translate }}"></i></span>
                 </li>
-                <li class="control-item" data-ng-hide="labelStatus.edit" data-ng-click="manageLabelCtrl.view.delete = false; manageLabelCtrl.view.edit = true;">
+                <li class="control-item" data-ng-hide="labelStatus.edit" data-ng-click="$ctrl.view.delete = false; $ctrl.view.edit = true;">
                     <span class="pull-right"><i class="fa fa-pencil" title="{{'button.edit' | translate }}"></i></span>
                 </li>
-                <li class="control-item active-control" data-ng-show="manageLabelCtrl.view.edit" data-ng-click="manageLabelCtrl.view.edit = false;">
+                <li class="control-item active-control" data-ng-show="$ctrl.view.edit" data-ng-click="$ctrl.view.edit = false;">
                     <span class="pull-right"><i class="fa fa-times" title="{{'button.cancel' | translate }}"></i></span>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="body" data-ng-hide="manageLabelCtrl.view.edit || manageLabelCtrl.view.delete">
-        <p><span data-translate>partials.project.manage-labels.type</span> <span>{{'partials.project.manage-labels.types.' + manageLabelCtrl.label.type | translate}}</span></p>
-        <p data-ng-if="manageLabelCtrl.label.unique"><span data-translate>partials.project.manage-labels.unique</span></p>
-        <p data-ng-if="manageLabelCtrl.label.type == 'LIST'"><span data-translate>partials.project.manage-labels.valuesList</span>
+    <div class="body" data-ng-hide="$ctrl.view.edit || $ctrl.view.delete">
+        <p><span data-translate>partials.project.manage-labels.type</span> <span>{{'partials.project.manage-labels.types.' + $ctrl.label.type | translate}}</span></p>
+        <p data-ng-if="$ctrl.label.unique"><span data-translate>partials.project.manage-labels.unique</span></p>
+        <p data-ng-if="$ctrl.label.type == 'LIST'"><span data-translate>partials.project.manage-labels.valuesList</span>
         <ol>
-            <li data-ng-repeat="(nValue,lValue) in manageLabelCtrl.labelListValues">{{lValue.value}}</li>
+            <li data-ng-repeat="(nValue,lValue) in $ctrl.labelListValues">{{lValue.value}}</li>
         </ol>
         </p>
     </div>
-    <div class="footer" data-ng-show="manageLabelCtrl.view.edit">
+    <div class="footer" data-ng-show="$ctrl.view.edit">
         <form data-ng-role="form"
-              data-ng-init="manageLabelCtrl.view.labelToUpdate = {id: manageLabelCtrl.label.id, name: manageLabelCtrl.label.name, type: manageLabelCtrl.label.type, unique: manageLabelCtrl.label.unique, color: '#000000'.substr(0, 7 - manageLabelCtrl.label.color.toString(16).length) + manageLabelCtrl.label.color.toString(16)}"
-              data-ng-submit="manageLabelCtrl.updateLabel(manageLabelCtrl.view.labelToUpdate); manageLabelCtrl.view.edit = false;">
+              data-ng-init="$ctrl.view.labelToUpdate = {id: $ctrl.label.id, name: $ctrl.label.name, type: $ctrl.label.type, unique: $ctrl.label.unique, color: '#000000'.substr(0, 7 - $ctrl.label.color.toString(16).length) + $ctrl.label.color.toString(16)}"
+              data-ng-submit="$ctrl.updateLabel($ctrl.view.labelToUpdate); $ctrl.view.edit = false;">
             <div class="form-group">
                 <label data-translate>partials.project.manage-labels.name</label>
-                <input class="form-control" type="text" data-ng-model="manageLabelCtrl.view.labelToUpdate.name">
+                <input class="form-control" type="text" data-ng-model="$ctrl.view.labelToUpdate.name">
             </div>
             <div class="form-group">
                 <label data-translate>partials.project.manage-labels.color</label>
 
                 <div class="input-group">
-                    <span class="input-group-btn"><lvg-colorpicker	data-ng-model="manageLabelCtrl.view.labelToUpdate.color"></lvg-colorpicker></span>
-                    <input class="form-control" type="text" data-ng-model="manageLabelCtrl.view.labelToUpdate.color">
+                    <span class="input-group-btn"><lvg-colorpicker	data-ng-model="$ctrl.view.labelToUpdate.color"></lvg-colorpicker></span>
+                    <input class="form-control" type="text" data-ng-model="$ctrl.view.labelToUpdate.color">
                 </div>
             </div>
 
             <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.update</button>
-            <button type="button" data-ng-show="manageLabelCtrl.label.type == 'LIST'" class="lvg-button lvg-button-default" data-ng-click="manageLabelCtrl.editLabelList();" data-translate>partials.project.manage-labels.editList</button>
-            <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageLabelCtrl.view.edit = false;" data-translate>button.cancel</button>
+            <button type="button" data-ng-show="$ctrl.label.type == 'LIST'" class="lvg-button lvg-button-default" data-ng-click="$ctrl.editLabelList();" data-translate>partials.project.manage-labels.editList</button>
+            <button type="button" class="lvg-button lvg-button-default" data-ng-click="$ctrl.view.edit = false;" data-translate>button.cancel</button>
         </form>
     </div>
-    <div class="footer" data-ng-show="manageLabelCtrl.view.delete">
+    <div class="footer" data-ng-show="$ctrl.view.delete">
         <form data-role="form"
-              data-ng-submit="manageLabelCtrl.removeLabel()">
+              data-ng-submit="$ctrl.removeLabel()">
             <div class="form-group" data-translate>partials.project.manage-labels.deleteLabel</div>
             <div>
                 <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
                 <button type="button" class="lvg-button lvg-button-default"
-                        data-ng-click="manageLabelCtrl.view.delete = false;"><span data-translate>button.no</span></button>
+                        data-ng-click="$ctrl.view.delete = false;"><span data-translate>button.no</span></button>
             </div>
         </form>
     </div>

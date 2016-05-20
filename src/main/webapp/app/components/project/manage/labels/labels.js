@@ -5,14 +5,13 @@
 
     components.component('lvgProjectManageLabels', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageLabelsController,
-        controllerAs: 'manageLabelsCtrl',
         templateUrl: 'app/components/project/manage/labels/labels.html'
     });
 
-    function ProjectManageLabelsController($scope, $rootScope, $q, $filter, $translate, $mdDialog, Notification, LabelCache, Label) {
+    function ProjectManageLabelsController($rootScope, $q, $filter, $translate, $mdDialog, Notification, LabelCache, Label) {
         var ctrl = this;
 
         var projectName = ctrl.project.shortName;
@@ -34,10 +33,10 @@
         loadLabels();
 
         var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabels);
-        $scope.$on('$destroy', unbind);
-
-
         
+        ctrl.$onDestroy = function() {
+        	unbind();
+        };
         
         ctrl.showAddLabelDialog = function($event) {
         	$mdDialog.show({
