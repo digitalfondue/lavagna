@@ -5,7 +5,6 @@
 
     components.component('lvgAdminExportImport', {
     	templateUrl: 'app/components/admin/export-import/export-import.html',
-        bindings: {},
         controller: AdminExportImportController
     });
 

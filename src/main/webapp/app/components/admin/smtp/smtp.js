@@ -5,7 +5,6 @@
 
     components.component('lvgAdminSmtp', {
     	templateUrl: 'app/components/admin/smtp/smtp.html',
-        bindings: {},
         controller: AdminSmtpController
     })
 

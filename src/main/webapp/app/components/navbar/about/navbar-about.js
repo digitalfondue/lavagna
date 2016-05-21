@@ -3,7 +3,6 @@
 
     components.component('lvgNavbarAbout', {
         templateUrl: 'app/components/navbar/about/navbar-about.html',
-        bindings: {},
         controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
              

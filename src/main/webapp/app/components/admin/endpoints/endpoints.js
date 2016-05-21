@@ -5,7 +5,6 @@
 
     components.component('lvgAdminEndpoints', {
     	templateUrl: 'app/components/admin/endpoints/endpoints.html',
-        bindings: {},
         controller: function(Admin) {
             var ctrl = this;
             Admin.endpointInfo().then(function (res) {

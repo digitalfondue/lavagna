@@ -5,7 +5,6 @@
 
     components.component('lvgAdminUsers', {
     	templateUrl: 'app/components/admin/users/users.html',
-        bindings: {},
         controller: AdminUserController
     });
 
