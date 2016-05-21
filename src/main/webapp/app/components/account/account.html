@@ -4,63 +4,51 @@
     data-is-current-user="$ctrl.isCurrentUser">
 </lvg-navbar-user>
 
-<div class="lvg-content lavagna-container-top-margin">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="lavagna-panel">
-                <form role="form" data-ng-submit="$ctrl.update($ctrl.profile)" data-lvg-has-permission="UPDATE_PROFILE">
-                    <div class="body">
-                        <div class="form-group">
-                            <label for="display-name" data-translate>partials.me.displayName</label>
-                            <div>
-                                <input type="text" class="form-control" id="display-name"
-                                       placeholder="{{'partials.me.displayName.placeholder' | translate}}" data-ng-model="$ctrl.profile.displayName"></input>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" data-translate>partials.me.email</label>
-                            <div>
-                                <input type="email" class="form-control" id="email"
-                                       placeholder="{{'partials.me.email.placeholder' | translate}}" data-ng-model="$ctrl.profile.email"></input>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label><span data-translate>partials.me.enableEmailNotification</span> <input type="checkbox" data-ng-model="$ctrl.profile.emailNotification"></input></label>
-                        </div>
-                        <div class="form-group">
-                            <label><span data-translate>partials.me.enableSkipOwnNotifications</span> <input type="checkbox" data-ng-model="profile.skipOwnNotifications"></input></label>
-                        </div>
-                    </div>
-                    <div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
-                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.me.update</button>
-                        <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.clearAllTokens()">partials.me.clearAllTokens</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="lavagna-panel">
-                <div class="head clearfix headonly">
-                    <div class="title"><strong data-translate>partials.me.calendar.header</strong></div>
-                </div>
-                <div class="body separated">
-                    <div>
-                        <p><strong data-translate>partials.me.calendar.disableFeed</strong> <md-switch ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"></md-switch></p>
-                    </div>
-                    <div>
-                        <label data-translate>partials.me.calendar.description</label>
-                        <div>
-                            <span>{{$ctrl.calendarFeedUrl}}</span>
-                        </div>
-                    </div>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1" lvg-has-permission="UPDATE_PROFILE">
+	<md-content>
+	<form role="form" ng-submit="$ctrl.update($ctrl.profile)">
+		<md-content layout-padding>
+			<md-input-container class="md-block">
+				<label><span translate>partials.me.displayName</span></label>
+				<input type="text" ng-model="$ctrl.profile.displayName" placeholder="{{'partials.me.displayName.placeholder' | translate}}">
+			</md-input-container>
+			<md-input-container class="md-block">
+				<label><span translate>partials.me.email</span></label>
+				<input type="email" ng-model="$ctrl.profile.email" placeholder="{{'partials.me.email.placeholder' | translate}}">
+			</md-input-container>
+			<div>
+				<md-checkbox ng-model="$ctrl.profile.emailNotification"><span translate>partials.me.enableEmailNotification</span></md-checkbox>
+			</div>
+			<div>
+				<md-checkbox ng-model="$ctrl.profile.skipOwnNotifications"><span translate>partials.me.enableSkipOwnNotifications</span></md-checkbox>
+			</div>
+			<div>
+				<md-button type="submit" class="md-primary md-raised"><span translate>partials.me.update</span></md-button>
+			</div>
+		</md-content>
+	</form>
+	
+	<md-divider></md-divider>
 
-                </div>
-                <div class="footer" data-lvg-has-permission="UPDATE_PROFILE">
-                    <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.clearCalendarToken()">partials.me.clearCalendarToken</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	<md-content layout-padding>
+		<div>
+			<md-checkbox ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"><span translate>partials.me.calendar.disableFeed</span></md-checkbox>
+		</div>
+		<div translate>partials.me.calendar.description</div>
+		<div>{{$ctrl.calendarFeedUrl}}</div>
+	</md-content>
+	
+	<md-divider></md-divider>
+	
+	
+	<md-content layout-padding>
+		<div>
+			<md-button ng-click="$ctrl.clearAllTokens()"><span translate>partials.me.clearAllTokens</span></md-button>
+		</div>
+		<div>
+			<md-button ng-click="$ctrl.clearCalendarToken()"><span translate>partials.me.clearCalendarToken</span></md-button>
+		</div>
+	</md-content>
+	
+	</md-content>
 </div>
