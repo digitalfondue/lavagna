@@ -1,7 +1,8 @@
 //
 // Copyright Kamil Pękala http://github.com/kamilkp
 // angular-sortable-view v0.0.15 2015/01/18
-//
+// 
+// customized: renamed $ctrl to $ctrl_as : clashed with angular 1.5 component
 
 ;(function(window, angular){
 	'use strict';
@@ -303,7 +304,7 @@
 			restrict: 'A',
 			require: '^svRoot',
 			controller: ['$scope', function($scope){
-				$scope.$ctrl = this;
+				$scope.$ctrl_as = this;
 				this.getPart = function(){
 					return $scope.part;
 				};
@@ -327,7 +328,7 @@
 
 				var sortablePart = {
 					element: $element,
-					getPart: $scope.$ctrl.getPart,
+					getPart: $scope.$ctrl_as.getPart,
 					container: true
 				};
 				$sortable.addToSortableElements(sortablePart);
@@ -343,7 +344,7 @@
 			restrict: 'A',
 			require: ['^svPart', '^svRoot'],
 			controller: ['$scope', function($scope){
-				$scope.$ctrl = this;
+				$scope.$ctrl_as = this;
 			}],
 			link: function($scope, $element, $attrs, $controllers){
 				var sortableElement = {
@@ -360,7 +361,7 @@
 
 				var handle = $element;
 				handle.on('mousedown touchstart', onMousedown);
-				$scope.$watch('$ctrl.handle', function(customHandle){
+				$scope.$watch('$ctrl_as.handle', function(customHandle){
 					if(customHandle){
 						handle.off('mousedown touchstart', onMousedown);
 						handle = customHandle;
@@ -373,13 +374,13 @@
 				var placeholder;
 				/*
 				
-				$scope.$watch('$ctrl.helper', function(customHelper){
+				$scope.$watch('$ctrl_as.helper', function(customHelper){
 					if(customHelper){
 						helper = customHelper;
 					}
 				});
 				
-				$scope.$watch('$ctrl.placeholder', function(customPlaceholder){
+				$scope.$watch('$ctrl_as.placeholder', function(customPlaceholder){
 					if(customPlaceholder){
 						placeholder = customPlaceholder;
 					}
@@ -490,9 +491,9 @@
 	module.directive('svHandle', function(){
 		return {
 			require: '?^svElement',
-			link: function($scope, $element, $attrs, $ctrl){
-				if($ctrl)
-					$ctrl.handle = $element.add($ctrl.handle); // support multiple handles
+			link: function($scope, $element, $attrs, $ctrl_as){
+				if($ctrl_as)
+					$ctrl_as.handle = $element.add($ctrl_as.handle); // support multiple handles
 			}
 		};
 	});
@@ -500,12 +501,12 @@
 	module.directive('svHelper', function(){
 		return {
 			require: ['?^svPart', '?^svElement'],
-			link: function($scope, $element, $attrs, $ctrl){
+			link: function($scope, $element, $attrs, $ctrl_as){
 				$element.addClass('sv-helper').addClass('ng-hide');
-				if($ctrl[1])
-					$ctrl[1].helper = $element;
-				else if($ctrl[0])
-					$ctrl[0].helper = $element;
+				if($ctrl_as[1])
+					$ctrl_as[1].helper = $element;
+				else if($ctrl_as[0])
+					$ctrl_as[0].helper = $element;
 			}
 		};
 	});
@@ -513,12 +514,12 @@
 	module.directive('svPlaceholder', function(){
 		return {
 			require: ['?^svPart', '?^svElement'],
-			link: function($scope, $element, $attrs, $ctrl){
+			link: function($scope, $element, $attrs, $ctrl_as){
 				$element.addClass('sv-placeholder').addClass('ng-hide');
-				if($ctrl[1])
-					$ctrl[1].placeholder = $element;
-				else if($ctrl[0])
-					$ctrl[0].placeholder = $element;
+				if($ctrl_as[1])
+					$ctrl_as[1].placeholder = $element;
+				else if($ctrl_as[0])
+					$ctrl_as[0].placeholder = $element;
 			}
 		};
 	});
