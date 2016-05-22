@@ -1,4 +1,3 @@
-
 <div class="lavagna-left-sidebar-list">
     <div class="lavagna-sidebar-column" data-lvg-fill-sidebar-height="{{$ctrl.control}}">
         <div class="panel-body" data-lvg-fill-sidebar-cards-height="$ctrl.control"
@@ -20,15 +19,13 @@
                 </div>
             </div>
         </div>
-        <div class="panel-footer" data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0 || $ctrl.sidebar[$ctrl.sideBarLocation].hasMore">
-        	<div layout="row" layout-align="space-between center">
-        		<div>
-        			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0" ng-click="$ctrl.sideBarLoad(-1)"><span translate>partials.fragments.board-sidebar-fragment.newer</span></md-button>
-        		</div>
-        		<div>
-        			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].hasMore" ng-click="$ctrl.sideBarLoad(1)"><span translate>partials.fragments.board-sidebar-fragment.older</span></md-button>
-        		</div>
-        	</div>
+        <div class="panel-footer" data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0 || $ctrl.sidebar[$ctrl.sideBarLocation].hasMore" layout="row" layout-align="space-between center">
+       		<div>
+       			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0" ng-click="$ctrl.sideBarLoad(-1)"><span translate>partials.fragments.board-sidebar-fragment.newer</span></md-button>
+       		</div>
+       		<div>
+       			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].hasMore" ng-click="$ctrl.sideBarLoad(1)"><span translate>partials.fragments.board-sidebar-fragment.older</span></md-button>
+       		</div>
         </div>
     </div>
 </div>
