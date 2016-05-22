@@ -1,0 +1,7 @@
+/*
+when an input container contain a select, the height is not the same as the ones
+containing input fields.
+*/
+md-input-container.lvg-fix-height {
+	height:54px;
+}
