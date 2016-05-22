@@ -5,8 +5,8 @@
 	angular.module('lavagna.components').component('lvgStatsPanel', {
 		templateUrl : 'app/components/stats/panel/stats-panel.html',
 		bindings : {
-			item: '=',
-			statsFetcher: '='
+			item: '<',
+			statsFetcher: '<'
 		},
 		controller : function($filter) {
 			

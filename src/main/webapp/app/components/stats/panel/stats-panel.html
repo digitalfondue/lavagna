@@ -1,29 +1,32 @@
-<div class="stats-panel-content clearfix">
-	<div class="stats-panel-description" data-ng-bind-html="$ctrl.item.description | markdown"></div>
-	<div data-ng-if="!$ctrl.item.archived && $ctrl.chartData" class="pull-right item-stats">
+<div layout="row">
+	<div data-ng-bind-html="$ctrl.item.description | markdown" flex class="stats-panel-description"></div>
+	<div data-ng-if="!$ctrl.item.archived && $ctrl.chartData">
 		<lvg-chart type="Doughnut" data="$ctrl.chartData" options="$ctrl.chartOptions"></lvg-chart>
 	</div>
 </div>
 
-<div class="row" data-ng-if="$ctrl.statistics">
-	<div class="col-md-12">
-		<ul class="statistics-definition">
-			<li class="stat"><span data-ng-style="$ctrl.statistics.openTaskColor|color" class="fa fa-tasks"></span>
-				<span data-translate>partials.fragments.stats-panel.open</span>
-				{{$ctrl.statistics.openTaskCount}}
-			</li>
-			<li class="stat"><span data-ng-style="$ctrl.statistics.closedTaskColor|color" class="fa fa-tasks"></span>
-				<span data-translate>partials.fragments.stats-panel.closed</span>
-				{{$ctrl.statistics.closedTaskCount}}
-			</li>
-			<li class="stat"><span data-ng-style="$ctrl.statistics.backlogTaskColor|color" class="fa fa-tasks"></span>
-				<span data-translate>partials.fragments.stats-panel.backlog</span>
-				{{$ctrl.statistics.backlogTaskCount}}
-			</li>
-			<li class="stat"><span data-ng-style="$ctrl.statistics.deferredTaskColor|color" class="fa fa-tasks"></span>
-				<span data-translate>partials.fragments.stats-panel.deferred</span>
-				{{$ctrl.statistics.deferredTaskCount}}
-			</li>
-		</ul>
-	</div>
+<div data-ng-if="$ctrl.statistics" class="stats-panel-count">
+	<span class="stats-panel-icon">
+		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.openTaskColor|color"></md-icon>
+		<span data-translate>partials.fragments.stats-panel.open</span>
+		{{$ctrl.statistics.openTaskCount}}
+	</span>
+
+	<span class="stats-panel-icon">
+		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.closedTaskColor|color"></md-icon>
+		<span data-translate>partials.fragments.stats-panel.closed</span>
+		{{$ctrl.statistics.closedTaskCount}}
+	</span>
+
+	<span class="stats-panel-icon">
+		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.backlogTaskColor|color"></md-icon>
+		<span data-translate>partials.fragments.stats-panel.backlog</span>
+		{{$ctrl.statistics.backlogTaskCount}}
+	</span>
+
+	<span class="stats-panel-icon">
+		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
+		<span data-translate>partials.fragments.stats-panel.deferred</span>
+		{{$ctrl.statistics.deferredTaskCount}}
+	</span>
 </div>

@@ -5,8 +5,8 @@
 	angular.module('lavagna.components').component('lvgStatsPanelBoard', {
 		templateUrl : 'app/components/stats/panel-board/stats-panel-board.html',
 		bindings : {
-			board: '=',
-			projectShortName: '='
+			board: '<',
+			projectShortName: '<'
 		},
 		controller : function(Board) {
 			

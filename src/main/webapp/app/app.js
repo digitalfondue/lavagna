@@ -455,6 +455,7 @@
 			.icon('folder-move',        'svg/folder-move.svg')
 			.icon('milestone',          'svg/ic_location_on_black_48px.svg')
 			.icon('label',          	'svg/ic_label_black_48px.svg')
+			.icon('task',				'svg/ic_assignment_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
