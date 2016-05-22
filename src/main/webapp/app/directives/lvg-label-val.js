@@ -4,23 +4,17 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgLabelVal', function ($filter, $compile, StompClient, LabelCache) {
+	directives.directive('lvgLabelVal', function ($filter) {
 
-		var loadListValue = function (labelId, listValueId, scope) {
-			return LabelCache.findLabelListValue(labelId, listValueId).then(function (listValue) {
-				scope.displayValue = listValue.value;
-				scope.metadata = listValue.metadata;
-			});
-		};
-		
 		var labelValTemplate = '<span data-bindonce="type" data-bindonce="readOnly">'
-			+ '<span data-bo-if="!readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'USER\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-lvg-user="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="!readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'CARD\'" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\'" data-bindonce="displayValue" data-bo-bind="displayValue" bo-class="{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';
+			+ '<span data-bo-if="!readOnly && type === \'USER\'"><span data-lvg-user="displayValue"></span></span>'
+			+ '<span data-bo-if="readOnly && type === \'USER\'"><span data-lvg-user="displayValue" data-read-only></span></span>'
+			+ '<span data-bo-if="!readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue"></span></span>'
+            + '<span data-bo-if="readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
+            + '<span data-bo-if="type === \'LIST\'"><lvg-label-list-val label-value="value"></lvg-label-list-val></span>'
+			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\' && type != \'LIST\'" data-bindonce="displayValue" data-bo-bind="displayValue"></span></span>';
 
-		return {
+        return {
 			restrict: 'EA',
 			scope: {
 				value: '='
@@ -31,7 +25,7 @@
 				if ($scope.value === undefined || $scope.value === null) {
 					return;
 				}
-				
+
 				$scope.readOnly = $attrs.readOnly != undefined;
 
 				$scope.type = $scope.value.labelValueType || $scope.value.type || $scope.value.labelType;
@@ -47,14 +41,7 @@
 				} else if (type === 'CARD') {
 					$scope.displayValue = value.valueCard;
 				} else if (type === 'LIST') {
-					loadListValue($scope.value.labelId, value.valueList, $scope);
-					
-					StompClient.subscribe($scope, '/event/label-list-values/' + value.valueList, function (message) {
-						loadListValue($scope.value.labelId, value.valueList, $scope).then(function() {
-							$element.html($compile(labelValTemplate)($scope));
-						})
-					});
-					
+                    // do nothing, the directive in the template will handle everything
 				} else if (type === 'TIMESTAMP') {
 					$scope.displayValue = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
 				}

@@ -103,14 +103,6 @@ public class CardLabelController {
 	}
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/system-label/{labelId}", method = RequestMethod.POST)
-	public void updateSystemLabel(@PathVariable("labelId") int labelId, @RequestBody Label label) {
-		CardLabel cl = cardLabelRepository.updateSystemLabel(labelId, label);
-		Project project = projectService.findById(cl.getProjectId());
-		eventEmitter.emitUpdateLabel(project.getShortName(), labelId);
-	}
-
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/label/{labelId}", method = RequestMethod.DELETE)
 	public void removeLabel(@PathVariable("labelId") int labelId) {
 

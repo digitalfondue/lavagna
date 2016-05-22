@@ -170,14 +170,6 @@ public class CardLabelRepository {
         return updateLabel(label, cl);
     }
 
-    @Transactional(readOnly = false)
-    public CardLabel updateSystemLabel(int labelId, Label label) {
-        CardLabel cl = findLabelById(labelId);
-        Validate.isTrue(cl.getDomain() == LabelDomain.SYSTEM, "Cannot update values in USER label for label with id "
-            + labelId);
-        return updateLabel(label, cl);
-    }
-
     public List<CardLabel> findUserLabelNameBy(String term, Integer projectId, UserWithPermission userWithPermission) {
         Set<Integer> projectIdFilter = userWithPermission.toProjectIdsFilter(projectId);
         return projectIdFilter.isEmpty() ?
