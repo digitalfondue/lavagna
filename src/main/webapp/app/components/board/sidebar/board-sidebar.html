@@ -19,16 +19,16 @@
 	                </ul>
                 </div>
             </div>
-
         </div>
         <div class="panel-footer" data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0 || $ctrl.sidebar[$ctrl.sideBarLocation].hasMore">
-            <ul class="pager">
-                <li class="previous" data-ng-click="$ctrl.sideBarLoad(-1)"
-                    data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0"><a href data-translate>partials.fragments.board-sidebar-fragment.newer</a></li>
-                <li class="next" data-ng-click="$ctrl.sideBarLoad(1)"
-                    data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].hasMore"><a href data-translate>partials.fragments.board-sidebar-fragment.older</a></li>
-            </ul>
-            <div class="clearfix"></div>
+        	<div layout="row" layout-align="space-between center">
+        		<div>
+        			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0" ng-click="$ctrl.sideBarLoad(-1)"><span translate>partials.fragments.board-sidebar-fragment.newer</span></md-button>
+        		</div>
+        		<div>
+        			<md-button ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].hasMore" ng-click="$ctrl.sideBarLoad(1)"><span translate>partials.fragments.board-sidebar-fragment.older</span></md-button>
+        		</div>
+        	</div>
         </div>
     </div>
 </div>

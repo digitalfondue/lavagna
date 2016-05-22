@@ -432,29 +432,6 @@ ul.board-controls li.control-item {
 	background-color: #d5d5d5;
 }
 
-.lavagna-sidebar-column .panel-footer ul.pager {
-	margin-bottom: 0;
-	padding:0;
-	margin-top: 10px;
-}
-
-.lavagna-sidebar-column .panel-footer ul.pager .next,
-.lavagna-sidebar-column .panel-footer ul.pager .previous {
-	display: inline-block;
-}
-
-.lavagna-sidebar-column .panel-footer ul.pager .next {
-	float:right;
-}
-
-.lavagna-sidebar-column .panel-footer ul.pager .next a,
-.lavagna-sidebar-column .panel-footer ul.pager .previous a {
-	border-radius: 4px;
-	border: 1px solid #a0a0a0;
-	padding:4px;
-	display: inline-block;
-}
-
 .lavagna-left-sidebar {
 	left: -250px;
 	width: 250px;
