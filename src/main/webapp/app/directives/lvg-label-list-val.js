@@ -4,17 +4,21 @@
 
     var directives = angular.module('lavagna.directives');
 
-    directives.directive('lvgLabelListVal', function ($stateParams, $state, $compile, StompClient, LabelCache) {
+    directives.directive('lvgLabelListVal', function ($q, $stateParams, $state, $compile, StompClient, LabelCache) {
 
         var loadListValue = function (scope) {
 
             var labelId = scope.labelValue.labelId;
-            var listValueId = scope.labelValue.labelValueList;
-            var labelDomain = scope.labelValue.labelDomain;
-            var labelName = scope.labelValue.labelName;
+            var listValueId = scope.labelValue.value.valueList;
 
-            return LabelCache.findLabelListValue(labelId, listValueId).then(function (listValue) {
-                if (labelDomain === 'SYSTEM' && labelName === 'MILESTONE') {
+            var fetchLabel = LabelCache.findByProjectShortNameAndLabelId($stateParams.projectName, labelId);
+            var fetchListValue = LabelCache.findLabelListValue(labelId, listValueId);
+
+            $q.all([fetchLabel, fetchListValue]).then(function(data){
+                var label = data[0];
+                var listValue = data[1];
+
+                if (label.domain === 'SYSTEM' && label.name === 'MILESTONE') {
                     scope.labelLink = $state.href('projectMilestone', {
                         projectName: $stateParams.projectName,
                         milestone: listValue.value
