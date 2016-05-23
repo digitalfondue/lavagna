@@ -1,33 +1,23 @@
-<div class="row">
-    <div class="col-xs-12">
-        <div class="lavagna-panel">
-            <form role="form" data-ng-init="$ctrl.view.itemToUpdate = {shortName: $ctrl.project.shortName, name: $ctrl.project.name, description: $ctrl.project.description, archived: $ctrl.project.archived}; $ctrl.view.preview = false"
-                  data-ng-submit="$ctrl.update($ctrl.view.itemToUpdate);$ctrl.view.preview = false" data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                <div class="body-full">
-                    <div class="form-group">
-                        <label for="name" data-translate>partials.project.manage-home.name</label>
-                        <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="$ctrl.view.itemToUpdate.name">
-                    </div>
-                    <div class="form-group">
-                        <label for="description" data-translate>partials.project.manage-home.description</label>
-                        <div data-ng-if="!$ctrl.view.preview">
-                            <textarea class="form-control" rows="3" id="description" data-ng-model="$ctrl.view.itemToUpdate.description"></textarea>
-                        </div>
-                        <div data-ng-if="$ctrl.view.preview">
-                            <div data-ng-bind-html="$ctrl.view.itemToUpdate.description | markdown"></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="itemToUpdate.archived"></label>
-                    </div>
-                </div>
-                <div class="footer">
-                    <button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.project.manage-home.update</button>
-                    <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.view.preview = true" data-ng-hide="$ctrl.view.preview">button.preview</button>
-                    <button type="button" class="lvg-button lvg-button-default" data-translate data-ng-click="$ctrl.view.preview = false" data-ng-show="$ctrl.view.preview">button.closePreview</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+	<md-content layout-padding>
+		<form role="form" ng-init="$ctrl.view.itemToUpdate = {shortName: $ctrl.project.shortName, name: $ctrl.project.name, description: $ctrl.project.description, archived: $ctrl.project.archived}; $ctrl.view.preview = false" ng-submit="$ctrl.update($ctrl.view.itemToUpdate);$ctrl.view.preview = false" lvg-has-permission="PROJECT_ADMINISTRATION">
+			<md-input-container class="md-block">
+				<label><span translate>partials.project.manage-home.name</span></label>
+				<input type="text" id="name" placeholder="" required="required" autocomplete="off" ng-model="$ctrl.view.itemToUpdate.name">
+			</md-input-container>
+			<md-input-container class="md-block">
+				<label><span translate>partials.project.manage-home.description</span></label>
+				<textarea ng-show="!$ctrl.view.preview" id="description" ng-model="$ctrl.view.itemToUpdate.description"></textarea>
+				<div ng-show="$ctrl.view.preview" ng-bind-html="$ctrl.view.itemToUpdate.description | markdown"></div>
+			</md-input-container>
+			<md-input-container class="md-block">
+				<md-checkbox ng-model="itemToUpdate.archived"><span translate>partials.project.manage-home.archived</span></md-checkbox>
+			</md-input-container>
+			<div>
+				<md-button type="submit" class="md-raised md-primary"><span translate>partials.project.manage-home.update</span></md-button>
+				<md-button type="button" class="md-raised" ng-click="$ctrl.view.preview = true" ng-hide="$ctrl.view.preview"><span translate>button.preview</span></md-button>
+				<md-button type="button" class="md-raised" ng-click="$ctrl.view.preview = false" ng-show="$ctrl.view.preview"><span translate>button.closePreview</span></md-button>
+			</div>
+		</form>
+	</md-content>
 </div>
-
