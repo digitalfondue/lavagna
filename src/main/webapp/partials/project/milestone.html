@@ -1,5 +1,12 @@
+<lvg-navbar data-navbar-type="milestone-menu">
+    <a ui-sref="home"><span data-translate>partials.home.title</span></a> <i class="fa fa-angle-right"></i>
+    <a ui-sref="project({projectName: project.shortName})">{{project.shortName}}</a> <i class="fa fa-angle-right"></i>
+    <a ui-sref="projectMilestones({projectName: project.shortName})"> <span data-translate>partials.project.milestones.breadcrumb.page</span></a> <i class="fa fa-angle-right"></i>
+    <span> {{milestone.value}}</span>
+</lvg-navbar>
+
 <div class="container">
-    TEST
+    TODO
 </div>
 
 <!--
