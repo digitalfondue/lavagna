@@ -459,6 +459,7 @@
 			.icon('edit',				'svg/ic_mode_edit_black_48px.svg')
 			.icon('archive',			'svg/ic_archive_black_48px.svg')
 			.icon('unarchive',			'svg/ic_unarchive_black_48px.svg')
+			.icon('close',				'svg/ic_close_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
