@@ -37,7 +37,7 @@
             updateAnonymousAccess(newValue);
         }
 
-        var updateAnonymousAccess = function(newVal) {
+        function updateAnonymousAccess(newVal) {
             User.byProviderAndUsername('system', 'anonymous').then(function (res) {
                 if (newVal) {
                     Permission.forProject(projectName).addUserToRole(res.id, 'ANONYMOUS').then(load).catch(function(error) {
