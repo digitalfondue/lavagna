@@ -57,6 +57,14 @@
         }
     });
 
+    filters.filter('showArray', function () {
+        return function (input, minLength) {
+            if (!input) {
+                return false;
+            }
+            return Object.keys(input).length > minLength;
+        }
+    });
 
 	filters.filter('capitalize', function () {
 		return function (input, scope) {

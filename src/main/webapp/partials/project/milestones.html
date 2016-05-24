@@ -7,7 +7,7 @@
          data-ng-init="milestone.detail = null">
         <div class="col-xs-12 lavagna-container-top-margin">
             <div class="lavagna-panel">
-                <div class="progress lvg-progress" data-ng-if="showArray(milestone.cardsCountByStatus, 0)"
+                <div class="progress lvg-progress" data-ng-if="milestone.cardsCountByStatus | showArray:0"
                      data-ng-style="{'background-color': (statusColors[cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
                     <div class="progress-bar" data-bindonce
                          data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"

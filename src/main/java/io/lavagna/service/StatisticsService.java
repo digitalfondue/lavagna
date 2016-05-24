@@ -171,4 +171,12 @@ public class StatisticsService {
 	public List<MilestoneCount> findCardsCountByMilestone(int projectId) {
 		return queries.findCardsCountByMilestone(projectId);
 	}
+
+    public List<MilestoneCount> findUnassignedCardsCountByMilestone(int projectId) {
+        return queries.findUnassignedCardsCountByMilestone(projectId);
+    }
+
+    public List<MilestoneCount> findCardsCountByMilestone(int projectId, int milestoneId) {
+        return queries.findCardsCountByMilestone(projectId, milestoneId);
+    }
 }

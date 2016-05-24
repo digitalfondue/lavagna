@@ -8,15 +8,7 @@
 
 		$scope.sidebarOpen = true;
 		$scope.project = project;
-
-		$scope.showArray = function (array, minLength) {
-			if (!array) {
-                
-				return false;
-			}
-			return Object.keys(array).length > minLength;
-		};
-
+        
 		var orderByStatus = function (milestone) {
 			var insertStatusIfExists = function (milestone, source, target, status) {
 				if (source[status] != undefined) {
@@ -56,9 +48,6 @@
 
         var unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
         $scope.$on('$destroy', unbindMovedEvent);
-
-        var unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
-        $scope.$on('$destroy', unbindRenamedEvent);
 
 	});
 })();

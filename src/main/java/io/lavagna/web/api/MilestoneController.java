@@ -81,6 +81,49 @@ public class MilestoneController {
         this.milestoneExportService = milestoneExportService;
     }
 
+    private Map<ColumnDefinition, Integer> getStatusColors(int projectId) {
+        Map<ColumnDefinition, Integer> statusColors = new EnumMap<>(ColumnDefinition.class);
+        for (BoardColumnDefinition cd : projectService.findColumnDefinitionsByProjectId(projectId)) {
+            statusColors.put(cd.getValue(), cd.getColor());
+        }
+        return statusColors;
+    }
+
+    @ExpectPermission(Permission.READ)
+    @RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}", method = RequestMethod.GET)
+    public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
+        @PathVariable("milestone") String milestone, UserWithPermission user) {
+
+        int projectId = projectService.findByShortName(projectShortName).getId();
+        LabelListValueWithMetadata ms = milestoneExportService.getMilestone(projectId, milestone);
+
+        SearchFilter filter;
+        Map<Long, Pair<Long, Long>> assignedAndClosedCards;
+        List<MilestoneCount> mcs;
+        if (ms != null) {
+            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
+            mcs = statisticsService.findCardsCountByMilestone(projectId, ms.getId());
+            assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(ms,
+                DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
+        } else {
+            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.UNASSIGNED, null);
+            mcs = statisticsService.findUnassignedCardsCountByMilestone(projectId);
+            assignedAndClosedCards = null;
+        }
+
+        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.TRASH.toString());
+
+        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
+
+        Map<ColumnDefinition, Long> cardsCountByStatus = new HashMap<>();
+        for (MilestoneCount count : mcs) {
+            cardsCountByStatus.put(count.getColumnDefinition(), count.getCount());
+        }
+
+        return new MilestoneDetail(cardsCountByStatus, getStatusColors(projectId), cards, assignedAndClosedCards);
+    }
+
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone", method = RequestMethod.GET)
     public Milestones findCardsByMilestone(@PathVariable("projectShortName") String projectShortName) {
@@ -94,12 +137,7 @@ public class MilestoneController {
             md.getCardsCountByStatus().put(count.getColumnDefinition(), count.getCount());
         }
 
-        Map<ColumnDefinition, Integer> statusColors = new EnumMap<>(ColumnDefinition.class);
-        for (BoardColumnDefinition cd : projectService.findColumnDefinitionsByProjectId(project.getId())) {
-            statusColors.put(cd.getValue(), cd.getColor());
-        }
-
-        return new Milestones(milestones, statusColors);
+        return new Milestones(milestones, getStatusColors(project.getId()));
     }
 
     private void getMilestones(int projectId, Map<Integer, Integer> milestoneToIndex, List<MilestoneInfo> milestones) {
@@ -135,32 +173,4 @@ public class MilestoneController {
         response.setHeader("Content-disposition", "attachment; filename=" + milestone + ".xls");
         wb.write(response.getOutputStream());
     }
-
-    @ExpectPermission(Permission.READ)
-    @RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}", method = RequestMethod.GET)
-    public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
-        @PathVariable("milestone") String milestone, UserWithPermission user) {
-
-        int projectId = projectService.findByShortName(projectShortName).getId();
-        LabelListValueWithMetadata ms = milestoneExportService.getMilestone(projectId, milestone);
-
-        SearchFilter filter;
-        Map<Long, Pair<Long, Long>> assignedAndClosedCards;
-
-        if (ms != null) {
-            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
-            assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(ms,
-                DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
-        } else {
-            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.UNASSIGNED, null);
-            assignedAndClosedCards = null;
-        }
-
-        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
-            BoardColumn.BoardColumnLocation.TRASH.toString());
-
-        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
-        return new MilestoneDetail(cards, assignedAndClosedCards);
-    }
-
 }
