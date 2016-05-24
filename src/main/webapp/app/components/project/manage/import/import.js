@@ -4,7 +4,7 @@
     var components = angular.module('lavagna.components');
     components.component('lvgProjectManageImport', {
         bindings: {
-            project: '='
+            project: '<'
         },
         controller: ProjectManageImportController,
         controllerAs: 'manageImportCtrl',

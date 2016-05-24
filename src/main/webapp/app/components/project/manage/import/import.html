@@ -1,3 +1,43 @@
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+	<md-content layout-padding>
+		<h2 translate>partials.project.manage-import.trello</h2>
+		<form ng-submit="manageImportCtrl.importFromTrello()" ng-cloak>
+			<div ng-if="manageImportCtrl.hasApiKey">
+				<p data-translate>partials.project.manage-import.notes</p>
+				<div ng-hide="manageImportCtrl.view.trelloImportIsRunning">
+					<div ng-repeat="organization in manageImportCtrl.availableOrganizations | orderBy: 'name'">
+						<md-subheader class="md-no-sticky">{{organization.name}}</md-subheader>
+						<div ng-repeat="board in organization.boards | orderBy: 'name'" ng-init="board.import = false;" layout="rows">
+								<md-checkbox class="md-secondary" ng-model="board.import" ng-change="manageImportCtrl.manageImports(board)"></md-checkbox>
+								<span>{{board.name}}</span>
+								<md-input-container ng-if="board.import" md-no-float>
+									<input ng-change="manageImportCtrl.checkShortName(board)" ng-model="board.shortName" 
+											type="text" autocomplete="off" placeholder="shortname" required="required" maxlength="8">
+								</md-input-container>
+						</div>
+						<md-divider ng-if="!$last"></md-divider>
+					</div>
+				</div>
+			</div>
+			<div ng-if="!manageImportCtrl.hasApiKey" translate>partials.project.manage-import.noKeySet</div>
+			<div>
+				<md-button class="md-primary md-raised" 
+					ng-click="manageImportCtrl.loadTrello()"
+            		ng-if="!manageImportCtrl.trelloLoaded">
+            		<span translate>partials.project.manage-import.load-trello-connector</span>
+            	</md-button>
+            	<md-button class="md-primary md-raised"
+            		ng-click="manageImportCtrl.connectToTrello()"
+					ng-disabled="manageImportCtrl.view.connectingToTrello"
+					ng-if="manageImportCtrl.trelloLoaded && manageImportCtrl.availableOrganizations.length <= 0">
+					<span translate>partials.project.manage-import.connect</span>
+            	</md-button>
+			</div>
+		</form>
+	</md-content>
+</div>
+
+
 <div class="col-sm-12">
     <form data-ng-submit="manageImportCtrl.importFromTrello()">
         <div class="lavagna-panel">
