@@ -239,20 +239,27 @@ div.card-data ul.data-info .lvg-action-full .fa {
 
 div.card-data ul.data-info li.lvg-due-date-tomorrow {
     background-color: #e6c60d;
-    color: #ffffff;
     padding-left: 5px;
 }
 
 div.card-data ul.data-info li.lvg-due-date-now {
     background-color: #cf513d;
-    color: #ffffff;
     padding-left: 5px;
 }
 
 div.card-data ul.data-info li.lvg-due-date-past {
     background-color: #ec9488;
-    color: #ffffff;
     padding-left: 5px;
+}
+
+div.card-data ul.data-info li.lvg-due-date-tomorrow a,
+div.card-data ul.data-info li.lvg-due-date-now a,
+div.card-data ul.data-info li.lvg-due-date-past a {
+    color: #ffffff;
+}
+
+div.card-data ul.data-info a {
+    color: #aaaaaa;
 }
 
 div.card-data ul.data-info .lvg-due-date-tomorrow .fa,
