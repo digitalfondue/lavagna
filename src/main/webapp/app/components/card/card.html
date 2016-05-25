@@ -47,52 +47,7 @@
                                         </p>
                                     </div>
                                 </div>
-
-                                <div class="lavagna-card-panel">
-                                    <div class="head clearfix">
-                                        <div class="title" data-translate>card.milestone</div>
-                                        <ul class="panel-controls">
-                                            <li class="control-item"
-                                                data-ng-hide="cardCtrl.view.editMetadataMilestone">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataMilestone = true;"
-                                                class="fa fa-plus" title="{{'card.setMileStone' | translate}}"
-                                                data-lvg-has-permission="UPDATE_CARD"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-show="cardCtrl.view.editMetadataMilestone">
-											<span
-                                                data-ng-click="cardCtrl.view.editMetadataMilestone = false;"
-                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body" data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['MILESTONE']]">
-                                        <p>
-                                            <span data-translate>card.partOf</span> <span
-                                            data-ng-repeat="milestone in cardCtrl.labelValues[cardCtrl.labelNameToId['MILESTONE']]">
-											<span><a data-ng-href="#/{{project.shortName}}/milestones/"><lvg-label-val value="milestone"></lvg-label-val></a>
-												<span class="fa fa-times lavagna-pointer"
-                                                      data-ng-click="cardCtrl.removeMilestone()"
-                                                      data-lvg-has-permission="UPDATE_CARD"></span>
-										</span>
-										</span>
-                                        </p>
-                                    </div>
-                                    <div class="footer" data-ng-show="cardCtrl.view.editMetadataMilestone">
-                                        <form data-ng-role="form"
-                                              data-ng-submit="cardCtrl.setMilestone(cardCtrl.view.milestone); cardCtrl.view.milestone = null;">
-                                            <div class="content input-group">
-                                                <lvg-label-picker label="cardCtrl.labels[cardCtrl.labelNameToId['MILESTONE']]" data-ng-model="cardCtrl.view.milestone" board="cardCtrl.board.shortName" group="'statusTranslated'" project-name="cardCtrl.project.shortName"></lvg-label-picker>
-											<span class="input-group-btn">
-												<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.set</button>
-											</span>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
                             </div>
-
 
                             <div flex="50">
                                 <div class="row">

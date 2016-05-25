@@ -202,14 +202,6 @@
             BulkOperations.unWatch(currentCard(), user);
         };
 
-        ctrl.setMilestone = function(milestone) {
-            BulkOperations.setMilestone(currentCard(), milestone);
-        };
-
-        ctrl.removeMilestone = function() {
-            BulkOperations.removeMilestone(currentCard());
-        };
-
         ctrl.addNewLabel = function(labelToAdd) {
             var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
             BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)

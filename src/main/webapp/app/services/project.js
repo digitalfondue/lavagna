@@ -8,6 +8,30 @@
 		return data.data;
 	};
 
+	var extractMetadata = function (data) {
+	    var metadata = data.data;
+	    // provide better format for some data
+        metadata.milestones = [];
+        angular.forEach(metadata.labels, function(label, labelId) {
+            if(label.name === 'MILESTONE') {
+                angular.forEach(metadata.labelListValues, function(labelValue, labelValueId) {
+                    if(labelValue.cardLabelId == label.id) {
+                        metadata.milestones.push({
+                            id: labelValue.id,
+                            labelId: labelId,
+                            name: labelValue.value,
+                            status: labelValue.metadata.status || null,
+                            metadata: labelValue.metadata,
+                            order: labelValue.order
+                        });
+                    }
+                });
+            }
+        });
+
+	    return metadata;
+	};
+
 	services.factory('Project', function ($http, $filter, StompClient) {
 		return {
 
@@ -65,9 +89,9 @@
 			statistics: function (shortName, days) {
 				return $http.get('api/project/' + shortName + '/statistics/' + days).then(extractData);
 			},
-			
+
 			getMetadata: function(shortName) {
-				return $http.get('api/project/' + shortName + '/metadata').then(extractData);
+				return $http.get('api/project/' + shortName + '/metadata').then(extractMetadata);
 			},
 
 			getAvailableTrelloBoards: function (trello) {
@@ -85,11 +109,11 @@
             findAllColumns: function (shortName) {
                 return $http.get('api/project/' + shortName + '/columns-in/').then(extractData);
             },
-            
+
             loadMetadataAndSubscribe: function(shortName, targetObject, $scope, assignToMap) {
-            	
+
             	var Project = this;
-            	
+
             	function loadProjectMetadata() {
                 	Project.getMetadata(shortName).then(function(metadata) {
                 		if(assignToMap) {
@@ -99,9 +123,9 @@
                 		}
                     });
                 }
-                
+
                 loadProjectMetadata();
-                
+
                 StompClient.subscribe($scope, '/event/project/' + shortName, function(ev) {
                 	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
                 		loadProjectMetadata();

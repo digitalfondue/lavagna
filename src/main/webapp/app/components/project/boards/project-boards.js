@@ -17,10 +17,9 @@
         var projectCtrl = this;
 
         var projectName = projectCtrl.project.shortName;
-        
-        
+
         Project.loadMetadataAndSubscribe(projectName, projectCtrl, $scope);
-        
+
         //
         var r = [];
         projectCtrl.getMetadataHash = function() {
@@ -31,7 +30,7 @@
         	r[0] = hash;
         	return r;
         }
-        
+
         //
 
         projectCtrl.boardPage = 1;
@@ -49,7 +48,7 @@
         loadBoardsInProject();
 
         projectCtrl.cardProjectPage = 1;
-        
+
 
         var loadUserCardsInProject = function(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
@@ -68,7 +67,7 @@
             loadUserCardsInProject(page - 1);
         };
 
-        
+
         projectCtrl.showBoardDialog = function($event) {
 		    $mdDialog.show({
 		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
@@ -77,10 +76,10 @@
 		    	controllerAs: 'boardDialogCtrl',
 		    	controller: function() {
 		    		var ctrl = this;
-		    		
+
 		    		ctrl.board = {};
 		            ctrl.isShortNameUsed = undefined;
-		    		
+
 		    		ctrl.suggestBoardShortName = function(board) {
 		                if(board == null ||board.name == null || board.name == "") {
 		                    return;
@@ -90,7 +89,7 @@
 		                    ctrl.checkBoardShortName(res.suggestion);
 		                });
 		            };
-		            
+
 		            ctrl.checkBoardShortName = function(val) {
 		                if(val !== undefined && val !== null) {
 		                	Board.checkShortName(val).then(function(res) {
@@ -100,7 +99,7 @@
 		                	ctrl.checkedShortName = undefined;
 		                }
 		            };
-		            
+
 		            ctrl.createBoard = function(board) {
 		                board.shortName = board.shortName.toUpperCase();
 		                Project.createBoard(projectName, board).then(function() {
@@ -113,7 +112,7 @@
 		                    Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
 		                });
 		            };
-		            
+
 		            ctrl.close = function() {
                     	$mdDialog.hide();
                     }

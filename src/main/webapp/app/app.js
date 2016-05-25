@@ -109,6 +109,9 @@
 				},
 				user: function(User) {
 					return User.currentCachedUser();
+				},
+				metadata : function(ProjectCache, $stateParams) {
+				    return ProjectCache.metadata($stateParams.projectName);
 				}
 		};
 
@@ -408,7 +411,8 @@
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
 			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
-			controller : function(card, project, board, user) {
+			controller : function(card, project, board, user, metadata) {
+			    project.metadata = metadata;
 			    this.card = card;
 			    this.board = board;
 			    this.project = project;

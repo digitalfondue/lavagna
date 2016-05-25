@@ -175,6 +175,25 @@
             BulkOperations.removeDueDate(currentCard())
         };
 
+        // ----
+        ctrl.hasClosedMilestones = function() {
+            for(var i = 0; i < ctrl.project.metadata.milestones.length; i++) {
+                if(ctrl.project.metadata.milestones[i].status === 'CLOSED') {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        ctrl.setMilestone = function(milestone) {
+            BulkOperations.setMilestone(currentCard(), milestone);
+        };
+
+        ctrl.removeMilestone = function() {
+            BulkOperations.removeMilestone(currentCard());
+        };
+        // ----
+
         //the /card-data has various card data related event that are pushed from the server that we must react
         StompClient.subscribe($scope, '/event/card/' + ctrl.card.id + '/card-data', function(e) {
             var type = JSON.parse(e.body).type;

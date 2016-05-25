@@ -51,6 +51,10 @@
 					projectCache[shortName] = Project.findByShortName(shortName);
 				}
 				return projectCache[shortName];
+			},
+
+			metadata: function(shortName) {
+			    return Project.getMetadata(shortName);
 			}
 		}
 	});
@@ -152,13 +156,13 @@
 				}
 				return labelsByProjectCache[shortName];
 			},
-			
+
 			findLabelByProjectShortNameAndId: function(shortName, labelId) {
 				return this.findByProjectShortName(shortName).then(function (data) {
 					return data[labelId];
 				});
 			},
-			
+
 			findLabelListValues: function (labelId) {
 				if (!(labelId in labelListValues)) {
 					labelListValues[labelId] = Label.findLabelListValues(labelId);
