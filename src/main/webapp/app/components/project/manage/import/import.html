@@ -32,6 +32,14 @@
 					ng-if="manageImportCtrl.trelloLoaded && manageImportCtrl.availableOrganizations.length <= 0">
 					<span translate>partials.project.manage-import.connect</span>
             	</md-button>
+            	<md-button class="md-primary md-raised" type="submit"
+                        ng-if="manageImportCtrl.availableOrganizations.length > 0"
+                        ng-disabled="manageImportCtrl.view.trelloImportIsRunning || manageImportCtrl.boardsToImport < 1">
+                    <span translate>partials.project.manage-import.import</span>
+                </md-button>
+                <md-button type="button" ng-click="manageImportCtrl.cancel()" ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning">
+                	<span translate>button.cancel</span>
+                </md-button>
 			</div>
 		</form>
 	</md-content>
