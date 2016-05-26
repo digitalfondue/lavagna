@@ -24,22 +24,38 @@
                     </div>
                 </div>
                 <div class="body">
-                    <!--<div data-ng-hide="detail.totalCards > 0" data-translate>
-                        partials.project.milestones.noCards
+                    <!-- -->
+                    <div data-ng-if="!(milestone.metadata['releaseDate'])">
+                        <span data-translate>partials.project.milestones.noReleaseDate</span>
                     </div>
-                    <div class="row" data-ng-hide="detail.totalCards == 0">
-                        <div class="col-md-12">
-                            <ul class="statistics-definition">
-                                <li class="stat"
-                                    data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]">
-                                    <span data-ng-style="statusColors[item.status]|color" class="fa fa-tasks"></span>
-                                    <span data-translate>{{item.status | capitalize}}:</span>
-                                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>-->
+                    <div data-ng-if="milestone.metadata['releaseDate']">
+                        <span data-translate>partials.project.milestones.releaseDate</span>:
+                        <span data-ng-bind="milestone.metadata['releaseDate']"></span>
+                    </div>
+                    <div>
+                        <span data-ng-show="milestone.dateEdit" data-ng-init="newDate = milestone.metadata['releaseDate']">
+                            <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
+                                   data-lvg-datepicker data-ng-model="newDate">
+                            <span data-ng-click="updateMilestoneDate(newDate)" class="lvg-milestone-clickable">
+                                <i class="fa fa-check"></i>
+                            </span>
+                        </span>
+                        <span data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                              class="lvg-milestone-clickable lvg-milestone-edit"
+                              data-ng-click="milestone.dateEdit = !milestone.dateEdit">
+                            <i class="fa fa-pencil"
+                                data-ng-hide="milestone.dateEdit"></i>
+                            <i class="fa fa-times" data-ng-show="milestone.dateEdit"></i>
+                        </span>
+                    </div>
+                    <!-- -->
+                    <div data-ng-if="::milestone.totalCards === 0" data-translate>
+                        <span data-translate>partials.project.milestones.noCards</span>
+                    </div>
+                    <div data-ng-if="::milestone.totalCards > 0">
+                        <span
+                            data-translate>partials.project.milestones.cards</span><span>: {{::milestone.totalCards}}</span>
+                    </div>
 
 
                     <div class="row">

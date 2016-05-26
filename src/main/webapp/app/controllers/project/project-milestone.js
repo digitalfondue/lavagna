@@ -4,12 +4,13 @@
 
     var module = angular.module('lavagna.controllers');
 
-    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, project, milestone, Card, User, StompClient) {
+    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope,
+                                                        project, milestone,
+                                                        Label, LabelCache, Card, User, StompClient) {
 
         $scope.sidebarOpen = true;
         $scope.project = project;
         $scope.milestone = milestone;
-
 
         var loadMilestoneDetail = function () {
             User.hasPermission('READ', project.shortName).then(function () {
@@ -19,11 +20,20 @@
             });
         };
 
+        var reloadAll = function() {
+
+            LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (value) {
+               $scope.milestone = value;
+            });
+
+            loadMilestoneDetail();
+        };
+
         loadMilestoneDetail();
 
-        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label-value', loadMilestoneDetail);
+        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label-value', reloadAll);
 
-        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label', loadMilestoneDetail);
+        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label', reloadAll);
 
         var unbindMovedEvent = $rootScope.$on('card.moved.event', loadMilestoneDetail);
         $scope.$on('$destroy', unbindMovedEvent);
@@ -78,15 +88,15 @@
          Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
          });
          };
+         */
 
-         $scope.updateMilestoneDate =function (milestoneId, newDate) {
-         if (newDate) {
-         Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
-         } else {
-         Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
-         }
-         }
-         **/
+        $scope.updateMilestoneDate = function (newDate) {
+            if (newDate) {
+                Label.updateLabelListValueMetadata($scope.milestone.id, 'releaseDate', newDate);
+            } else {
+                Label.removeLabelListValueMetadata($scope.milestone.id, 'releaseDate');
+            }
+        }
 
     });
 })();
