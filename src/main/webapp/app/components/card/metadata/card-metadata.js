@@ -165,8 +165,6 @@
             BulkOperations.removeAssign(currentCard(), {id: user.value.valueUser});
         };
 
-        ctrl.minDueDate = new Date();
-
         ctrl.setDueDate = function(date) {
             BulkOperations.setDueDate(currentCard(), date)
         };
