@@ -212,8 +212,14 @@ ul.lvg-admin-import .col-sm-1 {
 .lvg-progress {
 	border-radius: 0;
 	margin-bottom: 0;
-	height: 10px;
-    width: 550px;
+	height: 12px;
+    width: 500px;
+}
+
+@media (max-width: 550px) {
+    .lvg-progress {
+        width: 352px;
+    }
 }
 
 .lvg-milestones-panel > :not(:first-child) {
