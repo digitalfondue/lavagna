@@ -1,121 +1,54 @@
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
 	<md-content layout-padding>
 		<h2 translate>partials.project.manage-import.trello</h2>
-		<form ng-submit="manageImportCtrl.importFromTrello()" ng-cloak>
-			<div ng-if="manageImportCtrl.hasApiKey">
+		<form ng-submit="$ctrl.importFromTrello()" ng-cloak>
+			<div ng-if="$ctrl.hasApiKey">
 				<p data-translate>partials.project.manage-import.notes</p>
-				<div ng-hide="manageImportCtrl.view.trelloImportIsRunning">
-					<div ng-repeat="organization in manageImportCtrl.availableOrganizations | orderBy: 'name'">
+				<div ng-if="$ctrl.availableOrganizations.length > 0 && !$ctrl.view.trelloImportIsRunning">
+					<div ng-repeat="organization in $ctrl.availableOrganizations | orderBy: 'name'">
 						<md-subheader class="md-no-sticky">{{organization.name}}</md-subheader>
 						<div ng-repeat="board in organization.boards | orderBy: 'name'" ng-init="board.import = false;" layout="rows">
-								<md-checkbox class="md-secondary" ng-model="board.import" ng-change="manageImportCtrl.manageImports(board)"></md-checkbox>
-								<span>{{board.name}}</span>
-								<md-input-container ng-if="board.import" md-no-float>
-									<input ng-change="manageImportCtrl.checkShortName(board)" ng-model="board.shortName" 
-											type="text" autocomplete="off" placeholder="shortname" required="required" maxlength="8">
+								<md-checkbox class="md-secondary" ng-model="board.import" ng-change="$ctrl.manageImports(board)"></md-checkbox>
+								<span ng-if="!board.import">{{::board.name}} board</span>
+								<md-input-container ng-if="board.import" class="md-icon-right">
+									<label>"{{::board.name}}" board shortname</label>
+									<input ng-change="$ctrl.checkShortName(board)" ng-model="board.shortName"  type="text" autocomplete="off" required="required" maxlength="8">
+									<md-icon ng-if="board.checkedShortName === false" md-svg-icon="error"></md-icon>
+									<md-icon ng-if="board.checkedShortName === true" md-svg-icon="ok"></md-icon>
 								</md-input-container>
 						</div>
-						<md-divider ng-if="!$last"></md-divider>
+						<md-divider></md-divider>
 					</div>
+					<md-input-container>
+						<md-checkbox ng-model="$ctrl.importSettings.archived"><span translate>partials.project.manage-import.importArchived</span></md-checkbox>
+					</md-input-container>
 				</div>
 			</div>
-			<div ng-if="!manageImportCtrl.hasApiKey" translate>partials.project.manage-import.noKeySet</div>
+			<div ng-if="!$ctrl.hasApiKey" translate>partials.project.manage-import.noKeySet</div>
+			<div>
+				<md-progress-linear md-mode="indeterminate" ng-if="$ctrl.view.connectingToTrello || $ctrl.view.trelloImportIsRunning"></md-progress-linear>
+			</div>
 			<div>
 				<md-button class="md-primary md-raised" 
-					ng-click="manageImportCtrl.loadTrello()"
-            		ng-if="!manageImportCtrl.trelloLoaded">
+					ng-click="$ctrl.loadTrello()"
+            		ng-if="!$ctrl.trelloLoaded">
             		<span translate>partials.project.manage-import.load-trello-connector</span>
             	</md-button>
             	<md-button class="md-primary md-raised"
-            		ng-click="manageImportCtrl.connectToTrello()"
-					ng-disabled="manageImportCtrl.view.connectingToTrello"
-					ng-if="manageImportCtrl.trelloLoaded && manageImportCtrl.availableOrganizations.length <= 0">
+            		ng-click="$ctrl.connectToTrello()"
+					ng-disabled="$ctrl.view.connectingToTrello"
+					ng-if="$ctrl.trelloLoaded && $ctrl.availableOrganizations.length <= 0">
 					<span translate>partials.project.manage-import.connect</span>
             	</md-button>
             	<md-button class="md-primary md-raised" type="submit"
-                        ng-if="manageImportCtrl.availableOrganizations.length > 0"
-                        ng-disabled="manageImportCtrl.view.trelloImportIsRunning || manageImportCtrl.boardsToImport < 1">
+                        ng-if="$ctrl.availableOrganizations.length > 0"
+                        ng-disabled="$ctrl.view.trelloImportIsRunning || $ctrl.boardsToImport < 1">
                     <span translate>partials.project.manage-import.import</span>
                 </md-button>
-                <md-button type="button" ng-click="manageImportCtrl.cancel()" ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning">
+                <md-button type="button" ng-click="$ctrl.cancel()" ng-if="$ctrl.availableOrganizations.length > 0 && !$ctrl.view.trelloImportIsRunning">
                 	<span translate>button.cancel</span>
                 </md-button>
 			</div>
 		</form>
 	</md-content>
-</div>
-
-
-<div class="col-sm-12">
-    <form data-ng-submit="manageImportCtrl.importFromTrello()">
-        <div class="lavagna-panel">
-            <div class="head clearfix headonly">
-                <div class="title title-bold" data-translate>partials.project.manage-import.trello</div>
-            </div>
-            <div class="body separated">
-                <div data-ng-if="manageImportCtrl.hasApiKey">
-                    <p data-translate>partials.project.manage-import.notes</p>
-
-                    <ul class="lvg-admin-import" data-ng-hide="manageImportCtrl.view.trelloImportIsRunning">
-                        <li data-ng-repeat="organization in manageImportCtrl.availableOrganizations | orderBy: 'name'">
-                            <span class="lvg-admin-import-organization">{{organization.name}}</span>
-                            <ul class="lvg-admin-import-board">
-                                <li data-ng-repeat="board in organization.boards | orderBy: 'name'" data-ng-init="board.import = false;">
-                                    <div class="row">
-                                        <div class="col-sm-1"><input type="checkbox" data-ng-model="board.import" data-ng-change="manageImportCtrl.manageImports(board)"></div>
-                                        <div class="col-sm-5">
-                                            {{board.name}}
-                                            <div class="form-group has-feedback"  data-ng-class="{'has-error': board.checkedShortName === false}">
-                                                <input data-ng-if="board.import" data-ng-change="manageImportCtrl.checkShortName(board)" data-ng-model="board.shortName" type="text" autocomplete="off" class="form-control uppercase" placeholder="shortname" required="required" maxlength="8">
-                                                <i data-ng-if="board.import" class="fa form-control-feedback lvg-import-control-feedback"  data-ng-class="{'fa-times' : board.checkedShortName === false, 'fa-check' : board.checkedShortName === true}"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <div class="head clearfix headonly" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning">
-                        <div class="title col-xs-9" data-translate>partials.project.manage-import.importArchived</div>
-                        <div class="title-addon col-xs-3">
-                            <ul class="panel-controls">
-                                <li class="control-no-action">
-                                    <md-switch ng-model="manageImportCtrl.importSettings.archived"></md-switch>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div data-ng-show="manageImportCtrl.view.trelloImportIsRunning">
-                        <span data-translate>partials.project.manage-import.progressMessage</span> {{manageImportCtrl.view.currentBoardName}}...
-                    </div>
-                    <div class="progress progress-success ui-corner-all"
-                         data-ng-show="manageImportCtrl.view.trelloImportIsRunning">
-                        <div class="progress-bar" data-ng-style="{'width': manageImportCtrl.view.progress + '%'}"></div>
-                    </div>
-                </div>
-                <div data-ng-if="!manageImportCtrl.hasApiKey" data-translate>partials.project.manage-import.noKeySet</div>
-            </div>
-            <div class="footer" data-ng-if="manageImportCtrl.hasApiKey">
-            	<button type="button" class="lvg-button lvg-button-submit"
-            			data-ng-click="manageImportCtrl.loadTrello()"
-            			ng-if="!manageImportCtrl.trelloLoaded">
-            			<span data-translate>partials.project.manage-import.load-trello-connector</span>
-            		</button>
-                <button type="button" class="lvg-button lvg-button-submit"
-                        data-ng-click="manageImportCtrl.connectToTrello()"
-                        data-ng-disabled="manageImportCtrl.view.connectingToTrello"
-                        data-ng-if="manageImportCtrl.trelloLoaded && manageImportCtrl.availableOrganizations.length <= 0">
-                    <span data-translate>partials.project.manage-import.connect</span>
-                </button>
-                <button type="submit" class="lvg-button lvg-button-submit"
-                        data-ng-if="manageImportCtrl.availableOrganizations.length > 0"
-                        data-ng-disabled="manageImportCtrl.view.trelloImportIsRunning || manageImportCtrl.boardsToImport < 1">
-                    <span data-translate>partials.project.manage-import.import</span>
-                </button>
-                <button type="button" class="lvg-button lvg-button-default" data-ng-click="manageImportCtrl.cancel()" data-ng-if="manageImportCtrl.availableOrganizations.length > 0 && !manageImportCtrl.view.trelloImportIsRunning" data-translate>button.cancel</button>
-            </div>
-        </div>
-    </form>
 </div>

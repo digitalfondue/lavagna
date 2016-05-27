@@ -7,7 +7,6 @@
             project: '<'
         },
         controller: ProjectManageImportController,
-        controllerAs: 'manageImportCtrl',
         templateUrl: 'app/components/project/manage/import/import.html'
     });
 
@@ -155,15 +154,17 @@
                     persist: false,
                     scope: {read: true, write: false, account: true},
                     success: function () {
-                    	ctrl.view.connectingToTrello = true;
-                        trelloSecret = Trello.token();
-                        Project.getAvailableTrelloBoards({
-                            apiKey: trelloApiKey,
-                            secret: trelloSecret
-                        }).then(function (result) {
-                            ctrl.view.connectingToTrello = false;
-                            ctrl.availableOrganizations = result.organizations;
-                        });
+                    	$scope.$applyAsync(function() {
+	                    	ctrl.view.connectingToTrello = true;
+	                        trelloSecret = Trello.token();
+	                        Project.getAvailableTrelloBoards({
+	                            apiKey: trelloApiKey,
+	                            secret: trelloSecret
+	                        }).then(function (result) {
+	                            ctrl.view.connectingToTrello = false;
+	                            ctrl.availableOrganizations = result.organizations;
+	                        });
+                    	});
                     },
                     error: function () {
                     	$scope.$applyAsync(function() {
