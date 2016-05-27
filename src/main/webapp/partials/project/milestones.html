@@ -2,21 +2,49 @@
     <lvg-project-navigation/>
 </lvg-navbar>
 
-
 <div class="container">
-    <div class="row">
+    <div class="row" data-bindonce data-ng-repeat="milestone in cardsByMilestone"
+         data-ng-init="milestone.detail = null">
         <div class="col-xs-12 lavagna-container-top-margin">
-            <div class="lavagna-panel lvg-milestones-panel">
-
-                    <div class="row lvg-milestone-row" data-bindonce data-ng-repeat="milestone in cardsByMilestone">
-                        <div class="col-md-9">
-                            <div class="title-bold lvg-milestone-title">
-                                <a ui-sref="projectMilestone({projectName: project.shortName, milestone: milestone.labelListValue.value})">
+            <div class="lavagna-panel">
+                <div class="progress lvg-progress"
+                     data-ng-if="milestone.cardsCountByStatus | showArray:0"
+                     data-ng-style="{'background-color': (statusColors[cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
+                    <div class="progress-bar" data-bindonce
+                         data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]" ng-if="!$last"
+                         data-ng-style="{'width': (item.count * 100.0 / milestone.totalCards  | number:2) + '%', 'background-color': (statusColors[item.status] | color).color}">
+                    </div>
+                </div>
+                <div class="head clearfix">
+                    <div class="title title-bold col-xs-6 lvg-milestone-title">
+                        <a ui-sref="projectMilestone({projectName: project.shortName, milestone: milestone.labelListValue.value})">
 						    <span data-ng-bind="milestone.labelListValue.value"
                                   data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSED'}"></span>
-                                </a>
+                        </a>
+                    </div>
+                    <div class="col-xs-6 lvg-no-padding">
+                        <div class="pull-right">
+                            <div data-ng-hide="milestone.totalCards == 0">
+                                <ul class="statistics-definition lvg-milestone-stat">
+                                    <li class="stat"
+                                        data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]">
+                                        <span data-ng-style="statusColors[item.status]|color"
+                                              class="fa fa-tasks"></span>
+                                        <span data-translate>{{item.status | capitalize}}:</span>
+                                        {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+                                    </li>
+                                </ul>
                             </div>
-                            <!-- -->
+                            <div data-ng-if="::milestone.totalCards === 0" data-translate>
+                                <span data-translate>partials.project.milestones.noCards</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <!-- -->
+                        <div class="col-xs-6">
                             <div data-ng-if="::!(milestone.labelListValue.metadata['releaseDate'])">
                                 <span data-translate>partials.project.milestones.noReleaseDate</span>
 
@@ -25,42 +53,22 @@
                                 <span data-translate>partials.project.milestones.releaseDate</span>:
                                 <span data-ng-bind="milestone.labelListValue.metadata['releaseDate']"></span>
                             </div>
-                            <!-- -->
-                            <div data-ng-if="::milestone.totalCards === 0" data-translate>
-                                <span data-translate>partials.project.milestones.noCards</span>
-                            </div>
-                            <div data-ng-if="::milestone.totalCards > 0">
-                                <span data-translate>partials.project.milestones.cards</span><span>: {{::milestone.totalCards}}</span>
-                            </div>
                         </div>
-                        <div class="col-md-3">
+                        <!-- -->
+
+                        <div class="col-xs-6">
                             <div class="pull-right">
-                                <div class="progress lvg-progress"
-                                     data-ng-if="milestone.cardsCountByStatus | showArray:0"
-                                     data-ng-style="{'background-color': (statusColors[cardsCountByStatus[milestone.labelListValue.value].slice(-1)[0].status] | color).color}">
-                                    <div class="progress-bar" data-bindonce
-                                         data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]"
-                                         data-ng-if="!$last"
-                                         data-ng-style="{'width': (item.count * 100.0 / milestone.totalCards  | number:2) + '%', 'background-color': (statusColors[item.status] | color).color}">
-                                    </div>
-                                </div>
-                                <div class="lvg-milestones-statistics-definition ">
-                                    <ul class="statistics-definition pull-right">
-                                        <li class="stat"
-                                            data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]">
-                                            <span data-ng-style="statusColors[item.status]|color"
-                                                  class="fa fa-tasks"></span>
-                                            <span data-translate>{{item.status | capitalize}}:</span>
-                                            {{item.count}}
-                                        </li>
-                                    </ul>
+                                <div data-ng-if="::milestone.totalCards > 0">
+                                    <span data-translate>partials.project.statistics.totalCards</span><span>: {{::milestone.totalCards}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div data-ui-view data-autoscroll="false"></div>
+

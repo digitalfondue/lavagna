@@ -4,7 +4,7 @@
 
     var module = angular.module('lavagna.controllers');
 
-    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope,
+    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state,
                                                         project, milestone,
                                                         Label, LabelCache, Card, User, StompClient) {
 
@@ -20,13 +20,11 @@
             });
         };
 
-        var reloadAll = function() {
+        var reloadAll = function () {
 
-            LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (value) {
-               $scope.milestone = value;
+            LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (m) {
+                $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
             });
-
-            loadMilestoneDetail();
         };
 
         loadMilestoneDetail();
@@ -80,15 +78,17 @@
          currentOpenStatus ? $scope.clearMilestoneDetail(milestone) : $scope.loadMilestoneDetail(milestone);
          $scope.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
          };
-
-         $scope.updateMilestone = function (milestone, newName) {
-         var newLabelValue = jQuery.extend({}, milestone.labelListValue);
-         newLabelValue.value = newName;
-         Label.updateLabelListValue(newLabelValue).catch(function(error) {
-         Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
-         });
-         };
          */
+        $scope.updateMilestone = function (newName) {
+            var newLabelValue = jQuery.extend({}, $scope.milestone);
+            newLabelValue.value = newName;
+            Label.updateLabelListValue(newLabelValue).then(function () {
+                $state.go('projectMilestone', {projectName: project.shortName, milestone: newName});
+            }).catch(function (error) {
+                Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
+            });
+        };
+
 
         $scope.updateMilestoneDate = function (newDate) {
             if (newDate) {

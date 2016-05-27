@@ -210,28 +210,17 @@ ul.lvg-admin-import .col-sm-1 {
 }
 
 .lvg-progress {
-	border-radius: 0;
-	margin-bottom: 0;
-	height: 12px;
-    width: 500px;
+    border-radius: 0px;
+    margin-bottom: 5px;
+    height: 5px;
 }
 
-@media (max-width: 550px) {
-    .lvg-progress {
-        width: 352px;
-    }
+.lvg-no-padding {
+    padding: 0;
 }
 
-.lvg-milestones-panel > :not(:first-child) {
-    border-top: 1px solid #dddddd;
-}
-
-.lvg-milestone-row {
-    padding: 8px;
-}
-
-.lvg-milestones-statistics-definition {
-    margin-top: 10px;
+ul.lvg-milestone-stat li.stat:last-child {
+    margin-right: 0;
 }
 
 .lvg-milestone-clickable {
