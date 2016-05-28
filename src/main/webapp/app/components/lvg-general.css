@@ -628,3 +628,8 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 .clearfix {
 	clear:both;
 }
+
+.title-with-no-bottom-space {
+	margin-bottom: 0;
+    padding-bottom: 0;
+}
