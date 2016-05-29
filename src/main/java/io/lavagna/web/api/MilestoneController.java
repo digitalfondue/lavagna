@@ -114,7 +114,7 @@ public class MilestoneController {
         SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
             BoardColumn.BoardColumnLocation.TRASH.toString());
 
-        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
+        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user, 0);
 
         Map<ColumnDefinition, Long> cardsCountByStatus = new HashMap<>();
         for (MilestoneCount count : mcs) {

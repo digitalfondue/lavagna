@@ -11,6 +11,9 @@
         $scope.sidebarOpen = true;
         $scope.project = project;
         $scope.milestone = milestone;
+        $scope.totalCards = 0;
+        $scope.currentPage = 1;
+        $scope.statuses = ["BACKLOG", "OPEN", "DEFERRED", "CLOSED"];
 
         var loadMilestoneDetail = function () {
             User.hasPermission('READ', project.shortName).then(function () {
@@ -23,8 +26,14 @@
         var reloadAll = function () {
 
             LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (m) {
-                $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
+
+                if (m.value !== milestone.value) {
+                    $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
+                } else {
+// TODO FIXME
+                }
             });
+
         };
 
         loadMilestoneDetail();
@@ -39,20 +48,20 @@
         var unbindRenamedEvent = $rootScope.$on('card.renamed.event', loadMilestoneDetail);
         $scope.$on('$destroy', unbindRenamedEvent);
 
-        //console.log(milestone);
+
+        $scope.closeMilestone = function () {
+            Label.updateLabelListValueMetadata($scope.milestone.id, 'status', 'CLOSED');
+        };
+
+        $scope.openMilestone = function () {
+            Label.removeLabelListValueMetadata($scope.milestone.id, 'status');
+        };
+
+
+        $scope.orderCardByStatus = function (card) {
+            return card.columnDefinition == "CLOSED" ? 1 : 0;
+        };
         /*
-         $scope.closeMilestone = function(val) {
-         Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
-         };
-
-         $scope.openMilestone = function(val) {
-         Label.removeLabelListValueMetadata(val.id, 'status');
-         };
-
-         $scope.orderCardByStatus = function(card) {
-         return card.columnDefinition == "CLOSED" ? 1 : 0;
-         };
-
          $scope.moveDetailToPage = function (milestone, page) {
          User.hasPermission('READ', $stateParams.projectName).then(function () {
          return Card.findCardsByMilestoneDetail($stateParams.projectName, milestone.labelListValue.value);
@@ -79,6 +88,7 @@
          $scope.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
          };
          */
+
         $scope.updateMilestone = function (newName) {
             var newLabelValue = jQuery.extend({}, $scope.milestone);
             newLabelValue.value = newName;

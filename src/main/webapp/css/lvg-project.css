@@ -215,6 +215,14 @@ ul.lvg-admin-import .col-sm-1 {
     height: 5px;
 }
 
+.lvg-milestone-panel {
+    margin-bottom: 0;
+}
+
+.lvg-milestone-detail-row {
+    margin-bottom: 10px;
+}
+
 .lvg-no-padding {
     padding: 0;
 }
