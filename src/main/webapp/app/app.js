@@ -466,6 +466,8 @@
 			.icon('close',				'svg/ic_close_black_48px.svg')
 			.icon('error',				'svg/ic_error_outline_black_48px.svg')
 			.icon('ok',					'svg/ic_check_black_48px.svg')
+			.icon('expand_less',		'svg/ic_expand_less_black_48px.svg')
+			.icon('expand_more',		'svg/ic_expand_more_black_48px.svg')
 			
 			
 	});
