@@ -44,16 +44,22 @@
                     <div class="pull-right"
                          data-ng-if="milestone.id != -1"
                          data-lvg-has-permission="PROJECT_ADMINISTRATION">
-								<span class="fa fa-square-o lvg-default-text-color lvg-milestone-align-down-icon"
-                                      data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
-                                      data-ng-click="closeMilestone()"
-                                      title="{{'partials.project.milestones.hint.close' | translate}}">
-                                </span>
-								<span class="fa fa-check-square lvg-default-text-color lvg-milestone-align-down-icon"
-                                      data-ng-if="milestone.id != -1 && milestone.metadata['status'] === 'CLOSED'"
-                                      data-ng-click="openMilestone()"
-                                      title="{{'partials.project.milestones.hint.open' | translate}}">
-                                </span>
+                        <span class="fa fa-archive lvg-milestone-clickable lvg-milestone-action-icon"
+                              data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
+                              data-ng-click="closeMilestone()"
+                              title="{{'partials.project.milestones.hint.close' | translate}}">
+                        </span>
+                        <span class="fa fa-upload lvg-milestone-clickable lvg-milestone-action-icon"
+                              data-ng-if="milestone.id != -1 && milestone.metadata['status'] === 'CLOSED'"
+                              data-ng-click="openMilestone()"
+                              title="{{'partials.project.milestones.hint.open' | translate}}">
+                        </span>
+                        <a data-ng-if="milestone.id > 0"
+                           data-ng-href="api/project/{{project.shortName}}/export-milestone/{{milestone.value}}"
+                           target="_blank">
+                            <i class="fa fa-file-excel-o lvg-milestone-clickable lvg-milestone-action-icon"
+                                title="{{'partials.project.milestones.exportToExcel' | translate}}"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="body">
@@ -62,6 +68,25 @@
                         <div class="col-xs-6">
                             <div class="lvg-milestone-card-title" data-translate>
                                 partials.project.milestones.details
+                            </div>
+                            <!-- -->
+                            <div class="lvg-milestone-detail-row">
+                                <div data-ng-if="detail.cards.count === 0" data-translate>
+                                    <span data-translate>partials.project.milestones.noCards</span>
+                                </div>
+                                <div data-ng-hide="detail.cards.count == 0">
+                                    <ul class="statistics-definition lvg-milestone-stat">
+                                        <li class="stat" data-ng-repeat="status in statuses"
+                                            data-ng-if="detail.cardsCountByStatus[status] > 0">
+                                        <span data-ng-style="detail.statusColors[status] | color"
+                                              class="fa fa-tasks"></span>
+                                            <span data-translate>{{status | capitalize}}:</span>
+                                            {{detail.cardsCountByStatus[status]}} ({{(detail.cardsCountByStatus[status]
+                                            * 100 /
+                                            detail.cards.count) | number:0}}%)
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                             <!-- -->
                             <div class="lvg-milestone-detail-row">
@@ -91,26 +116,6 @@
                                     <i class="fa fa-times" data-ng-show="dateEdit"></i>
                                 </span>
                             </div>
-                            <!-- -->
-                            <div data-ng-if="::milestone.totalCards === 0" data-translate>
-                                <span data-translate>partials.project.milestones.noCards</span>
-                            </div>
-                            <div data-ng-if="::milestone.totalCards > 0">
-                                <span data-translate>partials.project.milestones.cards</span><span>: {{::milestone.totalCards}}</span>
-                            </div>
-                            <div data-ng-hide="milestone.totalCards == 0">
-                                <ul class="statistics-definition lvg-milestone-stat">
-                                    <li class="stat" data-ng-repeat="status in statuses"
-                                        data-ng-if="detail.cardsCountByStatus[status] > 0">
-                                        <span data-ng-style="detail.statusColors[status] | color"
-                                              class="fa fa-tasks"></span>
-                                        <span data-translate>{{status | capitalize}}:</span>
-                                        {{detail.cardsCountByStatus[status]}} ({{(detail.cardsCountByStatus[status]
-                                        * 100 /
-                                        detail.cards.count) | number:0}}%)
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="lvg-milestone-card-title"
@@ -118,7 +123,8 @@
                                 partials.project.milestones.assignedAndClosedCards
                             </div>
                             <div data-ng-if="detail.assignedAndClosedCards | showArray:1" class="lvg-milestone-chart">
-                                <lvg-stats-chart chart-data="detail.assignedAndClosedCards"></lvg-stats-chart>
+                                <lvg-stats-chart chart-data="detail.assignedAndClosedCards"
+                                                 chart-height="90"></lvg-stats-chart>
                             </div>
                         </div>
                     </div>
@@ -126,26 +132,26 @@
                     <div class="row">
 
                         <div class="lvg-milestone-card-title"
-                             data-ng-if="detail.assignedAndClosedCards | showArray:1" data-translate>
+                             data-ng-if="detail.cards.found" data-translate>
                             partials.project.milestones.cards
                         </div>
 
-                         <div class="lvg-milestone-card" data-bindonce
-                              data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage -1)">
+                        <div class="lvg-milestone-card" data-bindonce
+                             data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage - 1)">
 
-                                <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
-                                   data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
-                                    <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
-                                </a>
-                                <span> {{card.name}}</span>
-                            </div>
+                            <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
+                               data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+                                <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+                            </a>
+                            <span> {{card.name}}</span>
+                        </div>
 
-                            <div data-ng-if="detail.cards.found.length > 50" class="pull-right">
-                                <!--<pagination total-items="detail.cards.count" data-ng-model="milestone.currentPage"
-                                            items-per-page="50" max-size="10"
-                                            class="pagination-sm lvg-milestone-pagination" boundary-links="true"
-                                            data-ng-change="moveDetailToPage(milestone, milestone.currentPage - 1)"></pagination>-->
-                            </div>
+                        <div data-ng-if="detail.cards.count > 50" class="pull-right">
+                            <pagination total-items="detail.cards.count" data-ng-model="$parent.currentPage"
+                                        items-per-page="50" max-size="10"
+                                        class="pagination-sm lvg-milestone-pagination" boundary-links="true">
+                            </pagination>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -114,7 +114,7 @@ public class MilestoneController {
         SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
             BoardColumn.BoardColumnLocation.TRASH.toString());
 
-        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user, 0);
+        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
 
         Map<ColumnDefinition, Long> cardsCountByStatus = new HashMap<>();
         for (MilestoneCount count : mcs) {
@@ -165,12 +165,12 @@ public class MilestoneController {
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/export-milestone/{milestone}", method = RequestMethod.GET)
     public void exportMilestoneToExcel(@PathVariable("projectShortName") String projectShortName,
-        @PathVariable("milestone") String milestone, UserWithPermission user, HttpServletResponse response)
+        @PathVariable("milestone") String milestone, UserWithPermission user, HttpServletResponse resp)
         throws IOException {
 
         HSSFWorkbook wb = milestoneExportService.exportMilestoneToExcel(projectShortName, milestone, user);
 
-        response.setHeader("Content-disposition", "attachment; filename=" + milestone + ".xls");
-        wb.write(response.getOutputStream());
+        resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + "-" + milestone + ".xls");
+        wb.write(resp.getOutputStream());
     }
 }

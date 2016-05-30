@@ -46,7 +46,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @Transactional(readOnly = true)
@@ -136,8 +135,7 @@ public class MilestoneExportService {
         }
     }
 
-    public HSSFWorkbook exportMilestoneToExcel(@PathVariable("projectShortName") String projectShortName,
-        @PathVariable("milestone") String milestone, UserWithPermission user)
+    public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user)
         throws IOException {
 
         int projectId = projectService.findByShortName(projectShortName).getId();
@@ -212,6 +210,10 @@ public class MilestoneExportService {
             // Labels
             fillLabelValues(row, colPos, labels, cardLabelRepository.findCardLabelValuesByCardId(card.getId()),
                 userCache, cardCache, listValueCache);
+        }
+
+        for (int i = 0; i < colPos; i++) {
+            sheet.autoSizeColumn(i);
         }
 
         return wb;

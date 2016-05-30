@@ -4,7 +4,7 @@
 
     var module = angular.module('lavagna.controllers');
 
-    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state,
+    module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state, $http,
                                                         project, milestone,
                                                         Label, LabelCache, Card, User, StompClient) {
 
@@ -17,7 +17,7 @@
 
         var loadMilestoneDetail = function () {
             User.hasPermission('READ', project.shortName).then(function () {
-                return Card.findCardsByMilestoneDetail(project.shortName, milestone.value).then(function (detail) {
+                return Card.findCardsByMilestoneDetail(project.shortName, milestone.value, $scope.currentPage - 1).then(function (detail) {
                     $scope.detail = detail;
                 });
             });
@@ -30,7 +30,7 @@
                 if (m.value !== milestone.value) {
                     $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
                 } else {
-// TODO FIXME
+                    // TODO FIXME handle updates and the "unassigned" milestone
                 }
             });
 
@@ -61,33 +61,6 @@
         $scope.orderCardByStatus = function (card) {
             return card.columnDefinition == "CLOSED" ? 1 : 0;
         };
-        /*
-         $scope.moveDetailToPage = function (milestone, page) {
-         User.hasPermission('READ', $stateParams.projectName).then(function () {
-         return Card.findCardsByMilestoneDetail($stateParams.projectName, milestone.labelListValue.value);
-         }).then(function (response) {
-         milestone.detail = response;
-         milestone.currentPage = page + 1;
-         });
-         };
-         */
-
-        /*
-         $scope.clearMilestoneDetail = function (milestone) {
-         milestone.detail = null;
-         milestone.currentPage = 1;
-         };
-
-         $scope.loadMilestoneDetail = function (milestone) {
-         $scope.moveDetailToPage(milestone, 0);
-         };
-
-         $scope.toggleMilestoneOpenStatus = function (milestone) {
-         var currentOpenStatus = $scope.milestoneOpenStatus[milestone.labelListValue.value];
-         currentOpenStatus ? $scope.clearMilestoneDetail(milestone) : $scope.loadMilestoneDetail(milestone);
-         $scope.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
-         };
-         */
 
         $scope.updateMilestone = function (newName) {
             var newLabelValue = jQuery.extend({}, $scope.milestone);
@@ -106,7 +79,7 @@
             } else {
                 Label.removeLabelListValueMetadata($scope.milestone.id, 'releaseDate');
             }
-        }
+        };
 
     });
 })();

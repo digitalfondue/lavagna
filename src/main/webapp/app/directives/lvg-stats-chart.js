@@ -8,9 +8,10 @@
 
 		return {
 			restrict: 'E',
-			template: '<lvg-chart type="Line" data="data" options="chartOptions" height="160" class="img-responsive"></lvg-chart>',
+			template: '<lvg-chart type="Line" data="data" options="chartOptions" height="{{chartHeight}}" class="img-responsive"></lvg-chart>',
 			scope: {
-				chartData: "="
+                chartData: "=",
+                chartHeight: "@"
 			},
 			link: function (scope) {
 
@@ -36,6 +37,8 @@
 					sortedIndexes.sort();
 					return sortedIndexes;
 				}
+
+                scope.chartHeight = scope.chartHeight || 160;
 
 				scope.$watch('chartData', function () {
 					var data = {
