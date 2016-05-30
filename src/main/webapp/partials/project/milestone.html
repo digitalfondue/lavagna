@@ -41,25 +41,36 @@
                                 <i class="fa fa-times" data-ng-show="editName"></i>
                             </span>
                     </div>
-                    <div class="pull-right"
-                         data-ng-if="milestone.id != -1"
-                         data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                        <span class="fa fa-archive lvg-milestone-clickable lvg-milestone-action-icon"
-                              data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
-                              data-ng-click="closeMilestone()"
-                              title="{{'partials.project.milestones.hint.close' | translate}}">
-                        </span>
-                        <span class="fa fa-upload lvg-milestone-clickable lvg-milestone-action-icon"
-                              data-ng-if="milestone.id != -1 && milestone.metadata['status'] === 'CLOSED'"
-                              data-ng-click="openMilestone()"
-                              title="{{'partials.project.milestones.hint.open' | translate}}">
-                        </span>
-                        <a data-ng-if="milestone.id > 0"
-                           data-ng-href="api/project/{{project.shortName}}/export-milestone/{{milestone.value}}"
-                           target="_blank">
-                            <i class="fa fa-file-excel-o lvg-milestone-clickable lvg-milestone-action-icon"
-                                title="{{'partials.project.milestones.exportToExcel' | translate}}"></i>
-                        </a>
+
+                    <div class="title-addon col-xs-3">
+                        <ul class="panel-controls" >
+                            <li class="control-item"
+                                data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
+                                data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                data-ng-click="closeMilestone()">
+                                <span class="pull-right">
+                                    <i class="fa fa-archive"
+                                       title="{{'partials.project.milestones.hint.close' | translate}}"></i>
+                                </span>
+                            </li>
+                            <li class="control-item"
+                                data-ng-if="milestone.id != -1 && milestone.metadata['status'] === 'CLOSED'"
+                                data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                data-ng-click="openMilestone()">
+                                <span class="pull-right">
+                                    <i class="fa fa-upload"
+                                       title="{{'partials.project.milestones.hint.open' | translate}}"></i>
+                                </span>
+                            </li>
+                            <li class="control-item">
+                                <a data-ng-if="milestone.id > 0"
+                                   data-ng-href="api/project/{{project.shortName}}/export-milestone/{{milestone.value}}"
+                                   target="_blank">
+                                    <i class="fa fa-file-excel-o lvg-milestone-clickable lvg-milestone-action-icon"
+                                       title="{{'partials.project.milestones.exportToExcel' | translate}}"></i>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="body">
