@@ -16,6 +16,8 @@
  */
 package io.lavagna.web.api;
 
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -26,7 +28,7 @@ import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectAndBoard;
-import io.lavagna.model.User;
+import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CardLabelRepository;
@@ -37,15 +39,18 @@ import io.lavagna.service.StatisticsService;
 import io.lavagna.web.api.model.MilestoneInfo;
 import io.lavagna.web.api.model.Milestones;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MilestoneControllerTest {
@@ -75,7 +80,7 @@ public class MilestoneControllerTest {
 
     private MilestoneController milestoneController;
     @Mock
-    private User user;
+    private UserWithPermission user;
 
     @Before
     public void prepare() {
@@ -108,5 +113,17 @@ public class MilestoneControllerTest {
         MilestoneInfo md = cardsByMilestone.getMilestones().get(0);
         Assert.assertEquals("Unassigned", md.getLabelListValue().getValue());
         Assert.assertEquals(0, cardsByMilestone.getStatusColors().size());
+    }
+
+    @Test
+    public void testExportMilestoneToExcel() throws IOException {
+
+        MockHttpServletResponse mockResp = new MockHttpServletResponse();
+
+        when(milestoneExportService.exportMilestoneToExcel("TEST", "1.0", user)).thenReturn(new HSSFWorkbook());
+
+        milestoneController.exportMilestoneToExcel("TEST", "1.0", user, mockResp);
+
+        verify(milestoneExportService).exportMilestoneToExcel(eq("TEST"), eq("1.0"), eq(user));
     }
 }
