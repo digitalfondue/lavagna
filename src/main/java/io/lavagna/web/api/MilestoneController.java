@@ -96,20 +96,14 @@ public class MilestoneController {
 
         int projectId = projectService.findByShortName(projectShortName).getId();
         LabelListValueWithMetadata ms = milestoneExportService.getMilestone(projectId, milestone);
-
-        SearchFilter filter;
-        Map<Long, Pair<Long, Long>> assignedAndClosedCards;
-        List<MilestoneCount> mcs;
-        if (ms != null) {
-            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
-            mcs = statisticsService.findCardsCountByMilestone(projectId, ms.getId());
-            assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(ms,
-                DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
-        } else {
-            filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.UNASSIGNED, null);
-            mcs = statisticsService.findUnassignedCardsCountByMilestone(projectId);
-            assignedAndClosedCards = null;
+        if (ms == null) {
+            throw new IllegalArgumentException("Milestone not found");
         }
+
+        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
+        List<MilestoneCount> mcs = statisticsService.findCardsCountByMilestone(projectId, ms.getId());
+        Map<Long, Pair<Long, Long>> assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(ms,
+            DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
 
         SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
             BoardColumn.BoardColumnLocation.TRASH.toString());

@@ -8,7 +8,8 @@
 
 		$scope.sidebarOpen = true;
 		$scope.project = project;
-        
+        $scope.currentPage = 1;
+
 		var orderByStatus = function (milestone) {
 			var insertStatusIfExists = function (milestone, source, target, status) {
 				if (source[status] != undefined) {
