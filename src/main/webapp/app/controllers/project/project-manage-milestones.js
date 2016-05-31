@@ -7,6 +7,7 @@
     module.controller('ProjectManageMilestonesCtrl', function ($rootScope, $stateParams, $scope, $modal, $translate, Notification, LabelCache, Label, project) {
 
         $scope.project = project;
+        $scope.currentPage = 1;
 
         $scope.milestoneUseCount = {};
 
