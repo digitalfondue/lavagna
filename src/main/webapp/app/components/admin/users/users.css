@@ -1,7 +1,26 @@
-lvg-admin-users .lvg-users-small-col {
-    width: 25px;
+ 
+/* part of the css has been taken from https://github.com/daniel-nagy/md-data-table which is under the MIT License:
+
+ - https://github.com/daniel-nagy/md-data-table/blob/master/LICENSE.md
+*/
+ 
+lvg-admin-users table {
+	width:100%;
+	border-collapse: separate;
 }
 
-lvg-admin-users .lvg-users-medium-col {
-     width: 135px;
- }
+lvg-admin-users th, lvg-admin-users td {
+	text-align: left;
+	border-bottom: 1px solid rgba(0,0,0,0.12);
+	height: 56px;
+}
+
+
+lvg-admin-users table md-checkbox {
+    margin: 0;
+    width: 20px;
+}
+
+lvg-admin-users th:last-child, lvg-admin-users td:last-child {
+	text-align:center;
+}

@@ -14,12 +14,12 @@
 		<table>
 			<thead>
                 <tr>
-                    <th translate class="lvg-users-medium-col">partials.admin.manage-users.provider</th>
+                    <th translate>partials.admin.manage-users.provider</th>
                     <th translate>partials.admin.manage-users.username</th>
                     <th translate>partials.admin.manage-users.email</th>
                     <th translate>partials.admin.manage-users.displayName</th>
-                    <th translate class="lvg-users-small-col">partials.admin.manage-users.roles</th>
-                    <th translate class="lvg-users-small-col">partials.admin.manage-users.enabled</th>
+                    <th translate>partials.admin.manage-users.roles</th>
+                    <th translate>partials.admin.manage-users.enabled</th>
                 </tr>
 			</thead>
 			<tbody>
@@ -30,10 +30,10 @@
                     </td>
                     <td ng-bind="u.email"></td>
                     <td ng-bind="u.displayName"></td>
-                    <td class="text-align-center">
+                    <td>
                     	<md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.showUserPermissions(u)"><md-icon md-svg-icon="info"></md-icon></md-button>
 					</td>
-                    <td class="text-align-center"><md-checkbox ng-disabled="u.id == $ctrl.currentUser.id"
+                    <td><md-checkbox ng-disabled="u.id == $ctrl.currentUser.id"
                                ng-model="u.enabled"
                                ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"></td>
                 </tr>
