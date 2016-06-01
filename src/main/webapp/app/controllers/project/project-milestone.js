@@ -6,7 +6,7 @@
 
     module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state, $http,
                                                         project, milestone,
-                                                        Label, LabelCache, Card, User, StompClient) {
+                                                        Label, LabelCache, Card, Board, User, StompClient) {
 
         $scope.sidebarOpen = true;
         $scope.project = project;
@@ -30,7 +30,7 @@
                 if (m.value !== milestone.value) {
                     $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
                 } else {
-                    // TODO FIXME handle updates and the "unassigned" milestone
+                    // TODO FIXME handle websocket updates, updates from the modal windows and card's column width
                 }
             });
 
@@ -49,6 +49,12 @@
         $scope.$on('$destroy', unbindRenamedEvent);
 
 
+        $scope.loadColumn = function (card) {
+            Board.column(card.columnId).then(function (col) {
+                card.column = col;
+            });
+        };
+
         $scope.closeMilestone = function () {
             Label.updateLabelListValueMetadata($scope.milestone.id, 'status', 'CLOSED');
         };
@@ -56,7 +62,6 @@
         $scope.openMilestone = function () {
             Label.removeLabelListValueMetadata($scope.milestone.id, 'status');
         };
-
 
         $scope.orderCardByStatus = function (card) {
             return card.columnDefinition == "CLOSED" ? 1 : 0;
@@ -72,7 +77,6 @@
             });
         };
 
-
         $scope.updateMilestoneDate = function (newDate) {
             if (newDate) {
                 Label.updateLabelListValueMetadata($scope.milestone.id, 'releaseDate', newDate);
@@ -81,5 +85,6 @@
             }
         };
 
-    });
+    })
+    ;
 })();

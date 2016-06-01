@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="title-addon col-xs-3">
-                        <ul class="panel-controls" >
+                        <ul class="panel-controls">
                             <li class="control-item"
                                 data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
                                 data-lvg-has-permission="PROJECT_ADMINISTRATION"
@@ -140,22 +140,52 @@
                         </div>
                     </div>
 
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" data-ng-if="detail.cards.found.length > 0">
+        <div class="col-xs-12">
+            <div class="lavagna-panel lvg-milestone-cards">
+                <div class="head clearfix">
+                    <div class="title title-bold col-xs-9 lvg-milestone-title" data-translate>
+                        partials.project.milestones.cards
+                    </div>
+                </div>
+                <div class="body">
                     <div class="row">
-
-                        <div class="lvg-milestone-card-title"
-                             data-ng-if="detail.cards.found" data-translate>
-                            partials.project.milestones.cards
-                        </div>
-
-                        <div class="lvg-milestone-card" data-bindonce
-                             data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage - 1)">
-
-                            <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
-                               data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
-                                <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
-                            </a>
-                            <span> {{card.name}}</span>
-                        </div>
+                        <table class="table table-striped table-bordered lvg-table">
+                            <thead>
+                            <tr>
+                                <th data-translate>partials.project.milestones.card.id</th>
+                                <th data-translate>partials.project.milestones.card.name</th>
+                                <th data-translate>partials.project.milestones.card.column</th>
+                                <th data-translate>partials.project.milestones.card.assigned-to</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-bindonce
+                                data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage - 1)"
+                                data-ng-init="loadColumn(card)">
+                                <td>
+                                    <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
+                                       data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+                                        <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+                                    </a>
+                                </td>
+                                <td>{{card.name}}</td>
+                                <td>
+                                    <span>{{card.column.columnName}}</span>
+                                </td>
+                                <td><span
+                                    data-ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><span
+                                    data-lvg-user="assigned.labelValueUser"></span> </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
                         <div data-ng-if="detail.cards.count > 50" class="pull-right">
                             <pagination total-items="detail.cards.count" data-ng-model="$parent.currentPage"
@@ -172,71 +202,3 @@
 
 <div data-ui-view data-autoscroll="false"></div>
 
-
-<!--
-<div class="head clearfix">
-    <div class="title title-bold col-xs-9 lvg-milestone-title">
-        <span data-ng-hide="milestone.edit" data-ng-bind="milestone.labelListValue.value" data-ng-class="{'strike' : milestone.labelListValue.metadata['status'] === 'CLOSED'}"></span>
-						<span data-ng-show="milestone.edit" data-ng-init="newName = milestone.labelListValue.value">
-							<input data-ng-model="newName">
-							<span data-ng-click="updateMilestone(milestone, newName)" class="lvg-milestone-clickable">
-								<i class="fa fa-check"></i>
-							</span>
-						</span>
-						<span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable lvg-milestone-edit"
-                              data-ng-click="milestone.edit = !milestone.edit">
-							<i class="fa fa-pencil" data-ng-hide="milestone.edit || milestone.labelListValue.id < 0"></i>
-							<i class="fa fa-times" data-ng-show="milestone.edit"></i>
-						</span>
-    </div>
-</div>
-
-
-<div class="title-addon col-xs-3">
-    <ul class="panel-controls">
-        <li class="control-item" data-ng-if="milestone.labelListValue.metadata['releaseDate'] && milestone.labelListValue.metadata['status'] !== 'CLOSED'">
-            <i data-ng-hide="milestone.dateEdit" class="fa lvg-fa-icon fa-calendar"></i>
-            <span data-ng-hide="milestone.dateEdit" data-ng-bind="milestone.labelListValue.metadata['releaseDate']"></span>
-						        <span data-ng-show="milestone.dateEdit" data-ng-init="newDate = milestone.labelListValue.metadata['releaseDate']">
-                                    <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
-                                           data-lvg-datepicker data-ng-model="newDate">
-							        <span data-ng-click="updateMilestoneDate(milestone.labelListValue.id, newDate)" class="lvg-milestone-clickable">
-								        <i class="fa fa-check"></i>
-							        </span>
-						        </span>
-                                <span data-lvg-has-permission="PROJECT_ADMINISTRATION" class="lvg-milestone-clickable lvg-milestone-edit"
-                                      data-ng-click="milestone.dateEdit = !milestone.dateEdit">
-                                    <i class="fa fa-pencil" data-ng-hide="milestone.dateEdit || !milestone.labelListValue.metadata['releaseDate']"></i>
-                                    <i class="fa fa-times" data-ng-show="milestone.dateEdit"></i>
-                                </span>
-        </li>
-
-        <li class="control-item" data-ng-show="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-            <span class="fa fa-chevron-up" title="{{'partials.project.milestones.hint.hideCards' | translate}}"></span>
-        </li>
-        <li class="control-item active-control" data-ng-hide="milestone.totalCards > 0 && milestoneOpenStatus[milestone.labelListValue.value]" data-ng-click="toggleMilestoneOpenStatus(milestone)">
-            <span class="fa fa-chevron-down" title="{{'partials.project.milestones.hint.showCards' | translate}}"></span>
-        </li>
-    </ul>
-</div>
-
-
-<div class="body">
-    <div data-ng-hide="milestone.totalCards > 0" data-translate>
-        partials.project.milestones.noCards
-    </div>
-    <div class="row" data-ng-hide="milestone.totalCards == 0">
-        <div class="col-md-12">
-            <ul class="statistics-definition">
-                <li class="stat" data-ng-repeat="item in cardsCountByStatus[milestone.labelListValue.value]">
-                    <span data-ng-style="statusColors[item.status]|color" class="fa fa-tasks"></span>
-                    <span data-translate>{{item.status | capitalize}}:</span>
-                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</div>
-
--->

@@ -215,6 +215,16 @@ ul.lvg-admin-import .col-sm-1 {
     height: 5px;
 }
 
+.lvg-milestone-cards .body {
+    padding-bottom: 0;
+}
+
+.lvg-milestone-pagination {
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .lvg-milestones-pagination {
     float: right;
     margin-bottom: 5px;
