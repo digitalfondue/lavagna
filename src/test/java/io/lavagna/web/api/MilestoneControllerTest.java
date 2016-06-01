@@ -24,6 +24,7 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Project;
@@ -41,6 +42,7 @@ import io.lavagna.web.api.model.Milestones;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -113,6 +115,31 @@ public class MilestoneControllerTest {
         MilestoneInfo md = cardsByMilestone.getMilestones().get(0);
         Assert.assertEquals("Unassigned", md.getLabelListValue().getValue());
         Assert.assertEquals(0, cardsByMilestone.getStatusColors().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindCardsByMilestoneDetailWrongValue() {
+
+        when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
+
+        milestoneController.findCardsByMilestoneDetail("TEST", "1.0", user);
+
+    }
+
+    @Test
+    public void testFindCardsByMilestoneDetail() {
+
+        when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
+
+        LabelListValue llv = new LabelListValue(1, 6, 0, "1.0");
+        LabelListValueWithMetadata llvm = new LabelListValueWithMetadata(llv, new HashMap<String, String>());
+        when(milestoneExportService.getMilestone(1, "1.0")).thenReturn(llvm);
+
+
+        milestoneController.findCardsByMilestoneDetail("TEST", "1.0", user);
+
+        verify(milestoneExportService).getMilestone(eq(1), eq("1.0"));
+
     }
 
     @Test
