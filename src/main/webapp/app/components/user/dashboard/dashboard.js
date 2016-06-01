@@ -6,7 +6,7 @@
 
     components.component('lvgUserDashboard', {
         bindings: {
-            profile: '='
+            profile: '<'
         },
         controller: UserDashboardController,
         templateUrl: 'app/components/user/dashboard/dashboard.html'

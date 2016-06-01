@@ -1,3 +1,23 @@
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+	<md-content layout-padding>
+		<h2 translate class="md-title">partials.user.generalInfo</h2>
+		<table>
+			<tbody>
+				<tr><th translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
+				<tr><th translate>partials.user.username</th><td>{{::$ctrl.userName}}</td></tr>
+				<tr ng-if="$ctrl.user.displayName != null"><th translate>partials.user.displayName</th><td>{{::$ctrl.user.displayName}}</td></tr>
+				<tr><th translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
+			</tbody>
+		</table>
+		
+		<md-divider></md-divider>
+
+		<h2 translate class="md-title">partials.user.mostActiveProjects</h2>		
+	</md-content>
+</div>
+
+
+
 <div class="lvg-content lavagna-container-top-margin">
     <div class="row">
         <div class="col-xs-12">
