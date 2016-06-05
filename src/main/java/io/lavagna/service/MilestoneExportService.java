@@ -41,6 +41,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -161,11 +162,9 @@ public class MilestoneExportService {
         });
         Collections.sort(labels, new Comparator<CardLabel>() {
             public int compare(CardLabel l1, CardLabel l2) {
-                int domains = l1.getDomain().compareTo(l2.getDomain());
-                if (domains != 0) {
-                    return domains;
-                }
-                return l1.getName().compareTo(l2.getName());
+            	return new CompareToBuilder().append(l1.getDomain(), l2.getDomain())
+            			.append(l1.getName(), l2.getName())
+            			.toComparison();
             }
         });
 
