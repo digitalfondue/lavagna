@@ -61,7 +61,7 @@ public class CardFullWithCounts extends CardFull {
         CollectionUtils.filter(filteredValues, new Predicate<LabelAndValue>() {
             @Override 
             public boolean evaluate(LabelAndValue o) {
-                return ((LabelAndValue)o).getLabelType().equals(type);
+                return o.getLabelType().equals(type);
             }
         });
         return filteredValues;
