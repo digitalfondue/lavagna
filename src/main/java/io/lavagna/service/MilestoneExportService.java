@@ -33,12 +33,14 @@ import io.lavagna.model.UserWithPermission;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -144,9 +146,10 @@ public class MilestoneExportService {
             throw new IllegalArgumentException();
 
         List<CardLabel> labels = cardLabelRepository.findLabelsByProject(projectId);
-        labels.removeIf(new Predicate<CardLabel>() {
-            @Override public boolean test(CardLabel cl) {
-                if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
+        CollectionUtils.filter(labels, new Predicate<CardLabel>() {
+			@Override
+			public boolean evaluate(CardLabel cl) {
+				if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
                     if (cl.getName().equals("ASSIGNED") ||
                         cl.getName().equals("DUE_DATE")) {
                         return false;
@@ -154,9 +157,9 @@ public class MilestoneExportService {
                     return true;
                 }
                 return false;
-            }
+			}
         });
-        labels.sort(new Comparator<CardLabel>() {
+        Collections.sort(labels, new Comparator<CardLabel>() {
             public int compare(CardLabel l1, CardLabel l2) {
                 int domains = l1.getDomain().compareTo(l2.getDomain());
                 if (domains != 0) {

@@ -30,8 +30,8 @@ import java.util.Map;
 
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.cglib.core.CollectionUtils;
-import org.springframework.cglib.core.Predicate;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 
 @Getter
 public class CardFullWithCounts extends CardFull {
@@ -58,8 +58,9 @@ public class CardFullWithCounts extends CardFull {
 
     public List<LabelAndValue> getLabelsWithType(final LabelType type) {
         List<LabelAndValue> filteredValues = new ArrayList<>(labels);
-        CollectionUtils.filter(filteredValues, new Predicate() {
-            @Override public boolean evaluate(Object o) {
+        CollectionUtils.filter(filteredValues, new Predicate<LabelAndValue>() {
+            @Override 
+            public boolean evaluate(LabelAndValue o) {
                 return ((LabelAndValue)o).getLabelType().equals(type);
             }
         });
