@@ -6,7 +6,7 @@
 
     module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state, $http,
                                                         project, milestone,
-                                                        Label, LabelCache, Card, Board, User, StompClient) {
+                                                        Label, BoardCache, LabelCache, Card, User, StompClient) {
 
         $scope.sidebarOpen = true;
         $scope.project = project;
@@ -23,24 +23,7 @@
             });
         };
 
-        var reloadAll = function () {
-
-            LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (m) {
-
-                if (m.value !== milestone.value) {
-                    $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
-                } else {
-                    // TODO FIXME handle websocket updates, updates from the modal windows and card's column width
-                }
-            });
-
-        };
-
         loadMilestoneDetail();
-
-        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label-value', reloadAll);
-
-        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label', reloadAll);
 
         var unbindMovedEvent = $rootScope.$on('card.moved.event', loadMilestoneDetail);
         $scope.$on('$destroy', unbindMovedEvent);
@@ -48,9 +31,25 @@
         var unbindRenamedEvent = $rootScope.$on('card.renamed.event', loadMilestoneDetail);
         $scope.$on('$destroy', unbindRenamedEvent);
 
+        var reloadAll = function () {
+
+            LabelCache.findLabelListValue($scope.milestone.cardLabelId, $scope.milestone.id).then(function (m) {
+
+                if (m.value !== $scope.milestone.value) {
+                    $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
+                } else {
+                    $scope.milestone = m;
+                }
+            });
+
+        };
+
+        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label-value', reloadAll);
+
+        StompClient.subscribe($scope, '/event/project/' + project.shortName + '/label', reloadAll);
 
         $scope.loadColumn = function (card) {
-            Board.column(card.columnId).then(function (col) {
+            BoardCache.column(card.columnId).then(function (col) {
                 card.column = col;
             });
         };
@@ -85,6 +84,6 @@
             }
         };
 
-    })
-    ;
+    });
+
 })();

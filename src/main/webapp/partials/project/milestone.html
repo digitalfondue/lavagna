@@ -149,11 +149,6 @@
     <div class="row" data-ng-if="detail.cards.found.length > 0">
         <div class="col-xs-12">
             <div class="lavagna-panel lvg-milestone-cards">
-                <div class="head clearfix">
-                    <div class="title title-bold col-xs-9 lvg-milestone-title" data-translate>
-                        partials.project.milestones.cards
-                    </div>
-                </div>
                 <div class="body">
                     <div class="row">
                         <table class="table table-striped table-bordered lvg-table">
@@ -169,17 +164,17 @@
                             <tr data-bindonce
                                 data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage - 1)"
                                 data-ng-init="loadColumn(card)">
-                                <td>
+                                <td class="shrink">
                                     <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
                                        data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
                                         <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
                                     </a>
                                 </td>
-                                <td>{{card.name}}</td>
-                                <td>
+                                <td class="expand">{{card.name}}</td>
+                                <td class="shrink">
                                     <span>{{card.column.columnName}}</span>
                                 </td>
-                                <td><span
+                                <td class="shrink lvg-assigned-to-col"><span
                                     data-ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><span
                                     data-lvg-user="assigned.labelValueUser"></span> </span>
                                 </td>
