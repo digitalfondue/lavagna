@@ -1,0 +1,199 @@
+<lvg-navbar data-navbar-type="milestone-menu">
+    <a ui-sref="home"><span data-translate>partials.home.title</span></a> <i class="fa fa-angle-right"></i>
+    <a ui-sref="project({projectName: project.shortName})">{{project.shortName}}</a>
+    <a data-lvg-has-permission="PROJECT_ADMINISTRATION" class="project-settings-shortcut"
+       ui-sref="ProjectManage.projectManageHome({projectName: project.shortName})"
+       title="{{'partials.project.fragments.nabvar.projectAdmin' | translate}}"><i class="fa fa-cog"></i></a> <i
+    class="fa fa-angle-right"></i>
+    <a ui-sref="projectMilestones({projectName: project.shortName})"> <span data-translate>partials.project.milestones.breadcrumb.page</span></a>
+    <i class="fa fa-angle-right"></i>
+    <span> {{milestone.value}}</span>
+</lvg-navbar>
+
+<div class="container">
+    <div class="row" data-bindonce>
+        <div class="col-xs-12 lavagna-container-top-margin">
+            <div class="lavagna-panel">
+                <div class="progress lvg-progress"
+                     data-ng-if="detail.cardsCountByStatus | showArray:0"
+                     data-ng-style="{'background-color': (detail.statusColors[statuses.slice(-1)[0]] | color).color}">
+                    <div class="progress-bar" data-bindonce
+                         data-ng-repeat="status in statuses" ng-if="!$last"
+                         data-ng-style="{'width': (detail.cardsCountByStatus[status] * 100.0 / detail.cards.count  | number:2) + '%', 'background-color': (detail.statusColors[status] | color).color}">
+                    </div>
+                </div>
+                <div class="head clearfix">
+                    <div class="title title-bold col-xs-9 lvg-milestone-title">
+						    <span data-ng-bind="milestone.value" data-ng-hide="editName"
+                                  data-ng-class="{'strike' : milestone.metadata['status'] === 'CLOSED'}"></span>
+
+                            <span data-ng-show="editName"
+                                  data-ng-init="newName = milestone.value">
+                                <input data-ng-model="newName">
+                                <span data-ng-click="updateMilestone(newName)" class="lvg-milestone-clickable">
+                                    <i class="fa fa-check"></i>
+                                </span>
+                            </span>
+                            <span data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                  class="lvg-milestone-clickable lvg-milestone-edit"
+                                  data-ng-click="editName = !editName">
+                                <i class="fa fa-pencil" data-ng-hide="editName || milestone.labelListValue.id < 0"></i>
+                                <i class="fa fa-times" data-ng-show="editName"></i>
+                            </span>
+                    </div>
+
+                    <div class="title-addon col-xs-3">
+                        <ul class="panel-controls">
+                            <li class="control-item"
+                                data-ng-if="milestone.id != -1 && milestone.metadata['status'] !== 'CLOSED'"
+                                data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                data-ng-click="closeMilestone()">
+                                <span class="pull-right">
+                                    <i class="fa fa-archive"
+                                       title="{{'partials.project.milestones.hint.close' | translate}}"></i>
+                                </span>
+                            </li>
+                            <li class="control-item"
+                                data-ng-if="milestone.id != -1 && milestone.metadata['status'] === 'CLOSED'"
+                                data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                data-ng-click="openMilestone()">
+                                <span class="pull-right">
+                                    <i class="fa fa-upload"
+                                       title="{{'partials.project.milestones.hint.open' | translate}}"></i>
+                                </span>
+                            </li>
+                            <li class="control-item">
+                                <a data-ng-if="milestone.id > 0"
+                                   data-ng-href="api/project/{{project.shortName}}/export-milestone/{{milestone.value}}"
+                                   target="_blank">
+                                    <i class="fa fa-file-excel-o lvg-milestone-clickable lvg-milestone-action-icon"
+                                       title="{{'partials.project.milestones.exportToExcel' | translate}}"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <!-- -->
+                        <div class="col-xs-6">
+                            <div class="lvg-milestone-card-title" data-translate>
+                                partials.project.milestones.details
+                            </div>
+                            <!-- -->
+                            <div class="lvg-milestone-detail-row">
+                                <div data-ng-if="detail.cards.count === 0" data-translate>
+                                    <span data-translate>partials.project.milestones.noCards</span>
+                                </div>
+                                <div data-ng-hide="detail.cards.count == 0">
+                                    <ul class="statistics-definition lvg-milestone-stat">
+                                        <li class="stat" data-ng-repeat="status in statuses"
+                                            data-ng-if="detail.cardsCountByStatus[status] > 0">
+                                        <span data-ng-style="detail.statusColors[status] | color"
+                                              class="fa fa-tasks"></span>
+                                            <span data-translate>{{status | capitalize}}:</span>
+                                            {{detail.cardsCountByStatus[status]}} ({{(detail.cardsCountByStatus[status]
+                                            * 100 /
+                                            detail.cards.count) | number:0}}%)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- -->
+                            <div class="lvg-milestone-detail-row">
+                                <span data-ng-if="!(milestone.metadata['releaseDate'])">
+                                    <span data-ng-hide="dateEdit" data-translate>partials.project.milestones.noReleaseDate</span>
+                                </span>
+                                <span data-ng-if="milestone.metadata['releaseDate']">
+                                    <span data-translate>partials.project.milestones.releaseDate</span>:
+                                    <span data-ng-hide="dateEdit"
+                                          data-ng-bind="milestone.metadata['releaseDate']"></span>
+                                </span>
+                                <span data-ng-show="dateEdit"
+                                      data-ng-init="newDate = milestone.metadata['releaseDate']">
+                                    <input type="text"
+                                           placeholder="{{'partials.fragments.label-pickers.date' | translate}}"
+                                           size="12"
+                                           data-lvg-datepicker data-ng-model="newDate">
+                                    <span data-ng-click="updateMilestoneDate(newDate)" class="lvg-milestone-clickable">
+                                        <i class="fa fa-check"></i>
+                                    </span>
+                                </span>
+                                <span data-lvg-has-permission="PROJECT_ADMINISTRATION"
+                                      class="lvg-milestone-clickable lvg-milestone-edit"
+                                      data-ng-click="dateEdit = !dateEdit">
+                                    <i class="fa fa-pencil"
+                                       data-ng-hide="dateEdit"></i>
+                                    <i class="fa fa-times" data-ng-show="dateEdit"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="lvg-milestone-card-title"
+                                 data-ng-if="detail.assignedAndClosedCards | showArray:1" data-translate>
+                                partials.project.milestones.assignedAndClosedCards
+                            </div>
+                            <div data-ng-if="detail.assignedAndClosedCards | showArray:1" class="lvg-milestone-chart">
+                                <lvg-stats-chart chart-data="detail.assignedAndClosedCards"
+                                                 chart-height="90"></lvg-stats-chart>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" data-ng-if="detail.cards.found.length > 0">
+        <div class="col-xs-12">
+            <div class="lavagna-panel lvg-milestone-cards">
+                <div class="body">
+                    <div class="row">
+                        <table class="table table-striped table-bordered lvg-table">
+                            <thead>
+                            <tr>
+                                <th data-translate>partials.project.milestones.card.id</th>
+                                <th data-translate>partials.project.milestones.card.name</th>
+                                <th data-translate>partials.project.milestones.card.column</th>
+                                <th data-translate>partials.project.milestones.card.assigned-to</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-bindonce
+                                data-ng-repeat="card in detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence'] | limitToWithOffset: 50 : 50 * (currentPage - 1)"
+                                data-ng-init="loadColumn(card)">
+                                <td class="shrink">
+                                    <a ui-sref="projectMilestone.card({projectName: project.shortName, shortName: card.boardShortName, seqNr: card.sequence})"
+                                       data-ng-class="{'lavagna-closed-card':card.columnDefinition == 'CLOSED'}">
+                                        <span data-bo-text="card.boardShortName + '-' + card.sequence"></span>
+                                    </a>
+                                </td>
+                                <td class="expand">{{card.name}}</td>
+                                <td class="shrink">
+                                    <span>{{card.column.columnName}}</span>
+                                </td>
+                                <td class="shrink lvg-assigned-to-col"><span
+                                    data-ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><span
+                                    data-lvg-user="assigned.labelValueUser"></span> </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div data-ng-if="detail.cards.count > 50" class="pull-right">
+                            <pagination total-items="detail.cards.count" data-ng-model="$parent.currentPage"
+                                        items-per-page="50" max-size="10"
+                                        class="pagination-sm lvg-milestone-pagination" boundary-links="true">
+                            </pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-ui-view data-autoscroll="false"></div>
+

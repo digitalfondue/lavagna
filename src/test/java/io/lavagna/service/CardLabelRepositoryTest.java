@@ -153,23 +153,11 @@ public class CardLabelRepositoryTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testWrongUpdateSystemLabel() {
+	public void testWrongUpdateLabel() {
 		CardLabel randomSystemLabel = cardLabelRepository.findLabelsByProject(project.getId()).get(0);
 		Label label = new Label("label-new", false, randomSystemLabel.getType(), 0xffffff);
 
 		cardLabelRepository.updateLabel(randomSystemLabel.getId(), label);
-	}
-
-	@Test
-	public void testUpdateSystemLabel() {
-		CardLabel randomSystemLabel = cardLabelRepository.findLabelsByProject(project.getId()).get(0);
-		Label label = new Label("label-new", false, randomSystemLabel.getType(), 0xffffff);
-
-		cardLabelRepository.updateSystemLabel(randomSystemLabel.getId(), label);
-
-		CardLabel cl2 = cardLabelRepository.findLabelById(randomSystemLabel.getId());
-		Assert.assertEquals("label-new", cl2.getName());
-		Assert.assertEquals(0xffffff, cl2.getColor());
 	}
 
 	/**

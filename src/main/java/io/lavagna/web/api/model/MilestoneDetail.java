@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api.model;
 
+import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Pair;
 import io.lavagna.model.SearchResults;
 
@@ -27,6 +28,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MilestoneDetail {
+
+    private final Map<ColumnDefinition, Long> cardsCountByStatus;
+    private final Map<ColumnDefinition, Integer> statusColors;
 	private final SearchResults cards;
 	private final Map<Long, Pair<Long, Long>> assignedAndClosedCards;
 }

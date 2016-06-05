@@ -216,7 +216,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4.1208.jre7</version>
 		</dependency>
-		
+
 		<dependency>
         	<groupId>com.zaxxer</groupId>
         	<artifactId>HikariCP</artifactId>
@@ -228,7 +228,7 @@
 			<artifactId>urlrewritefilter</artifactId>
 			<version>4.0.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -241,20 +241,20 @@
 			<version>1.16.8</version>
 			<scope>provided</scope>
 		</dependency>
-        
+
         <!--  -->
         <!-- for the embedded war, the dependency are loaded by the repackage goal of spring-boot-maven-plugin -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
             <version>${org.eclipse.jetty.version}</version>
-            <scope>provided</scope> 
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-annotations</artifactId>
             <version>${org.eclipse.jetty.version}</version>
-            <scope>provided</scope> 
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
@@ -269,7 +269,6 @@
             <scope>provided</scope>
         </dependency>
         <!--  -->
-
 		<dependency>
 			<groupId>org.mnode.ical4j</groupId>
 			<artifactId>ical4j</artifactId>
@@ -285,6 +284,12 @@
                 </exclusion>
             </exclusions>
 		</dependency>
+        <!--  -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.14</version>
+        </dependency>
 	</dependencies>
 
 	<!-- -->

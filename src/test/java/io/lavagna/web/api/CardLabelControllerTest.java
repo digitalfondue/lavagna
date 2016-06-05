@@ -17,9 +17,6 @@
 package io.lavagna.web.api;
 
 import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFull;
@@ -39,6 +36,8 @@ import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.LabelService;
 import io.lavagna.service.ProjectService;
+
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -127,17 +126,6 @@ public class CardLabelControllerTest {
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
 
 		cardLabelController.updateLabel(labelId, label);
-	}
-
-	@Test
-	public void updateSystemLabelTest() {
-		Label label = new Label("test", false, LabelType.STRING, 0);
-		CardLabel cl = new CardLabel(labelId, board.getId(), false, LabelType.STRING, LabelDomain.SYSTEM, "test", 0);
-
-		when(cardLabelRepository.updateSystemLabel(labelId, label)).thenReturn(cl);
-		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
-
-		cardLabelController.updateSystemLabel(labelId, label);
 	}
 
 	@Test
