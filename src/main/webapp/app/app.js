@@ -470,8 +470,10 @@
 			.icon('expand_more',		'svg/ic_expand_more_black_48px.svg')
 			.icon('info',				'svg/ic_info_black_48px.svg')
 			.icon('search',				'svg/ic_search_black_48px.svg')
-			
-			
+			.icon('delete',             'svg/ic_delete_black_48px.svg')
+			.icon('drag',               'svg/drag.svg')
+
+
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

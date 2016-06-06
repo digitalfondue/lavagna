@@ -1,0 +1,29 @@
+.lvg-card-action-list__actionlists {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lvg-card-action-list__actionlists-item {
+    list-style: none;
+}
+
+.lvg-card-action-list__actions {
+    margin: 0;
+    border-top: 1px solid #dddddd;
+    background-color: #f5f5f5;
+    padding: 5px 5px;
+}
+
+.lvg-card-action-list__actions-input {
+    margin: 0;
+    max-height: 30px;
+}
+
+.lvg-card-action-list__handle {
+    margin-right: 13px !important;
+}
+
+.lvg-card-action-list__item > div {
+    padding: 0;
+}

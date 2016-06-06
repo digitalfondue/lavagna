@@ -6,7 +6,8 @@
             card: '<',
             board: '<',
             project: '<',
-            user: '<'
+            user: '<',
+            labelValues: '<'
         },
         controller: CardMetadataController,
         templateUrl: 'app/components/card/metadata/card-metadata.html'
@@ -143,26 +144,6 @@
 
         ctrl.updateDescription = function(description) {
             Card.updateDescription(ctrl.card.id, description);
-        };
-
-        ctrl.searchUser = function(text) {
-            return User.findUsers(text.trim()).then(function (res) {
-                angular.forEach(res, function(user) {
-                    user.label = User.formatName(user);
-                });
-                return res;
-            });
-        };
-
-        ctrl.assignUser = function(user) {
-            if(user === undefined || user === null) {
-                return;
-            }
-            BulkOperations.assign(currentCard(), user);
-        }
-
-        ctrl.removeAssignForUser = function(user) {
-            BulkOperations.removeAssign(currentCard(), {id: user.value.valueUser});
         };
 
         ctrl.setDueDate = function(date) {

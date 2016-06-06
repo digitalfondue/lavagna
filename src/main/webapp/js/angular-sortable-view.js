@@ -1,7 +1,7 @@
 //
 // Copyright Kamil Pękala http://github.com/kamilkp
 // angular-sortable-view v0.0.15 2015/01/18
-// 
+//
 // customized: renamed $ctrl to $ctrl_as : clashed with angular 1.5 component
 
 ;(function(window, angular){
@@ -368,18 +368,18 @@
 						handle.on('mousedown touchstart', onMousedown);
 					}
 				});
-				
+
 				//CUSTOMIZATION
 				var helper;
 				var placeholder;
 				/*
-				
+
 				$scope.$watch('$ctrl_as.helper', function(customHelper){
 					if(customHelper){
 						helper = customHelper;
 					}
 				});
-				
+
 				$scope.$watch('$ctrl_as.placeholder', function(customPlaceholder){
 					if(customPlaceholder){
 						placeholder = customPlaceholder;
@@ -474,7 +474,9 @@
 					function onMousemove(e){
 						touchFix(e);
 						if(!moveExecuted){
-							$element.parent().prepend(clone);
+							// $element.parent().prepend(clone);
+							// FIXME: this is done manually
+							body.prepend(clone);
 							moveExecuted = true;
 						}
 						$controllers[1].$moveUpdate(opts, {

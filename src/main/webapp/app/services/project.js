@@ -12,6 +12,7 @@
 	    var metadata = data.data;
 	    // provide better format for some data
         metadata.milestones = [];
+        metadata.userLabels = [];
         angular.forEach(metadata.labels, function(label, labelId) {
             if(label.name === 'MILESTONE') {
                 angular.forEach(metadata.labelListValues, function(labelValue, labelValueId) {
@@ -26,6 +27,9 @@
                         });
                     }
                 });
+            }
+            if(label.domain === 'USER') {
+                metadata.userLabels.push(label);
             }
         });
 

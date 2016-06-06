@@ -37,22 +37,39 @@
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
 
-        ctrl.sortActions = function(action, from, to, oldIndex, newIndex) {
-            ctrl.actionList.items = to.map(function(v, i) {
+        ctrl.sortActions = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
+            var newActionListId = $partTo.referenceId;
+            var oldActionListId = $partFrom.referenceId;
+
+            if(oldActionListId === newActionListId) {
+                ctrl.actionList.items = $partTo.map(function(v, i) {
                     v.order = i;
                     return v;
                 });
-            Card.updateActionItemOrder(
-                ctrl.actionList.id,
-                to.map(function(v) { return v.id})
+                Card.updateActionItemOrder(
+                    ctrl.actionList.id,
+                    $partTo.map(function(v) { return v.id})
                 ).catch(function(err) {
-                    ctrl.actionList.items = from;
+                     ctrl.actionList.items = $partFrom;
                 });
+            } else {
+                Card.moveActionItem(
+                    $item.id,
+                    newActionListId,
+                    {
+                        newContainer: $partTo.map(function(v) { return v.id})
+                    }
+                );
+            }
         };
 
         ctrl.saveName = function(name) {
             Card.updateActionList(ctrl.actionList.id, name);
         };
+
+        ctrl.saveAction = function(id, content) {
+            Card.updateActionItem(id, content);
+        }
 
         ctrl.deleteList = function() {
             Card.deleteActionList(ctrl.actionList.id).then(function(event) {

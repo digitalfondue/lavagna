@@ -154,11 +154,11 @@
         };
 
         ctrl.sortCards = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
-
         	var oldColumnId = $partFrom.columnId;
         	var newColumnId = $partTo.columnId;
         	var cardId = $item.id;
         	var ids = [];
+
         	angular.forEach($partTo, function(card) {
         		ids.push(card.id);
         	});
@@ -182,7 +182,7 @@
         //will be used as a map columnState[columnId].editColumnName = true/false
         ctrl.columnState = {};
 
-        
+
 
         //-----------------------------------------------------------------------------------------------------
 

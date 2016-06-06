@@ -9,11 +9,12 @@
 			+'<span ng-bind="::$ctrl.name"></span>'
 			+'<span ng-if="::($ctrl.type !== \'NULL\')">: </span>'
 			+'<lvg-label-val-v2 value-ref="$ctrl.value" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>'
-			+'</span>',
+			+'<span data-ng-transclude></span></span>',
     	bindings: {
     		valueRef: '&',
 			projectMetadataRef:'&'
     	},
+    	transclude: true,
     	controller: function() {
     		var ctrl = this;
     		ctrl.value = ctrl.valueRef();

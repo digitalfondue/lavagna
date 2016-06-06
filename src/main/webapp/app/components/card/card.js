@@ -71,13 +71,6 @@
         var unbind = $rootScope.$on('refreshLabelCache-' + project.shortName, loadLabel);
         $scope.$on('$destroy', unbind);
 
-        var loadLabelValues = function() {
-            Label.findValuesByCardId(card.id).then(function(labelValues) {
-                ctrl.labelValues = labelValues;
-            });
-        };
-        loadLabelValues();
-
         //----------------------
         var loadActionListsAndRefresh = function() {
             loadActionLists();
@@ -91,6 +84,7 @@
                 for(var i = 0; i < actionLists.lists.length; i++) {
                     var actionList = actionLists.lists[i];
                     actionList.items = actionLists.items[actionList.id] || [];
+                    actionList.items.referenceId = actionList.id;
                     ctrl.actionLists.push(actionList);
                 }
             });
@@ -160,28 +154,6 @@
             return cardByProject;
         };
 
-        ctrl.removeLabelValue = function(label) {
-
-            BulkOperations.removeLabel(currentCard(), {id: label.labelId}, label.value).then(function(data) {
-
-                    Notification.addAutoAckNotification('success', {
-                        key : 'notification.card.LABEL_DELETE.success',
-                        parameters : {
-                            labelName : ctrl.userLabels[label.labelId].name }
-                    }, false);
-
-            }, function(error) {
-                ctrl.actionListState[listId].deleteList = false;
-
-                    Notification.addAutoAckNotification('error', {
-                        key : 'notification.card.LABEL_DELETE.error',
-                        parameters : {
-                            labelName : ctrl.userLabels[label.labelId].name }
-                    }, false);
-
-            })
-        };
-
         ctrl.findElementWithUserId = function(arr, val) {
             if(!angular.isArray(arr)) {
                 return false;
@@ -200,6 +172,26 @@
 
         ctrl.unWatchCard = function(user) {
             BulkOperations.unWatch(currentCard(), user);
+        };
+
+        ctrl.searchUser = function(text) {
+            return User.findUsers(text.trim()).then(function (res) {
+                angular.forEach(res, function(user) {
+                    user.label = User.formatName(user);
+                });
+                return res;
+            });
+        };
+
+        ctrl.assignUser = function(user) {
+            if(user === undefined || user === null) {
+                return;
+            }
+            BulkOperations.assign(currentCard(), user);
+        }
+
+        ctrl.removeAssignForUser = function(user) {
+            BulkOperations.removeAssign(currentCard(), {id: user.value.valueUser});
         };
 
         ctrl.addNewLabel = function(labelToAdd) {
@@ -350,6 +342,15 @@
             return (ctrl.comments !== undefined && ctrl.actionLists !== undefined && ctrl.actionItems !== undefined && ctrl.files !== undefined);
         };
 
+
+        // ----
+        var loadLabelValues = function() {
+            Label.findValuesByCardId(card.id).then(function(labelValues) {
+                ctrl.labelValues = labelValues;
+            });
+        };
+        loadLabelValues();
+        // ----
 
         //the /card-data has various card data related event that are pushed from the server that we must react
         StompClient.subscribe($scope, '/event/card/' + card.id + '/card-data', function(e) {

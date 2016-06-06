@@ -1,354 +1,348 @@
 <lvg-card-metadata card="cardCtrl.card" board="cardCtrl.board"
                    project="cardCtrl.project" user="cardCtrl.user"></lvg-card-metadata>
 
-        <div class="card-modal-dialog">
-            <div class="card-modal-content">
-                <div class="card-modal-body">
-                    <div>
-                        <div layout="column" layout-gt-xs="row">
-                            <div flex="25">
+<div layout="column" layout-gt-sm="row">
+    <div flex="25">
 
-                                <div class="lavagna-card-panel">
-                                    <div class="head clearfix">
-                                        <div class="title" data-translate>card.people</div>
-                                        <ul class="panel-controls">
-                                            <li class="control-item"
-                                                data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
-											<span data-ng-click="cardCtrl.watchCard(cardCtrl.user)"
-                                                  data-lvg-has-permission="UPDATE_CARD"
-                                                  class="fa fa-eye" title="{{'card.watch' | translate}}"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
-											<span data-ng-click="cardCtrl.unWatchCard(cardCtrl.user)"
-                                                  data-lvg-has-permission="UPDATE_CARD"
-                                                  class="fa fa-eye-slash" title="{{'card.unwatch' | translate}}"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
-											<span data-ng-click="cardCtrl.assignToUser(cardCtrl.user)"
-                                                  data-lvg-has-permission="UPDATE_CARD"
-                                                  class="fa fa-hand-o-up" title="{{'card.takeCard' | translate}}"></span>
-                                            </li>
-                                            <li class="control-item"
-                                                data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
-											<span data-ng-click="cardCtrl.removeAssignForUser(cardCtrl.user)"
-                                                  data-lvg-has-permission="UPDATE_CARD"
-                                                  class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
-                                            </li>
+        <div class="lavagna-card-panel">
+            <div class="head clearfix">
+                <div class="title" data-translate>card.people</div>
+                <ul class="panel-controls">
+                    <li class="control-item"
+                        data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
+                    <span data-ng-click="cardCtrl.watchCard(cardCtrl.user)"
+                          data-lvg-has-permission="UPDATE_CARD"
+                          class="fa fa-eye" title="{{'card.watch' | translate}}"></span>
+                    </li>
+                    <li class="control-item"
+                        data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']], cardCtrl.user.id)">
+                    <span data-ng-click="cardCtrl.unWatchCard(cardCtrl.user)"
+                          data-lvg-has-permission="UPDATE_CARD"
+                          class="fa fa-eye-slash" title="{{'card.unwatch' | translate}}"></span>
+                    </li>
+                    <li class="control-item"
+                        data-ng-hide="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
+                    <span data-ng-click="cardCtrl.assignToUser(cardCtrl.user)"
+                          data-lvg-has-permission="UPDATE_CARD"
+                          class="fa fa-hand-o-up" title="{{'card.takeCard' | translate}}"></span>
+                    </li>
+                    <li class="control-item"
+                        data-ng-show="cardCtrl.findElementWithUserId(cardCtrl.labelValues[cardCtrl.labelNameToId['ASSIGNED']], cardCtrl.user.id)">
+                    <span data-ng-click="cardCtrl.removeAssignForUser(cardCtrl.user)"
+                          data-lvg-has-permission="UPDATE_CARD"
+                          class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="body">
+                <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
+                    <span data-translate>card.watchedBy</span> <span
+                    data-ng-repeat="watchedBy in cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
+                    <span data-lvg-user-tooltip="watchedBy.value.valueUser"></span>
+                </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div flex="50">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="lavagna-card-panel lavagna-tab" data-lvg-tab-ui>
+                    <div class="head clearfix tab-controls">
+                        <ul class="lavagna-tab-controls">
+                            <li><a href=""
+                                   data-lvg-tab-ui-target="lavagna-card-panel-comments" data-translate>card.comments</a></li>
+                            <li><a href=""
+                                   data-lvg-tab-ui-target="lavagna-card-panel-files" data-translate>card.files</a></li>
+                            <li><a href=""
+                                   data-lvg-tab-ui-target="lavagna-card-panel-activity" data-translate>card.activity</a></li>
+                        </ul>
+                    </div>
+                    <div class="lavagna-tab-panel" id="lavagna-card-panel-comments">
+                        <div class="body-full" data-ng-if="cardCtrl.comments.length > 0">
+                            <ul class="lavagna-comments">
+                                <li data-ng-repeat="comment in cardCtrl.comments | orderBy: 'time' track by comment.id "
+                                    class="comment" id="{{::comment.id}}" data-lvg-scroll-to-comment="comment.id">
+                                    <div class="header">
+                                        <span class="user" data-lvg-user-tooltip="comment.userId"></span>&nbsp;<span
+                                        class="date" data-ng-bind="comment.time | dateIncremental"></span>
+                                        <ul
+                                            class="panel-controls">
+                                            <li class="control-item"><a data-ng-href="#/{{cardCtrl.project.shortName}}/{{cardCtrl.board.shortName}}-{{cardCtrl.card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
+                                            <li data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="comment.userId"
+                                                data-ng-hide="commentControl.editComment"
+                                                data-ng-click="commentControl.deleteComment = false; commentToEdit = comment.content; commentControl.editComment=true"
+                                                class="control-item"><span
+                                                class="fa fa-pencil" title="{{'card.hint.updateComment' | translate}}"></span></li>
+                                            <li data-ng-show="commentControl.editComment"
+                                                data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false"
+                                                class="control-item"><span
+                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
+                                            <li data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="comment.userId"
+                                                data-ng-hide="commentControl.deleteComment"
+                                                data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false; commentControl.deleteComment = true"
+                                                class="control-item"><span
+                                                class="fa fa-trash-o" title="{{'card.hint.deleteComment' | translate}}"></span></li>
+                                            <li data-ng-show="commentControl.deleteComment"
+                                                data-ng-click="commentControl.deleteComment = false"
+                                                class="control-item"><span
+                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
                                         </ul>
-                                    </div>
-                                    <div class="body">
-                                        <p data-ng-show="cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
-                                            <span data-translate>card.watchedBy</span> <span
-                                            data-ng-repeat="watchedBy in cardCtrl.labelValues[cardCtrl.labelNameToId['WATCHED_BY']]">
-											<span data-lvg-user-tooltip="watchedBy.value.valueUser"></span>
-										</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div flex="50">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="lavagna-card-panel lavagna-tab" data-lvg-tab-ui>
-                                            <div class="head clearfix tab-controls">
-                                                <ul class="lavagna-tab-controls">
-                                                    <li><a href=""
-                                                           data-lvg-tab-ui-target="lavagna-card-panel-comments" data-translate>card.comments</a></li>
-                                                    <li><a href=""
-                                                           data-lvg-tab-ui-target="lavagna-card-panel-files" data-translate>card.files</a></li>
-                                                    <li><a href=""
-                                                           data-lvg-tab-ui-target="lavagna-card-panel-activity" data-translate>card.activity</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="lavagna-tab-panel" id="lavagna-card-panel-comments">
-                                                <div class="body-full" data-ng-if="cardCtrl.comments.length > 0">
-                                                    <ul class="lavagna-comments">
-                                                        <li data-ng-repeat="comment in cardCtrl.comments | orderBy: 'time' track by comment.id "
-                                                            class="comment" id="{{::comment.id}}" data-lvg-scroll-to-comment="comment.id">
-                                                            <div class="header">
-                                                                <span class="user" data-lvg-user-tooltip="comment.userId"></span>&nbsp;<span
-                                                                class="date" data-ng-bind="comment.time | dateIncremental"></span>
-                                                                <ul
-                                                                    class="panel-controls">
-                                                                    <li class="control-item"><a data-ng-href="#/{{cardCtrl.project.shortName}}/{{cardCtrl.board.shortName}}-{{cardCtrl.card.sequence}}#{{comment.id}}" title="{{'card.permalink' | translate}}"><span class="fa fa-link"></span></a></li>
-                                                                    <li data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="comment.userId"
-                                                                        data-ng-hide="commentControl.editComment"
-                                                                        data-ng-click="commentControl.deleteComment = false; commentToEdit = comment.content; commentControl.editComment=true"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-pencil" title="{{'card.hint.updateComment' | translate}}"></span></li>
-                                                                    <li data-ng-show="commentControl.editComment"
-                                                                        data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
-                                                                    <li data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="comment.userId"
-                                                                        data-ng-hide="commentControl.deleteComment"
-                                                                        data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false; commentControl.deleteComment = true"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-trash-o" title="{{'card.hint.deleteComment' | translate}}"></span></li>
-                                                                    <li data-ng-show="commentControl.deleteComment"
-                                                                        data-ng-click="commentControl.deleteComment = false"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
-                                                                </ul>
-                                                                <form data-role="form" data-ng-if="commentControl.deleteComment"
-                                                                      data-ng-submit="cardCtrl.deleteComment(comment, commentControl.deleteComment)" class="panel-confirmation-control">
-                                                                    <div class="form-group" data-translate>card.deleteThisComment</div>
-                                                                    <div>
-                                                                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
-                                                                        <button type="button" class="lvg-button lvg-button-default"
-                                                                                data-ng-click="commentControl.deleteComment = false"><span data-translate>button.no</span></button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div data-ng-hide="commentControl.editComment" class="content"
-                                                                 data-ng-bind-html="comment.content | markdown"></div>
-                                                            <div class="content-update"
-                                                                 data-ng-if="comment.updatedCount == 1 && !commentControl.editComment">
-                                                                <span data-translate>card.updateCount</span>
-                                                                -
-                                                                <span data-translate>card.lastUpdatedBy</span>
-                                                                <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
-                                                                <span data-translate>card.onDate</span>
-                                                                <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
-                                                            </div>
-                                                            <div class="content-update"
-                                                                 data-ng-if="comment.updatedCount > 1 && !commentControl.editComment">
-                                                                <span data-translate data-translate-value-count="{{comment.updatedCount}}">card.updateCounts</span>
-                                                                -
-                                                                <span data-translate>card.lastUpdatedBy</span>
-                                                                <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
-                                                                <span data-translate>card.onDate</span>
-                                                                <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
-                                                            </div>
-                                                            <form data-role="form" data-ng-if="commentControl.editComment"
-                                                                  data-ng-submit="cardCtrl.updateComment(comment, commentToEdit);commentControl.editComment=false;commentControl.editCommentPreviewMode=false">
-                                                                <div class="form-group">
-                                                                    <div data-ng-hide="commentControl.editCommentPreviewMode">
-																	<textarea
-                                                                        data-ng-model="commentToEdit" class="form-control"></textarea>
-                                                                    </div>
-                                                                    <div data-ng-show="commentControl.editCommentPreviewMode" data-ng-bind-html="commentToEditPreview | markdown"></div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button class="lvg-button lvg-button-submit" type="submit" data-translate>button.update</button>
-                                                                    <button class="lvg-button lvg-button-default" type="button"
-                                                                            data-ng-click="commentToEditPreview = commentToEdit; commentControl.editCommentPreviewMode = true"
-                                                                            data-ng-hide="commentControl.editCommentPreviewMode"><span data-translate>button.preview</span></button>
-                                                                    <button class="lvg-button lvg-button-default" type="button"
-                                                                            data-ng-click="commentControl.editCommentPreviewMode = false"
-                                                                            data-ng-show="commentControl.editCommentPreviewMode"><span data-translate>button.closePreview</span></button>
-                                                                    <button type="button" class="lvg-button lvg-button-default"
-                                                                            data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false"><span data-translate>button.cancel</span></button>
-                                                                </div>
-                                                            </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="footer" data-lvg-has-permission="CREATE_CARD_COMMENT">
-                                                    <div class="content">
-                                                        <form data-role="form"
-                                                              data-ng-submit="cardCtrl.addComment(comment);previewMode = false">
-                                                            <div class="form-group">
-                                                                <div data-ng-hide="previewMode">
-																<textarea
-                                                                    id="comment"
-                                                                    data-ng-model="comment.content" class="form-control"></textarea>
-                                                                </div>
-                                                                <div class="panel panel-default"
-                                                                     data-ng-show="previewMode">
-                                                                    <div class="panel-body"
-                                                                         data-ng-bind-html="editedContent | markdown"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
-                                                                <button type="button" data-ng-hide="previewMode"
-                                                                        data-ng-click="editedContent = comment.content; previewMode = true"
-                                                                        class="lvg-button lvg-button-default"><span data-translate>button.preview</span></button>
-                                                                <button type="button" data-ng-show="previewMode"
-                                                                        data-ng-click="previewMode = false" class="lvg-button lvg-button-default"><span data-translate>button.closePreview</span></button>
-                                                                <button type="button"
-                                                                        data-ng-click="comment.content = null;previewMode = false"
-                                                                        class="lvg-button lvg-button-default"><span data-translate>button.reset</span></button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="lavagna-tab-panel" id="lavagna-card-panel-files">
-                                                <div class="body-full" data-ng-if="cardCtrl.files">
-                                                    <ul class="lavagna-files-list" data-ng-init="fileControls = {}">
-                                                        <li class="lavagna-file clearfix"
-                                                            data-ng-repeat="file in cardCtrl.files"
-                                                            data-ng-init="fileControls[file.cardDataId] = {}">
-                                                            <div class="lavagna-file-icon">
-                                                                <span class="fa fa-floppy-o"></span>
-                                                            </div>
-                                                            <div class="lavagna-file-info">
-                                                                <ul>
-                                                                    <li class="file-info"><span class="username" data-lvg-user-tooltip="file.userId"></span>
-                                                                        <span class="date" data-ng-bind="file.time | dateIncremental"></span></li>
-                                                                    <li class="file-info"><a
-                                                                        data-ng-href="api/card-data/file/{{file.cardDataId}}/{{file.name}}" target="_blank">{{file.name}}</a></li>
-                                                                    <li class="file-info"><span class="size" data-ng-bind="file.size | fileBytes"></span></li>
-                                                                </ul>
-                                                                <form data-role="form" data-ng-if="fileControls[file.cardDataId].deleteFile"
-                                                                      data-ng-submit="cardCtrl.deleteFile(file.cardDataId)" class="panel-confirmation-control">
-                                                                    <div class="form-group" data-translate>card.deleteThisFile</div>
-                                                                    <div>
-                                                                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
-                                                                        <button type="button" class="lvg-button lvg-button-default"
-                                                                                data-ng-click="fileControls[file.cardDataId].deleteFile = false"><span data-translate>button.no</span></button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                            <div class="lavagna-file-controls">
-                                                                <ul>
-                                                                    <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = true"
-                                                                        data-ng-hide="fileControls[file.cardDataId].deleteFile"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
-                                                                    <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = false"
-                                                                        data-ng-if="fileControls[file.cardDataId].deleteFile"
-                                                                        class="control-item"><span
-                                                                        class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="footer" data-lvg-has-permission="CREATE_FILE">
-                                                    <div class="content">
-                                                        <form data-role="form">
-                                                            <div>
-                                                                <div class="lvg-button lvg-button-submit"
-                                                                     ng-file-select="cardCtrl.addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
-                                                            </div>
-                                                        </form>
-                                                        <ul class="lvg-card-file-queue">
-                                                            <li data-ng-repeat="entry in cardCtrl.filesToUpload track by $index">
-                                                                <div class="lavagna-file-icon">
-																<span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue',
-																	'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted',
-																	'fa-warning': entry.status == 'failed', 'fa-check': entry.status == 'success'}"></span>
-                                                                </div>
-                                                                <div class="lavagna-file-metadata">
-                                                                    <div class="file-name">{{entry.file.name}}</div>
-                                                                    <div class="upload-progress progress progress-success lavagna-progress">
-                                                                        <div class="progress-bar" data-ng-style="{'width': entry.progress + '%'}"></div>
-                                                                    </div>
-                                                                    <div class="file-size"><span class="size">{{entry.file.size | fileBytes}}</span></div>
-                                                                </div>
-                                                                <div class="lavagna-file-controls">
-                                                                    <ul>
-                                                                        <li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
-                                                                            data-ng-click="cardCtrl.retryUpload($index)"
-                                                                            class="control-item"><span
-                                                                            class="fa fa-repeat" title="{{'button.retry' | translate}}"></span></li>
-                                                                        <li data-ng-show="entry.status != 'upload'"
-                                                                            data-ng-click="cardCtrl.cancelUpload($index)"
-                                                                            class="control-item"><span
-                                                                            class="fa fa-times" title="{{'button.cancel' | translate}}"></span></li>
-                                                                        <li data-ng-show="entry.status == 'upload'"
-                                                                            data-ng-click="cardCtrl.abortUpload($index)"
-                                                                            class="control-item"><span
-                                                                            class="fa fa-stop" title="{{'button.abort' | translate}}"></span></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="lavagna-tab-panel" id="lavagna-card-panel-activity">
-                                                <div class="body-full">
-                                                    <ul data-ng-if="cardCtrl.hasActivity()" class="lavagna-activity">
-                                                        <li data-ng-repeat="activity in cardCtrl.activities | orderBy: '-id' track by activity.id"
-                                                            class="activity">
-                                                            <div class="header">
-                                                                <span class="user" data-lvg-user-tooltip="activity.userId"></span>&nbsp;<span
-                                                                class="date" data-ng-bind="activity.time | dateIncremental"></span>
-                                                            </div>
-                                                            <lvg-card-activity></lvg-card-activity>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div flex="25">
-                                <div class="lavagna-card-panel">
-                                    <div class="head clearfix">
-                                        <div class="title" data-translate>card.labels</div>
-                                    </div>
-                                    <div class="body" data-ng-if="cardCtrl.hasUserLabels(cardCtrl.userLabels, cardCtrl.labelValues)">
-									<span data-ng-repeat="(n,l) in cardCtrl.userLabels">
-										<span data-ng-repeat="val in cardCtrl.labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
-											<lvg-label data-name="cardCtrl.userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="cardCtrl.removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></lvg-label>
-										</span>
-									</span>
-                                    </div>
-                                    <div class="footer" data-lvg-has-permission="MANAGE_LABEL_VALUE">
-                                        <ul class="panel-controls"
-                                            data-ng-hide="addLabelPanel" >
-                                            <li class="control-box"><span
-                                                data-ng-click="addLabelPanel = true"
-                                                class="fa fa-plus" title="{{'button.add' | translate }}"></span></li>
-                                        </ul>
-                                        <div class="lavagna-card-edit content"
-                                             data-ng-show="addLabelPanel">
-                                            <form data-ng-role="form" data-ng-submit="cardCtrl.addNewLabel(labelToAdd); labelToAdd = null;">
-                                                <div class="form-group">
-                                                    <select class="form-control" data-ng-model="labelToAdd.label" data-ng-change="labelToAdd.value = undefined"
-                                                            data-lvg-to-focus="addLabelPanel"
-                                                            data-ng-options="l as l.name for (n,l) in (cardCtrl.userLabels | uniqueLabels: cardCtrl.labelValues | orderObjectBy:'name')"></select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="board.shortName" project-name="cardCtrl.project.shortName"></lvg-label-picker>
-                                                </div>
-                                                <button class="lvg-button lvg-button-submit" type="submit" data-ng-disabled="labelToAdd.label == NULL" data-translate>card.addLabel</button>
+                                        <form data-role="form" data-ng-if="commentControl.deleteComment"
+                                              data-ng-submit="cardCtrl.deleteComment(comment, commentControl.deleteComment)" class="panel-confirmation-control">
+                                            <div class="form-group" data-translate>card.deleteThisComment</div>
+                                            <div>
+                                                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
                                                 <button type="button" class="lvg-button lvg-button-default"
-                                                        data-ng-click="addLabelPanel=false;labelToAdd = null"><span data-translate>button.cancel</span></button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <md-list sv-root="'actionlist'"
-                                         sv-part="cardCtrl.actionLists"
-                                         sv-on-sort="cardCtrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-                                    <md-list-item ng-repeat="actionList in cardCtrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
-                                        <lvg-card-action-list card="cardCtrl.card"
-                                                              action-list="actionList">
-                                            <handle><md-icon md-font-icon="fa-arrows" class="fa" sv-handle></md-icon></handle>
-                                        </lvg-card-action-list>
-                                    </md-list-item>
-                                </md-list>
-                                <div class="lavagna-card-panel" data-lvg-has-permission="MANAGE_ACTION_LIST">
-                                    <div class="footer-full">
-                                        <form data-ng-role="form" data-ng-submit="cardCtrl.addActionList(newActionList);">
-                                            <div class="content input-group">
-                                                <input type="text"
-                                                       placeholder="{{'card.newList.placeholder' | translate}}" required="required"
-                                                       data-ng-model="newActionList" class="form-control"
-                                                       autocomplete="off"
-                                                       data-lvg-on-esc>
-											<span class="input-group-btn">
-												<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
-											</span>
+                                                        data-ng-click="commentControl.deleteComment = false"><span data-translate>button.no</span></button>
                                             </div>
                                         </form>
                                     </div>
-                                </div>
+                                    <div data-ng-hide="commentControl.editComment" class="content"
+                                         data-ng-bind-html="comment.content | markdown"></div>
+                                    <div class="content-update"
+                                         data-ng-if="comment.updatedCount == 1 && !commentControl.editComment">
+                                        <span data-translate>card.updateCount</span>
+                                        -
+                                        <span data-translate>card.lastUpdatedBy</span>
+                                        <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
+                                        <span data-translate>card.onDate</span>
+                                        <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
+                                    </div>
+                                    <div class="content-update"
+                                         data-ng-if="comment.updatedCount > 1 && !commentControl.editComment">
+                                        <span data-translate data-translate-value-count="{{comment.updatedCount}}">card.updateCounts</span>
+                                        -
+                                        <span data-translate>card.lastUpdatedBy</span>
+                                        <span class="user" data-lvg-user-tooltip="comment.updateUser"></span>
+                                        <span data-translate>card.onDate</span>
+                                        <span class="date" data-ng-bind="comment.updateDate | dateIncremental"></span>
+                                    </div>
+                                    <form data-role="form" data-ng-if="commentControl.editComment"
+                                          data-ng-submit="cardCtrl.updateComment(comment, commentToEdit);commentControl.editComment=false;commentControl.editCommentPreviewMode=false">
+                                        <div class="form-group">
+                                            <div data-ng-hide="commentControl.editCommentPreviewMode">
+                                            <textarea
+                                                data-ng-model="commentToEdit" class="form-control"></textarea>
+                                            </div>
+                                            <div data-ng-show="commentControl.editCommentPreviewMode" data-ng-bind-html="commentToEditPreview | markdown"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="lvg-button lvg-button-submit" type="submit" data-translate>button.update</button>
+                                            <button class="lvg-button lvg-button-default" type="button"
+                                                    data-ng-click="commentToEditPreview = commentToEdit; commentControl.editCommentPreviewMode = true"
+                                                    data-ng-hide="commentControl.editCommentPreviewMode"><span data-translate>button.preview</span></button>
+                                            <button class="lvg-button lvg-button-default" type="button"
+                                                    data-ng-click="commentControl.editCommentPreviewMode = false"
+                                                    data-ng-show="commentControl.editCommentPreviewMode"><span data-translate>button.closePreview</span></button>
+                                            <button type="button" class="lvg-button lvg-button-default"
+                                                    data-ng-click="commentControl.editCommentPreviewMode = false; commentControl.editComment=false"><span data-translate>button.cancel</span></button>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer" data-lvg-has-permission="CREATE_CARD_COMMENT">
+                            <div class="content">
+                                <form data-role="form"
+                                      data-ng-submit="cardCtrl.addComment(comment);previewMode = false">
+                                    <div class="form-group">
+                                        <div data-ng-hide="previewMode">
+                                        <textarea
+                                            id="comment"
+                                            data-ng-model="comment.content" class="form-control"></textarea>
+                                        </div>
+                                        <div class="panel panel-default"
+                                             data-ng-show="previewMode">
+                                            <div class="panel-body"
+                                                 data-ng-bind-html="editedContent | markdown"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.add</button>
+                                        <button type="button" data-ng-hide="previewMode"
+                                                data-ng-click="editedContent = comment.content; previewMode = true"
+                                                class="lvg-button lvg-button-default"><span data-translate>button.preview</span></button>
+                                        <button type="button" data-ng-show="previewMode"
+                                                data-ng-click="previewMode = false" class="lvg-button lvg-button-default"><span data-translate>button.closePreview</span></button>
+                                        <button type="button"
+                                                data-ng-click="comment.content = null;previewMode = false"
+                                                class="lvg-button lvg-button-default"><span data-translate>button.reset</span></button>
+                                    </div>
+                                </form>
                             </div>
+                        </div>
+                    </div>
+                    <div class="lavagna-tab-panel" id="lavagna-card-panel-files">
+                        <div class="body-full" data-ng-if="cardCtrl.files">
+                            <ul class="lavagna-files-list" data-ng-init="fileControls = {}">
+                                <li class="lavagna-file clearfix"
+                                    data-ng-repeat="file in cardCtrl.files"
+                                    data-ng-init="fileControls[file.cardDataId] = {}">
+                                    <div class="lavagna-file-icon">
+                                        <span class="fa fa-floppy-o"></span>
+                                    </div>
+                                    <div class="lavagna-file-info">
+                                        <ul>
+                                            <li class="file-info"><span class="username" data-lvg-user-tooltip="file.userId"></span>
+                                                <span class="date" data-ng-bind="file.time | dateIncremental"></span></li>
+                                            <li class="file-info"><a
+                                                data-ng-href="api/card-data/file/{{file.cardDataId}}/{{file.name}}" target="_blank">{{file.name}}</a></li>
+                                            <li class="file-info"><span class="size" data-ng-bind="file.size | fileBytes"></span></li>
+                                        </ul>
+                                        <form data-role="form" data-ng-if="fileControls[file.cardDataId].deleteFile"
+                                              data-ng-submit="cardCtrl.deleteFile(file.cardDataId)" class="panel-confirmation-control">
+                                            <div class="form-group" data-translate>card.deleteThisFile</div>
+                                            <div>
+                                                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
+                                                <button type="button" class="lvg-button lvg-button-default"
+                                                        data-ng-click="fileControls[file.cardDataId].deleteFile = false"><span data-translate>button.no</span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="lavagna-file-controls">
+                                        <ul>
+                                            <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = true"
+                                                data-ng-hide="fileControls[file.cardDataId].deleteFile"
+                                                class="control-item"><span
+                                                class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
+                                            <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = false"
+                                                data-ng-if="fileControls[file.cardDataId].deleteFile"
+                                                class="control-item"><span
+                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer" data-lvg-has-permission="CREATE_FILE">
+                            <div class="content">
+                                <form data-role="form">
+                                    <div>
+                                        <div class="lvg-button lvg-button-submit"
+                                             ng-file-select="cardCtrl.addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
+                                    </div>
+                                </form>
+                                <ul class="lvg-card-file-queue">
+                                    <li data-ng-repeat="entry in cardCtrl.filesToUpload track by $index">
+                                        <div class="lavagna-file-icon">
+                                        <span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue',
+                                            'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted',
+                                            'fa-warning': entry.status == 'failed', 'fa-check': entry.status == 'success'}"></span>
+                                        </div>
+                                        <div class="lavagna-file-metadata">
+                                            <div class="file-name">{{entry.file.name}}</div>
+                                            <div class="upload-progress progress progress-success lavagna-progress">
+                                                <div class="progress-bar" data-ng-style="{'width': entry.progress + '%'}"></div>
+                                            </div>
+                                            <div class="file-size"><span class="size">{{entry.file.size | fileBytes}}</span></div>
+                                        </div>
+                                        <div class="lavagna-file-controls">
+                                            <ul>
+                                                <li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
+                                                    data-ng-click="cardCtrl.retryUpload($index)"
+                                                    class="control-item"><span
+                                                    class="fa fa-repeat" title="{{'button.retry' | translate}}"></span></li>
+                                                <li data-ng-show="entry.status != 'upload'"
+                                                    data-ng-click="cardCtrl.cancelUpload($index)"
+                                                    class="control-item"><span
+                                                    class="fa fa-times" title="{{'button.cancel' | translate}}"></span></li>
+                                                <li data-ng-show="entry.status == 'upload'"
+                                                    data-ng-click="cardCtrl.abortUpload($index)"
+                                                    class="control-item"><span
+                                                    class="fa fa-stop" title="{{'button.abort' | translate}}"></span></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lavagna-tab-panel" id="lavagna-card-panel-activity">
+                        <div class="body-full">
+                            <ul data-ng-if="cardCtrl.hasActivity()" class="lavagna-activity">
+                                <li data-ng-repeat="activity in cardCtrl.activities | orderBy: '-id' track by activity.id"
+                                    class="activity">
+                                    <div class="header">
+                                        <span class="user" data-lvg-user-tooltip="activity.userId"></span>&nbsp;<span
+                                        class="date" data-ng-bind="activity.time | dateIncremental"></span>
+                                    </div>
+                                    <lvg-card-activity></lvg-card-activity>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+    </div>
+    <div flex="25">
+        <div class="lavagna-card-panel">
+            <div class="head clearfix">
+                <div class="title" data-translate>card.labels</div>
+            </div>
+            <div class="body" data-ng-if="cardCtrl.hasUserLabels(cardCtrl.userLabels, cardCtrl.labelValues)">
+            <span data-ng-repeat="(n,l) in cardCtrl.userLabels">
+                <span data-ng-repeat="val in cardCtrl.labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
+                    <lvg-label data-name="cardCtrl.userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="cardCtrl.removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></lvg-label>
+                </span>
+            </span>
+            </div>
+            <div class="footer" data-lvg-has-permission="MANAGE_LABEL_VALUE">
+                <ul class="panel-controls"
+                    data-ng-hide="addLabelPanel" >
+                    <li class="control-box"><span
+                        data-ng-click="addLabelPanel = true"
+                        class="fa fa-plus" title="{{'button.add' | translate }}"></span></li>
+                </ul>
+                <div class="lavagna-card-edit content"
+                     data-ng-show="addLabelPanel">
+                    <form data-ng-role="form" data-ng-submit="cardCtrl.addNewLabel(labelToAdd); labelToAdd = null;">
+                        <div class="form-group">
+                            <select class="form-control" data-ng-model="labelToAdd.label" data-ng-change="labelToAdd.value = undefined"
+                                    data-lvg-to-focus="addLabelPanel"
+                                    data-ng-options="l as l.name for (n,l) in (cardCtrl.userLabels | uniqueLabels: cardCtrl.labelValues | orderObjectBy:'name')"></select>
+                        </div>
+                        <div class="form-group">
+                            <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="board.shortName" project-name="cardCtrl.project.shortName"></lvg-label-picker>
+                        </div>
+                        <button class="lvg-button lvg-button-submit" type="submit" data-ng-disabled="labelToAdd.label == NULL" data-translate>card.addLabel</button>
+                        <button type="button" class="lvg-button lvg-button-default"
+                                data-ng-click="addLabelPanel=false;labelToAdd = null"><span data-translate>button.cancel</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <ul class="lvg-card-action-list__actionlists"
+            sv-root="card-actionlists"
+            sv-part="cardCtrl.actionLists"
+            sv-on-sort="cardCtrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+            <li class="lvg-card-action-list__actionlists-item"
+                ng-repeat="actionList in cardCtrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
+                <lvg-card-action-list card="cardCtrl.card"
+                                      action-list="actionList">
+                    <handle><md-icon md-svg-icon="drag" sv-handle></md-icon></handle>
+                </lvg-card-action-list>
+            </li>
+        </ul>
+        <div class="lavagna-card-panel" data-lvg-has-permission="MANAGE_ACTION_LIST">
+            <div class="footer-full">
+                <form data-ng-role="form" data-ng-submit="cardCtrl.addActionList(newActionList);">
+                    <div class="content input-group">
+                        <input type="text"
+                               placeholder="{{'card.newList.placeholder' | translate}}" required="required"
+                               data-ng-model="newActionList" class="form-control"
+                               autocomplete="off"
+                               data-lvg-on-esc>
+                    <span class="input-group-btn">
+                        <button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
