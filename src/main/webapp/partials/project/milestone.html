@@ -76,7 +76,7 @@
                 <div class="body">
                     <div class="row">
                         <!-- -->
-                        <div class="col-xs-6">
+                        <div class="{{ (detail.assignedAndClosedCards | showArray:1) ? 'col-xs-6' : 'col-xs-12' }}">
                             <div class="lvg-milestone-card-title" data-translate>
                                 partials.project.milestones.details
                             </div>
@@ -128,12 +128,11 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-xs-6">
-                            <div class="lvg-milestone-card-title"
-                                 data-ng-if="detail.assignedAndClosedCards | showArray:1" data-translate>
+                        <div class="col-xs-6" data-ng-if="detail.assignedAndClosedCards | showArray:1">
+                            <div class="lvg-milestone-card-title" data-translate>
                                 partials.project.milestones.assignedAndClosedCards
                             </div>
-                            <div data-ng-if="detail.assignedAndClosedCards | showArray:1" class="lvg-milestone-chart">
+                            <div class="lvg-milestone-chart">
                                 <lvg-stats-chart chart-data="detail.assignedAndClosedCards"
                                                  chart-height="90"></lvg-stats-chart>
                             </div>
