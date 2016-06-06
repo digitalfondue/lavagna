@@ -85,6 +85,10 @@ html, body {
 	background-color: white;
 }
 
+.lvg-line-height-as-md-button {
+	line-height:40px;
+}
+
 /*
 ===================================
 ==== buttons and inputs ===========

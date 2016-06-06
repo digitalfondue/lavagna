@@ -37,43 +37,6 @@
 	list-style: none;
 }
 
-.lvg-user-activity-list-item {
-	border-top: 1px solid #DDD;
-	padding: 5px 15px;
-}
-
-.lvg-user-activity-list-item:FIRST-CHILD {
-	margin-top:15px;
-}
-
-.lvg-user-activity-list-item .fa {
-	cursor: pointer;
-	color:#6E6E6E;
-}
-
-.lvg-user-activity-list-item .fa.fa-chevron-up {
-	color:#D5D5D5
-}
-
-.lvg-user-activity-list-item .fa:hover {
-	color: #424242;
-}
-
-.lvg-activity-list {
-	list-style: none;
-	margin:0;
-	padding:0;
-}
-
-.lvg-activity-list li {
-	padding: 5px 15px;
-	border-top: 1px solid #eee;
-}
-
-.lvg-activity-list li:FIRST-CHILD {
-	border-top:none;
-}
-
 /*
 ===================================
 ==== USER TOOLTIP =================
