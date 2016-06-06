@@ -1,0 +1,13 @@
+lvg-user-dashboard .user-info th {
+	text-align: left;
+	padding-right:8px;
+}
+
+lvg-user-dashboard .padding-left {
+	padding-left:16px;
+}
+
+/*
+lvg-user-dashboard lvg-card-activity  div {
+	display: inline;
+}*/

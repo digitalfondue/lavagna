@@ -186,64 +186,6 @@
 	font-size: 14px;
 }
 
-div.card-data ul {
-	padding: 0;
-	margin: 0;
-}
-
-div.card-data ul.data-info li {
-	list-style-type: none;
-	display: inline-block;
-	margin-top: 8px;
-	margin-bottom: 0;
-	padding-right: 5px;
-	padding-top: 3px;
-	color: #aaaaaa;
-}
-
-div.card-data ul.data-info li.lvg-action-not-done {
-    background-color: #cf513d;
-    color: #ffffff;
-    padding-left: 5px;
-}
-
-div.card-data ul.data-info .lvg-action-not-done .fa {
-    color: #ffffff;
-}
-
-div.card-data ul.data-info li.lvg-action-full {
-	background-color: #00CC00;
-	color: #ffffff;
-	padding-left: 5px;
-}
-
-div.card-data ul.data-info .lvg-action-full .fa {
-	color: #ffffff;
-}
-
-div.card-data ul.data-info li.lvg-due-date-tomorrow {
-    background-color: #e6c60d;
-    color: #ffffff;
-    padding-left: 5px;
-}
-
-div.card-data ul.data-info li.lvg-due-date-now {
-    background-color: #cf513d;
-    color: #ffffff;
-    padding-left: 5px;
-}
-
-div.card-data ul.data-info li.lvg-due-date-past {
-    background-color: #ec9488;
-    color: #ffffff;
-    padding-left: 5px;
-}
-
-div.card-data ul.data-info .lvg-due-date-tomorrow .fa,
-div.card-data ul.data-info .lvg-due-date-now .fa,
-div.card-data ul.data-info .lvg-due-date-past .fa {
-    color: #ffffff;
-}
 
 div.card-labels {
 	margin-top: 8px;

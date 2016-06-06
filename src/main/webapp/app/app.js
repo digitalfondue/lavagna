@@ -472,8 +472,10 @@
 			.icon('search',				'svg/ic_search_black_48px.svg')
 			.icon('delete',             'svg/ic_delete_black_48px.svg')
 			.icon('drag',               'svg/drag.svg')
-
-
+			.icon('comment', 			'svg/ic_comment_black_48px.svg')
+			.icon('file', 				'svg/ic_insert_drive_file_black_48px.svg')
+			.icon('list', 				'svg/ic_list_black_48px.svg')
+			.icon('clock', 				'svg/ic_access_time_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
