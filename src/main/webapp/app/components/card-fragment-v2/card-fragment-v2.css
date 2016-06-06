@@ -27,6 +27,7 @@ lvg-card-fragment-v2 .data-info li.lvg-action-full {
 	padding-left: 5px;
 }
 
+lvg-card-fragment-v2 .data-info li.lvg-action-not-done md-icon,
 lvg-card-fragment-v2 .data-info li.lvg-action-full md-icon {
 	color: #ffffff;
 }
