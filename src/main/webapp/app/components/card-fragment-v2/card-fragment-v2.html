@@ -53,22 +53,22 @@
         <div class="card-data">
             <ul class="data-info">
                 <li ng-if="::($ctrl.card.counts['COMMENT'].count > 0)">
-                    <span class="fa fa-comment"></span> <span ng-bind="::($ctrl.card.counts['COMMENT'].count)"></span>
+                    <md-icon md-svg-icon="comment"></md-icon> <span ng-bind="::($ctrl.card.counts['COMMENT'].count)"></span>
                 </li>
                 <li ng-if="::$ctrl.hasActionListWithItems"
                     ng-class="::({'lvg-action-full': $ctrl.card.counts['ACTION_CHECKED'].count == $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count,
                                     'lvg-action-not-done': $ctrl.card.columnDefinition == 'CLOSED' && $ctrl.card.counts['ACTION_CHECKED'].count != $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count})">
-                    <span class="fa fa-list"></span>
+                    <md-icon md-svg-icon="list"></md-icon>
                     <span ng-bind="::$ctrl.actionItemsSummary"></span>
                 </li>
                 <li ng-if="::$ctrl.hasFiles">
-                    <span class="fa fa-file"></span> <span ng-bind="::$ctrl.filesCount"></span>
+                    <md-icon md-svg-icon="file"></md-icon> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
                 <li ng-if="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
-                    <span class="fa fa-clock-o"></span> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
+                    <md-icon md-svg-icon="clock"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
                 <li ng-if="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
-                    <span class="fa fa-map-marker"></span> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
+                    <md-icon md-svg-icon="milestone"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>

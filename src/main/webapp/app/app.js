@@ -470,6 +470,12 @@
 			.icon('expand_more',		'svg/ic_expand_more_black_48px.svg')
 			.icon('info',				'svg/ic_info_black_48px.svg')
 			.icon('search',				'svg/ic_search_black_48px.svg')
+			.icon('comment', 			'svg/ic_comment_black_48px.svg')
+			.icon('file', 				'svg/ic_insert_drive_file_black_48px.svg')
+			.icon('list', 				'svg/ic_list_black_48px.svg')
+			.icon('clock', 				'svg/ic_access_time_black_48px.svg')
+			
+			
 			
 			
 	});
