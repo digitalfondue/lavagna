@@ -44,8 +44,8 @@
 			<md-list ng-if="$ctrl.view.showList[$index]" layout-padding>
 				<md-list-item ng-repeat="activity in $ctrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="md-2-line">
 					<div class="md-list-item-text">
-						<div><span ng-bind="activity.time | dateIncremental"></span>: <span lvg-card-tooltip="activity.cardId"></span></div> 
-						<div><lvg-card-activity></lvg-card-activity></div>
+						<h3><span ng-bind="activity.time | dateIncremental"></span>: <span lvg-card-tooltip="activity.cardId"></span></h3> 
+						<p><lvg-card-activity></lvg-card-activity></p>
 					</div>
 					<md-divider ng-if="!$last"></md-divider>
 				</md-list-item>
