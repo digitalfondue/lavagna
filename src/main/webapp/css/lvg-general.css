@@ -427,6 +427,15 @@ ul.panel-controls {
 	list-style: none;
 }
 
+ul.panel-controls a {
+    color: rgb(117, 117, 117);
+}
+
+ul.panel-controls a:HOVER {
+    cursor: pointer;
+    color: #424242;
+}
+
 ul.panel-controls li.control-box {
 	float: left;
 	padding: 10px 15px;
