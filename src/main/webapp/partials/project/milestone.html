@@ -26,17 +26,15 @@
                     <div class="title title-bold col-xs-9 lvg-milestone-title">
 						    <span data-ng-bind="milestone.value" data-ng-hide="editName"
                                   data-ng-class="{'strike' : milestone.metadata['status'] === 'CLOSED'}"></span>
-
-                            <span data-ng-show="editName"
-                                  data-ng-init="newName = milestone.value">
+                            <span data-ng-show="editName">
                                 <input data-ng-model="newName">
-                                <span data-ng-click="updateMilestone(newName)" class="lvg-milestone-clickable">
+                                <span data-ng-click="updateMilestone(newName); editName = false;" class="lvg-milestone-clickable">
                                     <i class="fa fa-check"></i>
                                 </span>
                             </span>
                             <span data-lvg-has-permission="PROJECT_ADMINISTRATION"
                                   class="lvg-milestone-clickable lvg-milestone-edit"
-                                  data-ng-click="editName = !editName">
+                                  data-ng-click="newName = milestone.value; editName = !editName;">
                                 <i class="fa fa-pencil" data-ng-hide="editName || milestone.labelListValue.id < 0"></i>
                                 <i class="fa fa-times" data-ng-show="editName"></i>
                             </span>
@@ -109,19 +107,18 @@
                                     <span data-ng-hide="dateEdit"
                                           data-ng-bind="milestone.metadata['releaseDate']"></span>
                                 </span>
-                                <span data-ng-show="dateEdit"
-                                      data-ng-init="newDate = milestone.metadata['releaseDate']">
+                                <span data-ng-show="dateEdit">
                                     <input type="text"
                                            placeholder="{{'partials.fragments.label-pickers.date' | translate}}"
                                            size="12"
                                            data-lvg-datepicker data-ng-model="newDate">
-                                    <span data-ng-click="updateMilestoneDate(newDate)" class="lvg-milestone-clickable">
+                                    <span data-ng-click="updateMilestoneDate(newDate); dateEdit = false;" class="lvg-milestone-clickable">
                                         <i class="fa fa-check"></i>
                                     </span>
                                 </span>
                                 <span data-lvg-has-permission="PROJECT_ADMINISTRATION"
                                       class="lvg-milestone-clickable lvg-milestone-edit"
-                                      data-ng-click="dateEdit = !dateEdit">
+                                      data-ng-click="newDate = milestone.metadata['releaseDate']; dateEdit = !dateEdit;">
                                     <i class="fa fa-pencil"
                                        data-ng-hide="dateEdit"></i>
                                     <i class="fa fa-times" data-ng-show="dateEdit"></i>

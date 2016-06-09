@@ -6,11 +6,17 @@
 
     module.controller('ProjectMilestoneCtrl', function ($rootScope, $scope, $state, $http,
                                                         project, milestone,
-                                                        Label, BoardCache, LabelCache, Card, User, StompClient) {
+                                                        Label, BoardCache, LabelCache, Card, User, Notification, StompClient) {
 
         $scope.sidebarOpen = true;
         $scope.project = project;
         $scope.milestone = milestone;
+
+        if(!milestone) {
+            $state.go('404');
+            return;
+        }
+
         $scope.totalCards = 0;
         $scope.currentPage = 1;
         $scope.statuses = ["BACKLOG", "OPEN", "DEFERRED", "CLOSED"];
@@ -78,9 +84,17 @@
 
         $scope.updateMilestoneDate = function (newDate) {
             if (newDate) {
-                Label.updateLabelListValueMetadata($scope.milestone.id, 'releaseDate', newDate);
+                Label.updateLabelListValueMetadata($scope.milestone.id, 'releaseDate', newDate).then(function(){
+                    Notification.addAutoAckNotification('success', {key: 'notification.project-milestones.update.success'}, false);
+                }).catch(function (error) {
+                    Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
+                });
             } else {
-                Label.removeLabelListValueMetadata($scope.milestone.id, 'releaseDate');
+                Label.removeLabelListValueMetadata($scope.milestone.id, 'releaseDate').then(function(){
+                    Notification.addAutoAckNotification('success', {key: 'notification.project-milestones.update.success'}, false);
+                }).catch(function (error) {
+                    Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
+                });
             }
         };
 
