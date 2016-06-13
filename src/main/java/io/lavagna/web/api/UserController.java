@@ -35,7 +35,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +50,7 @@ public class UserController {
     private final EventRepository eventRepository;
     private final ProjectService projectService;
 
-    @Autowired
+    
     public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
         ProjectService projectService) {
         this.userRepository = userRepository;

@@ -30,7 +30,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -45,7 +44,6 @@ public class BoardColumnRepository {
 	private final EventRepository eventRepository;
 	private final BoardColumnQuery queries;
 
-	@Autowired
 	public BoardColumnRepository(NamedParameterJdbcTemplate jdbc, EventRepository eventRepository,
 			BoardColumnQuery queries) {
 		this.jdbc = jdbc;

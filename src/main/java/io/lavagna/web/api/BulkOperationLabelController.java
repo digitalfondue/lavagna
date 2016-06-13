@@ -32,7 +32,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,7 @@ public class BulkOperationLabelController {
 	private final CardRepository cardRepository;
 	private final EventEmitter eventEmitter;
 
-	@Autowired
+	
 	public BulkOperationLabelController(BulkOperationService bulkOperationService, CardRepository cardRepository,
 			EventEmitter eventEmitter) {
 		this.bulkOperationService = bulkOperationService;

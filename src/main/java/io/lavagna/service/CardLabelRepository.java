@@ -44,7 +44,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -60,7 +59,6 @@ public class CardLabelRepository {
     private final CardLabelQuery queries;
     private final ListValueMetadataQuery listValuesMetadataQueries;
 
-    @Autowired
     public CardLabelRepository(NamedParameterJdbcTemplate jdbc, CardLabelQuery queries,
         ListValueMetadataQuery listValuesMetadataQueries) {
         this.jdbc = jdbc;

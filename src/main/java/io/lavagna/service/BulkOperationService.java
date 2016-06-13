@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.Validate;
@@ -48,7 +47,6 @@ public class BulkOperationService {
 	private final ProjectService projectService;
 	private final LabelService labelService;
 
-	@Autowired
 	public BulkOperationService(CardRepository cardRepository, CardLabelRepository cardLabelRepository,
 			LabelService labelService, ProjectService projectService) {
 		this.cardRepository = cardRepository;

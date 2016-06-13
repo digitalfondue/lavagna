@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,7 +45,7 @@ public class ImportEventProcessor implements ImportEvent {
 	private final UserRepository userRepository;
 	private final Map<EventType, AbstractProcessEvent> eventProcessors;
 
-	@Autowired
+	
 	public ImportEventProcessor(CardRepository cardRepository, UserRepository userRepository,
 			CardDataService cardDataService, CardService cardService, EventRepository eventRepository,
 

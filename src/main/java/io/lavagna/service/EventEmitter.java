@@ -28,7 +28,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.tuple.Triple;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,6 @@ public class EventEmitter {
 
 	private final SimpMessageSendingOperations messagingTemplate;
 
-	@Autowired
 	public EventEmitter(SimpMessageSendingOperations messageSendingOperations) {
 		this.messagingTemplate = messageSendingOperations;
 	}

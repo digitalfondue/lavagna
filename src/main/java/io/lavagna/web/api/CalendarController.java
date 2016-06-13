@@ -33,7 +33,6 @@ import lombok.AllArgsConstructor;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ValidationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,7 @@ public class CalendarController {
     private final UserRepository userRepository;
     private final CalendarService calendarService;
 
-    @Autowired
+    
     public CalendarController(UserRepository userRepository, CalendarService calendarService) {
         this.userRepository = userRepository;
         this.calendarService = calendarService;

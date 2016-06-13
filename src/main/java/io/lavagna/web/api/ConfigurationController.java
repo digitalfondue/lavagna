@@ -19,7 +19,6 @@ package io.lavagna.web.api;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +32,7 @@ public class ConfigurationController {
 
 	private final ConfigurationRepository configurationRepository;
 
-	@Autowired
+	
 	public ConfigurationController(ConfigurationRepository configurationRepository) {
 		this.configurationRepository = configurationRepository;
 	}

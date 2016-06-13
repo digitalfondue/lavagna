@@ -21,7 +21,6 @@ import io.lavagna.model.UserToCreate;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ public class SetupService {
 	private final ConfigurationRepository configurationRepository;
 	private final UserService userService;
 
-	@Autowired
+	
 	public SetupService(ConfigurationRepository configurationRepository, UserService userService) {
 		this.configurationRepository = configurationRepository;
 		this.userService = userService;

@@ -70,7 +70,6 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +89,7 @@ public class CardController {
 	private final SearchService searchService;
 	private final EventEmitter eventEmitter;
 
-	@Autowired
+	
 	public CardController(CardRepository cardRepository, CardService cardService,
 			CardLabelRepository cardLabelRepository, BoardRepository boardRepository, ProjectService projectService,
 			BoardColumnRepository boardColumnRepository, StatisticsService statisticsService,

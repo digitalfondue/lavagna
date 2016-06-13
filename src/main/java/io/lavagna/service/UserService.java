@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PermissionService permissionService;
 
-	@Autowired
+	
 	public UserService(UserRepository userRepository, PermissionService permissionService) {
 		this.userRepository = userRepository;
 		this.permissionService = permissionService;

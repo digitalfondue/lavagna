@@ -38,7 +38,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -57,7 +56,7 @@ public class UserRepository {
     private final NamedParameterJdbcTemplate jdbc;
     private final UserQuery queries;
 
-    @Autowired
+    
     public UserRepository(NamedParameterJdbcTemplate jdbc, UserQuery queries) {
         this.jdbc = jdbc;
         this.queries = queries;

@@ -43,7 +43,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -61,7 +60,7 @@ class LavagnaExporter {
 	private final CardDataRepository cardDataRepository;
 	private final StatisticsQuery statisticsQuery;
 
-	@Autowired
+	
 	public LavagnaExporter(ConfigurationRepository configurationRepository, UserRepository userRepository,
 			PermissionService permissionService, ProjectService projectService,
 			CardLabelRepository cardLabelRepository, BoardRepository boardRepository,

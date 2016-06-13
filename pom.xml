@@ -137,7 +137,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>4.0.1</version>
+			<version>4.0.2</version>
 		</dependency>
 		<!-- -->
 		<dependency>
@@ -265,7 +265,7 @@
         <dependency>
             <groupId>net.sf.jopt-simple</groupId>
             <artifactId>jopt-simple</artifactId>
-            <version>5.0.1</version>
+            <version>5.0.2</version>
             <scope>provided</scope>
         </dependency>
         <!--  -->
@@ -289,8 +289,8 @@
 
 	<!-- -->
 	<properties>
-		<org.apache.logging.log4j.version>2.6</org.apache.logging.log4j.version>
-		<org.springframework.version>4.2.6.RELEASE</org.springframework.version>
+		<org.apache.logging.log4j.version>2.6.1</org.apache.logging.log4j.version>
+		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
 		<org.eclipse.jetty.version>9.2.17.v20160517</org.eclipse.jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>

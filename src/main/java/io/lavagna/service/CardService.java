@@ -42,7 +42,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +55,6 @@ public class CardService {
     private final CardDataService cardDataService;
     private final CardLabelRepository cardLabelRepository;
 
-    @Autowired
     public CardService(CardRepository cardRepository, CardDataRepository cardDataRepository,
         EventRepository eventRepository, CardDataService cardDataService, CardLabelRepository cardLabelRepository) {
         this.cardRepository = cardRepository;

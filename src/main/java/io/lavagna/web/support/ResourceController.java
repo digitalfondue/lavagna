@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -74,7 +73,6 @@ public class ResourceController {
 	private final AtomicReference<byte[]> cssCache = new AtomicReference<>();
 	private final String version;
 
-	@Autowired
 	public ResourceController(Environment env) {
 		this.env = env;
 		this.version = Version.version();

@@ -58,7 +58,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.reflect.TypeToken;
@@ -79,7 +78,7 @@ class LavagnaImporter {
 
 	private final ImportEvent importEvent;
 
-	@Autowired
+	
 	public LavagnaImporter(ConfigurationRepository configurationRepository, UserRepository userRepository,
 			PermissionService permissionService, ProjectService projectService, BoardRepository boardRepository,
 			BoardColumnRepository boardColumnRepository, CardLabelRepository cardLabelRepository,

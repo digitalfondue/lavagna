@@ -36,7 +36,6 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,7 +46,7 @@ public class Ldap {
 	private final ConfigurationRepository configurationRepository;
 	private final LdapConnection ldapConnection;
 
-	@Autowired
+	
 	public Ldap(ConfigurationRepository configurationRepository, LdapConnection ldapConnection) {
 		this.configurationRepository = configurationRepository;
 		this.ldapConnection = ldapConnection;

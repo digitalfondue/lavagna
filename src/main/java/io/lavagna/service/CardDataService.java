@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +42,6 @@ public class CardDataService {
     private final EventRepository eventRepository;
     private final CardDataRepository cardDataRepository;
 
-    @Autowired
     public CardDataService(EventRepository eventRepository, CardDataRepository cardDataRepository) {
         this.eventRepository = eventRepository;
         this.cardDataRepository = cardDataRepository;

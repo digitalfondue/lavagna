@@ -36,7 +36,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -71,7 +70,6 @@ public class CardDataRepository {
 	private final NamedParameterJdbcTemplate jdbc;
 	private final CardDataQuery queries;
 
-	@Autowired
 	public CardDataRepository(NamedParameterJdbcTemplate jdbc, CardDataQuery queries) {
 		this.jdbc = jdbc;
 		this.queries = queries;

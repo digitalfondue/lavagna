@@ -36,7 +36,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +52,7 @@ public class ExportImportController {
 	private final ExportImportService exportImportService;
 	private final ImportService importService;
 
-	@Autowired
+	
 	public ExportImportController(ExportImportService exportImportService, ImportService importService) {
 		this.exportImportService = exportImportService;
 		this.importService = importService;

@@ -43,7 +43,6 @@ import java.util.Set;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,7 +61,7 @@ public class SearchController {
     private static final Type LIST_OF_SEARCH_FILTERS = new TypeToken<List<SearchFilter>>() {
     }.getType();
 
-    @Autowired
+    
     public SearchController(UserRepository userRepository, CardRepository cardRepository,
         CardLabelRepository cardLabelRepository, SearchService searchService, ProjectService projectService) {
         this.userRepository = userRepository;

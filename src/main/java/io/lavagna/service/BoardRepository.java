@@ -28,7 +28,6 @@ import io.lavagna.query.BoardQuery;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +38,6 @@ public class BoardRepository {
 	private final BoardColumnRepository boardColumnRepository;
 	private final BoardQuery queries;
 
-	@Autowired
 	public BoardRepository(BoardQuery queries, BoardColumnRepository boardColumnRepository) {
 		this.boardColumnRepository = boardColumnRepository;
 		this.queries = queries;

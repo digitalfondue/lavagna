@@ -23,7 +23,6 @@ import io.lavagna.model.LabelListValue;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,6 @@ public class EventService {
 	private final EventRepository eventRepository;
 	private final CardLabelRepository labelRepository;
 
-	@Autowired
 	public EventService(EventRepository eventRepository, CardLabelRepository labelRepository) {
 		this.eventRepository = eventRepository;
 		this.labelRepository = labelRepository;

@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +53,7 @@ public class SetupController {
 	private final ExportImportService exportImportService2;
 	private final SetupService setupService;
 
-	@Autowired
+	
 	public SetupController(SetupService setupService, Ldap ldap, ExportImportService exportImportService2) {
 
 		this.ldap = ldap;

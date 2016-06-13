@@ -53,7 +53,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.RowMapper;
@@ -87,7 +86,7 @@ public class NotificationService {
     private final Template emailTextTemplate;
     private final Template emailHtmlTemplate;
 
-    @Autowired
+    
     public NotificationService(ConfigurationRepository configurationRepository, UserRepository userRepository,
         CardDataRepository cardDataRepository, CardRepository cardRepository,
         BoardColumnRepository boardColumnRepository, MessageSource messageSource, NamedParameterJdbcTemplate jdbc,

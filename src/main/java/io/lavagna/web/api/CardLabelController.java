@@ -39,7 +39,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +52,7 @@ public class CardLabelController {
 	private final EventEmitter eventEmitter;
 	private final ProjectService projectService;
 
-	@Autowired
+	
 	public CardLabelController(ProjectService projectService,
 			CardLabelRepository cardLabelRepository, EventEmitter eventEmitter) {
 		this.cardLabelRepository = cardLabelRepository;

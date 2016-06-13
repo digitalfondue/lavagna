@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,6 @@ public class ConfigurationRepository {
 
 	private final ConfigurationQuery queries;
 
-	@Autowired
 	public ConfigurationRepository(ConfigurationQuery queries) {
 		this.queries = queries;
 	}

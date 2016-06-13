@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,6 @@ public class ExportImportService {
 	private final LavagnaImporter importer;
 	private final LavagnaExporter exporter;
 
-	@Autowired
 	public ExportImportService(LavagnaExporter exporter, LavagnaImporter importer) {
 		this.importer = importer;
 		this.exporter = exporter;

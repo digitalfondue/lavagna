@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +51,7 @@ public class ProjectPermissionController {
 	private final EventEmitter eventEmitter;
 	private final ProjectService projectService;
 
-	@Autowired
+	
 	public ProjectPermissionController(PermissionService permissionService, EventEmitter eventEmitter,
 			ProjectService projectService) {
 		this.permissionService = permissionService;

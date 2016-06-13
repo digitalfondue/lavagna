@@ -48,7 +48,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +65,7 @@ public class ProjectController {
     private final SearchService searchService;
     private final BoardColumnRepository boardColumnRepository;
 
-    @Autowired
+    
     public ProjectController(ProjectService projectService, BoardRepository boardRepository, EventEmitter eventEmitter,
         StatisticsService statisticsService, SearchService searchService, BoardColumnRepository boardColumnRepository) {
         this.projectService = projectService;

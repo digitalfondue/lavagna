@@ -55,7 +55,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +73,6 @@ public class ImportService {
 	private final CardLabelRepository cardLabelRepository;
 	private final UserRepository userRepository;
 
-	@Autowired
 	public ImportService(EventEmitter eventEmitter, ProjectService projectService, BoardRepository boardRepository,
 			BoardColumnRepository boardColumnRepository, CardDataService cardDataService, CardService cardService,
 			LabelService labelService, CardLabelRepository cardLabelRepository, UserRepository userRepository) {

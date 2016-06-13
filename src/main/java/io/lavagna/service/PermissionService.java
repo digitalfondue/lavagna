@@ -41,7 +41,6 @@ import java.util.TreeMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class PermissionService {
     private final PermissionQuery queries;
     private final UserRepository userRepository;
 
-    @Autowired
+    
     public PermissionService(NamedParameterJdbcTemplate jdbc, PermissionQuery queries, UserRepository userRepository) {
         this.jdbc = jdbc;
         this.queries = queries;

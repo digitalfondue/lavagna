@@ -44,7 +44,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -63,7 +62,7 @@ public class ProjectService {
 	private final PermissionService permissionService;
 	private final ProjectQuery queries;
 
-	@Autowired
+	
 	public ProjectService(NamedParameterJdbcTemplate jdbc, ProjectQuery queries,
 			CardLabelRepository cardLabelRepository, PermissionService permissionService) {
 		this.jdbc = jdbc;

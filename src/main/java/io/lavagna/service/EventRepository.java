@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -47,7 +46,6 @@ public class EventRepository {
 
 	private static final int FEED_SIZE = 20;
 
-	@Autowired
 	public EventRepository(NamedParameterJdbcTemplate jdbc, EventQuery queries) {
 		this.jdbc = jdbc;
 		this.queries = queries;

@@ -36,7 +36,6 @@ import io.lavagna.web.helper.ExpectPermission;
 import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +52,7 @@ public class BoardController {
 	private final StatisticsService statisticsService;
 	private final EventEmitter eventEmitter;
 
-	@Autowired
+	
 	public BoardController(BoardRepository boardRepository, ProjectService projectService, SearchService searchService,
 			EventEmitter eventEmitter, StatisticsService statisticsService) {
 		this.boardRepository = boardRepository;

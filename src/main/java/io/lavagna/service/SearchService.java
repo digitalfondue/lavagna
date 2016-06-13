@@ -49,7 +49,6 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +73,7 @@ public class SearchService {
 	private final BoardRepository boardRepository;
 	private final SearchQuery queries;
 
-	@Autowired
+	
 	public SearchService(CardRepository cardRepository, CardService cardService, UserRepository userRepository,
 			ProjectService projectService, BoardRepository boardRepository, NamedParameterJdbcTemplate jdbc,
 			SearchQuery queries) {

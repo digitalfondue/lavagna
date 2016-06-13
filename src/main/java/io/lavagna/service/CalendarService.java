@@ -70,7 +70,6 @@ import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +86,6 @@ public class CalendarService {
     private final ProjectService projectService;
     private final CardLabelRepository cardLabelRepository;
 
-    @Autowired
     public CalendarService(ConfigurationRepository configurationRepository, SearchService searchService,
         UserService userService, UserRepository userRepository, CardDataService cardDataService,
         ProjectService projectService, CardLabelRepository cardLabelRepository) {

@@ -39,7 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +54,7 @@ public class LoginInfoController {
     private final ConfigurationRepository configurationRepository;
     private final OAuthLogin oauthLogin;
 
-    @Autowired
+    
     public LoginInfoController(ConfigurationRepository configurationRepository, OAuthLogin oauthLogin) {
         this.configurationRepository = configurationRepository;
         this.oauthLogin = oauthLogin;

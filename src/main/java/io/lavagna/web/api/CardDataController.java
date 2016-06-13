@@ -61,7 +61,6 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,7 +82,7 @@ public class CardDataController {
     private final EventEmitter eventEmitter;
     private final ConfigurationRepository configurationRepository;
 
-    @Autowired
+    
     public CardDataController(CardDataService cardDataService, CardDataRepository cardDataRepository,
         CardRepository cardRepository, ConfigurationRepository configurationRepository,
         EventRepository eventRepository, EventEmitter eventEmitter) {

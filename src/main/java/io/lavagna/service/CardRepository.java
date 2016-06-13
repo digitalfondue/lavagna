@@ -40,7 +40,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -57,7 +56,6 @@ public class CardRepository {
 	private final NamedParameterJdbcTemplate jdbc;
 	private final CardQuery queries;
 
-	@Autowired
 	public CardRepository(NamedParameterJdbcTemplate jdbc, CardQuery queries) {
 		this.jdbc = jdbc;
 		this.queries = queries;
