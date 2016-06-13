@@ -11,7 +11,8 @@
 			inProject: '=',
 			collectIdsByProject: '=',
 			triggerSearch: '=',
-			project: '<'
+			project: '<',
+			count: '<'
 		},
 		controller: function(BulkOperationModal) {
 			var ctrl = this;

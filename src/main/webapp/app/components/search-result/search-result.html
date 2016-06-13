@@ -21,6 +21,7 @@
                     </div>
 				</li>
 			</ul>
+			<div class="md-padding" ng-if="$ctrl.count === 0" translate>partials.fragments.search-result-fragment.nothingFound</div>
 			<div data-ng-if="$ctrl.totalPages > 1">
 				<lvg-pagination 
 				    total-pages="$ctrl.totalPages"
