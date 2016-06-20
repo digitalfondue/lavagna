@@ -24,3 +24,7 @@ lvg-admin-users table md-checkbox {
 lvg-admin-users th:last-child, lvg-admin-users td:last-child {
 	text-align:center;
 }
+
+lvg-admin-users tr:last-child th, lvg-admin-users tr:last-child td {
+	border-bottom:0;
+}

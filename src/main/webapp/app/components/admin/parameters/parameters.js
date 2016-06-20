@@ -8,12 +8,13 @@
             templateUrl: 'app/components/admin/parameters/parameters.html'
     });
 
-    function AdminParametersController(Admin, Notification) {
+    function AdminParametersController(Admin, Notification, $q) {
         var ctrl = this;
+        
+        var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'USE_HTTPS', 'EMAIL_NOTIFICATION_TIMESPAN'];
 
         var loadAll = function() {
             ctrl.configurable = {};
-            var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'USE_HTTPS', 'EMAIL_NOTIFICATION_TIMESPAN'];
             angular.forEach(configurableKeys, function(v) {
                 Admin.findByKey(v).then(function(res) {
                     ctrl.configurable[res.first] = res.second;
@@ -26,9 +27,37 @@
         };
 
         loadAll();
+        
+        ctrl.updateAllChangedConfiguration = function() {
+        	Admin.findAllConfiguration().then(function (res) {
+        		//fetch all changed keys
+        		var changedKey = [];
+        		angular.forEach(configurableKeys, function(k) {
+        			if(ctrl.configurable[k] !== res[k]) {
+        				changedKey.push(k);
+        			}
+        		});
+        		
+        		var updated = [];
+        		
+        		//update or delete
+        		angular.forEach(changedKey, function(k) {
+        			var promise;
+        			if(ctrl.configurable[k] === '' || ctrl.configurable[k] === null || ctrl.configurable[k] === undefined) {
+        				promise = deleteConfiguration(k);
+        			} else {
+        				promise = updateConfiguration(k, ctrl.configurable[k]);
+        			}
+        			updated.push(promise);
+        		});
+        		
+        		//trigger refresh
+        		$q.all(updated).then(loadAll)
+        	});
+        };
 
-        ctrl.updateConfiguration = function(k,v) {
-            Admin.updateKeyConfiguration(k,v).then(function() {
+        function updateConfiguration(k,v) {
+            return Admin.updateKeyConfiguration(k,v).then(function() {
                 Notification.addAutoAckNotification('success', {
                     key: 'notification.admin-parameters.updateConfiguration.success',
                     parameters: { parameterName : k }
@@ -38,11 +67,11 @@
                     key: 'notification.admin-parameters.updateConfiguration.error',
                     parameters: { parameterName : k }
                 }, false);
-            }).then(loadAll)
+            });
         };
 
-        ctrl.deleteConfiguration = function(k) {
-            Admin.deleteKeyConfiguration(k).then(function() {
+        function deleteConfiguration(k) {
+            return Admin.deleteKeyConfiguration(k).then(function() {
                 Notification.addAutoAckNotification('success', {
                     key: 'notification.admin-parameters.deleteConfiguration.success',
                     parameters: { parameterName : k }
@@ -52,7 +81,7 @@
                     key: 'notification.admin-parameters.deleteConfiguration.error',
                     parameters: { parameterName : k }
                 }, false);
-            }).then(loadAll)
+            });
         };
     };
 })();
