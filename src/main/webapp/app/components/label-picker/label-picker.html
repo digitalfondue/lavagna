@@ -1,35 +1,54 @@
-<span data-ng-switch="$ctrl.label.type">
-	<span data-ng-switch-when="NULL"></span>
-	<span data-ng-switch-when="STRING"><input type="text" class="form-control"	placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required></span>
-	<span data-ng-switch-when="INT"><input type="number" class="form-control" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required></span>
-	<span data-ng-switch-when="TIMESTAMP"><md-datepicker ng-model="$ctrl.model" required></md-datepicker></span>
-	<span data-ng-switch-when="CARD">
+<div layout="row" data-ng-switch="$ctrl.label.type">
+	<div data-ng-switch-when="NULL"></div>
+	<div data-ng-switch-when="STRING">
+        <md-input-container class="md-block">
+            <input type="text" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required>
+        </md-input-container>
+    </div>
+	<div data-ng-switch-when="INT">
+        <md-input-container class="md-block">
+            <input type="number" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required>
+        </md-input-container>
+    </div>
+	<div data-ng-switch-when="TIMESTAMP">
+        <md-datepicker ng-model="$ctrl.model" required></md-datepicker>
+    </div>
+	<div data-ng-switch-when="CARD">
 	   <!-- data-lvg-on-esc -->
-	   <md-autocomplete 
-	       required
-	       placeholder="{{'partials.fragments.label-pickers.card'|translate}}"
-	       md-no-cache="true" 
-	       md-selected-item="$ctrl.model"
-	       md-search-text="cardSearchText"
-	       md-item-text="card.label"
-	       md-items="card in $ctrl.searchCard(cardSearchText)">
-	       <md-item-template>{{card.label}}</md-item-template>
-        </md-autocomplete>
-    </span>
-	<span data-ng-switch-when="USER">
-	   <md-autocomplete
-	       required
-	       placeholder="{{'partials.fragments.label-pickers.user'|translate}}"
-	       md-no-cache="true"
-	       md-selected-item="$ctrl.model"
-	       md-search-text="userSearchText"
-	       md-item-text="user.label"
-	       md-items="user in $ctrl.searchUser(userSearchText)">
-	       <md-item-template>{{user.label}}</md-item-template>
-	   </md-autocomplete>
-    </span>
-	<span data-ng-switch-when="LIST">
-		<select data-ng-if="$ctrl.group === undefined" class="form-control" data-ng-model="$ctrl.model" data-ng-options="l.value for l in $ctrl.listValues" required></select>
-		<select data-ng-if="$ctrl.group !== undefined" class="form-control" data-ng-model="$ctrl.model" data-ng-options="l.value group by l.metadata[group] for l in $ctrl.listValues" required></select>
-	</span>
-</span>
+        <md-input-container class="md-block">
+           <md-autocomplete
+               required
+               placeholder="{{'partials.fragments.label-pickers.card'|translate}}"
+               md-no-cache="true"
+               md-selected-item="$ctrl.model"
+               md-search-text="cardSearchText"
+               md-item-text="card.label"
+               md-items="card in $ctrl.searchCard(cardSearchText)">
+               <md-item-template>{{card.label}}</md-item-template>
+            </md-autocomplete>
+        </md-input-container>
+    </div>
+	<div data-ng-switch-when="USER">
+        <md-input-container class="md-block">
+           <md-autocomplete
+               required
+               placeholder="{{'partials.fragments.label-pickers.user'|translate}}"
+               md-no-cache="true"
+               md-selected-item="$ctrl.model"
+               md-search-text="userSearchText"
+               md-item-text="user.label"
+               md-items="user in $ctrl.searchUser(userSearchText)">
+               <md-item-template>{{user.label}}</md-item-template>
+           </md-autocomplete>
+        </md-input-container>
+    </div>
+	<div data-ng-switch-when="LIST">
+        <md-input-container>
+            <md-select ng-model="$ctrl.model">
+                <md-option ng-value="item" ng-repeat="item in $ctrl.listValues">
+                    {{item.value}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+	</div>
+</div>

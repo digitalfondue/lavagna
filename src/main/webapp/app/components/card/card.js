@@ -12,8 +12,7 @@
             card: '=',
             user: '='
         },
-        controller: CardController,
-        controllerAs: 'cardCtrl'
+        controller: CardController
     });
 
     function CardController($scope, $rootScope, $timeout, CardCache, Card, User, LabelCache, Label, StompClient,
@@ -194,11 +193,6 @@
             BulkOperations.removeAssign(currentCard(), {id: user.value.valueUser});
         };
 
-        ctrl.addNewLabel = function(labelToAdd) {
-            var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
-            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
-        };
-
         //-- file upload
         var loadFiles = function() {
             Card.files(card.id).then(function(files) {
@@ -350,6 +344,20 @@
             });
         };
         loadLabelValues();
+
+        var loadActionLists = function() {
+            Card.actionLists(card.id).then(function(actionLists) {
+                ctrl.actionLists = [];
+
+                for(var i = 0; i < actionLists.lists.length; i++) {
+                    var actionList = actionLists.lists[i];
+                    actionList.items = actionLists.items[actionList.id] || [];
+                    actionList.items.referenceId = actionList.id;
+                    ctrl.actionLists.push(actionList);
+                }
+            });
+        };
+        loadActionLists();
         // ----
 
         //the /card-data has various card data related event that are pushed from the server that we must react
@@ -359,7 +367,8 @@
                 loadComments();
                 reloadCard();
             } else if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
-                loadActionListsAndRefresh();
+                loadActionLists();
+                reloadCard();
             } else if(type.indexOf('LABEL') > -1) {
                 loadLabelValues();
                 reloadCard();

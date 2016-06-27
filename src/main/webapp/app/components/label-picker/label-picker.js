@@ -14,13 +14,13 @@
 		},
 		controller: function (LabelCache, User, $scope, $http) {
 			var ctrl = this;
-			
-			
+
+
 			ctrl.searchCard = function(text) {
 				var params = {term: text.trim()};
 				params.projectName = $ctrl.projectName
-				
-				
+
+
 				return $http.get('api/search/autocomplete-card', {params: params}).then(function (res) {
 					angular.forEach(res.data, function(card) {
 						card.label = card.boardShortName + "-" + card.sequence + " " + card.name;
@@ -28,18 +28,18 @@
 					return res.data;
 				});
 			};
-			
+
 			ctrl.searchUser = function(text) {
-				return User.findUsers(text.trim()).then(function (res) { 
+				return User.findUsers(text.trim()).then(function (res) {
 					angular.forEach(res, function(user) {
 						user.label = User.formatName(user);
 					});
 					return res;
 				});
 			};
-			
-			
-			
+
+
+
 			$scope.$watch('$ctrl.label', function () {
 				ctrl.model = null;
 				ctrl.listValues = null;
@@ -49,9 +49,10 @@
 					});
 				}
 			});
+
 		}
 	});
-	
+
 })();
 
 

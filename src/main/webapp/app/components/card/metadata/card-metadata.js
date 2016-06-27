@@ -142,6 +142,11 @@
         };
         loadLabelValues();
 
+        ctrl.addNewLabel = function(labelToAdd) {
+            var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
+            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
+        };
+
         ctrl.updateDescription = function(description) {
             Card.updateDescription(ctrl.card.id, description);
         };

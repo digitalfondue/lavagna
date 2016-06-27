@@ -57,10 +57,5 @@
             })
         };
 
-        ctrl.addNewLabel = function(labelToAdd) {
-            var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
-            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
-        };
-
     };
 })();

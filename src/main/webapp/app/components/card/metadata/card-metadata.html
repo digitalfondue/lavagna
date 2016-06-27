@@ -99,7 +99,7 @@
                                 <md-icon md-svg-icon="close"></md-icon>
                             </md-button>
                         </span>
-                        <span data-lvg-has-permission="UPDATE_CARD">
+                        <span class="lvg-card-metadata__item-due-date" data-lvg-has-permission="UPDATE_CARD">
                             <md-tooltip>{{'card.metadata.due.by.edit.tooltip' | translate}}</md-tooltip>
                             <md-datepicker
                                 ng-model="dueDate"
@@ -236,11 +236,52 @@
                     </div>
                 </div>
             </div>
-            <div layout="row" flex="100">
+            <div layout="row" flex="100" class="lvg-card-metadata__item">
                 <lvg-card-metadata-labels
                     card="$ctrl.card"
                     project="$ctrl.project"
                     label-values="$ctrl.labelValues"></lvg-card-metadata-labels>
+                <div data-lvg-has-permission="UPDATE_CARD" data-ng-hide="addLabelPanel">
+                    <md-button data-ng-click="addLabelPanel=true"
+                               md-no-ink
+                               class="md-icon-button lvg-card-metadata__label-add-button">
+                        <md-tooltip>{{'card.metadata.label.add.tooltip' | translate}}</md-tooltip>
+                        <md-icon md-menu-origin md-svg-icon="add"></md-icon>
+                    </md-button>
+                </div>
+                <div class="lvg-card-metadata__label-add lvg-card-metadata__label-add-panel" data-ng-show="addLabelPanel">
+                    <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
+                        <div layout="row" layout-fill>
+                            <div flex>
+                                <md-input-container>
+                                    <md-select flex
+                                               class="lvg-card-metadata__item-status-select"
+                                               md-container-class="lvg-card-metadata__label-add-md-select"
+                                               ng-model="labelToAdd.label"
+                                               ng-change="labelToAdd.value = undefined">
+                                            <md-option ng-value="l"
+                                                       ng-repeat="(n,l) in ($ctrl.userLabels | uniqueLabels: $ctrl.labelValues | orderObjectBy:'name')">
+                                                {{l.name}}
+                                            </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div>
+                                <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="$ctrl.board.shortName" project-name="$ctrl.project.shortName"></lvg-label-picker>
+                            </div>
+                            <div flex="nogrow">
+                                <md-button class="md-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
+                                    <md-icon md-svg-icon="ok"></md-icon>
+                                </md-button>
+                            </div>
+                            <div flex="nogrow">
+                                <md-button class="md-icon-button" ng-click="addLabelPanel=false;labelToAdd = null">
+                                    <md-icon md-svg-icon="close"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 

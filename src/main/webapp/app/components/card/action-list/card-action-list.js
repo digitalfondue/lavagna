@@ -10,7 +10,6 @@
             handle: 'handle'
         },
         controller: CardActionListController,
-        controllerAs: 'alCtrl',
         templateUrl: 'app/components/card/action-list/card-action-list.html'
     });
 
