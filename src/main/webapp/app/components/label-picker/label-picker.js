@@ -12,20 +12,19 @@
 			group: '=',
 			projectName: '<'
 		},
-		controller: function (LabelCache, User, $scope, $http) {
+		controller: function (LabelCache, User, Search, $scope) {
 			var ctrl = this;
 
 
 			ctrl.searchCard = function(text) {
 				var params = {term: text.trim()};
-				params.projectName = ctrl.projectName
+				params.projectName = ctrl.projectName;
 
-
-				return $http.get('api/search/autocomplete-card', {params: params}).then(function (res) {
-					angular.forEach(res.data, function(card) {
+				return Search.autoCompleteCard(params).then(function (cards) {
+					angular.forEach(cards, function(card) {
 						card.label = card.boardShortName + "-" + card.sequence + " " + card.name;
 					});
-					return res.data;
+					return cards;
 				});
 			};
 

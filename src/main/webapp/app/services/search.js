@@ -431,6 +431,10 @@
 		}
 	}
 
+	var extractData = function (data) {
+        return data.data
+    };
+
 	angular.module('lavagna.services').factory('Search', function ($http, $q, $log) {
 		return {
 			buildSearchFilter: function (criteria, columns, currentUserId) {
@@ -446,6 +450,9 @@
 				}
 				$log.debug(filtered);
 				return filtered;
+			},
+			autoCompleteCard: function(params) {
+			    return $http.get('api/search/autocomplete-card', {params: params}).then(extractData);
 			}
 		};
 	});
