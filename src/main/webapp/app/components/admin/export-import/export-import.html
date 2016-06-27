@@ -1,11 +1,11 @@
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
 	<md-content layout-padding>
-		<h2 class="title-with-no-bottom-space" translate>partials.admin.export-import.export</h2>
+		<h2 class="md-title" translate>partials.admin.export-import.export</h2>
 			<form ng-submit="$ctrl.doExport()">
 				<p><md-button class="md-raised md-primary" type="submit"><span translate>partials.admin.export-import.exportButton</span></md-button></p>
 			</form>
 		<md-divider ></md-divider>
-		<h2 class="title-with-no-bottom-space" translate>partials.admin.export-import.import</h2>
+		<h2 class="md-title" translate>partials.admin.export-import.import</h2>
 		<form ng-submit="$ctrl.doImport()">
 			<div ng-file-select="$ctrl.onFileSelect($files)"><md-button class="md-raised md-primary"><span translate>button.fileSelect</span></md-button></div>
 			<p ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.name"></p>

@@ -18,7 +18,7 @@
 
 			ctrl.searchCard = function(text) {
 				var params = {term: text.trim()};
-				params.projectName = $ctrl.projectName
+				params.projectName = ctrl.projectName
 
 
 				return $http.get('api/search/autocomplete-card', {params: params}).then(function (res) {
