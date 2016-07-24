@@ -144,15 +144,17 @@ public class NotificationServiceTest {
 
 	@Test
 	public void sendEmailTest() {
+		
+		Date creationDate = DateUtils.addMinutes(new Date(), -3);
 
 		labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
-				null, null, null, user.getId(), null), user, new Date());
+				null, null, null, user.getId(), null), user, creationDate);
 		labelService.addLabelValueToCard(watchedLabel.getId(), card2.getId(), new CardLabelValue.LabelValue(null, null,
-				null, null, user.getId(), null), user, new Date());
+				null, null, user.getId(), null), user, creationDate);
 
-		cardDataService.createComment(card1.getId(), "first comment", new Date(), user.getId());
+		cardDataService.createComment(card1.getId(), "first comment", creationDate, user.getId());
 
-		cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), user.getId());
+		cardDataService.createComment(card2.getId(), "first comment on card 2", creationDate, user.getId());
 
 		MailConfig mc = mock(MailConfig.class);
 		when(mc.isMinimalConfigurationPresent()).thenReturn(true);
@@ -167,17 +169,19 @@ public class NotificationServiceTest {
 
     @Test
     public void sendEmailTestWithoutMyEvents() {
+    	
+    	Date creationDate = DateUtils.addMinutes(new Date(), -3);
 
         userRepository.updateProfile(user, user.getEmail(), user.getDisplayName(), true, true);
 
         labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
-            null, null, null, user.getId(), null), user, new Date());
+            null, null, null, user.getId(), null), user, creationDate);
         labelService.addLabelValueToCard(watchedLabel.getId(), card2.getId(), new CardLabelValue.LabelValue(null, null,
-            null, null, user.getId(), null), user, new Date());
+            null, null, user.getId(), null), user, creationDate);
 
-        cardDataService.createComment(card1.getId(), "first comment", new Date(), user.getId());
+        cardDataService.createComment(card1.getId(), "first comment", creationDate, user.getId());
 
-        cardDataService.createComment(card2.getId(), "first comment on card 2", new Date(), otherUser.getId());
+        cardDataService.createComment(card2.getId(), "first comment on card 2", creationDate, otherUser.getId());
 
         MailConfig mc = mock(MailConfig.class);
         when(mc.isMinimalConfigurationPresent()).thenReturn(true);
