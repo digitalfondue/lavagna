@@ -17,7 +17,7 @@ Lavagna
 
 [Lavagna](http://lavagna.io) is a small and easy to use issue/project tracking software.
 
-It requires Java 7 or better and optionally a database: MySQL (5.1 or better) or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
+It requires Java 7 or better and optionally a database: MySQL, MariaDB or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
 See:
 
@@ -28,7 +28,7 @@ See:
 
 ## Install ##
 
-Lavagna supports MySQL (at least 5.1) and PostgreSQL (tested on 9.1) and HSQLDB (for small deploy).
+Lavagna supports MySQL (at least 5.1), MariaDB (tested on 10.1), PostgreSQL (tested on 9.1) and HSQLDB (for small deploy).
 
 It's distributed in 2 forms:
 
