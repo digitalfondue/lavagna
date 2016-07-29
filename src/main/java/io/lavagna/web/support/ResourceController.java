@@ -187,7 +187,7 @@ public class ResourceController {
 			data.put("contextPath", request.getServletContext().getContextPath() + "/");
 
 			data.put("version", version);
-			
+
 			List<String> inlineTemplates = prepareTemplates(context, "/app/");
 			inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
 			data.put("inlineTemplates", inlineTemplates);
@@ -241,6 +241,7 @@ public class ResourceController {
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
+                    "/js/angular-avatar.min.js",//
 
 					"/js/spectrum.js", //
 					"/js/search-parser.js",//
@@ -283,13 +284,13 @@ public class ResourceController {
 				.toJson(fromResources(resources))).getBytes(StandardCharsets.UTF_8));
 		ba.after("i18n", context, os);
 	}
-	
+
 	private static Map<String, Map<Object, Object>> fromResources(Resource[] resources) throws IOException {
 
 		Pattern extractLanguage = Pattern.compile("^messages_(.*)\\.properties$");
 
 		Map<String, Map<Object, Object>> langs = new HashMap<>();
-		
+
 		String version = Version.version();
 
 		for (Resource res : resources) {
