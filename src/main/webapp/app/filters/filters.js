@@ -82,6 +82,18 @@
 		};
 	});
 
+	filters.filter('userInitials', function ($filter) {
+        return function (user) {
+            if (user === undefined) {
+                return null;
+            }
+            if (user.displayName != null) {
+                return user.displayName.charAt(0).toUpperCase();
+            }
+            return user.username.charAt(0).toUpperCase();
+        };
+    });
+
 	filters.filter('dateIncremental', function ($filter, $cacheFactory) {
 		return decorateCache(function (v) {
 			if (v === undefined || v === null) {
@@ -120,7 +132,7 @@
 			if (color === undefined || color === null) {
 				return '';
 			}
-			
+
 			var lpad = function (value, padding) {
 				var zeroes = "0";
 				for (var i = 0; i < padding; i++) {
@@ -216,11 +228,11 @@
 	/* expecting dueDate with format: dd.MM.yyyy and dueDateTime with format HH:mm */
 	filters.filter('extractISO8601Date', function ($filter) {
 		return function (dueDate, dueDateTime) {
-			
+
 			if(dueDate instanceof Date) {
 				return $filter('date')(dueDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
 			}
-			
+
 			try {
 
 				var isDueDateTimeUndefined = dueDateTime === undefined;

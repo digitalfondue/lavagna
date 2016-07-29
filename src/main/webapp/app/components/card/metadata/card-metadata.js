@@ -7,7 +7,10 @@
             board: '<',
             project: '<',
             user: '<',
-            labelValues: '<'
+            milestones: '<',
+            dueDates: '<',
+            labelValues: '<',
+            userLabels: '<'
         },
         controller: CardMetadataController,
         templateUrl: 'app/components/card/metadata/card-metadata.html'
@@ -115,33 +118,6 @@
 
         loadDescription();
 
-        ctrl.labelNameToId = {};
-
-        var loadLabel = function() {
-            LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(labels) {
-                ctrl.labels = labels;
-                ctrl.userLabels = {};
-                ctrl.labelNameToId = {};
-                for(var k in labels) {
-                    ctrl.labelNameToId[labels[k].name] = k;
-                    if(labels[k].domain === 'USER') {
-                        ctrl.userLabels[k] = labels[k];
-                    }
-                }
-            });
-        };
-        loadLabel();
-
-        var unbind = $rootScope.$on('refreshLabelCache-' + ctrl.project.shortName, loadLabel);
-        $scope.$on('$destroy', unbind);
-
-        var loadLabelValues = function() {
-            Label.findValuesByCardId(ctrl.card.id).then(function(labelValues) {
-                ctrl.labelValues = labelValues;
-            });
-        };
-        loadLabelValues();
-
         ctrl.addNewLabel = function(labelToAdd) {
             var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
             BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
@@ -183,8 +159,6 @@
             var type = JSON.parse(e.body).type;
             if(type === 'UPDATE_DESCRIPTION') {
                 loadDescription();
-            } else if(type.indexOf('LABEL') > -1) {
-                loadLabelValues();
             }
         });
 

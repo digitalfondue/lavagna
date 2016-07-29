@@ -3,8 +3,8 @@
 
     angular.module('lavagna.components').component('lvgCardActionLists', {
         bindings: {
-                    actionLists: '=',
-                    card: '='
+                    actionLists: '<',
+                    card: '<'
         },
         controller: CardActionListsController,
         templateUrl: 'app/components/card/action-lists/card-action-lists.html'
@@ -27,7 +27,7 @@
         };
 
         ctrl.addActionList = function(actionList) {
-            Card.addActionList(card.id, actionList).then(function() {
+            Card.addActionList(ctrl.card.id, actionList).then(function() {
                 actionList = null;
             });
         };

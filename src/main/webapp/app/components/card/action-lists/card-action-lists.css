@@ -6,3 +6,15 @@
 .lvg-card-action-lists__new-list {
     padding: 0 0 0 10px;
 }
+
+.lvg-card-action-list__handle {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
+
+.sv-helper .lvg-card-action-list__handle {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+}

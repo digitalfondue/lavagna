@@ -28,7 +28,7 @@
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize',
 			'pascalprecht.translate',
-			'angularFileUpload', 'ngMaterial', 'angular-sortable-view']);
+			'angularFileUpload', 'ngMaterial', 'angular-sortable-view', 'ngAvatar']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));
@@ -98,22 +98,43 @@
         $translateProvider.useSanitizeValueStrategy('escape');
 
 		var cardCtrlResolver = {
-				card : function(CardCache, $stateParams) {
-					return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
-				},
-				project : function(ProjectCache, $stateParams) {
-					return ProjectCache.project($stateParams.projectName);
-				},
-				board : function(BoardCache, $stateParams) {
-					return BoardCache.board($stateParams.shortName);
-				},
-				user: function(User) {
-					return User.currentCachedUser();
-				},
-				metadata : function(ProjectCache, $stateParams) {
-				    return ProjectCache.metadata($stateParams.projectName);
-				}
+            card : function(CardCache, $stateParams) {
+                return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
+            },
+            project : function(ProjectCache, $stateParams) {
+                return ProjectCache.project($stateParams.projectName);
+            },
+            board : function(BoardCache, $stateParams) {
+                return BoardCache.board($stateParams.shortName);
+            },
+            user: function(User) {
+                return User.currentCachedUser();
+            },
+            metadata : function(ProjectCache, $stateParams) {
+                return ProjectCache.metadata($stateParams.projectName);
+            }
 		};
+
+		var cardProjectResolver = {
+            board : function(BoardCache, $stateParams) {
+                return BoardCache.board($stateParams.shortName);
+            },
+            card : function(CardCache, $stateParams) {
+                return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
+            },
+            metadata : function(ProjectCache, $stateParams) {
+                return ProjectCache.metadata($stateParams.projectName);
+            }
+        };
+
+		var cardResolver = {
+            card : function(CardCache, $stateParams) {
+                return CardCache.cardByBoardShortNameAndSeqNr($stateParams.shortName, $stateParams.seqNr);
+            },
+            metadata : function(ProjectCache, $stateParams) {
+                return ProjectCache.metadata($stateParams.projectName);
+            }
+        };
 
 		var projectResolver = {
 			project : function(ProjectCache, $stateParams) {
@@ -125,14 +146,14 @@
 		};
 
 		var boardResolver = {
-            project : function(ProjectCache, $stateParams) {
+		    project : function(ProjectCache, $stateParams) {
                 return ProjectCache.project($stateParams.projectName);
+            },
+            user: function(User) {
+                return User.currentCachedUser();
             },
             board : function(BoardCache, $stateParams) {
                 return BoardCache.board($stateParams.shortName);
-            },
-            user : function(User) {
-            	return User.currentCachedUser();
             }
 		};
 
@@ -152,9 +173,9 @@
 		};
 
 		var titleServiceResolver = {
-				Title : function(Title) {
-					return Title;
-				}
+            Title : function(Title) {
+                return Title;
+            }
 		};
 
 		$stateProvider.state('home', {
@@ -167,12 +188,12 @@
 		})
 		.state('home.dashboard', {
 		    url: '',
-		    template: '<lvg-dashboard user="userResolver.user"></lvg-dashboard>',
+		    template: '<lvg-dashboard user="rslvr.user"></lvg-dashboard>',
 		    resolve : currentUserResolver,
 		    controller: function(user) {
                 this.user = user;
             },
-            controllerAs: 'userResolver',
+            controllerAs: 'rslvr',
 		})
 		//---- ABOUT ----
 		.state('about', {
@@ -194,13 +215,13 @@
 		//---- ACCOUNT ----
 		.state('account', {
 			url :'/me/',
-			template: '<lvg-account username="accountResolver.username" provider="accountResolver.provider" is-current-user="accountResolver.isCurrentUser"></lvg-account>',
+			template: '<lvg-account username="rslvr.username" provider="rslvr.provider" is-current-user="rslvr.isCurrentUser"></lvg-account>',
 			controller: function(user) {
                 this.username = user.username;
                 this.provider = user.provider;
                 this.isCurrentUser = true;
             },
-            controllerAs: 'accountResolver',
+            controllerAs: 'rslvr',
             resolve : currentUserResolver,
             onEnter: function(Title) {
             	Title.set('title.account');
@@ -215,27 +236,27 @@
                 this.provider = user.user.provider;
                 this.isCurrentUser = isCurrentUser;
             },
-            controllerAs: 'userResolver',
+            controllerAs: 'rslvr',
             resolve : userResolver,
             onEnter: function(Title, user) {
             	Title.set('title.user.profile', { username: user.user.username });
             }
 		}).state('user.dashboard', {
             url :'',
-            template : '<lvg-user-dashboard profile="userResolver.user"></lvg-user-dashboard>'
+            template : '<lvg-user-dashboard profile="rslvr.user"></lvg-user-dashboard>'
         }).state('user.projects', {
         	url :'projects/',
-            template : '<lvg-user-projects profile="userResolver.user"></lvg-user-projects>'
+            template : '<lvg-user-projects profile="rslvr.user"></lvg-user-projects>'
         }).state('user.activity', {
         	url :'activity/',
-            template : '<lvg-user-activity profile="userResolver.user"></lvg-user-activity>'
+            template : '<lvg-user-activity profile="rslvr.user"></lvg-user-activity>'
         })
 		//---- SEARCH ----
 		.state('globalSearch', {
 			url : '/search/?q&page',
-			template : '<lvg-search user="globalSearchResolver.user"></lvg-search>',
+			template : '<lvg-search user="rslvr.user"></lvg-search>',
 			reloadOnSearch: false,
-			controllerAs : 'globalSearchResolver',
+			controllerAs : 'rslvr',
 			resolve : currentUserResolver,
 			controller: function(Title, user) {
 			    Title.set('title.search');
@@ -243,15 +264,16 @@
 			}
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
-            controller : function(Title, card, project, board, user) {
+			template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
+            controller : function(Title, card, project, board, user, metadata, labels) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
                 this.user = user;
+                project.metadata = metadata;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
-            controllerAs : 'cardCtrlResolver',
+            controllerAs : 'rslvr',
             resolve : cardCtrlResolver
 		})
 		//---- ADMIN ----
@@ -280,11 +302,11 @@
 			template : '<lvg-admin-users></lvg-admin-users>'
 		}).state('admin.login', {
 			url: 'login/',
-			template: '<lvg-admin-login oauth-providers="adminLoginRslvr.oauthProviders"></lvg-admin-login>',
+			template: '<lvg-admin-login oauth-providers="rslvr.oauthProviders"></lvg-admin-login>',
 			controller: function(oauthProviders) {
 			    this.oauthProviders = oauthProviders;
 			},
-			controllerAs: 'adminLoginRslvr',
+			controllerAs: 'rslvr',
 			resolve: {'oauthProviders' : function(Admin) {return Admin.findAllOauthProvidersInfo();}}
 		}).state('admin.smtp', {
 			url : 'smtp/',
@@ -299,35 +321,35 @@
           	controller : function(project) {
                 this.project = project;
           	},
-          	controllerAs: 'projectResolver',
+          	controllerAs: 'rslvr',
           	resolve: projectResolver,
           	onEnter:function(Title, project) {
           		Title.set('title.project.manage', { shortname: project.shortName });
           	}
         }).state('projectManage.roles', {
 			url : 'roles/',
-			template: '<lvg-manage-roles project="projectResolver.project"></lvg-manage-roles>'
+			template: '<lvg-manage-roles project="rslvr.project"></lvg-manage-roles>'
 		}).state('projectManage.import', {
 			url : 'import/',
-			template : '<lvg-project-manage-import project="projectResolver.project"></lvg-project-manage-import>'
+			template : '<lvg-project-manage-import project="rslvr.project"></lvg-project-manage-import>'
 		}).state('projectManage.labels', {
 			url : 'labels/',
-			template : '<lvg-project-manage-labels project="projectResolver.project"></lvg-project-manage-labels>'
+			template : '<lvg-project-manage-labels project="rslvr.project"></lvg-project-manage-labels>'
 		}).state('projectManage.milestones', {
 			url : 'milestones/',
-			template: '<lvg-project-manage-milestones project="projectResolver.project"></lvg-project-manage-milestones>'
+			template: '<lvg-project-manage-milestones project="rslvr.project"></lvg-project-manage-milestones>'
 		}).state('projectManage.access', {
 			url : 'access/',
-			template: '<lvg-project-manage-access project="projectResolver.project"></lvg-project-manage-access>'
+			template: '<lvg-project-manage-access project="rslvr.project"></lvg-project-manage-access>'
 		}).state('projectManage.status', {
 			url : 'status/',
-			template: '<lvg-project-manage-status project="projectResolver.project"></lvg-project-manage-status>'
+			template: '<lvg-project-manage-status project="rslvr.project"></lvg-project-manage-status>'
 		}).state('projectManage.boards', {
 			url : 'boards/',
-			template : '<lvg-project-manage-boards project="projectResolver.project"></lvg-project-manage-boards>'
+			template : '<lvg-project-manage-boards project="rslvr.project"></lvg-project-manage-boards>'
 		}).state('projectManage.project', {
 			url : '',
-			template: '<lvg-project-manage-project project="projectResolver.project"></lvg-project-manage-project>',
+			template: '<lvg-project-manage-project project="rslvr.project"></lvg-project-manage-project>',
 		})
 
 		//---- PROJECT ----
@@ -339,70 +361,72 @@
                 this.user = user;
                 Title.set('title.project', { shortname: project.shortName, name: project.name });
             },
-            controllerAs: 'projectResolver',
+            controllerAs: 'rslvr',
             resolve : projectResolver,
             templateUrl: 'app/components/project/project.html'
 		})
 		.state('project.boards', {
 			url: '',
-			template: '<lvg-project-boards project="projectResolver.project" user="projectResolver.user"></lvg-project-boards>'
+			template: '<lvg-project-boards project="rslvr.project" user="rslvr.user"></lvg-project-boards>'
 		}).state('project.statistics', {
 			url: 'statistics/',
-			template: '<lvg-project-statistics project="projectResolver.project"></lvg-project-statistics>'
+			template: '<lvg-project-statistics project="rslvr.project"></lvg-project-statistics>'
 		}).state('project.milestones', {
             url : 'milestones/',
-            template: '<lvg-project-milestones project="projectResolver.project"></lvg-project-milestones>'
+            template: '<lvg-project-milestones project="rslvr.project"></lvg-project-milestones>'
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-            template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
-            controller : function(Title, card, project, board, user) {
+            template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
+            controller : function(Title, card, project, board, user, metadata, labels) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
                 this.user = user;
+                project.metadata = metadata;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
-            controllerAs : 'cardCtrlResolver',
-            resolve : cardCtrlResolver
+            controllerAs : 'rslvr',
+            resolve : cardProjectResolver
         })
 
         //---- PROJECT SEARCH ----
         .state('projectSearch', {
 			url : '/:projectName/search/?q&page',
-			template : '<lvg-search project="searchResolver.project" user="searchResolver.user"></lvg-search>',
+			template : '<lvg-search project="rslvr.project" user="rslvr.user"></lvg-search>',
 			reloadOnSearch: false,
 			controller: function(Title, project, user) {
 			    this.project = project;
 			    this.user = user;
 			    Title.set('title.project', { shortname: project.shortName, name: project.name });
 			},
-			controllerAs: 'searchResolver',
+			controllerAs: 'rslvr',
 			resolve: projectResolver
 		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
-			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
+			template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
                 this.user = user;
+                project.metadata = metadata;
                 Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
             },
-            controllerAs : 'cardCtrlResolver',
-            resolve : cardCtrlResolver
+            controllerAs : 'rslvr',
+            resolve : cardProjectResolver
 		})
 
 		//---- BOARD ----
 		.state('board', {
             url : '/:projectName/{shortName:[A-Z0-9_]+}?q',
             reloadOnSearch: false,
-            template : '<lvg-board project="boardCtrlResolver.project" board="boardCtrlResolver.board" user-reference="::boardCtrlResolver.user"></lvg-board>',
+            template : '<lvg-board project="rslvr.project" board="rslvr.board" user-reference="::rslvr.user"></lvg-board>',
             controller : function(project, board, user) {
                 this.project = project;
                 this.board = board;
                 this.user = user;
             },
-            controllerAs: 'boardCtrlResolver',
+            controllerAs: 'rslvr',
             resolve : boardResolver,
             onEnter: function(Title, project, board) {
             	Title.set('title.board', { projectshortname: project.shortName, shortname: board.shortName, name: board.name });
@@ -410,7 +434,7 @@
 		})
 		.state('board.card', {
 			url : '-{seqNr:[0-9]+}/',
-			template : '<lvg-card-modal project="cardCtrlResolver.project" board="cardCtrlResolver.board" card="cardCtrlResolver.card" user="cardCtrlResolver.user"></lvg-card-modal>',
+			template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
 			controller : function(card, project, board, user, metadata) {
 			    project.metadata = metadata;
 			    this.card = card;
@@ -418,8 +442,8 @@
 			    this.project = project;
 			    this.user = user;
 			},
-			controllerAs : 'cardCtrlResolver',
-			resolve : cardCtrlResolver,
+			controllerAs : 'rslvr',
+			resolve : cardResolver,
 			onEnter: function(Title, board, card) {
 				Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
 			},
@@ -476,6 +500,8 @@
 			.icon('file', 				'svg/ic_insert_drive_file_black_48px.svg')
 			.icon('list', 				'svg/ic_list_black_48px.svg')
 			.icon('clock', 				'svg/ic_access_time_black_48px.svg')
+			.icon('notifications',      'svg/ic_notifications_black_48px.svg')
+			.icon('notifications-off',  'svg/ic_notifications_off_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

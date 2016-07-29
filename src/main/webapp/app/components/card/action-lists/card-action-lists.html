@@ -1,7 +1,7 @@
 <form data-ng-role="form"
       data-ng-submit="$ctrl.addActionList(newActionList);"
       data-lvg-has-permission="MANAGE_ACTION_LIST">
-    <div layout="row">
+    <div layout="row" layout-wrap>
         <div flex class="lvg-card-action-lists__new-list">
             <md-input-container md-no-float class="lvg-card-action-lists__new-list-input">
                 <input ng-model="newActionList" placeholder="{{'card.newList.placeholder'|translate}}">
@@ -23,7 +23,7 @@
         ng-repeat="actionList in $ctrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
         <lvg-card-action-list card="$ctrl.card"
                               action-list="actionList">
-            <handle><md-icon md-svg-icon="drag" sv-handle></md-icon></handle>
+            <handle><md-icon class="lvg-card-action-list__handle" md-svg-icon="drag" sv-handle></md-icon></handle>
         </lvg-card-action-list>
     </li>
 </ul>

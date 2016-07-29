@@ -1,0 +1,10 @@
+<div class="lvg-card-people-user" ng-if="$ctrl.user" layout="row" layout-align="start center">
+    <ng-avatar class="lvg-card-people-user__avatar" bg-color="#e5e5e5" color="#333" round-shape="true" initials="{{::($ctrl.user) | userInitials}}" flex></ng-avatar>
+    <a class="lvg-card-people-user__link"
+       ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})"
+       data-ng-class="{'lvg-card-people-user__disabled': !$ctrl.user.enabled}"
+       flex>
+            <span>{{::($ctrl.user | formatUser)}}</span>
+    </a>
+</div>
+

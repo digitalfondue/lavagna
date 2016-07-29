@@ -1,0 +1,15 @@
+.lvg-card-people-user > div {
+    display: inline-block;
+}
+
+.lvg-card-people-user__link {
+
+}
+
+.lvg-card-people-user__disabled {
+    text-decoration: line-through;
+}
+
+.lvg-card-people-user__avatar {
+    margin-right: 15px;
+}

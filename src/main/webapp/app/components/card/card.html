@@ -1,48 +1,12 @@
-<lvg-card-metadata card="$ctrl.card" board="$ctrl.board"
-                   project="$ctrl.project" user="$ctrl.user"></lvg-card-metadata>
+<lvg-card-metadata  card="$ctrl.card" board="$ctrl.board"
+                    project="$ctrl.project" user="$ctrl.user"
+                    milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"
+                    label-values="$ctrl.labelValues" user-labels="$ctrl.userLabels"></lvg-card-metadata>
 
 <div layout="column" layout-gt-sm="row">
     <div flex="25">
-
-        <div class="lavagna-card-panel">
-            <div class="head clearfix">
-                <div class="title" data-translate>card.people</div>
-                <ul class="panel-controls">
-                    <li class="control-item"
-                        data-ng-hide="$ctrl.findElementWithUserId($ctrl.labelValues[$ctrl.labelNameToId['WATCHED_BY']], $ctrl.user.id)">
-                    <span data-ng-click="$ctrl.watchCard($ctrl.user)"
-                          data-lvg-has-permission="UPDATE_CARD"
-                          class="fa fa-eye" title="{{'card.watch' | translate}}"></span>
-                    </li>
-                    <li class="control-item"
-                        data-ng-show="$ctrl.findElementWithUserId($ctrl.labelValues[$ctrl.labelNameToId['WATCHED_BY']], $ctrl.user.id)">
-                    <span data-ng-click="$ctrl.unWatchCard($ctrl.user)"
-                          data-lvg-has-permission="UPDATE_CARD"
-                          class="fa fa-eye-slash" title="{{'card.unwatch' | translate}}"></span>
-                    </li>
-                    <li class="control-item"
-                        data-ng-hide="$ctrl.findElementWithUserId($ctrl.labelValues[$ctrl.labelNameToId['ASSIGNED']], $ctrl.user.id)">
-                    <span data-ng-click="$ctrl.assignToUser($ctrl.user)"
-                          data-lvg-has-permission="UPDATE_CARD"
-                          class="fa fa-hand-o-up" title="{{'card.takeCard' | translate}}"></span>
-                    </li>
-                    <li class="control-item"
-                        data-ng-show="$ctrl.findElementWithUserId($ctrl.labelValues[$ctrl.labelNameToId['ASSIGNED']], $ctrl.user.id)">
-                    <span data-ng-click="$ctrl.removeAssignForUser($ctrl.user)"
-                          data-lvg-has-permission="UPDATE_CARD"
-                          class="fa fa-hand-o-down" title="{{'card.surrenderCard' | translate}}"></span>
-                    </li>
-                </ul>
-            </div>
-            <div class="body">
-                <p data-ng-show="$ctrl.labelValues[$ctrl.labelNameToId['WATCHED_BY']]">
-                    <span data-translate>card.watchedBy</span> <span
-                    data-ng-repeat="watchedBy in $ctrl.labelValues[$ctrl.labelNameToId['WATCHED_BY']]">
-                    <span data-lvg-user-tooltip="watchedBy.value.valueUser"></span>
-                </span>
-                </p>
-            </div>
-        </div>
+        <lvg-card-people card="$ctrl.card" project="$ctrl.project" user="$ctrl.user"
+                         assigned-users="$ctrl.assignedUsers" watching-users="$ctrl.watchingUsers"></lvg-card-people>
     </div>
 
     <div flex="50">

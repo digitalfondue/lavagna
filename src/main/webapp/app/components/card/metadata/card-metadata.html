@@ -88,11 +88,11 @@
                             <span class="lvg-card-metadata__item-name" data-translate>card.metadata.due.by</span>
                         </div>
                         <div flex="70" flex-md="55" layout="row" layout-align="start center">
-                        <span data-ng-if="!$ctrl.labelValues[$ctrl.labelNameToId['DUE_DATE']][0]">
+                        <span data-ng-if="!$ctrl.dueDates[0]">
                             <i data-translate>common.not-set</i>
                         </span>
-                        <span data-ng-if="$ctrl.labelValues[$ctrl.labelNameToId['DUE_DATE']][0]">
-                            <span>{{$ctrl.labelValues[$ctrl.labelNameToId['DUE_DATE']][0].value.valueTimestamp | date: 'MMM d, y'}}</span>
+                        <span data-ng-if="$ctrl.dueDates[0]">
+                            <span>{{$ctrl.dueDates[0].value.valueTimestamp | date: 'MMM d, y'}}</span>
                             <md-button class="md-icon-button"
                                        data-ng-click="$ctrl.removeDueDate(); dueDate = null"
                                        data-lvg-has-permission="UPDATE_CARD">
@@ -114,11 +114,11 @@
                             <span class="lvg-card-metadata__item-name" data-translate>card.metadata.milestone</span>
                         </div>
                         <div flex="70" flex-md="55" layout="row" layout-align="start center">
-                        <span data-ng-if="!$ctrl.labelValues[$ctrl.labelNameToId['MILESTONE']]">
+                        <span data-ng-if="!$ctrl.milestones">
                                 <i data-translate>common.not-set</i>
                         </span>
-                        <span data-ng-if="$ctrl.labelValues[$ctrl.labelNameToId['MILESTONE']]">
-                            <span data-ng-repeat="milestone in $ctrl.labelValues[$ctrl.labelNameToId['MILESTONE']]">
+                        <span data-ng-if="$ctrl.milestones">
+                            <span data-ng-repeat="milestone in $ctrl.milestones">
                                 <a data-ui-sref="project.milestones({projectName: $ctrl.project.shortName})">
                                     <lvg-label-val value="milestone"></lvg-label-val></a>
                                 <md-button data-lvg-has-permission="UPDATE_CARD"
@@ -251,7 +251,7 @@
                 </div>
                 <div class="lvg-card-metadata__label-add lvg-card-metadata__label-add-panel" data-ng-show="addLabelPanel">
                     <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
-                        <div layout="row" layout-fill>
+                        <div layout="row" layout-xs="column" layout-fill>
                             <div flex>
                                 <md-input-container>
                                     <md-select flex
@@ -273,8 +273,6 @@
                                 <md-button class="md-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
                                     <md-icon md-svg-icon="ok"></md-icon>
                                 </md-button>
-                            </div>
-                            <div flex="nogrow">
                                 <md-button class="md-icon-button" ng-click="addLabelPanel=false;labelToAdd = null">
                                     <md-icon md-svg-icon="close"></md-icon>
                                 </md-button>
@@ -284,35 +282,5 @@
                 </div>
             </div>
         </div>
-
-
-                    <!-- remove this crap
-                    <div layout="column" layouot-gt-sm="row" class="lvg-card-metadata__item">
-                        <div flex="30" flex-md="45" layout="row" layout-align="start center">
-                            <span class="lvg-card-metadata__item-name" data-translate>Assigned to:</span>
-                        </div>
-                        <div flex="70" flex-md="55" class="lvg-card-metadata__assigned-users">
-                            <md-chips ng-model="$ctrl.labelValues[$ctrl.labelNameToId['ASSIGNED']]"
-                                      md-autocomplete-snap
-                                      md-on-remove="$ctrl.removeAssignForUser($chip)"
-                                      md-require-match="true"
-                                      readonly="!$ctrl.userPermissions['UPDATE_CARD']"
-                                      ng-class="{ 'md-readonly': !$ctrl.userPermissions['UPDATE_CARD']}">
-                                <md-autocomplete
-                                    md-selected-item="userToAssign"
-                                    md-search-text="searchAssignedUser"
-                                    md-items="user in $ctrl.searchUser(searchAssignedUser)"
-                                    md-item-text="user.label"
-                                    placeholder="{{'partials.fragments.label-pickers.user'|translate}}"
-                                    md-selected-item-change="$ctrl.assignUser(userToAssign)"
-                                    md-no-cache="true">
-                                    <md-item-template>{{user.label}}</md-item-template>
-                                </md-autocomplete>
-                                <md-chip-template>
-                                    <span data-lvg-user-tooltip="$chip.value.valueUser"></span>
-                                </md-chip-template>
-                            </md-chips>
-                        </div>
-                    </div> -->
     </md-card-content>
 </md-card>
