@@ -20,6 +20,10 @@
             });
         };
 
+        ctrl.updateDescription = function(description) {
+            Card.updateDescription(ctrl.card.id, description);
+        };
+
         // -----
         var loadDescription = function() {
             Card.description(ctrl.card.id).then(function(description) {

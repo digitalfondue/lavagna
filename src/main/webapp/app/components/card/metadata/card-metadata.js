@@ -107,10 +107,6 @@
             BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
         };
 
-        ctrl.updateDescription = function(description) {
-            Card.updateDescription(ctrl.card.id, description);
-        };
-
         ctrl.setDueDate = function(date) {
             BulkOperations.setDueDate(currentCard(), date)
         };

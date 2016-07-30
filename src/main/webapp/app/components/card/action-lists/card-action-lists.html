@@ -1,3 +1,16 @@
+<ul class="lvg-card-action-list__actionlists"
+    sv-root="card-actionlists"
+    sv-part="$ctrl.actionLists"
+    sv-on-sort="$ctrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+    <li class="lvg-card-action-list__actionlists-item"
+        ng-repeat="actionList in $ctrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
+        <lvg-card-action-list card="$ctrl.card"
+                              action-list="actionList">
+            <handle><md-icon class="lvg-card-action-list__handle" md-svg-icon="drag" sv-handle></md-icon></handle>
+        </lvg-card-action-list>
+    </li>
+</ul>
+
 <form data-ng-role="form"
       data-ng-submit="$ctrl.addActionList(newActionList);"
       data-lvg-has-permission="MANAGE_ACTION_LIST">
@@ -14,16 +27,3 @@
         </div>
     </div>
 </form>
-
-<ul class="lvg-card-action-list__actionlists"
-    sv-root="card-actionlists"
-    sv-part="$ctrl.actionLists"
-    sv-on-sort="$ctrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-    <li class="lvg-card-action-list__actionlists-item"
-        ng-repeat="actionList in $ctrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
-        <lvg-card-action-list card="$ctrl.card"
-                              action-list="actionList">
-            <handle><md-icon class="lvg-card-action-list__handle" md-svg-icon="drag" sv-handle></md-icon></handle>
-        </lvg-card-action-list>
-    </li>
-</ul>
