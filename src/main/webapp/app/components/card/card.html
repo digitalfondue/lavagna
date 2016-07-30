@@ -1,15 +1,7 @@
-<lvg-card-metadata  card="$ctrl.card" board="$ctrl.board"
-                    project="$ctrl.project" user="$ctrl.user"
-                    milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"
-                    label-values="$ctrl.labelValues" user-labels="$ctrl.userLabels"></lvg-card-metadata>
-
 <div layout="column" layout-gt-sm="row">
-    <div flex="25">
-        <lvg-card-people card="$ctrl.card" project="$ctrl.project" user="$ctrl.user"
-                         assigned-users="$ctrl.assignedUsers" watching-users="$ctrl.watchingUsers"></lvg-card-people>
-    </div>
+    <div flex="66">
+        <lvg-card-description card="$ctrl.card" project="$ctrl.project"></lvg-card-description>
 
-    <div flex="50">
         <div class="row">
             <div class="col-md-12">
                 <div class="lavagna-card-panel lavagna-tab" data-lvg-tab-ui>
@@ -240,9 +232,16 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <div flex="25">
+    <div flex="33">
+        <lvg-card-metadata  card="$ctrl.card" board="$ctrl.board"
+                            project="$ctrl.project" user="$ctrl.user"
+                            milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"
+                            label-values="$ctrl.labelValues" user-labels="$ctrl.userLabels"></lvg-card-metadata>
+
+        <lvg-card-people card="$ctrl.card" project="$ctrl.project" user="$ctrl.user"
+                         assigned-users="$ctrl.assignedUsers" watching-users="$ctrl.watchingUsers"></lvg-card-people>
+
         <lvg-card-action-lists card="$ctrl.card" action-lists="$ctrl.actionLists"></lvg-card-action-lists>
     </div>
 </div>

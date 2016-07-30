@@ -102,22 +102,6 @@
         };
         //
 
-        // -----
-        ctrl.updateCardName = function(newName) {
-            Card.update(ctrl.card.id, newName).then( function() {
-                $rootScope.$emit('card.renamed.event');
-            });
-        };
-
-        // -----
-        var loadDescription = function() {
-            Card.description(ctrl.card.id).then(function(description) {
-                ctrl.description = description;
-            });
-        };
-
-        loadDescription();
-
         ctrl.addNewLabel = function(labelToAdd) {
             var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
             BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
@@ -153,14 +137,6 @@
             BulkOperations.removeMilestone(currentCard());
         };
         // ----
-
-        //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe($scope, '/event/card/' + ctrl.card.id + '/card-data', function(e) {
-            var type = JSON.parse(e.body).type;
-            if(type === 'UPDATE_DESCRIPTION') {
-                loadDescription();
-            }
-        });
 
         ctrl.userPermissions = {};
         function loadUserPermissions() {

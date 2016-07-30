@@ -31,51 +31,30 @@
     color: #aaaaaa;
 }
 
+.lvg-card-metadata__item-text {
+    min-height: 40px;
+    height: 40px;
+}
+
 .lvg-card-metadata__item-container {
     margin: 0 !important;
     padding: 0 !important;
 }
 
+.lvg-card-metadata__item-status-select md-select-value {
+    text-align: center;
+    padding: 2px 2px 1px 32px;
+}
+
 .lvg-card-metadata__item-status-select[disabled="disabled"] md-select-value {
     color: inherit !important;
-
 }
 
 .lvg-card-metadata__item-status-select[disabled="disabled"] ._md-select-icon {
     visibility: hidden !important;
 }
 
-.lvg-card-metadata__description-textarea {
-    height: 100%;
-    width: 100%;
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* Opera/IE 8+ */
-}
 
-.lvg-card-metadata__description-footer > div {
-    display: inline-block;
-}
-
-.lvg-card-metadata__description-edit-button {
-    width: 40px;
-}
-
-.lvg-card-metadata__description_updated {
-    font-size: 12px;
-    font-style: italic;
-    color: #aaaaaa;
-}
-
-.lvg-card-metadata__description_updated_user {
-    font-weight: 700;
-    color: #7e7e7e;
-}
-
-.lvg-card-metadata__description_updated_date {
-    color: #aaaaaa;
-    font-size: 12px;
-}
 
 .lvg-card-metadata__assigned-users .md-readonly md-chips-wrap {
     box-shadow: none !important;

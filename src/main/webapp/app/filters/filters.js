@@ -432,6 +432,21 @@
 		};
 	});
 
+	filters.filter('translateColumnName', function($filter) {
+	    return function (column) {
+	        if(column === undefined || column === null) {
+	            return null;
+	        }
+
+            if(column.location === 'BOARD') {
+                return $filter('translate')('card.metadata.status.view', {name: column.name});
+            } else {
+                var locationName = $filter('translate')('partials.board.' + column.name);
+                return $filter('translate')('card.metadata.status.view', {name: locationName});
+            }
+	    }
+	});
+
 	// imported from https://github.com/angular/angular.js/blob/master/src/ng/filter/limitTo.js
 	// which is under the following license:
 	/*
