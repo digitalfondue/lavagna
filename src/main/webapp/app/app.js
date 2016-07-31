@@ -47,7 +47,7 @@
 	/**
 	 * Configure angular-ui-router here...
 	 */
-	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider) {
+	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider) {
 
 		$locationProvider.html5Mode(true);
 
@@ -468,6 +468,9 @@
 
 
 		$mdThemingProvider.setDefaultTheme('default');
+		
+		
+		$mdInkRippleProvider.disableInkRipple();
 
 
 		//FIXME use a svg icon set
