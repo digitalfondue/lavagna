@@ -4,9 +4,9 @@
     components.component('lvgNavbarUser', {
         templateUrl: 'app/components/navbar/user/navbar-user.html',
         bindings: {
-            username: '=',
-            provider: '=',
-            isCurrentUser: '='
+            username: '<',
+            provider: '<',
+            isCurrentUser: '<'
         },
         controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
