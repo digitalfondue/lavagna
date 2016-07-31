@@ -27,8 +27,8 @@
         };
 
         ctrl.addActionList = function(actionList) {
-            Card.addActionList(ctrl.card.id, actionList).then(function() {
-                actionList = null;
+            Card.addActionList(ctrl.card.id, actionList.name).then(function() {
+                actionList.name = null;
             });
         };
     }

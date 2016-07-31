@@ -11,3 +11,7 @@ md-input-container.lvg-input-container__inline {
     max-height: 30px;
     width: 100%;
 }
+
+md-input-container .md-errors-spacer {
+    min-height: 0;
+}

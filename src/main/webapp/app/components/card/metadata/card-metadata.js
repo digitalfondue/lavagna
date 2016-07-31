@@ -8,9 +8,7 @@
             project: '<',
             user: '<',
             milestones: '<',
-            dueDates: '<',
-            labelValues: '<',
-            userLabels: '<'
+            dueDates: '<'
         },
         controller: CardMetadataController,
         templateUrl: 'app/components/card/metadata/card-metadata.html'
@@ -101,11 +99,6 @@
             }
         };
         //
-
-        ctrl.addNewLabel = function(labelToAdd) {
-            var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
-            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
-        };
 
         ctrl.setDueDate = function(date) {
             BulkOperations.setDueDate(currentCard(), date)

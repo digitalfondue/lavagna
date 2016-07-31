@@ -18,11 +18,11 @@
             <div layout="row">
                 <div flex>
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="newActionList" placeholder="{{'card.newList.placeholder'|translate}}">
+                        <input ng-model="newActionList.name" placeholder="{{'card.newList.placeholder'|translate}}">
                     </md-input-container>
                 </div>
                 <div flex="nogrow">
-                    <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!newActionList">
+                    <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!newActionList.name">
                         <span data-translate>button.add</span>
                     </md-button>
                 </div>

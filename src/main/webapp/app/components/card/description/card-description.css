@@ -29,3 +29,14 @@
     color: #aaaaaa;
     font-size: 12px;
 }
+
+.lvg-card-description__labels-add {
+    display: inline-block;
+}
+
+.lvg-card-description__labels-add-button.md-button {
+    min-height: 24px;
+    height: 24px;
+    width: 24px;
+    padding: 0;
+}

@@ -1,0 +1,19 @@
+.lvg-card-labels-add {
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+}
+
+.lvg-card-labels-add__label-add-panel {
+    display: inline-block;
+    padding: 10px 5px;
+}
+
+.lvg-card-labels-add__label-add-panel md-input-container {
+    margin: 0;
+}
+
+.lvg-card-labels-add__label-add-md-select md-option {
+    padding-left: 15px;
+    padding-right: 0px;
+}

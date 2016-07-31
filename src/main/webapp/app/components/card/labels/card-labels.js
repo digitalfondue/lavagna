@@ -1,17 +1,17 @@
 (function() {
     'use strict';
 
-    angular.module('lavagna.components').component('lvgCardMetadataLabels', {
+    angular.module('lavagna.components').component('lvgCardLabels', {
         bindings: {
             card: '<',
             project: '<',
             labelValues: '<'
         },
-        controller: CardMetadataLabelsController,
-        templateUrl: 'app/components/card/metadata-labels/card-metadata-labels.html'
+        controller: CardLabelsController,
+        templateUrl: 'app/components/card/labels/card-labels.html'
     });
 
-    function CardMetadataLabelsController(Label, BulkOperations, Notification) {
+    function CardLabelsController(Label, BulkOperations, Notification) {
 
         var ctrl = this;
         var project = ctrl.project;

@@ -16,9 +16,9 @@
     function CardActionListController(Card, Notification) {
         var ctrl = this;
 
-        ctrl.addAction = function(name) {
-            Card.addActionItem(ctrl.actionList.id, name).then(function() {
-                name = null;
+        ctrl.addAction = function(action) {
+            Card.addActionItem(ctrl.actionList.id, action.name).then(function() {
+                action.name = null;
             });
         };
 

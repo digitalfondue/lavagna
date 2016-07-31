@@ -1,4 +1,4 @@
-<div data-ng-if="$ctrl.hasUserLabels($ctrl.labels, $ctrl.labelValues)">
+<span data-ng-if="$ctrl.hasUserLabels($ctrl.labels, $ctrl.labelValues)">
     <span data-ng-repeat="l in $ctrl.labels">
         <span data-ng-repeat="val in $ctrl.labelValues[l.id]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
             <lvg-label-v2
@@ -8,4 +8,4 @@
             </lvg-label-v2>
         </span>
     </span>
-</div>
+</span>

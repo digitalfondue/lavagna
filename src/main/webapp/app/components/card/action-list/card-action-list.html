@@ -39,7 +39,7 @@
         <md-list sv-root="card-actionitems"
                  sv-part="$ctrl.actionList.items"
                  sv-on-sort="$ctrl.sortActions($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-            <md-list-item md-no-ink class="lvg-card-action-list__item md-with-secondary" data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id" sv-element>
+            <md-list-item md-no-ink class="lvg-card-action-list__item" data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id" sv-element>
                 <md-icon data-ng-hide="editName" class="lvg-svg-icon-small lvg-card-action-list__handle" data-lvg-has-permission="MANAGE_ACTION_LIST" md-svg-icon="drag" sv-handle></md-icon>
                 <md-checkbox data-lvg-has-permission="MANAGE_ACTION_LIST"
                              ng-disabled="editName"
@@ -49,48 +49,43 @@
                              ng-true-value="'ACTION_CHECKED'"
                              ng-false-value="'ACTION_UNCHECKED'">
                 </md-checkbox>
-                <p data-ng-hide="editName">{{ item.content }}</p>
-                <span>
-                    <md-button class="lvg-small-icon-button md-secondary" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="editName = true">
-                        <md-icon md-svg-icon="edit"></md-icon>
-                    </md-button>
-                    <md-button class="lvg-small-icon-button md-secondary" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="$ctrl.deleteAction(item);">
-                        <md-icon md-svg-icon="delete"></md-icon>
-                    </md-button>
-                </span>
-                <form data-ng-submit="$ctrl.saveAction(item.id, item.content); editName = false">
-                    <div layout="row" data-ng-show="editName">
-                        <div flex>
-                            <md-input-container md-no-float class="lvg-input-container__inline">
-                                <input ng-model="item.content">
-                            </md-input-container>
-                        </div>
-                        <div flex="nogrow">
-                            <md-button class="lvg-small-icon-button" type="submit">
-                                <md-icon md-svg-icon="ok"></md-icon>
-                            </md-button>
-                        </div>
-                        <div flex="nogrow">
-                            <md-button class="lvg-small-icon-button" ng-click="editName = false">
-                                <md-icon md-svg-icon="close"></md-icon>
-                            </md-button>
-                        </div>
+                <p flex data-ng-hide="editName">{{ item.content }}</p>
+                <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="editName = true">
+                    <md-icon md-svg-icon="edit"></md-icon>
+                </md-button>
+                <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="$ctrl.deleteAction(item);">
+                    <md-icon md-svg-icon="delete"></md-icon>
+                </md-button>
+                <form layout="row" data-ng-show="editName" data-ng-submit="$ctrl.saveAction(item.id, item.content); editName = false">
+                    <div flex>
+                        <md-input-container md-no-float class="lvg-input-container__inline">
+                            <input ng-model="item.content">
+                        </md-input-container>
+                    </div>
+                    <div flex="nogrow">
+                        <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!item.content">
+                            <md-icon md-svg-icon="ok"></md-icon>
+                        </md-button>
+                    </div>
+                    <div flex="nogrow">
+                        <md-button class="lvg-small-icon-button" ng-click="editName = false">
+                            <md-icon md-svg-icon="close"></md-icon>
+                        </md-button>
                     </div>
                 </form>
-
             </md-list-item>
         </md-list>
     </md-card-content>
     <md-card-actions data-lvg-has-permission="MANAGE_ACTION_LIST" class="lvg-card-action-list__actions">
-        <form data-ng-submit="$ctrl.addAction(actionName)">
+        <form data-ng-submit="$ctrl.addAction(newAction)">
             <div layout="row" layout-wrap>
                 <div flex>
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="actionName" placeholder="{{'card.actionItem.placeholder'|translate}}">
+                        <input ng-model="newAction.name" placeholder="{{'card.actionItem.placeholder'|translate}}">
                     </md-input-container>
                 </div>
                 <div flex="nogrow">
-                    <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!actionName">
+                    <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!newAction.name">
                         <span data-translate>button.add</span>
                     </md-button>
                 </div>

@@ -1,0 +1,32 @@
+<div class="lvg-card-labels-add lvg-card-labels-add__label-add-panel">
+    <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
+        <div layout="row" layout-align="start center">
+            <div flex>
+                <md-input-container>
+                    <md-select
+                               class="lvg-card-metadata__item-status-select"
+                               md-container-class="lvg-card-labels-add__label-add-md-select"
+                               ng-model="labelToAdd.label"
+                               ng-change="labelToAdd.value = undefined">
+                        <md-option ng-value="l"
+                                   ng-repeat="(n,l) in ($ctrl.userLabels | uniqueLabels: $ctrl.labelValues | orderObjectBy:'name')">
+                            {{l.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <lvg-label-picker flex="nogrow" data-label="labelToAdd.label"
+                              data-ng-model="labelToAdd.value"
+                              data-board="$ctrl.board.shortName"
+                              project-name="$ctrl.project.shortName"></lvg-label-picker>
+            <div flex="nogrow">
+                <md-button class="lvg-small-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
+                    <md-icon md-svg-icon="ok"></md-icon>
+                </md-button>
+                <md-button class="lvg-small-icon-button" ng-click="labelToAdd = null; $ctrl.cancel()">
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </form>
+</div>

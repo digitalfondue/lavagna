@@ -1,24 +1,24 @@
-<div layout="row" data-ng-switch="$ctrl.label.type">
-	<div data-ng-switch-when="NULL"></div>
-	<div data-ng-switch-when="STRING">
-        <md-input-container class="md-block">
+<div layout="row" flex="100" data-ng-switch="$ctrl.label.type">
+	<div data-ng-switch-when="NULL" flex></div>
+	<div data-ng-switch-when="STRING" flex>
+        <md-input-container>
             <input type="text" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required>
         </md-input-container>
     </div>
 	<div data-ng-switch-when="INT">
-        <md-input-container class="md-block">
+        <md-input-container>
             <input type="number" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" data-lvg-on-esc required>
         </md-input-container>
     </div>
 	<div data-ng-switch-when="TIMESTAMP">
         <md-datepicker ng-model="$ctrl.model" required></md-datepicker>
     </div>
-	<div data-ng-switch-when="CARD">
+	<div data-ng-switch-when="CARD" flex>
 	   <!-- data-lvg-on-esc -->
-        <md-input-container class="md-block">
+        <md-input-container>
            <md-autocomplete
                required
-               placeholder="{{'partials.fragments.label-pickers.card'|translate}}"
+               md-floating-label="{{'partials.fragments.label-pickers.card'|translate}}"
                md-no-cache="true"
                md-selected-item="$ctrl.model"
                md-search-text="cardSearchText"
@@ -28,11 +28,11 @@
             </md-autocomplete>
         </md-input-container>
     </div>
-	<div data-ng-switch-when="USER">
-        <md-input-container class="md-block">
+	<div data-ng-switch-when="USER" flex>
+        <md-input-container>
            <md-autocomplete
                required
-               placeholder="{{'partials.fragments.label-pickers.user'|translate}}"
+               md-floating-label="{{'partials.fragments.label-pickers.user'|translate}}"
                md-no-cache="true"
                md-selected-item="$ctrl.model"
                md-search-text="userSearchText"
@@ -42,7 +42,7 @@
            </md-autocomplete>
         </md-input-container>
     </div>
-	<div data-ng-switch-when="LIST">
+	<div data-ng-switch-when="LIST" flex>
         <md-input-container>
             <md-select ng-model="$ctrl.model">
                 <md-option ng-value="item" ng-repeat="item in $ctrl.listValues">

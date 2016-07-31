@@ -119,7 +119,7 @@
                     </div>
                     <div data-lvg-has-permission="UPDATE_CARD" flex="nogrow">
                         <md-menu>
-                            <md-button ng-click="$mdOpenMenu($event)" class="lvg-small-icon-button">
+                            <md-button ng-click="milestoneFilter = ''; $mdOpenMenu($event)" class="lvg-small-icon-button">
                                 <md-tooltip>{{'card.metadata.milestone.edit.tooltip' | translate}}</md-tooltip>
                                 <md-icon md-menu-origin md-svg-icon="edit"></md-icon>
                             </md-button>
@@ -153,52 +153,6 @@
                             </md-menu-content>
                         </md-menu>
                     </div>
-                </div>
-            </div>
-            <md-divider></md-divider>
-            <div layout="row" flex="100" class="lvg-card-metadata__item">
-                <lvg-card-metadata-labels
-                    card="$ctrl.card"
-                    project="$ctrl.project"
-                    label-values="$ctrl.labelValues"></lvg-card-metadata-labels>
-                <div data-lvg-has-permission="UPDATE_CARD" data-ng-hide="addLabelPanel">
-                    <md-button data-ng-click="addLabelPanel=true"
-                               md-no-ink
-                               class="lvg-small-icon-button lvg-card-metadata__label-add-button">
-                        <md-tooltip>{{'card.metadata.label.add.tooltip' | translate}}</md-tooltip>
-                        <md-icon md-menu-origin md-svg-icon="add"></md-icon>
-                    </md-button>
-                </div>
-                <div class="lvg-card-metadata__label-add lvg-card-metadata__label-add-panel" data-ng-show="addLabelPanel">
-                    <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
-                        <div layout="row" layout-xs="column" layout-fill>
-                            <div flex>
-                                <md-input-container>
-                                    <md-select flex
-                                               class="lvg-card-metadata__item-status-select"
-                                               md-container-class="lvg-card-metadata__label-add-md-select"
-                                               ng-model="labelToAdd.label"
-                                               ng-change="labelToAdd.value = undefined">
-                                        <md-option ng-value="l"
-                                                   ng-repeat="(n,l) in ($ctrl.userLabels | uniqueLabels: $ctrl.labelValues | orderObjectBy:'name')">
-                                            {{l.name}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
-                            <div>
-                                <lvg-label-picker data-label="labelToAdd.label" data-ng-model="labelToAdd.value" data-board="$ctrl.board.shortName" project-name="$ctrl.project.shortName"></lvg-label-picker>
-                            </div>
-                            <div flex="nogrow">
-                                <md-button class="lvg-small-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
-                                    <md-icon md-svg-icon="ok"></md-icon>
-                                </md-button>
-                                <md-button class="lvg-small-icon-button" ng-click="addLabelPanel=false;labelToAdd = null">
-                                    <md-icon md-svg-icon="close"></md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

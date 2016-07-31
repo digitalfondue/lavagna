@@ -4,13 +4,14 @@
     angular.module('lavagna.components').component('lvgCardDescription', {
         bindings: {
             project: '<',
-            card: '<'
+            card: '<',
+            labelValues: '<'
         },
         controller: CardDescriptionController,
         templateUrl: 'app/components/card/description/card-description.html'
     });
 
-    function CardDescriptionController($rootScope, $scope, Card, StompClient) {
+    function CardDescriptionController($rootScope, $scope, BulkOperations, Card, StompClient) {
         var ctrl = this;
 
         // -----
@@ -22,6 +23,10 @@
 
         ctrl.updateDescription = function(description) {
             Card.updateDescription(ctrl.card.id, description);
+        };
+
+        ctrl.hideAddPanel = function() {
+            ctrl.addLabelPanel = false;
         };
 
         // -----

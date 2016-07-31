@@ -1,6 +1,6 @@
 <div layout="column" layout-gt-sm="row">
     <div flex="66">
-        <lvg-card-description card="$ctrl.card" project="$ctrl.project"></lvg-card-description>
+        <lvg-card-description card="$ctrl.card" project="$ctrl.project" label-values="$ctrl.labelValues"></lvg-card-description>
 
         <!--<div class="row">
             <div class="col-md-12">
@@ -236,8 +236,7 @@
     <div flex="33">
         <lvg-card-metadata  card="$ctrl.card" board="$ctrl.board"
                             project="$ctrl.project" user="$ctrl.user"
-                            milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"
-                            label-values="$ctrl.labelValues" user-labels="$ctrl.userLabels"></lvg-card-metadata>
+                            milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"></lvg-card-metadata>
 
         <lvg-card-people card="$ctrl.card" project="$ctrl.project" user="$ctrl.user"
                          assigned-users="$ctrl.assignedUsers" watching-users="$ctrl.watchingUsers"></lvg-card-people>
