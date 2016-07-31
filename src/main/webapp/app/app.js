@@ -453,7 +453,11 @@
 		});
 
 		$urlRouterProvider.otherwise('/');
-
+		
+		
+		$mdThemingProvider.disableTheming();
+		
+		/* CHECK in case we need to regenerate the theme!
 		var background = $mdThemingProvider.extendPalette('grey', {
           //'A100': 'e5e5e5'
           'A100': 'ffffff'
@@ -468,6 +472,7 @@
 
 
 		$mdThemingProvider.setDefaultTheme('default');
+		*/
 		
 		
 		$mdInkRippleProvider.disableInkRipple();
