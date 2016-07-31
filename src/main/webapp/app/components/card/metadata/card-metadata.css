@@ -1,12 +1,10 @@
 .lvg-card-metadata__title {
-    font-size: 14px;
     font-weight: bold;
 }
 
 .lvg-card-metadata__item {
     margin-top:10px;
     min-height: 40px;
-    font-size: 14px;
 }
 
 .lvg-card-metadata__item .md-icon-button {
@@ -16,10 +14,6 @@
 .lvg-card-metadata__status {
     display: inline-block;
     padding: 8px 2px 4px 2px;
-}
-
-.lvg-card-metadata__md-select md-option div {
-    font-size: 14px;
 }
 
 .lvg-card-metadata__md-select md-option {
@@ -32,8 +26,8 @@
 }
 
 .lvg-card-metadata__item-text {
-    min-height: 40px;
-    height: 40px;
+    min-height: 30px;
+    height: 30px;
 }
 
 .lvg-card-metadata__item-container {
@@ -85,10 +79,6 @@
     margin: 0 !important;
 }
 
-.lvg-card-metadata__milestone-title {
-    font-size: 14px;
-}
-
 .lvg-card-metadata__milestone-closed {
     color: #e5e5e5;
 }
@@ -106,13 +96,6 @@
     padding: 0;
 }
 
-.lvg-card-metadata__label-add-button md-icon {
-    min-width: 24px;
-    min-height: 24px;
-    width: 24px;
-    height: 24px;
-}
-
 .lvg-card-metadata__label-add-panel {
     display: inline-block;
     padding: 10px 5px;
@@ -120,10 +103,6 @@
 
 .lvg-card-metadata__label-add-panel md-input-container {
     margin: 0;
-}
-
-.lvg-card-metadata__label-add-md-select md-option div {
-    font-size: 14px;
 }
 
 .lvg-card-metadata__label-add-md-select md-option {

@@ -1,5 +1,5 @@
 /**
-Specify the color of the links in a md-card 
+Specify the color of the links in a md-card
 */
 
 md-card-title-text a:not(.md-button) {
@@ -17,4 +17,20 @@ md-card-title-text a:not(.md-button):focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
+}
+
+md-card md-card-title {
+    padding: 12px;
+}
+
+md-card md-card-content {
+    padding: 12px;
+}
+
+md-card .lvg-headline {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
 }

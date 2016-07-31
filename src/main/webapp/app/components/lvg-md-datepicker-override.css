@@ -1,0 +1,17 @@
+md-datepicker.lvg-datepicker button {
+    margin: 0 6px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    min-width: 0 !important;
+    line-height: 18px !important;
+    padding: 6px !important;
+    width: 30px !important;
+    border-radius: 50% !important;
+}
+
+md-datepicker.lvg-datepicker button md-icon {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+}

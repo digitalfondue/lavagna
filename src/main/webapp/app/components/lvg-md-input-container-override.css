@@ -5,3 +5,9 @@ containing input fields.
 md-input-container.lvg-fix-height {
 	height:54px;
 }
+
+md-input-container.lvg-input-container__inline {
+    margin: 0;
+    max-height: 30px;
+    width: 100%;
+}

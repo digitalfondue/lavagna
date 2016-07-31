@@ -502,6 +502,8 @@
 			.icon('clock', 				'svg/ic_access_time_black_48px.svg')
 			.icon('notifications',      'svg/ic_notifications_black_48px.svg')
 			.icon('notifications-off',  'svg/ic_notifications_off_black_48px.svg')
+			.icon('take',               'svg/ic_assignment_ind_black_48px.svg')
+			.icon('surrender',          'svg/ic_assignment_returned_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

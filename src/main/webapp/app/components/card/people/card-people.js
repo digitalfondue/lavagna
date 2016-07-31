@@ -22,25 +22,41 @@
             return cardByProject;
         };
 
-        ctrl.isWatching = function() {
-            if(ctrl.watchingUsers === undefined) {
+        function isUserInList(list, user) {
+            if(list === undefined) {
                 return false;
             }
 
-            for(var i = 0; i < ctrl.watchingUsers.length; i++) {
-                if(ctrl.watchingUsers[i].value.valueUser === ctrl.user.id) {
+            for(var i = 0; i < list.length; i++) {
+                if(list[i].value.valueUser === user.id) {
                     return true;
                 }
             }
             return false;
         }
 
+        ctrl.isWatching = function() {
+            return isUserInList(ctrl.watchingUsers, ctrl.user);
+        }
+
+        ctrl.isAssigned = function() {
+            return isUserInList(ctrl.assignedUsers, ctrl.user);
+        }
+
         ctrl.watchCard = function() {
             BulkOperations.watch(currentCard(), ctrl.user);
         };
 
-        ctrl.unWatchCard = function(user) {
+        ctrl.unWatchCard = function() {
             BulkOperations.unWatch(currentCard(), ctrl.user);
+        };
+
+        ctrl.take = function() {
+            BulkOperations.assign(currentCard(), ctrl.user);
+        };
+
+        ctrl.surrender = function() {
+             BulkOperations.removeAssign(currentCard(), {id: ctrl.user.id});
         };
 
         ctrl.searchUser = function(text) {

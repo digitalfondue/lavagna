@@ -1,10 +1,3 @@
-.lvg-card-action-list__actionlists {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-}
-
 .lvg-card-action-list__actionlists-item {
     list-style: none;
 }
@@ -16,13 +9,17 @@
     padding: 5px 5px;
 }
 
-.lvg-card-action-list__actions-input {
-    margin: 0;
-    max-height: 30px;
-}
-
 .lvg-card-action-list__handle {
     margin-right: 13px !important;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
+
+.sv-helper .lvg-card-action-list__handle {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
 }
 
 .lvg-card-action-list__item > div {

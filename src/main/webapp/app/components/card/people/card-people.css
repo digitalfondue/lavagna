@@ -1,3 +1,11 @@
+.lvg-card-people__assigned md-list {
+    padding: 0 0;
+}
+
+.lvg-card-people__toolbar {
+    background-color: inherit;
+}
+
 .lvg-card-people__user {
     margin: 0;
     padding: 0 !important;
@@ -13,4 +21,12 @@
 .lvg-card-people__actions-input {
     margin: 0;
     max-height: 30px;
+}
+
+.lvg-card-people__watching {
+    margin-top: 12px;
+}
+
+.lvg-card-people__watching-count {
+    margin-top: 12px;
 }

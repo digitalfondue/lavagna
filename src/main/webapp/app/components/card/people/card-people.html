@@ -1,7 +1,26 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <div class="md-headline"><span data-translate>card.people</span></div>
+            <div layout="row">
+                <div class="lvg-headline"><span data-translate>card.people</span></div>
+                <span flex></span>
+                <md-button ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.take()">
+                    <md-tooltip>{{'card.people.take' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="take"></md-icon>
+                </md-button>
+                <md-button ng-if="$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.surrender()">
+                    <md-tooltip>{{'card.people.surrender' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="surrender"></md-icon>
+                </md-button>
+                <md-button ng-if="!$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.watchCard()">
+                    <md-tooltip>{{'card.people.watch' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="notifications"></md-icon>
+                </md-button>
+                <md-button ng-if="$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.unWatchCard()">
+                    <md-tooltip>{{'card.people.unwatch' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="notifications-off"></md-icon>
+                </md-button>
+            </div>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
@@ -9,48 +28,57 @@
             <md-list ng-if="$ctrl.assignedUsers">
                 <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.assignedUsers">
                     <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
+                    <md-button class="lvg-small-icon-button md-secondary" data-lvg-has-permission="UPDATE_CARD" ng-click="$ctrl.removeAssignForUser(user);">
+                        <md-tooltip>{{'card.people.unwatch' | translate}}</md-tooltip>
+                        <md-icon md-svg-icon="close"></md-icon>
+                    </md-button>
                 </md-list-item>
             </md-list>
-            <div ng-if="!$ctrl.assignedUsers"><span class="lvg-card-people__no-user" data-translate>card.assignedToNone</span></div>
+            <div ng-if="!$ctrl.assignedUsers"><i class="lvg-card-people__no-user" data-translate>card.people.assignedToNone</i></div>
         </div>
-        <div class="lvg-card-people__watching">
-            <div class="lvg-card-people__watching-title">
-                <span data-translate>card.watchedBy</span>
+        <div class="lvg-card-people__watching" ng-if="$ctrl.watchingUsers">
+            <md-divider></md-divider>
+            <div class="lvg-card-people__watching-count">
+                <ng-pluralize class="lvg-card-people__watching-count" count="$ctrl.watchingUsers.length"
+                              when="{'1': ('card.people.watchedByOne'|translate),
+                     'other': ('card.people.watchedByMany' | translate:{count: '{{$ctrl.watchingUsers.length}}'})}">
+                </ng-pluralize>
+                <md-button ng-hide="watchExpanded" class="lvg-small-icon-button" ng-click="watchExpanded = true;">
+                    <md-tooltip>{{'card.people.showWatchedUsers' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="expand_more"></md-icon>
+                </md-button>
+                <md-button ng-show="watchExpanded" class="lvg-small-icon-button" ng-click="watchExpanded = false;">
+                    <md-tooltip>{{'card.people.hideWatchedUsers' | translate}}</md-tooltip>
+                    <md-icon md-svg-icon="expand_less"></md-icon>
+                </md-button>
             </div>
-            <md-list ng-if="$ctrl.watchingUsers">
-                <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.watchingUsers">
-                    <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
-                </md-list-item>
-            </md-list>
-            <div ng-if="!$ctrl.watchingUsers"><span class="lvg-card-people__no-user" data-translate>card.watchedByNone</span></div>
+            <div ng-if="watchExpanded">
+                <md-list>
+                    <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.watchingUsers">
+                        <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
+                    </md-list-item>
+                </md-list>
+            </div>
         </div>
     </md-card-content>
     <md-card-actions data-lvg-has-permission="UPDATE_CARD" class="lvg-card-people__actions">
         <form data-ng-submit="$ctrl.assignUser(user)">
-            <div layout="row" layout-wrap>
+            <div layout-gt-md="row" layout="row" layout-wrap layout-align="start bottom">
                 <div flex>
                     <md-autocomplete flex
                         md-no-cache="true"
                         md-selected-item="user"
                         md-search-text="userSearchText"
                         md-item-text="user.label"
-                        md-items="user in $ctrl.searchUser(userSearchText)">
+                        md-items="user in $ctrl.searchUser(userSearchText)"
+                        md-floating-label="User"
+                        class="lvg-autocomplete__inline">
                         <md-item-template>{{user.label}}</md-item-template>
                     </md-autocomplete>
                 </div>
                 <div flex="nogrow">
-                    <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!user">
+                    <md-button class="md-primary" type="submit" ng-disabled="!user">
                         <span data-translate>button.assign</span>
-                    </md-button>
-                </div>
-                <div flex="nogrow" ng-if="!$ctrl.isWatching()">
-                    <md-button class="md-icon-button" ng-click="$ctrl.watchCard()">
-                        <md-icon md-svg-icon="notifications"></md-icon>
-                    </md-button>
-                </div>
-                <div flex="nogrow" ng-if="$ctrl.isWatching()">
-                    <md-button class="md-icon-button" ng-click="$ctrl.unWatchCard()">
-                        <md-icon md-svg-icon="notifications-off"></md-icon>
                     </md-button>
                 </div>
             </div>

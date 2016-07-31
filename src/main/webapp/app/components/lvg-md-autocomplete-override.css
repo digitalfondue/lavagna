@@ -1,0 +1,14 @@
+md-autocomplete.lvg-autocomplete__inline {
+    min-width: 0px;
+}
+
+md-autocomplete.lvg-autocomplete__inline md-input-container {
+    margin: 0 0;
+    height: 44px;
+    max-height: 44px;
+}
+
+md-virtual-repeat-container {
+    width: auto;
+    min-width: auto;
+}
