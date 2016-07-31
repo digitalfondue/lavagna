@@ -217,7 +217,7 @@
 		return function (userLabels, labelValues) {
 			var filteredLabels = {};
 			for (var k in userLabels) {
-				if (labelValues == undefined || !userLabels[k].unique || !(k in labelValues)) {
+				if (labelValues == undefined || !userLabels[k].unique || !(userLabels[k].id in labelValues)) {
 					filteredLabels[k] = userLabels[k];
 				}
 			}
