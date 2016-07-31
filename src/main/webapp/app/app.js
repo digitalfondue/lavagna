@@ -47,8 +47,10 @@
 	/**
 	 * Configure angular-ui-router here...
 	 */
-	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider) {
+	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider, $compileProvider) {
 
+		$compileProvider.debugInfoEnabled(false);
+		
 		$locationProvider.html5Mode(true);
 
 		//TODO: this is kinda fragile
