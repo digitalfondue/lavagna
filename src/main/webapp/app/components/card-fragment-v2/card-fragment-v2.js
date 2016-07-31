@@ -134,7 +134,7 @@
         
         
         function filterSystemLabelByName(labelName) {
-        	return $filter('filter')(ctrl.card.labels, {labelDomain:'SYSTEM', labelName});
+        	return $filter('filter')(ctrl.card.labels, {labelDomain:'SYSTEM', labelName: labelName});
         }
         
         function isSelfWatching(cardLabels, userId) {
