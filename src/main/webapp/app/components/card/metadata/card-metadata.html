@@ -124,8 +124,17 @@
                                 <md-icon md-menu-origin md-svg-icon="edit"></md-icon>
                             </md-button>
                             <md-menu-content>
+                                <md-menu-item>
+                                    <div flex>
+                                        <md-input-container class="lvg-input-container__inline lvg-card-metadata__milestone-search">
+                                            <label data-translate>card.metadata.milestone.search</label>
+                                            <input ng-model="milestoneFilter">
+                                        </md-input-container>
+                                    </div>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
                                 <md-menu-item
-                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: '!CLOSED'}">
+                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: '!CLOSED'} | filter: {name: milestoneFilter}">
                                     <md-button ng-click="$ctrl.setMilestone(milestone)">
                                   <span class="lvg-card-metadata__milestone-title">
                                     <span>{{::milestone.name}}</span>
@@ -134,7 +143,7 @@
                                 </md-menu-item>
                                 <md-menu-divider data-ng-show="$ctrl.hasClosedMilestones()"></md-menu-divider>
                                 <md-menu-item
-                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: 'CLOSED'}">
+                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: 'CLOSED'} | filter: {name: milestoneFilter}">
                                     <md-button ng-click="$ctrl.setMilestone(milestone)">
                                   <span class="lvg-card-metadata__milestone-title lvg-card-metadata__milestone-closed">
                                     <span>{{::milestone.name}}</span>
