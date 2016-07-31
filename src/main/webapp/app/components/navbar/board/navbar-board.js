@@ -4,8 +4,8 @@
     components.component('lvgNavbarBoard', {
         templateUrl: 'app/components/navbar/board/navbar-board.html',
         bindings: {
-            board: '=',
-            project: '='
+            board: '<',
+            project: '<'
         },
         controller: function(User, $mdSidenav, $state, $window) {
              var ctrl = this;
