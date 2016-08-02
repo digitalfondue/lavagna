@@ -446,13 +446,22 @@ angular.module('dndLists', [])
        * object needs to be inserted
        */
       function getPlaceholderIndex() {
-    	//CHECK Customization
     	//https://github.com/marceljuenemann/angular-drag-and-drop-lists/issues/54 small fix/workaround
-        var idx = Array.prototype.indexOf.call(listNode.children, placeholderNode);
-    	if(idx > 0 && listNode.children[idx -1].classList.contains('dndDraggingSource')) {
-    		idx--;
+    	//CHECK WORKAROUND
+    	var hasDndDraggingSource = false;
+    	var length = listNode.children.length;
+    	var children = listNode.children;
+    	for(var i = 0; i < length;i++) {
+    		var child = children[i];
+    		if(child.classList.contains('dndDraggingSource')) {
+    			hasDndDraggingSource = true;
+    		}
+    		if(child === placeholderNode) {
+    			return i - (hasDndDraggingSource ? 1 : 0);
+    		}
     	}
-        return idx;
+    	//CHECK WORKAROUND
+        return 0;
       }
 
       /**
