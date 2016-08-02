@@ -1,5 +1,5 @@
 <div class="panel-heading" data-ng-style="boardColumnCtrl.column.color|columnColor">
-    <div class="lvg-column-handle" layout="row" sv-handle>
+    <div class="lvg-column-handle" layout="row">
         <div flex="80">
             <div data-ng-if="!boardColumnCtrl.columnState.editColumnName">
                 <span data-ng-click="boardColumnCtrl.columnState.editColumnName=true; boardColumnCtrl.columnState.newColumnName = boardColumnCtrl.column.name" data-lvg-has-permission="RENAME_COLUMN"class="lvg-edit">{{boardColumnCtrl.column.name}}</span>
@@ -66,11 +66,15 @@
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" 
         data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" 
-        sv-root="board-column-card" 
-        sv-part="boardColumnCtrl.cardsInColumn" 
-        sv-on-sort="boardCtrl.sortCards($item, $partFrom, $partTo, $indexFrom, $indexTo)"
-        ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash">
-        <li data-ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" class="lavagna-board-card" sv-element>
+        ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash"
+        dnd-list="boardColumnCtrl.cardsInColumn"
+        dnd-allowed-types="['card']"
+        dnd-drop="boardColumnCtrl.dropCard(index, item)"
+        dnd-inserted="boardCtrl.sortCards(index, item, boardColumnCtrl.column, boardColumnCtrl.cardsInColumn)">
+        <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
+            class="lavagna-board-card"
+            dnd-draggable="card"
+            dnd-type="'card'">
              <lvg-card-fragment-v2
                 view="board"
                 card-ref="card"

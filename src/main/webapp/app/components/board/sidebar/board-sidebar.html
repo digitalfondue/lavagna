@@ -4,9 +4,9 @@
              data-lvg-fill-sidebar-cards-height-has-more="{{$ctrl.sidebar[$ctrl.sideBarLocation].hasMore}}"
              data-lvg-fill-sidebar-cards-height-current-page="{{$ctrl.sidebar[$ctrl.sideBarLocation].currentPage}}">
              <md-progress-circular md-mode="indeterminate" ng-hide="$ctrl.sidebarLoaded"></md-progress-circular>
-            <div class="clearfix" sv-root="board-column-card" sv-part="$ctrl.sidebar[$ctrl.sideBarLocation].found" sv-on-sort="$ctrl.cardMove($item, $partFrom, $partTo, $indexFrom, $indexTo)">
+            <div class="clearfix">
             	<div ng-repeat="hash in $ctrl.getMetadataHash() track by hash">
-	                <ul data-ng-repeat="card in $ctrl.sidebar[$ctrl.sideBarLocation].found track by (card.hash+$ctrl.metadataRef().hash)" class="lavagna-sidebar-cards list-group" sv-element>
+	                <ul data-ng-repeat="card in $ctrl.sidebar[$ctrl.sideBarLocation].found track by (card.hash+$ctrl.metadataRef().hash)" class="lavagna-sidebar-cards list-group">
 	                	<li>
 	                		<lvg-card-fragment-v2 
 	                			view="board" 

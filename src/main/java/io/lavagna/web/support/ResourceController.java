@@ -236,13 +236,15 @@ public class ResourceController {
 					//
 					"/js/angular-animate.min.js", "/js/angular-aria.min.js",
 					"/js/angular-messages.min.js", "/js/angular-material.min.js",
+					//
                     "/js/angular-sortable-view.js",
+                    "/js/angular-drag-and-drop-lists.js",
 					//
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
                     "/js/angular-avatar.min.js",//
-
+                    
 					"/js/spectrum.js", //
 					"/js/search-parser.js",//
 					"/js/moment.min.js",//

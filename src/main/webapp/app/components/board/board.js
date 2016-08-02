@@ -153,21 +153,22 @@
             });
         };
 
-        ctrl.sortCards = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
-        	var oldColumnId = $partFrom.columnId;
-        	var newColumnId = $partTo.columnId;
-        	var cardId = $item.id;
+        ctrl.sortCards = function(index, item, column, cardsInTargetColumn) {
+        	var oldColumnId = item.columnId;
+        	var newColumnId = column.id;
+        	var cardId = item.id;
         	var ids = [];
 
-        	angular.forEach($partTo, function(card) {
+        	angular.forEach(cardsInTargetColumn, function(card) {
         		ids.push(card.id);
         	});
 
-        	if(newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')) {
+        	if(false /*newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')*/) {
         		//move from board to sidebar
         		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
         	} else if(oldColumnId === newColumnId) {
         		//internal reorder
+        		console.log('internal reorder', ids)
                 Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
