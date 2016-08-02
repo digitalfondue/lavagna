@@ -2,8 +2,10 @@
 
     'use strict';
     
+    //
     var dndCardHeight = null;
-
+    //
+    
     var components = angular.module('lavagna.components');
 
     components.directive('lvgBoardColumn', BoardColumnComponent);
@@ -66,7 +68,7 @@
         	}
         }
         
-        ctrl.dropCard = function dropCard(index, card) {
+        ctrl.dropCard = function dropCard(card) {
         	//remove card before dropping if it's in the same column...
         	if(card.columnId === ctrl.column.id) {
         		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
