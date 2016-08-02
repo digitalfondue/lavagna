@@ -135,6 +135,26 @@
 	position: static;
 }
 
+/*  http://marceljuenemann.github.io/angular-drag-and-drop-lists/demo/#/simple  */
+.lavagna-board-card.dndDraggingSource {
+	display: none;
+}
+
+.lavagna-board-cards, .lavagna-board-card {
+	position: relative;
+}
+
+.lavagna-board-cards .dndPlaceholder {
+	display: block;
+	margin-bottom: 10px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ddd;
+    min-height: 80px;
+}
+/* ------ */
+
 /* display cards in board UI */
 
 .lavagna-board-panel {

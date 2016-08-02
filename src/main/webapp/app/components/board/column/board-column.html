@@ -73,6 +73,7 @@
         dnd-inserted="boardCtrl.sortCards(index, item, boardColumnCtrl.column, boardColumnCtrl.cardsInColumn)">
         <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
             class="lavagna-board-card"
+            dnd-moved="boardColumnCtrl.movedCard(card)"
             dnd-draggable="card"
             dnd-type="'card'">
              <lvg-card-fragment-v2

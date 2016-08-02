@@ -168,7 +168,6 @@
         		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
         	} else if(oldColumnId === newColumnId) {
         		//internal reorder
-        		console.log('internal reorder', ids)
                 Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
