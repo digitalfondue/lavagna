@@ -267,7 +267,7 @@
 		}).state('globalSearch.card', {
 			url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
-            controller : function(Title, card, project, board, user, metadata, labels) {
+            controller : function(Title, card, project, board, user, metadata) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
@@ -379,7 +379,7 @@
         }).state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
-            controller : function(Title, card, project, board, user, metadata, labels) {
+            controller : function(Title, card, project, board, user, metadata) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
@@ -406,7 +406,7 @@
 		}).state('projectSearch.card', {
 			url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
 			template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
-            controller : function(Title, card, project, board, user) {
+            controller : function(Title, card, project, board, user, metadata) {
                 this.board = board;
                 this.card = card;
                 this.project = project;
