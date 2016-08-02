@@ -1,6 +1,8 @@
 (function () {
 
     'use strict';
+    
+    var dndCardHeight = null;
 
     var components = angular.module('lavagna.components');
 
@@ -25,7 +27,7 @@
         }
     }
 
-    function BoardColumnController($scope, $filter, $mdDialog, Board, Card, Label, Notification, StompClient, BulkOperations) {
+    function BoardColumnController($scope, $filter, $mdDialog, $element, Board, Card, Label, Notification, StompClient, BulkOperations) {
         var ctrl = this;
         
         ctrl.user = ctrl.userRef();
@@ -44,8 +46,18 @@
         }
         //
         
-        ctrl.movedCard = function(card) {
-        	//
+        //FIXME ugly
+        ctrl.dragStartCard = function(event) {
+        	dndCardHeight =  event.target.offsetHeight+'px';
+        }
+        
+        ctrl.dragOverCard = function(event) {
+        	$element[0].querySelector('.dndPlaceholder').style.height = dndCardHeight;
+        	return true;
+        }
+        //
+        
+        ctrl.movedCard = function movedCard(card) {
     		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
         		if(ctrl.cardsInColumn[i].id == card.id) {
         			ctrl.cardsInColumn.splice(i, 1);
@@ -54,8 +66,7 @@
         	}
         }
         
-        ctrl.dropCard = function(index, card) {
-        	
+        ctrl.dropCard = function dropCard(index, card) {
         	//remove card before dropping if it's in the same column...
         	if(card.columnId === ctrl.column.id) {
         		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
