@@ -183,7 +183,7 @@ public class ResourceController {
 			PROJ_SHORT_NAME + "/statistics",//
             PROJ_SHORT_NAME + "/milestones",//
             PROJ_SHORT_NAME + "/milestone/{milestone}",
-			PROJ_SHORT_NAME + "/milestone/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
+			PROJ_SHORT_NAME + "/milestone/{milestone}/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,
 			PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ }, method = RequestMethod.GET)
 	public void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
