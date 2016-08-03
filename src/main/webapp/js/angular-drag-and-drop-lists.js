@@ -84,16 +84,16 @@ angular.module('dndLists', [])
        * which is the primary way we communicate with the target element
        */
       element.on('dragstart', function(event) {
-        event = event.originalEvent || event;
+    	  var localEvent = event.originalEvent || event;
 
         // Check whether the element is draggable, since dragstart might be triggered on a child.
         if (element.attr('draggable') == 'false') return true;
 
         // Serialize the data associated with this element. IE only supports the Text drag type
-        event.dataTransfer.setData("Text", angular.toJson(scope.$eval(attr.dndDraggable)));
+        localEvent.dataTransfer.setData("Text", angular.toJson(scope.$eval(attr.dndDraggable)));
 
         // Only allow actions specified in dnd-effect-allowed attribute
-        event.dataTransfer.effectAllowed = attr.dndEffectAllowed || "move";
+        localEvent.dataTransfer.effectAllowed = attr.dndEffectAllowed || "move";
 
         // Add CSS classes. See documentation above
         element.addClass("dndDragging");
@@ -108,14 +108,14 @@ angular.module('dndLists', [])
         dndDragTypeWorkaround.dragType = attr.dndType ? scope.$eval(attr.dndType) : undefined;
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
-        if (event._dndHandle && event.dataTransfer.setDragImage) {
-          event.dataTransfer.setDragImage(element[0], 0, 0);
+        if (localEvent._dndHandle && localEvent.dataTransfer.setDragImage) {
+        	localEvent.dataTransfer.setDragImage(element[0], 0, 0);
         }
 
         // Invoke callback
-        $parse(attr.dndDragstart)(scope, {event: event});
+        $parse(attr.dndDragstart)(scope, {event: localEvent});
 
-        event.stopPropagation();
+        localEvent.stopPropagation();
       });
 
       /**
@@ -124,7 +124,7 @@ angular.module('dndLists', [])
        * we will invoke the callbacks specified with the dnd-moved or dnd-copied attribute.
        */
       element.on('dragend', function(event) {
-        event = event.originalEvent || event;
+        var localEvent = event.originalEvent || event;
 
         // Invoke callbacks. Usually we would use event.dataTransfer.dropEffect to determine
         // the used effect, but Chrome has not implemented that field correctly. On Windows
@@ -134,23 +134,23 @@ angular.module('dndLists', [])
         scope.$apply(function() {
           switch (dropEffect) {
             case "move":
-              $parse(attr.dndMoved)(scope, {event: event});
+              $parse(attr.dndMoved)(scope, {event: localEvent});
               break;
             case "copy":
-              $parse(attr.dndCopied)(scope, {event: event});
+              $parse(attr.dndCopied)(scope, {event: localEvent});
               break;
             case "none":
-              $parse(attr.dndCanceled)(scope, {event: event});
+              $parse(attr.dndCanceled)(scope, {event: localEvent});
               break;
           }
-          $parse(attr.dndDragend)(scope, {event: event, dropEffect: dropEffect});
+          $parse(attr.dndDragend)(scope, {event: localEvent, dropEffect: dropEffect});
         });
 
         // Clean up
         element.removeClass("dndDragging");
         $timeout(function() { element.removeClass("dndDraggingSource"); }, 0);
         dndDragTypeWorkaround.isDragging = false;
-        event.stopPropagation();
+        localEvent.stopPropagation();
       });
 
       /**
@@ -160,13 +160,13 @@ angular.module('dndLists', [])
       element.on('click', function(event) {
         if (!attr.dndSelected) return;
 
-        event = event.originalEvent || event;
+        var localEvent = event.originalEvent || event;
         scope.$apply(function() {
-          $parse(attr.dndSelected)(scope, {event: event});
+          $parse(attr.dndSelected)(scope, {event: localEvent});
         });
 
         // Prevent triggering dndSelected in parent elements.
-        event.stopPropagation();
+        localEvent.stopPropagation();
       });
 
       /**
@@ -258,9 +258,9 @@ angular.module('dndLists', [])
        * to enforce this behaviour.
        */
       element.on('dragenter', function (event) {
-        event = event.originalEvent || event;
-        if (!isDropAllowed(event)) return true;
-        event.preventDefault();
+        var localEvent = event.originalEvent || event;
+        if (!isDropAllowed(localEvent)) return true;
+        localEvent.preventDefault();
       });
 
       /**
@@ -271,6 +271,8 @@ angular.module('dndLists', [])
         event = event.originalEvent || event;
 
         if (!isDropAllowed(event)) return true;
+        
+        var xy = getOffset(event);
 
         // First of all, make sure that the placeholder is shown
         // This is especially important if the list is empty
@@ -288,7 +290,7 @@ angular.module('dndLists', [])
           if (listItemNode.parentNode === listNode && listItemNode !== placeholderNode) {
             // If the mouse pointer is in the upper half of the child element,
             // we place it before the child element, otherwise below it.
-            if (isMouseInFirstHalf(event, listItemNode)) {
+            if (isMouseInFirstHalf(xy, listItemNode)) {
               listNode.insertBefore(placeholderNode, listItemNode);
             } else {
               listNode.insertBefore(placeholderNode, listItemNode.nextSibling);
@@ -299,19 +301,19 @@ angular.module('dndLists', [])
           // Usually we wouldn't need to do anything here, but the IE does not fire it's
           // events for the child element, only for the list directly. Therefore, we repeat
           // the positioning algorithm for IE here.
-          if (isMouseInFirstHalf(event, placeholderNode, true)) {
+          if (isMouseInFirstHalf(xy, placeholderNode, true)) {
             // Check if we should move the placeholder element one spot towards the top.
             // Note that display none elements will have offsetTop and offsetHeight set to
             // zero, therefore we need a special check for them.
             while (placeholderNode.previousElementSibling
-                 && (isMouseInFirstHalf(event, placeholderNode.previousElementSibling, true)
+                 && (isMouseInFirstHalf(xy, placeholderNode.previousElementSibling, true)
                  || placeholderNode.previousElementSibling.offsetHeight === 0)) {
               listNode.insertBefore(placeholderNode, placeholderNode.previousElementSibling);
             }
           } else {
             // Check if we should move the placeholder element one spot towards the bottom
             while (placeholderNode.nextElementSibling &&
-                 !isMouseInFirstHalf(event, placeholderNode.nextElementSibling, true)) {
+                 !isMouseInFirstHalf(xy, placeholderNode.nextElementSibling, true)) {
               listNode.insertBefore(placeholderNode,
                   placeholderNode.nextElementSibling.nextElementSibling);
             }
@@ -398,16 +400,39 @@ angular.module('dndLists', [])
        * again. If it is there, dragover must have been called in the meantime, i.e. the element
        * is still dragging over the list. If you know a better way of doing this, please tell me!
        */
+      var existingDeferred = null;
       element.on('dragleave', function(event) {
-        event = event.originalEvent || event;
-
+        
         element.removeClass("dndDragover");
-        $timeout(function() {
-          if (!element.hasClass("dndDragover")) {
-            placeholder.remove();
-          }
+        if (existingDeferred) {
+        	$timeout.cancel(existingDeferred);
+        }
+        existingDeferred = $timeout(function() {
+        	if (!element.hasClass("dndDragover")) {
+        		placeholder.remove();
+        	}
         }, 100);
       });
+      
+      function getOffset(event) {
+          var el = event.target.offsetParent,
+                 x = 0,
+                 y = 0;
+
+          while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+              x += el.offsetLeft - el.scrollLeft;
+              y += el.offsetTop - el.scrollTop;
+              el = el.offsetParent;
+          }
+          x = event.clientX - x;
+          y = event.clientY - y;
+
+          return {
+              x: x,
+              y: y
+          };
+      }
+
 
       /**
        * Checks whether the mouse pointer is in the first half of the given target element.
@@ -417,13 +442,23 @@ angular.module('dndLists', [])
        * on the listNode instead of the listNodeItem, therefore the mouse positions are
        * relative to the parent element of targetNode.
        */
-      function isMouseInFirstHalf(event, targetNode, relativeToParent) {
-        var mousePointer = horizontal ? (event.offsetX || event.layerX)
-                                      : (event.offsetY || event.layerY);
-        var targetSize = horizontal ? targetNode.offsetWidth : targetNode.offsetHeight;
-        var targetPosition = horizontal ? targetNode.offsetLeft : targetNode.offsetTop;
-        targetPosition = relativeToParent ? targetPosition : 0;
-        return mousePointer < targetPosition + targetSize / 2;
+      function isMouseInFirstHalf(xy, targetNode, relativeToParent) {
+    	  var mousePointer, targetSize, targetPosition = 0;
+    	  if (horizontal) {
+    		  mousePointer = xy.x;
+    		  targetSize = targetNode.offsetWidth;
+    		  if (relativeToParent) {
+    			  targetPosition = targetNode.offsetLeft;
+    		  }
+    	  } else {
+    		  mousePointer = xy.y;
+    		  var cachedHeight = targetNode.getAttribute('data-dnd-height');
+    		  targetSize = cachedHeight || targetNode.offsetHeight;
+    		  if (relativeToParent) {
+    			  targetPosition = targetNode.offsetTop;
+    		  }
+    	  }
+    	  return mousePointer < targetPosition + targetSize / 2;
       }
 
       /**
