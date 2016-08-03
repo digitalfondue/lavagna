@@ -37,7 +37,7 @@
 	};
 
 	//FIXME: useless parameters, check one by one
-	services.factory('Card', function ($http, $upload) {
+	services.factory('Card', function ($http, $window, FileUploader) {
 		return {
 			findCardByBoardShortNameAndSeqNr: function (shortName, seqNr) {
 				return $http.get('api/card-by-seq/' + shortName + '-' + seqNr).then(extractData);
@@ -139,18 +139,13 @@
 			getMaxFileSize: function () {
 				return $http.get('api/configuration/max-upload-file-size').then(extractData);
 			},
-			uploadFile: function (file, cardId, progressCallBack, completeCallback, failedCallback, canceledCallback) {
-				var upload = $upload.upload({
-					url: 'api/card/' + cardId + '/file',
-					file: file,
-					fileFormDataName: 'files'
-				}).progress(progressCallBack)
-					.success(completeCallback)
-					.error(failedCallback)
-					.xhr(function (xhr) {
-						xhr.addEventListener("abort", canceledCallback, false);
-					});
-				return upload;
+			getFileUploader: function(cardId) {
+                return new FileUploader({
+                    url: 'api/card/' + cardId + '/file',
+                    alias: 'files',
+                    autoUpload: true,
+                    headers: { 'x-csrf-token': $window.csrfToken }
+                });
 			},
 			deleteFile: function (cardDataId) {
 				return $http['delete']('api/card-data/file/' + cardDataId, null).then(extractData);

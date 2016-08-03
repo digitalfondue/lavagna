@@ -50,7 +50,7 @@
 	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider, $compileProvider) {
 
 		$compileProvider.debugInfoEnabled(false);
-		
+
 		$locationProvider.html5Mode(true);
 
 		//TODO: this is kinda fragile
@@ -455,10 +455,10 @@
 		});
 
 		$urlRouterProvider.otherwise('/');
-		
-		
+
+
 		$mdThemingProvider.disableTheming();
-		
+
 		/* CHECK in case we need to regenerate the theme!
 		var background = $mdThemingProvider.extendPalette('grey', {
           //'A100': 'e5e5e5'
@@ -475,8 +475,8 @@
 
 		$mdThemingProvider.setDefaultTheme('default');
 		*/
-		
-		
+
+
 		$mdInkRippleProvider.disableInkRipple();
 
 
@@ -514,6 +514,7 @@
 			.icon('notifications-off',  'svg/ic_notifications_off_black_48px.svg')
 			.icon('take',               'svg/ic_assignment_ind_black_48px.svg')
 			.icon('surrender',          'svg/ic_assignment_returned_black_48px.svg')
+			.icon('upload',             'svg/ic_cloud_upload_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

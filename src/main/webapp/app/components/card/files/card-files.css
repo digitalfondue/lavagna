@@ -1,0 +1,34 @@
+.lvg-card-files__dropzone-over {
+    margin: 6px;
+    border: 2px dashed #ccc;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background: #f5f5f5 url(../svg/ic_cloud_upload_black_48px.svg) no-repeat center center;
+    opacity: 0.5;
+    position: relative;
+}
+
+.lvg-card-files__dropzone-over md-card {
+    margin: 0 !important;
+    visibility: hidden;
+}
+
+.lvg-card-files__upload-notice {
+    padding-left: 15px;
+}
+
+.lvg-card-files__upload-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.lvg-card-files__upload-label {
+    cursor: pointer;
+    display: inline-block;
+}

@@ -1,0 +1,34 @@
+<div nv-file-drop nv-file-over uploader="$ctrl.uploader" over-class="lvg-card-files__dropzone-over" class="lvg-card-files__dropzone">
+    <md-card class="lvg-card-files__files">
+        <md-card-title>
+            <md-card-title-text><span class="md-headline" data-translate>card.files</span></md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-list>
+                <md-list-item ng-repeat="file in $ctrl.files track by id">
+                    {{ file | json }}
+                </md-list-item>
+                <!--<md-divider></md-divider>-->
+                <md-list-item ng-repeat="item in $ctrl.uploader.queue track by $index">
+                    <div>Name: {{ item.file.name }}</div>
+                    <div>Size: {{ item.file.size/1024/1024|number:2 }} Mb</div>
+                    <div>
+                        Progress: {{ item.progress }}
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+        <md-card-actions data-lvg-has-permission="CREATE_FILE" layout="row" layout-align="start center">
+            <div flex="nogrow">
+                <input type="file" name="files" id="files" class="lvg-card-files__upload-input"
+                       nv-file-select uploader="$ctrl.uploader" multiple/>
+                <label class="lvg-card-files__upload-label md-button md-raised md-primary" for="files">
+                    <span translate>button.filesSelect</span>
+                </label>
+            </div>
+            <div class="lvg-card-files__upload-notice" flex>
+                Or drop files here
+            </div>
+        </md-card-actions>
+    </md-card>
+</div>

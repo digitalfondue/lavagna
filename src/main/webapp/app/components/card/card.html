@@ -2,6 +2,7 @@
     <div flex="66">
         <lvg-card-description card="$ctrl.card" project="$ctrl.project" label-values="$ctrl.labelValues"></lvg-card-description>
 
+        <lvg-card-files card="$ctrl.card" user="$ctrl.user"></lvg-card-files>
         <!--<div class="row">
             <div class="col-md-12">
                 <div class="lavagna-card-panel lavagna-tab" data-lvg-tab-ui>
@@ -241,6 +242,6 @@
         <lvg-card-people card="$ctrl.card" project="$ctrl.project" user="$ctrl.user"
                          assigned-users="$ctrl.assignedUsers" watching-users="$ctrl.watchingUsers"></lvg-card-people>
 
-        <lvg-card-action-lists card="$ctrl.card" action-lists="$ctrl.actionLists"></lvg-card-action-lists>
+        <lvg-card-action-lists card="$ctrl.card"></lvg-card-action-lists>
     </div>
 </div>
