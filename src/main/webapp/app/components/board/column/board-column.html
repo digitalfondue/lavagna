@@ -73,7 +73,6 @@
         dnd-dragover="boardColumnCtrl.dragOverCard(event)">
         <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
             class="lavagna-board-card"
-            dnd-moved="boardColumnCtrl.movedCard(card)"
             dnd-dragstart="boardColumnCtrl.dragStartCard(event)"
             dnd-draggable="card"
             dnd-type="'card'">

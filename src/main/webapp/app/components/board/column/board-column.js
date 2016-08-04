@@ -4,6 +4,7 @@
     
     //
     var dndCardHeight = null;
+    var dndColumnOrigin = null;
     //
     
     var components = angular.module('lavagna.components');
@@ -51,6 +52,7 @@
         //FIXME ugly
         ctrl.dragStartCard = function(event) {
         	dndCardHeight =  event.target.offsetHeight+'px';
+        	dndColumnOrigin = ctrl;
         }
         
         ctrl.dragOverCard = function(event) {
@@ -59,8 +61,8 @@
         }
         //
         
-        ctrl.movedCard = function movedCard(card) {
-    		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
+        ctrl.removeCard = function(card) {
+        	for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
         		if(ctrl.cardsInColumn[i].id === card.id) {
         			ctrl.cardsInColumn.splice(i, 1);
         			break;
@@ -74,14 +76,10 @@
         		return false;
         	}
         	
-        	// remove card if target and origin column are the same destination
-        	if(card.columnId === ctrl.column.id) {
-        		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
-            		if(ctrl.cardsInColumn[i].id === card.id) {
-            			ctrl.cardsInColumn.splice(i, 1);
-            			break;
-            		}
-            	}
+        	// remove card from origin column
+        	if(dndColumnOrigin) {
+        		dndColumnOrigin.removeCard(card);
+        		dndColumnOrigin = null;
         	}
 
         	// insert card at correct index
