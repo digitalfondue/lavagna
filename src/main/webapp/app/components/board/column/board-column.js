@@ -68,11 +68,14 @@
         	}
         }
         
-        ctrl.dropCard = function dropCard(card) {
+        ctrl.dropCard = function dropCard(card, index) {
         	//remove card before dropping if it's in the same column...
         	if(card.columnId === ctrl.column.id) {
         		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
             		if(ctrl.cardsInColumn[i].id === card.id) {
+            			if(i === index) {//ignore drop as it's the same position
+            				return false;
+            			}
             			ctrl.cardsInColumn.splice(i, 1);
             			break;
             		}
