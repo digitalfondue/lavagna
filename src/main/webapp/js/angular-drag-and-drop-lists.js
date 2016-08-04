@@ -97,7 +97,9 @@ angular.module('dndLists', [])
 
         // Add CSS classes. See documentation above
         element.addClass("dndDragging");
-        $timeout(function() { element.addClass("dndDraggingSource"); }, 0);
+        
+        // 
+        setTimeout(function() { element.addClass("dndDraggingSource");}, 0);
 
         // Workarounds for stupid browsers, see description below
         dndDropEffectWorkaround.dropEffect = "none";
@@ -148,7 +150,12 @@ angular.module('dndLists', [])
 
         // Clean up
         element.removeClass("dndDragging");
-        $timeout(function() { element.removeClass("dndDraggingSource"); }, 0);
+        
+        //customization
+        //$timeout(function() { 
+        element.removeClass("dndDraggingSource"); 
+
+        //}, 0);
         dndDragTypeWorkaround.isDragging = false;
         localEvent.stopPropagation();
       });
@@ -278,6 +285,10 @@ angular.module('dndLists', [])
         // This is especially important if the list is empty
         if (placeholderNode.parentNode != listNode) {
           element.append(placeholder);
+          
+          //CHECK, customization: to prevent flickering, we add the class that hide the element only when the placeholder appear
+          element.find('.dndDragging').addClass('dndDraggingSource');
+          //
         }
 
         if (event.target !== listNode) {

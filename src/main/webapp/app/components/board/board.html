@@ -24,10 +24,18 @@
 <div class="horizontal-slide lavagna-left-sidebar-slide-open" data-ng-class="{'lavagna-board-left-sidebar-open':boardCtrl.toggledSidebar, 'lvg-can-move-columns' : boardCtrl.sortableColumnOptions, 'lvg-can-move-cards': boardCtrl.sortableCardOptions}"
      data-lvg-fill-height="{{boardCtrl.toggledSidebar}}" data-lvg-fill-height-margin="295">
      
-    <ul class="lavagna-board-column-holder" data-lvg-size-by-visible-columns="boardCtrl.columns">
+    <ul class="lavagna-board-column-holder" data-lvg-size-by-visible-columns="boardCtrl.columns" 
+        dnd-list="boardCtrl.columns"
+        dnd-horizontal-list="true"
+        dnd-allowed-types="['column']"
+        dnd-drop="boardCtrl.dropColumn(item, index)"
+        dnd-dragover="boardCtrl.dragOverColumn(event)">
         <li class="lavagna-board-column lavagna-sortable-board-column"
             data-ng-repeat="column in boardCtrl.columns track by column.id"
-            data-lvg-update-column-size>
+            data-lvg-update-column-size
+            dnd-dragstart="boardCtrl.dragStartColumn(event)"
+            dnd-draggable="column"
+            dnd-type="'column'">
             <lvg-board-column 
                 project-short-name="{{::boardCtrl.project.shortName}}" 
                 board-short-name="{{::boardCtrl.board.shortName}}"

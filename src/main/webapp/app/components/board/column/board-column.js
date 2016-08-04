@@ -4,6 +4,7 @@
     
     //
     var dndCardHeight = null;
+    var dndColumnOrigin = null;
     //
     
     var components = angular.module('lavagna.components');
@@ -51,6 +52,7 @@
         //FIXME ugly
         ctrl.dragStartCard = function(event) {
         	dndCardHeight =  event.target.offsetHeight+'px';
+        	dndColumnOrigin = ctrl;
         }
         
         ctrl.dragOverCard = function(event) {
@@ -59,8 +61,8 @@
         }
         //
         
-        ctrl.movedCard = function movedCard(card) {
-    		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
+        ctrl.removeCard = function(card) {
+        	for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
         		if(ctrl.cardsInColumn[i].id === card.id) {
         			ctrl.cardsInColumn.splice(i, 1);
         			break;
@@ -68,17 +70,47 @@
         	}
         }
         
-        ctrl.dropCard = function dropCard(card) {
-        	//remove card before dropping if it's in the same column...
-        	if(card.columnId === ctrl.column.id) {
-        		for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
-            		if(ctrl.cardsInColumn[i].id === card.id) {
-            			ctrl.cardsInColumn.splice(i, 1);
-            			break;
-            		}
-            	}
+        ctrl.dropCard = function dropCard(card, index) {
+        	//ignore drop as it's the same position
+        	if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
+        		return false;
         	}
-        	return card;
+        	
+        	// remove card from origin column
+        	if(dndColumnOrigin) {
+        		dndColumnOrigin.removeCard(card);
+        		dndColumnOrigin = null;
+        	}
+
+        	// insert card at correct index
+        	ctrl.cardsInColumn.splice(index, 0, card);
+        	//
+        	
+        	var oldColumnId = card.columnId;
+        	var newColumnId = ctrl.column.id;
+        	var cardId = card.id;
+        	var ids = [];
+
+        	angular.forEach(ctrl.cardsInColumn, function(card) {
+        		ids.push(card.id);
+        	});
+
+        	if(false /*newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')*/) {
+        		//move from board to sidebar
+        		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
+        	} else if(oldColumnId === newColumnId) {
+        		//internal reorder
+                Board.updateCardOrder(ctrl.boardShortName, oldColumnId, ids).catch(function(error) {
+                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                });
+            } else {
+            	//move card from one column to another
+                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
+                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                });
+            }
+        	
+        	return true;
         }
         
         //

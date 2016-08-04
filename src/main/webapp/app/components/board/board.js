@@ -41,6 +41,50 @@
             ctrl.locationOpened=false;
             ctrl.sideBarLocation=undefined;
         };
+        
+        // DnD facilities
+        ctrl.dragStartColumn = function(event) {
+        }
+        
+        ctrl.dragOverColumn = function(event) {
+        	return true;
+        }
+        
+        
+        function getColumnIndex(column) {
+        	for(var i = 0; i < ctrl.columns.length;i++) {
+        		if(ctrl.columns[i].id === column.id) {
+        			return i;
+        		}
+        	}
+        	return 0;
+        }
+        
+        ctrl.dropColumn = function(column, index) {
+        	var currentColIdx = getColumnIndex(column);
+        	//same position, ignore drop
+        	if(currentColIdx == index) {
+        		return false;
+        	}
+        	
+        	ctrl.columns.splice(currentColIdx, 1);
+
+        	
+        	ctrl.columns.splice(index, 0, column);
+        	
+        	var colPos = [];
+        	angular.forEach(ctrl.columns, function(col) {
+        		colPos.push(col.id);
+        	});
+        	
+        	console.log(colPos);
+        	
+        	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
+        		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+        	});
+            
+        }
+        //
 
         //keep track of the selected cards
         ctrl.selectedCards = {};
@@ -141,43 +185,7 @@
 
         Board.columnsByLocation(boardName, 'BOARD').then(assignToColumn);
 
-        //-------------
-
-        ctrl.sortColumns = function() {
-        	var colPos = [];
-        	angular.forEach(ctrl.columns, function(col) {
-        		colPos.push(col.id);
-        	});
-        	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-            });
-        };
-
-        ctrl.sortCards = function(index, item, column, cardsInTargetColumn) {
-        	var oldColumnId = item.columnId;
-        	var newColumnId = column.id;
-        	var cardId = item.id;
-        	var ids = [];
-
-        	angular.forEach(cardsInTargetColumn, function(card) {
-        		ids.push(card.id);
-        	});
-
-        	if(false /*newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')*/) {
-        		//move from board to sidebar
-        		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
-        	} else if(oldColumnId === newColumnId) {
-        		//internal reorder
-                Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
-                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                });
-            } else {
-            	//move card from one column to another
-                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
-                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                });
-            }
-        }
+        //-------------        
 
         //will be used as a map columnState[columnId].editColumnName = true/false
         ctrl.columnState = {};

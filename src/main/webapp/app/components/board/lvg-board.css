@@ -60,12 +60,27 @@
 .lavagna-board-column-holder {
 	margin: 0;
 	padding: 0;
-	float: left;
 	list-style: none;
+	float: left;
+	position: relative;
+}
+
+.lavagna-board-column-holder > .dndPlaceholder {
+	display: block;
+    background-color: #ddd;
+    width: 290px;
+    margin: 4px;
+    min-height: 100px;
+    float:left;
+}
+
+.lavagna-board-column.dndDraggingSource {
+    display: none;
 }
 
 .lavagna-board-column {
 	background-color: #f5f5f5;
+	position: relative;
 	width: 290px;
 	float: left;
 	margin: 4px;
