@@ -153,11 +153,11 @@ public class MilestoneExportService {
 				if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
                     if (cl.getName().equals("ASSIGNED") ||
                         cl.getName().equals("DUE_DATE")) {
-                        return false;
+                        return true;
                     }
-                    return true;
+                    return false;
                 }
-                return false;
+                return true;
 			}
         });
         Collections.sort(labels, new Comparator<CardLabel>() {
