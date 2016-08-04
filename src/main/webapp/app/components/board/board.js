@@ -153,32 +153,6 @@
             });
         };
 
-        ctrl.sortCards = function(index, item, column, cardsInTargetColumn) {
-        	var oldColumnId = item.columnId;
-        	var newColumnId = column.id;
-        	var cardId = item.id;
-        	var ids = [];
-
-        	angular.forEach(cardsInTargetColumn, function(card) {
-        		ids.push(card.id);
-        	});
-
-        	if(false /*newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')*/) {
-        		//move from board to sidebar
-        		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
-        	} else if(oldColumnId === newColumnId) {
-        		//internal reorder
-                Board.updateCardOrder(boardName, oldColumnId, ids).catch(function(error) {
-                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                });
-            } else {
-            	//move card from one column to another
-                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
-                    Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
-                });
-            }
-        }
-
         //will be used as a map columnState[columnId].editColumnName = true/false
         ctrl.columnState = {};
 
