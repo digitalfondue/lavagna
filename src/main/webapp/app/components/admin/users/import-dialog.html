@@ -1,15 +1,21 @@
 <md-dialog>
-	<form role="form" data-ng-submit="importDialogCtrl.bulkImport()">
+	<form role="form" data-ng-submit="importDialogCtrl.file.upload()">
 	   <md-dialog-content>
 			<div class="md-dialog-content">
-			    <div class="lvg-button lvg-button-submit" ng-file-select="importDialogCtrl.onFileSelect($files)"><span data-translate>button.fileSelect</span></div>
-			    <div data-ng-if="importDialogCtrl.importUserFile != null">{{importDialogCtrl.importUserFile.name}}</div>
-			    <div data-ng-if="importDialogCtrl.importUserFile == null" data-translate>common.no-files-selected</div>
+                <div>
+                    <input type="file" name="file" id="file" class="lvg-input-file__input"
+                           nv-file-select uploader="importDialogCtrl.uploader"/>
+                    <label class="lvg-input-file__label md-button md-raised md-primary" for="file">
+                        <span translate>button.fileSelect</span>
+                    </label>
+                </div>
+			    <div data-ng-if="importDialogCtrl.file">{{importDialogCtrl.file.file.name}}</div>
+			    <div data-ng-if="!importDialogCtrl.file" data-translate>common.no-file-selected</div>
 			</div>
 		</md-dialog-content>
 		<md-dialog-actions>
-		  <md-button type="submit" data-ng-disabled="importDialogCtrl.importUserFile == null"><span data-translate>partials.admin.manage-users.import</span></md-button>
-		  <md-button type="button" data-ng-click="importDialogCtrl.importUserFile = null;importDialogCtrl.close()"><span data-translate>button.cancel</span></md-button>
+		  <md-button type="submit" data-ng-disabled="!importDialogCtrl.file"><span data-translate>partials.admin.manage-users.import</span></md-button>
+		  <md-button type="button" data-ng-click="importDialogCtrl.file = null;importDialogCtrl.close()"><span data-translate>button.cancel</span></md-button>
 		</md-dialog-actions>
 	</form>
 </md-dialog>

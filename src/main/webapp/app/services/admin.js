@@ -8,7 +8,7 @@
 		return data.data
 	};
 
-	services.factory('Admin', function ($http, $upload) {
+	services.factory('Admin', function ($http, $window, FileUploader) {
 		return {
 			endpointInfo: function () {
 				return $http.get('api/admin/endpoint-info').then(extractData);
@@ -38,27 +38,20 @@
 				return $http.post('api/check-ldap/', angular.extend({}, ldap, usernameAndPwd)).then(extractData);
 			},
 
-			importUsers: function(file, progressCallBack, completeCallback, failedCallback, canceledCallback) {
-				var upload = $upload.upload({
-			        url: 'api/user/bulk-insert',
-			        file: file
-			      }).progress(progressCallBack)
-			      .success(completeCallback)
-			      .error(failedCallback)
-			      .xhr(function(xhr){xhr.addEventListener("abort", canceledCallback, false);});
-				return upload;
+			getImportUsersUploader: function() {
+			    return new FileUploader({
+                    url: 'api/user/bulk-insert',
+                    autoUpload: false,
+                    headers: { 'x-csrf-token': $window.csrfToken }
+                });
 		    },
 
-			importData: function(file, overrideConfig, progressCallBack, completeCallback, failedCallback) {
-				var upload = $upload.upload({
-			        url: 'api/import/lavagna',
-			        file: file,
-			        data: {overrideConfiguration: overrideConfig}
-				}).progress(progressCallBack)
-				.success(completeCallback)
-				.error(failedCallback);
-
-				return upload;
+			getImportDataUploader: function() {
+				return new FileUploader({
+                    url: 'api/import/lavagna',
+                    autoUpload: false,
+                    headers: { 'x-csrf-token': $window.csrfToken }
+                });
 			},
 
 			//----

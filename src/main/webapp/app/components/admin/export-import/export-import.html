@@ -6,10 +6,16 @@
 			</form>
 		<md-divider ></md-divider>
 		<h2 class="md-title" translate>partials.admin.export-import.import</h2>
-		<form ng-submit="$ctrl.doImport()">
-			<div ng-file-select="$ctrl.onFileSelect($files)"><md-button class="md-raised md-primary"><span translate>button.fileSelect</span></md-button></div>
-			<p ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.name"></p>
-			<p ng-if="$ctrl.importFile == null" translate>common.no-files-selected</p>
+		<form ng-submit="$ctrl.importFile.upload()">
+            <div>
+                <input type="file" name="file" id="file" class="lvg-input-file__input"
+                       nv-file-select uploader="$ctrl.uploader"/>
+                <label class="lvg-input-file__label md-button md-raised md-primary" for="file">
+                    <span translate>button.fileSelect</span>
+                </label>
+            </div>
+			<p ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.file.name"></p>
+			<p ng-if="$ctrl.importFile == null" translate>common.no-file-selected</p>
 			<div class="md-block">
 				<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
 			</div>

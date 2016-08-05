@@ -13,7 +13,7 @@
         var ctrl = this;
         ctrl.view = {};
         ctrl.isOpen = false
-        
+
         function loadUsers() {
             User.list().then(function(l) {
                 ctrl.users = l;
@@ -73,13 +73,13 @@
         ctrl.showAddUserDialog = function($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/admin/users/add-user-dialog.html',
-        		controller: function() {        			
+        		controller: function() {
         			var ctrl = this;
-        			
+
         			ctrl.close = function () {
                     	$mdDialog.hide();
                     }
-        			
+
         			ctrl.addUser = function(userToAdd) {
         	            var rawRoles = userToAdd.roles;
         	            var roles = [];
@@ -108,46 +108,50 @@
         		targetEvent: $event
         	});
         };
-        
+
         ctrl.showImportDialog = function($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/admin/users/import-dialog.html',
         		controller: function() {
         			var ctrl = this;
-        			
-        			ctrl.importUserFile = null;
 
-        	        ctrl.onFileSelect = function($files) {
-        	            ctrl.importUserFile = $files[0]; //single file
-        	        };
-        			
+        			var uploader = ctrl.uploader = Admin.getImportUsersUploader();
+
+        			ctrl.file = null;
+
+        			uploader.onAfterAddingFile = function(fileItem) {
+        			    ctrl.file = fileItem;
+        			};
+
+        			var reload = function() {
+        			    ctrl.file = null;
+        			    uploader.clearQueue();
+        			    loadUsers();
+        			}
+
+        			uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                        Notification.addAutoAckNotification('success', {
+                            key: 'notification.admin-manage-users.bulkImport.success'
+                        }, false);
+                        reload();
+                    };
+                    uploader.onErrorItem = function(fileItem, response, status, headers) {
+                        Notification.addAutoAckNotification('error', {
+                            key: 'notification.admin-manage-users.bulkImport.error'
+                        }, false);
+                        reload();
+                    };
+
         			ctrl.close = function () {
                     	$mdDialog.hide();
                     }
-        			
-        			//TODO: progress bar, abort
-        	        ctrl.bulkImport = function() {
-        	            Admin.importUsers(ctrl.importUserFile,
-        	                    function(evt) { },
-        	                    function() {
-        	                        Notification.addAutoAckNotification('success', {
-        	                            key: 'notification.admin-manage-users.bulkImport.success'
-        	                        }, false);
-        	                    },
-        	                    function() {
-        	                        Notification.addAutoAckNotification('error', {
-        	                            key: 'notification.admin-manage-users.bulkImport.error'
-        	                        }, false);
-        	                    },
-        	                    function() { }).then(loadUsers);
-        	        };
         		},
         		controllerAs: 'importDialogCtrl',
         		targetEvent: $event
         	});
         };
 
-        
+
 
         // ------- user pagination
         ctrl.showUserPermissions = function(user) {

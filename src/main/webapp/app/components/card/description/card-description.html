@@ -37,7 +37,7 @@
                 <md-button data-ng-click="$ctrl.addLabelPanel = true"
                            md-no-ink
                            class="lvg-small-icon-button lvg-card-description__labels-add-button">
-                    <md-tooltip>{{'card.metadata.label.add.tooltip' | translate}}</md-tooltip>
+                    <md-tooltip>{{'card.labels.add.tooltip' | translate}}</md-tooltip>
                     <md-icon md-menu-origin md-svg-icon="add"></md-icon>
                 </md-button>
             </span>
@@ -87,37 +87,37 @@
             <div class="lvg-card-description__footer">
                 <div class="lvg-card-description__updated"
                      data-ng-show="$ctrl.description.updatedCount == 0">
-                    <span data-translate>card.createdBy</span>
+                    <span data-translate>card.description.created.by</span>
                     <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
-                    <span data-translate>card.onDate</span>
+                    <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>
                 <div class="lvg-card-description__updated"
                      data-ng-show="$ctrl.description.updatedCount == 1">
-                    <span data-translate>card.updateCount</span>
+                    <span data-translate>card.description.update.count</span>
                     -
-                    <span data-translate>card.lastUpdatedBy</span>
+                    <span data-translate>card.description.updated.by</span>
                     <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
-                    <span data-translate>card.onDate</span>
+                    <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>
                 <div class="lvg-card-description__updated"
                      data-ng-show="$ctrl.description.updatedCount > 1">
-                    <span data-translate data-translate-value-count="{{$ctrl.description.updatedCount}}">card.updateCounts</span>
+                    <span data-translate data-translate-value-count="{{$ctrl.description.updatedCount}}">card.description.update.counts</span>
                     -
-                    <span data-translate>card.lastUpdatedBy</span>
+                    <span data-translate>card.description.updated.by</span>
                     <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
-                    <span data-translate>card.onDate</span>
+                    <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>
                 <div class="lvg-card-description__updated"
                      data-ng-show="!$ctrl.description.content">
-                    <span data-translate>card.metadata.description.not.available</span>
+                    <span data-translate>card.description.not.available</span>
                 </div>
                 <div class="lvg-card-description__edit-button">
                     <md-button ng-click="descriptionToEdit = $ctrl.description.content; editDescription = true;"
                                class="lvg-small-icon-button" data-lvg-has-permission="UPDATE_CARD">
-                        <md-tooltip>{{'card.metadata.description.edit.tooltip' | translate}}</md-tooltip>
+                        <md-tooltip>{{'card.description.edit.tooltip' | translate}}</md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>
                     </md-button>
                 </div>

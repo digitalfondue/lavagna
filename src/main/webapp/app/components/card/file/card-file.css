@@ -1,0 +1,44 @@
+.lvg-card-file {
+    display: table-row;
+    width: 100%;
+    max-height: 30px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.lvg-card-file:last-child {
+    border-bottom: 0;
+}
+
+.lvg-card-file__metadata {
+    display: table-cell;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.lvg-card-file__metadata-name {
+    padding-left: 6px;
+    width: 42%;
+}
+
+.lvg-card-file__metadata-size {
+    width: 15%;
+}
+
+.lvg-card-file__metadata-date {
+    width: 23%;
+}
+
+.lvg-card-file__metadata-user, lvg-card-file__metadata-progress {
+    width: 20%;
+}
+
+.lvg-card-file__action {
+    width: 42px;
+}
+
+.lvg-card-file__action-retry {
+    text-align: right;
+}

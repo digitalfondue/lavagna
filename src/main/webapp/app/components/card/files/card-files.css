@@ -19,16 +19,9 @@
     padding-left: 15px;
 }
 
-.lvg-card-files__upload-input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-}
-
-.lvg-card-files__upload-label {
-    cursor: pointer;
-    display: inline-block;
+.lvg-card-files__file-table {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    border-collapse: collapse;
 }

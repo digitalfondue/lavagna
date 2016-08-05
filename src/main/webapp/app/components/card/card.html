@@ -11,8 +11,6 @@
                             <li><a href=""
                                    data-lvg-tab-ui-target="lavagna-card-panel-comments" data-translate>card.comments</a></li>
                             <li><a href=""
-                                   data-lvg-tab-ui-target="lavagna-card-panel-files" data-translate>card.files</a></li>
-                            <li><a href=""
                                    data-lvg-tab-ui-target="lavagna-card-panel-activity" data-translate>card.activity</a></li>
                         </ul>
                     </div>
@@ -128,91 +126,6 @@
                                                 class="lvg-button lvg-button-default"><span data-translate>button.reset</span></button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lavagna-tab-panel" id="lavagna-card-panel-files">
-                        <div class="body-full" data-ng-if="$ctrl.files">
-                            <ul class="lavagna-files-list" data-ng-init="fileControls = {}">
-                                <li class="lavagna-file clearfix"
-                                    data-ng-repeat="file in $ctrl.files"
-                                    data-ng-init="fileControls[file.cardDataId] = {}">
-                                    <div class="lavagna-file-icon">
-                                        <span class="fa fa-floppy-o"></span>
-                                    </div>
-                                    <div class="lavagna-file-info">
-                                        <ul>
-                                            <li class="file-info"><span class="username" data-lvg-user-tooltip="file.userId"></span>
-                                                <span class="date" data-ng-bind="file.time | dateIncremental"></span></li>
-                                            <li class="file-info"><a
-                                                data-ng-href="api/card-data/file/{{file.cardDataId}}/{{file.name}}" target="_blank">{{file.name}}</a></li>
-                                            <li class="file-info"><span class="size" data-ng-bind="file.size | fileBytes"></span></li>
-                                        </ul>
-                                        <form data-role="form" data-ng-if="fileControls[file.cardDataId].deleteFile"
-                                              data-ng-submit="$ctrl.deleteFile(file.cardDataId)" class="panel-confirmation-control">
-                                            <div class="form-group" data-translate>card.deleteThisFile</div>
-                                            <div>
-                                                <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
-                                                <button type="button" class="lvg-button lvg-button-default"
-                                                        data-ng-click="fileControls[file.cardDataId].deleteFile = false"><span data-translate>button.no</span></button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="lavagna-file-controls">
-                                        <ul>
-                                            <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = true"
-                                                data-ng-hide="fileControls[file.cardDataId].deleteFile"
-                                                class="control-item"><span
-                                                class="fa fa-trash-o" title="{{'button.delete' | translate}}"></span></li>
-                                            <li data-lvg-has-permission="DELETE_FILE" data-ng-click="fileControls[file.cardDataId].deleteFile = false"
-                                                data-ng-if="fileControls[file.cardDataId].deleteFile"
-                                                class="control-item"><span
-                                                class="fa fa-times active-control" title="{{'button.cancel' | translate}}"></span></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="footer" data-lvg-has-permission="CREATE_FILE">
-                            <div class="content">
-                                <form data-role="form">
-                                    <div>
-                                        <div class="lvg-button lvg-button-submit"
-                                             ng-file-select="$ctrl.addFiles($files)" multiple><span data-translate>button.filesSelect</span></div>
-                                    </div>
-                                </form>
-                                <ul class="lvg-card-file-queue">
-                                    <li data-ng-repeat="entry in $ctrl.filesToUpload track by $index">
-                                        <div class="lavagna-file-icon">
-                                        <span class="fa" data-ng-class="{'fa-clock-o': entry.status == 'queue',
-                                            'fa-arrow-up': entry.status == 'upload', 'fa-stop': entry.status == 'aborted',
-                                            'fa-warning': entry.status == 'failed', 'fa-check': entry.status == 'success'}"></span>
-                                        </div>
-                                        <div class="lavagna-file-metadata">
-                                            <div class="file-name">{{entry.file.name}}</div>
-                                            <div class="upload-progress progress progress-success lavagna-progress">
-                                                <div class="progress-bar" data-ng-style="{'width': entry.progress + '%'}"></div>
-                                            </div>
-                                            <div class="file-size"><span class="size">{{entry.file.size | fileBytes}}</span></div>
-                                        </div>
-                                        <div class="lavagna-file-controls">
-                                            <ul>
-                                                <li data-ng-show="entry.status == 'failed' || entry.status == 'aborted'"
-                                                    data-ng-click="$ctrl.retryUpload($index)"
-                                                    class="control-item"><span
-                                                    class="fa fa-repeat" title="{{'button.retry' | translate}}"></span></li>
-                                                <li data-ng-show="entry.status != 'upload'"
-                                                    data-ng-click="$ctrl.cancelUpload($index)"
-                                                    class="control-item"><span
-                                                    class="fa fa-times" title="{{'button.cancel' | translate}}"></span></li>
-                                                <li data-ng-show="entry.status == 'upload'"
-                                                    data-ng-click="$ctrl.abortUpload($index)"
-                                                    class="control-item"><span
-                                                    class="fa fa-stop" title="{{'button.abort' | translate}}"></span></li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
