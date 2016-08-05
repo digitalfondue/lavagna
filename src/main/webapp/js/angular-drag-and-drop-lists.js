@@ -113,6 +113,10 @@ angular.module('dndLists', [])
         if (localEvent._dndHandle && localEvent.dataTransfer.setDragImage) {
         	localEvent.dataTransfer.setDragImage(element[0], 0, 0);
         }
+        
+        //CUSTOMIZATION: save height
+        dndDragTypeWorkaround.targetOffsetHeight = event.target.offsetHeight+'px';
+        //
 
         // Invoke callback
         $parse(attr.dndDragstart)(scope, {event: localEvent});
@@ -287,6 +291,7 @@ angular.module('dndLists', [])
           element.append(placeholder);
           
           //CHECK, customization: to prevent flickering, we add the class that hide the element only when the placeholder appear
+          placeholder[0].style.height = dndDragTypeWorkaround.targetOffsetHeight;
           element.find('.dndDragging').addClass('dndDraggingSource');
           //
         }

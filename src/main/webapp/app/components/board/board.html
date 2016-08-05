@@ -28,12 +28,10 @@
         dnd-list="boardCtrl.columns"
         dnd-horizontal-list="true"
         dnd-allowed-types="['column']"
-        dnd-drop="boardCtrl.dropColumn(item, index)"
-        dnd-dragover="boardCtrl.dragOverColumn(event)">
+        dnd-drop="boardCtrl.dropColumn(item, index)">
         <li class="lavagna-board-column lavagna-sortable-board-column"
             data-ng-repeat="column in boardCtrl.columns track by column.id"
             data-lvg-update-column-size
-            dnd-dragstart="boardCtrl.dragStartColumn(event)"
             dnd-draggable="column"
             dnd-type="'column'">
             <lvg-board-column 

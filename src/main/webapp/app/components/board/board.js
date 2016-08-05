@@ -42,15 +42,7 @@
             ctrl.sideBarLocation=undefined;
         };
         
-        // DnD facilities
-        ctrl.dragStartColumn = function(event) {
-        }
-        
-        ctrl.dragOverColumn = function(event) {
-        	return true;
-        }
-        
-        
+
         function getColumnIndex(column) {
         	for(var i = 0; i < ctrl.columns.length;i++) {
         		if(ctrl.columns[i].id === column.id) {

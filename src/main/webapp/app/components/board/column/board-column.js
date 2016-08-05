@@ -3,7 +3,6 @@
     'use strict';
     
     //
-    var dndCardHeight = null;
     var dndColumnOrigin = null;
     //
     
@@ -48,16 +47,8 @@
         	return r;
         }
         //
-        
-        //FIXME ugly
         ctrl.dragStartCard = function(event) {
-        	dndCardHeight =  event.target.offsetHeight+'px';
         	dndColumnOrigin = ctrl;
-        }
-        
-        ctrl.dragOverCard = function(event) {
-        	$element[0].querySelector('.dndPlaceholder').style.height = dndCardHeight;
-        	return true;
         }
         //
         

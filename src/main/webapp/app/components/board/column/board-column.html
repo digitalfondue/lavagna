@@ -69,8 +69,7 @@
         ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash"
         dnd-list="boardColumnCtrl.cardsInColumn"
         dnd-allowed-types="['card']"
-        dnd-drop="boardColumnCtrl.dropCard(item, index)"
-        dnd-dragover="boardColumnCtrl.dragOverCard(event)">
+        dnd-drop="boardColumnCtrl.dropCard(item, index)">
         <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
             class="lavagna-board-card"
             dnd-dragstart="boardColumnCtrl.dragStartCard(event)"
