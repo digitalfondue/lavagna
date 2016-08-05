@@ -136,6 +136,7 @@ angular.module('dndLists', [])
         // the used effect, but Chrome has not implemented that field correctly. On Windows
         // it always sets it to 'none', while Chrome on Linux sometimes sets it to something
         // else when it's supposed to send 'none' (drag operation aborted).
+        
         var dropEffect = dndDropEffectWorkaround.dropEffect;
         scope.$apply(function() {
           switch (dropEffect) {
@@ -151,6 +152,8 @@ angular.module('dndLists', [])
           }
           $parse(attr.dndDragend)(scope, {event: localEvent, dropEffect: dropEffect});
         });
+        
+        //console.log('dragend', new Error().stack)
 
         // Clean up
         element.removeClass("dndDragging");
@@ -545,8 +548,12 @@ angular.module('dndLists', [])
        * Small helper function that cleans up if we aborted a drop.
        */
       function stopDragover() {
-        scope.$applyAsync(function() {placeholder.remove();});
+        //console.log('stopDragover', new Error().stack);
+        placeholder.remove();
         element.removeClass("dndDragover");
+        //customization
+        $(".dndDraggingSource").removeClass('dndDraggingSource').removeClass('dndDragging')
+        //
         return true;
       }
 
