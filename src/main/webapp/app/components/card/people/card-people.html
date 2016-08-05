@@ -4,19 +4,19 @@
             <div layout="row">
                 <div class="lvg-headline"><span data-translate>card.people</span></div>
                 <span flex></span>
-                <md-button ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.take()">
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.take()">
                     <md-tooltip>{{'card.people.take' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="take"></md-icon>
                 </md-button>
-                <md-button ng-if="$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.surrender()">
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.surrender()">
                     <md-tooltip>{{'card.people.surrender' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="surrender"></md-icon>
                 </md-button>
-                <md-button ng-if="!$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.watchCard()">
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.watchCard()">
                     <md-tooltip>{{'card.people.watch' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="notifications"></md-icon>
                 </md-button>
-                <md-button ng-if="$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.unWatchCard()">
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.unWatchCard()">
                     <md-tooltip>{{'card.people.unwatch' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="notifications-off"></md-icon>
                 </md-button>
