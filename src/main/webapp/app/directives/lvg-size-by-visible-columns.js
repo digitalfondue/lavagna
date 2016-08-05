@@ -8,7 +8,7 @@
 		return {
 			restrict: 'A',
 			link: function ($scope, element, attrs) {
-				$scope.$watch('boardCtrl.columns.length', function (length) {
+				$scope.$watch('$ctrl.columns.length', function (length) {
 					if(length === undefined) {
 						return;
 					}

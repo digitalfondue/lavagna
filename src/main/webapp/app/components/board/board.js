@@ -5,7 +5,6 @@
 
     components.component('lvgBoard', {
         controller: BoardController,
-        controllerAs: 'boardCtrl',
         bindings: {
             project: '=',
             board: '=',
