@@ -17,7 +17,6 @@
             return;
         }
 
-        $scope.totalCards = 0;
         $scope.currentPage = 1;
         $scope.statuses = ["BACKLOG", "OPEN", "DEFERRED", "CLOSED"];
 
@@ -45,6 +44,7 @@
                     $state.go('projectMilestone', {projectName: project.shortName, milestone: m.value});
                 } else {
                     $scope.milestone = m;
+                    loadMilestoneDetail();
                 }
             });
 
