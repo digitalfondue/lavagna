@@ -42,6 +42,7 @@
         	var metadata = ctrl.metadataRef();
         	if(metadata) {
         		hash = metadata.hash;
+        		ctrl.metadata = metadata;
         	}
         	r[0] = hash;
         	return r;

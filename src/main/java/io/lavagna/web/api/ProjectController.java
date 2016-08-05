@@ -141,8 +141,10 @@ public class ProjectController {
     public int updateColumnDefinition(@PathVariable("projectShortName") String shortName,
         @RequestBody UpdateColumnDefinition columnDefinition) {
         Project project = projectService.findByShortName(shortName);
-        return projectService.updateColumnDefinition(project.getId(), columnDefinition.getDefinition(),
+        int res = projectService.updateColumnDefinition(project.getId(), columnDefinition.getDefinition(),
             columnDefinition.getColor());
+        eventEmitter.emitUpdateColumnDefinition(shortName);
+        return res;
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)

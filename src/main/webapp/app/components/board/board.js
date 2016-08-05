@@ -60,7 +60,6 @@
         	}
         	
         	ctrl.columns.splice(currentColIdx, 1);
-
         	
         	ctrl.columns.splice(index, 0, column);
         	
@@ -68,8 +67,6 @@
         	angular.forEach(ctrl.columns, function(col) {
         		colPos.push(col.id);
         	});
-        	
-        	console.log(colPos);
         	
         	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
         		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
@@ -150,14 +147,6 @@
             ctrl.columnsDefinition = definitions;
         });
         //
-
-        ctrl.hasMetadata = function(card) {
-            if(card.counts == null)
-                return false; //empty
-            return card.counts['COMMENT'] != undefined || card.counts['FILE'] != undefined
-                || card.counts['ACTION_CHECKED'] != undefined || card.counts['ACTION_UNCHECKED'] != undefined;
-        };
-
 
         ctrl.isEmpty = function(obj) {
             return Object.keys(obj).length === 0;

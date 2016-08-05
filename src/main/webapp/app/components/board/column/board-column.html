@@ -1,4 +1,4 @@
-<div class="panel-heading" data-ng-style="boardColumnCtrl.column.color|columnColor">
+<div class="panel-heading" data-ng-style="boardColumnCtrl.metadata.columnsDefinition[boardColumnCtrl.column.status].color|columnColor">
     <div class="lvg-column-handle" layout="row">
         <div flex="80">
             <div data-ng-if="!boardColumnCtrl.columnState.editColumnName">
@@ -28,8 +28,8 @@
                             <md-menu>
                                 <md-button ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
 	                            <md-menu-content>
-	                                <md-menu-item data-ng-repeat="definition in boardCtrl.columnsDefinition | addColDefOrder | orderBy:'order'">
-	                                    <md-button data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="definition.color | color" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
+	                                <md-menu-item data-ng-repeat="definition in boardColumnCtrl.metadata.columnsDefinition | addColDefOrder | orderBy:'order'">
+	                                    <md-button data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="::(definition.color | color)" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
 	                                </md-menu-item>
 	                            </md-menu-content>
                             </md-menu>

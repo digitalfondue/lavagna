@@ -81,6 +81,11 @@ public class EventEmitter {
 	public void emitImportProject(String importId, int currentBoard, int boards, String boardName) {
 		messagingTemplate.convertAndSend("/event/import/" + importId, importEvent(currentBoard, boards, boardName));
 	}
+	
+	public void emitUpdateColumnDefinition(String shortName) {
+	    emitUpdateProject(shortName);
+	    emitProjectMetadataHasChanged(shortName);
+    }
 
 	// ------------ board
 
@@ -407,5 +412,4 @@ public class EventEmitter {
 		private final int boards;
 		private final String boardName;
 	}
-
 }

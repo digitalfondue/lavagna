@@ -292,6 +292,17 @@
 			if (definitions === undefined || definitions === null) {
 				return r;
 			}
+			
+			//handle map form
+			if(definitions.length === undefined) {
+				angular.forEach(definitions, function(val, key) {
+					val.order = columnDefinitionOrder[key.toLowerCase()]
+					r.push(val);
+				});
+				return r;
+			}
+			
+			
 			for (var d = 0; d < definitions.length; d++) {
 				var definition = definitions[d];
 				definition.order = columnDefinitionOrder[definition.value.toLowerCase()];
