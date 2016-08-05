@@ -545,7 +545,7 @@ angular.module('dndLists', [])
        * Small helper function that cleans up if we aborted a drop.
        */
       function stopDragover() {
-        placeholder.remove();
+        scope.$applyAsync(function() {placeholder.remove();});
         element.removeClass("dndDragover");
         return true;
       }
