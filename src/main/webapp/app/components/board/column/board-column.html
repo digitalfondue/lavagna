@@ -67,14 +67,12 @@
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;" 
         data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" 
         ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash"
-        dnd-list="boardColumnCtrl.cardsInColumn"
-        dnd-allowed-types="['card']"
-        dnd-drop="boardColumnCtrl.dropCard(item, index)">
+        lvg-dnd="boardColumnCtrl.cardsInColumn"
+        lvg-dnd-drop="boardColumnCtrl.dropCard($index)"
+        lvg-dnd-dragstart="boardColumnCtrl.dragStartCard($item)"
+        lvg-dnd-opts="{group: 'card'}">
         <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
-            class="lavagna-board-card"
-            dnd-dragstart="boardColumnCtrl.dragStartCard(event)"
-            dnd-draggable="card"
-            dnd-type="'card'">
+            class="lavagna-board-card">
              <lvg-card-fragment-v2
                 view="board"
                 card-ref="card"

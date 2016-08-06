@@ -4,6 +4,7 @@
     
     //
     var dndColumnOrigin = null;
+    var dndCardOrigin = null;
     //
     
     var components = angular.module('lavagna.components');
@@ -48,8 +49,9 @@
         	return r;
         }
         //
-        ctrl.dragStartCard = function(event) {
+        ctrl.dragStartCard = function(item) {
         	dndColumnOrigin = ctrl;
+        	dndCardOrigin = item;
         }
         //
         
@@ -62,10 +64,14 @@
         	}
         }
         
-        ctrl.dropCard = function dropCard(card, index) {
+        ctrl.dropCard = function dropCard(index) {
+        	var card = dndCardOrigin;
+        	if(!card) {
+        		return;
+        	}
         	//ignore drop as it's the same position
         	if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
-        		return false;
+        		return;
         	}
         	
         	// remove card from origin column
@@ -101,8 +107,6 @@
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
             }
-        	
-        	return true;
         }
         
         //
