@@ -27,7 +27,7 @@
         ng-style="{width : ($ctrl.columns.length*(290 + 4 * 2))+'px'}"
         lvg-dnd="$ctrl.columns"
         lvg-dnd-drop="$ctrl.dropColumn($index, $oldIndex)"
-        lvg-dnd-opts="{group: 'column'}">
+        lvg-dnd-opts="{group: 'column', animation: 150}">
         <li class="lavagna-board-column lavagna-sortable-board-column"
             data-ng-repeat="column in $ctrl.columns track by column.id"
             data-lvg-update-column-size>
