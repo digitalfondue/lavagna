@@ -17,8 +17,6 @@
 				
 				var opts = angular.extend({}, $parse(attrs.lvgDndOpts)($scope));
 				
-				console.log(opts);
-				
 				var parsedListExpression = $parse(attrs.lvgDnd);
 				var parsedDndDragstart = $parse(attrs.lvgDndDragstart);
 				var parsedDndDrop = $parse(attrs.lvgDndDrop);
@@ -44,7 +42,9 @@
 				};
 				
 				function onDrop(index, oldIndex) {
-					parsedDndDrop($scope, {'$index' : index, '$oldIndex': oldIndex});
+					$scope.$evalAsync(function() {
+						parsedDndDrop($scope, {'$index' : index, '$oldIndex': oldIndex});
+					});
 				}
 				
 				function getModelList() {
@@ -66,8 +66,6 @@
 					if(!ngRepeatExpression) {
 						return false;
 					}
-					
-					
 					
 					var match = ngRepeatExpression.match(ngRepeatRegex);
 					if(!match) {
