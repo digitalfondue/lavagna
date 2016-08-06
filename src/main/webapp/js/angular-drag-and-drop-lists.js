@@ -98,8 +98,9 @@ angular.module('dndLists', [])
         // Add CSS classes. See documentation above
         element.addClass("dndDragging");
         
-        // 
-        setTimeout(function() { element.addClass("dndDraggingSource");}, 0);
+        // CUSTOMIZATION: if the user is fast enough, the dragend+drop event could be launched before event this timeout
+        // executed, thus leading to an invisible element!
+        setTimeout(function() {if(element.hasClass('dndDragging')) {element.addClass("dndDraggingSource")}}, 0);
 
         // Workarounds for stupid browsers, see description below
         dndDropEffectWorkaround.dropEffect = "none";
