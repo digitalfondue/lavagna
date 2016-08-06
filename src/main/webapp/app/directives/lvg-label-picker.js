@@ -19,11 +19,15 @@
 			link: function (scope, element, attrs) {
 				scope.internal = {};
 
+				scope.metadataSort = function(i) {
+                    return i.metadata[scope.group] || '';
+                };
+
 				//hacky (?)
 				scope.$watch('internal.model', function () {
 					scope.model = scope.internal.model
-				})
-				
+				});
+
 				scope.$watch('model', function() {
 					scope.internal.model = scope.model;
 				});

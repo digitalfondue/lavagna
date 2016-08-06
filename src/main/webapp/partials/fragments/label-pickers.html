@@ -7,7 +7,7 @@
 	<span data-ng-switch-when="USER"><input type="text" class="form-control" placeholder="{{'partials.fragments.label-pickers.user'|translate}}" data-lvg-user-autocomplete="internal.model" data-lvg-on-esc required></span>
 	<span data-ng-switch-when="LIST">
 		<select data-ng-if="!inMenu && group === undefined" class="form-control" data-ng-model="internal.model" data-ng-options="l.value for l in listValues" required></select>
-		<select data-ng-if="!inMenu && group !== undefined" class="form-control" data-ng-model="internal.model" data-ng-options="l.value group by l.metadata[group] for l in listValues" required></select>
+		<select data-ng-if="!inMenu && group !== undefined" class="form-control" data-ng-model="internal.model" data-ng-options="l.value group by l.metadata[group] for l in listValues | orderBy:metadataSort" required></select>
 		<div data-ng-if="inMenu" class="dropdown lvg-button-group add-label">
 			<button type="button" data-dropdown-toggle class="lvg-navigation-button lvg-dropdown-toggle">
 				<span data-ng-if="internal.model.value !== undefined" data-ng-bind="internal.model.value"></span>
