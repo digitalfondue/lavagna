@@ -4,7 +4,7 @@
 
 	var directives = angular.module('lavagna.directives');
 
-	directives.directive('lvgCardActivity', function () {
+	directives.directive('lvgCardActivityOld', function () {
 		return {
 			templateUrl: 'partials/fragments/card-activity-entry-fragment.html',
 			restrict: 'E',

@@ -1,0 +1,66 @@
+<div class="lvg-card-comment" layout="row">
+    <div class="lvg-card-comment__avatar" flex="nogrow">
+        <ng-avatar width="28" bg-color="#e5e5e5" color="#333" round-shape="true" initials="{{::($ctrl.user) | userInitials}}"></ng-avatar>
+    </div>
+    <div flex>
+        <div class="lvg-card-comment__body" layout="column">
+            <div class="lvg-card-comment__headline" layout="row" layout-align="start center">
+                <div class="lvg-card-comment__user" flex>
+                    <a class="lvg-card-people-user__link"
+                       ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})"
+                       data-ng-class="{'lvg-card-people-user__disabled': !$ctrl.user.enabled}">
+                        <span>{{::($ctrl.user | formatUser)}}</span>
+                    </a>
+                </div>
+                <div flex></div>
+                <div flex="nogrow">
+                    <md-button data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
+                               data-ng-click="commentEdit = $ctrl.comment.content; editComment = true;" ng-hide="editComment"
+                               class="lvg-small-icon-button">
+                        <md-tooltip>{{'card.comment.edit.tooltip' | translate}}</md-tooltip>
+                        <md-icon md-svg-icon="edit"></md-icon>
+                    </md-button>
+                    <md-button data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
+                               data-ng-click="$ctrl.delete()" class="lvg-small-icon-button">
+                        <md-tooltip>{{'card.comment.delete.tooltip' | translate}}</md-tooltip>
+                        <md-icon md-svg-icon="delete"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+            <div class="lvg-card-comment__content" ng-hide="editComment"
+                 data-ng-bind-html="$ctrl.comment.content | markdown">
+            </div>
+            <div class="lvg-card-comment__edit" ng-show="editComment">
+                <form data-ng-submit="$ctrl.updateComment(commentEdit); editComment = false; commentPreviewMode = false;">
+                    <div data-ng-hide="commentPreviewMode">
+                        <textarea class="lvg-card-activity__actions-textarea"
+                            ng-model="commentEdit" rows="5" md-select-on-focus></textarea>
+                    </div>
+                    <div data-ng-show="commentPreviewMode"
+                         data-ng-bind-html="commentEdit | markdown"></div>
+                    <div class="lvg-card-comment__actions-button-row">
+                        <md-button class="md-raised md-primary" type="submit">
+                            <span data-translate>button.update</span>
+                        </md-button>
+                        <md-button class="md-raised md-button"
+                                   data-ng-hide="commentPreviewMode"
+                                   data-ng-click="commentPreviewMode = true" type="button">
+                            <span data-translate>button.preview</span>
+                        </md-button>
+                        <md-button class="md-raised md-button"
+                                   data-ng-show="commentPreviewMode"
+                                   data-ng-click="commentPreviewMode = false" type="button">
+                            <span data-translate>button.closePreview</span>
+                        </md-button>
+                        <md-button class="md-raised md-primary" ng-click="editComment = false; commentPreviewMode = false;">
+                            <span data-translate>button.cancel</span>
+                        </md-button>
+                    </div>
+                </form>
+            </div>
+            <div class="lvg-card-comment__footer" ng-hide="editComment">
+                {{$ctrl.user | userInitials}}
+            </div>
+        </div>
+    </div>
+</div>

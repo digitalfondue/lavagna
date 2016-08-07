@@ -77,8 +77,8 @@
 				return $http.post('api/card/' + id + '/comment', comment).then(extractData);
 			},
 
-			updateComment: function (commentId, content) {
-				return $http.post('api/card-data/comment/' + commentId, {content: content}).then(extractData);
+			updateComment: function (commentId, comment) {
+				return $http.post('api/card-data/comment/' + commentId, comment).then(extractData);
 			},
 
 			deleteComment: function (commentId) {

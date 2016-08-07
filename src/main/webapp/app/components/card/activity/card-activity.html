@@ -1,0 +1,40 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <div layout="row">
+                <div class="lvg-headline"><span data-translate>card.activity</span></div>
+                <span flex></span>
+            </div>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div ng-repeat="comment in $ctrl.comments track by comment.id">
+            <lvg-card-comment card="$ctrl.card" comment="comment"></lvg-card-comment>
+        </div>
+    </md-card-content>
+    <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
+        <form data-ng-submit="$ctrl.addComment(comment)">
+            <div data-ng-hide="commentPreviewMode">
+                <textarea class="lvg-card-activity__actions-textarea"
+                          ng-model="comment.content" rows="5" md-select-on-focus></textarea>
+            </div>
+            <div data-ng-show="commentPreviewMode"
+                 data-ng-bind-html="commentPreview.content | markdown"></div>
+            <div class="lvg-card-activity__actions-button-row">
+                <md-button class="md-raised md-primary" type="submit">
+                    <span data-translate>button.add</span>
+                </md-button>
+                <md-button class="md-raised md-button"
+                           data-ng-hide="commentPreviewMode"
+                           data-ng-click="commentPreview = comment; commentPreviewMode = true" type="button">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button class="md-raised md-button"
+                           data-ng-show="commentPreviewMode"
+                           data-ng-click="commentPreviewMode = false" type="button">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
+            </div>
+        </form>
+    </md-card-actions>
+</md-card>
