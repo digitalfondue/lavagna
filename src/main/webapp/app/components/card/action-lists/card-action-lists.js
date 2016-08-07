@@ -50,7 +50,6 @@
             var type = JSON.parse(e.body).type;
             if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
                 loadActionLists();
-                reloadCard();
             }
         });
     }
