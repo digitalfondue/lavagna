@@ -17,7 +17,7 @@
     });
 
 
-    function BoardSidebarController($scope, Board, Card, StompClient) {
+    function BoardSidebarController($scope, Board, Card, StompClient, SharedBoardDataService) {
 
         var ctrl = this;
         
@@ -39,18 +39,30 @@
         	return r;
         }
         //
-        
-        
 
         ctrl.switchLocation = switchLocation;
         ctrl.sideBarLoad = sideBarLoad;
-        ctrl.cardMove = cardMove;
+        ctrl.dropCard = dropCard;
         
         switchLocation();
         
         $scope.$watch('$ctrl.sideBarLocation', function() {
         	switchLocation();
         });
+        
+        var startDragListener = SharedBoardDataService.listenToDragStart(function() {
+        	ctrl.dragFromBoard = true;
+        });
+        
+        var stopDragListener = SharedBoardDataService.listenToDragEnd(function() {
+        	ctrl.dragFromBoard = false;
+        });
+        
+        
+        ctrl.$onDestroy = function() {
+        	startDragListener();
+        	stopDragListener();
+        }
 
 
         function sideBarLoad(direction) {
@@ -73,19 +85,25 @@
             });
         };
         
-        function cardMove($item, $partFrom, $partTo, $indexFrom, $indexTo) {
-        	//move card from sidebar to column
-        	if($partTo.hasOwnProperty('columnId')) {
-        		var cardId = $item.id;
-        		var oldColumnId = $item.columnId;
-        		var newColumnId = $partTo.columnId;
-        		var ids = [];
-        		angular.forEach($partTo, function(card) {
-        			ids.push(card.id);
-        		});
-        		Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids});
+        ctrl.dragStartCard = function(item) {
+        	SharedBoardDataService.dndColumnOrigin = ctrl;
+        	SharedBoardDataService.dndCardOrigin = item;
+        }
+        
+        ctrl.removeCard = function(card) {
+        	var cards = ctrl.sidebar[ctrl.sideBarLocation].found;
+        	for(var i = 0; i < cards.length; i++) {
+        		if(cards[i].id === card.id) {
+        			cards.splice(i, 1);
+        			break;
+        		}
         	}
-        };
+        }
+        
+        function dropCard() {
+        	var card = SharedBoardDataService.dndCardOrigin;
+        	Card.moveAllFromColumnToLocation(card.columnId, [card.id], ctrl.sideBarLocation);
+        }
         
         function switchLocation() {
             if (subscriptionScope !== undefined) {

@@ -1,0 +1,53 @@
+
+
+
+.lavagna-sidebar-column {
+    background-color: #d5d5d5;
+    width: 290px;
+    float: left;
+    margin: 4px;
+    border: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: 1px solid #aaa;
+    border-top: 2px solid #aaa;
+}
+
+.lavagna-sidebar-column .panel-heading {
+    font-weight: 700;
+    background-color: #d5d5d5;
+    border: 0;
+    word-wrap: break-word;
+    padding: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-bottom: 8px;
+}
+
+.lavagna-sidebar-column .panel-heading .row {
+    padding: 10px 15px;
+}
+
+.lavagna-sidebar-column .panel-body {
+    padding: 0 7px 0 7px;
+    margin-right: 2px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.lavagna-sidebar-column .panel-footer {
+    border: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-height: 0;
+    background-color: #d5d5d5;
+}
+
+
+.lavagna-sidebar-cards {
+    position: relative;
+}
+
+.lavagna-sidebar-cards > li {
+    position: relative;
+}

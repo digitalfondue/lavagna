@@ -70,6 +70,7 @@
         lvg-dnd="boardColumnCtrl.cardsInColumn"
         lvg-dnd-drop="boardColumnCtrl.dropCard($index)"
         lvg-dnd-dragstart="boardColumnCtrl.dragStartCard($item)"
+        lvg-dnd-dragend="boardColumnCtrl.dragEndCard()"
         lvg-dnd-opts="{group: 'card', animation: 150}">
         <li ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)" 
             class="lavagna-board-card">

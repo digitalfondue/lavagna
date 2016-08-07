@@ -20,6 +20,7 @@
 				var parsedListExpression = $parse(attrs.lvgDnd);
 				var parsedDndDragstart = $parse(attrs.lvgDndDragstart);
 				var parsedDndDrop = $parse(attrs.lvgDndDrop);
+				var parsedDndEnd = $parse(attrs.lvgDndDragend);
 
 				opts.onStart = function onStart(event) {
 					var modelList = getModelList(); 
@@ -27,7 +28,9 @@
 					if(ngRepeatList) {
 						var $item = ngRepeatList[event.oldIndex];
 						var $index = modelList.indexOf($item);
-						parsedDndDragstart($scope, {'$item': $item, '$index' : $index});
+						$scope.$evalAsync(function() {
+							parsedDndDragstart($scope, {'$item': $item, '$index' : $index});
+						});
 					} else {
 						$log.debug('no ng-repeat or incorrect expression in element', event.item);
 					}
@@ -40,6 +43,12 @@
 				opts.onUpdate = function onUpdate(event) {
 					onDrop(event.newIndex, event.oldIndex);
 				};
+				
+				opts.onEnd = function onEnd(event) {
+					$scope.$evalAsync(function() {
+						parsedDndEnd($scope);
+					});
+				}
 				
 				function onDrop(index, oldIndex) {
 					$scope.$evalAsync(function() {

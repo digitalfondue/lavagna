@@ -1,22 +1,29 @@
 <div class="lavagna-left-sidebar-list">
     <div class="lavagna-sidebar-column" data-lvg-fill-sidebar-height="{{$ctrl.control}}">
+        <div ng-if="$ctrl.dragFromBoard" 
+            class="sidebar-dropzone"
+            lvg-dnd
+            lvg-dnd-drop="$ctrl.dropCard()"
+            lvg-dnd-opts="{sort:false, group: 'card', animation: 150}"></div>
         <div class="panel-body" data-lvg-fill-sidebar-cards-height="$ctrl.control"
              data-lvg-fill-sidebar-cards-height-has-more="{{$ctrl.sidebar[$ctrl.sideBarLocation].hasMore}}"
              data-lvg-fill-sidebar-cards-height-current-page="{{$ctrl.sidebar[$ctrl.sideBarLocation].currentPage}}">
              <md-progress-circular md-mode="indeterminate" ng-hide="$ctrl.sidebarLoaded"></md-progress-circular>
-            <div class="clearfix">
-            	<div ng-repeat="hash in $ctrl.getMetadataHash() track by hash">
-	                <ul data-ng-repeat="card in $ctrl.sidebar[$ctrl.sideBarLocation].found track by (card.hash+$ctrl.metadataRef().hash)" class="lavagna-sidebar-cards list-group">
-	                	<li>
-	                		<lvg-card-fragment-v2 
-	                			view="board" 
-	                			hide-select="true" 
-	                			card-ref="card" 
-	                			user-ref="$ctrl.user"
-	                			project-metadata-ref="$ctrl.metadataRef()"></lvg-card-fragment-v2>
-	                    </li>
-	                </ul>
-                </div>
+           	<div ng-repeat="hash in $ctrl.getMetadataHash() track by hash">
+                <ul
+                   lvg-dnd="$ctrl.sidebar[$ctrl.sideBarLocation].found"
+                   lvg-dnd-opts="{sort:false, group: 'card', animation: 150}"
+                   lvg-dnd-dragstart="$ctrl.dragStartCard($item)"
+                   class="lavagna-sidebar-cards list-group">
+                	<li ng-repeat="card in $ctrl.sidebar[$ctrl.sideBarLocation].found track by (card.hash+$ctrl.metadataRef().hash)">
+                		<lvg-card-fragment-v2 
+                			view="board" 
+                			hide-select="true" 
+                			card-ref="card" 
+                			user-ref="$ctrl.user"
+                			project-metadata-ref="$ctrl.metadataRef()"></lvg-card-fragment-v2>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="panel-footer" data-ng-if="$ctrl.sidebar[$ctrl.sideBarLocation].currentPage !== 0 || $ctrl.sidebar[$ctrl.sideBarLocation].hasMore" layout="row" layout-align="space-between center">
