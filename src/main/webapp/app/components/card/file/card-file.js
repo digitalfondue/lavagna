@@ -14,7 +14,7 @@
         var ctrl = this;
 
         ctrl.delete = function() {
-            Card.deleteFile(ctrl.file.id).then(function(event) {
+            Card.deleteFile(ctrl.file.cardDataId).then(function(event) {
                 Notification.addNotification('success', {key : 'notification.card.FILE_DELETE.success'}, true, true, function(notification) {
                     Card.undoDeleteFile(event.id).then(notification.acknowledge);
                 });
