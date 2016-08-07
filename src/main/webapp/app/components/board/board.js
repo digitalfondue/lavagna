@@ -40,19 +40,10 @@
             ctrl.locationOpened=false;
             ctrl.sideBarLocation=undefined;
         };
-        
 
-        function getColumnIndex(column) {
-        	for(var i = 0; i < ctrl.columns.length;i++) {
-        		if(ctrl.columns[i].id === column.id) {
-        			return i;
-        		}
-        	}
-        	return 0;
-        }
-        
-        ctrl.dropColumn = function(column, index) {
-        	var currentColIdx = getColumnIndex(column);
+        ctrl.dropColumn = function(index, oldIndex) {
+        	var currentColIdx = oldIndex;
+        	var column = ctrl.columns[oldIndex];
         	//same position, ignore drop
         	if(currentColIdx == index) {
         		return false;

@@ -2,10 +2,6 @@
 
     'use strict';
     
-    //
-    var dndColumnOrigin = null;
-    //
-    
     var components = angular.module('lavagna.components');
 
     components.directive('lvgBoardColumn', BoardColumnComponent);
@@ -29,7 +25,7 @@
         }
     }
 
-    function BoardColumnController($scope, $filter, $mdDialog, $element, Board, Card, Label, Notification, StompClient, BulkOperations) {
+    function BoardColumnController($scope, $filter, $mdDialog, $element, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
         var ctrl = this;
         
         ctrl.user = ctrl.userRef();
@@ -48,8 +44,14 @@
         	return r;
         }
         //
-        ctrl.dragStartCard = function(event) {
-        	dndColumnOrigin = ctrl;
+        ctrl.dragStartCard = function(item) {
+        	SharedBoardDataService.startDrag();
+        	SharedBoardDataService.dndColumnOrigin = ctrl;
+        	SharedBoardDataService.dndCardOrigin = item;
+        }
+        
+        ctrl.dragEndCard = function(item) {
+        	SharedBoardDataService.endDrag();
         }
         //
         
@@ -62,16 +64,21 @@
         	}
         }
         
-        ctrl.dropCard = function dropCard(card, index) {
+        ctrl.dropCard = function dropCard(index) {
+        	var card = SharedBoardDataService.dndCardOrigin;
+        	SharedBoardDataService.dndCardOrigin = null;
+        	if(!card) {
+        		return;
+        	}
         	//ignore drop as it's the same position
         	if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
-        		return false;
+        		return;
         	}
         	
         	// remove card from origin column
-        	if(dndColumnOrigin) {
-        		dndColumnOrigin.removeCard(card);
-        		dndColumnOrigin = null;
+        	if(SharedBoardDataService.dndColumnOrigin) {
+        		SharedBoardDataService.dndColumnOrigin.removeCard(card);
+        		SharedBoardDataService.dndColumnOrigin = null;
         	}
 
         	// insert card at correct index
@@ -87,10 +94,7 @@
         		ids.push(card.id);
         	});
 
-        	if(false /*newColumnId === undefined && $partTo.hasOwnProperty('sideBarLocation')*/) {
-        		//move from board to sidebar
-        		Card.moveAllFromColumnToLocation(oldColumnId, [cardId], $partTo.sideBarLocation);
-        	} else if(oldColumnId === newColumnId) {
+        	if(oldColumnId === newColumnId) {
         		//internal reorder
                 Board.updateCardOrder(ctrl.boardShortName, oldColumnId, ids).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
@@ -101,8 +105,6 @@
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
             }
-        	
-        	return true;
         }
         
         //

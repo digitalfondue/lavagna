@@ -1,12 +1,11 @@
 <ul class="lvg-card-action-list__actionlists"
-    sv-root="card-actionlists"
-    sv-part="$ctrl.actionLists"
-    sv-on-sort="$ctrl.sortActionLists($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-    <li class="lvg-card-action-list__actionlists-item"
-        ng-repeat="actionList in $ctrl.actionLists | orderBy: 'order' track by actionList.id" sv-element>
+    lvg-dnd="$ctrl.actionLists"
+    lvg-dnd-drop="$ctrl.dropActionLists($index, $oldIndex)"
+    lvg-dnd-opts="{group: 'actionlists', animation: 150, handle: 'handle.action-lists'}">
+    <li class="lvg-card-action-list__actionlists-item" ng-repeat="actionList in $ctrl.actionLists | orderBy: 'order' track by actionList.id">
         <lvg-card-action-list card="$ctrl.card"
                               action-list="actionList">
-            <handle><md-icon class="lvg-card-action-list__handle" md-svg-icon="drag" sv-handle></md-icon></handle>
+            <handle class="action-lists"><md-icon class="lvg-card-action-list__handle" md-svg-icon="drag"></md-icon></handle>
         </lvg-card-action-list>
     </li>
 </ul>

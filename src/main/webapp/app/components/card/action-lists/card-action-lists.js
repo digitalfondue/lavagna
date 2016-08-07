@@ -25,19 +25,26 @@
             });
         };
         loadActionLists();
-
-        ctrl.sortActionLists = function(actionlist, from, to, oldIndex, newIndex) {
-            ctrl.actionLists = to.map(function(v, i) {
-                    v.order = i;
-                    return v;
-                });
-            Card.updateActionListOrder(
-                ctrl.card.id,
-                to.map(function(v) { return v.id})
-                ).catch(function(err) {
-                    ctrl.actionLists = from;
-                });
-        };
+        
+        ctrl.dropActionLists = function(index, oldIndex) {
+        	var item = ctrl.actionLists[oldIndex];
+        	
+        	ctrl.actionLists.splice(oldIndex, 1);
+        	ctrl.actionLists.splice(index, 0, item);
+        	
+        	ctrl.actionLists.forEach(function(v, i) {
+        		v.order = i;
+        	});
+        	
+        	var ids = ctrl.actionLists.map(function(v) {
+        		return v.id;
+        	});
+        	
+        	Card.updateActionListOrder(ctrl.card.id, ids).catch(function(err) {
+        		ctrl.actionLists.splice(index, 1);
+            	ctrl.actionLists.splice(oldIndex, 0, item);
+            });
+        }
 
         ctrl.addActionList = function(actionList) {
             Card.addActionList(ctrl.card.id, actionList.name).then(function() {
@@ -50,7 +57,6 @@
             var type = JSON.parse(e.body).type;
             if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
                 loadActionLists();
-                reloadCard();
             }
         });
     }

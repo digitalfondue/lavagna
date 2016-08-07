@@ -28,7 +28,7 @@
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize',
 			'pascalprecht.translate',
-			'angularFileUpload', 'ngMaterial', 'angular-sortable-view', 'dndLists', 'ngAvatar']);
+			'angularFileUpload', 'ngMaterial', 'ngAvatar']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));

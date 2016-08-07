@@ -230,15 +230,13 @@ public class ResourceController {
 					"/js/jquery.min.js",//
 					"/js/highlight.pack.js",//
 					"/js/marked.js",//
+					"/js/Sortable.js",//
 					"/js/sockjs.min.js", "/js/stomp.min.js",//
 					"/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
 					//
 					"/js/angular-animate.min.js", "/js/angular-aria.min.js",
 					"/js/angular-messages.min.js", "/js/angular-material.min.js",
-					//
-                    "/js/angular-sortable-view.js",
-                    "/js/angular-drag-and-drop-lists.js",
 					//
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
