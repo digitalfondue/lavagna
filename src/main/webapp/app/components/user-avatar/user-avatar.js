@@ -7,8 +7,7 @@
             size: '@'
         },
         controller: UserAvatarController,
-        templateUrl: 'app/components/user-avatar/user-avatar.html',
-        replace: true
+        templateUrl: 'app/components/user-avatar/user-avatar.html'
     });
 
     function UserAvatarController(UserCache) {

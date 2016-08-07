@@ -6,8 +6,7 @@
             userId: '<'
         },
         controller: UserLinkController,
-        templateUrl: 'app/components/user-link/user-link.html',
-        replace: true
+        templateUrl: 'app/components/user-link/user-link.html'
     });
 
     function UserLinkController(UserCache) {
