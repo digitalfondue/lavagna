@@ -39,7 +39,7 @@
                     <span>
                         <span>{{::$ctrl.card.createTime | date: 'medium' }}</span>
                         <span data-translate>common.by</span>
-                        <span data-lvg-user-tooltip="$ctrl.card.userId"></span>
+                        <lvg-user-link user-id="$ctrl.card.userId"></lvg-user-link>
                     </span>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <span>
                         <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span>
                         <span data-translate>common.by</span>
-                        <span data-lvg-user-tooltip="$ctrl.card.lastUpdateUserId"></span>
+                        <lvg-user-link user-id="$ctrl.card.userId"></lvg-user-link>
                     </span>
                 </div>
             </div>

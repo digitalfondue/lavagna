@@ -1,16 +1,12 @@
-<div class="lvg-card-comment" layout="row">
+<div layout="row">
     <div class="lvg-card-comment__avatar" flex="nogrow">
-        <ng-avatar width="28" bg-color="#e5e5e5" color="#333" round-shape="true" initials="{{::($ctrl.user) | userInitials}}"></ng-avatar>
+        <lvg-user-avatar user-id="$ctrl.comment.userId"></lvg-user-avatar>
     </div>
     <div flex>
         <div class="lvg-card-comment__body" layout="column">
             <div class="lvg-card-comment__headline" layout="row" layout-align="start center">
                 <div class="lvg-card-comment__user" flex>
-                    <a class="lvg-card-people-user__link"
-                       ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})"
-                       data-ng-class="{'lvg-card-people-user__disabled': !$ctrl.user.enabled}">
-                        <span>{{::($ctrl.user | formatUser)}}</span>
-                    </a>
+                    <lvg-user-link user-id="$ctrl.comment.userId"></lvg-user-link>
                 </div>
                 <div flex></div>
                 <div flex="nogrow">

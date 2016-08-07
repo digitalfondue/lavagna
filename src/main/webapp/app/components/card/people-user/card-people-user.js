@@ -5,19 +5,7 @@
         bindings: {
             userId: '<'
         },
-        controller: UserLinkController,
+        controller: function() {},
         templateUrl: 'app/components/card/people-user/card-people-user.html'
     });
-
-    function UserLinkController(UserCache) {
-        var ctrl = this;
-
-        function loadUser() {
-            UserCache.user(ctrl.userId).then(function (user) {
-                ctrl.user = user;
-            });
-        }
-
-        loadUser();
-    }
 })();

@@ -7,6 +7,10 @@
     min-height: 40px;
 }
 
+.lvg-card-metadata__item:first-child {
+    margin-top:0;
+}
+
 .lvg-card-metadata__item .md-icon-button {
     margin: 0;
 }

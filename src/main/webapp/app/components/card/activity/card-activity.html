@@ -8,8 +8,8 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div ng-repeat="comment in $ctrl.comments track by comment.id">
-            <lvg-card-comment card="$ctrl.card" comment="comment"></lvg-card-comment>
+        <div ng-repeat="comment in $ctrl.comments track by comment.id" class="lvg-card-comment">
+            <lvg-card-comment comment="comment"></lvg-card-comment>
         </div>
     </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">

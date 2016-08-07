@@ -6,10 +6,6 @@
     font-size: 1.05rem;
 }
 
-.lvg-card-people-user__disabled {
-    text-decoration: line-through;
-}
-
 .lvg-card-people-user__avatar {
     margin-right: 15px;
 }

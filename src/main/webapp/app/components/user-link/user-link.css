@@ -1,0 +1,7 @@
+.lvg-user-link {
+    cursor: pointer;
+}
+
+.lvg-user-link__disabled {
+    text-decoration: line-through;
+}

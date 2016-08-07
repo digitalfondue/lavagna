@@ -3,21 +3,15 @@
 
     angular.module('lavagna.components').component('lvgCardComment', {
         bindings: {
-            comment: '<',
-            card: '<'
+            comment: '<'
         },
         controller: CardCommentController,
         templateUrl: 'app/components/card/comment/card-comment.html'
     });
 
-    function CardCommentController(Card, Notification, UserCache) {
+    function CardCommentController(Card, Notification) {
         var ctrl = this;
 
-        UserCache.user(ctrl.comment.userId).then(function (user) {
-            ctrl.user = user;
-        });
-
-        //
         ctrl.updateComment = function(commentToEdit) {
             Card.updateComment(ctrl.comment.id, {content: commentToEdit});
         };
