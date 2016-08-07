@@ -65,7 +65,6 @@
         }
         
         ctrl.dropCard = function dropCard(index) {
-        	SharedBoardDataService.endDrag();
         	var card = SharedBoardDataService.dndCardOrigin;
         	SharedBoardDataService.dndCardOrigin = null;
         	if(!card) {
