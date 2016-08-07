@@ -12,6 +12,9 @@
         controller: CardActionListController,
         templateUrl: 'app/components/card/action-list/card-action-list.html'
     });
+    
+    var dndActionListCtrl;
+    var dndActionListItem;
 
     function CardActionListController(Card, Notification) {
         var ctrl = this;
@@ -35,32 +38,29 @@
         ctrl.toggleAction = function(action) {
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
-
-        ctrl.sortActions = function($item, $partFrom, $partTo, $indexFrom, $indexTo) {
-            var newActionListId = $partTo.referenceId;
-            var oldActionListId = $partFrom.referenceId;
-
-            if(oldActionListId === newActionListId) {
-                ctrl.actionList.items = $partTo.map(function(v, i) {
-                    v.order = i;
-                    return v;
-                });
-                Card.updateActionItemOrder(
-                    ctrl.actionList.id,
-                    $partTo.map(function(v) { return v.id})
-                ).catch(function(err) {
-                     ctrl.actionList.items = $partFrom;
-                });
-            } else {
-                Card.moveActionItem(
-                    $item.id,
-                    newActionListId,
-                    {
-                        newContainer: $partTo.map(function(v) { return v.id})
-                    }
-                );
-            }
-        };
+        
+        
+        ctrl.dragStartActionList = function(item) {
+        	dndActionListItem = item;
+        	dndActionListCtrl = ctrl;
+        }
+        
+        ctrl.dropActionList = function(index, oldIndex) {
+        	
+        	var item = dndActionListCtrl.actionList.items[oldIndex];
+        	
+        	dndActionListCtrl.actionList.items.splice(oldIndex, 1);
+        	ctrl.actionList.items.splice(index, 0, item);
+        	
+        	if(ctrl === dndActionListCtrl) {
+            	ctrl.actionList.items.forEach(function(v, i) {
+            		v.order = i;
+            	});
+            	Card.updateActionItemOrder(ctrl.actionList.id, ctrl.actionList.items.map(function(v) {return v.id}));
+        	} else {
+        		Card.moveActionItem(item.id, ctrl.actionList.id, {newContainer: ctrl.actionList.items.map(function(v) {return v.id})});
+        	}
+        }
 
         ctrl.saveName = function(name) {
             Card.updateActionList(ctrl.actionList.id, name);

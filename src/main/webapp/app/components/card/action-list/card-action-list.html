@@ -38,11 +38,13 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <md-list sv-root="card-actionitems"
-                 sv-part="$ctrl.actionList.items"
-                 sv-on-sort="$ctrl.sortActions($item, $partFrom, $partTo, $indexFrom, $indexTo)">
-            <md-list-item md-no-ink class="lvg-card-action-list__item" data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id" sv-element>
-                <md-icon data-ng-hide="editName" class="lvg-svg-icon-small lvg-card-action-list__handle" data-lvg-has-permission="MANAGE_ACTION_LIST" md-svg-icon="drag" sv-handle></md-icon>
+        <md-list 
+            lvg-dnd="$ctrl.actionList.items"
+            lvg-dnd-drop="$ctrl.dropActionList($index, $oldIndex)"
+            lvg-dnd-dragstart="$ctrl.dragStartActionList($item)"
+            lvg-dnd-opts="{group: 'actionlist', animation: 150, handle: '.lvg-card-action-list__handle'}">
+            <md-list-item md-no-ink class="lvg-card-action-list__item" data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id">
+                <md-icon data-ng-hide="editName" class="lvg-svg-icon-small lvg-card-action-list__handle" data-lvg-has-permission="MANAGE_ACTION_LIST" md-svg-icon="drag"></md-icon>
                 <md-checkbox data-lvg-has-permission="MANAGE_ACTION_LIST"
                              ng-disabled="editName"
                              data-ng-hide="editName"
