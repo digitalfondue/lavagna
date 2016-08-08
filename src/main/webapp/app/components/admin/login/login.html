@@ -2,8 +2,9 @@
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
     <md-content layout-padding>
         
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"><span translate>Enable</span></md-checkbox>
-        
+        <div>
+            <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"><span translate>Enable</span></md-checkbox>
+        </div>
         <div ng-if="$ctrl.anonEnabled">
             <div>
                 <md-checkbox  ng-model="$ctrl.userHasGlobalRole" ng-change="$ctrl.globalRoleChange($ctrl.userHasGlobalRole)">
@@ -23,7 +24,9 @@
 <h2 class="md-title" translate>partials.admin.configure-login.demo</h2>
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
     <md-content layout-padding>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        <div>
+            <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        </div>
     </md-content>
 </div>
 
@@ -31,8 +34,9 @@
 <h2 class="md-title" translate>partials.admin.configure-login.ldap</h2>
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
     <md-content layout-padding>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.LDAP" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
-        
+        <div>
+            <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.LDAP" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        </div>
         <form ng-submit="$ctrl.saveLdapConfig($ctrl.ldap)" ng-if="$ctrl.authMethod.LDAP">        
 	        <md-input-container class="md-block">
 	            <label><span translate>partials.admin.configure-login.ldap.serverUrl</span></label>
