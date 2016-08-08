@@ -1,11 +1,17 @@
+<h2 class="md-title" translate>partials.admin.export-import.export</h2>
+
 <div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
 	<md-content layout-padding>
-		<h2 class="md-title" translate>partials.admin.export-import.export</h2>
 			<form ng-submit="$ctrl.doExport()">
 				<p><md-button class="md-raised md-primary" type="submit"><span translate>partials.admin.export-import.exportButton</span></md-button></p>
 			</form>
-		<md-divider ></md-divider>
-		<h2 class="md-title" translate>partials.admin.export-import.import</h2>
+    </md-content>
+</div>
+
+    
+<h2 class="md-title" translate>partials.admin.export-import.import</h2>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+    <md-content layout-padding>
 		<form ng-submit="$ctrl.importFile.upload()">
             <div>
                 <input type="file" name="file" id="file" class="lvg-input-file__input"

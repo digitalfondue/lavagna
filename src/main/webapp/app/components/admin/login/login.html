@@ -1,126 +1,69 @@
+<h2 class="md-title" translate>partials.admin.manage-anonymous-users-access.title</h2>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+    <md-content layout-padding>
+        
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"><span translate>Enable</span></md-checkbox>
+        
+        <div ng-if="$ctrl.anonEnabled">
+            <div>
+                <md-checkbox  ng-model="$ctrl.userHasGlobalRole" ng-change="$ctrl.globalRoleChange($ctrl.userHasGlobalRole)">
+                    <span data-translate>partials.admin.manage-anonymous-users-access.globalAccess</span>
+                </md-checkbox>
+            </div>
+            <div>
+                <md-checkbox ng-model="$ctrl.userHasSearchPermission" ng-change="$ctrl.searchRoleChange($ctrl.userHasSearchPermission)">
+                    <span data-translate>partials.admin.manage-anonymous-users-access.enableSearch</span>
+                </md-checkbox>
+            </div>
+        </div>
+    </md-content>
+</div>
+
+
+<h2 class="md-title" translate>partials.admin.configure-login.demo</h2>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+    <md-content layout-padding>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+    </md-content>
+</div>
+
+
+<h2 class="md-title" translate>partials.admin.configure-login.ldap</h2>
+<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
+    <md-content layout-padding>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.LDAP" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        
+        <form ng-submit="$ctrl.saveLdapConfig($ctrl.ldap)" ng-if="$ctrl.authMethod.LDAP">        
+	        <md-input-container class="md-block">
+	            <label><span translate>partials.admin.configure-login.ldap.serverUrl</span></label>
+	            <input type="text" placeholder="ldap://localhost:10389" ng-model="$ctrl.ldap.serverUrl">
+	        </md-input-container>
+	        <md-input-container class="md-block">
+                <label><span translate>partials.admin.configure-login.ldap.managerDn</span></label>
+                <input type="text" placeholder="uid=admin,ou=system" ng-model="$ctrl.ldap.managerDn">
+	        </md-input-container>
+	        <md-input-container class="md-block">
+                <label><span translate>partials.admin.configure-login.ldap.managerPassword</span></label>
+                <input type="password" placeholder="secret" ng-model="$ctrl.ldap.managerPassword" autocomplete="off">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><span translate>partials.admin.configure-login.ldap.userSearchBase</span></label>
+                <input type="text" placeholder="ou=system" ng-model="$ctrl.ldap.userSearchBase">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><span translate>partials.admin.configure-login.ldap.userSearchFilter</span></label>
+                <input type="text" placeholder="uid={0}" data-ng-model="$ctrl.ldap.userSearchFilter">
+            </md-input-container>
+            <div>
+                <md-button type="submit" class="md-raised md-primary"><span translate>button.save</span></md-button>
+                <md-button type="button" class="md-raised" ng-click="$ctrl.openLdapConfigModal()"><span data-translate>partials.admin.configure-login.ldap.check</span></md-button>                
+            </div>
+        </form>
+    </md-content>
+</div>
+
+
 <div class="col-xs-12">
-    <div class="lavagna-panel" data-ng-class="{collapsed : !$ctrl.anonEnabled}">
-        <div class="head clearfix headonly">
-            <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-anonymous-users-access.title</div>
-            <div class="title-addon col-xs-3">
-                <ul class="panel-controls">
-                    <li class="control-no-action">
-                        <md-switch ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"></md-switch>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="body separated">
-            <div>
-                <md-switch 
-                    ng-model="$ctrl.userHasGlobalRole" 
-                    ng-change="$ctrl.globalRoleChange($ctrl.userHasGlobalRole)"></md-switch>
-                <div class="lvg-switch-label"><span data-translate>partials.admin.manage-anonymous-users-access.globalAccess</span></div>
-            </div>
-            <div>
-                <md-switch
-                    ng-model="$ctrl.userHasSearchPermission"
-                    ng-change="$ctrl.searchRoleChange($ctrl.userHasSearchPermission)"></md-switch>
-                <div class="lvg-switch-label"><span data-translate>partials.admin.manage-anonymous-users-access.enableSearch</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="lavagna-panel">
-        <div class="head clearfix headonly">
-            <div class="title title-bold col-xs-9" data-translate>partials.admin.configure-login.demo</div>
-            <div class="title-addon col-xs-3 lvg-switch-controls">
-                <ul class="panel-controls">
-                    <li class="control-no-action">
-                        <md-switch
-                            ng-model="$ctrl.authMethod.DEMO"
-                            ng-change="$ctrl.updateActiveProviders()"></md-switch>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="lavagna-panel" data-ng-class="{collapsed : !$ctrl.authMethod.LDAP}">
-        <form data-ng-submit="$ctrl.saveLdapConfig($ctrl.ldap)">
-            <div class="head clearfix headonly">
-                <div class="title title-bold col-xs-9" data-translate>partials.admin.configure-login.ldap</div>
-                <div class="title-addon col-xs-3 lvg-switch-controls">
-                    <ul class="panel-controls">
-                        <li class="control-no-action">
-                            <md-switch 
-                                ng-model="$ctrl.authMethod.LDAP"
-                                ng-change="$ctrl.updateActiveProviders()"></md-switch>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="body separated">
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.ldap.serverUrl</div>
-                    <input class="form-control" type="text" placeholder="ldap://localhost:10389" data-ng-model="$ctrl.ldap.serverUrl">
-                </div>
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.ldap.managerDn</div>
-                    <input class="form-control" type="text" placeholder="uid=admin,ou=system" data-ng-model="$ctrl.ldap.managerDn">
-                </div>
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.ldap.managerPassword</div>
-                    <input class="form-control" type="password" placeholder="secret" data-ng-model="$ctrl.ldap.managerPassword" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.ldap.userSearchBase</div>
-                    <input class="form-control" type="text" placeholder="ou=system" data-ng-model="$ctrl.ldap.userSearchBase">
-                </div>
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.ldap.userSearchFilter</div>
-                    <input class="form-control" type="text" placeholder="uid={0}" data-ng-model="$ctrl.ldap.userSearchFilter">
-                </div>
-            </div>
-            <div class="footer clearfix">
-                <div class="content">
-                    <div>
-                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.save</button>
-                        <button type="button" class="lvg-button lvg-button-default"
-                                data-ng-click="$ctrl.openLdapConfigModal()"><span data-translate>partials.admin.configure-login.ldap.check</span></button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="lavagna-panel" data-ng-class="{collapsed : !$ctrl.authMethod.PERSONA}">
-        <form data-ng-submit="$ctrl.savePersonaConfig($ctrl.persona)">
-            <div class="head clearfix headonly">
-                <div class="title title-bold col-xs-9" data-translate>partials.admin.configure-login.persona</div>
-                <div class="title-addon col-xs-3 lvg-switch-controls">
-                    <ul class="panel-controls">
-                        <li class="control-no-action">
-                            <md-switch
-                                ng-model="$ctrl.authMethod.PERSONA"
-                                ng-change="$ctrl.updateActiveProviders()"></md-switch>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="body separated">
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.persona.audience</div>
-                    <input class="form-control" type="text" data-ng-model="$ctrl.persona.audience">
-                </div>
-
-                <p class="help-block" data-translate>partials.admin.configure-login.persona.help</p>
-            </div>
-            <div class="footer clearfix">
-                <div class="content">
-                    <div>
-                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.save</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
     <div class="lavagna-panel" data-ng-class="{collapsed : !$ctrl.authMethod.OAUTH}">
         <form data-ng-submit="$ctrl.saveOauthConfig()">
             <div class="head clearfix headonly">
