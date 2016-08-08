@@ -17,14 +17,12 @@
     </div>
 </md-content>
 
-
 <h2 class="md-title" translate>partials.admin.configure-login.demo</h2>
 <md-content layout-padding md-whiteframe="1">
     <div>
         <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
     </div>
 </md-content>
-
 
 <h2 class="md-title" translate>partials.admin.configure-login.ldap</h2>
 <md-content layout-padding md-whiteframe="1">
@@ -59,91 +57,68 @@
     </form>
 </md-content>
 
-
-<div class="col-xs-12">
-    <div class="lavagna-panel" data-ng-class="{collapsed : !$ctrl.authMethod.OAUTH}">
-        <form data-ng-submit="$ctrl.saveOauthConfig()">
-            <div class="head clearfix headonly">
-                <div class="title title-bold col-xs-9" data-translate>partials.admin.configure-login.oauth</div>
-                <div class="title-addon col-xs-3 lvg-switch-controls">
-                    <ul class="panel-controls">
-                        <li class="control-no-action">
-                            <md-switch
-                                ng-model="$ctrl.authMethod.OAUTH"
-                                ng-change="$ctrl.updateActiveProviders()"></md-switch>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="body separated">
-                <div class="form-group">
-                    <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.baseUrl</div>
-                    <input class="form-control" type="text" data-ng-model="$ctrl.oauth.baseUrl">
-                </div>
-                <div class="lvg-oauth-provider-title" data-translate>partials.admin.configure-login.oauth.preconfigured-online-providers</div>
-                <div class="form-group" data-ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:false}">
-                    <div>
-                        <md-switch ng-model="$ctrl.oauth[provider.name].present"></md-switch>
-                        <div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider.name"></span></div>
-                    </div>
-                    <div data-ng-show="$ctrl.oauth[provider.name].present" class="lvg-oauth-provider-panel">
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.apiKey</div>
-                            <input class="form-control" type="text" data-ng-model="oauth[provider.name].apiKey">
-                        </div>
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.secret</div>
-                            <input class="form-control" type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
-                        </div>
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.callback</div>
-                            <input class="form-control form-selectable" type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
-                        </div>
-                    </div>
-                </div>
-                <div class="lvg-oauth-provider-title" data-translate>partials.admin.configure-login.oauth.configurable-oauth-providers</div>
-                <div class="form-group" data-ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:true}">
-                    <div>
-                        <md-switch ng-model="$ctrl.oauth[provider.name].present"></md-switch>
-                        <div class="lvg-switch-label lvg-oauth-provider"><span data-ng-bind="provider.name"></span></div>
-                    </div>
-                    <div data-ng-show="$ctrl.oauth[provider.name].present" class="lvg-oauth-provider-panel">
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.base-url</div>
-                            <input class="form-control" type="text" data-ng-model="$ctrl.oauth[provider.name].baseUrl">
-                        </div>
-                        <!--
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.profile-url</div>
-                            <input class="form-control" type="text" data-ng-model="oauth[provider.name].profileUrl">
-                        </div>
-                         -->
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.apiKey</div>
-                            <input class="form-control" type="text" data-ng-model="$ctrl.oauth[provider.name].apiKey">
-                        </div>
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.secret</div>
-                            <input class="form-control" type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
-                        </div>
-                        <div class="form-group">
-                            <div class="lvg-form-label" data-translate>partials.admin.configure-login.oauth.callback</div>
-                            <input class="form-control form-selectable" type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
-                        </div>
-                    </div>
-                </div>
-                <div data-ng-if="($ctrl.oauthProviders | filter: {isConfigurableInstance:true}).length === 0" data-translate>partials.admin.configure-login.oauth.no-providers</div>
-            </div>
-            <div class="footer clearfix">
-                <div class="content">
-                    <div>
-                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.save</button>
-                        <a type="button" class="lvg-button lvg-button-submit" data-ng-click="$ctrl.openOauthAddNewModal()">
-                            <span data-translate>partials.admin.configure-login.oauth.add-new-provider</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </form>
+<h2 class="md-title" translate>partials.admin.configure-login.oauth</h2>
+<md-content layout-padding md-whiteframe="1" class="lvg-container-margin-bottom">
+    <div>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.OAUTH" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
     </div>
-</div>
+    <form data-ng-submit="$ctrl.saveOauthConfig()" ng-if="$ctrl.authMethod.OAUTH">
+        <md-input-container class="md-block">
+            <label><span translate>partials.admin.configure-login.oauth.baseUrl</span></label>
+            <input type="text" ng-model="$ctrl.oauth.baseUrl">
+        </md-input-container>
+        
+        <p><span translate>partials.admin.configure-login.oauth.preconfigured-online-providers</span>:</p>
+        <div ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:false}">
+            <div>
+                <md-checkbox ng-model="$ctrl.oauth[provider.name].present"><span data-ng-bind="provider.name"></span></md-checkbox>
+            </div>
+            
+            <div ng-show="$ctrl.oauth[provider.name].present">
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.apiKey</label>
+                    <input type="text" ng-model="oauth[provider.name].apiKey">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.apiKey</label>
+                    <input type="text" ng-model="$ctrl.oauth[provider.name].apiSecret">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.callback</label>
+                    <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
+                </md-input-container>
+            </div>
+        </div>
+        
+        <p><span translate>partials.admin.configure-login.oauth.configurable-oauth-providers</span>:</p>
+        <div ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:true}">
+            <div>
+                <md-checkbox ng-model="$ctrl.oauth[provider.name].present"><span data-ng-bind="provider.name"></span></md-checkbox>
+            </div>
+            
+            <div ng-show="$ctrl.oauth[provider.name].present">
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.base-url</label>
+                    <input type="text" data-ng-model="$ctrl.oauth[provider.name].baseUrl">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.apiKey</label>
+                    <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiKey">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.secret</label>
+                    <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>partials.admin.configure-login.oauth.callback</label>
+                    <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
+                </md-input-container>
+            </div>
+        </div>
+        <div ng-if="($ctrl.oauthProviders | filter: {isConfigurableInstance:true}).length === 0"><p data-translate>partials.admin.configure-login.oauth.no-providers</p></div>
+        <div>
+            <md-button type="submit" class="md-raised md-primary"><span translate>button.save</span></md-button>
+            <md-button type="button" class="md-raised" ng-click="$ctrl.openOauthAddNewModal()"><span translate>partials.admin.configure-login.oauth.add-new-provider</span></md-button>
+        </div>
+    </form>
+</md-content>

@@ -567,6 +567,10 @@ ul.panel-controls .control-item:HOVER, ul.panel-controls .control-box span.fa:HO
 	margin-bottom: 0;
 }
 
+.lvg-container-margin-bottom {
+	margin-bottom:20px;
+}
+
 .lavagna-progress {
 	position: relative;
 	background-color: white;
