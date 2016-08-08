@@ -1,29 +1,11 @@
-<div class="row">
-    <div class="col-sm-6" data-ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'">
-        <div class="lavagna-panel">
-            <div class="head clearfix">
-                <div class="title title-bold">{{'common.column.definition.' + definition.value | translate}}</div>
-            </div>
-            <div class="body-full">
-                <form data-ng-role="form"
-                      data-ng-submit="$ctrl.updateColumnDefinition(definition.id, $ctrl.columnDefinition[definition.id].color)">
-                    <div class="form-group">
-                        <lvg-colorpicker data-ng-model="$ctrl.columnDefinition[definition.id].color"></lvg-colorpicker>
-                        <span class="lavagna-project-admin-column-status-name">{{definition.value | capitalize}}</span>
-                    </div>
-                    <div>
-                        <button type="submit" class="lvg-button lvg-button-submit"
-                                data-ng-disabled="$ctrl.columnDefinition[definition.id].color == $ctrl.convertIntToColorCode(definition.color) || $ctrl.isNotUniqueColor(c$ctrl.olumnDefinition[definition.id].color)">
-                            <span data-translate>button.save</span>
-                        </button>
-                        <button type="button" class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.columnDefinition[definition.id].color == $ctrl.convertIntToColorCode(definition.color) || $ctrl.isNotUniqueColor($ctrl.columnDefinition[definition.id].color)"
-                                data-ng-click="$ctrl.columnDefinition[definition.id].color = $ctrl.convertIntToColorCode(definition.color);">
-                            <span data-translate>button.reset</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<h2 class="md-title" translate>partials.project.manage-columns-status.title</h2>
+<md-content class="lvg-content" layout-padding md-whiteframe="1">
+	<form ng-submit="$ctrl.update()">
+		<div layout="row" class="center">
+			<div ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'" flex>
+				<p><strong>{{'common.column.definition.' + definition.value | translate}}</strong></p>
+				<p><lvg-colorpicker ng-model="$ctrl.columnDefinition[definition.id].color" ng-change="$ctrl.updateColumnDefinition(definition.id, $ctrl.columnDefinition[definition.id].color)"></lvg-colorpicker></p>
+			</div>
+		</div>
+	</form>
+</md-content>
