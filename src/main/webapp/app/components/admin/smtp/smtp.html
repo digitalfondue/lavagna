@@ -1,4 +1,4 @@
-<md-content layout-padding class="lavagna-container-margin lvg-content" md-whiteframe="1">
+<md-content layout-padding class="lavagna-container-margin" md-whiteframe="1">
 	<div><md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.smtpEnabled" ng-change="$ctrl.toggleSmtp($ctrl.smtpEnabled)"><span translate>partials.admin.manage-smtp-configuration.title</span></md-checkbox></div>
 
 	<form ng-submit="$ctrl.saveSmtpConfig($ctrl.configuration)" ng-show="$ctrl.smtpEnabled">

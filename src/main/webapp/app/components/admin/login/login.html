@@ -1,7 +1,7 @@
 <h2 class="md-title" translate>partials.admin.manage-anonymous-users-access.title</h2>
 <md-content layout-padding md-whiteframe="1">
     <div>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"><span translate>Enable</span></md-checkbox>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.anonEnabled" ng-change="$ctrl.anonChange($ctrl.anonEnabled)"><span translate>common.enable</span></md-checkbox>
     </div>
     <div ng-if="$ctrl.anonEnabled">
         <div>
@@ -20,14 +20,14 @@
 <h2 class="md-title" translate>partials.admin.configure-login.demo</h2>
 <md-content layout-padding md-whiteframe="1">
     <div>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.DEMO" ng-change="$ctrl.updateActiveProviders()"><span translate>common.enable</span></md-checkbox>
     </div>
 </md-content>
 
 <h2 class="md-title" translate>partials.admin.configure-login.ldap</h2>
 <md-content layout-padding md-whiteframe="1">
     <div>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.LDAP" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.LDAP" ng-change="$ctrl.updateActiveProviders()"><span translate>common.enable</span></md-checkbox>
     </div>
     <form ng-submit="$ctrl.saveLdapConfig($ctrl.ldap)" ng-if="$ctrl.authMethod.LDAP">        
      <md-input-container class="md-block">
@@ -60,7 +60,7 @@
 <h2 class="md-title" translate>partials.admin.configure-login.oauth</h2>
 <md-content layout-padding md-whiteframe="1" class="lvg-container-margin-bottom">
     <div>
-        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.OAUTH" ng-change="$ctrl.updateActiveProviders()"><span translate>Enable</span></md-checkbox>
+        <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.OAUTH" ng-change="$ctrl.updateActiveProviders()"><span translate>common.enable</span></md-checkbox>
     </div>
     <form data-ng-submit="$ctrl.saveOauthConfig()" ng-if="$ctrl.authMethod.OAUTH">
         <md-input-container class="md-block">
