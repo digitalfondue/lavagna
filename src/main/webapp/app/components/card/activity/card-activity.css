@@ -16,3 +16,12 @@
 .lvg-card-activity__actions-button-row {
     margin-top: 6px;
 }
+
+.lvg-card-activity__filter-radio {
+    display: inline-block !important;
+    margin-left: 15px;
+}
+
+.lvg-card-activity__filter-radio:first-child {
+    margin-left: 0;
+}

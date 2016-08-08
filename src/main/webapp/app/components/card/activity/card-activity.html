@@ -1,15 +1,22 @@
-<md-card>
+<md-card >
     <md-card-title>
         <md-card-title-text>
             <div layout="row">
                 <div class="lvg-headline"><span data-translate>card.activity</span></div>
                 <span flex></span>
+                <md-radio-group class="lvg-card-activity__filter" ng-model="activityFilter" ng-init="activityFilter = 'COMMENT_CREATE';">
+                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="COMMENT_CREATE" ng-checked="true">Comments</md-radio-button>
+                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="">All</md-radio-button>
+                </md-radio-group>
             </div>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div ng-repeat="comment in $ctrl.comments track by comment.id" class="lvg-card-comment">
-            <lvg-card-comment comment="comment"></lvg-card-comment>
+        <div ng-repeat="activity in $ctrl.activities | filter:{event: activityFilter} | orderBy:'+id' track by activity.id" class="lvg-card-comment">
+            <div ng-switch="activity.event">
+                <lvg-card-comment ng-switch-when="COMMENT_CREATE" comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
+                <div ng-switch-default>type: {{::activity.event}}, date: {{::(activity.time | dateIncremental)}}</div>
+            </div>
         </div>
     </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">

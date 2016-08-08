@@ -12,7 +12,7 @@
 
     function CardActivityController($scope, $rootScope, $q, Card, StompClient) {
         var ctrl = this;
-        ctrl.comments = [];
+        ctrl.comments = {};
         ctrl.activities = [];
 
         var loadComments = function() {
@@ -26,7 +26,9 @@
         var loadData = function(promisesObject) {
             $q.all(promisesObject).then(function(result) {
                 if(result.comments) {
-                    ctrl.comments = result.comments;
+                    angular.forEach(result.comments, function(comment) {
+                        ctrl.comments[comment.id] = comment;
+                    });
                 }
                 if(result.activities) {
                     ctrl.activities = result.activities;
