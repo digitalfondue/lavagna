@@ -1,43 +1,41 @@
-<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1">
-	<md-content layout-padding>
-		<div><md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.smtpEnabled" ng-change="$ctrl.toggleSmtp($ctrl.smtpEnabled)"><span translate>partials.admin.manage-smtp-configuration.title</span></md-checkbox></div>
-	
-		<form ng-submit="$ctrl.saveSmtpConfig($ctrl.configuration)" ng-show="$ctrl.smtpEnabled">
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.host</span></label>
-				<input type="text" ng-model="$ctrl.configuration.host" required>
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.port</span></label>
-				<input type="number" ng-model="$ctrl.configuration.port" required>
-			</md-input-container>
-			<md-input-container class="md-block lvg-fix-height">
-				<label><span translate>partials.admin.manage-smtp-configuration.protocol</span></label>
-				<md-select ng-model="$ctrl.configuration.protocol" required>
-					<md-option value="smtp">smtp</md-option>
-					<md-option value="smtps">smtps</md-option>
-				</md-select>
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.username</span></label>
-				<input type="text" ng-model="$ctrl.configuration.username">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.password</span></label>
-				<input type="text" ng-model="$ctrl.configuration.password">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.from</span></label>
-				<input type="text" ng-model="$ctrl.configuration.from">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.manage-smtp-configuration.properties</span></label>
-				<textarea ng-model="$ctrl.configuration.properties"></textarea>
-			</md-input-container>
-			<div>
-				<md-button type="submit" class="md-raised md-primary"><span translate>button.save</span></md-button>
-				<md-button type="button" class="md-raised" ng-click="$ctrl.openSmtpConfigModal()"><span translate>partials.admin.manage-smpt-configuration.sendTestEmail</span></md-button>
-			</div>
-		</form>
-	</md-content>
-</div>
+<md-content layout-padding class="lavagna-container-margin lvg-content" md-whiteframe="1">
+	<div><md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.smtpEnabled" ng-change="$ctrl.toggleSmtp($ctrl.smtpEnabled)"><span translate>partials.admin.manage-smtp-configuration.title</span></md-checkbox></div>
+
+	<form ng-submit="$ctrl.saveSmtpConfig($ctrl.configuration)" ng-show="$ctrl.smtpEnabled">
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.host</span></label>
+			<input type="text" ng-model="$ctrl.configuration.host" required>
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.port</span></label>
+			<input type="number" ng-model="$ctrl.configuration.port" required>
+		</md-input-container>
+		<md-input-container class="md-block lvg-fix-height">
+			<label><span translate>partials.admin.manage-smtp-configuration.protocol</span></label>
+			<md-select ng-model="$ctrl.configuration.protocol" required>
+				<md-option value="smtp">smtp</md-option>
+				<md-option value="smtps">smtps</md-option>
+			</md-select>
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.username</span></label>
+			<input type="text" ng-model="$ctrl.configuration.username">
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.password</span></label>
+			<input type="text" ng-model="$ctrl.configuration.password">
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.from</span></label>
+			<input type="text" ng-model="$ctrl.configuration.from">
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label><span translate>partials.admin.manage-smtp-configuration.properties</span></label>
+			<textarea ng-model="$ctrl.configuration.properties"></textarea>
+		</md-input-container>
+		<div>
+			<md-button type="submit" class="md-raised md-primary"><span translate>button.save</span></md-button>
+			<md-button type="button" class="md-raised" ng-click="$ctrl.openSmtpConfigModal()"><span translate>partials.admin.manage-smpt-configuration.sendTestEmail</span></md-button>
+		</div>
+	</form>
+</md-content>
