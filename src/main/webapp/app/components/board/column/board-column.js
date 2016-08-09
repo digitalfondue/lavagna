@@ -32,17 +32,8 @@
         ctrl.searchFilter = ctrl.searchFilterRef();
         
         //
-        var r = [];
-        ctrl.getMetadataHash = function getMetadataHash() {
-        	var hash = '';
-        	var metadata = ctrl.metadataRef();
-        	if(metadata) {
-        		hash = metadata.hash;
-        		ctrl.metadata = metadata;
-        	}
-        	r[0] = hash;
-        	return r;
-        }
+        ctrl.metadata = ctrl.metadataRef();
+
         //
         ctrl.dragStartCard = function(item) {
         	SharedBoardDataService.startDrag();

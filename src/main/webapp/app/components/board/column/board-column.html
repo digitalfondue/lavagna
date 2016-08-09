@@ -1,4 +1,4 @@
-<div class="panel-heading" data-ng-style="boardColumnCtrl.metadata.columnsDefinition[boardColumnCtrl.column.status].color|columnColor">
+<div class="panel-heading" data-ng-style="::(boardColumnCtrl.metadata.columnsDefinition[boardColumnCtrl.column.status].color|columnColor)">
     <div class="lvg-column-handle" layout="row">
         <div flex="80">
             <div data-ng-if="!boardColumnCtrl.columnState.editColumnName">
@@ -66,7 +66,6 @@
 <div class="panel-body">
     <ul class="lavagna-board-cards" data-ng-show="boardColumnCtrl.loaded"  style="overflow-y:auto;overflow-x:hidden" 
         data-ng-style="{'max-height' : (maxHeight - panelHeadAndFooterSize - 40)+'px'}" 
-        ng-repeat="hash in boardColumnCtrl.getMetadataHash() track by hash"
         lvg-dnd="boardColumnCtrl.cardsInColumn"
         lvg-dnd-drop="boardColumnCtrl.dropCard($index)"
         lvg-dnd-dragstart="boardColumnCtrl.dragStartCard($item)"

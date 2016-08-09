@@ -64,7 +64,7 @@
         };
         
         // 
-        var r = []
+        
         ctrl.getMetadatasHash = function getMetadatasHash() {
         	var hash = '';
         	for(var k in ctrl.metadatas) {
@@ -72,8 +72,7 @@
         			hash+=ctrl.metadatas[k].hash;
         		}
         	}
-        	r[0] = hash;
-        	return r;
+        	return hash;
         }
         //
 

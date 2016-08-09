@@ -21,17 +21,6 @@
         Project.loadMetadataAndSubscribe(projectName, projectCtrl, $scope);
 
         //
-        var r = [];
-        projectCtrl.getMetadataHash = function() {
-        	var hash = '';
-        	if(projectCtrl.metadata) {
-        		hash = projectCtrl.metadata.hash;
-        	}
-        	r[0] = hash;
-        	return r;
-        }
-
-        //
 
         projectCtrl.boardPage = 1;
         projectCtrl.boardsPerPage = 10;

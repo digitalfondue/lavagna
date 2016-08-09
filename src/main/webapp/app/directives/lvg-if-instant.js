@@ -10,7 +10,6 @@
 
 	directives.directive('lvgIfInstant', ['$parse', function ($parse) {
 		return {
-			multiElement: true,
 		    transclude: 'element',
 		    priority: 600,
 		    terminal: true,

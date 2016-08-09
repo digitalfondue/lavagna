@@ -23,24 +23,26 @@
 
 <div class="horizontal-slide lavagna-left-sidebar-slide-open" data-ng-class="{'lavagna-board-left-sidebar-open':$ctrl.toggledSidebar, 'lvg-can-move-columns' : $ctrl.sortableColumnOptions, 'lvg-can-move-cards': $ctrl.sortableCardOptions}"
      data-lvg-fill-height="{{$ctrl.toggledSidebar}}" data-lvg-fill-height-margin="295">
-    <ul class="lavagna-board-column-holder" 
-        ng-style="{width : ($ctrl.columns.length*(290 + 4 * 2))+'px'}"
-        lvg-dnd="$ctrl.columns"
-        lvg-dnd-drop="$ctrl.dropColumn($index, $oldIndex)"
-        lvg-dnd-opts="{group: 'column', animation: 150}">
-        <li class="lavagna-board-column lavagna-sortable-board-column"
-            data-ng-repeat="column in $ctrl.columns track by column.id"
-            data-lvg-update-column-size>
-            <lvg-board-column 
-                project-short-name="{{::$ctrl.project.shortName}}" 
-                board-short-name="{{::$ctrl.board.shortName}}"
-                metadata-ref="$ctrl.getMetadata()"
-                column="column" 
-                selected-cards="$ctrl.selectedCards" 
-                search-filter-ref="$ctrl.searchFilter"
-                user-ref="$ctrl.user"></lvg-board-column>
-        </li>
-    </ul>
+     <lvg-rebuild-if-change to-watch="$ctrl.getMetadata().hash">
+	    <ul class="lavagna-board-column-holder" 
+	        ng-style="{width : ($ctrl.columns.length*(290 + 4 * 2))+'px'}"
+	        lvg-dnd="$ctrl.columns"
+	        lvg-dnd-drop="$ctrl.dropColumn($index, $oldIndex)"
+	        lvg-dnd-opts="{group: 'column', animation: 150}">
+	        <li class="lavagna-board-column lavagna-sortable-board-column"
+	            data-ng-repeat="column in $ctrl.columns track by column.id"
+	            data-lvg-update-column-size>
+	            <lvg-board-column 
+	                project-short-name="{{::$ctrl.project.shortName}}" 
+	                board-short-name="{{::$ctrl.board.shortName}}"
+	                metadata-ref="$ctrl.getMetadata()"
+	                column="column" 
+	                selected-cards="$ctrl.selectedCards" 
+	                search-filter-ref="$ctrl.searchFilter"
+	                user-ref="$ctrl.user"></lvg-board-column>
+	        </li>
+	    </ul>
+    </lvg-rebuild-if-change>
 </div>
 
 <div id="cardModalAnchor" data-ui-view data-autoscroll="false"></div>

@@ -25,20 +25,6 @@
         var projectShortName = ctrl.project.shortName;
 
         var subscriptionScope;
-        
-        /* uglyness imported from board-column, FIXME*/
-        //
-        var r = [];
-        ctrl.getMetadataHash = function getMetadataHash() {
-        	var hash = '';
-        	var metadata = ctrl.metadataRef();
-        	if(metadata) {
-        		hash = metadata.hash;
-        	}
-        	r[0] = hash;
-        	return r;
-        }
-        //
 
         ctrl.switchLocation = switchLocation;
         ctrl.sideBarLoad = sideBarLoad;

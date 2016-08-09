@@ -9,11 +9,13 @@
         
     <div flex  data-lvg-is-authenticated data-lvg-has-permission="SEARCH">
         <h2 class="card-home" data-translate>partials.home.openTask</h2>
-        <ul data-ng-if="$ctrl.totalOpenCards > 0" class="lavagna-home-cards" ng-repeat="meta in $ctrl.getMetadatasHash() track by meta">
-            <li class="lavagna-home-card" ng-repeat="card in $ctrl.userCards track by (card.hash+$ctrl.metadatas[card.projectShortName].hash)">
-                <lvg-card-fragment-v2 view="list" card-ref="card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadatas[card.projectShortName]"></lvg-card-fragment-v2>
-            </li>
-        </ul>
+        <lvg-rebuild-if-change to-watch="$ctrl.getMetadatasHash()">
+	        <ul data-ng-if="$ctrl.totalOpenCards > 0" class="lavagna-home-cards">
+	            <li class="lavagna-home-card" ng-repeat="card in $ctrl.userCards track by (card.hash+$ctrl.metadatas[card.projectShortName].hash)">
+	                <lvg-card-fragment-v2 view="list" card-ref="card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadatas[card.projectShortName]"></lvg-card-fragment-v2>
+	            </li>
+	        </ul>
+        </lvg-rebuild-if-change>
         <span data-ng-if="$ctrl.totalOpenCards == 0" data-translate>partials.home.noTask</span>
         <div data-ng-if="$ctrl.cardsTotalPages > 1">
             <lvg-pagination
