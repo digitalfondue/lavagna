@@ -10,7 +10,7 @@
 				targetState: '@',
 				dynamicLink: '@'
 			},
-			controller: function($scope, $element, $state, $location) {
+			controller: function lvgCardFragmentLink($scope, $element, $state, $location) {
 				var ctrl = this;
 				ctrl.shortCardName = ctrl.boardShortName + ' - ' + ctrl.sequenceNumber;
 				

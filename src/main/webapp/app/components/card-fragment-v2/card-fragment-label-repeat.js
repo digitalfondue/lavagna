@@ -11,7 +11,7 @@
 		    	lvgCardFragmentLabelRepeat:'&',
 		    	projectMetadataRef:'&'
 		    },
-		    compile: function($element, $attr) {
+		    compile: function lvgCardFragmentLabelRepeat($element, $attr) {
 		    	return function($scope, $element, $attr, ctrl, $transclude) {
 		    		var parent = $element.parent();
 		    		var toRepeat = $scope.lvgCardFragmentLabelRepeat();

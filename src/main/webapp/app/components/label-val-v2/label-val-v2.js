@@ -5,9 +5,9 @@
 	var components = angular.module('lavagna.components');
 
 	components.component('lvgLabelValV2', {
-		template: '<span ng-bind="::$ctrl.displayValue" ng-if="::($ctrl.type != \'CARD\' && $ctrl.type != \'USER\')"></span>' +
-					'<a ng-href="{{::$ctrl.cardLink}}" ng-if="::($ctrl.type == \'CARD\')" ng-bind="::$ctrl.displayValue"></a>' + 
-					'<a ng-href="{{::$ctrl.userLink}}" ng-if="::($ctrl.type == \'USER\')"></a>',
+		template: '<span ng-bind="::$ctrl.displayValue" lvg-if-instant="::($ctrl.type != \'CARD\' && $ctrl.type != \'USER\')"></span>' +
+					'<a ng-href="{{::$ctrl.cardLink}}" lvg-if-instant="::($ctrl.type == \'CARD\')" ng-bind="::$ctrl.displayValue"></a>' + 
+					'<a ng-href="{{::$ctrl.userLink}}" lvg-if-instant="::($ctrl.type == \'USER\')"></a>',
 		bindings: {
 			valueRef: '&',
 			projectMetadataRef:'&'

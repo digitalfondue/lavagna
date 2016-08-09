@@ -7,7 +7,7 @@
     components.component('lvgLabelV2', {
     	template: '<span>'
 			+'<span ng-bind="::$ctrl.name"></span>'
-			+'<span ng-if="::($ctrl.type !== \'NULL\')">: </span>'
+			+'<span lvg-if-instant="::($ctrl.type !== \'NULL\')">: </span>'
 			+'<lvg-label-val-v2 value-ref="$ctrl.value" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>'
 			+'<span data-ng-transclude></span></span>',
     	bindings: {

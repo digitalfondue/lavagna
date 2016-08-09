@@ -12,17 +12,17 @@
     		restrict: 'A',
     		require:'^lvgCardFragmentV2',
     		scope:false,
-    		link: function($scope, $element, $attrs, lvgCardFragmentV2Ctrl) {
+    		link: function CardFragmentCheckbox($scope, $element, $attrs, lvgCardFragmentV2Ctrl) {
     			
     			var card = lvgCardFragmentV2Ctrl.card;
     			
     			var selected = lvgCardFragmentV2Ctrl.selected;
     			
     			function isSelected() {
-    				try  {
-    					return lvgCardFragmentV2Ctrl.boardView ? (selected[card.columnId][card.id] === true) : (selected[card.projectShortName][card.id] === true);
-    				} catch(e) {
-    					return false;
+    				if(lvgCardFragmentV2Ctrl.boardView) {
+    					return card && selected && selected[card.columnId] && selected[card.columnId][card.id] === true;
+    				} else {
+    					return card && selected && selected[card.projectShortName] && selected[card.projectShortName][card.id] === true;
     				}
     			};
     			

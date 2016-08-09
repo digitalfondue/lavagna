@@ -3,9 +3,9 @@
     data-ng-class="::{'lavagna-is-watching': !$ctrl.listView && $ctrl.isSelfWatching, 'lavagna-board-panel' : $ctrl.boardView }">
     <div>
         <div>
-            <div data-ng-if="::($ctrl.boardView && !$ctrl.readOnly)">
+            <div lvg-if-instant="::($ctrl.boardView && !$ctrl.readOnly)">
                 <div>
-                    <input ng-if="::($ctrl.hideSelect !== 'true')" type="checkbox"  data-lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" 
+                    <input lvg-if-instant="::($ctrl.hideSelect !== 'true')" type="checkbox"  lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" 
                         lvg-card-fragment-checkbox></input>
                     <lvg-card-fragment-link
                         dynamic-link="true"
@@ -15,15 +15,15 @@
                         sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
                 </div>
                 <div>
-                    <div data-lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-                        <div class="lavagna-card-caret-container lvg-not-sortable-card" data-ng-click="openCardMenu($ctrl.card, $ctrl.projectMetadataRef())"><span class="fa fa-chevron-down"></span></div>
+                    <div lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
+                        <div class="lavagna-card-caret-container lvg-not-sortable-card" ng-click="openCardMenu($ctrl.card, $ctrl.projectMetadataRef())"><span class="fa fa-chevron-down"></span></div>
                     </div>
                 </div>
             </div>
-            <div data-ng-if="::($ctrl.boardView && $ctrl.readOnly)">
-                <div><span class="fake-link">{{::$ctrl.shortCardName}}</span></div>
+            <div lvg-if-instant="::($ctrl.boardView && $ctrl.readOnly)">
+                <div><span class="fake-link" ng-bind="::$ctrl.shortCardName"></span></div>
             </div>
-            <div data-ng-if="::($ctrl.listView)">
+            <div lvg-if-instant="::($ctrl.listView)">
                 <div>
                     <lvg-card-fragment-link
                         target-state="board.card"
@@ -31,11 +31,11 @@
                         board-short-name="{{::$ctrl.boardShortName}}"
                         sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
                 </div>
-                <div class="card-home-date">{{::$ctrl.card.lastUpdateTime|dateIncremental}}</div>
+                <div class="card-home-date" ng-bind="::($ctrl.card.lastUpdateTime|dateIncremental)"></div>
             </div>
-            <div data-ng-if="::($ctrl.searchView)">
+            <div lvg-if-instant="::($ctrl.searchView)">
                 <div>
-                    <input type="checkbox" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{$ctrl.card.projectShortName}}"
+                    <input type="checkbox" lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{::$ctrl.card.projectShortName}}"
                         lvg-card-fragment-checkbox>
                     <lvg-card-fragment-link
                         dynamic-link="true"
@@ -44,7 +44,7 @@
                         board-short-name="{{::$ctrl.boardShortName}}"
                         sequence-number="{{::$ctrl.card.sequence}}"></lvg-card-fragment-link>
                 </div>
-                <div class="card-home-date">{{::($ctrl.card.lastUpdateTime|dateIncremental)}}</div>
+                <div class="card-home-date" ng-bind="::($ctrl.card.lastUpdateTime|dateIncremental)"></div>
             </div>
             <span ng-bind="::$ctrl.card.name"></span>
         </div>
@@ -52,27 +52,27 @@
     <div>
         <div class="card-data">
             <ul class="data-info">
-                <li ng-if="::($ctrl.card.counts['COMMENT'].count > 0)">
+                <li lvg-if-instant="::($ctrl.card.counts['COMMENT'].count > 0)">
                     <md-icon md-svg-icon="comment"></md-icon> <span ng-bind="::($ctrl.card.counts['COMMENT'].count)"></span>
                 </li>
-                <li ng-if="::$ctrl.hasActionListWithItems"
+                <li lvg-if-instant="::$ctrl.hasActionListWithItems"
                     ng-class="::({'lvg-action-full': $ctrl.card.counts['ACTION_CHECKED'].count == $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count,
                                     'lvg-action-not-done': $ctrl.card.columnDefinition == 'CLOSED' && $ctrl.card.counts['ACTION_CHECKED'].count != $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count})">
                     <md-icon md-svg-icon="list"></md-icon>
                     <span ng-bind="::$ctrl.actionItemsSummary"></span>
                 </li>
-                <li ng-if="::$ctrl.hasFiles">
+                <li lvg-if-instant="::$ctrl.hasFiles">
                     <md-icon md-svg-icon="file"></md-icon> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
-                <li ng-if="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
+                <li lvg-if-instant="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
                     <md-icon md-svg-icon="clock"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
-                <li ng-if="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
+                <li lvg-if-instant="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
                     <md-icon md-svg-icon="milestone"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
                 </li>
             </ul>
         </div>
-        <div class="card-info" data-ng-if="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
+        <div class="card-info" lvg-if-instant="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">
                 <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">
                     <lvg-label-val-v2 value-ref="value"></lvg-label-val-v2>
@@ -80,7 +80,7 @@
             </ul>
         </div>
         
-        <div class="card-labels" ng-if="::$ctrl.hasUserCreatedLabels">
+        <div class="card-labels" lvg-if-instant="::$ctrl.hasUserCreatedLabels">
             <ul class="labels">
                 <li class="lavagna-label lavagna-label-no-controls" 
                     ng-style="::($ctrl.projectMetadata.labels[value.labelId].color|labelBackground)"
