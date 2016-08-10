@@ -31,8 +31,6 @@
 				ctrl.currentConf = conf;
 				ctrl.authMethod = allBaseLogin;
 
-				ctrl.persona = {audience : conf['PERSONA_AUDIENCE'] || ($window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window))};
-
 				ctrl.ldap = {
 						serverUrl : conf['LDAP_SERVER_URL'],
 						managerDn : conf['LDAP_MANAGER_DN'],
@@ -101,18 +99,6 @@
 				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveLdapConfig.success'}, false);
 			}, function(error) {
 				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.saveLdapConfig.error'}, false);
-			}).then(loadConfiguration);
-		};
-
-		ctrl.savePersonaConfig = function(persona) {
-			var toUpdate = [];
-
-			toUpdate.push({first : 'PERSONA_AUDIENCE', second : persona.audience});
-
-			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
-				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.savePersonaConfig.success'}, false);
-			}, function(error) {
-				Notification.addAutoAckNotification('error', { key : 'notification.admin-configure-login.savePersonaConfig.error'}, false);
 			}).then(loadConfiguration);
 		};
 

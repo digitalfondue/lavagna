@@ -13,11 +13,10 @@ The following page will be shown:
  
 ### Step 2, Login provider configuration
 
-Lavagna does **not** store the user credentials by design: an external provider must be chosen. There are 4 possible choice:
+Lavagna does **not** store the user credentials by design: an external provider must be chosen. There are 3 possible choice:
 
  - demo (use for test purpose only)
  - ldap
- - mozilla persona
  - oauth
  
 #### Demo provider
@@ -37,14 +36,6 @@ It requires a user that can query the directory (the Manager DN and Manager Pass
 The query is composed by a base (Search base) and the filter (User search filter), where `{0}` is the placeholder for the username.
 
 The configuration can be tested in the "Check ldap configuration" form.
-
-#### Mozilla persona provider
-
-[Mozilla Persona](https://developer.mozilla.org/en-US/Persona) is the simplest external provider available to configure.
-
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_persona.png" alt="Persona provider">
-
-The default Audience value is most likely correct.
 
 #### Oauth provider
 

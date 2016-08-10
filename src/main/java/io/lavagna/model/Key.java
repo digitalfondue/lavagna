@@ -28,7 +28,8 @@ public enum Key {
 	LDAP_USER_SEARCH_BASE, // ou=system
 	LDAP_USER_SEARCH_FILTER, // uid={0}
 	//
-	PERSONA_AUDIENCE, // http://localhost:8080
+	@Deprecated // kept for retrocompatibility
+	PERSONA_AUDIENCE, // http://localhost:8080 (
 	//
 	OAUTH_CONFIGURATION,
 	//

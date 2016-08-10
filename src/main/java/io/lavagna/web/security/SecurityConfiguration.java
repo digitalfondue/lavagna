@@ -254,7 +254,7 @@ public class SecurityConfiguration {
 			}
 			// -------------------------------
 			// given /login/demo/ -> return demo
-			// subPath will be demo/ldap/oauth/persona
+			// subPath will be demo/ldap/oauth
 			String subPath = findSubpath(req, loginPageUrl);
 
 			if (handlers.containsKey(subPath)) {

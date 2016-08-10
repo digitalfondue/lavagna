@@ -18,10 +18,6 @@
 #lvg-login .login-oauth {
 	display: {{loginOauth}};
 }
-
-#lvg-login .login-persona {
-	display: {{loginPersona}};
-}
 /* ------------------------------------------------ */
 </style>
 </head>
@@ -82,9 +78,9 @@
 							</p>
 						</form>
 					</div>
-					<div class="login-oauth login-persona">
+					<div class="login-oauth">
 						<div class="lvg-login-or login-box-2-separator"><hr><span>or</span></div>
-						<div class="error-message-oauth error-message-persona">Username/Password is not correct or the account is not enabled</div>
+						<div class="error-message-oauth">Username/Password is not correct or the account is not enabled</div>
 						{{#loginOauthProviders}}
 						<div class="single-button">
 							<form method="post" action="login/oauth/{{.}}">
@@ -96,11 +92,6 @@
 						</div>
 						{{/loginOauthProviders}}
 					
-						<div id="login-persona-{{loginPersona}}" class="single-button">
-							<button class="lvg-button btn-persona" id="signin-persona">Login with Persona</button>
-							<input type="hidden" name="rememberMe" value="" id="global-remember-me-persona" class="remember-me">
-						</div>
-					
 						<p  class="single-button remember-me">
 							<label><input type="checkbox" name="rememberMe" value="true" id="global-remember-me-oauth"> remember me</label>
 						</p>
@@ -111,67 +102,6 @@
 													r[i].value = ev.target.checked ? "true" : "";
 												}
 											};
-					
-					(
-						function() {
-							if ("{{loginPersona}}" === 'block') {
-								var v = document.createElement("script");
-								v.src = "https://login.persona.org/include.js";
-								v.onload = function() {
-										function simpleXhrSentinel(xhr) {
-											return function() {
-												if (xhr.readyState == 4) {
-													if (xhr.status == 200) {
-														var loc = JSON.parse(xhr.responseText).redirectTo;
-														window.location = window.location.pathname.replace(/\/login$/,loc);
-													} else {
-														navigator.id.logout();
-														window.location = window.location.pathname + '?error-persona';
-													}
-												}
-											}
-										}
-					
-										function verifyAssertion(assertion) {
-											var xhr = new XMLHttpRequest();
-											xhr.open("POST", "login/persona/", true);
-					
-											var rememberMe = document.getElementById("global-remember-me-persona").value === "true" ? "true" : "false";
-					
-											var param = "assertion=" + assertion + "&reqUrl={{reqUrl}}&rememberMe=" + rememberMe;
-											xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-											xhr.setRequestHeader("Content-length", param.length);
-											xhr.setRequestHeader("Connection", "close");
-											xhr.setRequestHeader("x-csrf-token", "{{csrfToken}}");
-											xhr.send(param);
-											xhr.onreadystatechange = simpleXhrSentinel(xhr);
-										}
-					
-										function signoutUser() {
-											var xhr = new XMLHttpRequest();
-											xhr.open("GET","logout/persona/", true);
-											xhr.send(null);
-											xhr.onreadystatechange = simpleXhrSentinel(xhr);
-										}
-					
-										navigator.id.watch({
-											loggedInUser : null,
-											onlogin : verifyAssertion,
-											onlogout : signoutUser
-										});
-					
-										document.getElementById('signin-persona').onclick = function() {
-											navigator.id.request();
-										};
-					
-										document.getElementById('login-persona-block').style.display = 'block';
-					
-									};
-					
-									document.body.appendChild(v);
-								}
-						}
-					)();
 						</script>
 					</div>
 				</div>
@@ -185,8 +115,7 @@
 	var errorKeyClass = {
 		'error-demo' : 'error-message-demo',
 		'error-ldap' : 'error-message-ldap',
-		'error-oauth' : 'error-message-oauth',
-		'error-persona' : 'error-message-persona'
+		'error-oauth' : 'error-message-oauth'
 	};
 	
 	for(var k in errorKeyClass) {
@@ -202,7 +131,7 @@
 		}
 	}
 	
-	var loginBoxes = ["{{loginDemo}}" === 'block', "{{loginLdap}}" === 'block', "{{loginOauth}}" === 'block' || "{{loginPersona}}" === 'block'];
+	var loginBoxes = ["{{loginDemo}}" === 'block', "{{loginLdap}}" === 'block', "{{loginOauth}}" === 'block'];
 	
 	for(var i = 0;i< loginBoxes.length;i++)	{
 		if(loginBoxes[i]) {

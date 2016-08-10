@@ -39,14 +39,6 @@ The query is composed by a base (Search base) and the filter (User search filter
 
 The configuration can be tested in the "Verify" form.
 
-#### Persona
-
-[Mozilla Persona](https://developer.mozilla.org/en-US/Persona) is the simplest external provider available to configure.
-
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c03_admin_login_persona.png" alt="Persona provider">
-
-The default Audience value is most likely correct.
-
 #### Oauth 
 
 The application support the following external oauth providers:

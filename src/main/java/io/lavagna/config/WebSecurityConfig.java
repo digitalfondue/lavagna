@@ -46,8 +46,6 @@ import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
-import io.lavagna.web.security.login.PersonaLogin.AudienceFetcher;
-import io.lavagna.web.security.login.PersonaLogin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -194,7 +192,7 @@ public class WebSecurityConfig {
 
     public enum LoginHandlerType {
 
-        DEMO(DemoLogin.class, "demo"), LDAP(LdapLogin.class, "ldap"), OAUTH(OAuthLogin.class, "oauth"), PERSONA(PersonaLogin.class, "persona");
+        DEMO(DemoLogin.class, "demo"), LDAP(LdapLogin.class, "ldap"), OAUTH(OAuthLogin.class, "oauth");
 
         LoginHandlerType(Class<? extends LoginHandler> classHandler, String pathAfterLogin) {
             this.classHandler = classHandler;
@@ -254,20 +252,6 @@ public class WebSecurityConfig {
         };
         
         return new LdapLogin(users, sessionHandler, authenticator, "/login?error-ldap");
-    }
-
-    @Lazy
-    @Bean
-    public PersonaLogin personaLogin(Users users, SessionHandler sessionHandler, final ConfigurationRepository configurationRepository, RestTemplate restTemplate) {
-        
-        AudienceFetcher audienceFetcher = new AudienceFetcher() {
-            @Override
-            public String fetch() {
-                return configurationRepository.getValue(Key.PERSONA_AUDIENCE);
-            }
-        };
-        
-        return new PersonaLogin(users, sessionHandler, audienceFetcher, restTemplate, "/WEB-INF/views/logout-persona.html");
     }
 
     @Lazy

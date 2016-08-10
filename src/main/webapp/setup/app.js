@@ -73,7 +73,6 @@
 
 
 		$rootScope.ldap = {};
-		$rootScope.persona = {audience: $window.location.protocol + '//' + $window.location.hostname + ':' + getPort($window)};
 		$rootScope.oauth = {baseUrl: getOrigin($window) + $window.location.pathname.replace(/setup\/$/, '')};
 		$rootScope.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
 		$rootScope.oauthCustomizable = ['gitlab'];
@@ -176,9 +175,6 @@
 				config.push({first: 'LDAP_MANAGER_PASSWORD', second: $scope.ldap.managerPassword});
 				config.push({first: 'LDAP_USER_SEARCH_BASE', second: $scope.ldap.userSearchBase});
 				config.push({first: 'LDAP_USER_SEARCH_FILTER', second: $scope.ldap.userSearchFilter});
-			} else if ($scope.authMethod == 'PERSONA') {
-				loginType = ['persona'];
-				config.push({first: 'PERSONA_AUDIENCE', second: $scope.persona.audience});
 			} else if ($scope.authMethod == 'OAUTH') {
 				var newOauthConf = {baseUrl: $scope.oauth.baseUrl, providers: []};
 

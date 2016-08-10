@@ -178,23 +178,6 @@
 			</div>
 			<div>
 				<label><input type="radio" data-ng-model="authMethod"
-					name="authMethod" value="PERSONA"> Persona</label>
-				<div data-ng-if="authMethod == 'PERSONA'" class="form-group">
-					<label for="persona-audience">Audience</label> <input class="form-control" type="text"
-						id="persona-audience"
-						data-ng-model="persona.audience"
-						data-ng-required="authMethod == 'PERSONA'">
-					<p class="help-block">
-						(The protocol, domain name, and port of your site. For example,
-						"https://example.com:443"). See the Mozilla Persona <a
-							href="https://developer.mozilla.org/en/Persona/Remote_Verification_API#Parameters">documentation</a>.
-						The proposed default value is most probably the correct one. Change
-						if necessary.
-					</p>
-				</div>
-			</div>
-			<div>
-				<label><input type="radio" data-ng-model="authMethod"
 					name="authMethod" value="OAUTH"> Oauth</label>
 				<div data-ng-if="authMethod == 'OAUTH'">
 					<div class="form-group">
@@ -280,7 +263,6 @@
 		<form data-ng-submit="saveUser()" class="form-inline">
 			<p data-ng-show="authMethod == 'DEMO'">Demo account: the password will be equal to the username. Use only for demo purpose.</p>
 			<p data-ng-show="authMethod == 'LDAP'">Ldap account. Insert username.</p>
-			<p data-ng-show="authMethod == 'PERSONA'">Persona account. Insert email.</p>
 			<p data-ng-show="authMethod == 'OAUTH'">Oauth: insert username for gitlab/github/bitbucket/twitter. Insert email in case of google.</p>
 			<div class="form-group">
     			<div class="input-group">
@@ -308,12 +290,6 @@
 		<ul>
 			<li>Base application url: {{toSave.first[0].second}}
 			<li style="margin-top:20px;">Authentication method: {{selectedAuthMethod}}
-				<div data-ng-if="selectedAuthMethod == 'PERSONA'">
-					Persona parameter:
-					<ul>
-						<li>Persona audience: {{toSave.second[1].second}}</li>
-					</ul>
-				</div>
 				<div data-ng-if="selectedAuthMethod == 'OAUTH'">
 					Oauth parameters:
 					<ul>

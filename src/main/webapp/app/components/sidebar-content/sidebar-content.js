@@ -22,11 +22,7 @@
                     User.current().then(function (u) {
                         StompClient.disconnect(function () {
                             $http.post('logout' + '/' + u.provider + '/').then(function (res) {
-                                if (u.provider === 'persona' && res.data && res.data.redirectToSelf) {
-                                    $window.location.href = $("base").attr('href') + 'logout/persona';
-                                } else {
-                                    $window.location.reload();
-                                }
+                            	$window.location.reload();
                             });
                         });
                     });
