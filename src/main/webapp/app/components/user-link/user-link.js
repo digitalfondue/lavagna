@@ -6,7 +6,11 @@
             userId: '<'
         },
         controller: UserLinkController,
-        templateUrl: 'app/components/user-link/user-link.html'
+        template: '<a ng-if="::$ctrl.user" class="lvg-user-link" '
+        	      	+ ' ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})" '
+        		    + ' data-ng-class="::{\'lvg-user-link__disabled\': !$ctrl.user.enabled}"> '
+        		    + ' {{::($ctrl.user | formatUser)}} '
+        		  +'</a>'
     });
 
     function UserLinkController(UserCache) {
