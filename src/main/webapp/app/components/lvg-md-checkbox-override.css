@@ -1,0 +1,4 @@
+/* as we have a smaller defaut font, we need to push down the text a little bit*/
+md-checkbox ._md-label {
+    margin-top: 3px;
+}
