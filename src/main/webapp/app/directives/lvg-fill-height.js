@@ -30,7 +30,8 @@
 		return {
 			restrict : 'A',
 			link: function($scope, element, attrs) {
-				var $elem = $(element);
+				
+				var domElement = element[0];
 
 				var resizeHandler = function() {
 					var toggle = "true" === attrs.lvgFillHeight;
@@ -39,32 +40,33 @@
 					//-> the sidebar has a width of 250px
 					var wHeight = $window.innerHeight;//
 					var wWidth = $window.innerWidth;//
-					$elem.width(wWidth - (toggle ? margin : 0));
+					
+					domElement.style.width = (wWidth - (toggle ? margin : 0)) + 'px'; 
+					
+					var elemOffsetTop = domElement.offsetTop;
+					
+					var maxHeight = wHeight - elemOffsetTop;
 
-					var maxHeight = wHeight - $elem.position().top;
-
-					$elem.height(wHeight - $elem.position().top);
+					domElement.style.height = (wHeight - elemOffsetTop) + 'px' 
 
 					$timeout(function() {$scope.maxHeight = maxHeight;},0);
-
-
 				};
 				resizeHandler();
 
 				//sidebar related
 				attrs.$observe('lvgFillHeight', resizeHandler);
-
-				$($window).resize(resizeHandler);
+				
+				$window.addEventListener('resize', resizeHandler);
 
 				$scope.$watch(function() {
-						return $(element).position().top;
+						return domElement.offsetTop;
 					}, function() {
 						resizeHandler();
 					}
 				);
 
 				$scope.$on('$destroy', function() {
-					$($window).unbind('resize', resizeHandler)
+					$window.removeEventListener('resize', resizeHandler);
 				});
 			}
 		};
