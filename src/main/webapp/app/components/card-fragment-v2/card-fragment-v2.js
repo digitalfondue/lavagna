@@ -92,9 +92,10 @@
         	ctrl.milestoneLabel = milestoneLabels[0];
         	
         	var releaseDateStr = undefined;
-        	try {
-        		releaseDateStr = ctrl.projectMetadata.labelListValues[ctrl.milestoneLabel.labelValueList].metadata.releaseDate;
-        	} catch(e) {
+        	const metadata = ctrl.projectMetadata;
+        	const milestoneLabel = ctrl.milestoneLabel;
+        	if(metadata && metadata.labelListValues && milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {        	
+        		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
         	}	
         	
         	if(releaseDateStr) {
