@@ -7,7 +7,7 @@
         },
         controller: CardLinkController,
         template: '<a ng-if="::$ctrl.card"  '
-        	      	+ ' ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})" '
+        	      	+ ' ui-sref="board.card({projectName: $ctrl.card.projectShortName, shortName: $ctrl.card.boardShortName, seqNr: $ctrl.card.sequence})" '
         		    + ' data-ng-class="::{\'lavagna-closed-card\': !$card.columnDefinition === \'CLOSED\'}"> '
         		    + ' {{::($ctrl.card.boardShortName)}}-{{::($ctrl.card.sequence)}}'
         		  +'</a> {{::($ctrl.card.name)}}'
