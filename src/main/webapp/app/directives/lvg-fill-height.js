@@ -76,12 +76,15 @@
 		return {
 			restrict : 'A',
 			link : function($scope, element, attrs) {
+				
+				var domElement = element[0];
+				
 				$scope.$watch(function() {
-				        var heads = element.find('.panel-heading');
-				        var panelHeadHeight = heads.length > 0 ? heads[0].offsetHeight : 0;
+				        var head = domElement.querySelector('.panel-heading');
+				        var panelHeadHeight = head ? head.offsetHeight : 0;
 
-				        var footers = element.find('.panel-footer');
-                        var panelFooterHeight = footers.length > 0 ? footers[0].offsetHeight : 0;
+				        var footer = domElement.querySelector('.panel-footer');
+                        var panelFooterHeight = footer ? footer.offsetHeight : 0;
 
 				        return panelHeadHeight + panelFooterHeight;
 				    }, function(v) {
@@ -95,18 +98,19 @@
 		return {
 			restrict : 'A',
 			link: function($scope, element, attrs) {
-				var $elem = $(element);
+				var domElement = element[0];
 
 				var resizeHandler = function() {
 					var wHeight = $window.innerHeight;//
-					$elem.height(wHeight - 102); //fixed
+					domElement.style.height = (wHeight - 102)+'px'; //fixed
 				};
 				resizeHandler();
-
-				$($window).resize(resizeHandler);
+				
+				
+				$window.addEventListener('resize', resizeHandler);
 
 				$scope.$on('$destroy', function() {
-					$($window).unbind('resize', resizeHandler)
+					$window.removeEventListener('resize', resizeHandler);
 				});
 
 				//sidebar related
@@ -119,11 +123,12 @@
 		return {
 			restrict : 'A',
 			link: function($scope, element, attrs) {
-				var $elem = $(element);
+				
+				var domElement = element[0];
 
 				var resizeHandler = function() {
 					var parentHeight = $window.innerHeight - 120;//fixed
-					var offset = $elem.get(0).offsetTop;
+					var offset = domElement.offsetTop;
 
 					var hasMoreCards = attrs.lvgFillSidebarCardsHeightHasMore === "true";
 					var currentPage = parseInt(attrs.lvgFillSidebarCardsHeightCurrentPage, 0) || 0;
@@ -131,14 +136,13 @@
 					if(hasMoreCards || currentPage) {
 						offset = offset + 36;
 					}
-
-					$elem.height(parentHeight - offset - 14); //14: based on margin, padding
+					domElement.style.height =  (parentHeight - offset - 14) + 'px'; //14: based on margin, padding
 				};
 				resizeHandler();
-				$($window).resize(resizeHandler);
+				$window.addEventListener('resize', resizeHandler);
 
 				$scope.$on('$destroy', function() {
-					$($window).unbind('resize', resizeHandler)
+					$window.removeEventListener('resize', resizeHandler);
 				});
 
 				//sidebar related
