@@ -8,7 +8,7 @@
         return data.data
     };
 
-    services.factory('User', function ($http, $q, $stateParams) {
+    services.factory('User', function ($http, $q, $stateParams, $window) {
 
         var cached = null;
 
@@ -19,6 +19,12 @@
         };
 
         return {
+        	loginUrl: function() {
+        		var baseHref = $window.document.querySelector('base').attributes.href.value;
+                var reqUrlWithoutContextPath = $window.location.pathname.substr(baseHref.length - 1);
+                return 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
+        	},
+        	
             current: function () {
                 var u = $http.get('api/self').then(extractData);
                 cached = u;

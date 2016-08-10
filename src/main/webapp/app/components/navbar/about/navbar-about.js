@@ -17,8 +17,7 @@
              }
 
              ctrl.login = function () {
-                 var reqUrlWithoutContextPath = $window.location.pathname.substr($("base").attr('href').length - 1);
-                 $window.location.href = 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
+                 $window.location.href = User.loginUrl();
              }
         }
     });
