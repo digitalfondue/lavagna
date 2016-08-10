@@ -103,7 +103,7 @@
                         </div>
                         <div data-ng-if="$ctrl.milestones[0]">
                             <a data-ui-sref="project.milestones({projectName: $ctrl.project.shortName})">
-                                <lvg-label-val value="$ctrl.milestones[0]"></lvg-label-val>
+                                <lvg-label-val-v2 value-ref="$ctrl.milestones[0]" project-metadata-ref="$ctrl.project.metadata"></lvg-label-val-v2>
                             </a>
                         </div>
                     </div>

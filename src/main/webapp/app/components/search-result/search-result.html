@@ -15,7 +15,7 @@
                             card-ref="card" 
                             search-type="{{::($ctrl.project ? 'projectSearch' : 'globalSearch')}}" 
                             user-ref="$ctrl.user"
-                            project-metadata-ref="metadata"
+                            project-metadata-ref="$ctrl.metadatas[card.projectShortName]"
                             selected-ref="$ctrl.selected"
                             view="search"></lvg-card-fragment-v2>
 				    </lvg-rebuild-if-change>
