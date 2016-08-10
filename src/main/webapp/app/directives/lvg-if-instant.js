@@ -2,9 +2,7 @@
 
 	'use strict';
 
-	var directives = angular.module('lavagna.directives');
-	
-	var exprCache = {};
+	const directives = angular.module('lavagna.directives');
 	
 	//based on angular.js code for ngIfDirective https://github.com/angular/angular.js/blob/master/src/ng/directive/ngIf.js#L104
 
@@ -14,13 +12,9 @@
 		    priority: 600,
 		    terminal: true,
 		    restrict: 'A',
-			link: function ($scope, $element, $attr, ctrl, $transclude) {
-				
-				var parsed = exprCache[$attr.lvgIfInstant];
-				if(!parsed) {
-					parsed = $parse($attr.lvgIfInstant);
-					exprCache[$attr.lvgIfInstant] = parsed;
-				}
+			link: function lvgIfInstantLink($scope, $element, $attr, ctrl, $transclude) {
+				const attrVal = $attr.lvgIfInstant;
+				const parsed = $parse(attrVal);
 				
 				if(parsed($scope)) {
 					$transclude(function(clone, newScope) {
