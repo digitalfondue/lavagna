@@ -18,10 +18,10 @@
 			var readOnly = $attrs.readOnly != undefined;
 			
 			function addReadOnlyAttr() {
-				return readOnly ? ' data-read-only ' : ''
+				return readOnly ? ' read-only="true" ' : ''
 			}
 			
-			return '<span ng-if="::(type === \'USER\')" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"><span '+addReadOnlyAttr()+' data-lvg-user-tooltip="displayValue"></span></span>'
+			return '<span ng-if="::(type === \'USER\')" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"><lvg-user-link '+addReadOnlyAttr()+' user-id="displayValue"></lvg-user-link></span>'
 				 + '<span ng-if="::(type === \'CARD\')" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"><span data-no-name data-lvg-card-tooltip="displayValue" ' + addReadOnlyAttr() + '></span></span>'
 				 + '<span ng-if="::(type != \'USER\' && type != \'CARD\')" ng-bind="::displayValue" ng-class="::{\'strike\' : metadata.status === \'CLOSED\'}"></span></span>';			
 		}

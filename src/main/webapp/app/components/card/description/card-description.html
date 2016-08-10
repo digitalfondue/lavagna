@@ -86,27 +86,27 @@
             </div>
             <div class="lvg-card-description__footer">
                 <div class="lvg-card-description__updated"
-                     data-ng-show="$ctrl.description.updatedCount == 0">
+                     data-ng-show="$ctrl.description.updatedCount == 0" ng-if="::$ctrl.description">
                     <span data-translate>card.description.created.by</span>
-                    <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                    <lvg-user-link  class="lvg-card-description__updated_user" user-id="$ctrl.description.updateUser"></lvg-user-link>
                     <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>
                 <div class="lvg-card-description__updated"
-                     data-ng-show="$ctrl.description.updatedCount == 1">
+                     data-ng-show="$ctrl.description.updatedCount == 1" ng-if="::$ctrl.description">
                     <span data-translate>card.description.update.count</span>
                     -
                     <span data-translate>card.description.updated.by</span>
-                    <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                    <lvg-user-link class="lvg-card-description__updated_user" user-id="$ctrl.description.updateUser"></lvg-user-link>
                     <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>
                 <div class="lvg-card-description__updated"
-                     data-ng-show="$ctrl.description.updatedCount > 1">
+                     data-ng-show="$ctrl.description.updatedCount > 1" ng-if="::$ctrl.description">
                     <span data-translate data-translate-value-count="{{$ctrl.description.updatedCount}}">card.description.update.counts</span>
                     -
                     <span data-translate>card.description.updated.by</span>
-                    <span class="lvg-card-description__updated_user" data-lvg-user-tooltip="$ctrl.description.updateUser"></span>
+                    <lvg-user-link class="lvg-card-description__updated_user" user-id="$ctrl.description.updateUser"></lvg-user-link>
                     <span data-translate>common.on</span>
                     <span class="lvg-card-description__updated_date" data-ng-bind="$ctrl.description.updateDate | dateIncremental"></span>
                 </div>

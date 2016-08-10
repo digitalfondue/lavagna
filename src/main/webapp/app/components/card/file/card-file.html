@@ -8,7 +8,7 @@
     <span>{{::($ctrl.file.time | dateIncremental)}}</span>
 </div>
 <div class="lvg-card-file__metadata lvg-card-file__metadata-user">
-    <span data-lvg-user-tooltip="$ctrl.file.userId"></span>
+    <lvg-user-link user-id="$ctrl.file.userId"></lvg-user-link>
 </div>
 <div class="lvg-card-file__metadata lvg-card-file__action">
     <md-button class="lvg-small-icon-button" ng-click="$ctrl.delete()" data-lvg-has-permission="DELETE_FILE">
