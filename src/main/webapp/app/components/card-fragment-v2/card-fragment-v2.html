@@ -65,7 +65,7 @@
                     <md-icon md-svg-icon="file"></md-icon> <span ng-bind="::$ctrl.filesCount"></span>
                 </li>
                 <li lvg-if-instant="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
-                    <md-icon md-svg-icon="clock"></md-icon> <lvg-label-val-v2></lvg-label-val-v2>
+                    <md-icon md-svg-icon="clock"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel"></lvg-label-val-v2>
                 </li>
                 <li lvg-if-instant="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
                     <md-icon md-svg-icon="milestone"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
