@@ -8,7 +8,7 @@
             <div data-ng-if="boardColumnCtrl.columnState.editColumnName">
                 <div class="form-group">
                     <input type="text" class="form-control" data-lvg-to-focus="boardColumnCtrl.columnState.editColumnName"
-                           data-ng-model="boardColumnCtrl.columnState.newColumnName" data-lvg-on-esc="boardColumnCtrl.columnState.editColumnName">
+                           data-ng-model="boardColumnCtrl.columnState.newColumnName">
                 </div>
                 <div>
                     <button class="lvg-button lvg-button-submit" data-ng-click="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false">{{::('partials.fragments.columns-fragment.save' | translate)}}</button>
@@ -52,8 +52,7 @@
                 <div class="form-group">
                     <input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
                            data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreateFromTop.name == null" required="required"
-                           data-ng-model="boardColumnCtrl.columnState.cardToCreateFromTop.name" class="form-control"
-                           data-lvg-on-esc="boardColumnCtrl.columnState.addNewCardFromTop" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreateFromTop = null"></input>
+                           data-ng-model="boardColumnCtrl.columnState.cardToCreateFromTop.name" class="form-control"></input>
                 </div>
                 <div>
                     <button type="submit" class="lvg-button lvg-button-submit">{{::('button.add' | translate)}}</button>
@@ -94,8 +93,7 @@
             <div class="form-group">
                 <input placeholder="{{::('partials.fragments.columns-fragment.cardName.placeholder' | translate)}})"
                        data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreate.name == null" required="required"
-                       data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"
-                       data-lvg-on-esc="boardColumnCtrl.columnState.addNewCard" data-lvg-on-esc-eval="boardColumnCtrl.columnState.cardToCreate = null"></input>
+                       data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"></input>
             </div>
             <div>
                 <button type="submit" class="lvg-button lvg-button-submit">{{::('button.add' | translate)}}</button>
