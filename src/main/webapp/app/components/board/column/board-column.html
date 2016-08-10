@@ -7,8 +7,7 @@
             </div>
             <div data-ng-if="boardColumnCtrl.columnState.editColumnName">
                 <div class="form-group">
-                    <input type="text" class="form-control" data-lvg-to-focus="boardColumnCtrl.columnState.editColumnName"
-                           data-ng-model="boardColumnCtrl.columnState.newColumnName">
+                    <input type="text" class="form-control" data-ng-model="boardColumnCtrl.columnState.newColumnName">
                 </div>
                 <div>
                     <button class="lvg-button lvg-button-submit" data-ng-click="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false">{{::('partials.fragments.columns-fragment.save' | translate)}}</button>
@@ -51,7 +50,7 @@
             <form data-ng-submit="boardColumnCtrl.createCardFromTop(boardColumnCtrl.columnState.cardToCreateFromTop)">
                 <div class="form-group">
                     <input placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
-                           data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreateFromTop.name == null" required="required"
+                           required="required"
                            data-ng-model="boardColumnCtrl.columnState.cardToCreateFromTop.name" class="form-control"></input>
                 </div>
                 <div>
@@ -92,7 +91,7 @@
         <form data-ng-submit="boardColumnCtrl.createCard(boardColumnCtrl.columnState.cardToCreate)">
             <div class="form-group">
                 <input placeholder="{{::('partials.fragments.columns-fragment.cardName.placeholder' | translate)}})"
-                       data-lvg-to-focus="boardColumnCtrl.columnState.cardToCreate.name == null" required="required"
+                       required="required"
                        data-ng-model="boardColumnCtrl.columnState.cardToCreate.name" class="form-control"></input>
             </div>
             <div>
