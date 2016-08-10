@@ -150,10 +150,10 @@
                 <div class="body">
                     <div>
                         <div>
-                            <table class="lvg-bar-chart">
+                            <table class="lvg-bar-chart" ng-if="$ctrl.metadata">
                                 <tr data-ng-repeat="label in $ctrl.stats.cardsByLabel">
                                     <td class="text">
-                                        <lvg-label value="label" name="label.labelName"></lvg-label>
+                                        <lvg-label-v2 value-ref="label" project-metadata-ref="$ctrl.metadata"></lvg-label-v2>
                                     </td>
                                     <td class="bar">
                                         <div class="inner-bar"

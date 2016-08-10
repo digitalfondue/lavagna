@@ -158,6 +158,10 @@
             ctrl.boardToFilter = boards[0];
             ctrl.filterByBoard(ctrl.boardToFilter);
         });
+        
+        Project.getMetadata(ctrl.project.shortName).then(function(metadata) {
+        	ctrl.metadata = metadata;
+        })
 	}
 
 })();
