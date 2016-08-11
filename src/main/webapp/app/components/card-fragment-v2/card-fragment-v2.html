@@ -50,28 +50,8 @@
         </div>
     </div>
     <div>
-        <div class="card-data">
-            <ul class="data-info">
-                <li lvg-if-instant="::($ctrl.card.counts['COMMENT'].count > 0)">
-                    <md-icon md-svg-icon="comment"></md-icon> <span ng-bind="::($ctrl.card.counts['COMMENT'].count)"></span>
-                </li>
-                <li lvg-if-instant="::$ctrl.hasActionListWithItems"
-                    ng-class="::({'lvg-action-full': $ctrl.card.counts['ACTION_CHECKED'].count == $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count,
-                                    'lvg-action-not-done': $ctrl.card.columnDefinition == 'CLOSED' && $ctrl.card.counts['ACTION_CHECKED'].count != $ctrl.card.counts['ACTION_CHECKED'].count + $ctrl.card.counts['ACTION_UNCHECKED'].count})">
-                    <md-icon md-svg-icon="list"></md-icon>
-                    <span ng-bind="::$ctrl.actionItemsSummary"></span>
-                </li>
-                <li lvg-if-instant="::$ctrl.hasFiles">
-                    <md-icon md-svg-icon="file"></md-icon> <span ng-bind="::$ctrl.filesCount"></span>
-                </li>
-                <li lvg-if-instant="::$ctrl.hasDueDateLabel" ng-class="::$ctrl.dueDateClasses">
-                    <md-icon md-svg-icon="clock"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.dueDateLabel"></lvg-label-val-v2>
-                </li>
-                <li lvg-if-instant="::$ctrl.hasMilestoneLabel" ng-class="::$ctrl.milestoneClasses">
-                    <md-icon md-svg-icon="milestone"></md-icon> <lvg-label-val-v2 value-ref="$ctrl.milestoneLabel" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
-                </li>
-            </ul>
-        </div>
+        <lvg-card-fragment-v2-data-info card-ref="$ctrl.card" project-metadata-ref="$ctrl.projectMetadata"></lvg-card-fragment-v2-data-info>
+        
         <div class="card-info" lvg-if-instant="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">
                 <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">

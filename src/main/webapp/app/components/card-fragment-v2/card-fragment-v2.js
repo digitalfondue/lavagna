@@ -43,71 +43,9 @@
         	ctrl.hideSelect = false;
         }
         
-        // action list
-        ctrl.hasActionListWithItems = hasCountGreaterThanZero('ACTION_CHECKED') || hasCountGreaterThanZero('ACTION_UNCHECKED');
-        ctrl.actionItemsSummary = '';
-        if(ctrl.hasActionListWithItems) {
-        	var checkedCount = getCountOrZero('ACTION_CHECKED');
-        	var uncheckedCount = getCountOrZero('ACTION_UNCHECKED');
-        	ctrl.actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
-        }
-        //
-        
         //
         ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
         ctrl.isAssignedToCard = Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
-        //
-        
-        
-        //
-        ctrl.hasFiles = hasCountGreaterThanZero('FILE');
-        ctrl.filesCount = ctrl.hasFiles ? getCountOrZero('FILE') : '';
-        //
-        
-        var notClosed = ctrl.card.columnDefinition !== 'CLOSED';
-        
-        // due date related 
-        var dueDateLabels = filterSystemLabelByName('DUE_DATE');
-        ctrl.hasDueDateLabel = dueDateLabels.length == 1;
-        ctrl.dueDateLabel = '';
-    	ctrl.dueDateClasses = {};
-        if(ctrl.hasDueDateLabel) {
-        	ctrl.dueDateLabel = dueDateLabels[0];
-        	
-        	var daysDiff = $filter('daysDiff')(ctrl.dueDateLabel.labelValueTimestamp);
-        	ctrl.dueDateClasses =  {
-        			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
-        			'lvg-due-date-now': (notClosed && daysDiff == 0),
-        			'lvg-due-date-past': (notClosed && daysDiff > 0)
-        	};
-        }
-        //
-        
-        //milestone related
-        var milestoneLabels = filterSystemLabelByName('MILESTONE');
-        ctrl.hasMilestoneLabel = milestoneLabels.length === 1;
-        ctrl.milestoneLabel = '';
-        ctrl.milestoneClasses = {};
-        if (ctrl.hasMilestoneLabel) {
-        	ctrl.milestoneLabel = milestoneLabels[0];
-        	
-        	var releaseDateStr = undefined;
-        	const metadata = ctrl.projectMetadata;
-        	const milestoneLabel = ctrl.milestoneLabel;
-        	if(metadata && metadata.labelListValues && milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {        	
-        		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
-        	}	
-        	
-        	if(releaseDateStr) {
-        		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
-        		var daysDiff = $filter('daysDiff')(releaseDate);
-        		ctrl.milestoneClasses = {
-            			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
-            			'lvg-due-date-now': (notClosed && daysDiff == 0),
-            			'lvg-due-date-past': (notClosed && daysDiff > 0)
-        		};
-        	}
-        }
         //
         
         
@@ -123,15 +61,6 @@
         ctrl.hasUserCreatedLabels = userCreatedLabels.length;
         ctrl.userCreatedLabels = userCreatedLabels;
         //
-        
-        
-        function hasCountGreaterThanZero(name) {
-        	return getCountOrZero(name) > 0;
-        }
-        
-        function getCountOrZero(name) {
-        	return (ctrl.card.counts && ctrl.card.counts[name]) ? ctrl.card.counts[name].count : 0;
-        }
         
         
         function filterSystemLabelByName(labelName) {
