@@ -23,26 +23,24 @@
 		
 		ctrl.$postLink = function lvgLabelValV2PostLink() {
 			if (type === 'STRING') {
-				appendValueToSpan(value.valueString);
+				appendValueToElement(value.valueString);
 			} else if (type === 'INT') {
-				appendValueToSpan(value.valueInt);
+				appendValueToElement(value.valueInt);
 			} else if (type === 'USER') {
 				handleUser(value.valueUser);
 			} else if (type === 'CARD') {
 				handleCard(value.valueCard);
 			} else if (type === 'LIST' && metadata && metadata.labelListValues && metadata.labelListValues[value.valueList]) {
-				appendValueToSpan(metadata.labelListValues[value.valueList].value);
+				appendValueToElement(metadata.labelListValues[value.valueList].value);
 			} else if (type === 'TIMESTAMP') {
-				appendValueToSpan($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
+				appendValueToElement($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
 			}
 		}
 		
 		//-------------
 		
-		function appendValueToSpan(value) {
-			const span = $window.document.createElement('span');
-			span.textContent = value;
-			$element.append(span);
+		function appendValueToElement(value) {
+			$element[0].textContent = value;
 		}
 		
 		function handleUser(userId) {

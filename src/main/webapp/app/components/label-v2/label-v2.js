@@ -5,22 +5,29 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgLabelV2', {
-    	template: '<span>'
-			+'<span ng-bind="::$ctrl.name"></span>'
-			+'<span lvg-if-instant="::($ctrl.type !== \'NULL\')">: </span>'
-			+'<lvg-label-val-v2 value-ref="$ctrl.value" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>'
-			+'<span data-ng-transclude></span></span>',
+    	template: '<lvg-label-val-v2 value-ref="$ctrl.value" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2><span data-ng-transclude></span>',
     	bindings: {
     		valueRef: '&',
 			projectMetadataRef:'&'
     	},
     	transclude: true,
-    	controller: function() {
-    		var ctrl = this;
-    		ctrl.value = ctrl.valueRef();
-    		ctrl.projectMetadata = ctrl.projectMetadataRef();
-    		ctrl.type = ctrl.value.labelValueType || ctrl.value.type;
-    		ctrl.name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
-    	}
+    	controller: ['$window', '$element', lvgLabelV2Ctrl]
     })
+    
+    function lvgLabelV2Ctrl($window, $element) {
+    	const ctrl = this;
+    	const domElem = $element[0];
+    	ctrl.value = ctrl.valueRef();
+    	ctrl.projectMetadata = ctrl.projectMetadataRef();
+    	
+    	
+    	
+    	ctrl.$postLink = function lvgLabelV2PostLink() {
+    		const addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
+        	const name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
+    		const nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));
+    		domElem.insertBefore(nameAndSeparator, domElem.firstChild);
+    	}    	
+    }
+    
 })();
