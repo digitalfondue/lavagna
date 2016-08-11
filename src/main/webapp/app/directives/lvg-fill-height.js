@@ -29,7 +29,7 @@
 	directives.directive('lvgFillHeight', function($window, $timeout) {
 		return {
 			restrict : 'A',
-			link: function($scope, element, attrs) {
+			link: function lvgFillHeightLink($scope, element, attrs) {
 				
 				var domElement = element[0];
 
@@ -58,7 +58,7 @@
 				
 				$window.addEventListener('resize', resizeHandler);
 
-				$scope.$watch(function() {
+				$scope.$watch(function lvgFillHeightWatch() {
 						return domElement.offsetTop;
 					}, function() {
 						resizeHandler();
@@ -75,11 +75,11 @@
 	directives.directive('lvgUpdateColumnSize', function($window, $timeout) {
 		return {
 			restrict : 'A',
-			link : function($scope, element, attrs) {
+			link : function lvgUpdateColumnSizeLink($scope, element, attrs) {
 				
 				var domElement = element[0];
 				
-				$scope.$watch(function() {
+				$scope.$watch(function lvgUpdateColumnSizeWatch() {
 				        var head = domElement.querySelector('.panel-heading');
 				        var panelHeadHeight = head ? head.offsetHeight : 0;
 
@@ -97,10 +97,10 @@
 	directives.directive('lvgFillSidebarHeight', function($window) {
 		return {
 			restrict : 'A',
-			link: function($scope, element, attrs) {
+			link: function lvgFillSidebarHeightLink($scope, element, attrs) {
 				var domElement = element[0];
 
-				var resizeHandler = function() {
+				var resizeHandler = function lvgFillSidebarHeightResizeHandler() {
 					var wHeight = $window.innerHeight;//
 					domElement.style.height = (wHeight - 102)+'px'; //fixed
 				};
@@ -122,11 +122,11 @@
 	directives.directive('lvgFillSidebarCardsHeight', function($window) {
 		return {
 			restrict : 'A',
-			link: function($scope, element, attrs) {
+			link: function lvgFillSidebarCardsHeightLink($scope, element, attrs) {
 				
 				var domElement = element[0];
 
-				var resizeHandler = function() {
+				var resizeHandler = function lvgFillSidebarCardsHeightResizeHandler() {
 					var parentHeight = $window.innerHeight - 120;//fixed
 					var offset = domElement.offsetTop;
 
