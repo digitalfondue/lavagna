@@ -13,14 +13,12 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: CardFragmentV2Controller
+		controller: ['Card', CardFragmentV2Controller]
 	});
 	
 	
-	function CardFragmentV2Controller($filter, Card) {
-		var ctrl = this;
-		
-		
+	function CardFragmentV2Controller(Card) {
+		const ctrl = this;
 		
 		ctrl.card = ctrl.cardRef();
 		//
@@ -46,13 +44,6 @@
         //
         ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
         ctrl.isAssignedToCard = Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
-        //
-        
-        
-        // user labels
-        var userCreatedLabels = $filter('filter')(ctrl.card.labels, {labelDomain:'USER'});
-        ctrl.hasUserCreatedLabels = userCreatedLabels.length;
-        ctrl.userCreatedLabels = userCreatedLabels;
         //
 	}
 	
