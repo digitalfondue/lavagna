@@ -24,11 +24,13 @@
 		}
 		
 		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
+			// metadata
 			const liComment = handleComment();
 			const liActionList = handleActionList();
 			const liFiles = handleFiles();
 			const liDueDate = handleDueDate();
 			const liMilestone = handleMilestone();
+			//
 			
 			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
 				const divWrapper = angular.element(createElem('div')).addClass('card-data')[0];
@@ -41,6 +43,9 @@
 				appendIfNotNull(ul, liDueDate);
 				appendIfNotNull(ul, liMilestone);
 			}
+			
+			
+			handleAssigned();
 		}
 		
 		function appendIfNotNull(parent, child) {
@@ -92,10 +97,11 @@
     		const $li = angular.element(li);
     		
     		const counts = card.counts;
-    		if(counts['ACTION_CHECKED'].count == counts['ACTION_CHECKED'].count + counts['ACTION_UNCHECKED'].count) {
+    		
+    		if(checkedCount > 0 && uncheckedCount == 0) {
     			$li.addClass('lvg-action-full');
     		}
-    		if(card.columnDefinition == 'CLOSED' && counts['ACTION_CHECKED'].count != counts['ACTION_CHECKED'].count + counts['ACTION_UNCHECKED'].count) {
+    		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
     			$li.addClass('lvg-action-not-done');
     		}
     		
@@ -189,6 +195,16 @@
     		return li;
         }
         
+        //------------
+        function handleAssigned() {
+        	const assignedLabels = filterSystemLabelByName('ASSIGNED');
+        	if(assignedLabels.length === 0) {
+        		return;
+        	}
+        	
+        	
+        	
+        }
         //------------
         
         function appendIconAndText(li, iconName, text) {
