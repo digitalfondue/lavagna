@@ -53,14 +53,6 @@
     <div>
         <lvg-card-fragment-v2-data-info></lvg-card-fragment-v2-data-info>
         
-        <div class="card-info" lvg-if-instant="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
-            <ul class="assigned-users">
-                <li class="assigned-user" lvg-card-fragment-label-repeat="$ctrl.assignedLabels">
-                    <lvg-label-val-v2 value-ref="value"></lvg-label-val-v2>
-                </li>
-            </ul>
-        </div>
-        
         <div class="card-labels" lvg-if-instant="::$ctrl.hasUserCreatedLabels">
             <ul class="labels">
                 <li class="lavagna-label lavagna-label-no-controls" 

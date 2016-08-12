@@ -5,12 +5,12 @@
 		require : {
 			lvgCardFragmentV2 : '^lvgCardFragmentV2'
 		},
-        controller: ['$filter', '$element', '$window', '$mdIcon', lvgCardFragmentV2DataInfoCtrl]
+        controller: ['$filter', '$element', '$window', '$mdIcon', '$state', 'UserCache', lvgCardFragmentV2DataInfoCtrl]
 	})
 	
 	
 	
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $window, $mdIcon) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $window, $mdIcon, $state, UserCache) {
 		const ctrl = this;
 		
 		var card;
@@ -202,8 +202,17 @@
         		return;
         	}
         	
-        	
-        	
+        	const divWrapper = angular.element(createElem('div')).addClass('card-info')[0];
+        	const ul = angular.element(createElem('ul')).addClass('assigned-users')[0];
+        	divWrapper.appendChild(ul);
+        	for(var i = 0; i < assignedLabels.length; i++) {
+        		const userId = assignedLabels[i].value.valueUser;
+        		const a = handleUser(userId);
+        		const li = angular.element(createElem('li')).addClass('assigned-user')[0];
+        		li.appendChild(a);
+        		ul.appendChild(li);
+        	}
+        	$element[0].appendChild(divWrapper);
         }
         //------------
         
@@ -220,6 +229,22 @@
         function createElem(name) {
         	return $window.document.createElement(name);
         }
+        
+        //-----------
+        
+		function handleUser(userId) {
+			const a = createElem('a');
+			UserCache.user(userId).then(function (user) {
+				const element = angular.element(a);				
+				element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
+				element.text($filter('formatUser')(user));
+				if (!user.enabled) {
+					element.addClass('user-disabled');
+				}
+			});
+			return a;
+		}
+        
 	}
 	
 	function addDueDateClasses($li, classes) {
@@ -233,6 +258,9 @@
     		$li.addClass('lvg-due-date-past')
     	}
     }
+	
+	
+	
 	
 	
 })();

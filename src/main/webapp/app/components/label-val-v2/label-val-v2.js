@@ -53,28 +53,12 @@
 				
 				element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
 				
-				updateUser(user, element);
-				
-				const toDismiss = $rootScope.$on('refreshUserCache-' + userId, function () {
-					UserCache.user(userId).then(function(user) {
-						updateUser(user, element);
-					})
-				});
-				
-				ctrl.$onDestroy = function onDestroy() {
-					toDismiss();
-				};
+				element.text($filter('formatUser')(user));
+				if (!user.enabled) {
+					element.addClass('user-disabled');
+				}
+
 			});
-		}
-		
-		function updateUser(user, element) {
-			//CHECK
-			element.text($filter('formatUser')(user));
-			if (user.enabled) {
-				element.removeClass('user-disabled');
-			} else {
-				element.addClass('user-disabled');
-			}
 		}
 		//-------------
 		
