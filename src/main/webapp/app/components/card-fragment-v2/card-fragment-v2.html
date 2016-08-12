@@ -1,7 +1,7 @@
 <div
     data-lvg-board-card-menu
     data-ng-class="::{'lavagna-is-watching': !$ctrl.listView && $ctrl.isSelfWatching, 'lavagna-board-panel' : $ctrl.boardView }">
-    <lvg-card-fragment-v2-head></lvg-card-fragment-v2-head>
+    <!-- <lvg-card-fragment-v2-head></lvg-card-fragment-v2-head> -->
     <div>
         <div>
             <div lvg-if-instant="::($ctrl.boardView && !$ctrl.readOnly)">
@@ -48,7 +48,7 @@
                 <div class="card-home-date" ng-bind="::($ctrl.card.lastUpdateTime|dateIncremental)"></div>
             </div>
             <span ng-bind="::$ctrl.card.name"></span>
-        </div>
+        </div> 
     </div>
     <div>
         <lvg-card-fragment-v2-data-info></lvg-card-fragment-v2-data-info>
