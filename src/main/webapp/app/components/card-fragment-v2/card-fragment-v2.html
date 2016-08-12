@@ -1,6 +1,7 @@
 <div
     data-lvg-board-card-menu
     data-ng-class="::{'lavagna-is-watching': !$ctrl.listView && $ctrl.isSelfWatching, 'lavagna-board-panel' : $ctrl.boardView }">
+    <lvg-card-fragment-v2-head></lvg-card-fragment-v2-head>
     <div>
         <div>
             <div lvg-if-instant="::($ctrl.boardView && !$ctrl.readOnly)">
@@ -50,7 +51,7 @@
         </div>
     </div>
     <div>
-        <lvg-card-fragment-v2-data-info card-ref="$ctrl.card" project-metadata-ref="$ctrl.projectMetadata"></lvg-card-fragment-v2-data-info>
+        <lvg-card-fragment-v2-data-info></lvg-card-fragment-v2-data-info>
         
         <div class="card-info" lvg-if-instant="::(!$ctrl.listView && $ctrl.hasAssignedLabels)">
             <ul class="assigned-users">

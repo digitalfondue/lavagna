@@ -3,10 +3,9 @@
 	
 	angular.module('lavagna.components').component('lvgCardFragmentV2DataInfo', {
 		template: '<div class="card-data"><ul class="data-info"></ul></div>',
-        bindings: {
-        	cardRef: '&',
-        	projectMetadataRef: '&',
-        },
+		require : {
+			lvgCardFragmentV2 : '^lvgCardFragmentV2'
+		},
         controller: ['$filter', '$element', '$window', '$mdIcon', lvgCardFragmentV2DataInfoCtrl]
 	})
 	
@@ -17,6 +16,16 @@
 		
 		const ulElement = $element[0].querySelector('ul.data-info');
 		
+		var card;
+		var projectMetadata;
+		var notClosed;
+		
+		ctrl.$onInit = function lvgCardFragmentV2DataInfoCtrlOnInit() {
+			card = ctrl.lvgCardFragmentV2.card;
+			projectMetadata = ctrl.lvgCardFragmentV2.projectMetadata;
+	        notClosed = card.columnDefinition !== 'CLOSED';
+		}
+		
 		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
 			handleComment();
 			handleActionList();
@@ -25,11 +34,6 @@
 			handleMilestone();
 		}
 		
-		const card = ctrl.cardRef();
-		const projectMetadata = ctrl.projectMetadataRef();
-		
-        
-        const notClosed = card.columnDefinition !== 'CLOSED';
         //
         
         function hasCountGreaterThanZero(name) {
