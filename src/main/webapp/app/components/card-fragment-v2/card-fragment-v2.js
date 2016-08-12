@@ -49,27 +49,11 @@
         //
         
         
-        // assigned related
-        var assignedLabels = filterSystemLabelByName('ASSIGNED');
-        ctrl.hasAssignedLabels = assignedLabels.length > 0;
-        ctrl.assignedLabels = assignedLabels;
-        //
-        
-        
         // user labels
         var userCreatedLabels = $filter('filter')(ctrl.card.labels, {labelDomain:'USER'});
         ctrl.hasUserCreatedLabels = userCreatedLabels.length;
         ctrl.userCreatedLabels = userCreatedLabels;
         //
-        
-        
-        function filterSystemLabelByName(labelName) {
-        	return $filter('filter')(ctrl.card.labels, {labelDomain:'SYSTEM', labelName: labelName});
-        }
-        
-        function isSelfWatching(cardLabels, userId) {
-            return Card.isWatchedByUser(cardLabels, userId)
-        }
 	}
 	
 })();
