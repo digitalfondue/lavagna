@@ -55,12 +55,6 @@
 			}
 		}
 		
-		function appendIfNotNull(parent, child) {
-			if(child) {
-				parent.appendChild(child);
-			}
-		}
-		
         //
         
         function hasCountGreaterThanZero(name) {
@@ -336,6 +330,12 @@
 			});
 			
 			return a;
+		}
+	}
+	
+	function appendIfNotNull(parent, child) {
+		if(child) {
+			parent.appendChild(child);
 		}
 	}
 	
