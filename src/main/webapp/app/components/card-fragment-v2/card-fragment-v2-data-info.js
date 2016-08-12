@@ -2,7 +2,6 @@
 	'use strict';
 	
 	angular.module('lavagna.components').component('lvgCardFragmentV2DataInfo', {
-		template: '<div class="card-data"><ul class="data-info"></ul></div>',
 		require : {
 			lvgCardFragmentV2 : '^lvgCardFragmentV2'
 		},
@@ -13,8 +12,6 @@
 	
 	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $window, $mdIcon) {
 		const ctrl = this;
-		
-		const ulElement = $element[0].querySelector('ul.data-info');
 		
 		var card;
 		var projectMetadata;
@@ -27,11 +24,29 @@
 		}
 		
 		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
-			handleComment();
-			handleActionList();
-			handleFiles();
-			handleDueDate();
-			handleMilestone();
+			const liComment = handleComment();
+			const liActionList = handleActionList();
+			const liFiles = handleFiles();
+			const liDueDate = handleDueDate();
+			const liMilestone = handleMilestone();
+			
+			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
+				const divWrapper = angular.element(createElem('div')).addClass('card-data')[0];
+				const ul = angular.element(createElem('ul')).addClass('data-info')[0];
+				divWrapper.appendChild(ul);
+				$element[0].appendChild(divWrapper);
+				appendIfNotNull(ul, liComment);
+				appendIfNotNull(ul, liActionList);
+				appendIfNotNull(ul, liFiles);
+				appendIfNotNull(ul, liDueDate);
+				appendIfNotNull(ul, liMilestone);
+			}
+		}
+		
+		function appendIfNotNull(parent, child) {
+			if(child) {
+				parent.appendChild(child);
+			}
 		}
 		
         //
@@ -52,13 +67,13 @@
         
         function handleComment() {
         	if(!(card.counts && card.counts['COMMENT'] && card.counts['COMMENT'].count > 0)) {
-        		return;
+        		return null;
         	}
         	
         	const li = createElem('li');
     		
     		appendIconAndText(li, 'comment', card.counts['COMMENT'].count);
-        	ulElement.appendChild(li);
+    		return li;
         }
         
         function handleActionList() {
@@ -66,7 +81,7 @@
         	const hasActionListWithItems = hasCountGreaterThanZero('ACTION_CHECKED') || hasCountGreaterThanZero('ACTION_UNCHECKED');
         	
         	if(!hasActionListWithItems) {
-        		return;
+        		return null;
         	}
         	
         	const checkedCount = getCountOrZero('ACTION_CHECKED');
@@ -85,7 +100,7 @@
     		}
     		
     		appendIconAndText(li, 'list', actionItemsSummary);
-        	ulElement.appendChild(li);
+        	return li;
         }
         
         
@@ -94,7 +109,7 @@
         function handleFiles() {
         	const hasFiles = hasCountGreaterThanZero('FILE');
         	if(!hasFiles) {
-        		return;
+        		return null;
         	}
         	
         	const filesCount = hasFiles ? getCountOrZero('FILE') : '';
@@ -102,14 +117,14 @@
     		
     		appendIconAndText(li, 'file', filesCount);
         	
-        	ulElement.appendChild(li);
+    		return li;
         }
         
         function handleDueDate() {
         	const dueDateLabels = filterSystemLabelByName('DUE_DATE');
         	const hasDueDateLabel = dueDateLabels.length == 1;
         	if(!hasDueDateLabel) {
-        		return;
+        		return null;
         	}
         	
         	const dueDateLabel = dueDateLabels[0];
@@ -130,18 +145,16 @@
     		const value = dueDateLabel.value || dueDateLabel;
     		
     		appendIconAndText(li, 'clock', $filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
-    		ulElement.appendChild(li);
+    		return li;
         }
         
         function handleMilestone() {
         	
         	const milestoneLabels = filterSystemLabelByName('MILESTONE');
             const hasMilestoneLabel = milestoneLabels.length === 1;
-            
-        	
         	
         	if(!hasMilestoneLabel) {
-        		return;
+        		return null;
         	}
         	
         	var milestoneLabel = '';
@@ -173,7 +186,7 @@
     		addDueDateClasses($li, milestoneClasses);
 
     		appendIconAndText(li, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
-    		ulElement.appendChild(li);
+    		return li;
         }
         
         //------------
