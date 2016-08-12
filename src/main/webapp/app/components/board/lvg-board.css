@@ -69,6 +69,14 @@
     opacity: .2;
 }
 
+.sortable-ghost .lavagna-board-cards > li{
+	display: none;
+}
+
+.sortable-chosen .lavagna-board-cards > li {
+	display: none;
+}
+
 .lavagna-sidebar-column .sortable-ghost{
 	opacity: .8;
 } 
