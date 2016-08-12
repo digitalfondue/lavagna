@@ -23,6 +23,11 @@
 				var parsedDndEnd = $parse(attrs.lvgDndDragend);
 
 				opts.onStart = function onStart(event) {
+					
+					if(opts.draggingClass) {
+						$element.addClass(opts.draggingClass);
+					}
+					
 					var modelList = getModelList(); 
 					var ngRepeatList = getNgRepeatList(event.item)
 					if(ngRepeatList) {
@@ -45,6 +50,11 @@
 				};
 				
 				opts.onEnd = function onEnd(event) {
+					
+					if(opts.draggingClass) {
+						$element.removeClass(opts.draggingClass);
+					}
+					
 					$scope.$evalAsync(function() {
 						parsedDndEnd($scope);
 					});
