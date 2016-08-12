@@ -1,30 +1,34 @@
 (function() {
-	
-	
+
+
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectUser', {
 			templateUrl: 'app/components/dialog-select-user/dialog-select-user.html',
 			bindings: {
-				dialogTitle: '<',
-				action: '='
+			    dialogTitle: '<',
+				action: '&'
 			},
 			controller: function($mdDialog, User) {
 				var ctrl = this;
-				
+
+				console.log('title: ', ctrl.dialogTitle);
+				console.log('cards: ', ctrl.cards);
+				console.log('action: ', ctrl.action);
+
 				ctrl.cancel = function() {
 					$mdDialog.hide();
 				}
-				
+
 				ctrl.ok = function(user) {
-					if(ctrl.action) {ctrl.action(user);}
+					ctrl.action({user: user});
 					$mdDialog.hide();
 				}
-				
+
 				ctrl.searchUser = searchUser
-				
+
 				function searchUser(text) {
-					return User.findUsers(text.trim()).then(function (res) { 
+					return User.findUsers(text.trim()).then(function (res) {
 						angular.forEach(res, function(user) {
 							user.label = User.formatName(user);
 						});
@@ -33,5 +37,5 @@
 				};
 			}
 		})
-	
+
 })();
