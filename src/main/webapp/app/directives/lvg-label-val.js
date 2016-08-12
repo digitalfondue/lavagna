@@ -1,52 +1,123 @@
 (function () {
 
-	'use strict';
+    'use strict';
 
-	var directives = angular.module('lavagna.directives');
+    var components = angular.module('lavagna.directives');
 
-	directives.directive('lvgLabelVal', function ($filter) {
+    components.component('lvgLabelVal', {
+        bindings: {
+            value: '='
+        },
+        controller: ['$filter', '$element', '$rootScope', '$state', '$stateParams', '$window', 'CardCache', 'UserCache', 'ProjectCache', lvgLabelValV2Ctrl]
+    });
 
-		var labelValTemplate = '<span data-bindonce="type" data-bindonce="readOnly">'
-			+ '<span data-bo-if="!readOnly && type === \'USER\'"><span data-lvg-user="displayValue"></span></span>'
-			+ '<span data-bo-if="readOnly && type === \'USER\'"><span data-lvg-user="displayValue" data-read-only></span></span>'
-			+ '<span data-bo-if="!readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue"></span></span>'
-            + '<span data-bo-if="readOnly && type === \'CARD\'"><span data-no-name data-lvg-card="displayValue" data-read-only></span></span>'
-            + '<span data-bo-if="type === \'LIST\'"><lvg-label-list-val label-value="value"></lvg-label-list-val></span>'
-			+ '<span data-bo-if="type != \'USER\' && type != \'CARD\' && type != \'LIST\'" data-bindonce="displayValue" data-bo-bind="displayValue"></span></span>';
+    function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $stateParams, $window, CardCache, UserCache, ProjectCache) {
+        const ctrl = this;
+        const ctrl_value = ctrl.value;
 
-        return {
-			restrict: 'EA',
-			scope: {
-				value: '='
-			},
-			template: labelValTemplate,
-			link: function ($scope, $element, $attrs) {
+        const type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
+        const value = ctrl_value.value || ctrl_value;
 
-				if ($scope.value === undefined || $scope.value === null) {
-					return;
-				}
+        ctrl.$postLink = function lvgLabelValV2PostLink() {
 
-				$scope.readOnly = $attrs.readOnly != undefined;
+            if (type === 'STRING') {
+                appendValueToElement(value.valueString);
+            } else if (type === 'INT') {
+                appendValueToElement(value.valueInt);
+            } else if (type === 'USER') {
+                handleUser(value.valueUser);
+            } else if (type === 'CARD') {
+                handleCard(value.valueCard);
+            } else if (type === 'LIST') {
+                handleList(value.valueList);
+            } else if (type === 'TIMESTAMP') {
+                appendValueToElement($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
+            }
+        };
 
-				$scope.type = $scope.value.labelValueType || $scope.value.type || $scope.value.labelType;
+        //-------------
 
-				var type = $scope.type;
-				var value = $scope.value.value || $scope.value;
-				if (type === 'STRING') {
-					$scope.displayValue = value.valueString;
-				} else if (type === 'INT') {
-					$scope.displayValue = value.valueInt;
-				} else if (type === 'USER') {
-					$scope.displayValue = value.valueUser;
-				} else if (type === 'CARD') {
-					$scope.displayValue = value.valueCard;
-				} else if (type === 'LIST') {
-                    // do nothing, the directive in the template will handle everything
-				} else if (type === 'TIMESTAMP') {
-					$scope.displayValue = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
-				}
-			}
-		};
-	});
+        function appendValueToElement(value) {
+            $element[0].textContent = value;
+        }
+
+        function handleUser(userId) {
+
+            const a = $window.document.createElement('a');
+            $element.append(a);
+
+            UserCache.user(userId).then(function (user) {
+                const element = angular.element(a);
+
+                element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
+
+                element.text($filter('formatUser')(user));
+                if (!user.enabled) {
+                    element.addClass('user-disabled');
+                }
+
+            });
+        }
+
+        //-------------
+
+        function handleList(valueList) {
+
+            var updateFromCache = function (valueList) {
+                ProjectCache.getMetadata($stateParams.projectName).then(function (metadata) {
+                    if (metadata && metadata.labelListValues && metadata.labelListValues[valueList]) {
+                        appendValueToElement(metadata.labelListValues[valueList].value);
+                    }
+                });
+            };
+
+            const toDismiss = $rootScope.$on('refreshProjectMetadataCache-' + $stateParams.projectName, function () {
+                updateFromCache(valueList);
+            });
+
+            ctrl.$onDestroy = function onDestroy() {
+                toDismiss();
+            };
+
+            updateFromCache(valueList);
+        }
+
+        function handleCard(cardId) {
+
+            const a = $window.document.createElement('a');
+            $element.append(a);
+
+            CardCache.card(cardId).then(function (card) {
+                const element = angular.element(a);
+
+                a.textContent = card.boardShortName + '-' + card.sequence;
+                element.attr('href', $state.href('board.card', {
+                    projectName: card.projectShortName,
+                    shortName: card.boardShortName,
+                    seqNr: card.sequence
+                }));
+
+                updateCardClass(card, element);
+
+                const toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
+                    CardCache.card(cardId).then(function (card) {
+                        updateCardClass(card, element);
+                    });
+                });
+
+                ctrl.$onDestroy = function onDestroy() {
+                    toDismiss();
+                };
+            });
+        }
+
+        function updateCardClass(card, element) {
+            if (card.columnDefinition != 'CLOSED') {
+                element.removeClass('lavagna-closed-card');
+            } else {
+                element.addClass('lavagna-closed-card');
+            }
+        }
+    }
 
 })();

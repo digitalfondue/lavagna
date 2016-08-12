@@ -40,10 +40,12 @@
     services.factory('ProjectCache', function ($rootScope, StompClient, BaseCache, Project) {
 
         var projectCache = {};
+        var projectMetadataCache = {};
 
         StompClient.subscribe($rootScope, '/event/project', function (message) {
             BaseCache.parseEventAndEmitUpdate(message, projectCache, 'refreshProjectCache-');
         });
+
 
         return {
             project: function (shortName) {
@@ -51,6 +53,17 @@
                     projectCache[shortName] = Project.findByShortName(shortName);
                 }
                 return projectCache[shortName];
+            },
+            getMetadata: function (shortName) {
+                if (!(shortName in projectMetadataCache)) {
+                    projectMetadataCache[shortName] = Project.getMetadata(shortName);
+                    StompClient.subscribe($rootScope, '/event/project/' + shortName + '', function (ev) {
+                        if (ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
+                            BaseCache.removeFromCacheAndEmit(shortName, projectMetadataCache, 'refreshProjectMetadataCache-');
+                        }
+                    });
+                }
+                return projectMetadataCache[shortName];
             }
         }
     });
