@@ -12,11 +12,11 @@
     });
 
     function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $stateParams, $window, CardCache, UserCache, ProjectCache) {
-        const ctrl = this;
-        const ctrl_value = ctrl.value;
+        var ctrl = this;
+        var ctrl_value = ctrl.value;
 
-        const type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
-        const value = ctrl_value.value || ctrl_value;
+        var type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
+        var value = ctrl_value.value || ctrl_value;
 
         ctrl.$postLink = function lvgLabelValV2PostLink() {
 
@@ -43,11 +43,11 @@
 
         function handleUser(userId) {
 
-            const a = $window.document.createElement('a');
+            var a = $window.document.createElement('a');
             $element.append(a);
 
             UserCache.user(userId).then(function (user) {
-                const element = angular.element(a);
+                var element = angular.element(a);
 
                 element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
 
@@ -71,7 +71,7 @@
                 });
             };
 
-            const toDismiss = $rootScope.$on('refreshProjectMetadataCache-' + $stateParams.projectName, function () {
+            var toDismiss = $rootScope.$on('refreshProjectMetadataCache-' + $stateParams.projectName, function () {
                 updateFromCache(valueList);
             });
 
@@ -84,11 +84,11 @@
 
         function handleCard(cardId) {
 
-            const a = $window.document.createElement('a');
+            var a = $window.document.createElement('a');
             $element.append(a);
 
             CardCache.card(cardId).then(function (card) {
-                const element = angular.element(a);
+                var element = angular.element(a);
 
                 a.textContent = card.boardShortName + '-' + card.sequence;
                 element.attr('href', $state.href('board.card', {
@@ -99,7 +99,7 @@
 
                 updateCardClass(card, element);
 
-                const toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
+                var toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
                     CardCache.card(cardId).then(function (card) {
                         updateCardClass(card, element);
                     });
