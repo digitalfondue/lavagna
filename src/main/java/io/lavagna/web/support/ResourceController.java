@@ -226,13 +226,7 @@ public class ResourceController {
 			ByteArrayOutputStream allJs = new ByteArrayOutputStream();
 
 			//
-			for (String res : Arrays.asList("/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
-					"/js/jquery.min.js",//
-					"/js/highlight.pack.js",//
-					"/js/marked.js",//
-					"/js/Sortable.js",//
-					"/js/sockjs.min.js", "/js/stomp.min.js",//
-					"/js/angular-file-upload-html5-shim.js",//
+			for (String res : Arrays.asList("/js/angular-file-upload-html5-shim.js",//
 					"/js/angular.min.js", "/js/angular-sanitize.min.js",//
 					//
 					"/js/angular-animate.min.js", "/js/angular-aria.min.js",
@@ -242,6 +236,17 @@ public class ResourceController {
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
                     "/js/angular-avatar.min.js",//
+                    
+                    
+                    //
+                    "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
+					"/js/jquery.min.js",//
+					"/js/highlight.pack.js",//
+					"/js/marked.js",//
+					"/js/Sortable.js",//
+					"/js/sockjs.min.js", "/js/stomp.min.js",//
+                    //
+                    
                     
 					"/js/spectrum.js", //
 					"/js/search-parser.js",//
