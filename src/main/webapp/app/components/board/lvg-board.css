@@ -70,11 +70,11 @@
 }
 
 .sortable-ghost .lavagna-board-cards > li{
-	display: none;
+	/*display: none;*/
 }
 
 .sortable-chosen .lavagna-board-cards > li {
-	display: none;
+	/*display: none;*/
 }
 
 .lavagna-sidebar-column .sortable-ghost{
