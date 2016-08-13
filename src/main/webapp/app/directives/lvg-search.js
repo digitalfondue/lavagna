@@ -6,6 +6,9 @@
     var locationSearch = {};
 
     function tryParse(q, Search, $log) {
+        if(q === null || q === undefined || q.trim() === '') {
+            return false;
+        }
         try {
             return Search.parse(q);
         } catch (e) {
