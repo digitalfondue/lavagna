@@ -13,21 +13,21 @@
     	transclude: true,
     	controller: ['$window', '$element', lvgLabelV2Ctrl]
     })
-    
+
     function lvgLabelV2Ctrl($window, $element) {
-    	const ctrl = this;
-    	const domElem = $element[0];
+    	var ctrl = this;
+    	var domElem = $element[0];
     	ctrl.value = ctrl.valueRef();
     	ctrl.projectMetadata = ctrl.projectMetadataRef();
-    	
-    	
-    	
+
+
+
     	ctrl.$postLink = function lvgLabelV2PostLink() {
-    		const addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
-        	const name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
-    		const nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));
+    		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
+        	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
+    		var nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));
     		domElem.insertBefore(nameAndSeparator, domElem.firstChild);
-    	}    	
+    	}
     }
-    
+
 })();
