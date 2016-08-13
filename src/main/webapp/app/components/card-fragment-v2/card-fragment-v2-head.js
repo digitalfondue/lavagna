@@ -19,7 +19,6 @@
 
 			if (parent.boardView && !parent.readOnly) {
 				
-				//<input lvg-if-instant="::($ctrl.hideSelect !== 'true')" type="checkbox"  lvg-has-permission="MANAGE_LABEL_VALUE" class="lavagna-board-card-checkbox" lvg-card-fragment-checkbox></input>
 				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					baseDiv.appendChild(checkbox());
 				}
@@ -38,7 +37,6 @@
 				baseDiv.appendChild(lastUpdateTime(lastUpdateTime));
 			} else if (parent.searchView) {
 				
-				//<input type="checkbox" lvg-has-permission="MANAGE_LABEL_VALUE" data-with-project="{{::$ctrl.card.projectShortName}}" lvg-card-fragment-checkbox>
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					baseDiv.appendChild(checkbox());
 				}
