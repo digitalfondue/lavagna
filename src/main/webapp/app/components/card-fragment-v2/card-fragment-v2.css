@@ -4,6 +4,10 @@ div.card-data ul {
 	margin: 0;
 }
 
+lvg-card-fragment-v2 {
+	display: block;
+}
+
 lvg-card-fragment-v2 .data-info li {
 	list-style-type: none;
 	display: inline-block;

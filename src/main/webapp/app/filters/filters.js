@@ -22,7 +22,7 @@
 	function decorateCache(funToDecorate, cachedCount, name, $cacheFactory) {
 		var cache = $cacheFactory(name, {number: cachedCount});
 
-		return function (key) {
+		return function cacheDecorator(key) {
 			var res = cache.get(key);
 
 			if (res !== undefined) {
@@ -49,7 +49,7 @@
 	});
 
     filters.filter('daysDiff', function () {
-        return function (input) {
+        return function daysDiffFilter(input) {
             if (input == null) {
                 return null;
             }
@@ -59,7 +59,7 @@
 
 
 	filters.filter('capitalize', function () {
-		return function (input, scope) {
+		return function capitalizeFilter(input, scope) {
 			if (input == null) {
 				return null;
 			}
@@ -70,8 +70,8 @@
 
 	//-----------------------------
 
-	filters.filter('formatUser', function ($filter) {
-		return function (user) {
+	filters.filter('formatUser', function () {
+		return function formatUserFilter(user) {
 			if (user === undefined) {
 				return null;
 			}
@@ -82,8 +82,8 @@
 		};
 	});
 
-	filters.filter('userInitials', function ($filter) {
-        return function (user) {
+	filters.filter('userInitials', function () {
+        return function userInitialsFilter(user) {
             if (user === undefined) {
                 return null;
             }

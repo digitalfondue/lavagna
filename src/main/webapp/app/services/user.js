@@ -19,6 +19,8 @@
         };
 
         return {
+        	checkPermissionInstant : checkPermission,
+        	
         	loginUrl: function() {
         		var baseHref = $window.document.querySelector('base').attributes.href.value;
                 var reqUrlWithoutContextPath = $window.location.pathname.substr(baseHref.length - 1);

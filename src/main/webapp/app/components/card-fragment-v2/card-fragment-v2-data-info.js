@@ -17,13 +17,15 @@
 		
 		var listeners = [];
 		
-		ctrl.$onInit = function lvgCardFragmentV2DataInfoCtrlOnInit() {
+
+		
+		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
+			
+			
 			card = ctrl.lvgCardFragmentV2.card;
 			projectMetadata = ctrl.lvgCardFragmentV2.projectMetadata;
 	        notClosed = card.columnDefinition !== 'CLOSED';
-		}
-		
-		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
+			
 			// metadata
 			const liComment = handleComment();
 			const liActionList = handleActionList();
@@ -137,17 +139,15 @@
         	const dueDateLabel = dueDateLabels[0];
         	const daysDiff = $filter('daysDiff')(dueDateLabel.labelValueTimestamp);
         	
-        	const dueDateClasses =  {
-        			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
-        			'lvg-due-date-now': (notClosed && daysDiff == 0),
-        			'lvg-due-date-past': (notClosed && daysDiff > 0)
-        	};
+        	const isTomorrow = notClosed  && daysDiff == -1;
+        	const isNow = notClosed && daysDiff == 0;
+        	const isPast = notClosed && daysDiff > 0;
 
         	
         	const li = createElem('li');
     		const $li = angular.element(li);
     		
-    		addDueDateClasses($li, dueDateClasses);
+    		addDueDateClasses($li, isTomorrow, isNow, isPast);
     		
     		const value = dueDateLabel.value || dueDateLabel;
     		
@@ -164,8 +164,11 @@
         		return null;
         	}
         	
+        	if(!projectMetadata) {
+        		return null;
+        	}
+        	
         	var milestoneLabel = '';
-            var milestoneClasses = {};
 
         	milestoneLabel = milestoneLabels[0];
         	
@@ -173,24 +176,21 @@
         	const metadata = projectMetadata;
         	if(metadata && metadata.labelListValues && milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {        	
         		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
-        	}	
+        	}
+        	
+        	const li = createElem('li');
+    		const $li = angular.element(li);
         	
         	if(releaseDateStr) {
-        		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
-        		var daysDiff = $filter('daysDiff')(releaseDate);
-        		milestoneClasses = {
-            			'lvg-due-date-tomorrow': (notClosed  && daysDiff == -1),
-            			'lvg-due-date-now': (notClosed && daysDiff == 0),
-            			'lvg-due-date-past': (notClosed && daysDiff > 0)
-        		};
+        		const releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
+        		const daysDiff = $filter('daysDiff')(releaseDate);
+        		
+        		const isTomorrow = (notClosed  && daysDiff == -1);
+            	const isNow = (notClosed && daysDiff == 0);
+            	const isPast = (notClosed && daysDiff > 0);
+        		
+        		addDueDateClasses($li, isTomorrow, isNow, isPast);
         	}
-            
-        	
-        	
-    		const li = createElem('li');
-    		const $li = angular.element(li);
-    		
-    		addDueDateClasses($li, milestoneClasses);
 
     		appendIconAndText(li, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
     		return li;
@@ -219,10 +219,16 @@
         const labelBackgroundClass = $filter('labelBackgroundClass');
         const labelBackground = $filter('labelBackground');
         function handleLabels() {
+        	
+        	if(!projectMetadata) {
+        		return null;
+        	}
+        	
         	const userCreatedLabels = $filter('filter')(card.labels, {labelDomain:'USER'});
         	if(userCreatedLabels.length === 0) {
         		return;
         	}
+        	
         	
         	const divWrapper = angular.element(createElem('div')).addClass('card-labels')[0];
         	const ul = angular.element(createElem('ul')).addClass('labels')[0];
@@ -347,14 +353,14 @@
 		}
 	}
 	
-	function addDueDateClasses($li, classes) {
-    	if(classes['lvg-due-date-tomorrow']) {
+	function addDueDateClasses($li, isTomorrow, isNow, isPast) {
+    	if(isTomorrow) {
     		$li.addClass('lvg-due-date-tomorrow');
     	}
-    	if(classes['lvg-due-date-now']) {
+    	if(isNow) {
     		$li.addClass('lvg-due-date-now');
     	}
-    	if(classes['lvg-due-date-past']) {
+    	if(isPast) {
     		$li.addClass('lvg-due-date-past')
     	}
     }

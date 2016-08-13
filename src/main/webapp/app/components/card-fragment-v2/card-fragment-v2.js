@@ -2,7 +2,11 @@
 	'use strict';
 	
 	angular.module('lavagna.components').component('lvgCardFragmentV2', {
-		templateUrl: 'app/components/card-fragment-v2/card-fragment-v2.html',
+		template: '<div data-lvg-board-card-menu '
+					+'data-ng-class="::{\'lavagna-is-watching\': !$ctrl.listView && $ctrl.isSelfWatching, \'lavagna-board-panel\' : $ctrl.boardView }">'
+					+'<lvg-card-fragment-v2-head></lvg-card-fragment-v2-head>'
+					+'<lvg-card-fragment-v2-data-info></lvg-card-fragment-v2-data-info>'
+					+'</div>',
 		bindings: {
 			readOnly: '@', /* true | false (default) */
 			view: '@', /* list | board | search */
