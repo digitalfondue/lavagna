@@ -5,10 +5,10 @@
 		require : {
 			lvgCardFragmentV2 : '^lvgCardFragmentV2'
 		},
-        controller: ['$filter', '$element', '$window', '$mdIcon', '$state', '$rootScope', 'UserCache', 'CardCache', lvgCardFragmentV2DataInfoCtrl]
+        controller: ['$filter', '$element', '$window', 'LvgIcon', '$state', '$rootScope', 'UserCache', 'CardCache', lvgCardFragmentV2DataInfoCtrl]
 	})
 
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $window, $mdIcon, $state, $rootScope, UserCache, CardCache) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $window, LvgIcon, $state, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
 
 		var card;
@@ -80,7 +80,7 @@
 
         	var li = createElem('li');
 
-    		appendIconAndText(li, 'comment', card.counts['COMMENT'].count);
+    		appendIconAndText(li, LvgIcon.comment, card.counts['COMMENT'].count);
     		return li;
         }
 
@@ -108,7 +108,7 @@
     			$li.addClass('lvg-action-not-done');
     		}
 
-    		appendIconAndText(li, 'list', actionItemsSummary);
+    		appendIconAndText(li, LvgIcon.list, actionItemsSummary);
         	return li;
         }
 
@@ -124,7 +124,7 @@
         	var filesCount = hasFiles ? getCountOrZero('FILE') : '';
         	var li = createElem('li');
 
-    		appendIconAndText(li, 'file', filesCount);
+    		appendIconAndText(li, LvgIcon.file, filesCount);
 
     		return li;
         }
@@ -151,7 +151,7 @@
 
     		var value = dueDateLabel.value || dueDateLabel;
 
-    		appendIconAndText(li, 'clock', $filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
+    		appendIconAndText(li, LvgIcon.clock, $filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
     		return li;
         }
 
@@ -192,7 +192,7 @@
         		addDueDateClasses($li, isTomorrow, isNow, isPast);
         	}
 
-    		appendIconAndText(li, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
+    		appendIconAndText(li, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
     		return li;
         }
 
@@ -284,12 +284,9 @@
 
         //------------
 
-        function appendIconAndText(li, iconName, text) {
-        	var icon = createElem('md-icon');
-
-    		$mdIcon(iconName).then(function(svg) {
-        		icon.appendChild(svg);
-        	});
+        function appendIconAndText(li, iconFactory, text) {
+        	var icon = createElem('md-icon');        	
+        	icon.appendChild(iconFactory());
     		li.appendChild(icon);
     		li.appendChild($window.document.createTextNode(' ' + text));
         }
@@ -317,7 +314,6 @@
 		function handleCard(cardId) {
 
 			var a = createElem('a');
-
 
 			CardCache.card(cardId).then(function (card) {
 				var element = angular.element(a);

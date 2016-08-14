@@ -58,7 +58,7 @@
 
 		function checkbox() {
 			var c = createElem("input");
-			var $c = angular.element(c).attr('type', 'checkbox');
+			angular.element(c).attr('type', 'checkbox');
 			var parent = ctrl.lvgCardFragmentV2;
 
 
@@ -82,14 +82,14 @@
 			$scope.$on('updatecheckbox', updateCheckbox);
 
 			if(parent.boardView) {
-				$c.on('click', function() {
+				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.columnId] = selected[card.columnId] || {};
 						selected[card.columnId][card.id] = !selected[card.columnId][card.id]
 					});
     			});
 			} else {
-				$c.on('click', function() {
+				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.projectShortName] = selected[card.projectShortName] || {};
 						selected[card.projectShortName][card.id] = !selected[card.projectShortName][card.id]
