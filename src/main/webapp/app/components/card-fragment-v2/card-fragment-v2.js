@@ -235,10 +235,10 @@
     		li.className += ' lvg-due-date-tomorrow';
     	}
     	if(isNow) {
-    		li.className = ' lvg-due-date-now';
+    		li.className += ' lvg-due-date-now';
     	}
     	if(isPast) {
-    		li.className = 'lvg-due-date-past';
+    		li.className += ' lvg-due-date-past';
     	}
     }
 	
