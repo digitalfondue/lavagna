@@ -68,11 +68,11 @@
         
         
         if(!ctrl.listView && ctrl.isSelfWatching) {
-        	$container.addClass('lavagna-is-watching');
+        	container.className += ' lavagna-is-watching';
 		}
         
         if(ctrl.boardView) {
-        	$container.addClass('lavagna-board-panel');
+        	container.className += ' lavagna-board-panel';
         }
 		
 		$element[0].appendChild(container);
@@ -230,15 +230,15 @@
 		}
 	}
 
-	function addDueDateClasses($li, isTomorrow, isNow, isPast) {
+	function addDueDateClasses(li, isTomorrow, isNow, isPast) {
     	if(isTomorrow) {
-    		$li.addClass('lvg-due-date-tomorrow');
+    		li.className += ' lvg-due-date-tomorrow';
     	}
     	if(isNow) {
-    		$li.addClass('lvg-due-date-now');
+    		li.className = ' lvg-due-date-now';
     	}
     	if(isPast) {
-    		$li.addClass('lvg-due-date-past')
+    		li.className = 'lvg-due-date-past';
     	}
     }
 	
@@ -268,8 +268,10 @@
 			//
 
 			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
-				var divWrapper = angular.element(createElem('div')).addClass('card-data')[0];
-				var ul = angular.element(createElem('ul')).addClass('data-info')[0];
+				var divWrapper = createElem('div');
+				divWrapper.className = 'card-data';
+				var ul = createElem('ul');
+				ul.className = 'data-info';
 				divWrapper.appendChild(ul);
 				$element[0].appendChild(divWrapper);
 				appendIfNotNull(ul, liComment);
@@ -348,15 +350,14 @@
         	var actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
 
         	var li = createElem('li');
-    		var $li = angular.element(li);
 
     		var counts = card.counts;
 
     		if(checkedCount > 0 && uncheckedCount == 0) {
-    			$li.addClass('lvg-action-full');
+    			li.className += ' lvg-action-full';
     		}
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
-    			$li.addClass('lvg-action-not-done');
+    			li.className += ' lvg-action-not-done';
     		}
 
     		appendIconAndText(li, LvgIcon.list, actionItemsSummary);
@@ -396,9 +397,8 @@
 
 
         	var li = createElem('li');
-    		var $li = angular.element(li);
 
-    		addDueDateClasses($li, isTomorrow, isNow, isPast);
+    		addDueDateClasses(li, isTomorrow, isNow, isPast);
 
     		var value = dueDateLabel.value || dueDateLabel;
 
@@ -430,7 +430,6 @@
         	}
 
         	var li = createElem('li');
-    		var $li = angular.element(li);
 
         	if(releaseDateStr) {
         		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
@@ -440,7 +439,7 @@
             	var isNow = (notClosed && daysDiff == 0);
             	var isPast = (notClosed && daysDiff > 0);
 
-        		addDueDateClasses($li, isTomorrow, isNow, isPast);
+        		addDueDateClasses(li, isTomorrow, isNow, isPast);
         	}
 
     		appendIconAndText(li, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
