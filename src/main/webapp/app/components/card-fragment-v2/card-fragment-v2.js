@@ -2,11 +2,6 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgCardFragmentV2', {
-		template: '<div data-lvg-board-card-menu '
-					+'data-ng-class="::{\'lavagna-is-watching\': !$ctrl.listView && $ctrl.isSelfWatching, \'lavagna-board-panel\' : $ctrl.boardView }">'
-					+'<lvg-card-fragment-v2-head></lvg-card-fragment-v2-head>'
-					+'<lvg-card-fragment-v2-data-info></lvg-card-fragment-v2-data-info>'
-					+'</div>',
 		bindings: {
 			readOnly: '@', /* true | false (default) */
 			view: '@', /* list | board | search */
@@ -25,6 +20,13 @@
 
 	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, LvgIcon, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
+		
+		
+		var container = createElem('div');
+		container.appendChild(createElem('lvg-card-fragment-v2-head'));
+		container.appendChild(createElem('lvg-card-fragment-v2-data-info'));
+		
+		var $container = angular.element(container);
 
 		ctrl.card = ctrl.cardRef();
 		//
@@ -53,16 +55,27 @@
         //
         
         
-        var headElem = $element.find('lvg-card-fragment-v2-head');
+        var headElem = $container.find('lvg-card-fragment-v2-head');
         var headCtrl = new lvgCardFragmentV2HeadCtrl(headElem, $scope, $state, $location, $filter, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
         
-        var dataInfoElem = $element.find('lvg-card-fragment-v2-data-info');
+        var dataInfoElem = $container.find('lvg-card-fragment-v2-data-info');
         var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, dataInfoElem, LvgIcon, $state, $rootScope, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
+        
+        
+        if(!ctrl.listView && ctrl.isSelfWatching) {
+        	$container.addClass('lavagna-is-watching');
+		}
+        
+        if(ctrl.boardView) {
+        	$container.addClass('lavagna-board-panel');
+        }
+		
+		$element[0].appendChild(container);
         
         ctrl.$onDestroy = function() {
         	dataInfoCtrl.$onDestroy();
