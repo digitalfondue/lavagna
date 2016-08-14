@@ -191,11 +191,10 @@
 		function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink) {
 			var a = createElem("a");
 			a.textContent = boardShortName + ' - ' + sequenceNumber;
-			var $a = angular.element(a);
-			$a.attr('href', updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber));
+			a.href = updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 			if(isDynamicLink) {
 				$scope.$on('updatedQueryOrPage', function(ev, searchFilter) {
-					$a.attr('href', updateUrl(searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber))
+					a.href = updateUrl(searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 				});
 			}
 			return a;
@@ -480,8 +479,10 @@
         	}
 
 
-        	var divWrapper = angular.element(createElem('div')).addClass('card-labels')[0];
-        	var ul = angular.element(createElem('ul')).addClass('labels')[0];
+        	var divWrapper = createElem('div');
+        	divWrapper.className = 'card-labels';
+        	var ul = createElem('ul');
+        	ul.className = 'labels';
         	divWrapper.appendChild(ul);
         	for(var i = 0; i < userCreatedLabels.length; i++) {
         		var value = userCreatedLabels[i];
@@ -517,12 +518,10 @@
         		}
 
         		//
-        		var li = angular.element(createElem('li'))
-        			.addClass('lavagna-label')
-        			.addClass('lavagna-label-no-controls')
-        			.addClass(labelBackgroundClass(projectMetadata.labels[value.labelId].color))
-        			.attr('style', 'background-color:' + bg['background-color'])
-        			.text(nameAndSeparator)[0];
+        		var li = createElem('li');
+        		li.className = 'lavagna-label lavagna-label-no-controls ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
+        		li.style.backgroundColor = bg['background-color'];
+        		li.textContent = nameAndSeparator;
         		if(userOrCardLink) {
         			li.appendChild(userOrCardLink);
         		}
