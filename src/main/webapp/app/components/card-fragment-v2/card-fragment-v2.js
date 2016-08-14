@@ -15,6 +15,12 @@
 		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', 'LvgIcon', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
 	});
 	
+	//
+	var BASE_URL = document.querySelector('base').href;
+	if(l[l.length-1] !== '/') {
+		BASE_URL += '/';
+	}
+	//
 	
 
 
@@ -200,12 +206,11 @@
 			return a;
 		}
 		
-		var baseUrl = document.querySelector('base').href;
 
 		function updateUrl(q, page, targetState, projectName, boardShortName, sequenceNumber) {
 			
 			if(targetState === 'board.card') {
-				var cardUrl = baseUrl+projectName+'/'+boardShortName+'-'+sequenceNumber;
+				var cardUrl = BASE_URL+projectName+'/'+boardShortName+'-'+sequenceNumber;
 				if(q !== undefined) {
 					cardUrl+='?q='+encodeURIComponent(q);
 				}
