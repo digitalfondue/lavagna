@@ -17,7 +17,7 @@
 	
 	//
 	var BASE_URL = document.querySelector('base').href;
-	if(l[l.length-1] !== '/') {
+	if(BASE_URL[BASE_URL.length-1] !== '/') {
 		BASE_URL += '/';
 	}
 	//
