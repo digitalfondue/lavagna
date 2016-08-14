@@ -146,7 +146,7 @@
 
 		function checkbox() {
 			var c = createElem("input");
-			angular.element(c).attr('type', 'checkbox');
+			c.type = 'checkbox';
 			var parent = ctrl.lvgCardFragmentV2;
 
 
