@@ -26,6 +26,7 @@ import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.Project;
 import io.lavagna.model.SearchResults;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
@@ -52,7 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
-public class MilestoneExportService {
+public class ExcelExportService {
 
     private final CardRepository cardRepository;
     private final CardLabelRepository cardLabelRepository;
@@ -62,7 +63,7 @@ public class MilestoneExportService {
     private final UserRepository userRepository;
 
     @Autowired
-    public MilestoneExportService(CardRepository cardRepository, CardLabelRepository cardLabelRepository,
+    public ExcelExportService(CardRepository cardRepository, CardLabelRepository cardLabelRepository,
         ProjectService projectService, SearchService searchService, BoardColumnRepository boardColumnRepository,
         UserRepository userRepository) {
         this.cardRepository = cardRepository;
@@ -138,43 +139,36 @@ public class MilestoneExportService {
         }
     }
 
-    public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user)
-        throws IOException {
-
-        int projectId = projectService.findByShortName(projectShortName).getId();
-        LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
-        if (ms == null)
-            throw new IllegalArgumentException();
+    private HSSFWorkbook getWorkbookFromSearchFilters(int projectId, String sheetName, List<SearchFilter> filters,
+        UserWithPermission user) {
 
         List<CardLabel> labels = cardLabelRepository.findLabelsByProject(projectId);
         CollectionUtils.filter(labels, new Predicate<CardLabel>() {
-			@Override
-			public boolean evaluate(CardLabel cl) {
-				if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
+            @Override
+            public boolean evaluate(CardLabel cl) {
+                if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
                     if (cl.getName().equals("ASSIGNED") ||
-                        cl.getName().equals("DUE_DATE")) {
+                        cl.getName().equals("DUE_DATE") ||
+                        cl.getName().equals("MILESTONE")) {
                         return true;
                     }
                     return false;
                 }
                 return true;
-			}
+            }
         });
         Collections.sort(labels, new Comparator<CardLabel>() {
             public int compare(CardLabel l1, CardLabel l2) {
-            	return new CompareToBuilder().append(l1.getDomain(), l2.getDomain())
-            			.append(l1.getName(), l2.getName())
-            			.toComparison();
+                return new CompareToBuilder().append(l1.getDomain(), l2.getDomain())
+                    .append(l1.getName(), l2.getName())
+                    .toComparison();
             }
         });
 
-        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
-        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
-            BoardColumn.BoardColumnLocation.TRASH.toString());
-        SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
+        SearchResults cards = searchService.find(filters, projectId, null, user);
 
         HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet(milestone);
+        HSSFSheet sheet = wb.createSheet(sheetName);
 
         Row header = sheet.createRow(0);
 
@@ -214,11 +208,34 @@ public class MilestoneExportService {
                 userCache, cardCache, listValueCache);
         }
 
-        for (int i = 0; i < colPos; i++) {
-            sheet.autoSizeColumn(i);
-        }
-
         return wb;
+    }
+
+    public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user)
+        throws IOException {
+
+        int projectId = projectService.findByShortName(projectShortName).getId();
+        LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
+        if (ms == null)
+            throw new IllegalArgumentException();
+
+        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
+        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.TRASH.toString());
+
+        return getWorkbookFromSearchFilters(projectId, milestone, Arrays.asList(filter, notTrashFilter), user);
+
+    }
+
+    public HSSFWorkbook exportProjectToExcel(String projectShortName, UserWithPermission user)
+        throws IOException {
+
+        Project project = projectService.findByShortName(projectShortName);
+
+        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.TRASH.toString());
+
+        return getWorkbookFromSearchFilters(project.getId(), project.getName(), Arrays.asList(notTrashFilter), user);
 
     }
 

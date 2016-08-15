@@ -17,6 +17,12 @@
 		<div class="form-group">
 			<label><span data-translate>partials.project.manage-home.archived</span> <input type="checkbox" data-ng-model="itemToUpdate.archived"></label>
 		</div>
+        <div class="form-group">
+            <label><span data-translate>partials.project.manage-home.export</span> <a data-ng-href="api/project/{{project.shortName}}/export/"
+                                                                                      target="_blank">
+                <i class="fa fa-file-excel-o lvg-export-to-excel-icon"></i>
+            </a></label>
+        </div>
 	</div>
 	<div class="footer">
 		<button type="submit" class="lvg-button lvg-button-submit" data-translate>partials.project.manage-home.update</button>

@@ -52,10 +52,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
 @Transactional
-public class MilestoneExportServiceTest {
+public class ExcelExportServiceTest {
 
     @Autowired
-    private MilestoneExportService milestoneExportService;
+    private ExcelExportService excelExportService;
 
     @Autowired
     private BoardRepository boardRepository;
@@ -149,30 +149,40 @@ public class MilestoneExportServiceTest {
 
     @Test
     public void testGetWrongMilestone() {
-        LabelListValueWithMetadata m = milestoneExportService.getMilestone(project.getId(), "AAAA");
+        LabelListValueWithMetadata m = excelExportService.getMilestone(project.getId(), "AAAA");
         Assert.assertNull(m);
     }
 
     @Test
     public void testGetMilestone() {
-        LabelListValueWithMetadata m = milestoneExportService.getMilestone(project.getId(), "1.0");
+        LabelListValueWithMetadata m = excelExportService.getMilestone(project.getId(), "1.0");
         Assert.assertNotNull(m);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testExportMilestoneToExcelWrongValue() throws IOException {
 
-        milestoneExportService.exportMilestoneToExcel(project.getShortName(), "AAA", user);
+        excelExportService.exportMilestoneToExcel(project.getShortName(), "AAA", user);
 
     }
 
     @Test
     public void testExportMilestoneToExcel() throws IOException {
 
-        HSSFWorkbook w = milestoneExportService.exportMilestoneToExcel(project.getShortName(), "1.0", user);
+        HSSFWorkbook w = excelExportService.exportMilestoneToExcel(project.getShortName(), "1.0", user);
 
         Assert.assertNotNull(w);
         Assert.assertEquals(1, w.getSheet("1.0").getLastRowNum()); // 0 based -> 1 means 2 rows (header + 1 card)
+
+    }
+
+    @Test
+    public void testExportProjectToExcel() throws IOException {
+
+        HSSFWorkbook w = excelExportService.exportProjectToExcel(project.getShortName(), user);
+
+        Assert.assertNotNull(w);
+        Assert.assertEquals(1, w.getSheet(project.getName()).getLastRowNum()); // 0 based -> 1 means 2 rows (header + 1 card)
 
     }
 }

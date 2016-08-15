@@ -24,7 +24,7 @@ import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CalendarService;
-import io.lavagna.service.MilestoneExportService;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.service.BulkOperationService;
 import io.lavagna.service.CardDataRepository;
@@ -76,8 +76,8 @@ public class ServiceConf {
 	}
 
     @Bean
-    public MilestoneExportService getMilestoneExportService() {
-        return mock(MilestoneExportService.class);
+    public ExcelExportService getMilestoneExportService() {
+        return mock(ExcelExportService.class);
     }
 
 	@Bean

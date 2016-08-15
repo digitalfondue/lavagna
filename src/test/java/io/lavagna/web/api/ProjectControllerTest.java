@@ -30,6 +30,7 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.StatisticsService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
@@ -37,6 +38,7 @@ import io.lavagna.service.SearchService;
 import io.lavagna.web.api.model.CreateRequest;
 import io.lavagna.web.api.model.UpdateRequest;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
@@ -44,11 +46,13 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectControllerTest {
@@ -59,8 +63,10 @@ public class ProjectControllerTest {
 	private BoardRepository boardRepository;
 	@Mock
 	private EventEmitter eventEmitter;
-	@Mock
-	private SearchService searchService;
+    @Mock
+    private SearchService searchService;
+    @Mock
+    private ExcelExportService excelExportService;
 	@Mock
 	StatisticsService statisticsService;
 	@Mock
@@ -77,7 +83,7 @@ public class ProjectControllerTest {
 	@Before
 	public void prepare() {
 		projectController = new ProjectController(projectService, boardRepository, eventEmitter, statisticsService,
-				searchService, boardColumnRepository);
+				searchService, boardColumnRepository, excelExportService);
 
 		project = new Project(0, "test", projectShortName, "Test Project", false);
 	}
@@ -196,4 +202,19 @@ public class ProjectControllerTest {
 		projectController.projectStatistics(projectShortName, new Date(), readProject);
 
 	}
+
+    @Test
+    public void testExportMilestoneToExcel() throws IOException {
+
+        UserWithPermission readProject = new UserWithPermission(user, EnumSet.of(Permission.READ),
+            Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+
+        MockHttpServletResponse mockResp = new MockHttpServletResponse();
+
+        when(excelExportService.exportProjectToExcel("TEST", readProject)).thenReturn(new HSSFWorkbook());
+
+        projectController.exportMilestoneToExcel("TEST", readProject, mockResp);
+
+        verify(excelExportService).exportProjectToExcel(eq("TEST"), eq(readProject));
+    }
 }

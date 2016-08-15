@@ -33,7 +33,7 @@ import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.MilestoneExportService;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.StatisticsService;
@@ -70,7 +70,7 @@ public class MilestoneControllerTest {
     @Mock
     private SearchService searchService;
     @Mock
-    private MilestoneExportService milestoneExportService;
+    private ExcelExportService excelExportService;
     @Mock
     private Card card;
     @Mock
@@ -87,7 +87,7 @@ public class MilestoneControllerTest {
     @Before
     public void prepare() {
         milestoneController = new MilestoneController(cardLabelRepository, projectService,
-            statisticsService, searchService, milestoneExportService);
+            statisticsService, searchService, excelExportService);
 
         ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
             project.getDescription(), project.isArchived(), board.getId(), board.getShortName(), board.getName(),
@@ -133,12 +133,12 @@ public class MilestoneControllerTest {
 
         LabelListValue llv = new LabelListValue(1, 6, 0, "1.0");
         LabelListValueWithMetadata llvm = new LabelListValueWithMetadata(llv, new HashMap<String, String>());
-        when(milestoneExportService.getMilestone(1, "1.0")).thenReturn(llvm);
+        when(excelExportService.getMilestone(1, "1.0")).thenReturn(llvm);
 
 
         milestoneController.findCardsByMilestoneDetail("TEST", "1.0", user);
 
-        verify(milestoneExportService).getMilestone(eq(1), eq("1.0"));
+        verify(excelExportService).getMilestone(eq(1), eq("1.0"));
 
     }
 
@@ -147,10 +147,10 @@ public class MilestoneControllerTest {
 
         MockHttpServletResponse mockResp = new MockHttpServletResponse();
 
-        when(milestoneExportService.exportMilestoneToExcel("TEST", "1.0", user)).thenReturn(new HSSFWorkbook());
+        when(excelExportService.exportMilestoneToExcel("TEST", "1.0", user)).thenReturn(new HSSFWorkbook());
 
         milestoneController.exportMilestoneToExcel("TEST", "1.0", user, mockResp);
 
-        verify(milestoneExportService).exportMilestoneToExcel(eq("TEST"), eq("1.0"), eq(user));
+        verify(excelExportService).exportMilestoneToExcel(eq("TEST"), eq("1.0"), eq(user));
     }
 }

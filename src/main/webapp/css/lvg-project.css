@@ -261,6 +261,11 @@ ul.lvg-milestone-stat li.stat:last-child {
     margin-right: 0;
 }
 
+.lvg-export-to-excel-icon {
+    cursor: pointer;
+    color: rgb(117, 117, 117);
+}
+
 .lvg-milestone-clickable {
     cursor: pointer;
 }

@@ -31,7 +31,7 @@ import io.lavagna.model.Project;
 import io.lavagna.model.SearchResults;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.MilestoneExportService;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchFilter;
 import io.lavagna.service.SearchService;
@@ -68,17 +68,17 @@ public class MilestoneController {
     private final ProjectService projectService;
     private final StatisticsService statisticsService;
     private final SearchService searchService;
-    private final MilestoneExportService milestoneExportService;
+    private final ExcelExportService excelExportService;
 
     @Autowired
     public MilestoneController(CardLabelRepository cardLabelRepository, ProjectService projectService,
         StatisticsService statisticsService, SearchService searchService,
-        MilestoneExportService milestoneExportService) {
+        ExcelExportService excelExportService) {
         this.cardLabelRepository = cardLabelRepository;
         this.projectService = projectService;
         this.statisticsService = statisticsService;
         this.searchService = searchService;
-        this.milestoneExportService = milestoneExportService;
+        this.excelExportService = excelExportService;
     }
 
     private Map<ColumnDefinition, Integer> getStatusColors(int projectId) {
@@ -95,7 +95,7 @@ public class MilestoneController {
         @PathVariable("milestone") String milestone, UserWithPermission user) {
 
         int projectId = projectService.findByShortName(projectShortName).getId();
-        LabelListValueWithMetadata ms = milestoneExportService.getMilestone(projectId, milestone);
+        LabelListValueWithMetadata ms = excelExportService.getMilestone(projectId, milestone);
         if (ms == null) {
             throw new IllegalArgumentException("Milestone not found");
         }
@@ -162,7 +162,7 @@ public class MilestoneController {
         @PathVariable("milestone") String milestone, UserWithPermission user, HttpServletResponse resp)
         throws IOException {
 
-        HSSFWorkbook wb = milestoneExportService.exportMilestoneToExcel(projectShortName, milestone, user);
+        HSSFWorkbook wb = excelExportService.exportMilestoneToExcel(projectShortName, milestone, user);
 
         resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + "-" + milestone + ".xls");
         wb.write(resp.getOutputStream());

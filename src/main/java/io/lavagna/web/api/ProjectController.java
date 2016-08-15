@@ -28,6 +28,7 @@ import io.lavagna.model.util.ShortNameGenerator;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.EventEmitter;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.StatisticsService;
@@ -39,15 +40,18 @@ import io.lavagna.web.api.model.UpdateRequest;
 import io.lavagna.web.api.model.ValidationException;
 import io.lavagna.web.helper.ExpectPermission;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,16 +69,19 @@ public class ProjectController {
     private final StatisticsService statisticsService;
     private final SearchService searchService;
     private final BoardColumnRepository boardColumnRepository;
+    private final ExcelExportService excelExportService;
 
     @Autowired
     public ProjectController(ProjectService projectService, BoardRepository boardRepository, EventEmitter eventEmitter,
-        StatisticsService statisticsService, SearchService searchService, BoardColumnRepository boardColumnRepository) {
+        StatisticsService statisticsService, SearchService searchService, BoardColumnRepository boardColumnRepository,
+        ExcelExportService excelExportService) {
         this.projectService = projectService;
         this.boardRepository = boardRepository;
         this.eventEmitter = eventEmitter;
         this.statisticsService = statisticsService;
         this.searchService = searchService;
         this.boardColumnRepository = boardColumnRepository;
+        this.excelExportService = excelExportService;
     }
 
     @RequestMapping(value = "/api/project", method = RequestMethod.GET)
@@ -121,7 +128,7 @@ public class ProjectController {
         Project project = projectService.findByShortName(shortName);
         return boardRepository.findBoardInfo(project.getId());
     }
-    
+
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/metadata", method = RequestMethod.GET)
     public ProjectMetadata getMetadata(@PathVariable("projectShortName") String shortName) {
@@ -196,6 +203,18 @@ public class ProjectController {
             statisticsService.getAverageCardsPerUserOnProject(projectId),
             statisticsService.getCardsByLabelOnProject(projectId),
             statisticsService.getMostActiveCardByProject(projectId, fromDate));
+    }
+
+    @ExpectPermission(Permission.READ)
+    @RequestMapping(value = "/api/project/{projectShortName}/export/", method = RequestMethod.GET)
+    public void exportMilestoneToExcel(@PathVariable("projectShortName") String projectShortName,
+        UserWithPermission user, HttpServletResponse resp)
+        throws IOException {
+
+        HSSFWorkbook wb = excelExportService.exportProjectToExcel(projectShortName, user);
+
+        resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + ".xls");
+        wb.write(resp.getOutputStream());
     }
 
     /**
