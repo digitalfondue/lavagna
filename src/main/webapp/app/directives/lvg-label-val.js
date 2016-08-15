@@ -29,7 +29,7 @@
             } else if (type === 'CARD') {
                 handleCard(value.valueCard);
             } else if (type === 'LIST') {
-                handleList(value.valueList);
+                handleList(ctrl_value.labelId, value.valueList);
             } else if (type === 'TIMESTAMP') {
                 appendValueToElement($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
             }
@@ -61,12 +61,33 @@
 
         //-------------
 
-        function handleList(valueList) {
+        function handleList(labelId, valueList) {
+
+            var a = $window.document.createElement('a');
+            $element.append(a);
 
             var updateFromCache = function (valueList) {
                 ProjectCache.getMetadata($stateParams.projectName).then(function (metadata) {
                     if (metadata && metadata.labelListValues && metadata.labelListValues[valueList]) {
-                        appendValueToElement(metadata.labelListValues[valueList].value);
+
+                        if (metadata.labels[labelId].domain === 'SYSTEM' && metadata.labels[labelId].name === 'MILESTONE') {
+                            var element = angular.element(a);
+                            element.attr('href', $state.href('projectMilestone', {
+                                projectName: $stateParams.projectName,
+                                milestone: metadata.labelListValues[valueList].value
+                            }));
+                            element.text(metadata.labelListValues[valueList].value);
+                            // Refresh milestone CLOSED status
+                            if (metadata.labelListValues[valueList].metadata &&
+                                metadata.labelListValues[valueList].metadata.status === 'CLOSED') {
+                                element.addClass('strike');
+                            } else {
+                                element.removeClass('strike');
+                            }
+                        } else {
+                            appendValueToElement(metadata.labelListValues[valueList].value);
+                        }
+
                     }
                 });
             };
