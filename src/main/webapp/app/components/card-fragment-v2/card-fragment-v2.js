@@ -402,10 +402,10 @@
         	if(!hasDueDateLabel) {
         		return null;
         	}
-
         	var dueDateLabel = dueDateLabels[0];
         	//inline daysDiff filter
-        	var daysDiff = moment().startOf('day').diff(new Date(dueDateLabel.labelValueTimestamp), 'days');
+        	var dueDate = new Date(dueDateLabel.labelValueTimestamp);
+        	var daysDiff = moment().startOf('day').diff(dueDate, 'days');
 
         	var isTomorrow = notClosed  && daysDiff == -1;
         	var isNow = notClosed && daysDiff == 0;
@@ -416,9 +416,7 @@
 
     		addDueDateClasses(li, isTomorrow, isNow, isPast);
 
-    		var value = dueDateLabel.value || dueDateLabel;
-
-    		appendIconAndText(li, LvgIcon.clock, $filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
+    		appendIconAndText(li, LvgIcon.clock, $filter('date')(dueDate, 'dd.MM.yyyy'));
     		return li;
         }
 
