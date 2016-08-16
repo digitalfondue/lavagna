@@ -404,7 +404,8 @@
         	}
 
         	var dueDateLabel = dueDateLabels[0];
-        	var daysDiff = $filter('daysDiff')(dueDateLabel.labelValueTimestamp);
+        	//inline daysDiff filter
+        	var daysDiff = moment().startOf('day').diff(new Date(dueDateLabel.labelValueTimestamp), 'days');
 
         	var isTomorrow = notClosed  && daysDiff == -1;
         	var isNow = notClosed && daysDiff == 0;
