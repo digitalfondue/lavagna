@@ -29,11 +29,10 @@
 		
 		
 		var container = createElem('div');
-		container.appendChild(createElem('lvg-card-fragment-v2-head'));
-		container.appendChild(createElem('lvg-card-fragment-v2-data-info'));
+		var headElem = createElem('lvg-card-fragment-v2-head');
+		var dataInfoElem = createElem('lvg-card-fragment-v2-data-info');
 		
-		var $container = angular.element(container);
-
+		
 		ctrl.card = ctrl.cardRef();
 		//
 		ctrl.boardShortName = ctrl.card.boardShortName,
@@ -61,13 +60,11 @@
         //
         
         
-        var headElem = $container.find('lvg-card-fragment-v2-head');
         var headCtrl = new lvgCardFragmentV2HeadCtrl(headElem, $scope, $state, $location, $filter, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
         
-        var dataInfoElem = $container.find('lvg-card-fragment-v2-data-info');
         var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, dataInfoElem, LvgIcon, $state, $rootScope, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
@@ -80,6 +77,9 @@
         if(ctrl.boardView) {
         	container.className += ' lavagna-board-panel';
         }
+        
+        container.appendChild(headElem);
+		container.appendChild(dataInfoElem);
 		
 		$element[0].appendChild(container);
         
@@ -404,8 +404,7 @@
         	}
         	var dueDateLabel = dueDateLabels[0];
         	//inline daysDiff filter
-        	var dueDate = new Date(dueDateLabel.labelValueTimestamp);
-        	var daysDiff = moment().startOf('day').diff(dueDate, 'days');
+        	var daysDiff = moment().startOf('day').diff(dueDateLabel.labelValueTimestamp, 'days');
 
         	var isTomorrow = notClosed  && daysDiff == -1;
         	var isNow = notClosed && daysDiff == 0;
