@@ -102,9 +102,8 @@
 	
 	
 	//--------------------
-	function lvgCardFragmentV2HeadCtrl($element, $scope, $state, $location, $filter, User) {
+	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $state, $location, $filter, User) {
 		var ctrl = this;
-		var domElement = $element[0];
 
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
 			var parent = ctrl.lvgCardFragmentV2;
@@ -285,10 +284,10 @@
 			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
 				var divWrapper = createElem('div');
 				divWrapper.className = 'card-data';
+				$element.appendChild(divWrapper);
 				var ul = createElem('ul');
 				ul.className = 'data-info';
 				divWrapper.appendChild(ul);
-				$element[0].appendChild(divWrapper);
 				appendIfNotNull(ul, liComment);
 				appendIfNotNull(ul, liActionList);
 				appendIfNotNull(ul, liFiles);
@@ -476,7 +475,7 @@
         		li.appendChild(a);
         		ul.appendChild(li);
         	}
-        	$element[0].appendChild(divWrapper);
+        	$element.appendChild(divWrapper);
         }
         //------------
         var labelBackgroundClass = $filter('labelBackgroundClass');
@@ -542,7 +541,7 @@
 
         		ul.appendChild(li);
         	}
-        	$element[0].appendChild(divWrapper);
+        	$element.appendChild(divWrapper);
         }
 
         //------------
