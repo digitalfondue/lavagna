@@ -280,7 +280,6 @@
 
 			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
 				var divWrapper = createElem('div');
-				divWrapper.className = 'card-data';
 				$element.appendChild(divWrapper);
 				appendIfNotNull(divWrapper, liComment);
 				appendIfNotNull(divWrapper, liActionList);
