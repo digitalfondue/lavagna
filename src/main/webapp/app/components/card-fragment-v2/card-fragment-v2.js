@@ -157,9 +157,9 @@
 
 			function isSelected() {
 				if(parent.boardView) {
-					return (selected[card.columnId] && (selected[card.columnId][card.id] === true));
+					return (selected[card.columnId] && (selected[card.columnId][card.id])) === true;
 				} else {
-					return (selected[card.projectShortName] && (selected[card.projectShortName][card.id] === true));
+					return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
 				}
 			};
 
@@ -175,14 +175,14 @@
 				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.columnId] = selected[card.columnId] || {};
-						selected[card.columnId][card.id] = !selected[card.columnId][card.id]
+						selected[card.columnId][card.id] = c.checked;
 					});
     			});
 			} else {
 				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.projectShortName] = selected[card.projectShortName] || {};
-						selected[card.projectShortName][card.id] = !selected[card.projectShortName][card.id]
+						selected[card.projectShortName][card.id] = c.checked;
 					});
 				});
 			}
@@ -243,13 +243,13 @@
 
 	function addDueDateClasses(li, isTomorrow, isNow, isPast) {
     	if(isTomorrow) {
-    		li.className += ' lvg-due-date-tomorrow';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow';
     	}
     	if(isNow) {
-    		li.className += ' lvg-due-date-now';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now';
     	}
     	if(isPast) {
-    		li.className += ' lvg-due-date-past';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past';
     	}
     }
 	
@@ -282,14 +282,11 @@
 				var divWrapper = createElem('div');
 				divWrapper.className = 'card-data';
 				$element.appendChild(divWrapper);
-				var ul = createElem('ul');
-				ul.className = 'data-info';
-				divWrapper.appendChild(ul);
-				appendIfNotNull(ul, liComment);
-				appendIfNotNull(ul, liActionList);
-				appendIfNotNull(ul, liFiles);
-				appendIfNotNull(ul, liDueDate);
-				appendIfNotNull(ul, liMilestone);
+				appendIfNotNull(divWrapper, liComment);
+				appendIfNotNull(divWrapper, liActionList);
+				appendIfNotNull(divWrapper, liFiles);
+				appendIfNotNull(divWrapper, liDueDate);
+				appendIfNotNull(divWrapper, liMilestone);
 			}
 
 			handleAssigned();
@@ -342,10 +339,11 @@
         		return null;
         	}
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(li, LvgIcon.comment, card.counts['COMMENT'].count);
-    		return li;
+    		appendIconAndText(div, LvgIcon.comment, card.counts['COMMENT'].count);
+    		return div;
         }
 
         function handleActionList() {
@@ -360,19 +358,20 @@
         	var uncheckedCount = getCountOrZero('ACTION_UNCHECKED');
         	var actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
     		var counts = card.counts;
 
     		if(checkedCount > 0 && uncheckedCount == 0) {
-    			li.className += ' lvg-action-full';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-full';
     		}
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
-    			li.className += ' lvg-action-not-done';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done';
     		}
 
-    		appendIconAndText(li, LvgIcon.list, actionItemsSummary);
-        	return li;
+    		appendIconAndText(div, LvgIcon.list, actionItemsSummary);
+        	return div;
         }
 
 
@@ -385,11 +384,12 @@
         	}
 
         	var filesCount = hasFiles ? getCountOrZero('FILE') : '';
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(li, LvgIcon.file, filesCount);
+    		appendIconAndText(div, LvgIcon.file, filesCount);
 
-    		return li;
+    		return div;
         }
 
         function handleDueDate() {
@@ -409,12 +409,13 @@
         	var isPast = notClosed && daysDiff > 0;
 
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		addDueDateClasses(li, isTomorrow, isNow, isPast);
+    		addDueDateClasses(div, isTomorrow, isNow, isPast);
 
-    		appendIconAndText(li, LvgIcon.clock, $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
-    		return li;
+    		appendIconAndText(div, LvgIcon.clock, $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
+    		return div;
         }
 
         function handleMilestone() {
@@ -440,7 +441,8 @@
         		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
         	}
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
         	if(releaseDateStr) {
         		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
@@ -450,11 +452,11 @@
             	var isNow = (notClosed && daysDiff == 0);
             	var isPast = (notClosed && daysDiff > 0);
 
-        		addDueDateClasses(li, isTomorrow, isNow, isPast);
+        		addDueDateClasses(div, isTomorrow, isNow, isPast);
         	}
 
-    		appendIconAndText(li, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
-    		return li;
+    		appendIconAndText(div, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
+    		return div;
         }
 
         //------------

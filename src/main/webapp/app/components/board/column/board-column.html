@@ -64,7 +64,7 @@
          lvg-dnd-drop="boardColumnCtrl.dropCard($index)"
          lvg-dnd-dragstart="boardColumnCtrl.dragStartCard($item)"
          lvg-dnd-dragend="boardColumnCtrl.dragEndCard()"
-         lvg-dnd-opts="{group: 'card', animation: 150}">
+         lvg-dnd-opts="{group: 'card', animation: 150, filter:'input'}">
         <lvg-card-fragment-v2
          ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)"
          view="board"

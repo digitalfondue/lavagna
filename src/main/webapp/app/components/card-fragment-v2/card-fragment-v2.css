@@ -2,83 +2,38 @@ lvg-card-fragment-v2 {
 	display: block;
 }
 
-div.card-data ul {
-	padding: 0;
-	margin: 0;
-}
-
-lvg-card-fragment-v2 {
-	display: block;
-}
-
-lvg-card-fragment-v2 .data-info li {
-	list-style-type: none;
+.lvg-card-fragment-v2__card-data {
 	display: inline-block;
 	margin-top: 8px;
 	margin-bottom: 0;
 	padding-right: 5px;
-	padding-top: 3px;
 	color: #aaaaaa;
 }
 
-lvg-card-fragment-v2 .data-info li.lvg-action-not-done {
+.lvg-card-fragment-v2__card-data__action-not-done {
     background-color: #cf513d;
     color: #ffffff;
-    padding-left: 5px;
 }
 
-
-lvg-card-fragment-v2 .data-info li.lvg-action-full {
+.lvg-card-fragment-v2__card-data__action-full {
 	background-color: #00CC00;
 	color: #ffffff;
-	padding-left: 5px;
 }
 
-lvg-card-fragment-v2 .data-info li.lvg-action-not-done md-icon,
-lvg-card-fragment-v2 .data-info li.lvg-action-full md-icon {
-	color: #ffffff;
-}
-
-lvg-card-fragment-v2 .data-info li.lvg-due-date-tomorrow {
+.lvg-card-fragment-v2__card-data__due-date-tomorrow {
     background-color: #e6c60d;
     color: #ffffff;
-    padding-left: 5px;
 }
 
-lvg-card-fragment-v2 .data-info li.lvg-due-date-now {
+.lvg-card-fragment-v2__card-data__due-date-now {
     background-color: #cf513d;
     color: #ffffff;
-    padding-left: 5px;
 }
 
-lvg-card-fragment-v2 .data-info li.lvg-due-date-past {
+.lvg-card-fragment-v2__card-data__due-date-past {
     background-color: #ec9488;
     color: #ffffff;
-    padding-left: 5px;
 }
-
-lvg-card-fragment-v2 .data-info li.lvg-due-date-tomorrow md-icon,
-lvg-card-fragment-v2 .data-info li.lvg-due-date-now md-icon,
-lvg-card-fragment-v2 .data-info li.lvg-due-date-past md-icon {
-    color: #ffffff;
-}
-
-
-
-
-lvg-card-fragment-v2 md-card-title {
-	overflow:hidden;
-}
-
-
-lvg-card-fragment-v2 md-card-content {
-	overflow:hidden;
-}
-
-lvg-card-fragment-v2 .data-info md-icon {
-	color:#aaa;
-}
-
 
 .lvg-card-fragment-v2__icon {
     display: inline-block;
@@ -87,6 +42,7 @@ lvg-card-fragment-v2 .data-info md-icon {
     width: 24px;
     min-height: 24px;
     min-width: 24px;
+    background-color: white;
 }
 
 .lvg-card-fragment-v2__label-container {
