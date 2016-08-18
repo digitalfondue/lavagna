@@ -29,11 +29,6 @@
 		
 		
 		var container = $element[0];
-		var headElem = createElem('lvg-card-fragment-v2-head');
-		var dataInfoElem = createElem('lvg-card-fragment-v2-data-info');
-		
-		container.appendChild(headElem);
-		container.appendChild(dataInfoElem);
 		
 		ctrl.card = ctrl.cardRef();
 		//
@@ -62,12 +57,12 @@
         //
         
         
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(headElem, $scope, $state, $location, $filter, User);
+        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $state, $location, $filter, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
         
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, dataInfoElem, LvgIcon, $state, $rootScope, UserCache, CardCache);
+        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, LvgIcon, $state, $rootScope, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
         
