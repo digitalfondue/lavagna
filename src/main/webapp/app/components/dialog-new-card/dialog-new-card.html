@@ -1,0 +1,23 @@
+<form name="dialogNewCardForm" data-ng-submit="$ctrl.createCard(name, $ctrl.columnId);" flex="column" layout="column">
+	<md-dialog-content class="md-dialog-content">
+		<h2 class="md-title">FIXME add card</h2>
+        <md-input-container>
+            <input
+                type="text" name="name" placeholder="{{'partials.fragments.columns-fragment.cardName.placeholder' | translate}}"
+                ng-model="name"
+                autocomplete="off" required>
+        </md-input-container>
+        <md-input-container>
+            <md-select ng-model="$ctrl.columnId" name="column" required>
+                <md-option ng-value="column.id"
+                           ng-repeat="column in $ctrl.columns | orderBy:'order'">
+                    {{column.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+	</md-dialog-content>
+	<md-dialog-actions>
+        <md-button type="submit" class="md-primary"><span translate>button.confirm</span></md-button>
+		<md-button ng-click="$ctrl.cancel()" class="md-button"><span translate>button.cancel</span></md-button>
+	</md-dialog-actions>
+</form>

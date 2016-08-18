@@ -26,87 +26,50 @@
 	 *
 	 *  Thus:
 	 */
-	directives.directive('lvgFillHeight', function($window, $timeout) {
-		return {
-			restrict : 'A',
-			link: function lvgFillHeightLink($scope, element, attrs) {
-				
-				var domElement = element[0];
-
-				var resizeHandler = function() {
-					var toggle = "true" === attrs.lvgFillHeight;
-					var margin = parseInt(attrs.lvgFillHeightMargin, 10) || 250;
-					//sidebar related
-					//-> the sidebar has a width of 250px
-					var wHeight = $window.innerHeight;//
-					var wWidth = $window.innerWidth;//
-					
-					domElement.style.width = (wWidth - (toggle ? margin : 0)) + 'px'; 
-					
-					var elemOffsetTop = domElement.offsetTop;
-					
-					var maxHeight = wHeight - elemOffsetTop;
-
-					domElement.style.height = (wHeight - elemOffsetTop) + 'px' 
-
-					$timeout(function() {$scope.maxHeight = maxHeight;},0);
-				};
-				resizeHandler();
-
-				//sidebar related
-				attrs.$observe('lvgFillHeight', resizeHandler);
-				
-				$window.addEventListener('resize', resizeHandler);
-
-				$scope.$watch(function lvgFillHeightWatch() {
-						return domElement.offsetTop;
-					}, function() {
-						resizeHandler();
-					}
-				);
-
-				$scope.$on('$destroy', function() {
-					$window.removeEventListener('resize', resizeHandler);
-				});
-			}
-		};
-	});
-
-	directives.directive('lvgUpdateColumnSize', function($window, $timeout) {
+	directives.directive('lvgUpdateColumnSize', function($window) {
 		return {
 			restrict : 'A',
 			link : function lvgUpdateColumnSizeLink($scope, element, attrs) {
-				
+
 				var domElement = element[0];
-				
-				$scope.$watch(function lvgUpdateColumnSizeWatch() {
-				        var head = domElement.querySelector('.panel-heading');
-				        var panelHeadHeight = head ? head.offsetHeight : 0;
 
-				        var footer = domElement.querySelector('.panel-footer');
-                        var panelFooterHeight = footer ? footer.offsetHeight : 0;
+				var resizeHandler = function() {
+				    var wHeight = $window.innerHeight;//
+                    var maxHeight = wHeight - 125; //fixed header + board-controls
 
-				        return panelHeadHeight + panelFooterHeight;
-				    }, function(v) {
-					    $scope.panelHeadAndFooterSize = v;
-				});
+				    var head = domElement.querySelector('.lvg-board-column__header');
+                    var panelHeadHeight = head ? head.offsetHeight : 0;
+
+                    domElement.querySelector('.lvg-board-column__content').style.maxHeight = (maxHeight - panelHeadHeight) + 'px';
+				};
+				resizeHandler();
+
+				$window.addEventListener('resize', resizeHandler);
+
+                $scope.$on('$destroy', function() {
+                    $window.removeEventListener('resize', resizeHandler);
+                });
 			}
 		};
 	});
 
-	directives.directive('lvgFillSidebarHeight', function($window) {
+	directives.directive('lvgUpdateSidebarSize', function($window) {
 		return {
 			restrict : 'A',
-			link: function lvgFillSidebarHeightLink($scope, element, attrs) {
+			link: function lvgUpdateSidebarSizeLink($scope, element, attrs) {
+
 				var domElement = element[0];
 
-				var resizeHandler = function lvgFillSidebarHeightResizeHandler() {
-					var wHeight = $window.innerHeight;//
-					domElement.style.height = (wHeight - 102)+'px'; //fixed
+				var resizeHandler = function lvgFillSidebarCardsHeightResizeHandler(hasMore) {
+				    var wHeight = $window.innerHeight;//
+                    var maxHeight = wHeight - 125; //fixed header + board-controls
+
+                    var panelFooterHeight = hasMore ? 48 : 0;
+
+                    domElement.querySelector('.lvg-board-sidebar__content').style.maxHeight = (maxHeight - panelFooterHeight) + 'px';
 				};
 				resizeHandler();
-				
-				
+
 				$window.addEventListener('resize', resizeHandler);
 
 				$scope.$on('$destroy', function() {
@@ -114,41 +77,7 @@
 				});
 
 				//sidebar related
-				attrs.$observe('lvgFillSidebarHeight', resizeHandler);
-			}
-		};
-	});
-
-	directives.directive('lvgFillSidebarCardsHeight', function($window) {
-		return {
-			restrict : 'A',
-			link: function lvgFillSidebarCardsHeightLink($scope, element, attrs) {
-				
-				var domElement = element[0];
-
-				var resizeHandler = function lvgFillSidebarCardsHeightResizeHandler() {
-					var parentHeight = $window.innerHeight - 120;//fixed
-					var offset = domElement.offsetTop;
-
-					var hasMoreCards = attrs.lvgFillSidebarCardsHeightHasMore === "true";
-					var currentPage = parseInt(attrs.lvgFillSidebarCardsHeightCurrentPage, 0) || 0;
-
-					if(hasMoreCards || currentPage) {
-						offset = offset + 36;
-					}
-					domElement.style.height =  (parentHeight - offset - 14) + 'px'; //14: based on margin, padding
-				};
-				resizeHandler();
-				$window.addEventListener('resize', resizeHandler);
-
-				$scope.$on('$destroy', function() {
-					$window.removeEventListener('resize', resizeHandler);
-				});
-
-				//sidebar related
-				attrs.$observe('lvgFillSidebarCardsHeight', resizeHandler);
-				attrs.$observe('lvgFillSidebarCardsHeightHasMore', resizeHandler);
-				attrs.$observe('lvgFillSidebarCardsHeightCurrentPage', resizeHandler);
+				attrs.$observe('lvgUpdateSidebarSizeTrigger', resizeHandler);
 			}
 		};
 	});

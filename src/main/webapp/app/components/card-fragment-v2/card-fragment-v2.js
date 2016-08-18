@@ -28,10 +28,12 @@
 		var ctrl = this;
 		
 		
-		var container = createElem('div');
+		var container = $element[0];
 		var headElem = createElem('lvg-card-fragment-v2-head');
 		var dataInfoElem = createElem('lvg-card-fragment-v2-data-info');
 		
+		container.appendChild(headElem);
+		container.appendChild(dataInfoElem);
 		
 		ctrl.card = ctrl.cardRef();
 		//
@@ -77,11 +79,6 @@
         if(ctrl.boardView) {
         	container.className += ' lavagna-board-panel';
         }
-        
-        container.appendChild(headElem);
-		container.appendChild(dataInfoElem);
-		
-		$element[0].appendChild(container);
         
         ctrl.$onDestroy = function() {
         	dataInfoCtrl.$onDestroy();

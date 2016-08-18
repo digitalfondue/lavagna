@@ -1,7 +1,7 @@
 (function () {
 
     'use strict';
-    
+
     var components = angular.module('lavagna.components');
 
     components.directive('lvgBoardColumn', BoardColumnComponent);
@@ -25,12 +25,12 @@
         }
     }
 
-    function BoardColumnController($scope, $filter, $mdDialog, $element, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
+    function BoardColumnController($scope, $filter, $mdDialog, $element, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
         var ctrl = this;
-        
+
         ctrl.user = ctrl.userRef();
         ctrl.searchFilter = ctrl.searchFilterRef();
-        
+
         //
         ctrl.metadata = ctrl.metadataRef();
 
@@ -40,12 +40,12 @@
         	SharedBoardDataService.dndColumnOrigin = ctrl;
         	SharedBoardDataService.dndCardOrigin = item;
         }
-        
+
         ctrl.dragEndCard = function(item) {
         	SharedBoardDataService.endDrag();
         }
         //
-        
+
         ctrl.removeCard = function(card) {
         	for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
         		if(ctrl.cardsInColumn[i].id === card.id) {
@@ -54,7 +54,7 @@
         		}
         	}
         }
-        
+
         ctrl.dropCard = function dropCard(index) {
         	var card = SharedBoardDataService.dndCardOrigin;
         	SharedBoardDataService.dndCardOrigin = null;
@@ -65,7 +65,7 @@
         	if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
         		return;
         	}
-        	
+
         	// remove card from origin column
         	if(SharedBoardDataService.dndColumnOrigin) {
         		SharedBoardDataService.dndColumnOrigin.removeCard(card);
@@ -75,7 +75,7 @@
         	// insert card at correct index
         	ctrl.cardsInColumn.splice(index, 0, card);
         	//
-        	
+
         	var oldColumnId = card.columnId;
         	var newColumnId = ctrl.column.id;
         	var cardId = card.id;
@@ -97,10 +97,10 @@
                 });
             }
         }
-        
+
         //
         var initializeColumn = function() {
-        	
+
             var columnId = ctrl.column.id;
 
             var loadCards = function() {
@@ -108,7 +108,7 @@
                 	res.columnId = columnId;
                 	ctrl.cardsInColumn = res;
                 	ctrl.loaded = true;
-                	
+
                 	// sync selection, in case of a moved selected card
                 	// not optimal, but it should be good enough
                 	if(ctrl.selectedCards[ctrl.column.id]) {
@@ -118,8 +118,8 @@
                 			}
                 		}
                 	}
-                	
-                	
+
+
                 	function idExist(id) {
                 		for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
                 			if(ctrl.cardsInColumn[i].id === id) {
@@ -128,7 +128,7 @@
                 		}
                 		return false;
                 	}
-                	
+
                 	//
                 });
             };
@@ -140,17 +140,17 @@
         };
 
         initializeColumn();
-        
+
         //
-        
+
 
         var boardShortName = ctrl.boardShortName;
         var projectShortName = ctrl.projectShortName;
 
         //capture all status variables
         ctrl.columnState = {};
-        
-        
+
+
 
         ctrl.selectAllInColumn = function() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
@@ -167,24 +167,28 @@
             });
             $scope.$broadcast('updatecheckbox');
         };
-        
-        
+
+
         $scope.$on('selectall', ctrl.selectAllInColumn);
         $scope.$on('unselectall', ctrl.unSelectAllInColumn);
 
-        ctrl.createCardFromTop = function(cardToCreateFromTop) {
-            Board.createCardFromTop(boardShortName, ctrl.column.id, {name: cardToCreateFromTop.name}).then(function() {
-                cardToCreateFromTop.name = null;
-            }).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
-            });
-        };
-
-        ctrl.createCard = function(cardToCreate) {
-            Board.createCard(boardShortName, ctrl.column.id, {name: cardToCreate.name}).then(function() {
-                cardToCreate.name = null;
-            }).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
+        ctrl.newCard = function() {
+            $mdDialog.show({
+                template: '<lvg-dialog-new-card board-short-name="vm.boardShortName" columns="vm.columns" column="vm.column"></lvg-dialog-new-card>',
+                locals: {
+                    column: ctrl.column,
+                    boardShortName: boardShortName
+                },
+                bindToController: true,
+                resolve: {
+                    columns: function() {
+                        return Board.columnsByLocation(boardShortName, 'BOARD');
+                    }
+                },
+                controller: function(columns) {
+                    this.columns = columns;
+                },
+                controllerAs: 'vm'
             });
         };
 
@@ -253,7 +257,7 @@
                         confirmAction();
                         $mdDialog.hide();
                     };
-                    
+
                     $scope.cancel = function() {
                     	$mdDialog.hide();
                     }
