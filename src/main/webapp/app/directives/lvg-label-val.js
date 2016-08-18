@@ -49,7 +49,7 @@
             UserCache.user(userId).then(function (user) {
                 var element = angular.element(a);
 
-                element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
+                element.attr('href', $state.href('user', {provider: user.provider, username: user.username}));
 
                 element.text($filter('formatUser')(user));
                 if (!user.enabled) {
@@ -107,22 +107,25 @@
 
             var a = $window.document.createElement('a');
             $element.append(a);
+            var span = $window.document.createElement('span');
+            a.appendChild(span);
 
             CardCache.card(cardId).then(function (card) {
-                var element = angular.element(a);
+                var aElement = angular.element(a);
+                var spanElement = angular.element(span);
 
-                a.textContent = card.boardShortName + '-' + card.sequence;
-                element.attr('href', $state.href('board.card', {
+                span.textContent = card.boardShortName + '-' + card.sequence;
+                aElement.attr('href', $state.href('projectBoard.card', {
                     projectName: card.projectShortName,
                     shortName: card.boardShortName,
                     seqNr: card.sequence
                 }));
 
-                updateCardClass(card, element);
+                updateCardClass(card, spanElement);
 
                 var toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
                     CardCache.card(cardId).then(function (card) {
-                        updateCardClass(card, element);
+                        updateCardClass(card, spanElement);
                     });
                 });
 
