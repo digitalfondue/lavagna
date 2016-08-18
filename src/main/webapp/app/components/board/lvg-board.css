@@ -197,25 +197,6 @@ lvg-board {
 	font-size: 14px;
 }
 
-
-div.card-labels {
-	margin-top: 8px;
-}
-
-div.card-labels ul.labels {
-	padding: 0;
-	margin: 0;
-}
-
-div.card-labels ul.labels li {
-	list-style-type: none;
-	display: inline-block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	font-size: 11px;
-}
-
 ul.assigned-users {
 	margin: 0;
 	padding: 0;

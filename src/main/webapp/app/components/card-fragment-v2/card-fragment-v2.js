@@ -492,10 +492,8 @@
 
 
         	var divWrapper = createElem('div');
-        	divWrapper.className = 'card-labels';
-        	var ul = createElem('ul');
-        	ul.className = 'labels';
-        	divWrapper.appendChild(ul);
+        	divWrapper.className = 'lvg-card-fragment-v2__label-container';
+        	
         	for(var i = 0; i < userCreatedLabels.length; i++) {
         		var value = userCreatedLabels[i];
         		var bg = labelBackground(projectMetadata.labels[value.labelId].color);
@@ -530,15 +528,15 @@
         		}
 
         		//
-        		var li = createElem('li');
-        		li.className = 'lavagna-label lavagna-label-no-controls ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
-        		li.style.backgroundColor = bg['background-color'];
-        		li.textContent = nameAndSeparator;
+        		var div = createElem('div');
+        		div.className = 'lvg-card-fragment-v2__label ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
+        		div.style.backgroundColor = bg['background-color'];
+        		div.textContent = nameAndSeparator;
         		if(userOrCardLink) {
-        			li.appendChild(userOrCardLink);
+        			div.appendChild(userOrCardLink);
         		}
 
-        		ul.appendChild(li);
+        		divWrapper.appendChild(div);
         	}
         	$element.appendChild(divWrapper);
         }

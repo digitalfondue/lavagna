@@ -88,3 +88,18 @@ lvg-card-fragment-v2 .data-info md-icon {
     min-height: 24px;
     min-width: 24px;
 }
+
+.lvg-card-fragment-v2__label-container {
+	margin-top:8px;
+}
+
+.lvg-card-fragment-v2__label {
+	display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 11px;
+    padding: .4em .9em .3em .6em;
+    margin-bottom: 5px;
+    margin-right: 2px;
+}
