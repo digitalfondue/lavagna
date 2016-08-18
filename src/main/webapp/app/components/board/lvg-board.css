@@ -148,6 +148,7 @@ lvg-board {
 	border: 1px solid #d0d0d0;
 	background-color: white;
 	box-shadow:none!important;
+	margin-bottom:8px;
 }
 
 .lavagna-board-panel:hover {

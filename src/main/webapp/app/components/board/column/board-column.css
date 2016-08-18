@@ -49,6 +49,8 @@ lvg-board-column {
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #fcfcfc;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .lvg-board__dragging-columns lvg-board-column {

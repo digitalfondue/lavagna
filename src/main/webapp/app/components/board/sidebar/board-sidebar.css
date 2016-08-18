@@ -38,6 +38,7 @@ lvg-board-sidebar {
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
+    padding:8px;
 }
 
 
