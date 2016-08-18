@@ -78,3 +78,13 @@ lvg-card-fragment-v2 md-card-content {
 lvg-card-fragment-v2 .data-info md-icon {
 	color:#aaa;
 }
+
+
+.lvg-card-fragment-v2__icon {
+    display: inline-block;
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+}

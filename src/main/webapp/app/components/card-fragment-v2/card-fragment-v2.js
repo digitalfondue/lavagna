@@ -546,9 +546,7 @@
         //------------
 
         function appendIconAndText(li, iconFactory, text) {
-        	var icon = createElem('md-icon');        	
-        	icon.appendChild(iconFactory());
-    		li.appendChild(icon);
+    		li.appendChild(iconFactory());
     		li.appendChild(createText(' ' + text));
         }
 
