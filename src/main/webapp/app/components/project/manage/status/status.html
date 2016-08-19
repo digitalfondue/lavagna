@@ -4,7 +4,7 @@
 		<div layout="row" class="text-align-center">
 			<div ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'" flex>
 				<p><strong>{{'common.column.definition.' + definition.value | translate}}</strong></p>
-				<p><lvg-colorpicker ng-model="$ctrl.columnDefinition[definition.id].color" ng-change="$ctrl.updateColumnDefinition(definition.id, $ctrl.columnDefinition[definition.id].color)"></lvg-colorpicker></p>
+				<p><lvg-color-picker-v2 ng-model="$ctrl.columnDefinition[definition.id].color" ng-change="$ctrl.updateColumnDefinition(definition.id, $ctrl.columnDefinition[definition.id].color)"></lvg-color-picker-v2></p>
 			</div>
 		</div>
 	</form>
