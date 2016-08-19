@@ -23,6 +23,8 @@
         var boardShortName = ctrl.board.shortName;
         var projectShortName = ctrl.project.shortName;
 
+        ctrl.sidebarLoaded = false;
+
         ctrl.$onInit = function() {
             switchLocation();
         };
@@ -50,7 +52,6 @@
         }
 
         function sideBarLoad(direction) {
-            ctrl.sidebarLoaded = false;
             ctrl.sidebar = ctrl.sidebar || {currentPage: 0};
 
             Board.cardsInLocationPaginated(boardShortName, ctrl.sideBarLocation, ctrl.sidebar.currentPage + direction).then(function (res) {

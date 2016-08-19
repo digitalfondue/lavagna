@@ -1,5 +1,6 @@
 lvg-board-column {
-    display: block;
+    display: inline-block;
+    vertical-align: top;
     background-color: #e5e5e5;
     position: relative;
     width: 290px;
@@ -10,9 +11,15 @@ lvg-board-column {
     border-top-right-radius: 0;
 }
 
+.lvg-board-column__container {
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+}
+
 .lvg-board-column__header {
     display: block;
-    width: 290px;
+    width: 288px;
     height: 40px;
     background-color: #fcfcfc;
     border: 0;
@@ -58,6 +65,10 @@ lvg-board-column {
     border: 3px dashed #d5d5d5;
 }
 
+.lvg-board__dragging-columns lvg-board-column .lvg-board-column__container {
+    border: 0;
+}
+
 .lvg-board__dragging-columns lvg-board-column .lvg-board-column__header {
     background-color: #e5e5e5;
 }
@@ -81,6 +92,10 @@ lvg-board-column.sortable-drag {
 
 .sortable-drag .lvg-board-column__content {
     display: none;
+}
+
+.sortable-drag .lvg-board-column__container {
+    border: 0;
 }
 
 lvg-board-column.sortable-drag {

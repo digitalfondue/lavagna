@@ -7,61 +7,59 @@ lvg-board {
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.lvg-board__header {
+    position: relative;
+    height: 68px;
 }
 
 .lvg-board__container {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     min-height:0;
     flex:1;
+    position: relative;
 }
 
 .lvg-board__inner-container {
     display: flex;
     height: 100%;
+    width: 100%;
     flex-direction: row;
     overflow-y: hidden;
-    overflow-x: auto;
+    overflow-x: hidden;
     min-height:0;
 }
 
 .lvg-board__sidebar-wrapper {
-    position: relative;
-    left: -290px;
     display: flex;
-    flex-direction: row;
+    -webkit-transition-property: -webkit-transform, width;
+    transition-property: transform, width;
+    -webkit-transition-duration: .1s;
+    transition-duration: 0.1s;
+    -webkit-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+    width: 0px;
+    height: 99%;
     flex: 0 0 auto;
-    -moz-transition: left .2s;
-    -webkit-transition: left .2s;
-    -o-transition: left .2s;
-    transition: left .2s;
-    min-width: 0;
-    width: 0;
-    min-height: 0;
 }
 
-.lvg-board__sidebar-open .lvg-board__sidebar-wrapper {
-  left: 0;
+.lvg-board__sidebar-wrapper.lvg-board__sidebar-open {
+    width: 300px;
 }
 
 .lvg-board__wrapper {
     display: flex;
     flex-direction: row;
     flex: 1 1 auto;
-    overflow-x: auto;
-    -moz-transition: margin-left .2s;
-    -webkit-transition: margin-left .2s;
-    -o-transition: margin-left .2s;
-    transition: margin-left .2s;
     margin-left: 0;
     min-height: 0;
     overflow-y: hidden;
     overflow-x: auto;
-}
-
-.lvg-board__sidebar-open .lvg-board__wrapper {
-    margin-left: 290px;
 }
 
 .lvg-board__rebuild-if-change {

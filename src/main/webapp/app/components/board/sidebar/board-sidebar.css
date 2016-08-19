@@ -2,6 +2,7 @@ lvg-board-sidebar {
     display: block;
     background-color: #d5d5d5;
     min-width: 290px;
+    height: 100%;
     margin: 4px;
     border: 0;
     border-top-left-radius: 0;

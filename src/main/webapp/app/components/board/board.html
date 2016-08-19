@@ -16,8 +16,9 @@
     </lvg-board-controls>
 
     <div class="lvg-board__inner-container"
-         data-ng-class="{'lvg-board__sidebar-open': $ctrl.toggledSidebar,'lvg-can-move-columns' : $ctrl.sortableColumnOptions, 'lvg-can-move-cards': $ctrl.sortableCardOptions}">
-        <div class="lvg-board__sidebar-wrapper">
+         data-ng-class="{'lvg-can-move-columns' : $ctrl.sortableColumnOptions, 'lvg-can-move-cards': $ctrl.sortableCardOptions}">
+        <div class="lvg-board__sidebar-wrapper"
+             data-ng-class="{'lvg-board__sidebar-open': $ctrl.toggledSidebar}">
             <lvg-board-sidebar data-ng-if="$ctrl.toggledSidebar"
                                project="$ctrl.project"
                                user="$ctrl.user"
@@ -26,6 +27,7 @@
                                side-bar-location="$ctrl.sidebarLocation">
             </lvg-board-sidebar>
         </div>
+
         <div class="lvg-board__wrapper">
             <lvg-rebuild-if-change class="lvg-board__rebuild-if-change" to-watch="$ctrl.getMetadata().hash"
                                    lvg-dnd="$ctrl.columns"
@@ -40,6 +42,7 @@
                     selected-cards="$ctrl.selectedCards"
                     search-filter-ref="$ctrl.searchFilter"
                     user-ref="$ctrl.user"></lvg-board-column>
+
             </lvg-rebuild-if-change>
         </div>
     </div>
