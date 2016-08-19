@@ -12,7 +12,7 @@
 			template: '<input class="input-small" />',
 			link: function ($scope, $element, attrs, $ngModel) {
 
-				var $input = $element.find('input');
+				var $input = jQuery($element.find('input'));
 				var fallbackValue = $scope.$eval(attrs.fallbackValue);
 
 				function setViewValue(color) {
