@@ -12,7 +12,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', 'LvgIcon', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
 	});
 	
 	//
@@ -24,7 +24,7 @@
 	
 
 
-	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, LvgIcon, $rootScope, UserCache, CardCache) {
+	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
 		
 		
@@ -62,7 +62,7 @@
         headCtrl.$postLink();
         
         
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, LvgIcon, $state, $rootScope, UserCache, CardCache);
+        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $state, $rootScope, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
         
@@ -238,18 +238,18 @@
 
 	function addDueDateClasses(li, isTomorrow, isNow, isPast) {
     	if(isTomorrow) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow lvg-card-fragment-v2__card-data__white';
     	}
     	if(isNow) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now lvg-card-fragment-v2__card-data__white';
     	}
     	if(isPast) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past lvg-card-fragment-v2__card-data__white';
     	}
     }
 	
 	
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, LvgIcon, $state, $rootScope, UserCache, CardCache) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $state, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
 
 		var card;
@@ -336,7 +336,7 @@
         	var div = createElem('div');
         	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(div, LvgIcon.comment, card.counts['COMMENT'].count);
+    		appendIconAndText(div, 'comment', card.counts['COMMENT'].count);
     		return div;
         }
 
@@ -358,13 +358,13 @@
     		var counts = card.counts;
 
     		if(checkedCount > 0 && uncheckedCount == 0) {
-    			div.className += ' lvg-card-fragment-v2__card-data__action-full';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-full lvg-card-fragment-v2__card-data__white';
     		}
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
-    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done lvg-card-fragment-v2__card-data__white';
     		}
 
-    		appendIconAndText(div, LvgIcon.list, actionItemsSummary);
+    		appendIconAndText(div, 'list', actionItemsSummary);
         	return div;
         }
 
@@ -381,7 +381,7 @@
         	var div = createElem('div');
         	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(div, LvgIcon.file, filesCount);
+    		appendIconAndText(div, 'file', filesCount);
 
     		return div;
         }
@@ -408,7 +408,7 @@
 
     		addDueDateClasses(div, isTomorrow, isNow, isPast);
 
-    		appendIconAndText(div, LvgIcon.clock, $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
+    		appendIconAndText(div, 'clock', $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
     		return div;
         }
 
@@ -449,7 +449,7 @@
         		addDueDateClasses(div, isTomorrow, isNow, isPast);
         	}
 
-    		appendIconAndText(div, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
+    		appendIconAndText(div, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
     		return div;
         }
 
@@ -539,8 +539,8 @@
 
         //------------
 
-        function appendIconAndText(li, iconFactory, text) {
-    		li.appendChild(iconFactory());
+        function appendIconAndText(li, iconName, text) {
+    		li.className += (' lvg-card-fragment-v2__card-data__icon_' + iconName)
     		li.appendChild(createText(' ' + text));
         }
 

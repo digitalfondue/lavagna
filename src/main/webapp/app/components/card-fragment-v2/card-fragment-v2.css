@@ -4,35 +4,89 @@ lvg-card-fragment-v2 {
 
 .lvg-card-fragment-v2__card-data {
 	display: inline-block;
+	margin:0;
+	padding:0;
 	margin-top: 8px;
 	margin-bottom: 0;
 	padding-right: 5px;
+	padding-left:26px;
 	color: #aaaaaa;
+	background-size: 24px 24px;
+    background-repeat: no-repeat;
+    height:24px;
+    line-height: 24px;
 }
+
+/*
+ic_comment_black_48px.svg  
+*/
+.lvg-card-fragment-v2__card-data__icon_comment {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjYWFhIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjEuOTkgNGMwLTEuMS0uODktMi0xLjk5LTJINGMtMS4xIDAtMiAuOS0yIDJ2MTJjMCAxLjEuOSAyIDIgMmgxNGw0IDQtLjAxLTE4ek0xOCAxNEg2di0yaDEydjJ6bTAtM0g2VjloMTJ2MnptMC0zSDZWNmgxMnYyeiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4");
+}
+
+/*
+ic_list_black_48px.svg
+*/
+.lvg-card-fragment-v2__card-data__icon_list {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjYWFhIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMyAxM2gydi0ySDN2MnptMCA0aDJ2LTJIM3Yyem0wLThoMlY3SDN2MnptNCA0aDE0di0ySDd2MnptMCA0aDE0di0ySDd2MnpNNyA3djJoMTRWN0g3eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=");
+}
+
+.lvg-card-fragment-v2__card-data__icon_list.lvg-card-fragment-v2__card-data__white {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMyAxM2gydi0ySDN2MnptMCA0aDJ2LTJIM3Yyem0wLThoMlY3SDN2MnptNCA0aDE0di0ySDd2MnptMCA0aDE0di0ySDd2MnpNNyA3djJoMTRWN0g3eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=");
+}
+
+/*
+ic_insert_drive_file_black_48px.svg
+*/
+.lvg-card-fragment-v2__card-data__icon_file {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjYWFhIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNiAyYy0xLjEgMC0xLjk5LjktMS45OSAyTDQgMjBjMCAxLjEuODkgMiAxLjk5IDJIMThjMS4xIDAgMi0uOSAyLTJWOGwtNi02SDZ6bTcgN1YzLjVMMTguNSA5SDEzeiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=");
+}
+
+/*
+ic_access_time_gray_48px.svg
+*/
+.lvg-card-fragment-v2__card-data__icon_clock {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjYWFhIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTEuOTkgMkM2LjQ3IDIgMiA2LjQ4IDIgMTJzNC40NyAxMCA5Ljk5IDEwQzE3LjUyIDIyIDIyIDE3LjUyIDIyIDEyUzE3LjUyIDIgMTEuOTkgMnpNMTIgMjBjLTQuNDIgMC04LTMuNTgtOC04czMuNTgtOCA4LTggOCAzLjU4IDggOC0zLjU4IDgtOCA4eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTIuNSA3SDExdjZsNS4yNSAzLjE1Ljc1LTEuMjMtNC41LTIuNjd6Ii8+PC9zdmc+");
+}
+
+.lvg-card-fragment-v2__card-data__icon_clock.lvg-card-fragment-v2__card-data__white {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTEuOTkgMkM2LjQ3IDIgMiA2LjQ4IDIgMTJzNC40NyAxMCA5Ljk5IDEwQzE3LjUyIDIyIDIyIDE3LjUyIDIyIDEyUzE3LjUyIDIgMTEuOTkgMnpNMTIgMjBjLTQuNDIgMC04LTMuNTgtOC04czMuNTgtOCA4LTggOCAzLjU4IDggOC0zLjU4IDgtOCA4eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTIuNSA3SDExdjZsNS4yNSAzLjE1Ljc1LTEuMjMtNC41LTIuNjd6Ii8+PC9zdmc+");
+}
+
+/*
+ic_location_on_gray_48px.svg
+*/
+.lvg-card-fragment-v2__card-data__icon_milestone {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjYWFhIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM4LjEzIDIgNSA1LjEzIDUgOWMwIDUuMjUgNyAxMyA3IDEzczctNy43NSA3LTEzYzAtMy44Ny0zLjEzLTctNy03em0wIDkuNWMtMS4zOCAwLTIuNS0xLjEyLTIuNS0yLjVzMS4xMi0yLjUgMi41LTIuNSAyLjUgMS4xMiAyLjUgMi41LTEuMTIgMi41LTIuNSAyLjV6Ii8+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==");
+}
+
+.lvg-card-fragment-v2__card-data__icon_milestone.lvg-card-fragment-v2__card-data__white {
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM4LjEzIDIgNSA1LjEzIDUgOWMwIDUuMjUgNyAxMyA3IDEzczctNy43NSA3LTEzYzAtMy44Ny0zLjEzLTctNy03em0wIDkuNWMtMS4zOCAwLTIuNS0xLjEyLTIuNS0yLjVzMS4xMi0yLjUgMi41LTIuNSAyLjUgMS4xMiAyLjUgMi41LTEuMTIgMi41LTIuNSAyLjV6Ii8+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==");"
+}
+
+.lvg-card-fragment-v2__card-data__white {
+	color: #ffffff;
+}
+
 
 .lvg-card-fragment-v2__card-data__action-not-done {
     background-color: #cf513d;
-    color: #ffffff;
 }
 
 .lvg-card-fragment-v2__card-data__action-full {
 	background-color: #00CC00;
-	color: #ffffff;
 }
 
 .lvg-card-fragment-v2__card-data__due-date-tomorrow {
     background-color: #e6c60d;
-    color: #ffffff;
 }
 
 .lvg-card-fragment-v2__card-data__due-date-now {
     background-color: #cf513d;
-    color: #ffffff;
 }
 
 .lvg-card-fragment-v2__card-data__due-date-past {
     background-color: #ec9488;
-    color: #ffffff;
 }
 
 .lvg-card-fragment-v2__icon {
