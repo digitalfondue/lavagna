@@ -1,15 +1,15 @@
-<div layout="row">
-    <div class="lvg-card-comment__avatar" flex="nogrow">
+<div class="row row-inherit">
+    <div class="lvg-card-comment__avatar flex no-grow">
         <lvg-user-avatar user-id="$ctrl.comment.userId"></lvg-user-avatar>
     </div>
-    <div flex>
-        <div class="lvg-card-comment__body" layout="column">
-            <div class="lvg-card-comment__headline" layout="row" layout-align="start center">
-                <div class="lvg-card-comment__user" flex>
+    <div class="flex">
+        <div class="lvg-card-comment__body flex column">
+            <div class="lvg-card-comment__headline row row-inherit start-xs middle-xs">
+                <div class="lvg-card-comment__user flex">
                     <lvg-user-link user-id="$ctrl.comment.userId"></lvg-user-link>
                 </div>
-                <div flex></div>
-                <div flex="nogrow">
+                <div class="flex"></div>
+                <div class="flex no-grow">
                     <md-button data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
                                data-ng-click="commentEdit = $ctrl.comment.content; editComment = true;" ng-hide="editComment"
                                class="lvg-small-icon-button">
@@ -35,20 +35,18 @@
                     <div data-ng-show="commentPreviewMode"
                          data-ng-bind-html="commentEdit | markdown"></div>
                     <div class="lvg-card-comment__actions-button-row">
-                        <md-button class="md-raised md-primary" type="submit">
+                        <md-button class="md-primary" type="submit">
                             <span data-translate>button.update</span>
                         </md-button>
-                        <md-button class="md-raised md-button"
-                                   data-ng-hide="commentPreviewMode"
+                        <md-button data-ng-hide="commentPreviewMode"
                                    data-ng-click="commentPreviewMode = true" type="button">
                             <span data-translate>button.preview</span>
                         </md-button>
-                        <md-button class="md-raised md-button"
-                                   data-ng-show="commentPreviewMode"
+                        <md-button data-ng-show="commentPreviewMode"
                                    data-ng-click="commentPreviewMode = false" type="button">
                             <span data-translate>button.closePreview</span>
                         </md-button>
-                        <md-button class="md-raised md-primary" ng-click="editComment = false; commentPreviewMode = false;">
+                        <md-button ng-click="editComment = false; commentPreviewMode = false;">
                             <span data-translate>button.cancel</span>
                         </md-button>
                     </div>

@@ -1,12 +1,15 @@
-lvg-stats-panel .stats-panel-description {
+.lvg-stats-panel__description {
 	padding-right:8px;
+	display: table-cell;
+    vertical-align: top;
+    width: 100%;
 }
 
-lvg-stats-panel .stats-panel-count {
+.lvg-stats-panel__count {
 	padding-top:8px;
 	font-size:14px;
 }
 
-lvg-stats-panel .stats-panel-icon {
+.lvg-stats-panel__icon {
 	display:inline-block;
 }

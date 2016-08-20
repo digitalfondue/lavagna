@@ -1,4 +1,4 @@
-<md-card>
+<md-card ng-class="{'archived': $ctrl.board.archived}">
     <md-card-title>
         <md-card-title-text>
 		  <a data-ui-sref="board({projectName: $ctrl.projectShortName, shortName: $ctrl.board.shortName})">

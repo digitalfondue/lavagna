@@ -1,43 +1,42 @@
-<md-dialog>
-    <form data-ng-role="form" data-ng-submit="projectDialogCtrl.createProject(projectDialogCtrl.view.project); projectDialogCtrl.view.project = {}; projectDialogCtrl.view.preview.show = false; projectDialogCtrl.view.checkedShortName=undefined;projectDialogCtrl.close();"
-                data-ng-init="projectDialogCtrl.view.project= {};">
-		<md-dialog-content>
-			<div class="md-dialog-content">
-		        <div class="form-group">
-		            <label for="name" data-translate>partials.home.newProjectForm.name</label> 
-		            <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="projectDialogCtrl.view.project.name" data-ng-keyup="projectDialogCtrl.suggestProjectShortName(projectDialogCtrl.view.project)" maxlength="128">
-		        </div>
-		        <div class="form-group has-feedback" data-ng-class="{'has-error': projectDialogCtrl.view.checkedShortName === false}">
-		            <label for="name" data-translate>partials.home.newProjectForm.shortName</label>
-		            <input type="text" class="form-control uppercase" id="name" placeholder="" required="required" autocomplete="off"
-		                    data-ng-model="projectDialogCtrl.view.project.shortName"
-		                    data-ng-change="projectDialogCtrl.checkProjectShortName(projectDialogCtrl.view.project.shortName)" maxlength="8">
-		                <i class="fa form-control-feedback" data-ng-class="{'fa-times' : projectDialogCtrl.view.checkedShortName === false, 'fa-check' : projectDialogCtrl.view.checkedShortName === true}"></i>
-		        </div>
-		        <div class="form-group">
-		            <label for="description" data-translate>partials.home.newProjectForm.description</label>
-		                <div data-ng-hide="projectDialogCtrl.view.preview.show">
-		                    <textarea class="form-control" rows="3" id="description" data-ng-model="projectDialogCtrl.view.project.description"></textarea>
-		                </div>
-		                <div data-ng-show="projectDialogCtrl.view.preview.show">
-		                    <div data-ng-bind-html="projectDialogCtrl.view.project.description | markdown"></div>
-		                </div>
-		        </div>
-			</div>
-		</md-dialog-content>
-		<md-dialog-actions>
-            <md-button type="submit"  data-ng-disabled="projectDialogCtrl.view.project.name == NULL || projectDialogCtrl.view.checkedShortName === undefined || projectDialogCtrl.view.checkedShortName === false">
-                <span data-translate>partials.home.newProjectForm.create</span>
-            </md-button>
-            <md-button type="button" data-ng-click="projectDialogCtrl.view.preview.show = true" data-ng-hide="projectDialogCtrl.view.preview.show">
-                <span data-translate>button.preview</span>
-            </md-button>
-            <md-button type="button" data-ng-click="projectDialogCtrl.view.preview.show = false" data-ng-show="projectDialogCtrl.view.preview.show">
-                <span  data-translate>button.closePreview</span>
-            </md-button>
-            <md-button type="button" data-ng-click="projectDialogCtrl.view.project = null; projectDialogCtrl.view.checkedShortName=undefined; projectDialogCtrl.view.preview.show = false;projectDialogCtrl.close();">
-                <span data-translate>partials.home.newProjectForm.cancel</span>
-            </md-button>
-		</md-dialog-actions>
-	 </form>
-</md-dialog>
+<form class="flex column"
+      data-ng-submit="projectDialogCtrl.createBoard(board); preview.show = false; projectDialogCtrl.close();">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>dashboard.create.project</h2>
+        <md-input-container class="md-block">
+            <label data-translate>label.name</label>
+            <input type="text" id="name" placeholder="" required autocomplete="off"
+                   data-ng-model="project.name" data-ng-keyup="projectDialogCtrl.suggestProjectShortName(board)" maxlength="128">
+        </md-input-container>
+        <md-input-container class="md-block" data-ng-class="{'md-input-invalid': projectDialogCtrl.errors.shortName}">
+            <label data-translate>label.shortName</label>
+            <input type="text" autocomplete="off" class="form-control uppercase" id="shortName" placeholder=""
+                   required="required" data-ng-model="project.shortName" maxlength="8"
+                   ng-change="projectDialogCtrl.checkProjectShortName(project.shortName)">
+            <div ng-messages="projectDialogCtrl.errors">
+                <div ng-message="shortName">{{'project.add-project.dialog.shortname.error' | translate}}</div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block" data-ng-hide="preview.show">
+            <label data-translate>label.description</label>
+            <textarea data-ng-model="project.description" rows="5" md-select-on-focus></textarea>
+        </md-input-container>
+        <div data-ng-show="preview.show">
+            <div data-ng-bind-html="project.description | markdown"></div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary" type="submit"
+                   data-ng-disabled="project.name == null || project.shortName == null || projectDialogCtrl.errors.shortName === true">
+            <span data-translate>button.create</span>
+        </md-button>
+        <md-button type="button" data-ng-click="preview.show = true" data-ng-hide="preview.show">
+            <span data-translate>button.preview</span>
+        </md-button>
+        <md-button type="button" data-ng-click="preview.show = false" data-ng-show="preview.show">
+            <span data-translate>button.closePreview</span>
+        </md-button>
+        <md-button type="button" data-ng-click="projectDialogCtrl.close();">
+            <span data-translate>button.cancel</span>
+        </md-button>
+    </md-dialog-actions>
+</form>

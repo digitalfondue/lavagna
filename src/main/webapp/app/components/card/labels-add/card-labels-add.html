@@ -1,7 +1,7 @@
 <div class="lvg-card-labels-add lvg-card-labels-add__label-add-panel">
     <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
-        <div layout="row" layout-align="start center">
-            <div flex>
+        <div class="row row-inherit start-xs middle-xs">
+            <div class="flex no-grow">
                 <md-input-container>
                     <md-select
                                class="lvg-card-metadata__item-status-select"
@@ -15,11 +15,11 @@
                     </md-select>
                 </md-input-container>
             </div>
-            <lvg-label-picker flex="nogrow" data-label="labelToAdd.label"
+            <lvg-label-picker class="flex" data-label="labelToAdd.label"
                               data-ng-model="labelToAdd.value"
                               data-board="$ctrl.board.shortName"
                               project-name="$ctrl.project.shortName"></lvg-label-picker>
-            <div flex="nogrow">
+            <div class="flex no-grow">
                 <md-button class="lvg-small-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
                     <md-icon md-svg-icon="ok"></md-icon>
                 </md-button>

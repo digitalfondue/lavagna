@@ -19,7 +19,7 @@
                 project-metadata-ref="$ctrl.metadataRef()"></lvg-card-fragment-v2>
         </lvg-rebuild-if-change>
     </div>
-    <div class="lvg-board-sidebar__footer" data-ng-show="$ctrl.sidebar.currentPage !== 0 || $ctrl.sidebar.hasMore" layout="row" layout-align="space-between center">
+    <div class="lvg-board-sidebar__footer row row-inherit middle-xs between-xs" data-ng-show="$ctrl.sidebar.currentPage !== 0 || $ctrl.sidebar.hasMore">
         <div>
             <md-button ng-if="$ctrl.sidebar.currentPage !== 0" ng-click="$ctrl.prevPage()"><span translate>partials.fragments.board-sidebar-fragment.newer</span></md-button>
         </div>

@@ -1,12 +1,12 @@
-.stats-tile-title {
+.lvg-stats-tile__title {
     text-align: center;
 }
 
-.stats-tile-title .chart-header {
+.lvg-stats-tile__title-chart-header {
     margin: 5px 0px;
 }
 
-.stats-tile-subtitle {
+.lvg-stats-tile__subtitle {
     padding: 0px 5px;
     text-align: center;
     overflow: hidden;
@@ -14,7 +14,7 @@
     text-overflow: ellipsis;
 }
 
-.stats-tile-value {
+.lvg-stats-tile__value {
     padding: 0px 5px;
     text-align: center;
     overflow: hidden;
@@ -23,6 +23,6 @@
     font-size: 48pt;
 }
 
-.stats-tile-value.stats-most-active-tile-value {
+.lvg-stats-tile__value-most-active {
     font-size: 29pt;
 }

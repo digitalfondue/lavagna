@@ -1,0 +1,19 @@
+.lvg-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 11;
+  background-color: #000000;
+}
+
+.lvg-modal-overlay-fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+
+.lvg-modal-overlay-fade.in {
+  opacity: 0.5;
+}

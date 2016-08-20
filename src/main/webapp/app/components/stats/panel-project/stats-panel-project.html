@@ -1,4 +1,4 @@
-<md-card>
+<md-card data-ng-class="{archived : $ctrl.project.archived}">
     <md-card-title>
         <md-card-title-text>
             <a data-ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{$ctrl.project.shortName}} - {{$ctrl.project.name}}</a>

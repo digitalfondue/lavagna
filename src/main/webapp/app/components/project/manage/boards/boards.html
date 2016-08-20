@@ -1,49 +1,49 @@
-<div class="lvg-content lavagna-container-margin">
-	<md-card ng-repeat="ab in $ctrl.boards" data-ng-init="$ctrl.view.boardStatus[ab.shortName] = {}">
+<div class="lvg-content">
+	<md-card class="lvg-content__item" ng-repeat="ab in $ctrl.boards">
 		<md-card-title>
-			<md-card-title-text>{{::ab.shortName}} - {{::ab.name}}</md-card-title-text>
+			<md-card-title-text>
+                <div class="row row-inherit">
+                    <div class="lvg-headline">{{::ab.shortName}} - {{::ab.name}}</div>
+                    <span class="flex"></span>
+                    <md-button class="lvg-small-icon-button" ng-click="edit = true" ng-hide="edit">
+                        <md-icon md-svg-icon="edit" aria-label="{{::('common.edit' | translate)}}"></md-icon>
+                        <md-tooltip><span ng-bind="::('common.edit' | translate)"></span></md-tooltip>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.archive(ab);" ng-if="!ab.archived">
+                        <md-icon md-svg-icon="archive" aria-label="{{::('common.archive' | translate)}}"></md-icon>
+                        <md-tooltip><span ng-bind="::('common.archive' | translate)"></span></md-tooltip>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.unarchive(ab);" ng-if="ab.archived">
+                        <md-icon md-svg-icon="unarchive" aria-label="{{::('common.unarchive' | translate)}}"></md-icon>
+                        <md-tooltip><span ng-bind="::('common.unarchive' | translate)"></span></md-tooltip>
+                    </md-button>
+                </div>
+            </md-card-title-text>
 		</md-card-title>
-		<form role="form" ng-submit="$ctrl.update($ctrl.view.boardStatus[ab.shortName].itemToUpdate);$ctrl.view.boardStatus[ab.shortName].preview = false"
-				ng-init="$ctrl.view.boardStatus[ab.shortName].itemToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: ab.archived}; $ctrl.view.boardStatus[ab.shortName].preview = false">
+		<form role="form" ng-submit="$ctrl.update(itemToUpdate); preview = false"
+				ng-init="itemToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: ab.archived}; $ctrl.view.boardStatus[ab.shortName].preview = false">
 			<md-card-content>
-				<div ng-class="{archived : ab.archived}" ng-if="!$ctrl.view.boardStatus[ab.shortName].edit">
+				<div ng-class="{archived : ab.archived}" ng-if="!edit">
 					<p ng-if="ab.description.length > 0" ng-bind-html="ab.description | markdown"></p>
-					<p ng-if="ab.description == null || ab.description.length == 0"><em translate>common.no-description-available</em></p>
+					<p ng-if="ab.description == null || ab.description.length == 0"><em translate>common.no-description</em></p>
 				</div>
-				<div ng-if="$ctrl.view.boardStatus[ab.shortName].edit">
+				<div ng-if="edit">
 					<md-input-container class="md-block">
-						<label for="name" data-translate>partials.project.manage-home.name</label>
-						<input type="text" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="$ctrl.view.boardStatus[ab.shortName].itemToUpdate.name">
+						<label for="name" data-translate>label.name</label>
+						<input type="text" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="itemToUpdate.name">
 					</md-input-container>
 					<md-input-container class="md-block">
-						<label for="description" data-translate>partials.project.manage-home.description</label>
-						<textarea id="description" data-ng-model="$ctrl.view.boardStatus[ab.shortName].itemToUpdate.description" ng-if="!$ctrl.view.boardStatus[ab.shortName].preview"></textarea>
-						<div data-ng-bind-html="$ctrl.view.boardStatus[ab.shortName].itemToUpdate.description | markdown" ng-if="$ctrl.view.boardStatus[ab.shortName].preview"></div>
-					</md-input-container>
-					<md-input-container class="md-block">
-						<md-checkbox ng-model="$ctrl.view.boardStatus[ab.shortName].itemToUpdate.archived"><span data-translate>partials.project.manage-home.archived</span></md-checkbox>
+						<label data-translate>label.description</label>
+						<textarea data-ng-model="itemToUpdate.description" rows="5" ng-if="!preview"></textarea>
+						<div data-ng-bind-html="itemToUpdate.description | markdown" ng-if="preview"></div>
 					</md-input-container>
 				</div>
 			</md-card-content>
-			<md-card-actions ng-if="$ctrl.view.boardStatus[ab.shortName].edit" layout="row">
+			<md-card-actions ng-show="edit" class="row margin-8">
 				<md-button type="submit" class="md-primary"><span translate>button.update</span></md-button>
-				<md-button ng-click="$ctrl.view.boardStatus[ab.shortName].preview = true" ng-hide="$ctrl.view.boardStatus[ab.shortName].preview"><span translate>button.preview</span></md-button>
-				<md-button ng-click="$ctrl.view.boardStatus[ab.shortName].preview = false" ng-show="$ctrl.view.boardStatus[ab.shortName].preview"><span translate>button.closePreview</md-button>
-				<md-button ng-click="$ctrl.view.boardStatus[ab.shortName].edit = false;$ctrl.view.boardStatus[ab.shortName].preview = false"><span translate>button.cancel</span></md-button>
-			</md-card-actions>
-			<md-card-actions layout="row" layout-align="end center" lvg-has-permission="PROJECT_ADMINISTRATION" ng-if="!$ctrl.view.boardStatus[ab.shortName].edit">
-				<md-button class="md-icon-button" ng-click="$ctrl.archive(ab);" ng-if="!ab.archived">
-					<md-icon md-svg-icon="archive" aria-label="{{::('common.archive' | translate)}}"></md-icon>
-					<md-tooltip><span ng-bind="::('common.archive' | translate)"></span></md-tooltip>
-				</md-button>
-				<md-button class="md-icon-button" ng-click="$ctrl.unarchive(ab);" ng-if="ab.archived">
-					<md-icon md-svg-icon="unarchive" aria-label="{{::('common.unarchive' | translate)}}"></md-icon>
-					<md-tooltip><span ng-bind="::('common.unarchive' | translate)"></span></md-tooltip>
-				</md-button>
-				<md-button class="md-icon-button" ng-click="$ctrl.view.boardStatus[ab.shortName].edit = true">
-					<md-icon md-svg-icon="edit" aria-label="{{::('common.edit' | translate)}}"></md-icon>
-					<md-tooltip><span ng-bind="::('common.edit' | translate)"></span></md-tooltip>
-				</md-button>
+				<md-button ng-click="preview = true" ng-hide="preview"><span translate>button.preview</span></md-button>
+				<md-button ng-click="preview = false" ng-show="preview"><span translate>button.closePreview</md-button>
+				<md-button ng-click="edit = false;preview = false"><span translate>button.cancel</span></md-button>
 			</md-card-actions>
 		</form>
 	</md-card>

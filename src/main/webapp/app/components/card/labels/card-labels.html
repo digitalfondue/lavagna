@@ -1,10 +1,10 @@
 <span data-ng-if="$ctrl.hasUserLabels($ctrl.labels, $ctrl.labelValues)">
     <span data-ng-repeat="l in $ctrl.labels">
-        <span data-ng-repeat="val in $ctrl.labelValues[l.id]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
+        <span data-ng-repeat="val in $ctrl.labelValues[l.id]" class="lvg-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
             <lvg-label-v2
                 value-ref="val"
                 project-metadata-ref="$ctrl.project.metadata">
-                <md-icon class="lvg-card-metadata-labels__label-remove lavagna-pointer" md-svg-icon="close" data-ng-click="$ctrl.removeLabelValue(l, val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
+                <md-icon class="lvg-card-metadata-labels__label-remove lvg-cursor-pointer" md-svg-icon="close" data-ng-click="$ctrl.removeLabelValue(l, val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
             </lvg-label-v2>
         </span>
     </span>

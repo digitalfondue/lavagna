@@ -15,7 +15,6 @@
     function ProjectManageAccessController(User, Notification, Permission) {
 
         var ctrl = this;
-        ctrl.view = {};
 
         var projectName = ctrl.project.shortName;
 

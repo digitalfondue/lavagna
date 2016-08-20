@@ -14,8 +14,6 @@
 
     function ProjectManageBoardsController(Project, Board, Notification) {
         var ctrl = this;
-        ctrl.view = {};
-        ctrl.view.boardStatus = {};
 
         ctrl.boards = {};
 

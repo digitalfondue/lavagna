@@ -15,3 +15,24 @@ md-datepicker.lvg-datepicker button md-icon {
     min-width: 18px !important;
     min-height: 18px !important;
 }
+
+.lvg-datepicker__icon-only .md-datepicker-triangle-button {
+    display: none !important;
+}
+
+.lvg-datepicker__icon-only md-datepicker {
+    background: white !important;
+}
+
+.lvg-datepicker__icon-only .md-datepicker-input-container {
+    display: inline-block !important;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+}
+
+.lvg-datepicker__icon-only .md-datepicker-input-container input, .lvg-datepicker__icon-only .md-datepicker-input-container button {
+    display: none !important;
+}

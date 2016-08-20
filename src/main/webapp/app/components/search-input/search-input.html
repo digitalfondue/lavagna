@@ -1,5 +1,5 @@
-<form class="lavagna-search lvg-search-hidden" role="search" data-ng-submit="$ctrl.submit();$event.preventDefault();" layout="row">    
-    <md-chips ng-model="$ctrl.selected" md-autocomplete-snap md-transform-chip="$ctrl.transformChip($chip)" flex>
+<form class="lavagna-search lvg-search-hidden row row-inherit" role="search" data-ng-submit="$ctrl.submit();$event.preventDefault();" layout="row">
+    <md-chips class="flex" ng-model="$ctrl.selected" md-autocomplete-snap md-transform-chip="$ctrl.transformChip($chip)">
         <md-autocomplete placeholder="Search"
             md-selected-item="$ctrl.selectedItem"
             md-search-text="$ctrl.searchText"

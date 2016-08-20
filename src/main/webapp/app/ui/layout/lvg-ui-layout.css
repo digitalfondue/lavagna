@@ -1,0 +1,151 @@
+html, body {
+	font-family: sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	background-color: #e5e5e5;
+	color: #333333;
+	font-size: 14px;
+}
+
+/*
+
+ Define various max-size for the content.
+
+*/
+
+.lvg-content {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.lvg-content__item {
+    margin-top: 20px;
+}
+
+.lvg-manage-dialog {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 50%;
+    flex: 1 1 50%;
+    max-width: 50%;
+    max-height: 100%;
+    box-sizing: border-box;
+}
+
+.lvg-content__item:last-child {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .lvg-content {width: 750px;}
+
+    .lvg-manage-dialog {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 100%;
+        flex: 1 1 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 992px) {
+    .lvg-content {width: 970px;}
+
+    .lvg-manage-dialog {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 66.66%;
+        flex: 1 1 66.66%;
+        max-width: 66.66%;
+        max-height: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 1200px) {
+    .lvg-content {width: 1170px;}
+}
+
+/*
+
+ Remove some flexboxgrid weird behaviour
+
+*/
+
+.row-inherit, column-inherit {
+    margin-right: inherit !important;
+    margin-left: inherit !important;
+}
+
+/*
+
+ Helper classes
+
+*/
+
+.padding-8 {
+    padding: 8px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.padding-12 {
+    padding: 12px;
+}
+
+.margin-8 {
+    margin: 8px;
+}
+
+.margin-10 {
+    margin: 10px;
+}
+
+.margin-12 {
+    margin: 12px;
+}
+
+.lvg-divider-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.lvg-divider-15 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+.lvg-divider-20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.lvg-main-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height:0;
+    flex:1;
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.no-grow {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+    flex: 0 1 auto;
+    box-sizing: border-box;
+}

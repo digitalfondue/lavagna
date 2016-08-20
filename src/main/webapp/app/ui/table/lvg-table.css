@@ -6,6 +6,7 @@
 table.lvg-table {
 	width:100%;
 	border-collapse: separate;
+	margin: 0;
 }
 
 table.lvg-table th, table.lvg-table td {
@@ -25,4 +26,8 @@ table.lvg-table md-checkbox {
 
 table.lvg-table .center {
 	text-align:center;
+}
+
+td.vcenter {
+	vertical-align: middle;
 }

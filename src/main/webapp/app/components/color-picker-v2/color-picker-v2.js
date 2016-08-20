@@ -18,7 +18,8 @@
 		function showPicker(event) {
 			var position = $mdPanel.newPanelPosition()
 				.relativeTo($element.find('div'))
-				.addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW);
+				.addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
+				.addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW);
 			
 			var conf = {
 					attachTo: angular.element(document.body),

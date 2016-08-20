@@ -33,43 +33,49 @@
         loadLabels();
 
         var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabels);
-        
+
         ctrl.$onDestroy = function() {
         	unbind();
         };
-        
+
         ctrl.showAddLabelDialog = function($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
         		targetEvent: $event,
-        		controller: function() {
+        		controller: function(labelOptions) {
         			var ctrl = this;
-        			ctrl.view = {};
-        			ctrl.addNewLabel = addNewLabel;
-        			ctrl.view.labelOptions = getLabelOptions();
-        			
-        			
+        			ctrl.labelOptions = labelOptions;
+
+        			ctrl.add = function(labelToAdd) {
+        			    $mdDialog.hide(labelToAdd);
+        			}
+
         			ctrl.close = function() {
-                    	$mdDialog.hide();
+                    	$mdDialog.cancel();
                     };
         		},
-        		controllerAs: 'addLabelDialogCtrl'
+        		controllerAs: 'ctrl',
+        		resolve: {
+        		    labelOptions: getLabelOptions
+        		}
+        	}).then(function(labelToAdd) {
+                return addNewLabel(labelToAdd);
         	});
         }
-        
+
         function getLabelOptions() {
             return [
-                { name: $filter('translate')('partials.project.manage-labels.types.NULL'), type: "NULL" },
-                { name: $filter('translate')('partials.project.manage-labels.types.STRING'), type: "STRING" },
-                { name: $filter('translate')('partials.project.manage-labels.types.TIMESTAMP'), type: "TIMESTAMP" },
-                { name: $filter('translate')('partials.project.manage-labels.types.INT'), type: "INT" },
-                { name: $filter('translate')('partials.project.manage-labels.types.CARD'), type: "CARD" },
-                { name: $filter('translate')('partials.project.manage-labels.types.USER'), type: "USER" },
-                { name: $filter('translate')('partials.project.manage-labels.types.LIST'), type: "LIST" }
+                { name: $filter('translate')('project.manage.labels.types.NULL'), type: "NULL" },
+                { name: $filter('translate')('project.manage.labels.types.STRING'), type: "STRING" },
+                { name: $filter('translate')('project.manage.labels.types.TIMESTAMP'), type: "TIMESTAMP" },
+                { name: $filter('translate')('project.manage.labels.types.INT'), type: "INT" },
+                { name: $filter('translate')('project.manage.labels.types.CARD'), type: "CARD" },
+                { name: $filter('translate')('project.manage.labels.types.USER'), type: "USER" },
+                { name: $filter('translate')('project.manage.labels.types.LIST'), type: "LIST" }
             ];
         };
-        
-        
+
+
         function addNewLabel(labelToAdd) {
             labelToAdd = labelToAdd || {value: undefined, color: undefined, type: undefined};
 

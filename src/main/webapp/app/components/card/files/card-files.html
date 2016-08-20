@@ -35,15 +35,15 @@
                 </div>
             </div>
         </md-card-content>
-        <md-card-actions data-lvg-has-permission="CREATE_FILE" layout="row" layout-align="start center">
-            <div flex="nogrow">
+        <md-card-actions data-lvg-has-permission="CREATE_FILE" class="row start-xs middle-xs row-inherit">
+            <div class="flex no-grow">
                 <input type="file" name="files" id="files" class="lvg-input-file__input"
                        nv-file-select uploader="$ctrl.uploader" multiple/>
-                <label class="lvg-input-file__label md-button md-raised md-primary" for="files">
+                <label class="lvg-input-file__label md-button md-primary" for="files">
                     <span translate>button.filesSelect</span>
                 </label>
             </div>
-            <div class="lvg-card-files__upload-notice" flex>
+            <div class="lvg-card-files__upload-notice flex">
                 <span data-translate>card.files.drop</span>
             </div>
         </md-card-actions>

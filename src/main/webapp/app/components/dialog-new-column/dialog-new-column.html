@@ -1,4 +1,4 @@
-<form name="dialogNewColumnForm" data-ng-submit="$ctrl.createColumn($ctrl.columnToCreate);" flex="column" layout="column">
+<form name="dialogNewColumnForm" data-ng-submit="$ctrl.createColumn($ctrl.columnToCreate);">
     <md-dialog-content class="md-dialog-content">
         <h2 class="md-title">FIXME add column</h2>
         <md-input-container>
@@ -16,7 +16,7 @@
             </md-select>
         </md-input-container>
     </md-dialog-content>
-    <md-dialog-actions>
+    <md-dialog-actions class="">
         <md-button type="submit" class="md-primary"><span translate>button.confirm</span></md-button>
         <md-button ng-click="$ctrl.cancel()" class="md-primary"><span translate>button.cancel</span></md-button>
     </md-dialog-actions>

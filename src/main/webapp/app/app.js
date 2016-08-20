@@ -26,7 +26,7 @@
 
 	var module = angular.module('lavagna', [ 'ui.router', 'lavagna.services',
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
-			'ngSanitize',
+			'ngSanitize', 'ngMessages',
 			'pascalprecht.translate',
 			'angularFileUpload', 'ngMaterial', 'ngAvatar']);
 
@@ -343,9 +343,6 @@
 		}).state('projectManage.access', {
 			url : 'access/',
 			template: '<lvg-project-manage-access project="rslvr.project"></lvg-project-manage-access>'
-		}).state('projectManage.status', {
-			url : 'status/',
-			template: '<lvg-project-manage-status project="rslvr.project"></lvg-project-manage-status>'
 		}).state('projectManage.boards', {
 			url : 'boards/',
 			template : '<lvg-project-manage-boards project="rslvr.project"></lvg-project-manage-boards>'
@@ -515,7 +512,11 @@
 			.icon('take',               'svg/ic_assignment_ind_black_48px.svg')
 			.icon('surrender',          'svg/ic_assignment_returned_black_48px.svg')
 			.icon('upload',             'svg/ic_cloud_upload_black_48px.svg')
-			.icon('replay',              'svg/ic_replay_black_48px.svg')
+			.icon('replay',             'svg/ic_replay_black_48px.svg')
+			.icon('align_top',          'svg/ic_vertical_align_top_black_48px.svg')
+            .icon('align_bottom',       'svg/ic_vertical_align_bottom_black_48px.svg')
+            .icon('milestone_open',     'svg/milestone-open.svg')
+            .icon('milestone_closed',   'svg/milestone-closed.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

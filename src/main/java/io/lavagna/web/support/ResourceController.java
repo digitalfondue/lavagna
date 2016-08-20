@@ -236,19 +236,16 @@ public class ResourceController {
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
                     "/js/angular-avatar.min.js",//
-                    
-                    
+
+
                     //
                     "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
-					
+
 					"/js/highlight.pack.js",//
 					"/js/marked.js",//
 					"/js/Sortable.js",//
 					"/js/sockjs.min.js", "/js/stomp.min.js",//
                     //
-                    
-                    
-					
 					"/js/search-parser.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js")) {
@@ -322,7 +319,7 @@ public class ResourceController {
 
             //make sure we add the css in the right order
             concatenateResourcesWithExtension(context, "/css/", ".css", cssOs, ba);
-
+            concatenateResourcesWithExtension(context, "/app/ui/", ".css", cssOs, ba);
             concatenateResourcesWithExtension(context, "/app/components/", ".css", cssOs, ba);
 
 			cssCache.set(cssOs.toByteArray());

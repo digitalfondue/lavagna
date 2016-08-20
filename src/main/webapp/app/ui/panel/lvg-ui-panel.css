@@ -1,0 +1,76 @@
+.lvg-panel {
+	display: block;
+	overflow: hidden;
+	background-color: white;
+	padding: 0;
+	margin-left: 8px;
+	margin-right: 8px;
+	box-sizing: border-box;
+	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+.lvg-panel__head {
+	font-size: 14px;
+	font-weight: normal;
+	word-wrap: break-word;
+	padding: 10px 10px 0 10px;
+}
+
+.lvg-panel__head-only {
+	padding-bottom: 10px;
+}
+
+.lvg-panel__head-title {
+	padding: 0;
+	font-size: 16px;
+}
+
+.lvg-panel__head-title-addon {
+	padding: 0;
+	font-size: 14px;
+}
+
+.lvg-panel__body {
+	clear: both;
+	display: block;
+	padding: 5px 10px 10px 10px;
+	margin: 0;
+	font-size: 14px;
+}
+
+.lvg-panel__body-separated {
+	border-top: 1px solid #dddddd;
+	padding-top: 10px;
+}
+
+.lvg-panel__body-full {
+	clear: both;
+	display: block;
+	padding: 10px 10px;
+	margin: 0;
+	font-size: 14px;
+}
+
+.lvg-panel__footer {
+	background-color: #f5f5f5;
+	border-top: 1px solid #d0d0d0;
+	padding: 10px 10px 10px 10px;
+	margin: 0 0 0 0;
+}
+
+.lvg-panel__footer-light {
+	border-top: 1px solid #d0d0d0;
+	padding: 10px 0 10px 0;
+	margin: 0 10px 0 10px;
+}
+
+.lvg-panel__footer-content, .lvg-panel__footer-light-content {
+	padding: 0;
+}
+
+.disabled.lvg-panel__body,
+.disabled.lvg-panel__body-full,
+.disabled.lvg-panel__footer {
+	pointer-events: none;
+	opacity: 0.5;
+}
