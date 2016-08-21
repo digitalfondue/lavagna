@@ -47,17 +47,30 @@
             var a = $window.document.createElement('a');
             $element.append(a);
 
-            UserCache.user(userId).then(function (user) {
-                var element = angular.element(a);
+            var updateUserFromCache = function (userId) {
 
-                element.attr('href', $state.href('user', {provider: user.provider, username: user.username}));
+                UserCache.user(userId).then(function (user) {
+                    var element = angular.element(a);
 
-                element.text($filter('formatUser')(user));
-                if (!user.enabled) {
-                    element.addClass('user-disabled');
-                }
+                    element.attr('href', $state.href('user', {provider: user.provider, username: user.username}));
+                    element.text($filter('formatUser')(user));
 
+                    if (!user.enabled) {
+                        element.addClass('user-disabled');
+                    }
+
+                });
+            };
+
+            var toDismiss = $rootScope.$on('refreshUserCache-' + userId, function () {
+                updateUserFromCache(userId);
             });
+
+            ctrl.$onDestroy = function onDestroy() {
+                toDismiss();
+            };
+
+            updateUserFromCache(userId);
         }
 
         //-------------
@@ -121,6 +134,8 @@
                     shortName: card.boardShortName,
                     seqNr: card.sequence
                 }));
+
+                aElement.attr('title', card.name);
 
                 updateCardClass(card, spanElement);
 
