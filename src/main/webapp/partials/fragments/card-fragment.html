@@ -55,13 +55,13 @@
                     data-bo-class="{'lvg-due-date-tomorrow': (card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) == -1),
                                     'lvg-due-date-now': (card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) == 0),
                                     'lvg-due-date-past': (card.columnDefinition !== 'CLOSED' && (label.labelValueTimestamp | daysDiff) > 0)}">
-					<span class="fa fa-clock-o"></span> <lvg-label-val value="::label"></lvg-label-val>
+					<span class="fa fa-clock-o"></span> <lvg-label-val value="::label" project="::card.projectShortName"></lvg-label-val>
 				</li>
 				<li data-ng-if="hasSystemLabelByName('MILESTONE', card.labels)" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'MILESTONE'} track by label.labelValueId"
                     data-ng-class="{'lvg-due-date-tomorrow': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == -1),
                                     'lvg-due-date-now': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) == 0),
                                     'lvg-due-date-past': (card.columnDefinition !== 'CLOSED' && (label.releaseDate | daysDiff) > 0)}">
-					<span class="fa fa-map-marker"></span> <lvg-label-val value="::label"></lvg-label-val>
+					<span class="fa fa-map-marker"></span> <lvg-label-val value="::label" project="::card.projectShortName"></lvg-label-val>
 				</li>
 			</ul>
 		</div>
@@ -69,10 +69,10 @@
 			<ul class="assigned-users">
 				<li class="assigned-user" data-bindonce data-ng-repeat="label in card.labels | filter:{labelDomain:'SYSTEM', labelName:'ASSIGNED'} track by label.labelValueId">
 					<div data-bo-if="!readOnly">
-						<lvg-label-val value="::label"></lvg-label-val>
+						<lvg-label-val value="::label" project="::card.projectShortName"></lvg-label-val>
 					</div>
 					<div data-bo-if="readOnly">
-						<lvg-label-val data-read-only value="::label"></lvg-label-val>
+						<lvg-label-val data-read-only value="::label" project="::card.projectShortName"></lvg-label-val>
 					</div>
 				</li>
 			</ul>
@@ -84,10 +84,10 @@
 					data-bo-style="label.labelColor|labelBackground"
 					data-bo-class="label.labelColor|labelBackgroundClass">
 					<div data-bo-if="!readOnly">
-						<lvg-label value="::label" name="::label.labelName"></lvg-label>
+						<lvg-label value="::label" project="::card.projectShortName"></lvg-label>
 					</div>
 					<div data-bo-if="readOnly">
-						<lvg-label data-read-only value="::label" name="::label.labelName"></lvg-label>
+						<lvg-label data-read-only value="::label" project="::card.projectShortName"></lvg-label>
 					</div>
 				</li>
 			</ul>

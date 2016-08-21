@@ -6,12 +6,13 @@
 
     components.component('lvgLabelVal', {
         bindings: {
-            value: '='
+            value: '=',
+            project:'<'
         },
-        controller: ['$filter', '$element', '$rootScope', '$state', '$stateParams', '$window', 'CardCache', 'UserCache', 'ProjectCache', lvgLabelValV2Ctrl]
+        controller: ['$filter', '$element', '$rootScope', '$state', '$window', 'CardCache', 'UserCache', 'ProjectCache', lvgLabelValV2Ctrl]
     });
 
-    function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $stateParams, $window, CardCache, UserCache, ProjectCache) {
+    function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $window, CardCache, UserCache, ProjectCache) {
         var ctrl = this;
         var ctrl_value = ctrl.value;
 
@@ -29,7 +30,7 @@
             } else if (type === 'CARD') {
                 handleCard(value.valueCard);
             } else if (type === 'LIST') {
-                handleList(ctrl_value.labelId, value.valueList);
+                handleList(ctrl.project, ctrl_value.labelId, value.valueList);
             } else if (type === 'TIMESTAMP') {
                 appendValueToElement($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
             }
@@ -61,19 +62,19 @@
 
         //-------------
 
-        function handleList(labelId, valueList) {
+        function handleList(projectShortName, labelId, valueList) {
 
             var a = $window.document.createElement('a');
             $element.append(a);
 
             var updateFromCache = function (valueList) {
-                ProjectCache.getMetadata($stateParams.projectName).then(function (metadata) {
+                ProjectCache.getMetadata(projectShortName).then(function (metadata) {
                     if (metadata && metadata.labelListValues && metadata.labelListValues[valueList]) {
 
                         if (metadata.labels[labelId].domain === 'SYSTEM' && metadata.labels[labelId].name === 'MILESTONE') {
                             var element = angular.element(a);
                             element.attr('href', $state.href('projectMilestone', {
-                                projectName: $stateParams.projectName,
+                                projectName: projectShortName,
                                 milestone: metadata.labelListValues[valueList].value
                             }));
                             element.text(metadata.labelListValues[valueList].value);
@@ -92,7 +93,7 @@
                 });
             };
 
-            var toDismiss = $rootScope.$on('refreshProjectMetadataCache-' + $stateParams.projectName, function () {
+            var toDismiss = $rootScope.$on('refreshProjectMetadataCache-' + projectShortName, function () {
                 updateFromCache(valueList);
             });
 

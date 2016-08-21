@@ -28,14 +28,17 @@
 		}
 	});
 
-	directives.directive('lvgActivityLabel', function () {
+	directives.directive('lvgActivityLabel', function ($stateParams) {
 		return {
 			templateUrl: 'partials/fragments/card-activity-label-name-value-fragment.html',
 			restrict: 'A',
 			replace: true,
 			scope: {
 				activity: "=lvgActivityLabel"
-			}
+			},
+            link: function ($scope) {
+			    $scope.project = $stateParams.shortName;
+            }
 		}
 	});
 

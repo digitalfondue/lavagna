@@ -205,7 +205,7 @@
 									<p>
 										<span data-translate>card.partOf</span> <span
 											data-ng-repeat="milestone in labelValues[labelNameToId['MILESTONE']]">
-											<span><lvg-label-val value="milestone"></lvg-label-val>
+											<span><lvg-label-val value="milestone" project="::project.shortName"></lvg-label-val>
 												<span class="fa fa-times lavagna-pointer"
 												      data-ng-click="removeMilestone()"
 												      data-lvg-has-permission="UPDATE_CARD"></span>
@@ -543,8 +543,9 @@
 								</div>
 								<div class="body" data-ng-if="hasUserLabels(userLabels, labelValues)">
 									<span data-ng-repeat="(n,l) in userLabels">
-										<span data-ng-repeat="val in labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
-											<span data-lvg-label data-name="userLabels[n].name" data-value="val"> <span class="fa fa-times lavagna-pointer" data-ng-click="removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></span>
+										<span data-ng-repeat="val in labelValues[n]" class="lavagna-label" data-ng-style="l.color|labelBackground"
+                                              data-ng-class="l.color|labelBackgroundClass">
+											<lvg-label data-name="userLabels[n].name" data-value="val" data-project="project.shortName"> <span class="fa fa-times lavagna-pointer" data-ng-click="removeLabelValue(val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></span></lvg-label>
 										</span>
 									</span>
 								</div>
