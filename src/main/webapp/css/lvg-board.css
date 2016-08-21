@@ -252,9 +252,9 @@ div.card-data ul.data-info li.lvg-due-date-past {
     padding-left: 5px;
 }
 
-div.card-data ul.data-info li.lvg-due-date-tomorrow span,
-div.card-data ul.data-info li.lvg-due-date-now span,
-div.card-data ul.data-info li.lvg-due-date-past span {
+div.card-data ul.data-info li.lvg-due-date-tomorrow,
+div.card-data ul.data-info li.lvg-due-date-now,
+div.card-data ul.data-info li.lvg-due-date-past {
     color: #ffffff;
 }
 
