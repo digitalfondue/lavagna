@@ -1,6 +1,9 @@
-lvg-board-controls {		
- 	height:45px;		
+lvg-board-controls {
+ 	height:45px;
+ 	min-height: 45px;
  	line-height:45px;
+ 	display: flex;
+    flex: 0 0 auto;
 }
 
 lvg-board-controls .new-column-button {

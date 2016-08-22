@@ -1,10 +1,8 @@
-
-
-
-.lavagna-sidebar-column {
+lvg-board-sidebar {
+    display: block;
     background-color: #d5d5d5;
-    width: 290px;
-    float: left;
+    min-width: 290px;
+    height: 100%;
     margin: 4px;
     border: 0;
     border-top-left-radius: 0;
@@ -13,34 +11,35 @@
     border-top: 2px solid #aaa;
 }
 
-.lavagna-sidebar-column .panel-heading {
-    font-weight: 700;
-    background-color: #d5d5d5;
-    border: 0;
-    word-wrap: break-word;
+.lvg-board-sidebar__dropzone {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 10;
+    width: 290px;
+    min-height: 100%;
+    margin: 0;
     padding: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    margin-bottom: 8px;
 }
 
-.lavagna-sidebar-column .panel-heading .row {
-    padding: 10px 15px;
+.lvg-board-sidebar__dropzone .lavagna-card-placeholder {
+	background-color: rgba(0, 0, 0, 0.4);
+	width: 290px;
+	min-height: 100%;
+	position: absolute;
+	margin: 0;
+	padding: 0;
 }
 
-.lavagna-sidebar-column .panel-body {
-    padding: 0 7px 0 7px;
-    margin-right: 2px;
+.lvg-board-sidebar__footer {
+    flex: 0 0 auto;
+}
+
+.lvg-board-sidebar__content {
+    min-height: 0px;
+    display: block;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.lavagna-sidebar-column .panel-footer {
-    border: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-    min-height: 0;
-    background-color: #d5d5d5;
+    padding:8px;
 }
 
 

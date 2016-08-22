@@ -12,7 +12,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', 'LvgIcon', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
 	});
 	
 	//
@@ -24,16 +24,12 @@
 	
 
 
-	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, LvgIcon, $rootScope, UserCache, CardCache) {
+	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
 		
 		
-		var container = createElem('div');
-		container.appendChild(createElem('lvg-card-fragment-v2-head'));
-		container.appendChild(createElem('lvg-card-fragment-v2-data-info'));
+		var container = $element[0];
 		
-		var $container = angular.element(container);
-
 		ctrl.card = ctrl.cardRef();
 		//
 		ctrl.boardShortName = ctrl.card.boardShortName,
@@ -61,14 +57,12 @@
         //
         
         
-        var headElem = $container.find('lvg-card-fragment-v2-head');
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(headElem, $scope, $state, $location, $filter, User);
+        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $state, $location, $filter, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
         
-        var dataInfoElem = $container.find('lvg-card-fragment-v2-data-info');
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, dataInfoElem, LvgIcon, $state, $rootScope, UserCache, CardCache);
+        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $state, $rootScope, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
         
@@ -80,8 +74,6 @@
         if(ctrl.boardView) {
         	container.className += ' lavagna-board-panel';
         }
-		
-		$element[0].appendChild(container);
         
         ctrl.$onDestroy = function() {
         	dataInfoCtrl.$onDestroy();
@@ -102,9 +94,8 @@
 	
 	
 	//--------------------
-	function lvgCardFragmentV2HeadCtrl($element, $scope, $state, $location, $filter, User) {
+	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $state, $location, $filter, User) {
 		var ctrl = this;
-		var domElement = $element[0];
 
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
 			var parent = ctrl.lvgCardFragmentV2;
@@ -161,9 +152,9 @@
 
 			function isSelected() {
 				if(parent.boardView) {
-					return (selected[card.columnId] && (selected[card.columnId][card.id] === true));
+					return (selected[card.columnId] && (selected[card.columnId][card.id])) === true;
 				} else {
-					return (selected[card.projectShortName] && (selected[card.projectShortName][card.id] === true));
+					return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
 				}
 			};
 
@@ -179,14 +170,14 @@
 				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.columnId] = selected[card.columnId] || {};
-						selected[card.columnId][card.id] = !selected[card.columnId][card.id]
+						selected[card.columnId][card.id] = c.checked;
 					});
     			});
 			} else {
 				c.addEventListener('click', function() {
 					$scope.$applyAsync(function() {
 						selected[card.projectShortName] = selected[card.projectShortName] || {};
-						selected[card.projectShortName][card.id] = !selected[card.projectShortName][card.id]
+						selected[card.projectShortName][card.id] = c.checked;
 					});
 				});
 			}
@@ -247,18 +238,18 @@
 
 	function addDueDateClasses(li, isTomorrow, isNow, isPast) {
     	if(isTomorrow) {
-    		li.className += ' lvg-due-date-tomorrow';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow lvg-card-fragment-v2__card-data__white';
     	}
     	if(isNow) {
-    		li.className += ' lvg-due-date-now';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now lvg-card-fragment-v2__card-data__white';
     	}
     	if(isPast) {
-    		li.className += ' lvg-due-date-past';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past lvg-card-fragment-v2__card-data__white';
     	}
     }
 	
 	
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, LvgIcon, $state, $rootScope, UserCache, CardCache) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $state, $rootScope, UserCache, CardCache) {
 		var ctrl = this;
 
 		var card;
@@ -284,16 +275,12 @@
 
 			if(liComment || liActionList || liFiles || liDueDate || liMilestone) {
 				var divWrapper = createElem('div');
-				divWrapper.className = 'card-data';
-				var ul = createElem('ul');
-				ul.className = 'data-info';
-				divWrapper.appendChild(ul);
-				$element[0].appendChild(divWrapper);
-				appendIfNotNull(ul, liComment);
-				appendIfNotNull(ul, liActionList);
-				appendIfNotNull(ul, liFiles);
-				appendIfNotNull(ul, liDueDate);
-				appendIfNotNull(ul, liMilestone);
+				$element.appendChild(divWrapper);
+				appendIfNotNull(divWrapper, liComment);
+				appendIfNotNull(divWrapper, liActionList);
+				appendIfNotNull(divWrapper, liFiles);
+				appendIfNotNull(divWrapper, liDueDate);
+				appendIfNotNull(divWrapper, liMilestone);
 			}
 
 			handleAssigned();
@@ -346,10 +333,11 @@
         		return null;
         	}
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(li, LvgIcon.comment, card.counts['COMMENT'].count);
-    		return li;
+    		appendIconAndText(div, 'comment', card.counts['COMMENT'].count);
+    		return div;
         }
 
         function handleActionList() {
@@ -364,19 +352,20 @@
         	var uncheckedCount = getCountOrZero('ACTION_UNCHECKED');
         	var actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
     		var counts = card.counts;
 
     		if(checkedCount > 0 && uncheckedCount == 0) {
-    			li.className += ' lvg-action-full';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-full lvg-card-fragment-v2__card-data__white';
     		}
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
-    			li.className += ' lvg-action-not-done';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done lvg-card-fragment-v2__card-data__white';
     		}
 
-    		appendIconAndText(li, LvgIcon.list, actionItemsSummary);
-        	return li;
+    		appendIconAndText(div, 'list', actionItemsSummary);
+        	return div;
         }
 
 
@@ -389,11 +378,12 @@
         	}
 
         	var filesCount = hasFiles ? getCountOrZero('FILE') : '';
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		appendIconAndText(li, LvgIcon.file, filesCount);
+    		appendIconAndText(div, 'file', filesCount);
 
-    		return li;
+    		return div;
         }
 
         function handleDueDate() {
@@ -402,23 +392,24 @@
         	if(!hasDueDateLabel) {
         		return null;
         	}
-
         	var dueDateLabel = dueDateLabels[0];
-        	var daysDiff = $filter('daysDiff')(dueDateLabel.labelValueTimestamp);
+        	//inline daysDiff filter
+        	var dueDate = moment(dueDateLabel.labelValueTimestamp);
+        	var daysDiff = moment().startOf('day').diff(dueDate, 'days');
+        	
 
         	var isTomorrow = notClosed  && daysDiff == -1;
         	var isNow = notClosed && daysDiff == 0;
         	var isPast = notClosed && daysDiff > 0;
 
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
-    		addDueDateClasses(li, isTomorrow, isNow, isPast);
+    		addDueDateClasses(div, isTomorrow, isNow, isPast);
 
-    		var value = dueDateLabel.value || dueDateLabel;
-
-    		appendIconAndText(li, LvgIcon.clock, $filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
-    		return li;
+    		appendIconAndText(div, 'clock', $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
+    		return div;
         }
 
         function handleMilestone() {
@@ -444,7 +435,8 @@
         		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
         	}
 
-        	var li = createElem('li');
+        	var div = createElem('div');
+        	div.className = 'lvg-card-fragment-v2__card-data'
 
         	if(releaseDateStr) {
         		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
@@ -454,11 +446,11 @@
             	var isNow = (notClosed && daysDiff == 0);
             	var isPast = (notClosed && daysDiff > 0);
 
-        		addDueDateClasses(li, isTomorrow, isNow, isPast);
+        		addDueDateClasses(div, isTomorrow, isNow, isPast);
         	}
 
-    		appendIconAndText(li, LvgIcon.milestone, projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
-    		return li;
+    		appendIconAndText(div, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
+    		return div;
         }
 
         //------------
@@ -478,7 +470,7 @@
         		li.appendChild(a);
         		ul.appendChild(li);
         	}
-        	$element[0].appendChild(divWrapper);
+        	$element.appendChild(divWrapper);
         }
         //------------
         var labelBackgroundClass = $filter('labelBackgroundClass');
@@ -496,10 +488,8 @@
 
 
         	var divWrapper = createElem('div');
-        	divWrapper.className = 'card-labels';
-        	var ul = createElem('ul');
-        	ul.className = 'labels';
-        	divWrapper.appendChild(ul);
+        	divWrapper.className = 'lvg-card-fragment-v2__label-container';
+        	
         	for(var i = 0; i < userCreatedLabels.length; i++) {
         		var value = userCreatedLabels[i];
         		var bg = labelBackground(projectMetadata.labels[value.labelId].color);
@@ -534,25 +524,23 @@
         		}
 
         		//
-        		var li = createElem('li');
-        		li.className = 'lavagna-label lavagna-label-no-controls ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
-        		li.style.backgroundColor = bg['background-color'];
-        		li.textContent = nameAndSeparator;
+        		var div = createElem('div');
+        		div.className = 'lvg-card-fragment-v2__label ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
+        		div.style.backgroundColor = bg['background-color'];
+        		div.textContent = nameAndSeparator;
         		if(userOrCardLink) {
-        			li.appendChild(userOrCardLink);
+        			div.appendChild(userOrCardLink);
         		}
 
-        		ul.appendChild(li);
+        		divWrapper.appendChild(div);
         	}
-        	$element[0].appendChild(divWrapper);
+        	$element.appendChild(divWrapper);
         }
 
         //------------
 
-        function appendIconAndText(li, iconFactory, text) {
-        	var icon = createElem('md-icon');        	
-        	icon.appendChild(iconFactory());
-    		li.appendChild(icon);
+        function appendIconAndText(li, iconName, text) {
+    		li.className += (' lvg-card-fragment-v2__card-data__icon_' + iconName)
     		li.appendChild(createText(' ' + text));
         }
 

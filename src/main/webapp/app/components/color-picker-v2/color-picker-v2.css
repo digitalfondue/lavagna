@@ -1,0 +1,25 @@
+.lvg-color-picker-v2__button {
+	width:24px;
+	height:24px;
+	display:inline-block;
+	border:2px solid rgba(0,0,0,0);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.lvg-color-picker-v2__button:hover,
+.lvg-color-picker-v2__button:focus {
+	border-color: rgba(1,1,1,0.4);
+	outline:none;
+}
+
+
+.lvg-color-picker-v2__panel {
+	background-color: white;
+	padding:8px;
+	width: 144px;
+}
+
+.lvg-color-picker-v2__button_in-panel {
+	margin: 4px;
+}

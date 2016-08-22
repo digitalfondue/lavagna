@@ -240,7 +240,7 @@ public class ResourceController {
                     
                     //
                     "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
-					"/js/jquery.min.js",//
+					
 					"/js/highlight.pack.js",//
 					"/js/marked.js",//
 					"/js/Sortable.js",//
@@ -248,7 +248,7 @@ public class ResourceController {
                     //
                     
                     
-					"/js/spectrum.js", //
+					
 					"/js/search-parser.js",//
 					"/js/moment.min.js",//
 					"/js/Chart.min.js")) {
