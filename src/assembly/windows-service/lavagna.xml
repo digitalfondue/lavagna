@@ -5,4 +5,5 @@
 	<executable>java</executable>
 	<arguments>-Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar ..\..\lavagna\lavagna-jetty-console.war</arguments>
 	<logmode>rotate</logmode>
+    <stopparentprocessfirst>true</stopparentprocessfirst>
 </service>
