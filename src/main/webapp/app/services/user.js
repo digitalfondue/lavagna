@@ -8,7 +8,7 @@
         return data.data
     };
 
-    services.factory('User', function ($http, $q, $stateParams, $window) {
+    services.factory('User', function ($http, $q, $stateParams, $window, $timeout) {
 
         var cached = null;
 
@@ -17,6 +17,10 @@
             currentUser.permissionsForProject[projectName] !== undefined &&
             currentUser.permissionsForProject[projectName][permissionToCheck] !== undefined));
         };
+        
+        
+        var pendingUserRequests = null;
+        var usersToRequestMap = {};
 
         return {
         	checkPermissionInstant : checkPermission,
@@ -93,7 +97,44 @@
             },
 
             user: function (userId) {
-                return $http.get('api/user/' + userId).then(extractData);
+            	
+            	//try to accumulate enough requests to do a bulk one, this avoid a storm of little requests
+            	
+            	if(pendingUserRequests) {
+            		//remove pending requests
+            		$timeout.cancel(pendingUserRequests);
+            		pendingUserRequests = null;
+            	}
+            	
+            	var deferred = $q.defer();
+            	
+            	if(!usersToRequestMap[userId]) {
+            		usersToRequestMap[userId] = [];
+            	}
+            	
+            	usersToRequestMap[userId].push(deferred);
+            	
+            	pendingUserRequests = $timeout(function() {
+            		
+            		var ids = [];
+            		angular.forEach(usersToRequestMap, function(v, uid) {
+            			ids.push(uid);
+            		});
+            		
+            		$http.get('api/user/bulk', {params: {ids: ids}}).then(function(res) {
+            			angular.forEach(usersToRequestMap, function(v, uid) {
+            				angular.forEach(usersToRequestMap[uid], function(promReq) {
+            					promReq.resolve(res.data[uid]);
+            				});
+            			});
+            			
+            			usersToRequestMap = {};
+                		pendingUserRequests = null;
+            		});
+
+            	}, 30);
+            	
+            	return deferred.promise;
             },
 
             getUserProfile: function (provider, username, page) {
