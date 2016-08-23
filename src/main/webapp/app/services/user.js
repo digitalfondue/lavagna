@@ -106,13 +106,12 @@
             		pendingUserRequests = null;
             	}
             	
-            	var deferred = $q.defer();
-            	
-            	if(!usersToRequestMap[userId]) {
-            		usersToRequestMap[userId] = [];
+            	if(usersToRequestMap[userId]) {
+            		return usersToRequestMap[userId].promise;
             	}
-            	
-            	usersToRequestMap[userId].push(deferred);
+
+            	usersToRequestMap[userId] = $q.defer();
+            	var deferred = usersToRequestMap[userId];
             	
             	pendingUserRequests = $timeout(function() {
             		
@@ -123,11 +122,8 @@
             		
             		$http.get('api/user/bulk', {params: {ids: ids}}).then(function(res) {
             			angular.forEach(usersToRequestMap, function(v, uid) {
-            				angular.forEach(usersToRequestMap[uid], function(promReq) {
-            					promReq.resolve(res.data[uid]);
-            				});
+            				usersToRequestMap[uid].resolve(res.data[uid]);
             			});
-            			
             			usersToRequestMap = {};
                 		pendingUserRequests = null;
             		});
