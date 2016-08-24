@@ -4,7 +4,7 @@
 
     var directives = angular.module('lavagna.directives');
 
-    directives.directive('lvgCardFragment', function (Card, LabelCache) {
+    directives.directive('lvgCardFragment', function (Card, ProjectCache) {
         return {
             templateUrl: 'partials/fragments/card-fragment.html',
             restrict: 'E',
@@ -53,8 +53,11 @@
                 };
 
                 var getMilestoneDate = function (label) {
-                    LabelCache.findLabelListValue(label.labelId, label.labelValueList).then(function (value) {
-                        label.releaseDate = value.metadata.releaseDate ? moment.utc(value.metadata.releaseDate, 'DD.MM.YYYY').valueOf() : null;
+                    ProjectCache.getMetadata($scope.project).then(function (metadata) {
+                        if (metadata && metadata.labelListValues && metadata.labelListValues[label.labelValueList]) {
+                            var value = metadata.labelListValues[label.labelValueList];
+                            label.releaseDate = value.metadata.releaseDate ? moment.utc(value.metadata.releaseDate, 'DD.MM.YYYY').valueOf() : null;
+                        }
                     });
                 };
 
