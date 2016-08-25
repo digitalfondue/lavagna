@@ -1,13 +1,13 @@
 <div class="lvg-board-column__container" data-lvg-update-column-size>
-    <div class="lvg-board-column__header" data-ng-style="::(boardColumnCtrl.metadata.columnsDefinition[boardColumnCtrl.column.status].color|columnColor)">
+    <div class="lvg-board-column__header" data-ng-style="::($ctrl.metadata.columnsDefinition[$ctrl.column.status].color|columnColor)">
         <div class="lvg-board-column__header-title"
-             data-ng-hide="boardColumnCtrl.columnState.editColumnName"
+             data-ng-hide="$ctrl.columnState.editColumnName"
              layout="row">
             <div class="lvg-board-column__header-title-text lvg-column__handle" flex>
                 <span data-lvg-has-permission="RENAME_COLUMN"
-                      data-ng-click="boardColumnCtrl.columnState.editColumnName=true; boardColumnCtrl.columnState.newColumnName = boardColumnCtrl.column.name"
-                      class="lavagna-hide lvg-edit" title="{{boardColumnCtrl.column.name}}">{{boardColumnCtrl.column.name}}</span>
-                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{boardColumnCtrl.column.name}}</span>
+                      data-ng-click="$ctrl.columnState.editColumnName=true; $ctrl.columnState.newColumnName = $ctrl.column.name"
+                      class="lavagna-hide lvg-edit" title="{{$ctrl.column.name}}">{{$ctrl.column.name}}</span>
+                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{$ctrl.column.name}}</span>
             </div>
             <div class="lvg-board-column__header-menu"
                  data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN"
@@ -15,44 +15,44 @@
                 <md-menu>
                     <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"><span class="fa fa-chevron-down"></span></md-button>
                     <md-menu-content>
-                        <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="boardColumnCtrl.newCard()">{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="boardColumnCtrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="boardColumnCtrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="$ctrl.newCard()">{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">
                             <md-menu>
                                 <md-button ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
                                 <md-menu-content>
-                                    <md-menu-item data-ng-repeat="definition in boardColumnCtrl.metadata.columnsDefinition | addColDefOrder | orderBy:'order'">
-                                        <md-button data-ng-click="boardColumnCtrl.setColumnDefinition(definition.id);"><span data-ng-style="::(definition.color | color)" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
+                                    <md-menu-item data-ng-repeat="definition in $ctrl.metadata.columnsDefinition | addColDefOrder | orderBy:'order'">
+                                        <md-button data-ng-click="$ctrl.setColumnDefinition(definition.id);"><span data-ng-style="::(definition.color | color)" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
                                     </md-menu-item>
                                 </md-menu-content>
                             </md-menu>
                         </md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'ARCHIVE')">{{::('partials.fragments.columns-fragment.moveAllToArchive' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'BACKLOG')">{{::('partials.fragments.columns-fragment.moveAllToBacklog' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="boardColumnCtrl.moveAllCardsInColumn(boardColumnCtrl.cardsInColumn, 'TRASH')">{{::('partials.fragments.columns-fragment.moveAllToTrash' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('ARCHIVE')">{{::('partials.fragments.columns-fragment.moveColumnToArchive' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('BACKLOG')">{{::('partials.fragments.columns-fragment.moveColumnToBacklog' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="boardColumnCtrl.moveColumn('TRASH')">{{::('partials.fragments.columns-fragment.moveColumnToTrash' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'ARCHIVE')">{{::('partials.fragments.columns-fragment.moveAllToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'BACKLOG')">{{::('partials.fragments.columns-fragment.moveAllToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'TRASH')">{{::('partials.fragments.columns-fragment.moveAllToTrash' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('ARCHIVE')">{{::('partials.fragments.columns-fragment.moveColumnToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('BACKLOG')">{{::('partials.fragments.columns-fragment.moveColumnToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('TRASH')">{{::('partials.fragments.columns-fragment.moveColumnToTrash' | translate)}}</md-button></md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>
         </div>
-        <div class="lvg-board-column__header-edit" data-ng-if="boardColumnCtrl.columnState.editColumnName">
+        <div class="lvg-board-column__header-edit" data-ng-if="$ctrl.columnState.editColumnName">
             <form layout="row"
-                  data-ng-submit="boardColumnCtrl.saveNewColumnName(boardColumnCtrl.columnState.newColumnName); boardColumnCtrl.columnState.editColumnName=false">
+                  data-ng-submit="$ctrl.saveNewColumnName($ctrl.columnState.newColumnName); $ctrl.columnState.editColumnName=false">
                 <div flex>
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="boardColumnCtrl.columnState.newColumnName">
+                        <input ng-model="$ctrl.columnState.newColumnName">
                     </md-input-container>
                 </div>
                 <div flex="nogrow">
-                    <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!boardColumnCtrl.columnState.newColumnName">
+                    <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!$ctrl.columnState.newColumnName">
                         <md-icon md-svg-icon="ok"></md-icon>
                     </md-button>
                 </div>
                 <div flex="nogrow">
-                    <md-button class="lvg-small-icon-button" ng-click="boardColumnCtrl.columnState.editColumnName=false">
+                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.columnState.editColumnName=false">
                         <md-icon md-svg-icon="close"></md-icon>
                     </md-button>
                 </div>
@@ -60,17 +60,17 @@
         </div>
     </div>
     <div class="lvg-board-column__content"
-         lvg-dnd="boardColumnCtrl.cardsInColumn"
-         lvg-dnd-drop="boardColumnCtrl.dropCard($index)"
-         lvg-dnd-dragstart="boardColumnCtrl.dragStartCard($item)"
-         lvg-dnd-dragend="boardColumnCtrl.dragEndCard()"
+         lvg-dnd="$ctrl.cardsInColumn"
+         lvg-dnd-drop="$ctrl.dropCard($index)"
+         lvg-dnd-dragstart="$ctrl.dragStartCard($item)"
+         lvg-dnd-dragend="$ctrl.dragEndCard()"
          lvg-dnd-opts="{group: 'card', animation: 150, filter:'input'}">
         <lvg-card-fragment-v2
-         ng-repeat="card in boardColumnCtrl.cardsInColumn | filter : boardColumnCtrl.searchFilter.cardFilter track by (card.hash+boardColumnCtrl.metadataRef().hash)"
+         ng-repeat="card in $ctrl.cardsInColumn | filter : $ctrl.searchFilter.cardFilter track by (card.hash+$ctrl.metadataRef().hash)"
          view="board"
          card-ref="card"
-         user-ref="boardColumnCtrl.user"
-         project-metadata-ref="boardColumnCtrl.metadataRef()"
-         selected-ref="boardColumnCtrl.selectedCards"></lvg-card-fragment-v2>
+         user-ref="$ctrl.user"
+         project-metadata-ref="$ctrl.metadataRef()"
+         selected-ref="$ctrl.selectedCards"></lvg-card-fragment-v2>
     </div>
 </div>

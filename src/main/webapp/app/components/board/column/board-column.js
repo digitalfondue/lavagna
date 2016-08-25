@@ -4,26 +4,19 @@
 
     var components = angular.module('lavagna.components');
 
-    components.directive('lvgBoardColumn', BoardColumnComponent);
-
-    function BoardColumnComponent() {
-        return {
-            restrict: 'E',
-            controller: BoardColumnController,
-            controllerAs: 'boardColumnCtrl',
-            scope: true,
-            bindToController: {
-                projectShortName: '@',
-                metadataRef: '&',
-                boardShortName:'@',
-                column: '=',
-                selectedCards: '=',
-                searchFilterRef: '&',
-                userRef:'&'
-            },
-            templateUrl: 'app/components/board/column/board-column.html'
-        }
-    }
+    components.component('lvgBoardColumn', {
+    	controller: BoardColumnController,
+        bindings: {
+            projectShortName: '@',
+            metadataRef: '&',
+            boardShortName:'@',
+            column: '=',
+            selectedCards: '=',
+            searchFilterRef: '&',
+            userRef:'&'
+        },
+        templateUrl: 'app/components/board/column/board-column.html'
+    });
 
     function BoardColumnController($scope, $filter, $mdDialog, $element, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
         var ctrl = this;
