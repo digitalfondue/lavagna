@@ -100,17 +100,19 @@
             	
             	pendingUserRequests = $timeout(function() {
             		
+            		pendingUserRequests = null;
+            		var reqMap = angular.copy(usersToRequestMap);
+            		usersToRequestMap = {};
+            		
             		var ids = [];
-            		angular.forEach(usersToRequestMap, function(v, uid) {
+            		angular.forEach(reqMap, function(v, uid) {
             			ids.push(uid);
             		});
             		
             		$http.get('api/user/bulk', {params: {ids: ids}}).then(function(res) {
-            			angular.forEach(usersToRequestMap, function(v, uid) {
-            				usersToRequestMap[uid].resolve(res.data[uid]);
+            			angular.forEach(reqMap, function(v, uid) {
+            				reqMap[uid].resolve(res.data[uid]);
             			});
-            			usersToRequestMap = {};
-                		pendingUserRequests = null;
             		});
 
             	}, 30);
