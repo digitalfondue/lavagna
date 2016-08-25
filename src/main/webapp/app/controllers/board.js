@@ -108,7 +108,7 @@
 
 	module.controller('BoardCtrl', function($rootScope, $stateParams, $scope, $location, $filter, $log, $timeout, $http, $modal,
 			Board, Card, Project, LabelCache, Label, Search, StompClient, User, Notification,//
-			project, board //resolved by ui-router
+			project, board, projectMetadata //resolved by ui-router
 			) {
 
 		$scope.project = project;

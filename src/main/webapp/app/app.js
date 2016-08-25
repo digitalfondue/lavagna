@@ -327,7 +327,10 @@
 				},
 				board : function(BoardCache, $stateParams) {
 					return BoardCache.board($stateParams.shortName);
-				}
+				},
+                projectMetadata : function(ProjectCache, $stateParams) {
+                    return ProjectCache.getMetadata($stateParams.projectName);
+                }
 			}
 		}).state('projectBoard.card', {
 			url : '-{seqNr:[0-9]+}/',
