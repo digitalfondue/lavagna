@@ -130,7 +130,7 @@
             			});
             		});
 
-            	}, 30);
+            	}, 50);
             	
             	return deferred.promise;
             },
