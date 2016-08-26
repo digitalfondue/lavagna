@@ -124,18 +124,6 @@
         //
 
         //-----------------------------------------------------------------------------------------------------
-        //--- TODO cleanup
-
-        //
-
-        Project.columnsDefinition(projectName).then(function(definitions) {
-            ctrl.columnsDefinition = definitions;
-        });
-        //
-
-        ctrl.isEmpty = function(obj) {
-            return Object.keys(obj).length === 0;
-        };
 
         //----------
         ctrl.columnsLocation = 'BOARD';
