@@ -12,7 +12,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
 	});
 	
 	//
@@ -24,7 +24,7 @@
 	
 
 
-	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache) {
+	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache, $mdPanel) {
 		var ctrl = this;
 		
 		
@@ -57,7 +57,7 @@
         //
         
         
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $state, $location, $filter, User);
+        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $state, $location, $filter, $mdPanel, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
@@ -94,7 +94,7 @@
 	
 	
 	//--------------------
-	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $state, $location, $filter, User) {
+	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $state, $location, $filter, $mdPanel, User) {
 		var ctrl = this;
 
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
@@ -110,6 +110,14 @@
 
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true);
 				baseDiv.appendChild(a);
+				
+				//card fragment menu
+				if(User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+					var button = createElem('button');
+					button.className = 'lvg-card-fragment-v2__menu';
+					baseDiv.appendChild(button);
+					button.addEventListener('click', prepareOpenCardMenu($mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user.id));
+				}
 				//<div lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
                 //  <div class="lavagna-card-caret-container lvg-not-sortable-card" ng-click="openCardMenu($ctrl.card, $ctrl.projectMetadataRef())"><span class="fa fa-chevron-down"></span></div>
 				//</div>
@@ -587,6 +595,36 @@
 			});
 
 			return a;
+		}
+	}
+	
+	
+	function prepareOpenCardMenu($mdPanel, $element, card, isSelfWatching, isAssignedToCard, currentUserId) {
+		return function(event) {
+			var position = $mdPanel.newPanelPosition()
+				.relativeTo($element)
+				.addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
+				.addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
+				.addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
+				.addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
+			var conf = {
+					attachTo: angular.element(document.body),
+					controller: function(mdPanelRef) {this.mdPanelRef = mdPanelRef;},
+					controllerAs: '$ctrl',
+					template: '<lvg-card-fragment-v2-menu md-panel-ref="$ctrl.mdPanelRef" card="$ctrl.card" current-user-id="$ctrl.currentUserId" is-self-watching="$ctrl.isSelfWatching" is-assigned-to-card="$ctrl.isAssignedToCard" class="lvg-card-fragment-v2-menu md-whiteframe-z2"></lvg-card-fragment-v2-menu>',
+					position: position,
+					openFrom: event,
+					clickOutsideToClose: true,
+					escapeToClose: true,
+					focusOnOpen: true,
+				    locals: {
+				    	isSelfWatching: isSelfWatching,
+				    	isAssignedToCard: isAssignedToCard,
+				    	card:card,
+				    	currentUserId:currentUserId
+				    }
+			};
+			$mdPanel.open(conf);
 		}
 	}
 	

@@ -17,6 +17,24 @@ lvg-card-fragment-v2 {
     line-height: 24px;
 }
 
+.lvg-card-fragment-v2__menu {
+	background-color: transparent;
+	outline: 0;
+	border:none;
+	margin:0;
+	display:inline-block;
+	background-size: 24px 24px;
+    background-repeat: no-repeat;
+    height:24px;
+    width:24px;
+    line-height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    float: right;
+    background-image: url('../svg/ic_expand_more_black_48px.svg')
+}
+
 /*
 ic_comment_black_48px.svg  
 */

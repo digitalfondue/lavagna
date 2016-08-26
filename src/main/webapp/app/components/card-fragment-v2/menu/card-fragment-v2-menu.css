@@ -1,0 +1,30 @@
+.lvg-card-fragment-v2-menu {
+	display: block;
+	background-color: white;
+    min-width: 160px;
+}
+
+.lvg-card-fragment-v2-menu__button_list {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+.lvg-card-fragment-v2-menu__button {
+	font-size:15px;
+	display: inline-block;
+	height: 48px;
+	line-height: 36px;
+	padding-left:16px;
+	padding-right:16px;
+	background-color: transparent;
+	border: none;
+	width: 100%;
+	text-align: left;
+	outline: none;
+}
+
+
+.lvg-card-fragment-v2-menu__button:hover {
+	background-color:rgba(158,158,158,0.2); 
+}
