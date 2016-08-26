@@ -4,7 +4,7 @@
 		.component('lvgDialogNewColumn', {
 			templateUrl: 'app/components/dialog-new-column/dialog-new-column.html',
 			bindings: {
-				boardName: '@',
+				boardName: '<',
 				columnsDefinition: '<'
 			},
 			controller: function($mdDialog, Board, Notification) {
