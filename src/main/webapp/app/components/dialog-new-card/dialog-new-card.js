@@ -5,7 +5,7 @@
 		.component('lvgDialogNewCard', {
 			templateUrl: 'app/components/dialog-new-card/dialog-new-card.html',
 			bindings: {
-				boardShortName: '@',
+				boardShortName: '<',
 				columns: '<',
 				column: '<'
 			},
