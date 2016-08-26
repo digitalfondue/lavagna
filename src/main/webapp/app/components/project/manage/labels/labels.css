@@ -1,0 +1,11 @@
+.lvg-project-manage-labels__color-picker {
+    margin-left: 10px;
+}
+
+.lvg-project-manage-labels__list-value {
+    border-top: 1px solid #d5d5d5;
+}
+
+.lvg-project-manage-labels__list-value:last-child {
+    border-bottom: 1px solid #d5d5d5;
+}

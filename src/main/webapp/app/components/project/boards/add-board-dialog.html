@@ -1,45 +1,42 @@
-<md-dialog>
-    <form data-ng-submit="boardDialogCtrl.createBoard(boardDialogCtrl.board); boardDialogCtrl.board={};boardDialogCtrl.preview.show = false;boardDialogCtrl.checkedShortName = undefined; boardDialogCtrl.close();"
-        data-ng-init="boardDialogCtrl.board={}; boardDialogCtrl.preview.show = false;">
-        <md-dialog-content>
-            <div class="md-dialog-content">
-                <div class="form-group">
-                    <label for="name" data-translate>partials.fragments.create-board-fragment.name</label>
-                    <input type="text" class="form-control" id="name" placeholder="" required="required" autocomplete="off"
-                            data-ng-model="boardDialogCtrl.board.name" data-ng-keyup="boardDialogCtrl.suggestBoardShortName(boardDialogCtrl.board)" maxlength="128">
-                </div>
-                <div class="form-group has-feedback"  data-ng-class="{'has-error': boardDialogCtrl.checkedShortName === false}">
-                    <label for="shortName" data-translate>partials.fragments.create-board-fragment.shortName</label>
-                    <input type="text" autocomplete="off" class="form-control uppercase" id="shortName" placeholder=""
-                            required="required" data-ng-model="boardDialogCtrl.board.shortName" maxlength="8"
-                            ng-change="boardDialogCtrl.checkBoardShortName(boardDialogCtrl.board.shortName)">
-                    <i class="fa form-control-feedback"  data-ng-class="{'fa-times' : boardDialogCtrl.checkedShortName === false, 'fa-check' : boardDialogCtrl.checkedShortName === true}"></i>
-                </div>
-                <div class="form-group">
-                    <label for="description" data-translate>partials.fragments.create-board-fragment.description</label>
-                        <div data-ng-hide="boardDialogCtrl.preview.show">
-                            <textarea class="form-control" rows="3" id="description" data-ng-model="boardDialogCtrl.board.description"></textarea>
-                        </div>
-                        <div data-ng-show="boardDialogCtrl.preview.show">
-                            <div data-ng-bind-html="boardDialogCtrl.board.description | markdown"></div>
-                        </div>
-                </div>
+<form class="flex column"
+      data-ng-submit="boardDialogCtrl.createBoard(board); preview.show = false; boardDialogCtrl.close();">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>project.boards.create.board</h2>
+        <md-input-container class="md-block">
+            <label data-translate>label.name</label>
+            <input type="text" id="name" placeholder="" required autocomplete="off"
+                   data-ng-model="board.name" data-ng-keyup="boardDialogCtrl.suggestBoardShortName(board)" maxlength="128">
+        </md-input-container>
+        <md-input-container class="md-block" data-ng-class="{'md-input-invalid': boardDialogCtrl.errors.shortName}">
+            <label data-translate>label.shortName</label>
+            <input type="text" autocomplete="off" class="form-control uppercase" id="shortName" placeholder=""
+                   required="required" data-ng-model="board.shortName" maxlength="8"
+                   ng-change="boardDialogCtrl.checkBoardShortName(board.shortName)">
+            <div ng-messages="boardDialogCtrl.errors">
+                <div ng-message="shortName">{{'project.add-board.dialog.shortname.error' | translate}}</div>
             </div>
-        </md-dialog-content>
-        <md-dialog-actions>
-            <md-button type="submit"
-                data-ng-disabled="boardDialogCtrl.board.name == null || boardDialogCtrl.board.shortName == null || boardDialogCtrl.checkedShortName === undefined || boardDialogCtrl.checkedShortName === false">
-                <span data-translate>partials.fragments.create-board-fragment.createNewBoard</span>
-            </md-button>
-            <md-button type="button" data-ng-click="boardDialogCtrl.preview.show = true" data-ng-hide="boardDialogCtrl.preview.show">
-                <span data-translate>button.preview</span>
-            </md-button>
-            <md-button type="button" data-ng-click="boardDialogCtrl.preview.show = false" data-ng-show="boardDialogCtrl.preview.show">
-                <span data-translate>button.closePreview</span>
-            </md-button>
-            <md-button type="button" data-ng-click="boardDialogCtrl.board = {}; boardDialogCtrl.checkedShortName = undefined; boardDialogCtrl.createNewBoard = false;  boardDialogCtrl.close();">
-                <span data-translate>partials.fragments.create-board-fragment.cancel</span>
-            </md-button>
-        </md-dialog-actions>
-    </form>
-</md-dialog>
+        </md-input-container>
+        <md-input-container class="md-block" data-ng-hide="preview.show">
+            <label data-translate>label.description</label>
+            <textarea data-ng-model="board.description" rows="5" md-select-on-focus></textarea>
+        </md-input-container>
+        <div data-ng-show="preview.show">
+            <div data-ng-bind-html="board.description | markdown"></div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary" type="submit"
+            data-ng-disabled="board.name == null || board.shortName == null || boardDialogCtrl.errors.shortName === true">
+            <span data-translate>button.create</span>
+        </md-button>
+        <md-button type="button" data-ng-click="preview.show = true" data-ng-hide="preview.show">
+            <span data-translate>button.preview</span>
+        </md-button>
+        <md-button type="button" data-ng-click="preview.show = false" data-ng-show="preview.show">
+            <span data-translate>button.closePreview</span>
+        </md-button>
+        <md-button type="button" data-ng-click="boardDialogCtrl.close();">
+            <span data-translate>button.cancel</span>
+        </md-button>
+    </md-dialog-actions>
+</form>

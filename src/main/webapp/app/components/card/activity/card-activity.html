@@ -1,9 +1,9 @@
 <md-card >
     <md-card-title>
         <md-card-title-text>
-            <div layout="row">
+            <div class="row row-inherit">
                 <div class="lvg-headline"><span data-translate>card.activity</span></div>
-                <span flex></span>
+                <span class="flex"></span>
                 <md-radio-group class="lvg-card-activity__filter" ng-model="activityFilter" ng-init="activityFilter = 'COMMENT_CREATE';">
                     <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="COMMENT_CREATE" ng-checked="true">Comments</md-radio-button>
                     <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="">All</md-radio-button>
@@ -28,16 +28,14 @@
             <div data-ng-show="commentPreviewMode"
                  data-ng-bind-html="commentPreview.content | markdown"></div>
             <div class="lvg-card-activity__actions-button-row">
-                <md-button class="md-raised md-primary" type="submit">
+                <md-button class="md-primary" type="submit">
                     <span data-translate>button.add</span>
                 </md-button>
-                <md-button class="md-raised md-button"
-                           data-ng-hide="commentPreviewMode"
+                <md-button data-ng-hide="commentPreviewMode"
                            data-ng-click="commentPreview = comment; commentPreviewMode = true" type="button">
                     <span data-translate>button.preview</span>
                 </md-button>
-                <md-button class="md-raised md-button"
-                           data-ng-show="commentPreviewMode"
+                <md-button data-ng-show="commentPreviewMode"
                            data-ng-click="commentPreviewMode = false" type="button">
                     <span data-translate>button.closePreview</span>
                 </md-button>

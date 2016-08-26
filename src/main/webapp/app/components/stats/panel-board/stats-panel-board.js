@@ -9,9 +9,9 @@
 			projectShortName: '<'
 		},
 		controller : function(Board) {
-			
+
 			var ctrl = this;
-			
+
 			ctrl.statsFetcher = function() {
 				return Board.taskStatistics(ctrl.board.shortName);
 			}

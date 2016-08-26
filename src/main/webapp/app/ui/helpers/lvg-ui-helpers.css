@@ -1,0 +1,43 @@
+.archived {
+    opacity: 0.5;
+}
+
+.closed, .disabled {
+    text-decoration: underline line-through;
+}
+
+.strike {
+	text-decoration: line-through;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.break-word {
+    word-wrap: break-work;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+.lvg-hide, .lavagna-hide {
+    display: none !important;
+}
+
+.lvg-no-margin-bottom {
+	margin-bottom: 0;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.lvg-cursor-text {
+	cursor: text;
+}
+
+.lvg-cursor-pointer {
+	cursor: pointer;
+}

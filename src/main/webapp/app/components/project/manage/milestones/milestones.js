@@ -11,7 +11,7 @@
         templateUrl: 'app/components/project/manage/milestones/milestones.html'
     });
 
-    function ProjectManageMilestonesController($rootScope, $mdDialog,LabelCache, Label, Notification) {
+    function ProjectManageMilestonesController($rootScope, $mdDialog, $translate, LabelCache, Label, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -55,8 +55,16 @@
             });
         };
 
-        ctrl.removeLabelListValue = function (labelListValueId) {
-            Label.removeLabelListValue(labelListValueId).then(function() {
+        ctrl.deleteMilestone = function(milestone, ev) {
+            var confirm = $mdDialog.confirm()
+                  .title($translate.instant('project.manage.milestone.dialog.delete.title'))
+                  .textContent($translate.instant('project.manage.milestone.dialog.delete.message', {name: milestone.value}))
+                  .targetEvent(ev)
+                  .ok($translate.instant('button.yes'))
+                  .cancel($translate.instant('button.no'));
+            $mdDialog.show(confirm).then(function() {
+              return Label.removeLabelListValue(milestone.id);
+            }).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.remove.success'}, false);
             }, function(error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-milestones.remove.error'}, false);
@@ -80,13 +88,13 @@
         };
 
         ctrl.updateReleaseDate = function (milestoneId, newDate) {
-            if (newDate) {
-                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
-            } else {
-                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
-            }
+            Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
         };
-        
+
+        ctrl.removeReleaseDate = function (milestoneId) {
+            Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
+        };
+
         ctrl.showAddMilestoneDialog = function showAddMilestoneDialog($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
@@ -101,8 +109,8 @@
         		},
         		controllerAs: 'addMilestoneDialogCtrl'
         	});
-        }
-        
+        };
+
         function addLabelListValue(val) {
             Label.addLabelListValue(ctrl.milestoneLabel.id, {value: val});
         };

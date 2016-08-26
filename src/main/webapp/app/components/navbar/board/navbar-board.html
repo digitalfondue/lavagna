@@ -2,7 +2,7 @@
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2><a ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a> / {{::$ctrl.board.shortName}}</h2>
-        <lvg-search-input board="$ctrl.board" project="$ctrl.project" data-lvg-has-permission="SEARCH" flex></lvg-search-input>
+        <lvg-search-input board="$ctrl.board" project="$ctrl.project" data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input>
         <md-button class="md-icon-button" data-lvg-has-permission="PROJECT_ADMINISTRATION" data-ui-sref="projectManage.project({projectName: $ctrl.project.shortName})">
             <md-tooltip>{{'common.project-settings' | translate}}</md-tooltip>
             <md-icon md-svg-icon="settings"></md-icon>

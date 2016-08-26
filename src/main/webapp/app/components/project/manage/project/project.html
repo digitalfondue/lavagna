@@ -1,21 +1,49 @@
-<md-content class="lvg-content lavagna-container-margin" md-whiteframe="1" layout-padding>
-	<form role="form" ng-init="$ctrl.view.itemToUpdate = {shortName: $ctrl.project.shortName, name: $ctrl.project.name, description: $ctrl.project.description, archived: $ctrl.project.archived}; $ctrl.view.preview = false" ng-submit="$ctrl.update($ctrl.view.itemToUpdate);$ctrl.view.preview = false" lvg-has-permission="PROJECT_ADMINISTRATION">
-		<md-input-container class="md-block">
-			<label><span translate>partials.project.manage-home.name</span></label>
-			<input type="text" id="name" placeholder="" required="required" autocomplete="off" ng-model="$ctrl.view.itemToUpdate.name">
-		</md-input-container>
-		<md-input-container class="md-block">
-			<label><span translate>partials.project.manage-home.description</span></label>
-			<textarea ng-show="!$ctrl.view.preview" id="description" ng-model="$ctrl.view.itemToUpdate.description"></textarea>
-			<div ng-show="$ctrl.view.preview" ng-bind-html="$ctrl.view.itemToUpdate.description | markdown"></div>
-		</md-input-container>
-		<md-input-container class="md-block">
-			<md-checkbox ng-model="itemToUpdate.archived"><span translate>partials.project.manage-home.archived</span></md-checkbox>
-		</md-input-container>
-		<div>
-			<md-button type="submit" class="md-raised md-primary"><span translate>partials.project.manage-home.update</span></md-button>
-			<md-button type="button" class="md-raised" ng-click="$ctrl.view.preview = true" ng-hide="$ctrl.view.preview"><span translate>button.preview</span></md-button>
-			<md-button type="button" class="md-raised" ng-click="$ctrl.view.preview = false" ng-show="$ctrl.view.preview"><span translate>button.closePreview</span></md-button>
-		</div>
-	</form>
-</md-content>
+<div class="row lvg-content">
+    <div class="col-md-9 col-xs-12 lvg-content__item">
+        <md-card>
+            <form role="form"
+                  ng-submit="$ctrl.update(itemToUpdate); preview = false"
+                  lvg-has-permission="PROJECT_ADMINISTRATION"
+                  ng-init="itemToUpdate = {shortName: $ctrl.project.shortName, name: $ctrl.project.name, description: $ctrl.project.description, archived: $ctrl.project.archived}; $ctrl.view.preview = false">
+                <md-card-content>
+                    <md-input-container class="md-block">
+                        <label translate>label.name</label>
+                        <input type="text" id="name" placeholder="" required="required" autocomplete="off" ng-model="itemToUpdate.name">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label translate>label.description</label>
+                        <textarea ng-show="!preview" rows="5" ng-model="itemToUpdate.description"></textarea>
+                        <div ng-show="preview" ng-bind-html="itemToUpdate.description | markdown"></div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <md-checkbox ng-model="itemToUpdate.archived"><span translate>project.manage.home.archived</span></md-checkbox>
+                    </md-input-container>
+                </md-card-content>
+                <md-card-actions class="row margin-8">
+                    <md-button type="submit" class="md-primary"><span translate>button.update</span></md-button>
+                    <md-button type="button" ng-click="$ctrl.view.preview = true" ng-hide="$ctrl.view.preview"><span translate>button.preview</span></md-button>
+                    <md-button type="button" ng-click="$ctrl.view.preview = false" ng-show="$ctrl.view.preview"><span translate>button.closePreview</span></md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
+    <div class="col-md-3 col-xs-12 lvg-content__item">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <div class="lvg-headline" translate>project.manage.home.status.color</div>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="flex column">
+                    <div ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'">
+                        <p><strong>{{'common.column.definition.' + definition.value | translate}}</strong></p>
+                        <p><lvg-color-picker-v2 ng-model="$ctrl.columnDefinition[definition.id].color"
+                                                ng-change="$ctrl.updateColumnDefinition(definition.id, $ctrl.columnDefinition[definition.id].color)"></lvg-color-picker-v2></p>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+

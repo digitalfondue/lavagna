@@ -1,49 +1,39 @@
-<md-dialog>
-	<form data-ng-role="form"
-	    data-ng-init="addLabelDialogCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique: true}"
-	    data-ng-submit="addLabelDialogCtrl.addNewLabel(addLabelDialogCtrl.view.labelToAdd);addLabelDialogCtrl.view.labelToAdd = {type: 'NULL', color: '#3f51b5', unique:true}">
-	
-	   <md-dialog-content>
-	       <div class="md-dialog-content">
-				<div class="form-group">
-				    <label data-translate>partials.project.manage-labels.name</label>
-				    <input type="text" class="form-control" placeholder="{{'partials.project.manage-labels.labelName.placeholder' | translate}}"
-				           data-ng-model="addLabelDialogCtrl.view.labelToAdd.name" required>
-				</div>
-				
-				<div class="form-group">
-				    <label data-translate>partials.project.manage-labels.type</label>
-				    <select class="form-control" data-ng-model="addLabelDialogCtrl.view.labelToAdd.type"
-				            data-ng-options="l.type as l.name for l in addLabelDialogCtrl.view.labelOptions"></select>
-				</div>
-				
-				
-				<div class="form-group">
-				    <label data-translate>partials.project.manage-labels.color</label>
-				
-				    <div class="input-group">
-				        <span class="input-group-btn"><lvg-color-picker-v2 data-ng-model="addLabelDialogCtrl.view.labelToAdd.color"></lvg-color-picker-v2></span>
-				        <input class="form-control" type="text" data-ng-model="addLabelDialogCtrl.view.labelToAdd.color">
-				    </div>
-				</div>
-				
-				<div class="form-group">
-				    <div class="checkbox">
-				        <label>
-				            <input type="checkbox"
-				               data-ng-model="addLabelDialogCtrl.view.labelToAdd.unique"> <span data-translate>partials.project.manage-labels.unique</span>
-				        </label>
-				    </div>
-				</div>
+<form name="addLabelForm"
+      data-ng-init="labelToAdd = {type: 'NULL', color: '#3f51b5', unique: true}"
+      data-ng-submit="ctrl.add(labelToAdd);">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>project.manage.labels.dialog.create</h2>
+        <md-input-container class="md-block">
+            <label translate>label.name</label>
+            <input ng-model="labelToAdd.name" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>label.type</label>
+            <md-select ng-model="labelToAdd.type" required>
+                <md-option value="{{::l.type}}" ng-repeat="l in ctrl.labelOptions">{{::l.name}}</md-option>
+            </md-select>
+        </md-input-container>
+        <div class="row row-inherit">
+            <div class="flex">
+                <md-input-container class="lvg-input-container__inline">
+                    <label translate>label.color</label>
+                    <input lvg-validator-hex-color ng-model="labelToAdd.color" required>
+                </md-input-container>
             </div>
-		</md-dialog-content>
-        <md-dialog-actions>
-			<md-button type="submit" data-ng-disabled="addLabelDialogCtrl.view.labelToAdd.name == NULL">
-			    <span data-translate>partials.project.manage-labels.addLabel</span>
-			</md-button>
-			<md-button type="button" data-ng-click="addLabelDialogCtrl.close();">
-			    <span data-translate>button.cancel</span>
-			</md-button>
-		</md-dialog-actions>
-	</form>
-</md-dialog>
+            <div class="flex no-grow lvg-project-manage-labels__color-picker">
+                <lvg-color-picker-v2 ng-model="labelToAdd.color"></lvg-color-picker-v2>
+            </div>
+        </div>
+        <md-input-container class="md-block">
+            <md-checkbox ng-model="labelToAdd.unique"><span data-translate>project.manage.labels.unique</span></md-checkbox>
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button type="button" data-ng-click="ctrl.close();">
+            <span data-translate>button.cancel</span>
+        </md-button>
+        <md-button type="submit" data-ng-disabled="!addLabelForm.$valid">
+            <span data-translate>button.create</span>
+        </md-button>
+    </md-dialog-actions>
+</form>

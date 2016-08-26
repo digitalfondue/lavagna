@@ -52,33 +52,6 @@
     visibility: hidden !important;
 }
 
-
-
-.lvg-card-metadata__assigned-users .md-readonly md-chips-wrap {
-    box-shadow: none !important;
-}
-
-.lvg-card-metadata__item-due-date .md-datepicker-triangle-button {
-    display: none !important;
-}
-
-.lvg-card-metadata__item-due-date md-datepicker {
-    background: white !important;
-}
-
-.lvg-card-metadata__item-due-date .md-datepicker-input-container {
-    display: inline-block !important;
-    width: 0 !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: 0 !important;
-}
-
-.lvg-card-metadata__item-due-date .md-datepicker-input-container input, .lvg-card-metadata__item .md-datepicker-input-container button {
-    display: none !important;
-}
-
 .lvg-card-metadata__item md-select {
     margin: 0 !important;
 }

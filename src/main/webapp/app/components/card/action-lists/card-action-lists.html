@@ -14,13 +14,13 @@
     <md-card-actions class="lvg-card-action-lists__new-actions" data-lvg-has-permission="MANAGE_ACTION_LIST">
         <form data-ng-role="form"
               data-ng-submit="$ctrl.addActionList(newActionList);">
-            <div layout="row">
-                <div flex>
+            <div class="row margin-8">
+                <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
                         <input ng-model="newActionList.name" placeholder="{{'card.action.lists.placeholder.list'|translate}}">
                     </md-input-container>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!newActionList.name">
                         <span data-translate>button.add</span>
                     </md-button>

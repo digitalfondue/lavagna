@@ -121,21 +121,21 @@
 
         ctrl.availableDateRanges = [];
 
-        $translate('partials.project.statistics.last30Days').then(function (translatedValue) {
+        $translate('project.statistics.last30Days').then(function (translatedValue) {
             ctrl.availableDateRanges.push({name: translatedValue, value: moment().day(-30).toDate()});
         });
-        $translate('partials.project.statistics.last14Days').then(function (translatedValue) {
+        $translate('project.statistics.last14Days').then(function (translatedValue) {
             var range = {name: translatedValue, value: moment().day(-14).toDate()};
             ctrl.availableDateRanges.push(range);
             ctrl.dateRange = range;
         });
-        $translate('partials.project.statistics.last7Days').then(function (translatedValue) {
+        $translate('project.statistics.last7Days').then(function (translatedValue) {
             ctrl.availableDateRanges.push({name: translatedValue, value: moment().day(-7).toDate()});
         });
-        $translate('partials.project.statistics.thisMonth').then(function (translatedValue) {
+        $translate('project.statistics.thisMonth').then(function (translatedValue) {
             ctrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('month').toDate()});
         });
-        $translate('partials.project.statistics.thisWeek').then(function (translatedValue) {
+        $translate('project.statistics.thisWeek').then(function (translatedValue) {
             ctrl.availableDateRanges.push({name: translatedValue, value: moment().startOf('week').toDate()});
         });
 
@@ -158,7 +158,7 @@
             ctrl.boardToFilter = boards[0];
             ctrl.filterByBoard(ctrl.boardToFilter);
         });
-        
+
         Project.getMetadata(ctrl.project.shortName).then(function(metadata) {
         	ctrl.metadata = metadata;
         })

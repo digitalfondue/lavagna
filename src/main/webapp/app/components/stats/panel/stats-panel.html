@@ -1,32 +1,32 @@
-<div layout="row">
-	<div data-ng-bind-html="$ctrl.item.description | markdown" flex class="stats-panel-description"></div>
+<div class="row row-inherit">
+	<div data-ng-bind-html="$ctrl.item.description | markdown" class="lvg-stats-panel__description flex"></div>
 	<div data-ng-if="!$ctrl.item.archived && $ctrl.chartData">
 		<lvg-chart type="Doughnut" data="$ctrl.chartData" options="$ctrl.chartOptions"></lvg-chart>
 	</div>
 </div>
 
-<div data-ng-if="$ctrl.statistics" class="stats-panel-count">
-	<span class="stats-panel-icon">
+<div data-ng-if="$ctrl.statistics" class="lvg-stats-panel__count">
+	<span class="lvg-stats-panel__icon">
 		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.openTaskColor|color"></md-icon>
-		<span data-translate>partials.fragments.stats-panel.open</span>
+		<span data-translate>common.column.definition.OPEN</span>
 		{{$ctrl.statistics.openTaskCount}}
 	</span>
 
-	<span class="stats-panel-icon">
+	<span class="lvg-stats-panel__icon">
 		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.closedTaskColor|color"></md-icon>
-		<span data-translate>partials.fragments.stats-panel.closed</span>
+		<span data-translate>common.column.definition.CLOSED</span>
 		{{$ctrl.statistics.closedTaskCount}}
 	</span>
 
-	<span class="stats-panel-icon">
+	<span class="lvg-stats-panel__icon">
 		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.backlogTaskColor|color"></md-icon>
-		<span data-translate>partials.fragments.stats-panel.backlog</span>
+		<span data-translate>common.column.definition.DEFERRED</span>
 		{{$ctrl.statistics.backlogTaskCount}}
 	</span>
 
-	<span class="stats-panel-icon">
+	<span class="lvg-stats-panel__icon">
 		<md-icon md-svg-icon="task" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
-		<span data-translate>partials.fragments.stats-panel.deferred</span>
+		<span data-translate>common.column.definition.BACKLOG</span>
 		{{$ctrl.statistics.deferredTaskCount}}
 	</span>
 </div>

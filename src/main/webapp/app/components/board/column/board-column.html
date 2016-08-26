@@ -1,17 +1,15 @@
 <div class="lvg-board-column__container" data-lvg-update-column-size>
     <div class="lvg-board-column__header" data-ng-style="::($ctrl.metadata.columnsDefinition[$ctrl.column.status].color|columnColor)">
-        <div class="lvg-board-column__header-title"
-             data-ng-hide="$ctrl.columnState.editColumnName"
-             layout="row">
-            <div class="lvg-board-column__header-title-text lvg-column__handle" flex>
+        <div class="lvg-board-column__header-title row row-inherit"
+             data-ng-hide="$ctrl.columnState.editColumnName">
+            <div class="flex lvg-board-column__header-title-text lvg-column__handle">
                 <span data-lvg-has-permission="RENAME_COLUMN"
                       data-ng-click="$ctrl.columnState.editColumnName=true; $ctrl.columnState.newColumnName = $ctrl.column.name"
-                      class="lavagna-hide lvg-edit" title="{{$ctrl.column.name}}">{{$ctrl.column.name}}</span>
-                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-edit">{{$ctrl.column.name}}</span>
+                      class="lavagna-hide lvg-cursor-text" title="{{$ctrl.column.name}}">{{$ctrl.column.name}}</span>
+                <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-cursor-text">{{$ctrl.column.name}}</span>
             </div>
-            <div class="lvg-board-column__header-menu"
-                 data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN"
-                 flex="nogrow">
+            <div class="lvg-board-column__header-menu flex no-grow"
+                 data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN">
                 <md-menu>
                     <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"><span class="fa fa-chevron-down"></span></md-button>
                     <md-menu-content>
@@ -39,19 +37,19 @@
             </div>
         </div>
         <div class="lvg-board-column__header-edit" data-ng-if="$ctrl.columnState.editColumnName">
-            <form layout="row"
+            <form class="row row-inherit"
                   data-ng-submit="$ctrl.saveNewColumnName($ctrl.columnState.newColumnName); $ctrl.columnState.editColumnName=false">
-                <div flex>
+                <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
                         <input ng-model="$ctrl.columnState.newColumnName">
                     </md-input-container>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!$ctrl.columnState.newColumnName">
                         <md-icon md-svg-icon="ok"></md-icon>
                     </md-button>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button class="lvg-small-icon-button" ng-click="$ctrl.columnState.editColumnName=false">
                         <md-icon md-svg-icon="close"></md-icon>
                     </md-button>

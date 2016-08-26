@@ -61,13 +61,14 @@
 		    $mdDialog.show({
 		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
 		    	targetEvent: $event,
-		    	fullscreen:true,
+		    	fullscreen: true,
 		    	controllerAs: 'boardDialogCtrl',
 		    	controller: function() {
 		    		var ctrl = this;
 
 		    		ctrl.board = {};
-		            ctrl.isShortNameUsed = undefined;
+
+		            ctrl.errors = {};
 
 		    		ctrl.suggestBoardShortName = function(board) {
 		                if(board == null ||board.name == null || board.name == "") {
@@ -82,10 +83,10 @@
 		            ctrl.checkBoardShortName = function(val) {
 		                if(val !== undefined && val !== null) {
 		                	Board.checkShortName(val).then(function(res) {
-		                		ctrl.checkedShortName = res;
+		                	    ctrl.errors.shortName = res === false ? true : undefined;
 		                    });
 		                } else {
-		                	ctrl.checkedShortName = undefined;
+		                	ctrl.errors.shortName = undefined;
 		                }
 		            };
 

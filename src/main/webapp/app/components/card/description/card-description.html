@@ -8,18 +8,18 @@
             </md-card-title-text>
         </div>
         <div class="lavagna-card-title-main" data-ng-show="editCardName">
-            <form layout="row" data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
-                <div flex>
+            <form class="row" data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
+                <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
                         <input required ng-model="cardNameToEdit">
                     </md-input-container>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!cardNameToEdit">
                         <md-icon md-svg-icon="ok"></md-icon>
                     </md-button>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button class="lvg-small-icon-button" ng-click="editCardName=false">
                         <md-icon md-svg-icon="close"></md-icon>
                     </md-button>
@@ -59,21 +59,18 @@
                 <div data-ng-show="editDescriptionPreviewMode"
                      data-ng-bind-html="descriptionToEditPreview | markdown"></div>
                 <div>
-                    <md-button class="md-raised md-primary" type="submit">
+                    <md-button class="md-primary" type="submit">
                         <span data-translate>button.update</span>
                     </md-button>
-                    <md-button class="md-raised md-button"
-                               data-ng-hide="editDescriptionPreviewMode"
+                    <md-button data-ng-hide="editDescriptionPreviewMode"
                                data-ng-click="descriptionToEditPreview = descriptionToEdit; editDescriptionPreviewMode = true" type="button">
                         <span data-translate>button.preview</span>
                     </md-button>
-                    <md-button class="md-raised md-button"
-                               data-ng-show="editDescriptionPreviewMode"
+                    <md-button data-ng-show="editDescriptionPreviewMode"
                                data-ng-click="editDescriptionPreviewMode = false" type="button">
                         <span data-translate>button.closePreview</span>
                     </md-button>
-                    <md-button class="md-raised md-button"
-                               data-ng-click="editDescriptionPreviewMode = false; editDescription = false" type="button">
+                    <md-button data-ng-click="editDescriptionPreviewMode = false; editDescription = false" type="button">
                         <span data-translate>button.cancel</span>
                     </md-button>
                 </div>

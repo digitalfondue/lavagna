@@ -6,7 +6,7 @@
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> {{::$ctrl.project.shortName}}</span></span>
         </h2>
-        <lvg-search-input data-lvg-has-permission="SEARCH" project="$ctrl.project" flex></lvg-search-input>
+        <lvg-search-input data-lvg-has-permission="SEARCH" project="$ctrl.project" class="flex"></lvg-search-input>
         <md-button class="md-icon-button" data-lvg-is-authenticated ui-sref="account">
             <md-tooltip>{{'partials.fragments.sidebar.profile' | translate}}</md-tooltip>
             <md-icon md-svg-icon="person"></md-icon>

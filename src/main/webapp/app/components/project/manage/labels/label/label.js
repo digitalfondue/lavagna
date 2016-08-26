@@ -12,30 +12,28 @@
         templateUrl: 'app/components/project/manage/labels/label/label.html'
     });
 
-    function ProjectManageLabelController($scope, $rootScope, $filter, $mdDialog, Notification, LabelCache, Label) {
+    function ProjectManageLabelController($scope, $rootScope, $filter, $mdDialog, $translate, Notification, LabelCache, Label) {
         var ctrl = this;
-        ctrl.view = {};
 
         var projectName = ctrl.project.shortName;
 
         var emitRefreshEvent = function() {
             $scope.$emit('refreshLabelCache-' + projectName);
-        }
-
-        ctrl.removeLabel = function () {
-            Label.remove(ctrl.label.id).then(function() {
-                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.success'}, false);
-            }, function(error) {
-                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.error'}, false);
-            }).then(emitRefreshEvent);
         };
 
-        ctrl.updateLabel = function (values) {
-            var labelColor = $filter('parseHexColor')(values.color);
-            Label.update(ctrl.label.id, {name: values.name, color: labelColor, type: values.type}).then(function() {
-                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.success'}, false);
+        ctrl.deleteLabel = function (ev) {
+            var confirm = $mdDialog.confirm()
+                  .title($translate.instant('project.manage.labels.dialog.delete.title'))
+                  .textContent($translate.instant('project.manage.labels.dialog.delete.message', {name: ctrl.label.name}))
+                  .targetEvent(ev)
+                  .ok($translate.instant('button.yes'))
+                  .cancel($translate.instant('button.no'));
+            $mdDialog.show(confirm).then(function() {
+              return Label.remove(ctrl.label.id);
+            }).then(function() {
+                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.success'}, false);
             }, function(error) {
-                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.error'}, false);
+                Notification.addAutoAckNotification('error', {key: 'notification.project-manage-labels.remove.error'}, false);
             }).then(emitRefreshEvent);
         };
 
@@ -50,7 +48,7 @@
 
         var isLabelInUse = function() {
             Label.useCount(ctrl.label.id).then(function(useCount) {
-                ctrl.view.useCount = useCount;
+                ctrl.useCount = useCount;
             });
         }
 
@@ -66,11 +64,21 @@
         	unbind();
         }
 
-        ctrl.editLabelList = function () {
+        var updateLabel = function (values) {
+            var labelColor = $filter('parseHexColor')(values.color);
+            Label.update(ctrl.label.id, {name: values.name, color: labelColor, type: ctrl.label.type}).then(function() {
+                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.success'}, false);
+            }, function(error) {
+                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.error'}, false);
+            }).then(emitRefreshEvent);
+        };
+
+        ctrl.editLabel = function () {
         	$mdDialog.show({
-        		templateUrl: 'app/components/project/manage/labels/label/edit-label-values.html',
-        		controller: function ($rootScope, $scope, LabelCache, Label, label, labelListValues) {
+        		templateUrl: 'app/components/project/manage/labels/label/edit-label.html',
+        		controller: function ($rootScope, $scope, LabelCache, Label, label, labelListValues, projectName) {
                     var ctrl = this;
+
                     ctrl.label = label;
                     ctrl.labelListValues = labelListValues;
 
@@ -93,9 +101,13 @@
                             ctrl.labelListValueUseCount[id] = cnt;
                         });
                     };
-                    
+
+                    ctrl.save = function(values) {
+                        $mdDialog.hide(values);
+                    }
+
                     ctrl.closeDialog = function() {
-                    	$mdDialog.hide();
+                    	$mdDialog.cancel();
                     };
 
                     //handle refresh event
@@ -110,16 +122,21 @@
                     var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadListValues);
                     $scope.$on('$destroy', unbind);
                 },
-                controllerAs: 'manageLabelValuesCtrl',
+                controllerAs: 'ctrl',
                 resolve: {
                     label: function() {
                         return ctrl.label;
                     },
                     labelListValues: function() {
                         return ctrl.labelListValues;
+                    },
+                    projectName: function() {
+                        return projectName;
                     }
                 },
                 fullscreen: true
+        	}).then(function(values) {
+                return updateLabel(values);
         	});
         };
 

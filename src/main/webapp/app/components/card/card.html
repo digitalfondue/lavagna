@@ -1,12 +1,12 @@
-<div layout="column" layout-gt-sm="row">
-    <div flex="66">
+<div class="row row-inherit">
+    <div class="col-md-8 col-xs-12">
         <lvg-card-description card="$ctrl.card" project="$ctrl.project" label-values="$ctrl.labelValues"></lvg-card-description>
 
         <lvg-card-files card="$ctrl.card" user="$ctrl.user"></lvg-card-files>
 
         <lvg-card-activity card="$ctrl.card" user="$ctrl.user"></lvg-card-activity>
     </div>
-    <div flex="33">
+    <div class="col-md-4 col-xs-12">
         <lvg-card-metadata  card="$ctrl.card" board="$ctrl.board"
                             project="$ctrl.project" user="$ctrl.user"
                             milestones="$ctrl.milestones" due-dates="$ctrl.dueDates"></lvg-card-metadata>

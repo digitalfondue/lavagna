@@ -1,0 +1,68 @@
+<md-dialog class="lvg-manage-dialog">
+    <form name="editLabelForm"
+          ng-submit="ctrl.save(labelToUpdate)"
+          ng-init="labelToUpdate = { name: ctrl.label.name, color: (ctrl.label.color|parseIntColor)}">
+        <md-dialog-content class="md-dialog-content">
+            <h2 class="md-title" translate>project.manage.labels.dialog.edit.title</h2>
+            <md-input-container class="md-block">
+                <label translate>label.name</label>
+                <input ng-model="labelToUpdate.name" required>
+            </md-input-container>
+            <div class="row row-inherit">
+                <div class="flex">
+                    <md-input-container class="lvg-input-container__inline">
+                        <label translate>label.color</label>
+                        <input lvg-validator-hex-color ng-model="labelToUpdate.color" required>
+                    </md-input-container>
+                </div>
+                <div class="flex no-grow lvg-project-manage-labels__color-picker">
+                    <lvg-color-picker-v2 ng-model="labelToUpdate.color"></lvg-color-picker-v2>
+                </div>
+            </div>
+            <div ng-if="ctrl.label.type === 'LIST'">
+                <h4 translate>project.manage.labels.dialog.edit.values</h4>
+                <div class="row row-inherit">
+                    <div class="flex">
+                        <md-input-container md-no-float class="lvg-input-container__inline">
+                            <input placeholder="{{'label.new.value'|translate}}" ng-model="newValue">
+                        </md-input-container>
+                    </div>
+                    <div class="flex no-grow">
+                        <md-button ng-disabled="newValue == null || newValue.trim() == 0" data-ng-click="ctrl.addLabelListValue(newValue); newValue=null;"><span translate>button.add</span></md-button>
+                    </div>
+                </div>
+                <div class="row row-inherit middle-xs lvg-project-manage-labels__list-value"
+                     data-ng-repeat="(nValue,lValue) in ctrl.labelListValues"
+                     data-ng-init="ctrl.labelListValueUseCount[lValue.id] = false; ctrl.updateCount(lValue.id)">
+                    <div class="flex break-word">
+                        {{lValue.value}}
+                    </div>
+                    <div class="flex no-grow">
+                        <md-button class="lvg-small-icon-button"
+                                   data-ng-disabled="ctrl.labelListValues.length < 2 || nValue == 0"
+                                   data-ng-click="ctrl.swapLabelListValues(lValue.id, ctrl.labelListValues[nValue - 1].id)">
+                            <md-tooltip>{{'project.manage.labels.dialog.edit.value.move.up'|translate}}</md-tooltip>
+                            <md-icon md-svg-icon="expand_less"></md-icon>
+                        </md-button>
+                        <md-button class="lvg-small-icon-button"
+                                   data-ng-disabled="ctrl.labelListValues.length < 2 || ctrl.labelListValues.length == nValue + 1"
+                                   data-ng-click="ctrl.swapLabelListValues(lValue.id, ctrl.labelListValues[nValue + 1].id)">
+                            <md-tooltip>{{'project.manage.labels.dialog.edit.value.move.down'|translate}}</md-tooltip>
+                            <md-icon md-svg-icon="expand_more"></md-icon>
+                        </md-button>
+                        <md-button class="lvg-small-icon-button"
+                                   data-ng-disabled="ctrl.labelListValueUseCount[lValue.id] !== 0"
+                                   data-ng-click="ctrl.removeLabelListValue(lValue.id)">
+                            <md-tooltip md-visible="showTooltip">{{(ctrl.labelListValueUseCount[lValue.id] !== 0 ? 'project.manage.labels.dialog.edit.value.cant.delete':'project.manage.labels.dialog.edit.value.delete')|translate}}</md-tooltip>
+                            <md-icon ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" md-svg-icon="delete"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="ctrl.closeDialog()"><span data-translate>button.cancel</span></md-button>
+            <md-button class="md-primary" ng-disabled="!editLabelForm.$valid" type="submit"><span data-translate>button.save</span></md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

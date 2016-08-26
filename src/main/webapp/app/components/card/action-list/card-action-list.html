@@ -1,10 +1,10 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <div layout="row" data-ng-hide="editListName">
+            <div class="row row-inherit" data-ng-hide="editListName">
                 <span ng-transclude="handle" data-lvg-has-permission="MANAGE_ACTION_LIST"></span>
                 <div class="lvg-headline"><span data-translate>{{$ctrl.actionList.content}}</span></div>
-                <span flex></span>
+                <span class="flex"></span>
                 <md-button data-lvg-has-permission="MANAGE_ACTION_LIST"
                            class="lvg-small-icon-button"
                            ng-click="newListName = $ctrl.actionList.content; editListName = true;">
@@ -17,18 +17,18 @@
                 </md-button>
             </div>
             <form data-ng-submit="$ctrl.saveName(newListName); editListName=false">
-                <div data-ng-show="editListName" layout="row" layout-wrap>
-                    <div flex>
+                <div data-ng-show="editListName" class="row">
+                    <div class="flex">
                         <md-input-container md-no-float class="lvg-input-container__inline">
                             <input ng-model="newListName">
                         </md-input-container>
                     </div>
-                    <div flex="nogrow">
+                    <div class="flex no-grow">
                         <md-button type="submit" class="lvg-small-icon-button">
                             <md-icon md-svg-icon="ok"></md-icon>
                         </md-button>
                     </div>
-                    <div flex="nogrow">
+                    <div class="flex no-grow">
                         <md-button class="lvg-small-icon-button" data-ng-click="editListName=false">
                             <md-icon md-svg-icon="close"></md-icon>
                         </md-button>
@@ -38,7 +38,7 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <md-list 
+        <md-list
             lvg-dnd="$ctrl.actionList.items"
             lvg-dnd-drop="$ctrl.dropActionList($index, $oldIndex)"
             lvg-dnd-dragstart="$ctrl.dragStartActionList($item)"
@@ -53,7 +53,7 @@
                              ng-true-value="'ACTION_CHECKED'"
                              ng-false-value="'ACTION_UNCHECKED'">
                 </md-checkbox>
-                <p flex data-ng-hide="editName">{{ item.content }}</p>
+                <p class="flex" data-ng-hide="editName">{{ item.content }}</p>
                 <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="editName = true">
                     <md-tooltip>{{'card.action.list.tooltip.edit.item' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="edit"></md-icon>
@@ -62,18 +62,18 @@
                     <md-tooltip>{{'card.action.list.tooltip.delete.item' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="delete"></md-icon>
                 </md-button>
-                <form layout="row" data-ng-show="editName" data-ng-submit="$ctrl.saveAction(item.id, item.content); editName = false">
-                    <div flex>
+                <form class="row" data-ng-show="editName" data-ng-submit="$ctrl.saveAction(item.id, item.content); editName = false">
+                    <div class="flex">
                         <md-input-container md-no-float class="lvg-input-container__inline">
                             <input ng-model="item.content">
                         </md-input-container>
                     </div>
-                    <div flex="nogrow">
+                    <div class="flex no-grow">
                         <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!item.content">
                             <md-icon md-svg-icon="ok"></md-icon>
                         </md-button>
                     </div>
-                    <div flex="nogrow">
+                    <div class="flex no-grow">
                         <md-button class="lvg-small-icon-button" ng-click="editName = false">
                             <md-icon md-svg-icon="close"></md-icon>
                         </md-button>
@@ -84,19 +84,18 @@
     </md-card-content>
     <md-card-actions data-lvg-has-permission="MANAGE_ACTION_LIST" class="lvg-card-action-list__actions">
         <form data-ng-submit="$ctrl.addAction(newAction)">
-            <div layout="row" layout-wrap>
-                <div flex>
+            <div class="row margin-8">
+                <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
                         <input ng-model="newAction.name" placeholder="{{'card.action.list.placeholder.item'|translate}}">
                     </md-input-container>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button md-no-ink class="md-primary" type="submit" ng-disabled="!newAction.name">
                         <span data-translate>button.add</span>
                     </md-button>
                 </div>
             </div>
         </form>
-
     </md-card-actions>
 </md-card>

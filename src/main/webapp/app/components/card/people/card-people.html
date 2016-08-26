@@ -1,9 +1,9 @@
 <md-card>
     <md-card-title>
         <md-card-title-text>
-            <div layout="row">
+            <div class="row row-inherit">
                 <div class="lvg-headline"><span data-translate>card.people</span></div>
-                <span flex></span>
+                <span class="flex"></span>
                 <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.take()">
                     <md-tooltip>{{'card.people.take' | translate}}</md-tooltip>
                     <md-icon md-svg-icon="take"></md-icon>
@@ -63,20 +63,20 @@
     </md-card-content>
     <md-card-actions data-lvg-has-permission="UPDATE_CARD" class="lvg-card-people__actions">
         <form data-ng-submit="$ctrl.assignUser(user)">
-            <div layout-gt-md="row" layout="row" layout-wrap layout-align="start bottom">
-                <div flex>
-                    <md-autocomplete flex
+            <div class="row margin-8 start-xs bottom-xs">
+                <div class="flex">
+                    <md-autocomplete
                         md-no-cache="true"
                         md-selected-item="user"
                         md-search-text="userSearchText"
                         md-item-text="user.label"
                         md-items="user in $ctrl.searchUser(userSearchText)"
                         md-floating-label="User"
-                        class="lvg-autocomplete__inline">
+                        class="lvg-autocomplete__inline flex">
                         <md-item-template>{{user.label}}</md-item-template>
                     </md-autocomplete>
                 </div>
-                <div flex="nogrow">
+                <div class="flex no-grow">
                     <md-button class="md-primary" type="submit" ng-disabled="!user">
                         <span data-translate>button.assign</span>
                     </md-button>

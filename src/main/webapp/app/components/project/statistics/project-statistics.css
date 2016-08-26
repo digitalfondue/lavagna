@@ -1,0 +1,25 @@
+.lvg-statistics__top-panel {
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.lvg-bar-chart {
+	width: 100%;
+}
+
+.lvg-bar-chart .text {
+	text-align: right;
+	white-space: nowrap;
+	padding-right: 5px;
+}
+
+.lvg-bar-chart .bar {
+	width: 99%;
+}
+
+.lvg-bar-chart .inner-bar {
+	text-align: left;
+	padding: 5px 10px;
+	margin: 5px 0px;
+}

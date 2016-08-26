@@ -1,88 +1,114 @@
-<div class="row">
-    <div class="col-xs-12">
-        <div class="lavagna-panel">
-            <table class="table lvg-table" data-ng-init="$ctrl.view.milestoneDeleteStatus = {}">
-                <tr data-ng-repeat="(nValue,lValue) in $ctrl.milestoneValues">
-                    <td class="vcenter"><span data-ng-hide="lValue.edit" data-ng-class="{strike : lValue.metadata.status === 'CLOSED'}">{{lValue.value}}</span><span data-ng-show="lValue.edit"><input data-ng-model="lValue.value"> <button class="lvg-button lvg-button-default" data-ng-click="$ctrl.update(lValue)"><i class="fa fa-check"></i></button></span></td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default" data-ng-click="lValue.edit = !lValue.edit">
-                            <i class="fa fa-pencil" data-ng-hide="lValue.edit"></i>
-                            <i class="fa fa-times" data-ng-show="lValue.edit"></i>
-                        </button>
-                    </td>
-                    <td class="vcenter lavagna-date-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <span data-ng-hide="lValue.dateEdit" data-ng-bind="lValue.metadata.releaseDate"></span>
-                        <span data-ng-show="lValue.dateEdit" data-ng-init="newDate = lValue.metadata.releaseDate">
-                            <input type="text" placeholder="{{'partials.fragments.label-pickers.date' | translate}}" size="12"
-                                   data-lvg-datepicker data-ng-model="newDate">
-                            <button class="lvg-button lvg-button-default pull-right" data-ng-click="$ctrl.updateReleaseDate(lValue.id, newDate)"><i class="fa fa-check"></i></button>
-                        </span>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default" data-ng-click="lValue.dateEdit = !lValue.dateEdit">
-                            <i class="fa fa-calendar" data-ng-hide="lValue.dateEdit"></i>
-                            <i class="fa fa-times" data-ng-show="lValue.dateEdit"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0"
-                                data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue - 1].id)">
-                            <i class="fa fa-angle-up"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1"
-                                data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue + 1].id)">
-                            <i class="fa fa-angle-down"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0"
-                                data-ng-click="$ctrl.moveLabelListValue(lValue.id, 1)">
-                            <i class="fa fa-angle-double-up"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1"
-                                data-ng-click="$ctrl.moveLabelListValue(lValue.id, $ctrl.milestoneValues.length)">
-                            <i class="fa fa-angle-double-down"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <button class="lvg-button lvg-button-default" data-ng-hide="lValue.metadata.status === 'CLOSED'"
-                                data-ng-click="$ctrl.closeMilestone(lValue)">
-                            <i class="fa fa-square-o"></i>
-                        </button>
-                        <button class="lvg-button lvg-button-default" data-ng-show="lValue.metadata.status === 'CLOSED'"
-                                data-ng-click="$ctrl.openMilestone(lValue)">
-                            <i class="fa fa-check-square"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]" data-ng-init="$ctrl.milestoneUseCount[lValue.id] = false; $ctrl.updateCount(lValue.id)">
-                        <button class="lvg-button lvg-button-default"
-                                data-ng-disabled="$ctrl.milestoneUseCount[lValue.id] !== 0"
-                                data-ng-click="$ctrl.view.milestoneDeleteStatus[lValue.id] = true">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                    </td>
-                    <td class="lavagna-confirm-column" colspan="5" data-ng-show="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                        <form data-ng-role="form" data-ng-submit="$ctrl.removeLabelListValue(lValue.id)">
-                            <p data-translate>partials.project.manage-milestones.remove</p>
-                            <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
-                            <button type="button" class="lvg-button lvg-button-default" data-ng-click="$ctrl.view.milestoneDeleteStatus[lValue.id] = false;" data-translate>button.no</button>
-                        </form>
-                    </td>
-                </tr>
-            </table>
-        </div>
+<div class="row lvg-content">
+    <div class="col-xs-12 lvg-panel lvg-content__item">
+        <table class="table lvg-table" data-ng-init="$ctrl.view.milestoneDeleteStatus = {}">
+            <tr data-ng-repeat="(nValue,lValue) in $ctrl.milestoneValues">
+                <td class="vcenter lvg-milestones__manage-name-column">
+                    <span ng-hide="edit" data-ng-class="{strike : lValue.metadata.status === 'CLOSED'}">{{lValue.value}}</span>
+                    <form ng-show="edit"
+                          ng-submit="$ctrl.update(lValue); edit = false;"
+                          class="row row-inherit">
+                        <div class="flex">
+                            <md-input-container md-no-float class="lvg-input-container__inline">
+                                <input required type="text" data-ng-model="lValue.value">
+                            </md-input-container>
+                        </div>
+                        <div class="flex no-grow">
+                            <md-button class="lvg-small-icon-button md-primary" type="submit" ng-disabled="!lValue.value">
+                                <md-icon md-svg-icon="ok"></md-icon>
+                            </md-button>
+                        </div>
+                        <div class="flex no-grow">
+                            <md-button class="lvg-small-icon-button" ng-click="edit=false">
+                                <md-icon md-svg-icon="close"></md-icon>
+                            </md-button>
+                        </div>
+                    </form>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <md-button class="lvg-small-icon-button" ng-click="newValue = lValue.value; edit = true;" data-ng-hide="edit">
+                        <md-tooltip>{{'button.edit' | translate}}</md-tooltip>
+                        <md-icon md-svg-icon="edit"></md-icon>
+                    </md-button>
+                </td>
+                <td class="vcenter lvg-milestones__manage-date-column">
+                    <span>{{ lValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
+                    <md-button ng-if="lValue.metadata.releaseDate"
+                               class="lvg-small-icon-button"
+                               ng-click="$ctrl.removeReleaseDate(lValue.id)">
+                        <md-tooltip>{{'button.remove'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="close"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <span class="lvg-datepicker__icon-only">
+                        <md-tooltip>{{'project.manage.milestones.due.date.tooltip' | translate}}</md-tooltip>
+                        <md-datepicker
+                            class="lvg-datepicker"
+                            ng-model="dueDate"
+                            ng-change="$ctrl.updateReleaseDate(lValue.id, dueDate)">
+                        </md-datepicker>
+                    </span>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue - 1].id)"
+                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
+                        <md-tooltip>{{'project.manage.milestones.move.up'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="expand_less"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue + 1].id)"
+                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
+                        <md-tooltip>{{'project.manage.milestones.move.down'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="expand_more"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-click="$ctrl.moveLabelListValue(lValue.id, 1)"
+                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
+                        <md-tooltip>{{'project.manage.milestones.move.top'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="align_top"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-click="$ctrl.moveLabelListValue(lValue.id, $ctrl.milestoneValues.length)"
+                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
+                        <md-tooltip>{{'project.manage.milestones.move.bottom'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="align_bottom"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-hide="lValue.metadata.status === 'CLOSED'"
+                               data-ng-click="$ctrl.closeMilestone(lValue)">
+                        <md-tooltip>{{'project.manage.milestones.close'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="milestone_open"></md-icon>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-show="lValue.metadata.status === 'CLOSED'"
+                               data-ng-click="$ctrl.openMilestone(lValue)">
+                        <md-tooltip>{{'project.manage.milestones.open'|translate}}</md-tooltip>
+                        <md-icon md-svg-icon="milestone_closed"></md-icon>
+                    </md-button>
+                </td>
+                <td class="lvg-milestones__manage-icon-column" data-ng-init="$ctrl.milestoneUseCount[lValue.id] = false; $ctrl.updateCount(lValue.id)">
+                    <md-button class="lvg-small-icon-button"
+                               data-ng-disabled="$ctrl.milestoneUseCount[lValue.id] !== 0"
+                               data-ng-click="$ctrl.deleteMilestone(lValue, $event)">
+                        <md-tooltip md-visible="showTooltip">{{($ctrl.milestoneUseCount[lValue.id] !== 0 ? 'project.manage.milestones.cant.delete':'project.manage.milestones.delete')|translate}}</md-tooltip>
+                        <md-icon ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" md-svg-icon="delete"></md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showAddMilestoneDialog($event)">
-    <md-tooltip md-direction="top">{{'partials.project.manage-milestones.addNewMilestone' | translate}}</md-tooltip>
+    <md-tooltip md-direction="top">{{'project.manage.milestone.dialog.add.title' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>
