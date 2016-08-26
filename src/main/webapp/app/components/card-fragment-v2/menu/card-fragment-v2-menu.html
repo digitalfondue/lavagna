@@ -1,31 +1,46 @@
-<div>
-    <ul class="lvg-card-fragment-v2-menu__button_list">
-        <li lvg-has-permission="MOVE_CARD">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveColumnFlag = true;" translate>partials.fragments.card-fragment.moveToColumn</button>
-        </li>
-        <li lvg-has-permission="CREATE_CARD">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.cloneCardFlag = true;" translate>partials.fragments.card-fragment.clone</button>
-        </li>
-        <li lvg-has-permission="MOVE_CARD">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('ARCHIVE'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToArchive</button>
-        </li>
-        <li lvg-has-permission="MOVE_CARD">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('BACKLOG'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToBacklog</button>
-        </li>
-        <li lvg-has-permission="MOVE_CARD">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('TRASH'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToTrash</button>
-        </li>
-        <li lvg-has-permission="MANAGE_LABEL_VALUE" ng-if="!$ctrl.isSelfWatching">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.watchCard(); $ctrl.close();" translate>partials.fragments.card-fragment.watch</button>
-        </li>
-        <li lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isSelfWatching">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.unWatchCard(); $ctrl.close();" translate>partials.fragments.card-fragment.unwatch</button>
-        </li>
-        <li lvg-has-permission="MANAGE_LABEL_VALUE" ng-if="!$ctrl.isAssignedToCard">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.assignToCurrentUser(); $ctrl.close();" translate>partials.fragments.card-fragment.take</button>
-        </li>
-        <li lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isAssignedToCard">
-            <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.removeAssignForCurrentUser(); $ctrl.close();" translate>partials.fragments.card-fragment.surrender</button>
-        </li>
-    </ul>
+<ul class="lvg-card-fragment-v2-menu__button_list" ng-hide="$ctrl.moveColumnFlag || $ctrl.cloneCardFlag">
+    <li lvg-has-permission="MOVE_CARD">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveColumnFlag = true;" translate>partials.fragments.card-fragment.moveToColumn</button>
+    </li>
+    <li lvg-has-permission="CREATE_CARD">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.cloneCardFlag = true;" translate>partials.fragments.card-fragment.clone</button>
+    </li>
+    <li lvg-has-permission="MOVE_CARD">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('ARCHIVE'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToArchive</button>
+    </li>
+    <li lvg-has-permission="MOVE_CARD">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('BACKLOG'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToBacklog</button>
+    </li>
+    <li lvg-has-permission="MOVE_CARD">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveCard('TRASH'); $ctrl.close();" translate>partials.fragments.card-fragment.moveToTrash</button>
+    </li>
+    <li lvg-has-permission="MANAGE_LABEL_VALUE" ng-if="!$ctrl.isSelfWatching">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.watchCard(); $ctrl.close();" translate>partials.fragments.card-fragment.watch</button>
+    </li>
+    <li lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isSelfWatching">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.unWatchCard(); $ctrl.close();" translate>partials.fragments.card-fragment.unwatch</button>
+    </li>
+    <li lvg-has-permission="MANAGE_LABEL_VALUE" ng-if="!$ctrl.isAssignedToCard">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.assignToCurrentUser(); $ctrl.close();" translate>partials.fragments.card-fragment.take</button>
+    </li>
+    <li lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isAssignedToCard">
+        <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.removeAssignForCurrentUser(); $ctrl.close();" translate>partials.fragments.card-fragment.surrender</button>
+    </li>
+</ul>
+<div ng-if="$ctrl.cloneCardFlag" class="lvg-card-fragment-v2-menu__panel">
+</div>
+<div ng-if="$ctrl.moveColumnFlag" class="">
+    <md-dialog class="md-transition-in">
+        <form ng-submit="$ctrl.moveToColumn(toColumn)">
+		    <md-dialog-content class="md-dialog-content">
+			    <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select">
+			        <md-option ng-value="opt" ng-repeat="opt in $ctrl.moveColumns">{{::opt.name}}</md-option>
+			    </md-select>
+	        </md-dialog-content>
+		    <md-dialog-actions>
+		       <md-button type="button" ng-click="$ctrl.moveColumnFlag=false"><span translate>button.cancel</span></md-button>
+		       <md-button type="submit" ng-disabled="toColumn === null || toColumn === undefined"><span translate>partials.fragments.move-card-to-column-modal-fragment.move</span></md-button>
+		    </md-dialog-actions>
+	    </form>
+    </md-dialog>
 </div>

@@ -28,3 +28,11 @@
 .lvg-card-fragment-v2-menu__button:hover {
 	background-color:rgba(158,158,158,0.2); 
 }
+
+.lvg-card-fragment-v2-menu__panel {
+	min-width: 256px;
+}
+
+.lvg-card-fragment-v2-menu__select {
+	margin-bottom:0!important;
+}
