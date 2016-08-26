@@ -23,13 +23,13 @@
                                project="$ctrl.project"
                                user="$ctrl.user"
                                board="$ctrl.board"
-                               metadata-ref="$ctrl.getMetadata()"
+                               metadata-ref="$ctrl.metadata"
                                side-bar-location="$ctrl.sidebarLocation">
             </lvg-board-sidebar>
         </div>
 
         <div class="lvg-board__wrapper">
-            <lvg-rebuild-if-change class="lvg-board__rebuild-if-change" to-watch="$ctrl.getMetadata().hash"
+            <lvg-rebuild-if-change class="lvg-board__rebuild-if-change" to-watch="$ctrl.metadata.hash"
                                    lvg-dnd="$ctrl.columns"
                                    lvg-dnd-drop="$ctrl.dropColumn($index, $oldIndex)"
                                    lvg-dnd-opts="{group: 'column', animation: 0, draggingClass: 'lvg-board__dragging-columns', handle: '.lvg-column__handle'}">
@@ -37,7 +37,7 @@
                     data-ng-repeat="column in $ctrl.columns track by column.id"
                     project-short-name="{{::$ctrl.project.shortName}}"
                     board-short-name="{{::$ctrl.board.shortName}}"
-                    metadata-ref="$ctrl.getMetadata()"
+                    metadata-ref="$ctrl.metadata"
                     column="column"
                     selected-cards="$ctrl.selectedCards"
                     search-filter-ref="$ctrl.searchFilter"
