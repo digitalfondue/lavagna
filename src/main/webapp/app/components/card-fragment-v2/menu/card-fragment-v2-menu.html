@@ -27,9 +27,24 @@
         <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.removeAssignForCurrentUser(); $ctrl.close();" translate>partials.fragments.card-fragment.surrender</button>
     </li>
 </ul>
-<div ng-if="$ctrl.cloneCardFlag" class="lvg-card-fragment-v2-menu__panel">
+<div ng-if="$ctrl.cloneCardFlag">
+    <md-dialog class="md-transition-in">
+        <form ng-submit="$ctrl.cloneCard(toColumn)">
+            <md-dialog-content class="md-dialog-content">
+                <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select">
+                    <md-optgroup label="{{::columnByProject[0].board}}" ng-repeat="columnByProject in $ctrl.columnsByProject">
+                        <md-option ng-value="opt" ng-repeat="opt in columnByProject">{{::opt.columnName}}</md-option>
+                    </md-optgroup>
+                </md-select>
+            </md-dialog-content>
+            <md-dialog-actions>
+               <md-button type="button" ng-click="$ctrl.cloneCardFlag = false"><span translate>button.cancel</span></md-button>
+               <md-button type="submit" ng-disabled="toColumn === null || toColumn === undefined"><span translate>partials.fragments.card-fragment.clone</span></md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </div>
-<div ng-if="$ctrl.moveColumnFlag" class="">
+<div ng-if="$ctrl.moveColumnFlag">
     <md-dialog class="md-transition-in">
         <form ng-submit="$ctrl.moveToColumn(toColumn)">
 		    <md-dialog-content class="md-dialog-content">

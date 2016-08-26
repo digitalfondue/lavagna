@@ -22,7 +22,6 @@
     		
     		
     		ctrl.goTo = function(page) {
-    			console.log(page);
     			ctrl.changePage(page);
     		}
     	}

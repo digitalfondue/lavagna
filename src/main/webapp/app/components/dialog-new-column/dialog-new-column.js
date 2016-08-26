@@ -14,8 +14,6 @@
 					$mdDialog.hide();
 				}
 
-				console.log('definitions: ', ctrl.columnsDefinition);
-
 				ctrl.createColumn = function(columnToCreate) {
 		            Board.createColumn(ctrl.boardName, columnToCreate).then(function() {
 		                columnToCreate.name = null;

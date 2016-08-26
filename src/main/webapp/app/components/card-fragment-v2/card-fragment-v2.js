@@ -12,7 +12,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
 	});
 	
 	//
@@ -24,7 +24,7 @@
 	
 
 
-	function CardFragmentV2Controller($element, $scope, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache, $mdPanel) {
+	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache, $mdPanel) {
 		var ctrl = this;
 		
 		
@@ -57,7 +57,7 @@
         //
         
         
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $state, $location, $filter, $mdPanel, User);
+        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
@@ -94,7 +94,7 @@
 	
 	
 	//--------------------
-	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $state, $location, $filter, $mdPanel, User) {
+	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User) {
 		var ctrl = this;
 
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
@@ -116,11 +116,8 @@
 					var button = createElem('button');
 					button.className = 'lvg-card-fragment-v2__menu';
 					baseDiv.appendChild(button);
-					button.addEventListener('click', prepareOpenCardMenu($mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user.id));
+					button.addEventListener('click', prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata));
 				}
-				//<div lvg-has-at-least-one-permission="MOVE_CARD,MANAGE_LABEL_VALUE">
-                //  <div class="lavagna-card-caret-container lvg-not-sortable-card" ng-click="openCardMenu($ctrl.card, $ctrl.projectMetadataRef())"><span class="fa fa-chevron-down"></span></div>
-				//</div>
 			} else if (parent.boardView && parent.readOnly) {
 				baseDiv.appendChild(createText(parent.shortCardName));
 				angular.element(baseDiv).addClass('fake-link');
@@ -599,8 +596,16 @@
 	}
 	
 	
-	function prepareOpenCardMenu($mdPanel, $element, card, isSelfWatching, isAssignedToCard, currentUserId) {
+	function prepareOpenCardMenu(cardFragmentElement, $scope, $compile, $mdPanel, $element, card, isSelfWatching, isAssignedToCard, user, metadata) {
 		return function(event) {
+			
+			var scopeForCardFragment = $scope.$new();
+			scopeForCardFragment['style'] = getStyle(cardFragmentElement);
+			scopeForCardFragment['card'] = card;
+			scopeForCardFragment['user'] = user;
+			scopeForCardFragment['metadata'] = metadata;
+			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata" ng-style="style"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
+			window.document.body.appendChild(readOnlyCard);
 			var position = $mdPanel.newPanelPosition()
 				.relativeTo($element)
 				.addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
@@ -609,25 +614,39 @@
 				.addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
 			var conf = {
 					attachTo: angular.element(document.body),
-					controller: function(mdPanelRef) {this.mdPanelRef = mdPanelRef;},
+					controller: function(mdPanelRef) {
+						this.mdPanelRef = mdPanelRef;
+					},
 					controllerAs: '$ctrl',
 					template: '<lvg-card-fragment-v2-menu md-panel-ref="$ctrl.mdPanelRef" card="$ctrl.card" current-user-id="$ctrl.currentUserId" is-self-watching="$ctrl.isSelfWatching" is-assigned-to-card="$ctrl.isAssignedToCard" class="lvg-card-fragment-v2-menu md-whiteframe-z2"></lvg-card-fragment-v2-menu>',
 					position: position,
 					openFrom: event,
 					clickOutsideToClose: true,
 					escapeToClose: true,
+					trapFocus:true,
+					disableParentScroll:true,
 					focusOnOpen: true,
+					onDomRemoved:function() {
+						readOnlyCard.remove();
+						scopeForCardFragment.$destroy();
+					},
 				    locals: {
 				    	isSelfWatching: isSelfWatching,
 				    	isAssignedToCard: isAssignedToCard,
 				    	card:card,
-				    	currentUserId:currentUserId
+				    	currentUserId:user.id
 				    }
 			};
 			$mdPanel.open(conf);
+			
 		}
 	}
 	
+	
+	function getStyle(element) {
+		var r = element.getBoundingClientRect();
+		return {position:'absolute', left: (r.left + window.scrollX)+'px',top: (r.top + window.scrollY)+'px', height: (r.height-2)+'px', width:(r.width-2)+'px'}
+	}
 	
 
 })();
