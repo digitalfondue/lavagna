@@ -119,7 +119,7 @@
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false);
 				baseDiv.appendChild(a);
-				baseDiv.appendChild(lastUpdateTime(lastUpdateTime));
+				baseDiv.appendChild(lastUpdateTime(parent.card.lastUpdateTime));
 			} else if (parent.searchView) {
 
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
@@ -421,7 +421,7 @@
         		return null;
         	}
 
-        	if(!projectMetadata) {
+        	if(!projectMetadata || !projectMetadata.labelListValues) {
         		return null;
         	}
 
@@ -431,7 +431,13 @@
 
         	var releaseDateStr = undefined;
         	var metadata = projectMetadata;
-        	if(metadata && metadata.labelListValues && milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {
+        	
+        	var hasMilestoneMetadata = milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList];
+        	if(!hasMilestoneMetadata) {
+        		return null;
+        	}
+        	
+        	if(hasMilestoneMetadata && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {
         		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
         	}
 
@@ -477,7 +483,7 @@
         var labelBackground = $filter('labelBackground');
         function handleLabels() {
 
-        	if(!projectMetadata) {
+        	if(!projectMetadata || !projectMetadata.labels) {
         		return null;
         	}
 
