@@ -1,33 +1,37 @@
 <div class="lvg-content">
-    <div class="row lvg-content__item">
-        <md-input-container class="col-xs-3">
-            <label translate>project.statistics.filter.by.board</label>
-            <md-select data-ng-model="$ctrl.boardToFilter"
-                       data-ng-change="$ctrl.filterByBoard($ctrl.boardToFilter)">
-                <md-option ng-value="board" ng-repeat="board in $ctrl.boards | filter:{archived: false}">{{::board.name}}</md-option>
-            </md-select>
-        </md-input-container>
-        <md-input-container class="col-xs-3">
-            <label translate>project.statistics.filter.by.date.range</label>
-            <md-select data-ng-model="$ctrl.dateRange"
-                       data-ng-change="$ctrl.changeDateRange($ctrl.dateRange)">
-                <md-option ng-value="date" ng-repeat="date in $ctrl.availableDateRanges">{{::date.name}}</md-option>
-            </md-select>
-        </md-input-container>
+    <div class="row row-inherit lvg-content__row">
+        <div class="lvg-content__row-item col-md-3 col-xs-6">
+            <md-input-container class="lvg-project-statistics__filter">
+                <label translate>project.statistics.filter.by.board</label>
+                <md-select data-ng-model="$ctrl.boardToFilter"
+                           data-ng-change="$ctrl.filterByBoard($ctrl.boardToFilter)">
+                    <md-option ng-value="board" ng-repeat="board in $ctrl.boards | filter:{archived: false}">{{::board.name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div class="lvg-content__row-item col-md-3 col-xs-6">
+            <md-input-container class="lvg-project-statistics__filter">
+                <label translate>project.statistics.filter.by.date.range</label>
+                <md-select data-ng-model="$ctrl.dateRange"
+                           data-ng-change="$ctrl.changeDateRange($ctrl.dateRange)">
+                    <md-option ng-value="date" ng-repeat="date in $ctrl.availableDateRanges">{{::date.name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
     </div>
 
-    <div class="row lvg-content__item">
-        <div data-ng-class="{'col-md-6': $ctrl.stats.mostActiveCard == null, 'col-md-3': $ctrl.stats.mostActiveCard}">
+    <div class="row row-inherit lvg-content__row">
+        <div class="lvg-content__row-item col-xs-12" data-ng-class="{'col-md-6': $ctrl.stats.mostActiveCard == null, 'col-md-3': $ctrl.stats.mostActiveCard}">
             <lvg-stats-tile tile-title="'project.statistics.created.this.period'|translate"
                             value="$ctrl.openedThisPeriod" value-color="$ctrl.stats.openTaskColor">
             </lvg-stats-tile>
         </div>
-        <div data-ng-class="{'col-md-6': $ctrl.stats.mostActiveCard == null, 'col-md-3': $ctrl.stats.mostActiveCard}">
+        <div class="lvg-content__row-item col-xs-12" data-ng-class="{'col-md-6': $ctrl.stats.mostActiveCard == null, 'col-md-3': $ctrl.stats.mostActiveCard}">
             <lvg-stats-tile tile-title="'project.statistics.closed.this.period'|translate"
                             value="$ctrl.closedThisPeriod" value-color="$ctrl.stats.closedTaskColor">
             </lvg-stats-tile>
         </div>
-        <div class="col-md-6" data-ng-if="$ctrl.stats.mostActiveCard">
+        <div class="lvg-content__row-item col-md-6 col-xs-12" data-ng-if="$ctrl.stats.mostActiveCard">
             <div class="lvg-panel">
                 <div class="lvg-stats-tile__title">
                     <h4 data-translate>project.statistics.most.active.card</h4>
@@ -43,8 +47,8 @@
         </div>
     </div>
 
-    <div class="row lvg-content__item" data-ng-if="$ctrl.showCreatedAndClosedCards">
-        <div class="col-md-12">
+    <div class="row row-inherit lvg-content__row" data-ng-if="$ctrl.showCreatedAndClosedCards">
+        <div class="lvg-content__row-item col-xs-12">
             <div class="lvg-panel">
                 <div class="lvg-panel__head">
                     <div class="lvg-stats-tile__title">
@@ -62,27 +66,27 @@
         </div>
     </div>
 
-    <div class="row lvg-content__item">
-        <div class="col-md-3">
+    <div class="row row-inherit lvg-content__row">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'common.column.definition.OPEN'|translate"
                             value="$ctrl.stats.openTaskCount" value-color="$ctrl.stats.openTaskColor"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'common.column.definition.CLOSED'|translate"
                             value="$ctrl.stats.closedTaskCount" value-color="$ctrl.stats.closedTaskColor"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'common.column.definition.DEFERRED'|translate"
                             value="$ctrl.stats.deferredTaskCount" value-color="$ctrl.stats.deferredTaskColor"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'common.column.definition.BACKLOG'|translate"
                             value="$ctrl.stats.backlogTaskCount" value-color="$ctrl.stats.backlogTaskColor"></lvg-stats-tile>
         </div>
     </div>
 
-    <div class="row lvg-content__item" data-ng-if="$ctrl.showCardsHistory">
-        <div class="col-md-12">
+    <div class="row row-inherit lvg-content__row" data-ng-if="$ctrl.showCardsHistory">
+        <div class="lvg-content__row-item col-xs-12">
             <div class="lvg-panel">
                 <div class="lvg-panel__head">
                     <div class="lvg-stats-tile__title">
@@ -102,27 +106,27 @@
         </div>
     </div>
 
-    <div class="row lvg-content__item">
-        <div class="col-md-3">
+    <div class="row row-inherit lvg-content__row">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'project.statistics.total.cards'|translate"
                             value="$ctrl.totalCards"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'project.statistics.active.users'|translate"
                             value="$ctrl.stats.activeUsers"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'project.statistics.average.cards.user'|translate"
                             value="$ctrl.stats.averageCardsPerUser|number:2"></lvg-stats-tile>
         </div>
-        <div class="col-md-3">
+        <div class="lvg-content__row-item col-md-3 col-xs-12">
             <lvg-stats-tile tile-title="'project.statistics.average.users.card'|translate"
                             value="$ctrl.stats.averageUsersPerCard|number:2"></lvg-stats-tile>
         </div>
     </div>
 
-    <div class="row lvg-content__item" data-ng-if="$ctrl.showCardsByLabel">
-        <div class="col-md-12">
+    <div class="row row-inherit lvg-content__row" data-ng-if="$ctrl.showCardsByLabel">
+        <div class="lvg-content__row-item col-xs-12">
             <div class="lvg-panel">
                 <div class="lvg-panel__head">
                     <div class="lvg-stats-tile__title">

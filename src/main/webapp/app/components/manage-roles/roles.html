@@ -1,101 +1,68 @@
-<div class="col-md-4">
-    <div class="lavagna-form-panel lavagna-container-bottom-margin">
-        <div class="search-bar" data-ng-init="username">
-            <div class="search-user-form inner-addon left-inner-addon">
-                <i class="fa fa-search"></i>
-                <input type="text" placeholder="{{'partials.fragments.common-manage-roles.searchUsername' | translate}}"
-                       class="form-control" data-ng-model="manageRolesCtrl.view.username"
-                       lvg-user-list="manageRolesCtrl.view.userList"/>
-            </div>
+<div class="lvg-content">
+    <div class="row row-inherit lvg-content__row">
+        <div class="col-md-3 col-xs-12 lvg-content__row-item">
+            <md-input-container>
+                <label>Filter users</label>
+                <input ng-model="$ctrl.userFilterText">
+            </md-input-container>
+        </div>
+
+        <div data-ng-repeat="(roleName, roleDescriptor) in $ctrl.roles"
+             class="col-xs-12 lvg-content__row-item">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="row row-inherit">
+                            <div class="lvg-headline">{{::roleName}}</div>
+                            <span class="flex"></span>
+                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.open(roleName, roleDescriptor)">
+                                <md-icon md-svg-icon="edit"></md-icon>
+                            </md-button>
+                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.deleteRole(roleName)">
+                                <md-icon md-svg-icon="delete"></md-icon>
+                            </md-button>
+                        </div>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                <span class="lvg-label lavagna-role-user"
+                      data-ng-if="$ctrl.usersWithRole[roleName].length > 0"
+                      data-ng-repeat="user in $ctrl.usersWithRole[roleName] | filterUsersBy:$ctrl.userFilterText | limitTo: 40">
+			        <lvg-user-link user-id="user.id"></lvg-user-link>
+				    <span class="fa fa-times lvg-cursor-pointer"
+                          data-ng-click="$ctrl.removeUserToRole(user.id, roleName)"></span>
+			    </span>
+                    <span data-ng-if="$ctrl.usersWithRole[roleName].length == 0" data-translate>partials.fragments.common-manage-roles.noUsersForRole</span>
+                </md-card-content>
+                <md-card-actions>
+                    <form data-ng-submit="$ctrl.addUserToRole(userToAdd, roleName); userToAdd = null;">
+                        <div class="row margin-8 start-xs bottom-xs">
+                            <div class="flex">
+                                <md-autocomplete
+                                    md-no-cache="true"
+                                    md-selected-item="userToAdd"
+                                    md-search-text="userSearchText"
+                                    md-item-text="user.label"
+                                    md-items="user in $ctrl.searchUser(userSearchText)"
+                                    md-floating-label="User"
+                                    class="lvg-autocomplete__inline flex">
+                                    <md-item-template>{{user.label}}</md-item-template>
+                                </md-autocomplete>
+                            </div>
+                            <div class="flex no-grow">
+                                <md-button class="md-primary" type="submit" ng-disabled="!userToAdd">
+                                    <span data-translate>button.assign</span>
+                                </md-button>
+                            </div>
+                        </div>
+                    </form>
+                </md-card-actions>
+            </md-card>
         </div>
     </div>
 </div>
 
-
-<div class="col-xs-12" data-ng-repeat="(roleName, roleDescriptor) in manageRolesCtrl.roles"
-     data-ng-init="manageRolesCtrl.view.roleState[roleName] = {}">
-    <div class="lavagna-panel">
-        <div class="head clearfix">
-            <div class="title col-xs-9">
-                <a data-ng-href data-ng-click="manageRolesCtrl.open(roleName, roleDescriptor)">{{::roleName}}</a>
-            </div>
-            <div class="title-addon col-xs-3">
-                <ul class="panel-controls">
-                    <li class="control-no-action">
-                        <span class="pull-right"><i class="fa fa-user"></i> {{manageRolesCtrl.usersWithRole[roleName].length}}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="body">
-			<span class="lvg-label lavagna-role-user" data-ng-if="manageRolesCtrl.usersWithRole[roleName].length > 0"  data-ng-repeat="user in manageRolesCtrl.usersWithRole[roleName] | usersInList:manageRolesCtrl.view.userList | limitTo: 40">
-			    <lvg-user-link user-id="user.id"></lvg-user-link>
-				<span class="fa fa-times lvg-cursor-pointer"
-                      data-ng-click="manageRolesCtrl.removeUserToRole(user.id, roleName)"></span>
-			</span>
-            <span data-ng-if="manageRolesCtrl.usersWithRole[roleName].length == 0" data-translate>partials.fragments.common-manage-roles.noUsersForRole</span>
-        </div>
-        <div class="footer clearfix">
-            <ul class="panel-controls" data-ng-hide="manageRolesCtrl.view.roleState[roleName].delete">
-                <li class="control-item"
-                    data-ng-hide="manageRolesCtrl.view.roleState[roleName].delete || !roleDescriptor.removable || manageRolesCtrl.view.roleState[roleName].addUser">
-					<span
-                        data-ng-click="manageRolesCtrl.view.roleState[roleName].addUser = false; manageRolesCtrl.view.roleState[roleName].delete = true;"
-                        class="fa fa-trash-o" title="{{'button.delete' | translate}}"
-                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
-                </li>
-                <li class="control-item"
-                    data-ng-hide="manageRolesCtrl.view.roleState[roleName].addUser">
-					<span
-                        data-ng-click="manageRolesCtrl.view.roleState[roleName].delete = false; manageRolesCtrl.view.roleState[roleName].addUser = true;"
-                        class="fa fa-plus" title="{{'button.add' | translate}}"
-                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
-                </li>
-                <li class="control-item"
-                    data-ng-show="manageRolesCtrl.view.roleState[roleName].addUser">
-					<span
-                        data-ng-click="manageRolesCtrl.view.roleState[roleName].addUser = false;"
-                        class="fa fa-times" title="{{'button.close' | translate}}"
-                        data-lvg-has-permission="MANAGE_LABEL_VALUE"></span>
-                </li>
-            </ul>
-            <div class="content col-xs-10 col-md-6" data-ng-show="manageRolesCtrl.view.roleState[roleName].addUser">
-                <form data-ng-submit="manageRolesCtrl.addUserToRole(manageRolesCtrl.view.roleState[roleName].newUsername, roleName); manageRolesCtrl.view.roleState[roleName].newUsername = null">
-                    <div class="input-group">
-                        <md-autocomplete
-                            required
-                            placeholder="{{'partials.fragments.common-manage-roles.username'|translate}}"
-                            md-no-cache="true"
-                            md-selected-item="manageRolesCtrl.view.roleState[roleName].newUsername"
-                            md-search-text="userSearchText"
-                            md-item-text="user.label"
-                            md-items="user in manageRolesCtrl.searchUser(userSearchText)">
-                            <md-item-template>{{user.label}}</md-item-template>
-                        </md-autocomplete>
-						<span class="input-group-btn">
-							<button class="lvg-inline-button lvg-button-submit" type="submit" data-translate>button.add</button>
-						</span>
-                    </div>
-                </form>
-            </div>
-            <div class="content col-xs-12 col-md-6" data-ng-show="manageRolesCtrl.view.roleState[roleName].delete">
-                <form
-                    data-ng-submit="manageRolesCtrl.deleteRole(roleName)">
-                    <div class="form-group">
-                        <span data-translate>partials.fragments.common-manage-roles.deleteThisRole</span>
-                    </div>
-                    <div>
-                        <button type="submit" class="lvg-button lvg-button-submit" data-translate>button.yes</button>
-                        <button type="button" class="lvg-button lvg-button-default"
-                                data-ng-click="manageRolesCtrl.view.roleState[roleName].delete = false"><span data-translate>button.no</span></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="manageRolesCtrl.showAddRoleDialog($event)">
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showAddRoleDialog($event)">
     <md-tooltip md-direction="top">{{'partials.fragments.common-manage-roles.addNewRole' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>

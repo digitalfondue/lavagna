@@ -1,7 +1,8 @@
 <div class="lvg-content">
     <lvg-project-manage-labels-label data-ng-repeat="(n,l) in $ctrl.userLabels | orderObjectBy:'name' track by l.name"
                                      project="$ctrl.project"
-                                     label="l"></lvg-project-manage-labels-label>
+                                     label="l"
+                                     class="lvg-content__row"></lvg-project-manage-labels-label>
 </div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showAddLabelDialog($event)">

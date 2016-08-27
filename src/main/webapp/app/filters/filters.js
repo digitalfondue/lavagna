@@ -292,7 +292,7 @@
 			if (definitions === undefined || definitions === null) {
 				return r;
 			}
-			
+
 			//handle map form
 			if(definitions.length === undefined) {
 				angular.forEach(definitions, function(val, key) {
@@ -301,89 +301,12 @@
 				});
 				return r;
 			}
-			
-			
+
+
 			for (var d = 0; d < definitions.length; d++) {
 				var definition = definitions[d];
 				definition.order = columnDefinitionOrder[definition.value.toLowerCase()];
 				r.push(definition);
-			}
-			return r;
-		}
-	});
-
-	filters.filter('usersInList', function ($filter) {
-		var equals = function (user1, user2) {
-			return user1.id === user2.id;
-		};
-
-		return function (users, filteredUsers) {
-			var r = [];
-			if (users === undefined || users === null || filteredUsers === undefined || filteredUsers === null) {
-				return r;
-			}
-			for (var u = 0; u < users.length; u++) {
-				var cu = users[u];
-				for (var f = 0; f < filteredUsers.length; f++) {
-					var cfu = filteredUsers[f];
-					if (equals(cu, cfu)) {
-						r.push(cu);
-					}
-				}
-			}
-			return r;
-		}
-	});
-
-	filters.filter('usersInListIfNotEmpty', function ($filter) {
-		var equals = function (user1, user2) {
-			return user1.id === user2.id;
-		};
-
-		return function (users, filteredUsers, search) {
-			var r = [];
-			if (users === undefined || users === null) {
-				return r;
-			}
-			if (search === undefined || search === null || filteredUsers === undefined || filteredUsers === null) {
-				return users;
-			}
-			for (var u = 0; u < users.length; u++) {
-				var cu = users[u];
-				for (var f = 0; f < filteredUsers.length; f++) {
-					var cfu = filteredUsers[f];
-					if (equals(cu, cfu)) {
-						r.push(cu);
-					}
-				}
-			}
-			return r;
-		}
-	});
-
-	filters.filter('removeDuplicateUsers', function ($filter) {
-		var equals = function (user1, user2) {
-			return user1.id === user2.id;
-		};
-
-		return function (users, filteredUsers, search) {
-			var r = [];
-			if (users === undefined || users === null) {
-				return r;
-			}
-			if (filteredUsers === undefined || filteredUsers === null || filteredUsers.length == 0) {
-				return users;
-			}
-			for (var u = 0; u < users.length; u++) {
-				var cu = users[u];
-				var userFound = false;
-				for (var f = 0; f < filteredUsers.length; f++) {
-					var cfu = filteredUsers[f];
-					userFound |= equals(cu, cfu);
-				}
-				if (!userFound) {
-					r.push(cu);
-				}
 			}
 			return r;
 		}
@@ -404,17 +327,6 @@
 				}
 			}
 			return r;
-		}
-	});
-
-	filters.filter('usersPagination', function ($filter) {
-		return function (userList, limit, page) {
-			if (userList === undefined || userList === null || page === undefined || page === null ||
-				limit * (page - 1) >= userList.length) {
-				return [];
-			}
-			return userList.slice((page - 1) * limit,
-					((page - 1) * limit) + limit);
 		}
 	});
 
@@ -455,6 +367,37 @@
                 var locationName = $filter('translate')('partials.board.' + column.name);
                 return $filter('translate')('card.metadata.status.view', {name: locationName});
             }
+	    }
+	});
+
+	filters.filter('filterUsersBy', function() {
+	    return function(users, text) {
+	        if(text === undefined || text === null || text.length === 0 || users === undefined) {
+	            return users;
+	        }
+
+	        var filteredUsers = [];
+
+	        angular.forEach(users, function(user) {
+                var add = false;
+                if(user.username.indexOf(text) >= 0) {
+                    add = true;
+                }
+                if(!add && user.provider.indexOf(text) >= 0) {
+                    add = true;
+                }
+                if(!add && user.displayName != null && user.displayName.indexOf(text) >= 0) {
+                    add = true;
+                }
+                if(!add && user.email != null && user.email.indexOf(text) >= 0) {
+                    add = true;
+                }
+                if(add) {
+                    filteredUsers.push(user);
+                }
+	        });
+
+	        return filteredUsers;
 	    }
 	});
 

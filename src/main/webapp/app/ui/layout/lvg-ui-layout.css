@@ -18,8 +18,12 @@ html, body {
     margin-left: auto;
 }
 
-.lvg-content__item {
+.lvg-content__row-item {
     margin-top: 20px;
+}
+
+.lvg-content__row:last-child {
+    margin-bottom: 20px;
 }
 
 .lvg-manage-dialog {
@@ -31,9 +35,7 @@ html, body {
     box-sizing: border-box;
 }
 
-.lvg-content__item:last-child {
-    margin-bottom: 20px;
-}
+
 
 @media (min-width: 768px) {
     .lvg-content {width: 750px;}

@@ -8,7 +8,6 @@
             project: '='
         },
         controller: ManageRolesController,
-        controllerAs: 'manageRolesCtrl',
         templateUrl: 'app/components/manage-roles/roles.html'
     });
 
@@ -24,9 +23,9 @@
             projectName = ctrl.project.shortName;
             Permission = Permission.forProject(projectName);
         }
-        
+
         ctrl.searchUser = function(text) {
-			return User.findUsersGlobally(text.trim()).then(function (res) { 
+			return User.findUsersGlobally(text.trim()).then(function (res) {
 				angular.forEach(res, function(user) {
 					user.label = User.formatName(user);
 				});
@@ -119,11 +118,6 @@
             ctrl.permissionsByCategory = res;
         });
 
-        ctrl.view.userListPage = 1;
-        ctrl.switchUserPage = function(page) {
-            ctrl.view.userListPage = page;
-        };
-
         //permission modal
         ctrl.open = function(roleName, roleDescriptor) {
             $mdDialog.show({
@@ -164,7 +158,7 @@
                 }
             });
         }
-        
+
         //
         ctrl.showAddRoleDialog = function($event) {
         	$mdDialog.show({
@@ -173,7 +167,7 @@
         		controller: function() {
         			var ctrl = this;
         			ctrl.createRole = createRole;
-        			
+
         			ctrl.close = function() {
                     	$mdDialog.hide();
                     };
@@ -181,7 +175,7 @@
         		controllerAs: 'addRoleDialogCtrl'
         	});
         }
-        
+
         function createRole(roleName) {
             Permission.createRole(roleName).catch(function() {
                 Notification.addAutoAckNotification('error', {
