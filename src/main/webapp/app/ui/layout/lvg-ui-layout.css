@@ -140,6 +140,7 @@ html, body {
 }
 
 .column {
+    -webkit-flex-direction: column;
     flex-direction: column;
 }
 

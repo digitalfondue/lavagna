@@ -1,0 +1,5 @@
+.lvg-navbar .md-toolbar-tools {
+    min-height: 64px !important;
+    height: 64px;
+    max-height: 64px;
+}

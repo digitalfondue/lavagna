@@ -1,13 +1,9 @@
-<md-toolbar>
+<md-toolbar class="lvg-navbar">
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2 data-translate>partials.about.title</h2>
         <lvg-search-input data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input>
-        <md-button class="md-icon-button" data-lvg-is-authenticated ui-sref="account">
-            <md-tooltip>{{'partials.fragments.sidebar.profile' | translate}}</md-tooltip>
-            <md-icon md-svg-icon="person"></md-icon>
-        </md-button>
-        <md-button data-lvg-is-not-authenticated data-ng-click="$event.preventaDefault(); $ctrl.login()"><span data-translate>index.navbar.login</span></md-button>
+        <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
     </div>
     <md-tabs md-center-tabs>
         <md-tab data-ui-sref="about.lavagna" md-active="$ctrl.$state.is('about.lavagna')">

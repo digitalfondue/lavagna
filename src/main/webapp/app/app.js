@@ -517,6 +517,15 @@
             .icon('align_bottom',       'svg/ic_vertical_align_bottom_black_48px.svg')
             .icon('milestone_open',     'svg/milestone-open.svg')
             .icon('milestone_closed',   'svg/milestone-closed.svg')
+            .icon('location_backlog',   'svg/ic_developer_board_black_48px.svg')
+            .icon('location_archive',   'svg/ic_storage_black_48px.svg')
+            .icon('location_trash',     'svg/trash.svg')
+            .icon('dashboard',          'svg/ic_dashboard_black_48px.svg')
+            .icon('dashboard_white',    'svg/ic_dashboard_white_48px.svg')
+            .icon('menu_ellipsis',      'svg/ic_more_vert_black_48px.svg')
+            .icon('menu_ellipsis_white','svg/ic_more_vert_white_48px.svg')
+            .icon('add_column',         'svg/add_column.svg')
+            .icon('select_all',         'svg/ic_select_all_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

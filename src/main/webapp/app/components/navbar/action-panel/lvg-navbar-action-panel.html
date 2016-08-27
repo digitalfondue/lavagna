@@ -1,0 +1,9 @@
+<md-button class="md-icon-button" ui-sref="home.dashboard">
+    <md-tooltip>{{'navbar.common.dashboard' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="dashboard_white"></md-icon>
+</md-button>
+<md-button class="md-icon-button" data-lvg-is-authenticated ui-sref="account">
+    <md-tooltip>{{'navbar.common.my.profile' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="person"></md-icon>
+</md-button>
+<md-button data-lvg-is-not-authenticated data-ng-click="$event.preventaDefault(); $ctrl.login()"><span data-translate>navbar.common.login</span></md-button>

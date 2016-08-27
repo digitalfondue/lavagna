@@ -1,15 +1,19 @@
-lvg-board-controls {
- 	height:45px;
- 	min-height: 45px;
- 	line-height:45px;
- 	display: flex;
-    flex: 0 0 auto;
+.lvg-board-controls {
+    display: flex;
+    height: 100%;
+    min-height: 100%;
+    max-width: 55px;
 }
 
-lvg-board-controls .new-column-button {
-	text-transform: none;
+.lvg-board-controls__container {
+    padding-top: 4px;
 }
 
-lvg-board-controls .new-column-button span {
-	color: black;
+.lvg-board-controls__container-divider {
+    margin: 9px 5px 10px 5px;
+    border-top: 1px solid #aaa
+}
+
+.lvg-board-controls__location-active {
+    background-color: #aaa;
 }

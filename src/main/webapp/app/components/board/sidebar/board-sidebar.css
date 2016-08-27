@@ -1,14 +1,26 @@
 lvg-board-sidebar {
     display: block;
-    background-color: #d5d5d5;
+    background-color: #f8f8f8;
     min-width: 290px;
     height: 100%;
-    margin: 4px;
+    margin: 4px 4px 4px 0;
     border: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border: 1px solid #aaa;
     border-top: 2px solid #aaa;
+}
+
+.lvg-board-sidebar__header {
+    height: 40px;
+    max-width: 290px;
+}
+
+.lvg-board-sidebar__header-title {
+    padding: 9px 0px 0px 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .lvg-board-sidebar__dropzone {
@@ -39,7 +51,7 @@ lvg-board-sidebar {
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
-    padding:8px;
+    padding: 0 8px 0 8px;
 }
 
 

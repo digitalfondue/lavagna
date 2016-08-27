@@ -3,20 +3,20 @@
 </header>
 
 <div class="lvg-board__container">
-    <lvg-board-controls
-        board="$ctrl.board"
-        project="$ctrl.project"
-        toggled-sidebar="$ctrl.toggledSidebar"
-        side-bar-location="$ctrl.sidebarLocation"
-        un-select-all="$ctrl.unSelectAll"
-        select-all="$ctrl.selectAll"
-        selected-visible-count="$ctrl.selectedVisibleCount"
-        format-bulk-request="$ctrl.formatBulkRequest"
-        selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId">
-    </lvg-board-controls>
-
     <div class="lvg-board__inner-container"
          data-ng-class="{'lvg-can-move-columns' : $ctrl.sortableColumnOptions, 'lvg-can-move-cards': $ctrl.sortableCardOptions}">
+        <lvg-board-controls
+            class="flex no-grow"
+            board="$ctrl.board"
+            project="$ctrl.project"
+            toggled-sidebar="$ctrl.toggledSidebar"
+            side-bar-location="$ctrl.sidebarLocation"
+            un-select-all="$ctrl.unSelectAll"
+            select-all="$ctrl.selectAll"
+            selected-visible-count="$ctrl.selectedVisibleCount"
+            format-bulk-request="$ctrl.formatBulkRequest"
+            selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId">
+        </lvg-board-controls>
         <div class="lvg-board__sidebar-wrapper"
              data-ng-class="{'lvg-board__sidebar-open': $ctrl.toggledSidebar}">
             <lvg-board-sidebar data-ng-if="$ctrl.toggledSidebar"

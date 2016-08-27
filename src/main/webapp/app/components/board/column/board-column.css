@@ -21,7 +21,7 @@ lvg-board-column {
     display: block;
     width: 288px;
     height: 40px;
-    background-color: #fcfcfc;
+    background-color: #fafafa;
     border: 0;
     padding: 0;
     border-top-left-radius: 0;
@@ -55,7 +55,7 @@ lvg-board-column {
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: #fcfcfc;
+    background-color: #fafafa;
     padding-left: 8px;
     padding-right: 8px;
 }

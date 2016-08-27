@@ -20,9 +20,16 @@
         	var ctrl = this;
 
         	ctrl.bulkOperationModal = BulkOperationModal;
-        	ctrl.sideBarLocation = 'BOARD';
-        	ctrl.selectForSidebar = function() {
-        		ctrl.toggledSidebar = ctrl.sideBarLocation !== 'BOARD';
+        	ctrl.sideBarLocation = null;
+        	ctrl.toggledSidebar = false;
+
+        	ctrl.toggleSidebar = function(location) {
+        	    if(location === ctrl.sideBarLocation) {
+        	        ctrl.toggledSidebar = !ctrl.toggledSidebar;
+        	    } else {
+        	        ctrl.sideBarLocation = location;
+                    ctrl.toggledSidebar = true;
+        	    }
         	};
 
         	ctrl.newColumn = function() {

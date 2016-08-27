@@ -4,6 +4,9 @@
          lvg-dnd
          lvg-dnd-drop="$ctrl.dropCard()"
          lvg-dnd-opts="{sort:false, group: 'card', animation: 150}"></div>
+    <div class="lvg-board-sidebar__header">
+        <div class="lvg-board-sidebar__header-title">{{'common.location.definition.' + $ctrl.sideBarLocation | translate}}</div>
+    </div>
     <div class="lvg-board-sidebar__content">
         <md-progress-circular md-mode="indeterminate" ng-hide="$ctrl.sidebarLoaded"></md-progress-circular>
         <lvg-rebuild-if-change to-watch="$ctrl.metadataRef().hash"
