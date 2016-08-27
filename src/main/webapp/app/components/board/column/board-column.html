@@ -11,7 +11,7 @@
             <div class="lvg-board-column__header-menu flex no-grow"
                  data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN">
                 <md-menu>
-                    <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)"><span class="fa fa-chevron-down"></span></md-button>
+                    <md-button class="md-icon-button lvg-board-column__menu-button" ng-click="$mdOpenMenu($event)"></md-button>
                     <md-menu-content>
                         <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="$ctrl.newCard()">{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
