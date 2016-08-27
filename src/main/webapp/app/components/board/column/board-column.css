@@ -60,6 +60,17 @@ lvg-board-column {
     padding-right: 8px;
 }
 
+.lvg-board-column__menu-button {
+	background-color: transparent;
+	outline: 0;
+	border:none;
+	display:inline-block;
+	background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('../svg/ic_expand_more_black_48px.svg')
+}
+
 .lvg-board__dragging-columns lvg-board-column {
     opacity: .6;
     border: 3px dashed #d5d5d5;
