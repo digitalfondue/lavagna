@@ -4,7 +4,7 @@
 		.component('lvgDialogNewColumn', {
 			templateUrl: 'app/components/dialog-new-column/dialog-new-column.html',
 			bindings: {
-				boardName: '@',
+				boardName: '<',
 				columnsDefinition: '<'
 			},
 			controller: function($mdDialog, Board, Notification) {
@@ -13,8 +13,6 @@
 				ctrl.cancel = function() {
 					$mdDialog.hide();
 				}
-
-				console.log('definitions: ', ctrl.columnsDefinition);
 
 				ctrl.createColumn = function(columnToCreate) {
 		            Board.createColumn(ctrl.boardName, columnToCreate).then(function() {

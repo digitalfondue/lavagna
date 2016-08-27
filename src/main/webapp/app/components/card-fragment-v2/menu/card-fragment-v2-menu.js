@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgCardFragmentV2Menu', {
-		controller: ['BulkOperations', 'Card', 'Board', '$filter', lvgCardFragmentV2MenuCtrl],
+		controller: ['BulkOperations', 'Card', 'Board', 'Notification', 'Project', '$filter', lvgCardFragmentV2MenuCtrl],
 		templateUrl: 'app/components/card-fragment-v2/menu/card-fragment-v2-menu.html',
 		bindings: {
 			mdPanelRef:'<',
@@ -14,13 +14,14 @@
 	});
 	
 	
-	function lvgCardFragmentV2MenuCtrl(BulkOperations, Card, Board, $filter) {
+	function lvgCardFragmentV2MenuCtrl(BulkOperations, Card, Board, Notification, Project, $filter) {
 		var ctrl = this;
 		
 		ctrl.$onInit = function lvgCardFragmentV2MenuCtrlOnInit() {
 			ctrl.moveColumnFlag = false;
 			ctrl.cloneCardFlag = false;
 			loadColumns();
+			loadAllProjectColumns();
 		}
 		
 		
@@ -31,6 +32,7 @@
 		ctrl.removeAssignForCurrentUser = removeAssignForCurrentUser;
 		ctrl.moveCard = moveCard;
 		ctrl.moveToColumn = moveToColumn;
+		ctrl.cloneCard = cloneCard;
 		
 		
 		var cardByProject = {};
@@ -64,6 +66,23 @@
             });
 		}
 		
+		function loadAllProjectColumns() {
+			Project.findAllColumns(ctrl.card.projectShortName).then(function(columns) {
+                ctrl.projectColumns = columns;
+                var cols = [[]];
+                var orderedColumns = $filter('orderBy')(columns, ['board','columnName']);
+                for(var i = 0; i < orderedColumns.length;i++) {
+                	var col = orderedColumns[i];
+                	var latestSegment = cols.length-1;
+                	if(cols[latestSegment] && cols[latestSegment][0] && cols[latestSegment][0].board !== col.board) {
+                		cols.push([]);
+                	}
+                	cols[cols.length-1].push(col);
+                }
+                ctrl.columnsByProject = cols;
+            });
+		}
+		
 		function moveToColumn(toColumn) {
 			Card.findByColumn(toColumn.id).then(function(cards) {
 				var ids = [];
@@ -77,6 +96,14 @@
 			}).then(close)
 		}
 		
+		
+		function cloneCard(clonetoColumn) {
+            Card.clone(ctrl.card.id, clonetoColumn.columnId).then(function() {
+                Notification.addAutoAckNotification('success', { key : 'partials.fragments.card-fragment.clone-done'}, false);
+            }).catch(function(error) {
+                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+            }).then(close);
+        }
 		
 		function close() {
 			ctrl.mdPanelRef.close();

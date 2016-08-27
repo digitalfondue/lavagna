@@ -12,10 +12,6 @@
 			controller: function($mdDialog, User) {
 				var ctrl = this;
 
-				console.log('title: ', ctrl.dialogTitle);
-				console.log('cards: ', ctrl.cards);
-				console.log('action: ', ctrl.action);
-
 				ctrl.cancel = function() {
 					$mdDialog.hide();
 				}
