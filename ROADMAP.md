@@ -4,16 +4,13 @@ This is a high level roadmap. Lavagna has currently:
 
  - a stable 1.0.x branch where small fixes and features will be added. Some of the work done in the master branch will be backported.
  - the current master (1.1) where the big features are developed
-  
-## Expected for 1.0.7
-
- - support for internal password protected accounts
 
 ## Expected for 1.1 
 
  - improve the UI/UX
  - support commit log parsing (git, svn (?))
  - webhooks support
+ - support for internal password protected accounts
  - client side refactoring, porting to angular 1.5 [wip]
  - support internal account handling [wip]
  - refactor the authentication manager: cleanup + simplification [mostly done]
