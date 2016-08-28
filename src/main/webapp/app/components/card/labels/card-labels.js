@@ -17,16 +17,19 @@
         var project = ctrl.project;
         var card = ctrl.card;
         ctrl.labels = ctrl.project.metadata.userLabels;
-
+        
         ctrl.hasUserLabels = function(userLabels, labelValues) {
             if(userLabels === undefined || labelValues === undefined) {
                 return false;
             }
-            var count = 0;
-            for(var n in userLabels) {
-                count += labelValues[n] === undefined ? 0 : labelValues[n].length;
+            
+            for(var v in userLabels) {
+            	if(labelValues[userLabels[v].id] !== undefined) {
+            		return true;
+            	}
             }
-            return count > 0;
+            
+            return false;
         };
 
         var currentCard = function() {
