@@ -6,11 +6,12 @@
 	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations, Label, $translate) {
 
 		function moveTo(toMove, location) {
-			var confirm = $mdDialog.confirm().title('FIXME MOVE TO ' + location)
-	          .textContent('FIXME MOVE TO ' + location)
-	          .ariaLabel('FIXME MOVE TO ' + location)
-	          .ok($translate.instant('button.confirm'))
-	          .cancel($translate.instant('button.cancel'));
+			var title = $translate.instant('dialog-move-to.'+location);
+			var confirm = $mdDialog.confirm()
+				.title(title)
+				.ariaLabel(title)
+				.ok($translate.instant('button.yes'))
+				.cancel($translate.instant('button.no'));
 
 			$mdDialog.show(confirm).then(function() {
 				for(var columnId in toMove) {
@@ -100,11 +101,11 @@
 			},
 
 			removeDueDate: function removeDueDate(cards, applyIfPresent) {
-				var confirm = $mdDialog.confirm().title('FIXME REMOVE DUE DATE')
-		          .textContent('FIXME REMOVE DUE DATE')
-		          .ariaLabel('FIXME REMOVE DUE DATE')
-		          .ok($translate.instant('button.confirm'))
-		          .cancel($translate.instant('button.cancel'));
+				var title = $translate.instant('dialog-remove-due-date.title');
+				var confirm = $mdDialog.confirm().title(title)
+		          .ariaLabel(title)
+		          .ok($translate.instant('button.yes'))
+		          .cancel($translate.instant('button.no'));
 
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;
@@ -115,7 +116,7 @@
 			setMilestone: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-milestone dialog-title="title" action="action"  project-name="projectName"></lvg-dialog-select-milestone>',
+					template: '<lvg-dialog-select-milestone dialog-title="title" action="action($milestone)"  project-name="projectName"></lvg-dialog-select-milestone>',
 					controller: function($scope) {
 						$scope.title = 'SELECT MILESTONE';
 						$scope.projectName = projectName;
