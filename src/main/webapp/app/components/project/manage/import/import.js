@@ -112,10 +112,10 @@
             //
             // 
             // http://stackoverflow.com/a/14174028
-            function requireTrelloScript(callback){
+            function requireScript(url, callback){
                 var head = document.getElementsByTagName("head")[0];
                 var script = document.createElement('script');
-                script.src = ctrl.trelloClientUrl;
+                script.src = url;
                 script.type = 'text/javascript';
                 script.onload = callback;
                 //Internet explorer
@@ -131,11 +131,13 @@
             
             ctrl.loadTrello = function() {
             	if(!window.Trello) {
-	            	requireTrelloScript(function() {
-	            		$scope.$applyAsync(function() {
-	            			ctrl.trelloLoaded = true;
-	            		})
-	            	});
+            		requireScript('/js/jquery-3.1.0.slim.min.js', function() {
+            			requireScript(ctrl.trelloClientUrl, function() {
+    	            		$scope.$applyAsync(function() {
+    	            			ctrl.trelloLoaded = true;
+    	            		})
+    	            	});
+            		})
             	} else {
             		ctrl.trelloLoaded = true;
             	}
