@@ -27,7 +27,7 @@
                     permissionsToEnable.push(key);
                 }
             });
-            ctrl.submit({permissionsToEnable: permissionsToEnable});
+            ctrl.submit({$permissionsToEnable: permissionsToEnable});
         };
 
         var hasChanges = function() {

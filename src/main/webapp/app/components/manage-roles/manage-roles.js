@@ -148,8 +148,8 @@
                     this.perms = permissionsByCategory;
                     this.project = project;
 
-                    this.submit = function(permissionsToEnable) {
-                    	$mdDialog.hide(permissionsToEnable);
+                    this.submit = function($permissionsToEnable) {
+                    	$mdDialog.hide($permissionsToEnable);
                     };
 
                     this.cancel = function() {
