@@ -1,17 +1,19 @@
-<md-dialog-content class="md-dialog-content">
-	<h2 class="md-title">{{$ctrl.dialogTitle}}</h2>
-	<p>
-		<md-select ng-model="$ctrl.selectedLabel.label">
-          <md-option ng-value="m" ng-repeat="m in $ctrl.userLabels">
-            {{m.name}}
-          </md-option>
-        </md-select>
-	</p>
-	<p ng-if="$ctrl.withLabelValuePicker">
-		<lvg-label-picker label="$ctrl.selectedLabel.label" ng-model="$ctrl.selectedLabel.value" project-name="$ctrl.projectName"></lvg-label-picker>
-	</p>
-</md-dialog-content>
-<md-dialog-actions> 
-	<md-button ng-click="$ctrl.cancel()" class="md-primary"><span translate>button.cancel</span></md-button>
-	<md-button ng-click="$ctrl.ok($ctrl.selectedLabel.label, $ctrl.selectedLabel.value)" class="md-primary"><span translate>button.confirm</span></md-button> 
-</md-dialog-actions>
+<form name="dialogSelectLabel" ng-submit="$ctrl.ok($ctrl.selectedLabel.label, $ctrl.selectedLabel.value)" class="lvg-dialog__form">
+	<md-dialog-content class="md-dialog-content">
+		<h2 class="md-title" translate>{{::('dialog-select-label.'+$ctrl.dialogTitle)}}</h2>
+		<p>
+			<md-select ng-model="$ctrl.selectedLabel.label" required>
+	          <md-option ng-value="m" ng-repeat="m in $ctrl.userLabels">
+	            {{m.name}}
+	          </md-option>
+	        </md-select>
+		</p>
+		<p ng-if="$ctrl.withLabelValuePicker">
+			<lvg-label-picker label="$ctrl.selectedLabel.label" ng-model="$ctrl.selectedLabel.value" project-name="$ctrl.projectName"></lvg-label-picker>
+		</p>
+	</md-dialog-content>
+	<md-dialog-actions> 
+		<md-button ng-click="$ctrl.cancel()"><span translate>button.cancel</span></md-button>
+		<md-button type="button"  ng-disabled="!dialogSelectLabel.$valid"><span translate>{{::$ctrl.buttonLabel}}</span></md-button> 
+	</md-dialog-actions>
+</form>

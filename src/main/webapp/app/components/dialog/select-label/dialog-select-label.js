@@ -7,6 +7,7 @@
 			templateUrl: 'app/components/dialog/select-label/dialog-select-label.html',
 			bindings: {
 				dialogTitle: '<',
+				buttonLabel:'<',
 				action: '=',
 				withLabelValuePicker: '<',
 				projectName: '<'

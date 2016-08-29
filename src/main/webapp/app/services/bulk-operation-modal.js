@@ -143,9 +143,10 @@
 			addLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" with-label-value-picker="true"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" with-label-value-picker="true"></lvg-dialog-select-label>',
 					controller: function($scope) {
-						$scope.title = 'FIXME SELECT LABEL TO ADD';
+						$scope.title = 'add';
+						$scope.button = 'button.add';
 						$scope.projectName = projectName;
 						$scope.action = function(labelToAdd, labelValueToAdd) {
 							var labelValueToAdd = Label.extractValue(labelToAdd, labelValueToAdd);
@@ -158,9 +159,10 @@
 			removeLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" ></lvg-dialog-select-label>',
 					controller: function($scope) {
-						$scope.title = 'FIXME SELECT LABEL TO REMOVE';
+						$scope.title = 'remove';
+						$scope.button = 'button.remove';
 						$scope.projectName = projectName;
 						$scope.action = function(labelToRemove) {
 							BulkOperations.removeLabel(cards, labelToRemove).then(applyIfPresent);
