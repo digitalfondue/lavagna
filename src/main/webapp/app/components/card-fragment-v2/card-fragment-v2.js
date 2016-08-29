@@ -122,6 +122,9 @@
 			} else if (parent.boardView && parent.readOnly) {
 				baseDiv.appendChild(createText(parent.shortCardName));
 				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
+				var button = createElem('button');
+				button.className = 'lvg-card-fragment-v2__menu';
+				baseDiv.appendChild(button);
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false);
 				baseDiv.appendChild(a);
@@ -629,7 +632,6 @@
 					clickOutsideToClose: true,
 					escapeToClose: true,
 					trapFocus:true,
-					disableParentScroll:true,
 					focusOnOpen: true,
 					onDomRemoved:function() {
 						readOnlyCard.remove();
