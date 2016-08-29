@@ -27,7 +27,7 @@
 
     <div class="flex no-grow" lvg-has-permission="CREATE_COLUMN">
         <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button">
-            <md-tooltip md-autohide md-direction="right">{{'partials.board.createNewColumn'|translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right" md-visible="$ctrl.columns.length === 0">{{'partials.board.createNewColumn'|translate}}</md-tooltip>
             <md-icon md-svg-icon="add_column"></md-icon>
         </md-button>
     </div>

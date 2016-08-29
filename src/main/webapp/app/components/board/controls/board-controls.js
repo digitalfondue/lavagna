@@ -13,7 +13,8 @@
             formatBulkRequest: '=',
             selectedVisibleCardsIdByColumnId: '=',
             board:'<',
-            project:'<'
+            project:'<',
+            columns:'<'
         },
         templateUrl: 'app/components/board/controls/board-controls.html',
         controller:function(BulkOperationModal, Project, $mdDialog) {
