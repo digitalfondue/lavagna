@@ -65,9 +65,11 @@
             $mdDialog.show(confirm).then(function() {
               return Label.removeLabelListValue(milestone.id);
             }).then(function() {
-                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.remove.success'}, false);
+                Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.remove.success', parameters: {name: milestone.value}}, false);
             }, function(error) {
-                Notification.addAutoAckNotification('error', {key: 'notification.project-manage-milestones.remove.error'}, false);
+                if(error) {
+                    Notification.addAutoAckNotification('error', {key: 'notification.project-manage-milestones.remove.error', parameters: {name: milestone.value}}, false);
+                }
             });
         };
 

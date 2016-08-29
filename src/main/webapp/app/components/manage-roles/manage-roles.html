@@ -2,8 +2,8 @@
     <div class="row row-inherit lvg-content__row">
         <div class="col-md-3 col-xs-12 lvg-content__row-item">
             <md-input-container>
-                <label>Filter users</label>
-                <input ng-model="$ctrl.userFilterText">
+                <label translate>manage.roles.filter.users</label>
+                <input ng-model="$ctrl.userFilterText" ng-change="$ctrl.filterUsersBy()">
             </md-input-container>
         </div>
 
@@ -18,23 +18,36 @@
                             <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.open(roleName, roleDescriptor)">
                                 <md-icon md-svg-icon="edit"></md-icon>
                             </md-button>
-                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.deleteRole(roleName)">
+                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.deleteRole(roleName, $event)">
                                 <md-icon md-svg-icon="delete"></md-icon>
                             </md-button>
+                        </div>
+                        <div class="row row-inherit">
+                            <span class="lvg-sub-headline">
+                                <ng-pluralize count="$ctrl.usersByRole[roleName].length"
+                                              when="{'0':('manage.roles.none.assigned'|translate),
+                                              '1': ('manage.roles.one.assigned'|translate),
+                                              'other': ('manage.roles.more.assigned' | translate:{count: '{{$ctrl.usersByRole[roleName].length}}'})}">
+                            </span>
                         </div>
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                <span class="lvg-label lavagna-role-user"
-                      data-ng-if="$ctrl.usersWithRole[roleName].length > 0"
-                      data-ng-repeat="user in $ctrl.usersWithRole[roleName] | filterUsersBy:$ctrl.userFilterText | limitTo: 40">
-			        <lvg-user-link user-id="user.id"></lvg-user-link>
-				    <span class="fa fa-times lvg-cursor-pointer"
-                          data-ng-click="$ctrl.removeUserToRole(user.id, roleName)"></span>
-			    </span>
-                    <span data-ng-if="$ctrl.usersWithRole[roleName].length == 0" data-translate>partials.fragments.common-manage-roles.noUsersForRole</span>
+                    <div data-ng-if="$ctrl.usersWithRole[roleName].length > 0">
+                        <md-chips ng-model="$ctrl.usersWithRole[roleName]"
+                                  readonly="true"
+                                  class="md-contact-chips lvg-user-chips">
+                            <md-chip-template>
+                                <lvg-user-avatar class="md-contact-avatar" user-id="$chip.id" size="32" bg-color-hex="#E0E0E0"></lvg-user-avatar>
+                                <lvg-user-link class="md-contact-name" user-id="$chip.id"></lvg-user-link>
+                                <md-button md-no-ink class="lvg-small-icon-button lvg-manage-roles__user-remove" ng-click="$ctrl.removeUserToRole($chip, roleName)">
+                                    <md-icon md-svg-icon="close"></md-icon>
+                                </md-button>
+                            </md-chip-template>
+                        </md-chips>
+                    </div>
                 </md-card-content>
-                <md-card-actions>
+                <md-card-actions class="lvg-manage-roles__role-actions">
                     <form data-ng-submit="$ctrl.addUserToRole(userToAdd, roleName); userToAdd = null;">
                         <div class="row margin-8 start-xs bottom-xs">
                             <div class="flex">
@@ -44,7 +57,7 @@
                                     md-search-text="userSearchText"
                                     md-item-text="user.label"
                                     md-items="user in $ctrl.searchUser(userSearchText)"
-                                    md-floating-label="User"
+                                    md-floating-label="{{'label.user'|translate}}"
                                     class="lvg-autocomplete__inline flex">
                                     <md-item-template>{{user.label}}</md-item-template>
                                 </md-autocomplete>
@@ -63,6 +76,6 @@
 </div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showAddRoleDialog($event)">
-    <md-tooltip md-direction="top">{{'partials.fragments.common-manage-roles.addNewRole' | translate}}</md-tooltip>
+    <md-tooltip md-direction="top">{{'manage.roles.add.dialog' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>

@@ -4,7 +4,9 @@
     angular.module('lavagna.components').component('lvgUserAvatar', {
         bindings: {
             userId: '<',
-            size: '@'
+            size: '@',
+            colorHex: '@',
+            bgColorHex: '@'
         },
         controller: UserAvatarController,
         templateUrl: 'app/components/user-avatar/user-avatar.html'
@@ -14,6 +16,8 @@
         var ctrl = this;
 
         ctrl.size = ctrl.size || 28;
+        ctrl.colorHex = ctrl.colorHex || '#333';
+        ctrl.bgColorHex = ctrl.bgColorHex || '#e5e5e5';
 
         function loadUser() {
             UserCache.user(ctrl.userId).then(function (user) {

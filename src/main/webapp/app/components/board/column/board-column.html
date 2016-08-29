@@ -8,12 +8,16 @@
                       class="lavagna-hide lvg-cursor-text" title="{{$ctrl.column.name}}">{{$ctrl.column.name}}</span>
                 <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-cursor-text">{{$ctrl.column.name}}</span>
             </div>
+            <div class="lvg-board-column__header-add-card flex no-grow">
+                <md-button class="md-icon-button lvg-board-column__add-card-button" ng-click="$ctrl.newCard()">
+                    <md-tooltip>{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-tooltip>
+                </md-button>
+            </div>
             <div class="lvg-board-column__header-menu flex no-grow"
                  data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN">
                 <md-menu>
                     <md-button class="md-icon-button lvg-board-column__menu-button" ng-click="$mdOpenMenu($event)"></md-button>
                     <md-menu-content>
-                        <md-menu-item data-lvg-has-permission="CREATE_CARD"><md-button data-ng-click="$ctrl.newCard()">{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">

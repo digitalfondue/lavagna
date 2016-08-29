@@ -7,15 +7,13 @@
         bindings: {
             project: '='
         },
-        controller: ManageRolesController,
-        templateUrl: 'app/components/manage-roles/roles.html'
+        controller: ['$scope', 'Permission', 'Notification', 'ProjectCache', 'StompClient', 'User', '$mdDialog', '$filter', '$translate', ManageRolesController],
+        templateUrl: 'app/components/manage-roles/manage-roles.html'
     });
 
-    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $mdDialog, $filter) {
+    function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $mdDialog, $filter, $translate) {
 
         var ctrl = this;
-        ctrl.view = {};
-        ctrl.view.roleState = {};
 
         //handle manage role at project level:
         var projectName = undefined;
@@ -23,6 +21,17 @@
             projectName = ctrl.project.shortName;
             Permission = Permission.forProject(projectName);
         }
+
+        var getUsersByRole = function(roleName, users, limit) {
+            users = $filter('filterUsersBy')(users, ctrl.userFilterText);
+            return users.slice(0, 40);
+        };
+
+        ctrl.filterUsersBy = function() {
+            angular.forEach(ctrl.usersByRole, function(users, name) {
+                ctrl.usersWithRole[name] = getUsersByRole(name, users, 40);
+            });
+        };
 
         ctrl.searchUser = function(text) {
 			return User.findUsersGlobally(text.trim()).then(function (res) {
@@ -36,7 +45,7 @@
         var reloadRoles = function() {
             Permission.findAllRolesAndRelatedPermissions().then(function(res) {
 
-                for(var roleName in res) {
+                for(var roleName in res) {getUsersByRole
                     if(res[roleName].hidden) {
                         delete res[roleName];
                     }
@@ -65,21 +74,31 @@
             }
         });
 
+        ctrl.usersByRole = {};
         ctrl.usersWithRole = {};
 
         var loadUsersWithRole = function(roleName) {
             Permission.findUsersWithRole(roleName).then(function(users) {
-                ctrl.usersWithRole[roleName] = users;
+                ctrl.usersByRole[roleName] = users;
+                ctrl.usersWithRole[roleName] = getUsersByRole(roleName, users, 40);
             });
         };
 
-
-        ctrl.deleteRole = function(roleName) {
-            Permission.deleteRole(roleName).catch(function() {
-                Notification.addAutoAckNotification('error', {
-                    key: 'notification.manage-role.deleteRole.error',
-                    parameters: {roleName : roleName}
-                }, false);
+        ctrl.deleteRole = function(roleName, ev) {
+            var confirm = $mdDialog.confirm()
+                  .title($translate.instant('manage.roles.delete.dialog.title'))
+                  .textContent($translate.instant('manage.roles.delete.dialog.message', {name: roleName}))
+                  .targetEvent(ev)
+                  .ok($translate.instant('button.yes'))
+                  .cancel($translate.instant('button.no'));
+            $mdDialog.show(confirm).then(function() {
+              return Permission.deleteRole(roleName);
+            }).then(function() {
+                Notification.addAutoAckNotification('success', {key: 'notification.manage-role.deleteRole.success', parameters: {roleName : roleName}}, false);
+            }, function(error) {
+                if(error) {
+                    Notification.addAutoAckNotification('error', {key: 'notification.manage-role.deleteRole.error', parameters: {roleName : roleName}}, false);
+                }
             });
         };
 
@@ -92,22 +111,22 @@
             return false;
         }
 
-        ctrl.addUserToRole = function(username, roleName) {
-            if(!isRoleAssignedToUser(username.id, roleName)) {
-                Permission.addUserToRole(username.id, roleName).catch(function() {
+        ctrl.addUserToRole = function(user, roleName) {
+            if(!isRoleAssignedToUser(user.id, roleName)) {
+                Permission.addUserToRole(user.id, roleName).catch(function() {
                     Notification.addAutoAckNotification('error', {
                         key: 'notification.manage-role.addUserToRole.error',
-                        parameters: {roleName : roleName, userName : $filter('formatUser')(username)}
+                        parameters: {roleName : roleName, userName : $filter('formatUser')(user)}
                     }, false);
                 });
             }
         };
 
-        ctrl.removeUserToRole = function(username, roleName) {
-            Permission.removeUserToRole(username, roleName).catch(function() {
+        ctrl.removeUserToRole = function(user, roleName) {
+            Permission.removeUserToRole(user.id, roleName).catch(function() {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.manage-role.removeUserToRole.error',
-                    parameters: {roleName : roleName, userName : $filter('formatUser')(username)}
+                    parameters: {roleName : roleName, userName : $filter('formatUser')(user)}
                 }, false);
             });
         };
@@ -120,28 +139,25 @@
 
         //permission modal
         ctrl.open = function(roleName, roleDescriptor) {
-            $mdDialog.show({
-            	autoWrap:false,
-                templateUrl: 'app/components/manage-roles/permissions/permissions-modal.html',
+            var dialog = $mdDialog.show({
+            	autoWrap: false,
+                templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions-dialog.html',
                 controller: function(role, roleDescriptor, permissionsByCategory, project) {
                     this.roleName = role;
                     this.roleDesc = roleDescriptor;
                     this.perms = permissionsByCategory;
                     this.project = project;
 
-                    this.submit = function() {
-                    	$mdDialog.hide();
-                    };
-
-                    this.close = function() {
-                    	$mdDialog.hide();
+                    this.submit = function(permissionsToEnable) {
+                    	$mdDialog.hide(permissionsToEnable);
                     };
 
                     this.cancel = function() {
-                    	$mdDialog.hide();
+                    	$mdDialog.cancel(false);
                     };
                 },
                 controllerAs: 'modalResolver',
+                fullscreen: true,
                 resolve: {
                     role: function () {
                         return roleName;
@@ -155,6 +171,17 @@
                     project: function() {
                         return ctrl.project;
                     }
+                }
+            });
+
+            dialog.then(function (permissionsToEnable) {
+                return Permission.updateRole(roleName, permissionsToEnable);
+            }).catch(function (error) {
+                if(error) {
+                    Notification.addAutoAckNotification('error', {
+                        key: 'notification.manage-role.updateRole.error',
+                        parameters: {roleName : roleName}
+                    }, false);
                 }
             });
         }

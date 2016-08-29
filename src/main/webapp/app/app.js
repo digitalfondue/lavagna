@@ -526,6 +526,7 @@
             .icon('menu_ellipsis_white','svg/ic_more_vert_white_48px.svg')
             .icon('add_column',         'svg/add_column.svg')
             .icon('select_all',         'svg/ic_select_all_black_48px.svg')
+            .icon('add-to-list',        'svg/ic_playlist_add_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

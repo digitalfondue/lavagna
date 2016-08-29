@@ -20,8 +20,6 @@
     	ctrl.value = ctrl.valueRef();
     	ctrl.projectMetadata = ctrl.projectMetadataRef();
 
-
-
     	ctrl.$postLink = function lvgLabelV2PostLink() {
     		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
         	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;

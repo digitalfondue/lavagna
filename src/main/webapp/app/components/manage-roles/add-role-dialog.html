@@ -1,19 +1,23 @@
 <md-dialog>
-	<form data-ng-submit="addRoleDialogCtrl.createRole(addRoleDialogCtrl.name);addRoleDialogCtrl.name = null">
-	
+	<form name="addRoleForm"
+          data-ng-submit="addRoleDialogCtrl.createRole(addRoleDialogCtrl.name);addRoleDialogCtrl.name = null">
 	   <md-dialog-content>
 	       <div class="md-dialog-content">
-	           <input type="text" 
-	               placeholder="{{ 'partials.fragments.common-manage-roles.roleName' | translate }}" required="required"
-	               ng-model="addRoleDialogCtrl.name" class="form-control"
-	               autocomplete="off"
-	               pattern="[a-zA-Z0-9_\-\+]+">
+               <h2 class="md-title" translate>manage.roles.add.dialog</h2>
+               <md-input-container md-block>
+                   <label translate>label.name</label>
+                   <input name="name"
+                          type="text"
+                          ng-model="addRoleDialogCtrl.name"
+                          autocomplete="off"
+                          required
+                          ng-pattern="[a-zA-Z0-9_\-\+]+">
+               </md-input-container>
             </div>
         </md-dialog-content>
-	        
         <md-dialog-actions>
-	       <md-button type="submit"><span translate>button.add</span></md-button>
-	       <md-button type="button" ng-click="addRoleDialogCtrl.close()"><span translate>button.close</span></md-button>
+	        <md-button type="button" ng-click="addRoleDialogCtrl.close()"><span translate>button.cancel</span></md-button>
+            <md-button type="submit" disabled="!addRoleForm.$valid"><span translate>button.add</span></md-button>
         </md-dialog-actions>
 	</form>
 </md-dialog>

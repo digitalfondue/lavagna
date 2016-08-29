@@ -33,7 +33,9 @@
             }).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.success'}, false);
             }, function(error) {
-                Notification.addAutoAckNotification('error', {key: 'notification.project-manage-labels.remove.error'}, false);
+                if(error) {
+                    Notification.addAutoAckNotification('error', {key: 'notification.project-manage-labels.remove.error'}, false);
+                }
             }).then(emitRefreshEvent);
         };
 

@@ -8,7 +8,7 @@
                                md-selected-text="$ctrl.column | translateColumnName"
                                ng-model="$ctrl.column"
                                ng-change="$ctrl.moveCard($ctrl.column);"
-                               ng-disabled="!$ctrl.userPermissions['UPDATE_CARD']"
+                               ng-disabled="!$ctrl.userPermissions['MOVE_CARD']"
                                data-ng-style="$ctrl.column.color|labelBackground"
                                data-ng-class="$ctrl.column.color|labelBackgroundClass">
                         <md-optgroup label="Special">

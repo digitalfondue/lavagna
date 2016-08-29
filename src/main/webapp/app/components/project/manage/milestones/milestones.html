@@ -1,45 +1,47 @@
-<div class="row lvg-content">
-    <div class="col-xs-12 lvg-panel lvg-content__row lvg-content__row-item">
-        <table class="table lvg-table" data-ng-init="$ctrl.view.milestoneDeleteStatus = {}">
-            <tr data-ng-repeat="(nValue,lValue) in $ctrl.milestoneValues">
-                <td class="vcenter lvg-milestones__manage-name-column">
-                    <span ng-hide="edit" data-ng-class="{strike : lValue.metadata.status === 'CLOSED'}">{{lValue.value}}</span>
-                    <form ng-show="edit"
-                          ng-submit="$ctrl.update(lValue); edit = false;"
-                          class="row row-inherit">
-                        <div class="flex">
-                            <md-input-container md-no-float class="lvg-input-container__inline">
-                                <input required type="text" data-ng-model="lValue.value">
-                            </md-input-container>
-                        </div>
-                        <div class="flex no-grow">
-                            <md-button class="lvg-small-icon-button md-primary" type="submit" ng-disabled="!lValue.value">
-                                <md-icon md-svg-icon="ok"></md-icon>
+<div class="lvg-content">
+    <div class="row row-inherit lvg-content__row">
+        <div class="col-xs-12 lvg-content__row-item">
+            <div class="lvg-panel">
+                <table class="table lvg-table" data-ng-init="$ctrl.view.milestoneDeleteStatus = {}">
+                    <tr data-ng-repeat="(nValue,lValue) in $ctrl.milestoneValues">
+                        <td class="vcenter lvg-milestones__manage-name-column">
+                            <span ng-hide="edit" data-ng-class="{strike : lValue.metadata.status === 'CLOSED'}">{{lValue.value}}</span>
+                            <form ng-show="edit"
+                                  ng-submit="$ctrl.update(lValue); edit = false;"
+                                  class="row row-inherit">
+                                <div class="flex">
+                                    <md-input-container md-no-float class="lvg-input-container__inline">
+                                        <input required type="text" data-ng-model="lValue.value">
+                                    </md-input-container>
+                                </div>
+                                <div class="flex no-grow">
+                                    <md-button class="lvg-small-icon-button md-primary" type="submit" ng-disabled="!lValue.value">
+                                        <md-icon md-svg-icon="ok"></md-icon>
+                                    </md-button>
+                                </div>
+                                <div class="flex no-grow">
+                                    <md-button class="lvg-small-icon-button" ng-click="edit=false">
+                                        <md-icon md-svg-icon="close"></md-icon>
+                                    </md-button>
+                                </div>
+                            </form>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
+                            <md-button class="lvg-small-icon-button" ng-click="newValue = lValue.value; edit = true;" data-ng-hide="edit">
+                                <md-tooltip>{{'button.edit' | translate}}</md-tooltip>
+                                <md-icon md-svg-icon="edit"></md-icon>
                             </md-button>
-                        </div>
-                        <div class="flex no-grow">
-                            <md-button class="lvg-small-icon-button" ng-click="edit=false">
+                        </td>
+                        <td class="vcenter lvg-milestones__manage-date-column">
+                            <span>{{ lValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
+                            <md-button ng-if="lValue.metadata.releaseDate"
+                                       class="lvg-small-icon-button"
+                                       ng-click="$ctrl.removeReleaseDate(lValue.id)">
+                                <md-tooltip>{{'button.remove'|translate}}</md-tooltip>
                                 <md-icon md-svg-icon="close"></md-icon>
                             </md-button>
-                        </div>
-                    </form>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
-                    <md-button class="lvg-small-icon-button" ng-click="newValue = lValue.value; edit = true;" data-ng-hide="edit">
-                        <md-tooltip>{{'button.edit' | translate}}</md-tooltip>
-                        <md-icon md-svg-icon="edit"></md-icon>
-                    </md-button>
-                </td>
-                <td class="vcenter lvg-milestones__manage-date-column">
-                    <span>{{ lValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
-                    <md-button ng-if="lValue.metadata.releaseDate"
-                               class="lvg-small-icon-button"
-                               ng-click="$ctrl.removeReleaseDate(lValue.id)">
-                        <md-tooltip>{{'button.remove'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="close"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
                     <span class="lvg-datepicker__icon-only">
                         <md-tooltip>{{'project.manage.milestones.due.date.tooltip' | translate}}</md-tooltip>
                         <md-datepicker
@@ -48,63 +50,65 @@
                             ng-change="$ctrl.updateReleaseDate(lValue.id, dueDate)">
                         </md-datepicker>
                     </span>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue - 1].id)"
-                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
-                        <md-tooltip>{{'project.manage.milestones.move.up'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="expand_less"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue + 1].id)"
-                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
-                        <md-tooltip>{{'project.manage.milestones.move.down'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="expand_more"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-click="$ctrl.moveLabelListValue(lValue.id, 1)"
-                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
-                        <md-tooltip>{{'project.manage.milestones.move.top'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="align_top"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-click="$ctrl.moveLabelListValue(lValue.id, $ctrl.milestoneValues.length)"
-                               data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
-                        <md-tooltip>{{'project.manage.milestones.move.bottom'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="align_bottom"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-hide="lValue.metadata.status === 'CLOSED'"
-                               data-ng-click="$ctrl.closeMilestone(lValue)">
-                        <md-tooltip>{{'project.manage.milestones.close'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="milestone_open"></md-icon>
-                    </md-button>
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-show="lValue.metadata.status === 'CLOSED'"
-                               data-ng-click="$ctrl.openMilestone(lValue)">
-                        <md-tooltip>{{'project.manage.milestones.open'|translate}}</md-tooltip>
-                        <md-icon md-svg-icon="milestone_closed"></md-icon>
-                    </md-button>
-                </td>
-                <td class="lvg-milestones__manage-icon-column" data-ng-init="$ctrl.milestoneUseCount[lValue.id] = false; $ctrl.updateCount(lValue.id)">
-                    <md-button class="lvg-small-icon-button"
-                               data-ng-disabled="$ctrl.milestoneUseCount[lValue.id] !== 0"
-                               data-ng-click="$ctrl.deleteMilestone(lValue, $event)">
-                        <md-tooltip md-visible="showTooltip">{{($ctrl.milestoneUseCount[lValue.id] !== 0 ? 'project.manage.milestones.cant.delete':'project.manage.milestones.delete')|translate}}</md-tooltip>
-                        <md-icon ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" md-svg-icon="delete"></md-icon>
-                    </md-button>
-                </td>
-            </tr>
-        </table>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue - 1].id)"
+                                       data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
+                                <md-tooltip>{{'project.manage.milestones.move.up'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="expand_less"></md-icon>
+                            </md-button>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-click="$ctrl.swapLabelListValues(lValue.id, $ctrl.milestoneValues[nValue + 1].id)"
+                                       data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
+                                <md-tooltip>{{'project.manage.milestones.move.down'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="expand_more"></md-icon>
+                            </md-button>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-click="$ctrl.moveLabelListValue(lValue.id, 1)"
+                                       data-ng-disabled="$ctrl.milestoneValues.length < 2 || nValue == 0">
+                                <md-tooltip>{{'project.manage.milestones.move.top'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="align_top"></md-icon>
+                            </md-button>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column" data-ng-hide="$ctrl.view.milestoneDeleteStatus[lValue.id]">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-click="$ctrl.moveLabelListValue(lValue.id, $ctrl.milestoneValues.length)"
+                                       data-ng-disabled="$ctrl.milestoneValues.length < 2 || $ctrl.milestoneValues.length == nValue + 1">
+                                <md-tooltip>{{'project.manage.milestones.move.bottom'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="align_bottom"></md-icon>
+                            </md-button>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-hide="lValue.metadata.status === 'CLOSED'"
+                                       data-ng-click="$ctrl.closeMilestone(lValue)">
+                                <md-tooltip>{{'project.manage.milestones.close'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="milestone_open"></md-icon>
+                            </md-button>
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-show="lValue.metadata.status === 'CLOSED'"
+                                       data-ng-click="$ctrl.openMilestone(lValue)">
+                                <md-tooltip>{{'project.manage.milestones.open'|translate}}</md-tooltip>
+                                <md-icon md-svg-icon="milestone_closed"></md-icon>
+                            </md-button>
+                        </td>
+                        <td class="lvg-milestones__manage-icon-column" data-ng-init="$ctrl.milestoneUseCount[lValue.id] = false; $ctrl.updateCount(lValue.id)">
+                            <md-button class="lvg-small-icon-button"
+                                       data-ng-disabled="$ctrl.milestoneUseCount[lValue.id] !== 0"
+                                       data-ng-click="$ctrl.deleteMilestone(lValue, $event)">
+                                <md-tooltip md-visible="showTooltip">{{($ctrl.milestoneUseCount[lValue.id] !== 0 ? 'project.manage.milestones.cant.delete':'project.manage.milestones.delete')|translate}}</md-tooltip>
+                                <md-icon ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" md-svg-icon="delete"></md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

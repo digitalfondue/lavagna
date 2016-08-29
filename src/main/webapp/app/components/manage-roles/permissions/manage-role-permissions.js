@@ -5,30 +5,20 @@
 
     components.component('lvgManageRolePermissions', {
         bindings: {
-            roleName: '=',
-            roleDesc: '=',
-            permissionsByCategory: '=permissions',
-            project: '=',
-            submit: '=',
-            cancel: '='
+            roleName: '<',
+            roleDesc: '<',
+            permissionsByCategory: '<permissions',
+            project: '<',
+            submit: '&',
+            cancel: '&'
         },
         controller: ManageRolePermissionsController,
         controllerAs: 'managePermsCtrl',
-        templateUrl: 'app/components/manage-roles/permissions/permissions.html'
+        templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions.html'
     });
 
-    function ManageRolePermissionsController(Permission, Notification) {
+    function ManageRolePermissionsController() {
         var ctrl = this;
-        ctrl.view = {};
-
-        //handle manage role at project level:
-        var projectName = undefined;
-        if(ctrl.project !== undefined) {
-            projectName = ctrl.project.shortName;
-            Permission = Permission.forProject(projectName);
-        }
-
-        var role = ctrl.roleName;
 
         ctrl.save = function() {
             var permissionsToEnable = [];
@@ -37,12 +27,7 @@
                     permissionsToEnable.push(key);
                 }
             });
-            Permission.updateRole(role, permissionsToEnable).catch(function() {
-                Notification.addAutoAckNotification('error', {
-                    key: 'notification.manage-role.updateRole.error',
-                    parameters: {roleName : role}
-                }, false);
-            }).then(ctrl.submit);
+            ctrl.submit({permissionsToEnable: permissionsToEnable});
         };
 
         var hasChanges = function() {
@@ -56,10 +41,6 @@
             }
             return false;
         };
-
-        ctrl.cancelWithConfirmation = function() {
-           ctrl.cancel();
-        }
 
         ctrl.assignStatus = {};
 

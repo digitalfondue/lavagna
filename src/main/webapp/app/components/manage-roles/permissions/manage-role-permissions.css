@@ -1,0 +1,37 @@
+.lvg-manage-role-permissions__dialog {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.lvg-manage-role-permissions__content {
+    display: flex;flex-direction: column;
+    background-color: #eee !important;
+}
+
+.lvg-manage-role-permissions__panel {
+    padding: 0;
+}
+
+.lvg-manage-role-permissions__role {
+    padding: 10px 12px 10px 12px;
+}
+
+.lvg-manage-role-permissions__role-change {
+    background-color: #ffe0b2;
+}
+
+.lvg-manage-role-permissions__role-checkbox {
+    margin-bottom: 0;
+}
+
+.lvg-manage-role-permissions__role-name {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.lvg-manage-role-permissions__role-description {
+    font-size: 12px;
+    font-weight: 400;
+    word-wrap: break-word;
+    color: rgba(0,0,0,0.54);
+}
