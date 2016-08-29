@@ -518,7 +518,7 @@
             .icon('milestone_open',     'svg/milestone-open.svg')
             .icon('milestone_closed',   'svg/milestone-closed.svg')
             .icon('location_backlog',   'svg/ic_developer_board_black_48px.svg')
-            .icon('location_archive',   'svg/ic_storage_black_48px.svg')
+            .icon('location_archive',   'svg/archive.svg')
             .icon('location_trash',     'svg/trash.svg')
             .icon('dashboard',          'svg/ic_dashboard_black_48px.svg')
             .icon('dashboard_white',    'svg/ic_dashboard_white_48px.svg')
