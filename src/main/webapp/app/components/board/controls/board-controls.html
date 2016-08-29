@@ -2,7 +2,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'BACKLOG'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('BACKLOG')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.backlog.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.backlog.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'BACKLOG' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_backlog"></md-icon>
         </md-button>
     </div>
@@ -10,7 +10,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'ARCHIVE'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('ARCHIVE')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.archive.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.archive.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'ARCHIVE' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_archive"></md-icon>
         </md-button>
     </div>
@@ -18,7 +18,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'TRASH'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('TRASH')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.trash.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.trash.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'TRASH' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_trash"></md-icon>
         </md-button>
     </div>
