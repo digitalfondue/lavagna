@@ -128,11 +128,11 @@
 			},
 
 			removeMilestone: function(cards, applyIfPresent) {
-				var confirm = $mdDialog.confirm().title('FIXME REMOVE MILESTONE')
-		          .textContent('FIXME REMOVE MILESTONE')
-		          .ariaLabel('FIXME REMOVE MILESTONE')
-		          .ok($translate.instant('button.confirm'))
-		          .cancel($translate.instant('button.cancel'));
+				var title = $translate.instant('dialog-remove-milestone.title');
+				var confirm = $mdDialog.confirm().title(title)
+		          .ariaLabel(title)
+		          .ok($translate.instant('button.yes'))
+		          .cancel($translate.instant('button.no'));
 
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;
