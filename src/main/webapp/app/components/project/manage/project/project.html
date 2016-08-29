@@ -10,10 +10,13 @@
                         <label translate>label.name</label>
                         <input type="text" id="name" placeholder="" required="required" autocomplete="off" ng-model="itemToUpdate.name">
                     </md-input-container>
-                    <md-input-container class="md-block">
+                    <md-input-container class="md-block" ng-if="!$ctrl.view.preview">
                         <label translate>label.description</label>
-                        <textarea ng-show="!preview" rows="5" ng-model="itemToUpdate.description"></textarea>
-                        <div ng-show="preview" ng-bind-html="itemToUpdate.description | markdown"></div>
+                        <textarea rows="5" ng-model="itemToUpdate.description"></textarea>
+                    </md-input-container>
+                    <md-input-container class="md-block  md-input-has-value" ng-if="$ctrl.view.preview">
+                        <label translate>label.description</label>
+                        <div ng-bind-html="itemToUpdate.description | markdown"></div>
                     </md-input-container>
                     <md-input-container class="md-block">
                         <md-checkbox ng-model="itemToUpdate.archived"><span translate>project.manage.home.archived</span></md-checkbox>

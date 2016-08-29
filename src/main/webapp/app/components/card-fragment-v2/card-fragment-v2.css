@@ -1,5 +1,11 @@
 lvg-card-fragment-v2 {
 	display: block;
+	overflow: hidden;
+}
+
+.lvg-card-fragment-v2__card-head {
+	height:24px;
+	line-height: 24px;
 }
 
 .lvg-card-fragment-v2__card-data {
@@ -15,6 +21,16 @@ lvg-card-fragment-v2 {
     background-repeat: no-repeat;
     height:24px;
     line-height: 24px;
+}
+
+.lvg-card-fragment-v2__card-link {
+	color: #428bca;
+    text-decoration: none;
+}
+
+.lvg-card-fragment-v2__card-link:hover {
+	color: #2a6496;
+    text-decoration: underline;
 }
 
 .lvg-card-fragment-v2__menu {
@@ -130,4 +146,12 @@ ic_location_on_gray_48px.svg
     padding: .4em .9em .3em .6em;
     margin-bottom: 5px;
     margin-right: 2px;
+}
+
+.lvg-card-fragment-v2__label-text-black {
+	color:black!important;
+}
+
+.lvg-card-fragment-v2__label-text-white {
+	color:white!important;
 }

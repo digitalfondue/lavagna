@@ -1,4 +1,7 @@
-<div class="row row-inherit">
+<div class="row row-inherit" ng-if="$ctrl.comment === undefined">
+    <p class="lvg-card-comment__deleted" translate>card.comment.deleted-comment</p>
+</div>
+<div class="row row-inherit" ng-if="$ctrl.comment !== undefined">
     <div class="lvg-card-comment__avatar flex no-grow">
         <lvg-user-avatar user-id="$ctrl.comment.userId"></lvg-user-avatar>
     </div>

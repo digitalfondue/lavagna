@@ -1,5 +1,5 @@
 <span data-ng-if="$ctrl.hasUserLabels($ctrl.labels, $ctrl.labelValues)">
-    <span data-ng-repeat="l in $ctrl.labels">
+    <span data-ng-repeat="l in $ctrl.labels" ng-if="$ctrl.labelValues[l.id] !==undefined">
         <span data-ng-repeat="val in $ctrl.labelValues[l.id]" class="lvg-label" data-ng-style="l.color|labelBackground" data-ng-class="l.color|labelBackgroundClass">
             <lvg-label-v2
                 value-ref="val"

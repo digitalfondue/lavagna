@@ -101,6 +101,7 @@
 			var parent = ctrl.lvgCardFragmentV2;
 
 			var baseDiv = createElem('div');
+			baseDiv.className = 'lvg-card-fragment-v2__card-head';
 
 			if (parent.boardView && !parent.readOnly) {
 
@@ -120,7 +121,10 @@
 				}
 			} else if (parent.boardView && parent.readOnly) {
 				baseDiv.appendChild(createText(parent.shortCardName));
-				angular.element(baseDiv).addClass('fake-link');
+				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
+				var button = createElem('button');
+				button.className = 'lvg-card-fragment-v2__menu';
+				baseDiv.appendChild(button);
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false);
 				baseDiv.appendChild(a);
@@ -192,6 +196,7 @@
 
 		function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink) {
 			var a = createElem("a");
+			a.className = 'lvg-card-fragment-v2__card-link';
 			a.textContent = boardShortName + ' - ' + sequenceNumber;
 			a.href = updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 			if(isDynamicLink) {
@@ -505,6 +510,7 @@
         		var value = userCreatedLabels[i];
         		var bg = labelBackground(projectMetadata.labels[value.labelId].color);
 
+        		var textColorClass = 'lvg-card-fragment-v2__label-text-' + labelBackgroundClass(projectMetadata.labels[value.labelId].color);
 
         		//
         		var addSeparator = (value.labelValueType || value.type) !== 'NULL';
@@ -527,16 +533,16 @@
         			nameAndSeparator += ' ' + $filter('date')(value.value.valueTimestamp, 'dd.MM.yyyy');
         			break;
         		case 'USER':
-        			userOrCardLink = handleUser(value.value.valueUser);
+        			userOrCardLink = handleUser(value.value.valueUser, textColorClass);
         			break;
         		case 'CARD':
-        			userOrCardLink = handleCard(value.value.valueCard);
+        			userOrCardLink = handleCard(value.value.valueCard, textColorClass);
         			break;
         		}
 
         		//
         		var div = createElem('div');
-        		div.className = 'lvg-card-fragment-v2__label ' +  labelBackgroundClass(projectMetadata.labels[value.labelId].color);
+        		div.className = 'lvg-card-fragment-v2__label ' +  textColorClass;
         		div.style.backgroundColor = bg['background-color'];
         		div.textContent = nameAndSeparator;
         		if(userOrCardLink) {
@@ -557,8 +563,9 @@
 
         //-----------
 
-		function handleUser(userId) {
+		function handleUser(userId, textColorClass) {
 			var a = createElem('a');
+			a.className = textColorClass;
 			UserCache.user(userId).then(function (user) {
 				var element = angular.element(a);
 				element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
@@ -571,7 +578,7 @@
 		}
 
 
-		function handleCard(cardId) {
+		function handleCard(cardId, textColorClass) {
 
 			var a = createElem('a');
 
@@ -579,6 +586,7 @@
 				var element = angular.element(a);
 
 				a.textContent = card.boardShortName + '-' + card.sequence;
+				a.className = textColorClass;
 				element.attr('href', $state.href('board.card', {projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence}));
 
 				updateCardClass(card, element);
@@ -624,7 +632,6 @@
 					clickOutsideToClose: true,
 					escapeToClose: true,
 					trapFocus:true,
-					disableParentScroll:true,
 					focusOnOpen: true,
 					onDomRemoved:function() {
 						readOnlyCard.remove();

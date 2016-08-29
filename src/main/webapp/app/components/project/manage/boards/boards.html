@@ -32,11 +32,14 @@
 						<label for="name" data-translate>label.name</label>
 						<input type="text" id="name" placeholder="" required="required" autocomplete="off" data-ng-model="itemToUpdate.name">
 					</md-input-container>
-					<md-input-container class="md-block">
+					<md-input-container class="md-block" ng-if="!preview">
 						<label data-translate>label.description</label>
-						<textarea data-ng-model="itemToUpdate.description" rows="5" ng-if="!preview"></textarea>
-						<div data-ng-bind-html="itemToUpdate.description | markdown" ng-if="preview"></div>
+						<textarea data-ng-model="itemToUpdate.description" rows="5"></textarea>
 					</md-input-container>
+					<md-input-container class="md-block md-input-has-value" ng-if="preview">
+					   <label data-translate>label.description</label>
+                        <div data-ng-bind-html="itemToUpdate.description | markdown"></div>
+                    </md-input-container>
 				</div>
 			</md-card-content>
 			<md-card-actions ng-show="edit" class="row margin-8">

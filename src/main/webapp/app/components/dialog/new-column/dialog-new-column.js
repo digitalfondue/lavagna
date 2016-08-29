@@ -2,7 +2,7 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogNewColumn', {
-			templateUrl: 'app/components/dialog-new-column/dialog-new-column.html',
+			templateUrl: 'app/components/dialog/new-column/dialog-new-column.html',
 			bindings: {
 				boardName: '<',
 				columnsDefinition: '<'

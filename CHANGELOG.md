@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.7 (2016-08-28)
+
+ - optimization: better performance when handling big boards
+ - feature: export milestone to excel file
+ - feature: export an entire project to excel file
+
 ## 1.0.6.2 (2016-03-28)
 
  - fix unsubscribe mechanism in stomp-client wrapper

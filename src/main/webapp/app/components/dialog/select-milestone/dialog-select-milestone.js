@@ -4,10 +4,10 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectMilestone', {
-			templateUrl: 'app/components/dialog-select-milestone/dialog-select-milestone.html',
+			templateUrl: 'app/components/dialog/select-milestone/dialog-select-milestone.html',
 			bindings: {
 				dialogTitle: '<',
-				action: '=',
+				action: '&',
 				projectName: '<'
 			},
 			controller: function($mdDialog, LabelCache) {
@@ -29,8 +29,8 @@
 					$mdDialog.hide();
 				}
 				
-				ctrl.ok = function(date) {
-					if(ctrl.action) {ctrl.action(date);}
+				ctrl.ok = function(milestone) {
+					if(ctrl.action) {ctrl.action({'$milestone' : milestone});}
 					$mdDialog.hide();
 				}
 			}

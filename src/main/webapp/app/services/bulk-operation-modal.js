@@ -6,11 +6,12 @@
 	services.factory('BulkOperationModal', function ($mdDialog, Card, User, BulkOperations, Label, $translate) {
 
 		function moveTo(toMove, location) {
-			var confirm = $mdDialog.confirm().title('FIXME MOVE TO ' + location)
-	          .textContent('FIXME MOVE TO ' + location)
-	          .ariaLabel('FIXME MOVE TO ' + location)
-	          .ok($translate.instant('button.confirm'))
-	          .cancel($translate.instant('button.cancel'));
+			var title = $translate.instant('dialog-move-to.'+location);
+			var confirm = $mdDialog.confirm()
+				.title(title)
+				.ariaLabel(title)
+				.ok($translate.instant('button.yes'))
+				.cancel($translate.instant('button.no'));
 
 			$mdDialog.show(confirm).then(function() {
 				for(var columnId in toMove) {
@@ -35,9 +36,9 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
 					locals: {
-                        title: 'dialog.select.user.assign',
+                        title: 'dialog-select-user.assign',
                         action: function(user) {
                             BulkOperations.assign(cards, user).then(applyIfPresent);
                         }
@@ -52,9 +53,9 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
 					locals: {
-					    title: 'dialog.select.user.remove',
+					    title: 'dialog-select-user.remove',
 					    action: function(user) {
 					        BulkOperations.removeAssign(cards, user).then(applyIfPresent);
 					    }
@@ -70,9 +71,9 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-				    template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+				    template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
                     locals: {
-                        title: 'dialog.select.user.reassign',
+                        title: 'dialog-select-user.reassign',
                         action: function(user) {
                             BulkOperations.reassign(cards, user).then(applyIfPresent);
                         }
@@ -86,9 +87,9 @@
 			setDueDate : function(cards, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-date dialog-title="vm.title" action="vm.action(dueDate)"></lvg-dialog-select-date>',
+					template: '<lvg-dialog-select-date dialog-title="vm.title" action="vm.action($date)"></lvg-dialog-select-date>',
 					locals: {
-                        title: 'dialog.select.date.set',
+                        title: 'dialog-select-date.set',
                         action: function(dueDate) {
                             BulkOperations.setDueDate(cards, dueDate).then(applyIfPresent);
                         }
@@ -100,11 +101,11 @@
 			},
 
 			removeDueDate: function removeDueDate(cards, applyIfPresent) {
-				var confirm = $mdDialog.confirm().title('FIXME REMOVE DUE DATE')
-		          .textContent('FIXME REMOVE DUE DATE')
-		          .ariaLabel('FIXME REMOVE DUE DATE')
-		          .ok($translate.instant('button.confirm'))
-		          .cancel($translate.instant('button.cancel'));
+				var title = $translate.instant('dialog-remove-due-date.title');
+				var confirm = $mdDialog.confirm().title(title)
+		          .ariaLabel(title)
+		          .ok($translate.instant('button.yes'))
+		          .cancel($translate.instant('button.no'));
 
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;
@@ -115,7 +116,7 @@
 			setMilestone: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-milestone dialog-title="title" action="action"  project-name="projectName"></lvg-dialog-select-milestone>',
+					template: '<lvg-dialog-select-milestone dialog-title="title" action="action($milestone)"  project-name="projectName"></lvg-dialog-select-milestone>',
 					controller: function($scope) {
 						$scope.title = 'SELECT MILESTONE';
 						$scope.projectName = projectName;
@@ -127,11 +128,11 @@
 			},
 
 			removeMilestone: function(cards, applyIfPresent) {
-				var confirm = $mdDialog.confirm().title('FIXME REMOVE MILESTONE')
-		          .textContent('FIXME REMOVE MILESTONE')
-		          .ariaLabel('FIXME REMOVE MILESTONE')
-		          .ok($translate.instant('button.confirm'))
-		          .cancel($translate.instant('button.cancel'));
+				var title = $translate.instant('dialog-remove-milestone.title');
+				var confirm = $mdDialog.confirm().title(title)
+		          .ariaLabel(title)
+		          .ok($translate.instant('button.yes'))
+		          .cancel($translate.instant('button.no'));
 
 				$mdDialog.show(confirm).then(function() {
 					applyIfPresent = applyIfPresent || angular.noop;
@@ -142,9 +143,10 @@
 			addLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" with-label-value-picker="true"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" with-label-value-picker="true"></lvg-dialog-select-label>',
 					controller: function($scope) {
-						$scope.title = 'FIXME SELECT LABEL TO ADD';
+						$scope.title = 'add';
+						$scope.button = 'button.add';
 						$scope.projectName = projectName;
 						$scope.action = function(labelToAdd, labelValueToAdd) {
 							var labelValueToAdd = Label.extractValue(labelToAdd, labelValueToAdd);
@@ -157,9 +159,10 @@
 			removeLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" ></lvg-dialog-select-label>',
 					controller: function($scope) {
-						$scope.title = 'FIXME SELECT LABEL TO REMOVE';
+						$scope.title = 'remove';
+						$scope.button = 'button.remove';
 						$scope.projectName = projectName;
 						$scope.action = function(labelToRemove) {
 							BulkOperations.removeLabel(cards, labelToRemove).then(applyIfPresent);

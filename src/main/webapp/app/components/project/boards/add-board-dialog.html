@@ -20,9 +20,10 @@
             <label data-translate>label.description</label>
             <textarea data-ng-model="board.description" rows="5" md-select-on-focus></textarea>
         </md-input-container>
-        <div data-ng-show="preview.show">
+        <md-input-container class="md-block md-input-has-placeholder" data-ng-show="preview.show">
+            <label data-translate>label.description</label>
             <div data-ng-bind-html="board.description | markdown"></div>
-        </div>
+        </md-input-container>
     </md-dialog-content>
     <md-dialog-actions>
         <md-button class="md-primary" type="submit"

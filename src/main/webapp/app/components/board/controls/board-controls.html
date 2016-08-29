@@ -2,7 +2,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'BACKLOG'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('BACKLOG')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.backlog.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.backlog.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'BACKLOG' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_backlog"></md-icon>
         </md-button>
     </div>
@@ -10,7 +10,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'ARCHIVE'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('ARCHIVE')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.archive.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.archive.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'ARCHIVE' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_archive"></md-icon>
         </md-button>
     </div>
@@ -18,7 +18,7 @@
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'TRASH'}">
         <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('TRASH')">
-            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.trash.tooltip.' + ($ctrl.toggledSidebar ? 'close' : 'open') | translate}}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'board.controls.trash.tooltip.' + ($ctrl.toggledSidebar && $ctrl.sideBarLocation == 'TRASH' ? 'close' : 'open') | translate}}</md-tooltip>
             <md-icon md-svg-icon="location_trash"></md-icon>
         </md-button>
     </div>
@@ -26,8 +26,8 @@
     <div class="flex no-grow lvg-board-controls__container-divider" lvg-has-permission="CREATE_COLUMN"></div>
 
     <div class="flex no-grow" lvg-has-permission="CREATE_COLUMN">
-        <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button">
-            <md-tooltip md-autohide md-direction="right">{{'partials.board.createNewColumn'|translate}}</md-tooltip>
+        <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button" ng-mouseover="$ctrl.createColumnTooltipVisibility = true" ng-mouseout="$ctrl.createColumnTooltipVisibility = false || $ctrl.columns.length === 0">
+            <md-tooltip md-autohide md-direction="right" md-visible="$ctrl.createColumnTooltipVisibility">{{'partials.board.createNewColumn'|translate}}</md-tooltip>
             <md-icon md-svg-icon="add_column"></md-icon>
         </md-button>
     </div>

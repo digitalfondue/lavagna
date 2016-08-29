@@ -1,0 +1,24 @@
+<form name="dialogNewColumnForm" data-ng-submit="$ctrl.createColumn($ctrl.columnToCreate);" class="lvg-dialog__content">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>dialog-new-column.title</h2>
+        <md-input-container class="md-block">
+            <label translate>dialog-new-column.name</label>
+            <input
+                type="text" name="name" placeholder="{{'partials.fragments.columns-fragment.columnName.placeholder' | translate}}"
+                ng-model="$ctrl.columnToCreate.name"
+                autocomplete="off" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label translate>dialog-new-column.status</label>
+            <md-select ng-model="$ctrl.columnToCreate.definition" name="definition" required>
+                <md-option ng-value="definition.id"
+                           ng-repeat="definition in $ctrl.columnsDefinition | addColDefOrder | orderBy:'order'" 
+                           ng-bind="::(definition.value | capitalize)"></md-option>
+            </md-select>
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="$ctrl.cancel()"><span translate>button.cancel</span></md-button>
+        <md-button type="submit" ng-disabled="!dialogNewColumnForm.$valid"><span translate>button.add</span></md-button>
+    </md-dialog-actions>
+</form>

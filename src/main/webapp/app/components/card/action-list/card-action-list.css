@@ -24,3 +24,7 @@
 .lvg-card-action-list__item > div {
     padding: 0;
 }
+
+.lvg-card-action-list__actionlists-item.sortable-drag md-card {
+	margin:0!important;
+}

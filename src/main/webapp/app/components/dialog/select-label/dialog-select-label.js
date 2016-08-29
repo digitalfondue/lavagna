@@ -4,9 +4,10 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectLabel', {
-			templateUrl: 'app/components/dialog-select-label/dialog-select-label.html',
+			templateUrl: 'app/components/dialog/select-label/dialog-select-label.html',
 			bindings: {
 				dialogTitle: '<',
+				buttonLabel:'<',
 				action: '=',
 				withLabelValuePicker: '<',
 				projectName: '<'

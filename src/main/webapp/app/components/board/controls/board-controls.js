@@ -13,11 +13,19 @@
             formatBulkRequest: '=',
             selectedVisibleCardsIdByColumnId: '=',
             board:'<',
-            project:'<'
+            project:'<',
+            columns:'<'
         },
         templateUrl: 'app/components/board/controls/board-controls.html',
         controller:function(BulkOperationModal, Project, $mdDialog) {
         	var ctrl = this;
+        	
+        	ctrl.$onChanges = function(change) {
+        		console.log(change)
+        		if(change.columns.currentValue) {
+        			ctrl.createColumnTooltipVisibility = change.columns.currentValue.length === 0;
+        		}
+        	}
 
         	ctrl.bulkOperationModal = BulkOperationModal;
         	ctrl.sideBarLocation = null;
