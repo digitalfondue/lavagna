@@ -37,7 +37,7 @@
 				$mdDialog.show({
 					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
 					locals: {
-                        title: 'dialog.select.user.assign',
+                        title: 'dialog-select-user.assign',
                         action: function(user) {
                             BulkOperations.assign(cards, user).then(applyIfPresent);
                         }
@@ -54,7 +54,7 @@
 				$mdDialog.show({
 					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
 					locals: {
-					    title: 'dialog.select.user.remove',
+					    title: 'dialog-select-user.remove',
 					    action: function(user) {
 					        BulkOperations.removeAssign(cards, user).then(applyIfPresent);
 					    }
@@ -72,7 +72,7 @@
 				$mdDialog.show({
 				    template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
                     locals: {
-                        title: 'dialog.select.user.reassign',
+                        title: 'dialog-select-user.reassign',
                         action: function(user) {
                             BulkOperations.reassign(cards, user).then(applyIfPresent);
                         }

@@ -1,16 +1,19 @@
-<md-dialog-content class="md-dialog-content">
-	<h2 class="md-title">{{::$ctrl.dialogTitle}}</h2>
-	<p>
-		<md-autocomplete
-			md-no-cache="true"
-			md-selected-item="user"
+<form name="dialogSelectUser" data-ng-submit="$ctrl.ok(user)" class="lvg-dialog__form">
+	<md-dialog-content class="md-dialog-content">
+		<h2 class="md-title" translate>{{::$ctrl.dialogTitle}}</h2>
+        <md-autocomplete
+            required
+            md-require-match="true"
+            md-no-cache="true"
+            md-selected-item="user"
 			md-search-text="userSearchText"
 			md-item-text="user.label"
-			md-items="user in $ctrl.searchUser(userSearchText)"><md-item-template>{{user.label}}</md-item-template>
+			md-items="user in $ctrl.searchUser(userSearchText)"
+			md-floating-label="{{::('dialog-select-user.username' | translate)}}"><md-item-template>{{user.label}}</md-item-template>
 		</md-autocomplete>
-	</p>
-</md-dialog-content>
-<md-dialog-actions>
-	<md-button ng-click="$ctrl.cancel()" class="md-primary"><span translate>button.cancel</span></md-button>
-	<md-button ng-click="$ctrl.ok(user)" class="md-primary"><span translate>button.confirm</span></md-button>
-</md-dialog-actions>
+	</md-dialog-content>
+	<md-dialog-actions>
+		<md-button ng-click="$ctrl.cancel()"><span translate>button.cancel</span></md-button>
+		<md-button type="submit" ng-disabled="!dialogSelectUser.$valid"><span translate>button.confirm</span></md-button>
+	</md-dialog-actions>
+</form>
