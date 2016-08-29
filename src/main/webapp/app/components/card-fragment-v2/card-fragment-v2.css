@@ -146,3 +146,11 @@ ic_location_on_gray_48px.svg
     margin-bottom: 5px;
     margin-right: 2px;
 }
+
+.lvg-card-fragment-v2__label-text-black {
+	color:black!important;
+}
+
+.lvg-card-fragment-v2__label-text-white {
+	color:white!important;
+}
