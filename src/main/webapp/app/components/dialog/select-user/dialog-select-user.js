@@ -17,7 +17,7 @@
 				}
 
 				ctrl.ok = function(user) {
-					ctrl.action({user: user});
+					ctrl.action({'$user': user});
 					$mdDialog.hide();
 				}
 

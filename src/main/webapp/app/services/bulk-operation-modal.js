@@ -35,7 +35,7 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
 					locals: {
                         title: 'dialog-select-user.assign',
                         action: function(user) {
@@ -52,7 +52,7 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+					template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
 					locals: {
 					    title: 'dialog-select-user.remove',
 					    action: function(user) {
@@ -70,7 +70,7 @@
 				applyIfPresent = applyIfPresent || angular.noop;
 
 				$mdDialog.show({
-				    template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action(user)"></lvg-dialog-select-user>',
+				    template: '<lvg-dialog-select-user dialog-title="vm.title" cards="vm.cards" action="vm.action($user)"></lvg-dialog-select-user>',
                     locals: {
                         title: 'dialog-select-user.reassign',
                         action: function(user) {
@@ -86,9 +86,9 @@
 			setDueDate : function(cards, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-date dialog-title="vm.title" action="vm.action(dueDate)"></lvg-dialog-select-date>',
+					template: '<lvg-dialog-select-date dialog-title="vm.title" action="vm.action($date)"></lvg-dialog-select-date>',
 					locals: {
-                        title: 'dialog.select.date.set',
+                        title: 'dialog-select-date.set',
                         action: function(dueDate) {
                             BulkOperations.setDueDate(cards, dueDate).then(applyIfPresent);
                         }

@@ -7,7 +7,7 @@
 			templateUrl: 'app/components/dialog/select-date/dialog-select-date.html',
 			bindings: {
 				dialogTitle: '<',
-				action: '='
+				action: '&'
 			},
 			controller: function($mdDialog) {
 				var ctrl = this;
@@ -17,7 +17,7 @@
 				}
 				
 				ctrl.ok = function(date) {
-					if(ctrl.action) {ctrl.action(date);}
+					if(ctrl.action) {ctrl.action({'$date':date});}
 					$mdDialog.hide();
 				}
 			}
