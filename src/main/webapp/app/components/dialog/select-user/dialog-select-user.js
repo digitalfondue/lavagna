@@ -4,7 +4,7 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectUser', {
-			templateUrl: 'app/components/dialog-select-user/dialog-select-user.html',
+			templateUrl: 'app/components/dialog/select-user/dialog-select-user.html',
 			bindings: {
 			    dialogTitle: '<',
 				action: '&'

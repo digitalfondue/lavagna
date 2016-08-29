@@ -4,7 +4,7 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectDate', {
-			templateUrl: 'app/components/dialog-select-date/dialog-select-date.html',
+			templateUrl: 'app/components/dialog/select-date/dialog-select-date.html',
 			bindings: {
 				dialogTitle: '<',
 				action: '='

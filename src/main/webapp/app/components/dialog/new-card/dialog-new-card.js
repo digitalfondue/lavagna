@@ -3,7 +3,7 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogNewCard', {
-			templateUrl: 'app/components/dialog-new-card/dialog-new-card.html',
+			templateUrl: 'app/components/dialog/new-card/dialog-new-card.html',
 			bindings: {
 				boardShortName: '<',
 				columns: '<',

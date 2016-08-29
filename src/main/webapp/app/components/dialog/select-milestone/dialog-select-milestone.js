@@ -4,7 +4,7 @@
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogSelectMilestone', {
-			templateUrl: 'app/components/dialog-select-milestone/dialog-select-milestone.html',
+			templateUrl: 'app/components/dialog/select-milestone/dialog-select-milestone.html',
 			bindings: {
 				dialogTitle: '<',
 				action: '=',
