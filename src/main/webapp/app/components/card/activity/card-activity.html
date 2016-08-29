@@ -20,7 +20,7 @@
         </div>
     </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
-        <form data-ng-submit="$ctrl.addComment(comment)">
+        <form data-ng-submit="$ctrl.addComment(comment);commentPreviewMode=false;">
             <div data-ng-hide="commentPreviewMode">
                 <textarea class="lvg-card-activity__actions-textarea"
                           ng-model="comment.content" rows="5" md-select-on-focus></textarea>
