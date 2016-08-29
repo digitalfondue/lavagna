@@ -1,5 +1,6 @@
 lvg-card-fragment-v2 {
 	display: block;
+	overflow: hidden;
 }
 
 .lvg-card-fragment-v2__card-head {
