@@ -101,6 +101,7 @@
 			var parent = ctrl.lvgCardFragmentV2;
 
 			var baseDiv = createElem('div');
+			baseDiv.className = 'lvg-card-fragment-v2__card-head';
 
 			if (parent.boardView && !parent.readOnly) {
 
@@ -120,7 +121,7 @@
 				}
 			} else if (parent.boardView && parent.readOnly) {
 				baseDiv.appendChild(createText(parent.shortCardName));
-				angular.element(baseDiv).addClass('fake-link');
+				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false);
 				baseDiv.appendChild(a);
@@ -192,6 +193,7 @@
 
 		function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink) {
 			var a = createElem("a");
+			a.className = 'lvg-card-fragment-v2__card-link';
 			a.textContent = boardShortName + ' - ' + sequenceNumber;
 			a.href = updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 			if(isDynamicLink) {

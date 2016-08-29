@@ -2,6 +2,11 @@ lvg-card-fragment-v2 {
 	display: block;
 }
 
+.lvg-card-fragment-v2__card-head {
+	height:24px;
+	line-height: 24px;
+}
+
 .lvg-card-fragment-v2__card-data {
 	display: inline-block;
 	margin:0;
@@ -15,6 +20,16 @@ lvg-card-fragment-v2 {
     background-repeat: no-repeat;
     height:24px;
     line-height: 24px;
+}
+
+.lvg-card-fragment-v2__card-link {
+	color: #428bca;
+    text-decoration: none;
+}
+
+.lvg-card-fragment-v2__card-link:hover {
+	color: #2a6496;
+    text-decoration: underline;
 }
 
 .lvg-card-fragment-v2__menu {
