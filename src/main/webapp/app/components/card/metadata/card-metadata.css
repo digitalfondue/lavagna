@@ -48,7 +48,7 @@
     color: inherit !important;
 }
 
-.lvg-card-metadata__item-status-select[disabled="disabled"] ._md-select-icon {
+.lvg-card-metadata__item-status-select[disabled="disabled"] .md-select-icon {
     visibility: hidden !important;
 }
 

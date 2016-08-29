@@ -14,7 +14,7 @@
         templateUrl: 'app/components/card/metadata/card-metadata.html'
     });
 
-    var COMPONENT_PERMISSIONS = ['UPDATE_CARD'];
+    var COMPONENT_PERMISSIONS = ['UPDATE_CARD','MOVE_CARD'];
 
     function CardMetadataController($rootScope, $scope, CardCache, Card, User, LabelCache, Label, StompClient,
         Notification, Board, BulkOperations, Project, Search) {
