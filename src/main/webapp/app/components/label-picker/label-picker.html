@@ -1,12 +1,12 @@
 <div class="row row-inherit" data-ng-switch="$ctrl.label.type">
 	<div data-ng-switch-when="NULL" class="flex"></div>
 	<div data-ng-switch-when="STRING" class="flex">
-        <md-input-container>
+        <md-input-container class="md-block">
             <input type="text" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" required>
         </md-input-container>
     </div>
 	<div data-ng-switch-when="INT" class="flex">
-        <md-input-container>
+        <md-input-container class="md-block">
             <input type="number" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" required>
         </md-input-container>
     </div>
@@ -14,7 +14,7 @@
         <md-datepicker ng-model="$ctrl.model" required></md-datepicker>
     </div>
 	<div data-ng-switch-when="CARD" class="flex">
-        <md-input-container>
+        <md-input-container class="md-block">
            <md-autocomplete
                required
                md-floating-label="{{'partials.fragments.label-pickers.card'|translate}}"
@@ -28,7 +28,7 @@
         </md-input-container>
     </div>
 	<div data-ng-switch-when="USER" class="flex">
-        <md-input-container>
+        <md-input-container class="md-block">
            <md-autocomplete
                required
                md-floating-label="{{'partials.fragments.label-pickers.user'|translate}}"
@@ -42,8 +42,8 @@
         </md-input-container>
     </div>
 	<div data-ng-switch-when="LIST" class="flex">
-        <md-input-container>
-            <md-select ng-model="$ctrl.model">
+        <md-input-container class="md-block">
+            <md-select ng-model="$ctrl.model" required>
                 <md-option ng-value="item" ng-repeat="item in $ctrl.listValues">
                     {{item.value}}
                 </md-option>

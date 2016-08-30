@@ -12,18 +12,13 @@
 				withLabelValuePicker: '<',
 				projectName: '<'
 			},
-			controller: function($mdDialog, LabelCache) {
+			controller: function($mdDialog, Project, $filter) {
 				var ctrl = this;
 				
 				ctrl.selectedLabel = {};
 				
-				LabelCache.findByProjectShortName(ctrl.projectName).then(function(res) {
-					ctrl.userLabels = [];
-					for(var k in res) {
-        		  		if(res[k].domain === 'USER') {
-        		  			ctrl.userLabels.push(res[k]);
-        		  		}
-        		  	}
+				Project.getMetadata(ctrl.projectName).then(function(res) {
+					ctrl.userLabels = $filter('orderBy')(res.userLabels, 'name'); 
 				});
 				
 				ctrl.cancel = function() {
