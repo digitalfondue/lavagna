@@ -1,14 +1,21 @@
 <form name="dialogSelectMilestone" data-ng-submit="$ctrl.ok(milestone)" class="lvg-dialog__content">
 	<md-dialog-content class="md-dialog-content">
-		<h2 class="md-title">{{$ctrl.dialogTitle}}</h2>
-			<md-select ng-model="milestone" required>
-	          <md-option ng-value="m" ng-repeat="m in $ctrl.milestones">
-	            {{m.value}}
-	          </md-option>
+		<h2 class="md-title" translate>dialog-select-milestone.title</h2>
+			<md-select ng-model="milestone" required placeholder="{{::('dialog-select-milestone.milestone' | translate)}}">
+                <md-select-header class="lvg-dialog-select-milestone__search-header">
+                     <input ng-model="$ctrl.toSearch" type="text" placeholder="{{::('dialog-select-milestone.search' | translate)}}" class="md-text lvg-dialog-select-milestone__input" ng-keyup="$ctrl.reFilter()">
+                </md-select-header>
+                <md-optgroup label="{{::('dialog-select-milestone.open-milestones'|translate)}}" ng-if="$ctrl.filteredOpen.length > 0">
+                    <md-option ng-value="m" ng-repeat="m in $ctrl.filteredOpen" title="{{::m.name}}">{{::m.name}}</md-option>
+                </md-optgroup>
+	           <md-optgroup label="{{::('dialog-select-milestone.closed-milestones'|translate)}}" ng-if="$ctrl.filteredClosed.length > 0">
+	               <md-option ng-value="m" ng-repeat="m in $ctrl.filteredClosed" title="{{::m.name}}">{{::m.name}}</md-option>
+                </md-optgroup>
+                <md-optgroup label="{{::('dialog-select-milestone.no-milestones-found'|translate)}}" ng-if="$ctrl.filteredOpen.length === 0 && $ctrl.filteredClosed.length === 0"></md-optgroup>
 	        </md-select>
 	</md-dialog-content>
 	<md-dialog-actions>
 		<md-button ng-click="$ctrl.cancel()"><span translate>button.cancel</span></md-button>
-		<md-button type="submit" ng-disabled="!dialogSelectMilestone.$valid"><span translate>button.submit</span></md-button>
+		<md-button type="submit" ng-disabled="!dialogSelectMilestone.$valid"><span translate>button.set</span></md-button>
 	</md-dialog-actions>
 </form>

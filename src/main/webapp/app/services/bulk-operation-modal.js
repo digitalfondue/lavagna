@@ -116,9 +116,8 @@
 			setMilestone: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-milestone dialog-title="title" action="action($milestone)"  project-name="projectName"></lvg-dialog-select-milestone>',
+					template: '<lvg-dialog-select-milestone action="action($milestone)"  project-name="projectName"></lvg-dialog-select-milestone>',
 					controller: function($scope) {
-						$scope.title = 'SELECT MILESTONE';
 						$scope.projectName = projectName;
 						$scope.action = function(milestone) {
 							BulkOperations.setMilestone(cards, milestone).then(applyIfPresent);
