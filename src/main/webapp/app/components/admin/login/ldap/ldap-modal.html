@@ -1,43 +1,30 @@
-<md-dialog>
-	<md-toolbar>
-	    <div class="md-toolbar-tools">
-	    	<h3 data-translate>partials.admin.configure-login.ldap.checkConfiguration</h3>
-	    </div>
-	</md-toolbar>
-	
-	<md-dialog-content>
-		<div class="md-dialog-content">
-		
-		    <div class="form-group">
-		        <label data-translate for="checkLdap.username">partials.admin.configure-login.ldap.username</label> 
-		        <input type="text" class="form-control" data-ng-model="checkLdap.username" id="checkLdap.username">
-		    </div>
-		    <div class="form-group">
-		        <label data-translate for="checkLdap.password">partials.admin.configure-login.ldap.password</label> 
-		        <input type="password" class="form-control" data-ng-model="checkLdap.password" id="checkLdap.password">
-		    </div>
-		    <div>
-		        <div data-ng-show="ldapCheckResult">
-		            <span data-ng-show="ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.allOk</span>
-		            <span data-ng-show="!ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.error</span>
-		            <ul>
-		                <li data-ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
-		            </ul>
-		        </div>
-		    </div>
-
-		
-		</div>
+<form name="checkLdapForm" ng-submit="checkLdapConfiguration(ldap, checkLdap)">
+	<md-dialog-content class="md-dialog-content">
+        <h2 translate>partials.admin.configure-login.ldap.checkConfiguration</h2>
+        
+        <md-input-container class="md-block">
+            <label data-translate>partials.admin.configure-login.ldap.username</label>
+            <input type="text" ng-model="checkLdap.username" required>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.ldap.password</label> 
+            <input type="password" ng-model="checkLdap.password" id="checkLdap.password" required>
+        </md-input-container>
+        
+	    
+        <div ng-if="ldapCheckResult">
+            <span ng-if="ldapCheckResult.first" translate>partials.admin.configure-login.ldap.allOk</span>
+            <span ng-if="!ldapCheckResult.first" translate>partials.admin.configure-login.ldap.error</span>
+            <ul>
+                <li ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
+            </ul>
+        </div>
+	    
 	</md-dialog-content>
-	
+		
 	<md-dialog-actions>
-	
-		<md-button
-            data-ng-click="checkLdapConfiguration(ldap, checkLdap)"
-            type="button" data-translate>
-            	<span translate>partials.admin.configure-login.ldap.check</span></md-button>
-            
-    	<md-button data-ng-click="close()" data-translate><span translate>button.close</span></md-button>
-	
+	    <md-button ng-click="close()"><span translate>button.cancel</span></md-button>
+	    <md-button type="submit" ng-disabled="!checkLdapForm.$valid"><span translate>partials.admin.configure-login.ldap.check</span></md-button>
 	</md-dialog-actions>
-</md-dialog>
+</form>
