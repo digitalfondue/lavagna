@@ -100,6 +100,10 @@ public class OAuthLogin extends AbstractLoginHandler {
 		Map<String, Object> m = super.modelForLoginPage(request);
 
 		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
+		
+        if (conf == null) {
+            return m;
+        }
 
 		List<String> loginOauthProviders = new ArrayList<>();
 
