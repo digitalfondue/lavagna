@@ -81,17 +81,10 @@
                     }
 
         			ctrl.addUser = function(userToAdd) {
-        	            var rawRoles = userToAdd.roles;
-        	            var roles = [];
-        	            for(var r in rawRoles) {
-        	                if(rawRoles[r]) {
-        	                    roles.push(r);
-        	                }
-        	            }
-        	            userToAdd.roles = roles;
         	            UsersAdministration.addUser(userToAdd).then(function() {
         	                configureDefaultUserToAdd();
         	                loadUsers();
+        	                $mdDialog.hide();
         	            }, function(error) {
         	                Notification.addAutoAckNotification('error', {
         	                    key: 'notification.admin-manage-users.add.error'
