@@ -145,7 +145,7 @@
 		}
 
 		function lastUpdateTime(lastUpdateTime) {
-			var e = angular.element(createElem('div')).addClass('card-home-date')[0];
+			var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
 			e.textContent = $filter('dateIncremental')(lastUpdateTime);
 			return e;
 		}
