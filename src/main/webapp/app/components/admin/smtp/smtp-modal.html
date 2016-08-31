@@ -1,21 +1,15 @@
-<md-dialog>
-	<md-toolbar>
-		<div class="md-toolbar-tools">
-      		<h2 data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</h2>
-      	</div>
-    </md-toolbar>
+<form ng-submit="sendTestEmail(to)" name="dialogSmtpTest">
 
-	<md-dialog-content>
-		<div class="md-dialog-content">
+	<md-dialog-content class="md-dialog-content">
+	   <h2 class="md-title" data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</h2>
+		<md-input-container class="md-block">
 			<label data-translate>partials.admin.manage-smpt-configuration.emailAddressTest</label>
-			<input class="form-control" type="email" data-ng-model="to" placeholder="your@email.com"></input>
-		</div>
+			<input class="form-control" type="email" data-ng-model="to" placeholder="your@email.com" required></input>
+		</md-input-container>
 	</md-dialog-content>
 	
 	<md-dialog-actions>
-		<md-button
-			ng-click="sendTestEmail(to)"
-			type="button"><span translate>partials.admin.manage-smpt-configuration.send</span></md-button>
-		<md-button data-ng-click="close()"><span translate>button.close</span></md-button>
+	    <md-button ng-click="close()"><span translate>button.cancel</span></md-button>
+		<md-button type="submit" ng-disabled="!dialogSmtpTest.$valid"><span translate>partials.admin.manage-smpt-configuration.send</span></md-button>
 	</md-dialog-actions>
-</md-dialog>
+</form>

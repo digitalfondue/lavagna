@@ -67,6 +67,7 @@
 						Admin.testSmtpConfig(to)
 							.success(function () {
 								Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.success'}, false);
+								$mdDialog.hide();
 							}).error(function () {
 								Notification.addAutoAckNotification('error', {key: 'notification.smtp-configuration.error'}, false);
 							});
