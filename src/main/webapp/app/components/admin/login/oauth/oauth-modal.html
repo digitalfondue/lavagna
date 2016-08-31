@@ -1,17 +1,12 @@
-<form data-ng-submit="saveOauthConfig(oauthNewProvider);">
+<form data-ng-submit="saveOauthConfig(oauthNewProvider);" name="newOauthProviderForm">
     <md-dialog-content class="md-dialog-content">
         <h2 class="md-title" translate>partials.admin.configure-login.oauth.configure-oauth-provider</h2>
         
         <md-input-container class="md-block">
             <label translate>partials.admin.configure-login.oauth.type</label>
-            <select ng-model="oauthNewProvider.type" required data-ng-options="provider.name for provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">
-                <option></option>
-            </select>
-        </md-input-container>
-        
-        <md-input-container class="md-block">
-            <label translate>partials.admin.configure-login.oauth.name</label>
-            <input type="text" ng-model="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
+            <md-select ng-model="oauthNewProvider.type" required>
+                <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">{{::provider.name}}</md-option>
+            </md-select>
         </md-input-container>
         
         <md-input-container class="md-block">
@@ -38,13 +33,11 @@
             <label translate>partials.admin.configure-login.oauth.callback</label>
             <input type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type.name}}-{{oauthNewProvider.name}}/callback">
         </md-input-container>
-	
-		
 	</md-dialog-content>
 
 	<md-dialog-actions>
 		<md-button type="button" data-ng-click="close()"><span translate>button.cancel</span></md-button>
-        <md-button type="submit"><span translate>partials.admin.configure-login.oauth.add-new-provider</span></md-button>
+        <md-button type="submit" ng-disabled="!newOauthProviderForm.$valid"><span translate>partials.admin.configure-login.oauth.add-new-provider</span></md-button>
 	</md-dialog-actions>
 </form>
 
