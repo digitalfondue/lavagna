@@ -1,10 +1,10 @@
 <form ng-submit="sendTestEmail(to)" name="dialogSmtpTest">
 
     <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title" data-translate>partials.admin.manage-smpt-configuration.sendTestEmail</h2>
+        <h2 class="md-title" translate>partials.admin.manage-smpt-configuration.sendTestEmail</h2>
         <md-input-container class="md-block">
-            <label data-translate>partials.admin.manage-smpt-configuration.emailAddressTest</label>
-			<input class="form-control" type="email" data-ng-model="to" placeholder="your@email.com" required></input>
+            <label translate>partials.admin.manage-smpt-configuration.emailAddressTest</label>
+			<input class="form-control" type="email" ng-model="to" placeholder="your@email.com" required></input>
         </md-input-container>
 	</md-dialog-content>
 	

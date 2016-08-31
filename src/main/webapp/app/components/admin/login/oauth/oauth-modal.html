@@ -1,57 +1,51 @@
-<md-dialog>
-	<md-toolbar>
-	    <div class="md-toolbar-tools">
-	    	<h3 data-translate>partials.admin.configure-login.oauth.configure-oauth-provider</h3>
-	    </div>
-	</md-toolbar>
+<form data-ng-submit="saveOauthConfig(oauthNewProvider);">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>partials.admin.configure-login.oauth.configure-oauth-provider</h2>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.type</label>
+            <select ng-model="oauthNewProvider.type" required data-ng-options="provider.name for provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">
+                <option></option>
+            </select>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.name</label>
+            <input type="text" ng-model="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.name</label>
+            <input type="text" ng-model="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.base-url</label>
+            <input type="text" ng-model="oauthNewProvider.baseUrl" required>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.apiKey</label>
+            <input type="text" ng-model="oauthNewProvider.apiKey" required>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.secret</label>
+            <input type="text" ng-model="oauthNewProvider.apiSecret" required>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label translate>partials.admin.configure-login.oauth.callback</label>
+            <input type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type.name}}-{{oauthNewProvider.name}}/callback">
+        </md-input-container>
 	
-	<form data-ng-submit="saveOauthConfig(oauthNewProvider);">
-		<md-dialog-content>
-			<div class="md-dialog-content">
-			
-			
-				<div class="form-group">
-		            <div class="form-group">
-		                <label for="oauthNewProvider.type" data-translate>partials.admin.configure-login.oauth.type</label>
-		                <select class="form-control" data-ng-model="oauthNewProvider.type" id="oauthNewProvider.type"
-		                        required
-		                        data-ng-options="provider.name for provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">
-		                    <option></option>
-		                </select>
-		            </div>
-		            <div class="form-group">
-		                <label for="oauthNewProvider.name" data-translate>partials.admin.configure-login.oauth.name</label>
-		                <input class="form-control" type="text" data-ng-model="oauthNewProvider.name" id="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
-		            </div>
-		            <div class="form-group">
-		                <label for="oauthNewProvider.baseUrl" data-translate>partials.admin.configure-login.oauth.base-url</label>
-		                <input class="form-control" type="text" data-ng-model="oauthNewProvider.baseUrl" id="oauthNewProvider.baseUrl" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="oauthNewProvider.apiKey" data-translate>partials.admin.configure-login.oauth.apiKey</label>
-		                <input class="form-control" type="text" data-ng-model="oauthNewProvider.apiKey" id="oauthNewProvider.apiKey" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="oauthNewProvider.apiSecret" data-translate>partials.admin.configure-login.oauth.secret</label>
-		                <input class="form-control" type="text" data-ng-model="oauthNewProvider.apiSecret" id="oauthNewProvider.apiSecret" required>
-		            </div>
-		            <div class="form-group">
-		                <label for="oauthNewProvider.callback" data-translate>partials.admin.configure-login.oauth.callback</label>
-		                <input id="oauthNewProvider.callback" class="form-control form-selectable" type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type.name}}-{{oauthNewProvider.name}}/callback">
-		            </div>
-		        </div>
-        
-        
-			</div>
-		</md-dialog-content>
+		
+	</md-dialog-content>
 
-		<md-dialog-actions>
-			<md-button type="button" data-ng-click="close()"><span data-translate>button.close</span></md-button>
-	        <md-button type="submit">
-	            <span data-translate>partials.admin.configure-login.oauth.add-new-provider</span>
-	        </md-button>
-		</md-dialog-actions>
-	</form>
-</md-dialog>
+	<md-dialog-actions>
+		<md-button type="button" data-ng-click="close()"><span translate>button.cancel</span></md-button>
+        <md-button type="submit"><span translate>partials.admin.configure-login.oauth.add-new-provider</span></md-button>
+	</md-dialog-actions>
+</form>
 
 
