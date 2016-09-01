@@ -13,9 +13,9 @@
     </md-card-title>
     <md-card-content>
         <div ng-repeat="activity in $ctrl.activities | filter:{event: activityFilter} | orderBy:'+id' track by activity.id" class="lvg-card-comment">
-            <div ng-switch="activity.event">
+            <div ng-switch="::activity.event">
                 <lvg-card-comment ng-switch-when="COMMENT_CREATE" comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
-                <div ng-switch-default>type: {{::activity.event}}, date: {{::(activity.time | dateIncremental)}}</div>
+                <lvg-activity ng-switch-default event="activity"></lvg-activity>
             </div>
         </div>
     </md-card-content>

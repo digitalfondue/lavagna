@@ -8,8 +8,8 @@
         controller: UserLinkController,
         template: '<a ng-if="::$ctrl.user" class="lvg-user-link" '
         	      	+ ' ui-sref="user.dashboard({provider: $ctrl.user.provider, username: $ctrl.user.username})" '
-        		    + ' data-ng-class="::{\'lvg-user-link__disabled\': !$ctrl.user.enabled}"> '
-        		    + ' {{::($ctrl.user | formatUser)}} '
+        		    + ' data-ng-class="::{\'lvg-user-link__disabled\': !$ctrl.user.enabled}">'
+        		    + '{{::($ctrl.user | formatUser)}}'
         		  +'</a>'
     });
 

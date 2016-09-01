@@ -8,8 +8,10 @@
     <div class="flex">
         <div class="lvg-card-comment__body flex column">
             <div class="lvg-card-comment__headline row row-inherit start-xs middle-xs">
-                <div class="lvg-card-comment__user flex">
-                    <lvg-user-link user-id="$ctrl.comment.userId"></lvg-user-link>
+                <div class="flex no grow">
+                    <lvg-user-link class="lvg-card-comment__user" user-id="$ctrl.comment.userId"></lvg-user-link>
+                    <span class="lvg-card-comment__time">{{ $ctrl.comment.time | dateIncremental }}</span>
+                    <span class="lvg-card-comment__edited" ng-if="$ctrl.comment.updatedCount">{{ 'label.edited' | translate }}</span>
                 </div>
                 <div class="flex"></div>
                 <div class="flex no-grow">
@@ -54,9 +56,6 @@
                         </md-button>
                     </div>
                 </form>
-            </div>
-            <div class="lvg-card-comment__footer" ng-hide="editComment">
-                {{$ctrl.user | userInitials}}
             </div>
         </div>
     </div>
