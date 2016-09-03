@@ -454,25 +454,24 @@
 		$urlRouterProvider.otherwise('/');
 
 
-		$mdThemingProvider.disableTheming();
+		if(true) {
+			$mdThemingProvider.disableTheming();
+		} else {
+			/* CHECK in case we need to regenerate the theme! https://github.com/angular/material/blob/master/docs/app/performance/internet-explorer.md#theming */
+			var background = $mdThemingProvider.extendPalette('grey', {
+		          //'A100': 'e5e5e5'
+		          'A100': 'ffffff'
+		        });
+			$mdThemingProvider.definePalette('lavagna-background', background);
 
-		/* CHECK in case we need to regenerate the theme!
-		var background = $mdThemingProvider.extendPalette('grey', {
-          //'A100': 'e5e5e5'
-          'A100': 'ffffff'
-        });
-        $mdThemingProvider.definePalette('lavagna-background', background);
+			$mdThemingProvider.theme('default')
+				.primaryPalette('blue-grey')
+				.accentPalette('light-blue')
+				.warnPalette('red')
+				.backgroundPalette('lavagna-background');
 
-		$mdThemingProvider.theme('default')
-		    .primaryPalette('blue-grey')
-		    .accentPalette('light-blue')
-		    .warnPalette('red')
-		    .backgroundPalette('lavagna-background');
-
-
-		$mdThemingProvider.setDefaultTheme('default');
-		*/
-
+			$mdThemingProvider.setDefaultTheme('default');
+		}
 
 		$mdInkRippleProvider.disableInkRipple();
 
