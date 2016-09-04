@@ -5,7 +5,7 @@
         </md-button>
     </li>
     <li ng-repeat="page in $ctrl.pages" class="lvg-pagination__li">
-        <md-button ng-click="$ctrl.changePage({'$page': page})" class="md-icon-button"><span>{{page}}</span></md-button>
+        <md-button ng-click="$ctrl.changePage({'$page': page})" class="md-icon-button lvg-pagination__button" ng-class="{'lvg-pagination__current-page' : page === $ctrl.currentPage}"><span class="lvg-pagination__page">{{page}}</span></md-button>
     </li>
     <li class="lvg-pagination__li">
         <md-button class="md-icon-button" ng-click="$ctrl.changePage({'$page': $ctrl.currentPage +1})" ng-disabled="$ctrl.currentPage == $ctrl.totalPages">

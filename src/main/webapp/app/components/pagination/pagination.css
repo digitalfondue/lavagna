@@ -15,3 +15,31 @@ lvg-pagination {
 	cursor: pointer;
 	display: inline-block;
 }
+
+.lvg-pagination__current-page {
+	background-color: rgba(0,0,0,0.38);
+	color:white;
+}
+
+.lvg-pagination__current-page:hover {
+	color:black;
+}
+
+.lvg-pagination__button {
+	height:26px!important;
+	width:26px!important;
+	min-height:26px!important;
+	min-width:26px!important;
+	padding:0!important;
+}
+
+.lvg-pagination__button:hover {
+	background-color: rgba(0,0,0,0.28)!important;
+	color:white;
+}
+
+.lvg-pagination__page {
+    position: relative;
+    top: 1px;
+    left: -1px;	
+}

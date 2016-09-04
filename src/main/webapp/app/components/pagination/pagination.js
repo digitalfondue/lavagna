@@ -15,9 +15,11 @@
     	controller: function() {
     		var ctrl = this;
     		
-    		ctrl.pages = [];
-    		for(var i = 1; i <= ctrl.totalPages;i++) {
-    			ctrl.pages.push(i);
+    		ctrl.$onChanges = function(change) {
+				ctrl.pages = [];
+	    		for(var i = 1; i <= ctrl.totalPages;i++) {
+	    			ctrl.pages.push(i);
+	    		}
     		}
     	}
     });
