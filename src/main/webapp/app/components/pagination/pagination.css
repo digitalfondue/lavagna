@@ -1,0 +1,17 @@
+lvg-pagination {
+	display: block;
+	margin-top:8px;
+	margin-bottom: 8px;
+	text-align: center;
+}
+
+.lvg-pagination {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+.lvg-pagination__li {
+	cursor: pointer;
+	display: inline-block;
+}

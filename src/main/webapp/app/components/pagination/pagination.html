@@ -1,3 +1,15 @@
-<ul>
-    <li ng-repeat="page in $ctrl.pages"><span ng-click="$ctrl.goTo(page)">{{page}}</span></li>
+<ul class="lvg-pagination">
+    <li class="lvg-pagination__li">
+        <md-button class="md-icon-button" ng-click="$ctrl.changePage({'$page': $ctrl.currentPage -1})" ng-disabled="$ctrl.currentPage == 1">
+            <md-icon md-svg-icon="chevron-left"></md-icon>
+        </md-button>
+    </li>
+    <li ng-repeat="page in $ctrl.pages" class="lvg-pagination__li">
+        <md-button ng-click="$ctrl.changePage({'$page': page})" class="md-icon-button"><span>{{page}}</span></md-button>
+    </li>
+    <li class="lvg-pagination__li">
+        <md-button class="md-icon-button" ng-click="$ctrl.changePage({'$page': $ctrl.currentPage +1})" ng-disabled="$ctrl.currentPage == $ctrl.totalPages">
+            <md-icon md-svg-icon="chevron-right"></md-icon>
+        </md-button>
+    </li>
 </ul>

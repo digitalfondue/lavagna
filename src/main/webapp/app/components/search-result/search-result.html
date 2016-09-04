@@ -6,7 +6,7 @@
 				    total-pages="$ctrl.totalPages"
 				    current-page="$ctrl.currentPage"
 				    max-size="10"
-				    change-page="$ctrl.moveToPage"></lvg-pagination>
+				    change-page="$ctrl.moveToPage($page)"></lvg-pagination>
 			</div>
 			<ul class="lvg-search-result-list">
 				<li class="lavagna-home-card" ng-repeat="card in $ctrl.found">
@@ -27,7 +27,7 @@
 				    total-pages="$ctrl.totalPages"
                     current-page="$ctrl.currentPage"
 				    max-size="10"
-				    change-page="$ctrl.moveToPage"></lvg-pagination>
+				    change-page="$ctrl.moveToPage($page)"></lvg-pagination>
 			</div>
 		</div>
 	</div>

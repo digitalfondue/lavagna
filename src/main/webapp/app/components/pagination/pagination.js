@@ -10,7 +10,7 @@
     		totalPages:'<',
     		currentPage:'<',
     		maxSize:'<',
-    		changePage:'<'
+    		changePage:'&' // $page parameter
     	},
     	controller: function() {
     		var ctrl = this;
@@ -18,11 +18,6 @@
     		ctrl.pages = [];
     		for(var i = 1; i <= ctrl.totalPages;i++) {
     			ctrl.pages.push(i);
-    		}
-    		
-    		
-    		ctrl.goTo = function(page) {
-    			ctrl.changePage(page);
     		}
     	}
     });
