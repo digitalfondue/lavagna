@@ -12,3 +12,8 @@
 .lvg-user-chips .md-chips {
     box-shadow: none;
 }
+
+.lvg-manage-roles__no-remove-icon {
+	display: inline-block;
+	width: 16px;
+}

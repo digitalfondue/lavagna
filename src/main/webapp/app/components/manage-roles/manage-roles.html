@@ -18,7 +18,7 @@
                             <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.open(roleName, roleDescriptor)">
                                 <md-icon md-svg-icon="edit"></md-icon>
                             </md-button>
-                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.deleteRole(roleName, $event)">
+                            <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.deleteRole(roleName, $event)" ng-if="!($ctrl.isGlobalRoles && ['ADMIN', 'DEFAULT', 'READ_ONLY'].indexOf(roleName) >= 0)">
                                 <md-icon md-svg-icon="delete"></md-icon>
                             </md-button>
                         </div>
@@ -40,9 +40,10 @@
                             <md-chip-template>
                                 <lvg-user-avatar class="md-contact-avatar" user-id="$chip.id" size="32" bg-color-hex="#E0E0E0"></lvg-user-avatar>
                                 <lvg-user-link class="md-contact-name" user-id="$chip.id"></lvg-user-link>
-                                <md-button md-no-ink class="lvg-small-icon-button lvg-manage-roles__user-remove" ng-click="$ctrl.removeUserToRole($chip, roleName)">
+                                <md-button md-no-ink class="lvg-small-icon-button lvg-manage-roles__user-remove" ng-click="$ctrl.removeUserToRole($chip, roleName)" ng-if="!($ctrl.isGlobalRoles && $chip.id === $ctrl.currentUser.id && roleName === 'ADMIN')">
                                     <md-icon md-svg-icon="close"></md-icon>
                                 </md-button>
+                                <span class="lvg-manage-roles__no-remove-icon" ng-if="($ctrl.isGlobalRoles && $chip.id === $ctrl.currentUser.id && roleName === 'ADMIN')"></span>
                             </md-chip-template>
                         </md-chips>
                     </div>

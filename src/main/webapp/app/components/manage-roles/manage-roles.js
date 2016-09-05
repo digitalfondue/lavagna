@@ -14,6 +14,10 @@
     function ManageRolesController($scope, Permission, Notification, ProjectCache, StompClient, User, $mdDialog, $filter, $translate) {
 
         var ctrl = this;
+        ctrl.isGlobalRoles = ctrl.project === undefined;
+        User.currentCachedUser().then(function(user) {
+        	ctrl.currentUser = user;
+        });
 
         //handle manage role at project level:
         var projectName = undefined;
@@ -21,6 +25,9 @@
             projectName = ctrl.project.shortName;
             Permission = Permission.forProject(projectName);
         }
+        
+        
+         
 
         var getUsersByRole = function(roleName, users, limit) {
             users = $filter('filterUsersBy')(users, ctrl.userFilterText);
