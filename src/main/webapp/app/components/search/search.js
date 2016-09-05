@@ -38,7 +38,6 @@
 					for(var i = 1; i<=res.data.totalPages;i++) {
 						ctrl.pages.push(i);
 					}
-					$log.debug(ctrl.pages);
 				});
 			} catch(e) {
 				$log.debug(e);
@@ -48,7 +47,6 @@
 		var queryString = { params: {}};
 
 		ctrl.moveToPage = function(page) {
-			$log.debug('move to page', page);
 			var loc = $location.search();
 			loc.page = page;
 			$location.search(loc);

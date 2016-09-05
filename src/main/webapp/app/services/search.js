@@ -448,7 +448,6 @@
 						filtered.push(res[i]);
 					}
 				}
-				$log.debug(filtered);
 				return filtered;
 			},
 			autoCompleteCard: function(params) {

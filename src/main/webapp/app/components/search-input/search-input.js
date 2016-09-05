@@ -280,15 +280,12 @@
                 ctrl.querySearch = autocompleteProvider;
                 ctrl.selected = [];
                 ctrl.selectedItemChange = function(item) {
-                	$log.debug(item);
                 };
                 ctrl.transformChip = function(chip) {
                 	if(chip.type === 'example') {
-                		$log.debug('example', chip);
                 		ctrl.searchText = chip.value;
                 		return null;
                 	}
-                	$log.debug(chip);
                 	
                 	if(angular.isString(chip)) {
                 		chip = {value: chip, text:chip};
