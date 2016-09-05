@@ -2,9 +2,12 @@
 
 ## 1.0.7 (2016-08-28)
 
- - optimization: better performance when handling big boards
- - feature: export milestone to excel file
- - feature: export an entire project to excel file
+ - better performance when handling boards with many custom labels or more than 200 cards
+ - export an entire project to Excel
+ - reworked the milestones in order to improve their usefulness 
+   - milestone's detail page
+   - improved cards list with "Column" and "Assigned to" columns
+   - export a milestone to Excel 
 
 ## 1.0.6.2 (2016-03-28)
 
@@ -12,13 +15,13 @@
 
 ## 1.0.6.1 (2016-03-25)
 
- - Clone card functionality
- - Milestones can have a release date
+ - clone card functionality
+ - milestones can have a release date
  - misc. minor UI/UX improvements
  - improved performances
- - updated libraries 
- 
- (note: the 1.0.6 release has been skipped due to an error in the dependencies).
+ - updated libraries
+
+(note: the 1.0.6 release has been skipped due to an error in the dependencies).
 
 ## 1.0.5.2 (2016-01-12)
 
@@ -32,9 +35,9 @@
 ## 1.0.5 (2015-11-07)
 
  - UI/UX improvements
-   - Change due date color based on the current date
-   - Card label: on mouse hover, show a tooltip with the card name
-   - Email notification: now the user can choose to receive only changes made by other users
+   - change due date color based on the current date
+   - card label: on mouse hover, show a tooltip with the card name
+   - email notification: now the user can choose to receive only changes made by other users
 
 ## 1.0.4.1 (2015-10-19)
 
