@@ -18,7 +18,7 @@
         templateUrl: 'app/components/board/column/board-column.html'
     });
 
-    function BoardColumnController($scope, $filter, $mdDialog, $element, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
+    function BoardColumnController($scope, $filter, $mdDialog, $element, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
         var ctrl = this;
 
         ctrl.user = ctrl.userRef();
@@ -213,23 +213,18 @@
             var confirmAction = function() {Board.moveColumnToLocation(ctrl.column.id, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
+            
+            
+            var title = $translate.instant('partials.fragments.confirm-modal-fragment.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
+			var confirm = $mdDialog.confirm()
+				.title(title)
+				.ariaLabel(title)
+				.ok($translate.instant('button.yes'))
+				.cancel($translate.instant('button.no'));
 
-            $mdDialog.show({
-                templateUrl: 'app/components/board/column/confirm-modal-fragment.html',
-                controller: function($scope) {
-                    $scope.title = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location.title');
-                    $scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
-                    $scope.confirm = function() {
-                        confirmAction();
-                        $mdDialog.hide();
-                    };
-                    $scope.cancel = function() {
-                    	$mdDialog.hide();
-                    }
-                }
-            });
-
-
+			$mdDialog.show(confirm).then(function() {
+				confirmAction();
+			}, function() {});
         };
 
         ctrl.moveAllCardsInColumn = function (cards, location) {
@@ -238,24 +233,17 @@
             var confirmAction = function() {Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
+            
+            var title = $translate.instant('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
+			var confirm = $mdDialog.confirm()
+				.title(title)
+				.ariaLabel(title)
+				.ok($translate.instant('button.yes'))
+				.cancel($translate.instant('button.no'));
 
-            $mdDialog.show({
-                templateUrl: 'app/components/board/column/confirm-modal-fragment.html',
-                controller: function($scope) {
-                    $scope.title =  $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location.title');
-                    $scope.operation = $filter('translate')('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location',
-                        {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
-
-                    $scope.confirm = function() {
-                        confirmAction();
-                        $mdDialog.hide();
-                    };
-
-                    $scope.cancel = function() {
-                    	$mdDialog.hide();
-                    }
-                }
-            });
+			$mdDialog.show(confirm).then(function() {
+				confirmAction();
+			}, function() {});
         }
 
         ctrl.saveNewColumnName = function(newName) {
