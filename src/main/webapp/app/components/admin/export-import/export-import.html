@@ -1,26 +1,27 @@
 <h2 class="md-title" translate>partials.admin.export-import.export</h2>
-<md-content layout-padding md-whiteframe="1">
+<md-content md-whiteframe="1">
     <form ng-submit="$ctrl.doExport()">
-        <p><md-button class="md-raised md-primary" type="submit"><span translate>partials.admin.export-import.exportButton</span></md-button></p>
+        <md-button class="md-primary" type="submit"><span translate>partials.admin.export-import.exportButton</span></md-button>
     </form>
 </md-content>
 
 <h2 class="md-title" translate>partials.admin.export-import.import</h2>
-<md-content class="lvg-container-margin-bottom" layout-padding md-whiteframe="1">
+<md-content class="lvg-admin-content__margin-bottom" md-whiteframe="1">
     <form ng-submit="$ctrl.importFile.upload()">
-	    <div>
-	        <input type="file" name="file" id="file" class="lvg-input-file__input"
-	               nv-file-select uploader="$ctrl.uploader"/>
-	        <label class="lvg-input-file__label md-button md-raised md-primary" for="file">
+        <div class="lvg-admin-content__padding">
+	        <span ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.file.name"></span>
+            <span ng-if="$ctrl.importFile == null" translate>common.no-file-selected</span>
+	        <input type="file" name="file" id="file" class="lvg-input-file__input" nv-file-select uploader="$ctrl.uploader"/>
+	        <label class="lvg-input-file__label md-button" for="file">
 	            <span translate>button.fileSelect</span>
 	        </label>
-	    </div>
-		<p ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.file.name"></p>
-		<p ng-if="$ctrl.importFile == null" translate>common.no-file-selected</p>
-		<div class="md-block">
-			<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
+			
+			<div class="md-block">
+				<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
+			</div>
 		</div>
-		<md-button type="submit" class="md-raised md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">
+		
+		<md-button type="submit" class="md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">
 			<span translate>partials.admin.export-import.importButton</span>
 		</md-button>
 	</form>

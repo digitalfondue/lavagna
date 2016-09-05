@@ -1,31 +1,32 @@
 <h2 class="md-title" translate>partials.admin.parameters.title</h2>
-<md-content layout-padding md-whiteframe="1">
+<md-content md-whiteframe="1">
     <form ng-submit="$ctrl.updateAllChangedConfiguration()">
-		<md-input-container class="md-block">
-			<label><span translate>partials.admin.parameters.trelloApiKey</span></label>
-			<input type="text" ng-model="$ctrl.configurable['TRELLO_API_KEY']">
-		</md-input-container>
-		<md-input-container class="md-block">
-			<label><span translate>partials.admin.parameters.maxUploadFileSize</span></label>
-			<input type="text" ng-model="$ctrl.configurable['MAX_UPLOAD_FILE_SIZE']">
-		</md-input-container>
-		<md-input-container class="md-block">
-			<label><span translate>partials.admin.parameters.emailNotificationTimespan</span></label>
-			<input type="text" ng-model="$ctrl.configurable['EMAIL_NOTIFICATION_TIMESPAN']">
-		</md-input-container>
-		<div>
-			<md-checkbox ng-model="$ctrl.configurable['USE_HTTPS']" ng-true-value="'true'" ng-false-value="'false'">
-				<span translate>partials.admin.parameters.useHttps</span>
-			</md-checkbox>
+        <div class="lvg-admin-content__padding">
+			<md-input-container class="md-block">
+				<label><span translate>partials.admin.parameters.trelloApiKey</span></label>
+				<input type="text" ng-model="$ctrl.configurable['TRELLO_API_KEY']">
+			</md-input-container>
+			<md-input-container class="md-block">
+				<label><span translate>partials.admin.parameters.maxUploadFileSize</span></label>
+				<input type="text" ng-model="$ctrl.configurable['MAX_UPLOAD_FILE_SIZE']">
+			</md-input-container>
+			<md-input-container class="md-block">
+				<label><span translate>partials.admin.parameters.emailNotificationTimespan</span></label>
+				<input type="text" ng-model="$ctrl.configurable['EMAIL_NOTIFICATION_TIMESPAN']">
+			</md-input-container>
+			<div>
+				<md-checkbox ng-model="$ctrl.configurable['USE_HTTPS']" ng-true-value="'true'" ng-false-value="'false'">
+					<span translate>partials.admin.parameters.useHttps</span>
+				</md-checkbox>
+			</div>
 		</div>
-		<div>
-			<md-button type="submit" class="md-raised md-primary"><span translate>button.save</span></md-button>
-		</div>
+        <md-button type="submit" class="md-primary"><span translate>button.save</span></md-button>
+		
 	</form>
 </md-content>
 
 <h2 class="md-title" translate>All parameters</h2>
-<md-content class="lvg-container-margin-bottom" layout-padding md-whiteframe="1">
+<md-content class="lvg-admin-content__margin-bottom lvg-admin-content__padding" layout-padding md-whiteframe="1">
 	<table class="lvg-table">
 	    <thead>
 	        <tr>
