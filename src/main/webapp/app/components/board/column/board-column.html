@@ -7,6 +7,7 @@
                       data-ng-click="$ctrl.columnState.editColumnName=true; $ctrl.columnState.newColumnName = $ctrl.column.name"
                       class="lavagna-hide lvg-cursor-text" title="{{$ctrl.column.name}}">{{$ctrl.column.name}}</span>
                 <span data-lvg-has-not-permission="RENAME_COLUMN" class="lvg-cursor-text">{{$ctrl.column.name}}</span>
+                <span ng-if="$ctrl.cardsInColumn.length > 0" ng-bind="'('+$ctrl.cardsInColumn.length+')'"></span>
             </div>
             <div class="lvg-board-column__header-add-card flex no-grow">
                 <md-button class="md-icon-button lvg-board-column__add-card-button" ng-click="$ctrl.newCard()">
