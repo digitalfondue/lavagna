@@ -1,4 +1,7 @@
 (function() {
+	
+	'use strict';
+	
 	angular
 		.module('lavagna.components')
 		.component('lvgDialogNewColumn', {
@@ -7,23 +10,28 @@
 				boardName: '<',
 				columnsDefinition: '<'
 			},
-			controller: function($mdDialog, Board, Notification) {
-				var ctrl = this;
+			controller: ['$mdDialog', 'Board', 'Notification', dialogNewColumnCtrl]
+		});
 
-				ctrl.cancel = function() {
-					$mdDialog.hide();
-				}
+	function dialogNewColumnCtrl($mdDialog, Board, Notification) {
+		var ctrl = this;
+		
+		ctrl.cancel = cancel;
+		ctrl.createColumn = createColumn;
 
-				ctrl.createColumn = function(columnToCreate) {
-		            Board.createColumn(ctrl.boardName, columnToCreate).then(function() {
-		                columnToCreate.name = null;
-		                columnToCreate.definition = null;
-		                $mdDialog.hide();
-		            }).catch(function(error) {
-		                Notification.addAutoAckNotification('error', { key : 'notification.board.create-column.error'}, false);
-		            });
-		        };
-			}
-		})
+		function cancel() {
+			$mdDialog.hide();
+		}
+
+		function createColumn(columnToCreate) {
+            Board.createColumn(ctrl.boardName, columnToCreate).then(function() {
+                columnToCreate.name = null;
+                columnToCreate.definition = null;
+                $mdDialog.hide();
+            }).catch(function(error) {
+                Notification.addAutoAckNotification('error', { key : 'notification.board.create-column.error'}, false);
+            });
+        };
+	}
 
 })();

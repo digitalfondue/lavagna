@@ -1,10 +1,10 @@
-<form name="dialogNewCardForm" data-ng-submit="$ctrl.createCard(name, $ctrl.columnId);" class="lvg-dialog__content">
+<form name="$ctrl.dialogNewCardForm" data-ng-submit="$ctrl.createCard($ctrl.name, $ctrl.columnId);" class="lvg-dialog__content">
 	<md-dialog-content class="md-dialog-content">
 		<h2 class="md-title" translate>dialog-new-card.title</h2>
         <md-input-container class="md-block">
             <input
                 type="text" name="name" placeholder="{{::('dialog-new-card.name' | translate)}}"
-                ng-model="name"
+                ng-model="$ctrl.name"
                 autocomplete="off" required>
         </md-input-container>
         <md-input-container class="md-block">
@@ -16,6 +16,6 @@
 	</md-dialog-content>
 	<md-dialog-actions>
         <md-button ng-click="$ctrl.cancel()"><span translate>button.cancel</span></md-button>
-        <md-button type="submit"  ng-disabled="!dialogNewCardForm.$valid"><span translate>button.add</span></md-button>
+        <md-button type="submit"  ng-disabled="!$ctrl.dialogNewCardForm.$valid"><span translate>button.add</span></md-button>
 	</md-dialog-actions>
 </form>

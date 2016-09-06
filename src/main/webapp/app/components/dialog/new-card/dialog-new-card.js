@@ -1,4 +1,6 @@
 (function() {
+	
+	'use strict';
 
 	angular
 		.module('lavagna.components')
@@ -9,23 +11,32 @@
 				columns: '<',
 				column: '<'
 			},
-			controller: function($mdDialog, Board, Notification) {
-				var ctrl = this;
+			controller: ['$mdDialog', 'Board', 'Notification', dialogNewCardCtrl]
+		});
 
-                ctrl.columnId = ctrl.column.id;
+	function dialogNewCardCtrl($mdDialog, Board, Notification) {
+		var ctrl = this;
+			
+		ctrl.cancel = cancel;
+		ctrl.createCard = createCard;
 
-				ctrl.cancel = function() {
-					$mdDialog.hide();
-				}
+		ctrl.$onInit = function init() {
+			ctrl.columnId = ctrl.column.id;
+		}
+        
+		function cancel() {
+			$mdDialog.hide();
+		}
 
-		        ctrl.createCard = function(name, columnId) {
-		            Board.createCardFromTop(ctrl.boardShortName, columnId, {name: name}).then(function() {
-                        name = null;
-                    }).catch(function(error) {
-                        Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
-                    });
-		        };
-			}
-		})
-
+        function createCard(name, columnId) {
+            Board.createCardFromTop(ctrl.boardShortName, columnId, {name: name}).then(function() {
+            	ctrl.name = null;
+            	ctrl.dialogNewCardForm.$setPristine();
+            	ctrl.dialogNewCardForm.$setUntouched();//clear up error messages
+            }).catch(function(error) {
+                Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
+            });
+        };
+	}
+		
 })();

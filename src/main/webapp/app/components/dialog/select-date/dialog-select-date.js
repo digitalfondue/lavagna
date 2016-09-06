@@ -1,5 +1,6 @@
 (function() {
 	
+	'use strict';
 	
 	angular
 		.module('lavagna.components')
@@ -9,18 +10,23 @@
 				dialogTitle: '<',
 				action: '&'
 			},
-			controller: function($mdDialog) {
-				var ctrl = this;
-				
-				ctrl.cancel = function() {
-					$mdDialog.hide();
-				}
-				
-				ctrl.ok = function(date) {
-					if(ctrl.action) {ctrl.action({'$date':date});}
-					$mdDialog.hide();
-				}
-			}
-		})
+			controller: ['$mdDialog', dialogSelectDateCtrl]
+		});
+	
+	function dialogSelectDateCtrl($mdDialog) {
+		var ctrl = this;
+		
+		ctrl.cancel = cancel;
+		ctrl.ok = ok;
+		
+		function cancel() {
+			$mdDialog.hide();
+		}
+		
+		function ok(date) {
+			ctrl.action({'$date':date});
+			$mdDialog.hide();
+		}
+	}
 	
 })();

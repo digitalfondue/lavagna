@@ -1,5 +1,6 @@
 (function() {
 	
+	'use strict';
 	
 	angular
 		.module('lavagna.components')
@@ -8,28 +9,36 @@
 			bindings: {
 				dialogTitle: '<',
 				buttonLabel:'<',
-				action: '=',
+				action: '&', // $label, $value
 				withLabelValuePicker: '<',
 				projectName: '<'
 			},
-			controller: function($mdDialog, Project, $filter) {
-				var ctrl = this;
-				
-				ctrl.selectedLabel = {};
-				
-				Project.getMetadata(ctrl.projectName).then(function(res) {
-					ctrl.userLabels = $filter('orderBy')(res.userLabels, 'name'); 
-				});
-				
-				ctrl.cancel = function() {
-					$mdDialog.hide();
-				}
-				
-				ctrl.ok = function(label, value) {
-					if(ctrl.action) {ctrl.action(label, value);}
-					$mdDialog.hide();
-				}
-			}
-		})
+			controller: ['$mdDialog', 'Project', '$filter', dialogSelectLabelCtrl]
+		});
+	
+	
+	function dialogSelectLabelCtrl($mdDialog, Project, $filter) {
+		var ctrl = this;
+		
+		ctrl.ok = ok; 
+		ctrl.cancel = cancel;
+		
+		ctrl.$onInit = function init() {
+			ctrl.selectedLabel = {};
+			
+			Project.getMetadata(ctrl.projectName).then(function(res) {
+				ctrl.userLabels = $filter('orderBy')(res.userLabels, 'name'); 
+			});
+		};
+		
+		function cancel() {
+			$mdDialog.hide();
+		}
+		
+		function ok(label, value) {
+			ctrl.action({'$label': label, '$value': value});
+			$mdDialog.hide();
+		}
+	}
 	
 })();

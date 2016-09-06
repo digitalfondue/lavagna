@@ -1,5 +1,6 @@
 (function() {
-
+	
+	'use strict';
 
 	angular
 		.module('lavagna.components')
@@ -7,31 +8,35 @@
 			templateUrl: 'app/components/dialog/select-user/dialog-select-user.html',
 			bindings: {
 			    dialogTitle: '<',
-				action: '&'
+				action: '&' // $user
 			},
-			controller: function($mdDialog, User) {
-				var ctrl = this;
+			controller: []
+		});
+	
+	function dialogSelectUserCtrl($mdDialog, User) {
+		var ctrl = this;
+		
+		ctrl.searchUser = searchUser;
+		ctrl.cancel = cancel;
+		ctrl.ok = ok;
 
-				ctrl.cancel = function() {
-					$mdDialog.hide();
-				}
+		function cancel() {
+			$mdDialog.hide();
+		}
 
-				ctrl.ok = function(user) {
-					ctrl.action({'$user': user});
-					$mdDialog.hide();
-				}
+		function ok(user) {
+			ctrl.action({'$user': user});
+			$mdDialog.hide();
+		}
 
-				ctrl.searchUser = searchUser
-
-				function searchUser(text) {
-					return User.findUsers(text.trim()).then(function (res) {
-						angular.forEach(res, function(user) {
-							user.label = User.formatName(user);
-						});
-						return res;
-					});
-				};
-			}
-		})
-
+		function searchUser(text) {
+			return User.findUsers(text.trim()).then(function (res) {
+				angular.forEach(res, function(user) {
+					user.label = User.formatName(user);
+				});
+				return res;
+			});
+		}
+	}
+	
 })();

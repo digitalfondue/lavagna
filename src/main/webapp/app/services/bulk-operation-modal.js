@@ -142,7 +142,7 @@
 			addLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" with-label-value-picker="true"></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action($label, $value)" project-name="projectName" button-label="button" with-label-value-picker="true"></lvg-dialog-select-label>',
 					controller: function($scope) {
 						$scope.title = 'add';
 						$scope.button = 'button.add';
@@ -158,7 +158,7 @@
 			removeLabel: function(cards, projectName, applyIfPresent) {
 				applyIfPresent = applyIfPresent || angular.noop;
 				$mdDialog.show({
-					template: '<lvg-dialog-select-label dialog-title="title" action="action" project-name="projectName" button-label="button" ></lvg-dialog-select-label>',
+					template: '<lvg-dialog-select-label dialog-title="title" action="action($label)" project-name="projectName" button-label="button" ></lvg-dialog-select-label>',
 					controller: function($scope) {
 						$scope.title = 'remove';
 						$scope.button = 'button.remove';
