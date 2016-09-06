@@ -1,5 +1,5 @@
 <md-dialog>
-	<form name="addRoleForm"
+	<form name="addRoleDialogCtrl.addRoleForm"
           data-ng-submit="addRoleDialogCtrl.createRole(addRoleDialogCtrl.name);addRoleDialogCtrl.name = null">
 	   <md-dialog-content>
 	       <div class="md-dialog-content">
@@ -11,13 +11,13 @@
                           ng-model="addRoleDialogCtrl.name"
                           autocomplete="off"
                           required
-                          ng-pattern="[a-zA-Z0-9_\-\+]+">
+                          ng-pattern="/[a-zA-Z0-9_\-\+]+/g">
                </md-input-container>
             </div>
         </md-dialog-content>
         <md-dialog-actions>
 	        <md-button type="button" ng-click="addRoleDialogCtrl.close()"><span translate>button.cancel</span></md-button>
-            <md-button type="submit" ng-disabled="!addRoleForm.$valid"><span translate>button.add</span></md-button>
+            <md-button type="submit" ng-disabled="!addRoleDialogCtrl.addRoleForm.$valid"><span translate>button.add</span></md-button>
         </md-dialog-actions>
 	</form>
 </md-dialog>
