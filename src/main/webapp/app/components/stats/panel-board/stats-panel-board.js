@@ -8,13 +8,19 @@
 			board: '<',
 			projectShortName: '<'
 		},
-		controller : function(Board) {
-
-			var ctrl = this;
-
-			ctrl.statsFetcher = function() {
-				return Board.taskStatistics(ctrl.board.shortName);
-			}
-		}
+		controller : ['Board', statsPanelBoard]
 	});
+	
+	
+	function statsPanelBoard(Board) {
+
+		var ctrl = this;
+
+		ctrl.statsFetcher = statsFetcher;
+		
+		function statsFetcher() {
+			return Board.taskStatistics(ctrl.board.shortName);
+		}
+	}
+	
 })();

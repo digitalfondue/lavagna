@@ -7,13 +7,19 @@
 		bindings : {
 			project: '<'
 		},
-		controller : function(Project) {
-			
-			var ctrl = this;
-
-			ctrl.statsFetcher = function() {
-				return Project.taskStatistics(ctrl.project.shortName);
-			}
-		}
+		controller : ['Project', statsPanelProjectCtrl]
 	});
+	
+	
+	function statsPanelProjectCtrl(Project) {
+		
+		var ctrl = this;
+		
+		ctrl.statsFetcher = statsFetcher;
+		
+		function statsFetcher() {
+			return Project.taskStatistics(ctrl.project.shortName);
+		}
+	}
+	
 })();
