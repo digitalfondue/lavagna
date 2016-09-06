@@ -78,9 +78,9 @@
 
         loadMilestonesInProject();
 
-        StompClient.subscribe($scope, '/event/project/' + projectMilestonesCtrl.project.shortName + '/label-value', loadMilestonesInProject);
+        StompClient.subscribe('/event/project/' + projectMilestonesCtrl.project.shortName + '/label-value', loadMilestonesInProject, $scope);
 
-        StompClient.subscribe($scope, '/event/project/' + projectMilestonesCtrl.project.shortName + '/label', loadMilestonesInProject);
+        StompClient.subscribe('/event/project/' + projectMilestonesCtrl.project.shortName + '/label', loadMilestonesInProject, $scope);
 
         var unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
         $scope.$on('$destroy', unbindMovedEvent);

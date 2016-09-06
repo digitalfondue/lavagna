@@ -23,9 +23,9 @@
 
 		var userCache = {};
 
-		StompClient.subscribe($rootScope, '/event/user', function (message) {
+		StompClient.subscribe('/event/user', function (message) {
 			BaseCache.parseEventAndEmitUpdate(message, userCache, 'refreshUserCache-');
-		});
+		}, $rootScope);
 
 		return {
 			user: function (userId) {
@@ -41,9 +41,9 @@
 
 		var projectCache = {};
 
-		StompClient.subscribe($rootScope, '/event/project', function (message) {
+		StompClient.subscribe('/event/project', function (message) {
 			BaseCache.parseEventAndEmitUpdate(message, projectCache, 'refreshProjectCache-');
-		});
+		}, $rootScope);
 
 		return {
 			project: function (shortName) {
@@ -68,9 +68,9 @@
 			board: function (shortName) {
 				if (!(shortName in boardCache)) {
 					boardCache[shortName] = Board.findByShortName(shortName);
-					StompClient.subscribe($rootScope, '/event/board/' + shortName, function () {
+					StompClient.subscribe('/event/board/' + shortName, function () {
 						BaseCache.removeFromCacheAndEmit(shortName, boardCache, 'refreshBoardCache-');
-					});
+					}, $rootScope);
 				}
 				return boardCache[shortName];
 			},
@@ -97,9 +97,9 @@
 				cardSeqToId[c.boardShortName + '-' + c.sequence] = c.id;
 				var path = '/event/' + c.projectShortName + '/' + c.boardShortName + '/card';
 				if (!(path in subscribedBoardCards)) {
-					StompClient.subscribe($rootScope, path, function (message) {
+					StompClient.subscribe(path, function (message) {
 						BaseCache.parseEventAndEmitUpdate(message, cardCache, 'refreshCardCache-');
-					});
+					}, $rootScope);
 					subscribedBoardCards[path] = true;
 				}
 				return card;
@@ -146,11 +146,11 @@
 					labelsByProjectCache[shortName] = Label.findByProjectShortName(shortName);
 					var path = '/event/project/' + shortName + '/label';
 					if (!(path in subscribedProjects)) {
-						StompClient.subscribe($rootScope, path, function () {
+						StompClient.subscribe(path, function () {
 							// TODO clear only the labels associated to the subscribed project
 							labelListValues = {};
 							BaseCache.removeFromCacheAndEmit(shortName, labelsByProjectCache, 'refreshLabelCache-');
-						});
+						}, $rootScope);
 						subscribedProjects[path] = true;
 					}
 				}

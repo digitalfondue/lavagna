@@ -30,7 +30,7 @@
         	
         	ctrl.metadatas = {};
         	
-        	StompClient.subscribe($scope, '/event/project', loadProjects);
+        	StompClient.subscribe('/event/project', loadProjects, $scope);
         	
         	loadProjects();
         	loadUserCards(ctrl.view.cardPage - 1);

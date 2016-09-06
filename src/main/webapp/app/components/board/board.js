@@ -133,9 +133,9 @@
             $rootScope.$broadcast('requestSearch');
         };
 
-        StompClient.subscribe($scope, '/event/board/'+boardName+'/location/BOARD/column', function() {
+        StompClient.subscribe('/event/board/'+boardName+'/location/BOARD/column', function() {
             Board.columnsByLocation(boardName, ctrl.columnsLocation).then(assignToColumn);
-        });
+        }, $scope);
 
         Board.columnsByLocation(boardName, 'BOARD').then(assignToColumn);
 

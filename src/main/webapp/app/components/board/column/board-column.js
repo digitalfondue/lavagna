@@ -125,7 +125,7 @@
                 	//
                 });
             };
-            StompClient.subscribe($scope, '/event/column/'+columnId+'/card', loadCards);
+            StompClient.subscribe('/event/column/'+columnId+'/card', loadCards, $scope);
 
             $scope.$on('loadcards', loadCards);
 

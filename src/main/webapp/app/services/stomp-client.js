@@ -22,7 +22,7 @@
 			});
 		};
 
-		defer.promise.subscribe = function (scope, path, callback, headers) {
+		defer.promise.subscribe = function (path, callback, scope) {
 			this.then(function (v) {
 				
 				var identifier = '__id__'+(cnt++);
@@ -34,21 +34,25 @@
 					callbacks[path].subscription = v.subscribe(path, function (msg) {
 						angular.forEach(callbacks[path], function(cb, key) {
 							if(key.indexOf('__id__') === 0) {
-								cb.scope.$applyAsync(function() {cb.callback(msg);});
+								$log.log('calling callback for path ' + path + ' with key ' + key)
+								$rootScope.$applyAsync(function() {cb.callback(msg);});
 							}
 							
 						});
-					}, headers);
+					});
 				}
 				
 				
 				$log.log('callback with id ' + identifier + ' registered for', path);
-				callbacks[path][identifier] = {callback: callback, scope: scope};
+				callbacks[path][identifier] = {callback: callback};
 				callbacks[path].count++;
 				
-				
-				scope.$on('$destroy', function () {
+				function destroyCallback() {
 					$log.log('callback with id ' + identifier + ' unregistered for', path);
+					if(!callbacks[path][identifier]) {
+						$log.log('callback with id ' + identifier + ' for ' + path + ' has already been unregistered!');
+						return;
+					}
 					delete callbacks[path][identifier]
 					callbacks[path].count--;
 					$log.log('count for path ' + path, callbacks[path].count);
@@ -56,7 +60,9 @@
 						$log.log('stomp client unsubscribe from', path);
 						callbacks[path].subscription.unsubscribe();
 					}
-				});
+				}
+				
+				scope.$on('$destroy', destroyCallback);
 			});
 		};
 
@@ -75,7 +81,7 @@
 			}, function (error) {
 				$log.log('stomp client error', error);
 				if(!ignoreErrorOnApplicationDestroy) {
-					$rootScope.$apply(function () {
+					$rootScope.$applyAsync(function () {
 						Notification.addNotification('error', {key: 'notification.error.connectionFailure'}, false, false);
 					});
 				}

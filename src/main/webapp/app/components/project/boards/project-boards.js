@@ -110,7 +110,7 @@
 		    });
         }
 
-        StompClient.subscribe($scope, '/event/project/' + projectName + '/board', loadBoardsInProject);
+        StompClient.subscribe('/event/project/' + projectName + '/board', loadBoardsInProject, $scope);
     }
 
 })();

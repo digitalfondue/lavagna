@@ -105,9 +105,9 @@
                 subscriptionScope = $scope.$new();
                 sideBarLoad(0);
 
-                StompClient.subscribe(subscriptionScope, '/event/board/' + boardShortName + '/location/' + ctrl.sideBarLocation + '/card', function () {
+                StompClient.subscribe('/event/board/' + boardShortName + '/location/' + ctrl.sideBarLocation + '/card', function () {
                     sideBarLoad(0);
-                });
+                }, subscriptionScope);
             }
         };
     }

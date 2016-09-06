@@ -130,11 +130,11 @@
 
                 loadProjectMetadata();
 
-                StompClient.subscribe($scope, '/event/project/' + shortName, function(ev) {
+                StompClient.subscribe('/event/project/' + shortName, function(ev) {
                 	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
                 		loadProjectMetadata();
                 	}
-                });
+                }, $scope);
             }
 		};
 	});

@@ -54,7 +54,7 @@
             });
         };
 
-        StompClient.subscribe($scope, '/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
+        StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns, $scope);
 
         findAndAssignColumns();
         //

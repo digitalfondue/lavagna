@@ -72,14 +72,14 @@
         };
 
         var route = '/event/permission' + (projectName === undefined ? '' : ('/project/'+ projectName));
-        StompClient.subscribe($scope, route , function(event) {
+        StompClient.subscribe(route , function(event) {
             var b = JSON.parse(event.body);
             if(b.type === 'REMOVE_ROLE_TO_USERS' || b.type === 'ASSIGN_ROLE_TO_USERS') {
                 reloadUserWithRole(b.payload);
             } else {
                 reloadRoles();
             }
-        });
+        }, $scope);
 
         ctrl.usersByRole = {};
         ctrl.usersWithRole = {};

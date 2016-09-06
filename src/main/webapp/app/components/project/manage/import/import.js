@@ -29,11 +29,11 @@
         ctrl.availableOrganizations = [];
         ctrl.boardsToImport = 0;
 
-        StompClient.subscribe($scope, '/event/import/' + ctrl.importSettings.id, function (message) {
+        StompClient.subscribe('/event/import/' + ctrl.importSettings.id, function (message) {
             var body = JSON.parse(message.body);
             ctrl.view.progress = 100.0 * body["currentBoard"] / body["boards"];
             ctrl.view.currentBoardName = body["boardName"];
-        });
+        }, $scope);
 
         ctrl.checkShortName = function (board) {
             if(board.shortName == null || board.shortName == "") {

@@ -47,7 +47,7 @@
         };
 
         //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe($scope, '/event/card/' + ctrl.card.id + '/card-data', function(e) {
+        StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
             var type = JSON.parse(e.body).type;
 
             var promisesObject = {activities: loadActivity()};
@@ -55,7 +55,7 @@
                 promisesObject.comments = loadComments();
             }
             loadData(promisesObject);
-        });
+        }, $scope);
 
         //reload activities when the card is moved/renamed
         var unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, function() {
