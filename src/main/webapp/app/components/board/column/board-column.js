@@ -5,7 +5,6 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgBoardColumn', {
-    	controller: BoardColumnController,
         bindings: {
             projectShortName: '@',
             metadataRef: '&',
@@ -15,31 +14,102 @@
             searchFilterRef: '&',
             userRef:'&'
         },
-        templateUrl: 'app/components/board/column/board-column.html'
+        templateUrl: 'app/components/board/column/board-column.html',
+        controller: ['$scope', '$filter', '$mdDialog', '$translate', 'Project', 'Board', 'Card', 'Label', 'Notification', 'StompClient', 'BulkOperations', 'SharedBoardDataService', BoardColumnController],
     });
 
-    function BoardColumnController($scope, $filter, $mdDialog, $element, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
+    function BoardColumnController($scope, $filter, $mdDialog, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
         var ctrl = this;
-
-        ctrl.user = ctrl.userRef();
-        ctrl.searchFilter = ctrl.searchFilterRef();
-
+        
         //
-        ctrl.metadata = ctrl.metadataRef();
-
+        ctrl.dragStartCard = dragStartCard;
+        ctrl.dragEndCard = dragEndCard;
+        ctrl.removeCard = removeCard;
+        ctrl.dropCard = dropCard ;
+		ctrl.selectAllInColumn = selectAllInColumn;
+	    ctrl.unSelectAllInColumn = unSelectAllInColumn;
+	    ctrl.newCard = newCard;
+		ctrl.assignToCurrentUser =assignToCurrentUser;
+		ctrl.removeAssignForCurrentUser =removeAssignForCurrentUser;
+		ctrl.watchCard =watchCard;
+    	ctrl.unWatchCard =unWatchCard;
+		ctrl.moveColumn =moveColumn;
+		ctrl.saveNewColumnName = saveNewColumnName;
+		ctrl.setColumnDefinition = setColumnDefinition;
+		ctrl.moveAllCardsInColumn = moveAllCardsInColumn;
         //
-        ctrl.dragStartCard = function(item) {
+		
+		var stompSub = angular.noop;
+		
+		ctrl.$onInit = function init() {
+			ctrl.user = ctrl.userRef();
+	        ctrl.searchFilter = ctrl.searchFilterRef();
+	        ctrl.metadata = ctrl.metadataRef();
+	        
+	        initializeColumn();
+	        //capture all status variables
+	        ctrl.columnState = {};
+	        $scope.$on('selectall', selectAllInColumn);
+	        $scope.$on('unselectall', unSelectAllInColumn);
+		}
+		
+		ctrl.$onDestroy = function onDestroy() {
+			stompSub();
+		}
+        //
+		
+		function initializeColumn() {
+
+            var columnId = ctrl.column.id;
+
+            function loadCards() {
+                Card.findByColumn(columnId).then(function(res) {
+                	res.columnId = columnId;
+                	ctrl.cardsInColumn = res;
+                	ctrl.loaded = true;
+
+                	// sync selection, in case of a moved selected card
+                	// not optimal, but it should be good enough
+                	if(ctrl.selectedCards[ctrl.column.id]) {
+                		for(var key in ctrl.selectedCards[ctrl.column.id]) {
+                			if(ctrl.selectedCards[ctrl.column.id][key] && !idExist(parseInt(key))) {
+                				delete ctrl.selectedCards[ctrl.column.id][key];
+                			}
+                		}
+                	}
+
+
+                	function idExist(id) {
+                		for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
+                			if(ctrl.cardsInColumn[i].id === id) {
+                				return true;
+                			}
+                		}
+                		return false;
+                	}
+
+                	//
+                });
+            };
+            
+            stompSub = StompClient.subscribe('/event/column/'+columnId+'/card', loadCards);
+
+            $scope.$on('loadcards', loadCards);
+            loadCards();
+        };
+        
+
+        function dragStartCard(item) {
         	SharedBoardDataService.startDrag();
         	SharedBoardDataService.dndColumnOrigin = ctrl;
         	SharedBoardDataService.dndCardOrigin = item;
         }
 
-        ctrl.dragEndCard = function(item) {
+        function dragEndCard(item) {
         	SharedBoardDataService.endDrag();
         }
-        //
 
-        ctrl.removeCard = function(card) {
+        function removeCard(card) {
         	for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
         		if(ctrl.cardsInColumn[i].id === card.id) {
         			ctrl.cardsInColumn.splice(i, 1);
@@ -48,7 +118,7 @@
         	}
         }
 
-        ctrl.dropCard = function dropCard(index) {
+        function dropCard(index) {
         	var card = SharedBoardDataService.dndCardOrigin;
         	SharedBoardDataService.dndCardOrigin = null;
         	if(!card) {
@@ -91,61 +161,7 @@
             }
         }
 
-        //
-        var initializeColumn = function() {
-
-            var columnId = ctrl.column.id;
-
-            var loadCards = function() {
-                Card.findByColumn(columnId).then(function(res) {
-                	res.columnId = columnId;
-                	ctrl.cardsInColumn = res;
-                	ctrl.loaded = true;
-
-                	// sync selection, in case of a moved selected card
-                	// not optimal, but it should be good enough
-                	if(ctrl.selectedCards[ctrl.column.id]) {
-                		for(var key in ctrl.selectedCards[ctrl.column.id]) {
-                			if(ctrl.selectedCards[ctrl.column.id][key] && !idExist(parseInt(key))) {
-                				delete ctrl.selectedCards[ctrl.column.id][key];
-                			}
-                		}
-                	}
-
-
-                	function idExist(id) {
-                		for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
-                			if(ctrl.cardsInColumn[i].id === id) {
-                				return true;
-                			}
-                		}
-                		return false;
-                	}
-
-                	//
-                });
-            };
-            StompClient.subscribe('/event/column/'+columnId+'/card', loadCards, $scope);
-
-            $scope.$on('loadcards', loadCards);
-
-            loadCards();
-        };
-
-        initializeColumn();
-
-        //
-
-
-        var boardShortName = ctrl.boardShortName;
-        var projectShortName = ctrl.projectShortName;
-
-        //capture all status variables
-        ctrl.columnState = {};
-
-
-
-        ctrl.selectAllInColumn = function() {
+        function selectAllInColumn() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
             	if(!ctrl.selectedCards[ctrl.column.id]) {
             		ctrl.selectedCards[ctrl.column.id] = {};
@@ -153,8 +169,9 @@
                 ctrl.selectedCards[ctrl.column.id][c.id] = true;
             });
             $scope.$broadcast('updatecheckbox');
-        };
-        ctrl.unSelectAllInColumn = function() {
+        }
+        
+        function unSelectAllInColumn() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
                 delete ctrl.selectedCards[ctrl.column.id];
             });
@@ -162,20 +179,18 @@
         };
 
 
-        $scope.$on('selectall', ctrl.selectAllInColumn);
-        $scope.$on('unselectall', ctrl.unSelectAllInColumn);
 
-        ctrl.newCard = function() {
+        function newCard() {
             $mdDialog.show({
                 template: '<lvg-dialog-new-card board-short-name="vm.boardShortName" columns="vm.columns" column="vm.column"></lvg-dialog-new-card>',
                 locals: {
                     column: ctrl.column,
-                    boardShortName: boardShortName
+                    boardShortName: ctrl.boardShortName
                 },
                 bindToController: true,
                 resolve: {
                     columns: function() {
-                        return Board.columnsByLocation(boardShortName, 'BOARD');
+                        return Board.columnsByLocation(ctrl.boardShortName, 'BOARD');
                     }
                 },
                 controller: function(columns) {
@@ -183,33 +198,34 @@
                 },
                 controllerAs: 'vm'
             });
-        };
+        }
 
-        ctrl.assignToCurrentUser = function(cardId, currentUserId) {
+        function assignToCurrentUser(cardId, currentUserId) {
             var cardByProject = {};
-            cardByProject[projectShortName] = [cardId];
+            cardByProject[ctrl.projectShortName] = [cardId];
             BulkOperations.assign(cardByProject, {id: currentUserId});
-        };
+        }
 
-        ctrl.removeAssignForCurrentUser = function(cardId, currentUserId) {
+        function removeAssignForCurrentUser(cardId, currentUserId) {
             var cardByProject = {};
-            cardByProject[projectShortName] = [cardId];
+            cardByProject[ctrl.projectShortName] = [cardId];
             BulkOperations.removeAssign(cardByProject, {id: currentUserId});
-        };
+        }
 
-        ctrl.watchCard = function(cardId, currentUserId) {
+        function watchCard(cardId, currentUserId) {
             var cardByProject = {};
-            cardByProject[projectShortName] = [cardId];
+            cardByProject[ctrl.projectShortName] = [cardId];
             BulkOperations.watch(cardByProject, {id: currentUserId});
-        };
+        }
+        
 
-        ctrl.unWatchCard = function(cardId, currentUserId) {
+        function unWatchCard(cardId, currentUserId) {
             var cardByProject = {};
-            cardByProject[projectShortName] = [cardId];
+            cardByProject[ctrl.projectShortName] = [cardId];
             BulkOperations.unWatch(cardByProject, {id: currentUserId});
-        };
+        }
 
-        ctrl.moveColumn = function(location) {
+        function moveColumn(location) {
             var confirmAction = function() {Board.moveColumnToLocation(ctrl.column.id, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
@@ -225,9 +241,9 @@
 			$mdDialog.show(confirm).then(function() {
 				confirmAction();
 			}, function() {});
-        };
+        }
 
-        ctrl.moveAllCardsInColumn = function (cards, location) {
+        function moveAllCardsInColumn(cards, location) {
 
             var cardIds = cards.map(function(c) {return c.id});
             var confirmAction = function() {Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function(error) {
@@ -246,16 +262,16 @@
 			}, function() {});
         }
 
-        ctrl.saveNewColumnName = function(newName) {
-            Board.renameColumn(boardShortName, ctrl.column.id, newName).catch(function(error) {
+        function saveNewColumnName(newName) {
+            Board.renameColumn(ctrl.boardShortName, ctrl.column.id, newName).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.rename-column.error'}, false);
             });
-        };
+        }
 
-        ctrl.setColumnDefinition = function(definition) {
-            Board.redefineColumn(boardShortName, ctrl.column.id, definition).catch(function(error) {
+        function setColumnDefinition(definition) {
+            Board.redefineColumn(ctrl.boardShortName, ctrl.column.id, definition).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.redefine-column.error'}, false);
             });
-        };
+        }
     }
 })();
