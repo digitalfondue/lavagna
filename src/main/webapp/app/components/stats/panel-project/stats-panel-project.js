@@ -7,11 +7,11 @@
 		bindings : {
 			project: '<'
 		},
-		controller : ['Project', statsPanelProjectCtrl]
+		controller : ['Project', StatsPanelProjectController]
 	});
 	
 	
-	function statsPanelProjectCtrl(Project) {
+	function StatsPanelProjectController(Project) {
 		
 		var ctrl = this;
 		

@@ -8,10 +8,10 @@
 			item: '<',
 			statsFetcher: '<'
 		},
-		controller : ['$filter', statsPanelCtrl] 
+		controller : ['$filter', StatsPanelController] 
 	});
 	
-	function statsPanelCtrl($filter) {
+	function StatsPanelController($filter) {
 		
 		var ctrl = this;
 		

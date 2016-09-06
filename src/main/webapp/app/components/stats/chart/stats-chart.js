@@ -7,12 +7,12 @@
 			bindings: {
 				chartData: "<"
 			},
-			controller: [statsChartCtrl]
+			controller: [StatsChartController]
 		}
 	);
 	
 	
-	function statsChartCtrl() {
+	function StatsChartController() {
 
 		var ctrl = this;
 		

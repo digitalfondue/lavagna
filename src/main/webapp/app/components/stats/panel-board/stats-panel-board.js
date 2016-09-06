@@ -8,11 +8,11 @@
 			board: '<',
 			projectShortName: '<'
 		},
-		controller : ['Board', statsPanelBoard]
+		controller : ['Board', StatsPanelBoardController]
 	});
 	
 	
-	function statsPanelBoard(Board) {
+	function StatsPanelBoardController(Board) {
 
 		var ctrl = this;
 

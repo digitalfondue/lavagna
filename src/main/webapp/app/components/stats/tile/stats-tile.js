@@ -10,11 +10,11 @@
 			subtitle : "<?",
 			valueColor : "<?"
 		},
-		controller : [statsTileCtrl]
+		controller : [StatsTileController]
 	});
 	
 	
-	function statsTileCtrl() {
+	function StatsTileController() {
 		
 		var ctrl = this;
 		
