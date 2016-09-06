@@ -3,38 +3,72 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgProjectMilestones', {
-        controller: ProjectMilestonesController,
         bindings: {
             project: '<'
         },
-        templateUrl: 'app/components/project/milestones/project-milestones.html'
+        templateUrl: 'app/components/project/milestones/project-milestones.html',
+        controller: ['$rootScope', 'Card', 'User', 'Label', 'Notification', 'StompClient', ProjectMilestonesController],
     });
 
-    function ProjectMilestonesController($rootScope, $scope, Card, User, Label, Notification, StompClient) {
-        var projectMilestonesCtrl = this;
+    function ProjectMilestonesController($rootScope, Card, User, Label, Notification, StompClient) {
+        var ctrl = this;
+        //
+        ctrl.showArray = showArray;
+    	ctrl.closeMilestone = closeMilestone;
+		ctrl.openMilestone = openMilestone;
+		ctrl.orderCardByStatus = orderCardByStatus;
+		ctrl.moveDetailToPage = moveDetailToPage;
+		ctrl.clearMilestoneDetail = clearMilestoneDetail;
+		ctrl.loadMilestoneDetail = loadMilestoneDetail;
+    	ctrl.toggleMilestoneOpenStatus = toggleMilestoneOpenStatus;
+    	ctrl.updateMilestone = updateMilestone;
+		ctrl.updateMilestoneDate = updateMilestoneDate;
+      	//
+		
+		var unbindLabelValue = angular.noop;
+		var unbindLabel = angular.noop;
+		var unbindMovedEvent = angular.noop;
+		var unbindRenamedEvent = angular.noop;
+		
+		ctrl.$onInit = function init() {
+			ctrl.milestoneOpenStatus = {};
+			loadMilestonesInProject();
+			
+			unbindLabelValue = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/label-value', loadMilestonesInProject);
+			unbindLabel = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/label', loadMilestonesInProject);
+	        unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
+	        unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
+		};
+		
+		ctrl.$onDestroy = function onDestroy() {
+			unbindLabelValue();
+			unbindLabel();
+			unbindMovedEvent();
+			unbindRenamedEvent();
+		};
 
-        projectMilestonesCtrl.milestoneOpenStatus = {};
+        
 
-        projectMilestonesCtrl.showArray = function (array, minLength) {
+        function showArray(array, minLength) {
             if (!array) {
                 return false;
             }
             return Object.keys(array).length > minLength;
-        };
+        }
 
-        projectMilestonesCtrl.closeMilestone = function(val) {
+        function closeMilestone(val) {
             Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
-        };
+        }
 
-        projectMilestonesCtrl.openMilestone = function(val) {
+        function openMilestone(val) {
             Label.removeLabelListValueMetadata(val.id, 'status');
-        };
+        }
 
-        projectMilestonesCtrl.orderCardByStatus = function(card) {
+        function orderCardByStatus(card) {
             return card.columnDefinition == "CLOSED" ? 1 : 0;
-        };
+        }
 
-        var orderByStatus = function (milestone) {
+        function orderByStatus(milestone) {
             var insertStatusIfExists = function (milestone, source, target, status) {
                 if (source[status] != undefined) {
                     target[target.length] = {status: status, count: source[status]};
@@ -48,71 +82,58 @@
             insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "OPEN");
             insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "DEFERRED");
             insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "CLOSED");
-            projectMilestonesCtrl.cardsCountByStatus[milestone.labelListValue.value] = sorted;
-        };
+            ctrl.cardsCountByStatus[milestone.labelListValue.value] = sorted;
+        }
 
-        projectMilestonesCtrl.moveDetailToPage = function (milestone, page) {
-            User.hasPermission('READ', projectMilestonesCtrl.project.shortName).then(function () {
-                return Card.findCardsByMilestoneDetail(projectMilestonesCtrl.project.shortName, milestone.labelListValue.value);
+        function moveDetailToPage(milestone, page) {
+            User.hasPermission('READ', ctrl.project.shortName).then(function () {
+                return Card.findCardsByMilestoneDetail(ctrl.project.shortName, milestone.labelListValue.value);
             }).then(function (response) {
                 milestone.detail = response;
             });
-        };
+        }
 
-        var loadMilestonesInProject = function () {
-            User.hasPermission('READ', projectMilestonesCtrl.project.shortName).then(function () {
-                return Card.findCardsByMilestone(projectMilestonesCtrl.project.shortName);
+        function loadMilestonesInProject() {
+            User.hasPermission('READ', ctrl.project.shortName).then(function () {
+                return Card.findCardsByMilestone(ctrl.project.shortName);
             }).then(function (response) {
-                projectMilestonesCtrl.cardsByMilestone = response.milestones;
-                projectMilestonesCtrl.cardsCountByStatus = [];
+                ctrl.cardsByMilestone = response.milestones;
+                ctrl.cardsCountByStatus = [];
                 for (var index in response.milestones) {
                     var milestone = response.milestones[index];
                     orderByStatus(milestone);
-                    if (projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value]) {
-                        projectMilestonesCtrl.moveDetailToPage(milestone, 0);
+                    if (ctrl.milestoneOpenStatus[milestone.labelListValue.value]) {
+                        ctrl.moveDetailToPage(milestone, 0);
                     }
                 }
-                projectMilestonesCtrl.statusColors = response.statusColors;
+                ctrl.statusColors = response.statusColors;
             });
-        };
-
-        loadMilestonesInProject();
-
-        StompClient.subscribe('/event/project/' + projectMilestonesCtrl.project.shortName + '/label-value', loadMilestonesInProject, $scope);
-
-        StompClient.subscribe('/event/project/' + projectMilestonesCtrl.project.shortName + '/label', loadMilestonesInProject, $scope);
-
-        var unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
-        $scope.$on('$destroy', unbindMovedEvent);
-
-        var unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
-        $scope.$on('$destroy', unbindRenamedEvent);
-
-
-        projectMilestonesCtrl.clearMilestoneDetail = function (milestone) {
+        }
+        
+        function clearMilestoneDetail(milestone) {
             milestone.detail = null;
             milestone.currentPage = 1;
-        };
+        }
 
-        projectMilestonesCtrl.loadMilestoneDetail = function (milestone) {
-            projectMilestonesCtrl.moveDetailToPage(milestone, 0);
-        };
+        function loadMilestoneDetail(milestone) {
+            ctrl.moveDetailToPage(milestone, 0);
+        }
 
-        projectMilestonesCtrl.toggleMilestoneOpenStatus = function (milestone) {
-            var currentOpenStatus = projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value];
-            currentOpenStatus ? projectMilestonesCtrl.clearMilestoneDetail(milestone) : projectMilestonesCtrl.loadMilestoneDetail(milestone);
-            projectMilestonesCtrl.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
-        };
+        function toggleMilestoneOpenStatus(milestone) {
+            var currentOpenStatus = ctrl.milestoneOpenStatus[milestone.labelListValue.value];
+            currentOpenStatus ? ctrl.clearMilestoneDetail(milestone) : ctrl.loadMilestoneDetail(milestone);
+            ctrl.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
+        }
 
-        projectMilestonesCtrl.updateMilestone = function (milestone, newName) {
-            var newLabelValue = jQuery.extend({}, milestone.labelListValue);
+        function updateMilestone(milestone, newName) {
+            var newLabelValue = angular.extend({}, milestone.labelListValue);
             newLabelValue.value = newName;
             Label.updateLabelListValue(newLabelValue).catch(function(error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
             });
-        };
+        }
 
-        projectMilestonesCtrl.updateMilestoneDate =function (milestoneId, newDate) {
+        function updateMilestoneDate(milestoneId, newDate) {
             if (newDate) {
                 Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
             } else {
