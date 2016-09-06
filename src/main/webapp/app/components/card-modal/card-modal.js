@@ -6,46 +6,46 @@
 
 	components.component('lvgCardModal', {
 		bindings: {
-			project: '=',
-			board: '=',
-			card: '=',
-			user: '='
+			project: '<',
+			board: '<',
+			card: '<',
+			user: '<'
 		}, 
 		
-		controller: function($mdDialog, $state, $scope) {
+		controller: function($mdDialog, $state) {
 			
 			var ctrl = this;
 			
-            var goBack = function() {
-                $state.go('^');
-            };
+			ctrl.$onInit = function init() {
+				$mdDialog.show({
+	                controller: DialogController,
+	                templateUrl: 'app/components/card-modal/card-modal.html',
+	                parent: angular.element(document.body),
+	                clickOutsideToClose: true,
+	                fullscreen: true,
+	                locals: {
+	                    project: ctrl.project,
+	                    board: ctrl.board,
+	                    card: ctrl.card,
+	                    user: ctrl.user
+	                },
+	                bindToController: true,
+	                controllerAs: 'modalCtrl',
+	                onRemoving: function goBack() {
+	                    $state.go('^');
+	                }
+	            });
+			}
+			
+			ctrl.$onDestroy = function() {
+				$mdDialog.cancel();
+			}
 
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'app/components/card-modal/card-modal.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: true,
-                locals: {
-                    project: ctrl.project,
-                    board: ctrl.board,
-                    card: ctrl.card,
-                    user: ctrl.user
-                },
-                bindToController: true,
-                controllerAs: 'modalCtrl',
-                onRemoving: goBack
-            });
-
-            function DialogController($mdDialog) {
+			function DialogController($mdDialog) {
                 this.close = function() {
                     $mdDialog.cancel();
                 };
             }
-
-            $scope.$on('$destroy', function() {
-                $mdDialog.cancel();
-            });
 		}
 	});
 

@@ -5,9 +5,12 @@
     	templateUrl: 'app/components/about/licenses/licenses.html',
         controller: function($http) {
             var ctrl = this;
-            $http.get('about/THIRD-PARTY.txt').success(function(res) {
-                ctrl.thirdParty=res;
-            });
+            
+            ctrl.$onInit = function init() {
+            	$http.get('about/THIRD-PARTY.txt').success(function(res) {
+                    ctrl.thirdParty=res;
+                });
+            }
         }
     });
 })();

@@ -13,22 +13,22 @@
 			width: "@",
 			height: "@"
 		},
-		controller: function($element, $scope) {
+		controller: function($element) {
 			
 			var ctrl = this;
 			
-			ctrl.$postLink = function() {
-				
-				var baseWidth = 150;
-				var baseHeight = 150;
-				
-				var canvas = $element.find('canvas')[0];
-				var context = canvas.getContext('2d');
-				
-				$scope.$watch('$ctrl.data', function (value) {
+			ctrl.$onChanges = function onChanges(changes) {
+				if(changes.data || changes.options) {
+					var value = ctrl.data;
 					if (value === undefined) {
 						return;
 					}
+					
+					var baseWidth = 150;
+					var baseHeight = 150;
+					
+					var canvas = $element.find('canvas')[0];
+					var context = canvas.getContext('2d');
 
 					canvas.width = ctrl.width || baseWidth;
 					canvas.height = ctrl.height || baseHeight;
@@ -37,7 +37,7 @@
 					var chart = new Chart(context);
 					var chartType = ctrl.type || "Line";
 					chart[chartType](ctrl.data, ctrl.options);
-				});
+				}
 			}
 		}
 	});

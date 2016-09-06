@@ -16,8 +16,10 @@
     function CardLinkController(CardCache) {
         var ctrl = this;
 
-        CardCache.card(ctrl.cardId).then(function (card) {
-        	ctrl.card = card;
-        });
+        ctrl.$onInit = function init() {
+        	CardCache.card(ctrl.cardId).then(function (card) {
+            	ctrl.card = card;
+            });
+        }
     };
 })();

@@ -6,9 +6,11 @@
         controller: function($http) {
             var ctrl = this;
 
-            $http.get('about/LICENSE-GPLv3.txt').success(function(res) {
-                ctrl.license=res;
-            });
+            ctrl.$onInit = function init() {
+	            $http.get('about/LICENSE-GPLv3.txt').success(function(res) {
+	                ctrl.license=res;
+	            });
+            }
         }
     });
 })();
