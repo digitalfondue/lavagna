@@ -6,24 +6,58 @@
             card: '<',
             user: '<'
         },
-        controller: CardActivityController,
-        templateUrl: 'app/components/card/activity/card-activity.html'
+        templateUrl: 'app/components/card/activity/card-activity.html',
+        controller: ['$rootScope', '$q', 'Card', 'StompClient', CardActivityController]
     });
 
-    function CardActivityController($scope, $rootScope, $q, Card, StompClient) {
+    function CardActivityController($rootScope, $q, Card, StompClient) {
         var ctrl = this;
-        ctrl.comments = {};
-        ctrl.activities = [];
+        
+        //
+        ctrl.addComment = addComment;
+        //
+        
+        var stompSubscription = angular.noop;
+        var unbindCardCache = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	ctrl.comments = {};
+            ctrl.activities = [];
+            
+            loadData({comments: loadComments(), activities: loadActivity()});
+            
+            
+            //the /card-data has various card data related event that are pushed from the server that we must react
+            stompSubscription = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+                var type = JSON.parse(e.body).type;
 
-        var loadComments = function() {
+                var promisesObject = {activities: loadActivity()};
+                if(type.match(/COMMENT/g) !== null) {
+                    promisesObject.comments = loadComments();
+                }
+                loadData(promisesObject);
+            });
+            
+            // reload activities when the card is moved/renamed
+            unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, function() {
+                loadData({activities: loadActivity()});
+            });
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	stompSubscription();
+        	unbindCardCache();
+        }
+        
+        function loadComments() {
             return Card.comments(ctrl.card.id);
-        };
+        }
 
-        var loadActivity = function() {
+        function loadActivity() {
             return Card.activity(ctrl.card.id);
-        };
+        }
 
-        var loadData = function(promisesObject) {
+        function loadData(promisesObject) {
             $q.all(promisesObject).then(function(result) {
                 if(result.comments) {
                     angular.forEach(result.comments, function(comment) {
@@ -34,33 +68,12 @@
                     ctrl.activities = result.activities;
                 }
             })
-        };
+        }
 
-        loadData({comments: loadComments(), activities: loadActivity()});
-
-        //--------------
-
-        ctrl.addComment = function(comment) {
+        function addComment(comment) {
             Card.addComment(ctrl.card.id, comment).then(function() {
                 comment.content = null;
             });
-        };
-
-        //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
-            var type = JSON.parse(e.body).type;
-
-            var promisesObject = {activities: loadActivity()};
-            if(type.match(/COMMENT/g) !== null) {
-                promisesObject.comments = loadComments();
-            }
-            loadData(promisesObject);
-        }, $scope);
-
-        //reload activities when the card is moved/renamed
-        var unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, function() {
-            loadData({activities: loadActivity()});
-        });
-        $scope.$on('$destroy', unbindCardCache);
+        }
     };
 })();

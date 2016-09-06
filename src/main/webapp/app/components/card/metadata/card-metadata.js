@@ -10,25 +10,48 @@
             milestones: '<',
             dueDates: '<'
         },
-        controller: CardMetadataController,
-        templateUrl: 'app/components/card/metadata/card-metadata.html'
+        templateUrl: 'app/components/card/metadata/card-metadata.html',
+        controller: ['$rootScope', 'Card', 'User', 'StompClient', 'Notification', 'Board', 'BulkOperations', CardMetadataController]
     });
 
     var COMPONENT_PERMISSIONS = ['UPDATE_CARD','MOVE_CARD'];
 
-    function CardMetadataController($rootScope, $scope, CardCache, Card, User, LabelCache, Label, StompClient,
-        Notification, Board, BulkOperations, Project, Search) {
+    function CardMetadataController($rootScope, Card, User, StompClient, Notification, Board, BulkOperations) {
+    	
         var ctrl = this;
+        //
+        ctrl.moveCard = moveCard;
+        ctrl.setDueDate = setDueDate;
+        ctrl.removeDueDate = removeDueDate;
+        ctrl.hasClosedMilestones = hasClosedMilestones;
+        ctrl.setMilestone = setMilestone;
+        ctrl.removeMilestone = removeMilestone;
+        //
+        
+        
+        var stompSubscription = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	stompSubscription = StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
+            findAndAssignColumns();
+            ctrl.userPermissions = {};
+            loadUserPermissions();
+        };
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	stompSubscription();
+        };
+        
 
         // return the current card in a bulk operation friendly data structure
-        var currentCard = function() {
+        function currentCard() {
             var cardByProject = {};
             cardByProject[ctrl.project.shortName] = [ctrl.card.id];
             return cardByProject;
-        };
+        }
         //
 
-        var findAndAssignColumns = function() {
+        function findAndAssignColumns() {
             Board.columns(ctrl.board.shortName).then(function(cols) {
                 var locations = [];
                 var columns = [];
@@ -54,12 +77,9 @@
             });
         };
 
-        StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns, $scope);
-
-        findAndAssignColumns();
+        
         //
-
-        ctrl.moveCard = function(column) {
+        function moveCard(column) {
             if(angular.isUndefined(column)) {
                 return;
             }
@@ -100,16 +120,16 @@
         };
         //
 
-        ctrl.setDueDate = function(date) {
+        function setDueDate(date) {
             BulkOperations.setDueDate(currentCard(), date)
-        };
+        }
 
-        ctrl.removeDueDate = function() {
+        function removeDueDate() {
             BulkOperations.removeDueDate(currentCard())
-        };
+        }
 
         // ----
-        ctrl.hasClosedMilestones = function() {
+        function hasClosedMilestones() {
             for(var i = 0; i < ctrl.project.metadata.milestones.length; i++) {
                 if(ctrl.project.metadata.milestones[i].status === 'CLOSED') {
                     return true;
@@ -118,21 +138,21 @@
             return false;
         };
 
-        ctrl.setMilestone = function(milestone) {
+        function setMilestone(milestone) {
             BulkOperations.setMilestone(currentCard(), milestone);
         };
 
-        ctrl.removeMilestone = function() {
+        function removeMilestone() {
             BulkOperations.removeMilestone(currentCard());
         };
         // ----
 
-        ctrl.userPermissions = {};
+        
         function loadUserPermissions() {
             User.hasPermissions(COMPONENT_PERMISSIONS, ctrl.project.shortName).then(function(permissions) {
                 ctrl.userPermissions = permissions;
             });
         }
-        loadUserPermissions();
+        
     };
 })();
