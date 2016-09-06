@@ -10,7 +10,7 @@
 			    dialogTitle: '<',
 				action: '&' // $user
 			},
-			controller: []
+			controller: ['$mdDialog', 'User', dialogSelectUserCtrl]
 		});
 	
 	function dialogSelectUserCtrl($mdDialog, User) {
