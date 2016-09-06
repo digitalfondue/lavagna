@@ -5,65 +5,81 @@
 	var components = angular.module('lavagna.components');
 
 	components.component('lvgProjectBoards', {
-        controller: ProjectController,
         bindings: {
-            project: '=',
-            user: '='
+            project: '<',
+            user: '<'
         },
-        templateUrl: 'app/components/project/boards/project-boards.html'
+        templateUrl: 'app/components/project/boards/project-boards.html',
+        controller: ['$scope', '$mdDialog', 'Project', 'Board', 'User', 'Notification', 'StompClient', ProjectController],
     });
 
     function ProjectController($scope, $mdDialog, Project, Board, User, Notification, StompClient) {
-        var projectCtrl = this;
+        var ctrl = this;
+        
+        //
+        ctrl.fetchUserCardsInProjectPage = fetchUserCardsInProjectPage;
+        ctrl.showBoardDialog = showBoardDialog;
+        //
+        
+        var onDestroyStomp = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	
+        	ctrl.boardPage = 1;
+            ctrl.boardsPerPage = 10;
+            ctrl.maxVisibleBoardPages = 3;
+            ctrl.cardProjectPage = 1;
+        	
+            Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl, $scope);
+            
+            loadBoardsInProject();
+            loadUserCardsInProject(ctrl.cardProjectPage - 1);
+            
+            onDestroyStomp = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/board', loadBoardsInProject);
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	onDestroyStomp();
+        }
 
-        var projectName = projectCtrl.project.shortName;
-
-        Project.loadMetadataAndSubscribe(projectName, projectCtrl, $scope);
-
+        
         //
 
-        projectCtrl.boardPage = 1;
-        projectCtrl.boardsPerPage = 10;
-        projectCtrl.maxVisibleBoardPages = 3;
+        
 
-        var loadBoardsInProject = function() {
-            User.hasPermission('READ', projectName).then(function() {
-                return Project.findBoardsInProject(projectName);
+        function loadBoardsInProject() {
+            User.hasPermission('READ', ctrl.project.shortName).then(function() {
+                return Project.findBoardsInProject(ctrl.project.shortName);
             }).then(function(b) {
-                projectCtrl.boards = b;
+                ctrl.boards = b;
             });
-        };
+        }
 
-        loadBoardsInProject();
-
-        projectCtrl.cardProjectPage = 1;
-
-
-        var loadUserCardsInProject = function(page) {
+        function loadUserCardsInProject(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
-                User.cardsByProject(projectName, page).then(function(cards) {
-                	projectCtrl.totalProjectOpenCards = cards.count;
-                	projectCtrl.cardsCurrentPage = cards.currentPage+1;
-                	projectCtrl.cardsTotalPages = cards.totalPages;
-                	projectCtrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
+                User.cardsByProject(ctrl.project.shortName, page).then(function(cards) {
+                	ctrl.totalProjectOpenCards = cards.count;
+                	ctrl.cardsCurrentPage = cards.currentPage+1;
+                	ctrl.cardsTotalPages = cards.totalPages;
+                	ctrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
                 });
             });
-        };
+        }
 
-        loadUserCardsInProject(projectCtrl.cardProjectPage - 1);
-
-        projectCtrl.fetchUserCardsInProjectPage = function(page) {
+        function fetchUserCardsInProjectPage(page) {
             loadUserCardsInProject(page - 1);
-        };
-
-
-        projectCtrl.showBoardDialog = function($event) {
+        }
+        
+        function showBoardDialog($event) {
 		    $mdDialog.show({
 		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
 		    	targetEvent: $event,
 		    	fullscreen: true,
 		    	controllerAs: 'boardDialogCtrl',
 		    	controller: function() {
+		    		//
+		    		var projectName =  ctrl.project.shortName;
+		    		//
 		    		var ctrl = this;
 
 		    		ctrl.board = {};
@@ -109,8 +125,6 @@
 		    	}
 		    });
         }
-
-        StompClient.subscribe('/event/project/' + projectName + '/board', loadBoardsInProject, $scope);
     }
 
 })();

@@ -32,7 +32,7 @@
             loadFiles();
             
             //the /card-data has various card data related event that are pushed from the server that we must react
-            StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+            onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
                 if(type.match(/FILE$/g)) {
                     loadFiles();

@@ -8,18 +8,21 @@
         bindings: {
             project: '<'
         },
-        controller: ProjectManageAccessController,
-        templateUrl: 'app/components/project/manage/access/access.html'
+        templateUrl: 'app/components/project/manage/access/access.html',
+        controller: ['User', 'Notification', 'Permission', ProjectManageAccessController],
     });
 
     function ProjectManageAccessController(User, Notification, Permission) {
 
         var ctrl = this;
+        //
+        ctrl.update = update;
+        //
+        
+        ctrl.$onInit = load;
 
-        var projectName = ctrl.project.shortName;
-
-        var load = function () {
-            Permission.forProject(projectName).findUsersWithRole('ANONYMOUS').then(function (res) {
+        function load() {
+            Permission.forProject(ctrl.project.shortName).findUsersWithRole('ANONYMOUS').then(function (res) {
                 var userHasRole = false;
                 for (var i = 0; i < res.length; i++) {
                     if (res[i].provider === 'system' && res[i].username === 'anonymous') {
@@ -30,20 +33,14 @@
             });
         }
 
-        load();
-
-        ctrl.update = function(newValue) {
-            updateAnonymousAccess(newValue);
-        }
-
-        function updateAnonymousAccess(newVal) {
+        function update(newVal) {
             User.byProviderAndUsername('system', 'anonymous').then(function (res) {
                 if (newVal) {
-                    Permission.forProject(projectName).addUserToRole(res.id, 'ANONYMOUS').then(load).catch(function(error) {
+                    Permission.forProject(ctrl.project.shortName).addUserToRole(res.id, 'ANONYMOUS').then(load).catch(function(error) {
                         Notification.addAutoAckNotification('error', {key: 'notification.project-manage-anon.enable.error'}, false);
                     });
                 } else {
-                    Permission.forProject(projectName).removeUserToRole(res.id, 'ANONYMOUS').then(load).catch(function(error) {
+                    Permission.forProject(ctrl.project.shortName).removeUserToRole(res.id, 'ANONYMOUS').then(load).catch(function(error) {
                         Notification.addAutoAckNotification('error', {key: 'notification.project-manage-anon.disable.error'}, false);
                     });
                 }

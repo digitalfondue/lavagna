@@ -12,59 +12,77 @@
             card: '<',
             user: '<'
         },
-        controller: CardController
+        controller: ['$rootScope', 'CardCache', 'Card', 'LabelCache', 'Label', 'StompClient', 'Title', CardController]
     });
 
-    function CardController($scope, $rootScope, $timeout, CardCache, Card, User, LabelCache, Label, StompClient,
-        Notification, Board, BulkOperations, Title) {
+    function CardController($rootScope, CardCache, Card, LabelCache, Label, StompClient, Title) {
         var ctrl = this;
-        var board = ctrl.board;
-        var project = ctrl.project;
-        var card = ctrl.card;
-
-        ctrl.labels = ctrl.project.metadata.labels;
-
-        ctrl.assignedUsers = [];
-        ctrl.watchingUsers = [];
-        ctrl.milestones = [];
-        ctrl.dueDates = [];
-        ctrl.userLabels = {};
+        
+        var unbindCardCache = angular.noop;
+        var unbindLabelCache = angular.noop;
+        var unbindStomp = angular.noop;
+        
+        ctrl.$onInit = function() {
+        	
+        	ctrl.labels = ctrl.project.metadata.labels;
+            ctrl.assignedUsers = [];
+            ctrl.watchingUsers = [];
+            ctrl.milestones = [];
+            ctrl.dueDates = [];
+            ctrl.userLabels = {};
+            
+            unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, reloadCard);
+            
+            unbindLabelCache = $rootScope.$on('refreshLabelCache-' + ctrl.project.shortName, loadLabel);
+            
+            //the /card-data has various card data related event that are pushed from the server that we must react
+            unbindStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+                var type = JSON.parse(e.body).type;
+                if(type.indexOf('LABEL') > -1) {
+                    loadLabelValues();
+                    reloadCard();
+                }
+            });
+            
+            loadLabelValues();
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	unbindCardCache();
+        	unbindLabelCache();
+        	unbindStomp();
+        }
+        
+        
 
         //------------------
 
         function refreshTitle() {
-        	Title.set('title.card', { shortname: board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
+        	Title.set('title.card', { shortname: ctrl.board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
         }
 
-        var reloadCard = function() {
-            CardCache.card(card.id).then(function(c) {
+        function reloadCard() {
+            CardCache.card(ctrl.card.id).then(function(c) {
                 ctrl.card = c;
-                card = ctrl.card;
                 refreshTitle();
             });
         };
 
-        var unbindCardCache = $rootScope.$on('refreshCardCache-' + card.id, reloadCard);
-        $scope.$on('$destroy', unbindCardCache);
-
-        var currentCard = function() {
+        function currentCard() {
             var cardByProject = {};
-            cardByProject[project.shortName] = [card.id];
+            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
             return cardByProject;
         };
 
         // ----
-        var loadLabel = function() {
-            LabelCache.findByProjectShortName(project.shortName).then(function(labels) {
+        function loadLabel() {
+            LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(labels) {
                 ctrl.labels = labels;
             });
         };
 
-        var unbind = $rootScope.$on('refreshLabelCache-' + project.shortName, loadLabel);
-        $scope.$on('$destroy', unbind);
-
-        var loadLabelValues = function() {
-            Label.findValuesByCardId(card.id).then(function(labelValues) {
+        function loadLabelValues() {
+            Label.findValuesByCardId(ctrl.card.id).then(function(labelValues) {
                 ctrl.labelValues = labelValues;
 
                 angular.forEach(ctrl.labels, function(value, key) {
@@ -84,15 +102,5 @@
                 });
             });
         };
-        loadLabelValues();
-
-        //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
-            var type = JSON.parse(e.body).type;
-            if(type.indexOf('LABEL') > -1) {
-                loadLabelValues();
-                reloadCard();
-            }
-        }, $scope);
     }
 })();

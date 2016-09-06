@@ -9,16 +9,18 @@
     		user:'<'
     	},
         templateUrl: 'app/components/dashboard/dashboard.html',
-        controller: ['$mdDialog', 'Project', 'User', 'Notification', 'StompClient', DashboardController],
+        controller: ['$scope', '$mdDialog', 'Project', 'User', 'Notification', 'StompClient', DashboardController],
     });
 
-    function DashboardController($mdDialog, Project, User, Notification, StompClient) {
+    function DashboardController($scope, $mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
         
         ctrl.fetchUserCardsPage = fetchUserCardsPage;
         ctrl.getMetadatasHash = getMetadatasHash;
         ctrl.showProjectDialog = showProjectDialog;
+        
+        //
         
         var onDestroyStomp = angular.noop;
         

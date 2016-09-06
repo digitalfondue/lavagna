@@ -8,49 +8,49 @@
         bindings: {
             project: '<'
         },
-        controller: ProjectManageBoardsController,
-        templateUrl: 'app/components/project/manage/boards/boards.html'
+        templateUrl: 'app/components/project/manage/boards/boards.html',
+        controller: ['Project', 'Board', 'Notification', ProjectManageBoardsController],
     });
 
     function ProjectManageBoardsController(Project, Board, Notification) {
         var ctrl = this;
+        //
+        ctrl.update = update;
+        ctrl.archive = archive;
+        ctrl.unarchive = unarchive;
+        //
+        
+        ctrl.$onInit = function init() {
+        	ctrl.boards = {};
+        	reloadBoards();
+        };
 
-        ctrl.boards = {};
-
-        var reloadBoards = function () {
+        function reloadBoards() {
             Project.findBoardsInProject(ctrl.project.shortName).then(function (boards) {
                 ctrl.boards = boards;
             });
         };
 
-        reloadBoards();
-
-        ctrl.update = function (boardToUpdate) {
-            Board.update(boardToUpdate).then(function (b) {
-                reloadBoards();
-            }).then(function() {
+        function update(boardToUpdate) {
+            Board.update(boardToUpdate).then(reloadBoards).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.update.success'}, false);
             }, function(error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.update.error'}, false);
             });
         };
 
-        ctrl.archive = function (ab) {
+        function archive(ab) {
             var boardToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: true};
-            Board.update(boardToUpdate).then(function (b) {
-                reloadBoards();
-            }).then(function() {
+            Board.update(boardToUpdate).then(reloadBoards).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.archive.success'}, false);
             }, function(error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.archive.error'}, false);
             });
         };
 
-        ctrl.unarchive = function (ab) {
+        function unarchive(ab) {
             var boardToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: false};
-            Board.update(boardToUpdate).then(function (b) {
-                reloadBoards();
-            }).then(function() {
+            Board.update(boardToUpdate).then(reloadBoards).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.unarchive.success'}, false);
             }, function(error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.unarchive.error'}, false);
