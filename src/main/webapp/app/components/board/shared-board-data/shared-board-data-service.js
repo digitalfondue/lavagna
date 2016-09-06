@@ -5,19 +5,19 @@
     var components = angular.module('lavagna.components');
     
     //used for transient drag and drop data
-    components.service('SharedBoardDataService', function($rootScope) {
+    components.service('SharedBoardDataService', function(EventBus) {
     	return {
     		startDrag: function startDrag() {
-    			$rootScope.$emit('SharedBoardDataService.startDrag');
+    			EventBus.emit('SharedBoardDataService.startDrag');
     		},
     		endDrag: function endDrag() {
-    			$rootScope.$emit('SharedBoardDataService.endDrag');
+    			EventBus.emit('SharedBoardDataService.endDrag');
     		},
     		listenToDragStart: function listenToStartDrag(callback) {
-    			return $rootScope.$on('SharedBoardDataService.startDrag', callback);
+    			return EventBus.on('SharedBoardDataService.startDrag', callback);
     		},
     		listenToDragEnd: function listenToDragEnd(callback) {
-    			return $rootScope.$on('SharedBoardDataService.endDrag', callback);
+    			return EventBus.on('SharedBoardDataService.endDrag', callback);
     		}
     	};
     })

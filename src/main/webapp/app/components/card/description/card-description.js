@@ -8,10 +8,10 @@
             labelValues: '<'
         },
         templateUrl: 'app/components/card/description/card-description.html',
-        controller: ['$rootScope', 'BulkOperations', 'Card', 'StompClient', CardDescriptionController],
+        controller: ['EventBus', 'BulkOperations', 'Card', 'StompClient', CardDescriptionController],
     });
 
-    function CardDescriptionController($rootScope, BulkOperations, Card, StompClient) {
+    function CardDescriptionController(EventBus, BulkOperations, Card, StompClient) {
         var ctrl = this;
         
         ctrl.hideAddPanel = hideAddPanel;
@@ -41,7 +41,7 @@
         // -----
         function updateCardName(newName) {
             Card.update(ctrl.card.id, newName).then( function() {
-                $rootScope.$emit('card.renamed.event');
+            	EventBus.emit('card.renamed.event');
             });
         };
 

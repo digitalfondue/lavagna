@@ -7,10 +7,10 @@
             project: '<'
         },
         templateUrl: 'app/components/project/milestones/project-milestones.html',
-        controller: ['$rootScope', 'Card', 'User', 'Label', 'Notification', 'StompClient', ProjectMilestonesController],
+        controller: ['EventBus', 'Card', 'User', 'Label', 'Notification', 'StompClient', ProjectMilestonesController],
     });
 
-    function ProjectMilestonesController($rootScope, Card, User, Label, Notification, StompClient) {
+    function ProjectMilestonesController(EventBus, Card, User, Label, Notification, StompClient) {
         var ctrl = this;
         //
         ctrl.showArray = showArray;
@@ -36,8 +36,8 @@
 			
 			unbindLabelValue = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/label-value', loadMilestonesInProject);
 			unbindLabel = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/label', loadMilestonesInProject);
-	        unbindMovedEvent =  $rootScope.$on('card.moved.event', loadMilestonesInProject);
-	        unbindRenamedEvent =  $rootScope.$on('card.renamed.event', loadMilestonesInProject);
+	        unbindMovedEvent =  EventBus.on('card.moved.event', loadMilestonesInProject);
+	        unbindRenamedEvent =  EventBus.on('card.renamed.event', loadMilestonesInProject);
 		};
 		
 		ctrl.$onDestroy = function onDestroy() {

@@ -12,7 +12,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', '$rootScope', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', 'EventBus', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
 	});
 	
 	//
@@ -24,7 +24,7 @@
 	
 
 
-	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, $rootScope, UserCache, CardCache, $mdPanel) {
+	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, EventBus, UserCache, CardCache, $mdPanel) {
 		var ctrl = this;
 		
 		
@@ -57,12 +57,12 @@
         //
         
         
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User);
+        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
         
         
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $state, $rootScope, UserCache, CardCache);
+        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $state, EventBus, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
         
@@ -76,6 +76,7 @@
         }
         
         ctrl.$onDestroy = function() {
+        	headCtrl.$onDestroy();
         	dataInfoCtrl.$onDestroy();
         }
         
@@ -94,9 +95,11 @@
 	
 	
 	//--------------------
-	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User) {
+	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {
 		var ctrl = this;
-
+		
+		var subscribers = [];
+		
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
 			var parent = ctrl.lvgCardFragmentV2;
 
@@ -143,6 +146,12 @@
 			domElement.appendChild(baseDiv);
 			domElement.appendChild(createText(parent.card.name))
 		}
+		
+		ctrl.$onDestroy = function onDestroy() {
+			for(var i = 0; i < subscribers.length; i++) {
+				subscribers[i]();
+			}
+		};
 
 		function lastUpdateTime(lastUpdateTime) {
 			var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
@@ -173,7 +182,7 @@
 
 			updateCheckbox();
 
-			$scope.$on('updatecheckbox', updateCheckbox);
+			subscribers.push(EventBus.on('updatecheckbox', updateCheckbox));
 
 			if(parent.boardView) {
 				c.addEventListener('click', function() {
@@ -200,9 +209,11 @@
 			a.textContent = boardShortName + ' - ' + sequenceNumber;
 			a.href = updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 			if(isDynamicLink) {
-				$scope.$on('updatedQueryOrPage', function(ev, searchFilter) {
+				var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
 					a.href = updateUrl(searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 				});
+				
+				subscribers.push(onUpdateQueryOrPageSub);
 			}
 			return a;
 		}
@@ -225,7 +236,6 @@
 				q:  q,
 				page: page});
 		}
-		
 		
 		//--------------------------------------
 		
@@ -259,7 +269,7 @@
     }
 	
 	
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $state, $rootScope, UserCache, CardCache) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $state, EventBus, UserCache, CardCache) {
 		var ctrl = this;
 
 		var card;
@@ -591,7 +601,7 @@
 
 				updateCardClass(card, element);
 
-				var toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
+				var toDismiss = EventBus.on('refreshCardCache-' + cardId, function () {
 					CardCache.card(cardId).then(function (card) {
 						updateCardClass(card, element);
 					});

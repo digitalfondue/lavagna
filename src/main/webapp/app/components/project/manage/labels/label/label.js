@@ -12,13 +12,13 @@
         templateUrl: 'app/components/project/manage/labels/label/label.html'
     });
 
-    function ProjectManageLabelController($scope, $rootScope, $filter, $mdDialog, $translate, Notification, LabelCache, Label) {
+    function ProjectManageLabelController($scope, EventBus, $filter, $mdDialog, $translate, Notification, LabelCache, Label) {
         var ctrl = this;
 
         var projectName = ctrl.project.shortName;
 
         var emitRefreshEvent = function() {
-            $scope.$emit('refreshLabelCache-' + projectName);
+        	EventBus.emit('refreshLabelCache-' + projectName);
         };
 
         ctrl.deleteLabel = function (ev) {
@@ -61,7 +61,7 @@
 
         loadLabelData();
 
-        var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabelData);
+        var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabelData);
         ctrl.$onDestroy = function() {
         	unbind();
         }
@@ -78,7 +78,7 @@
         ctrl.editLabel = function () {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/labels/label/edit-label.html',
-        		controller: function ($rootScope, $scope, LabelCache, Label, label, labelListValues, projectName) {
+        		controller: function (EventBus, $scope, LabelCache, Label, label, labelListValues, projectName) {
                     var ctrl = this;
 
                     ctrl.label = label;
@@ -121,7 +121,7 @@
                         }
                     };
 
-                    var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadListValues);
+                    var unbind = EventBus.on('refreshLabelCache-' + projectName, loadListValues);
                     $scope.$on('$destroy', unbind);
                 },
                 controllerAs: 'ctrl',

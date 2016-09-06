@@ -12,7 +12,7 @@
         templateUrl: 'app/components/project/manage/project/project.html'
     });
 
-    function ProjectManageController($filter, $rootScope, Project, ProjectCache, Notification) {
+    function ProjectManageController($filter, EventBus, Project, ProjectCache, Notification) {
         var ctrl = this;
         var shortName = ctrl.project.shortName;
 
@@ -27,7 +27,7 @@
             });
         };
 
-        var unbind = $rootScope.$on('refreshProjectCache-' + shortName, function () {
+        var unbind = EventBus.on('refreshProjectCache-' + shortName, function () {
             ProjectCache.project(shortName).then(function (p) {
                 ctrl.project = p;
             });

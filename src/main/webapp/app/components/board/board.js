@@ -10,11 +10,11 @@
             userReference: '&'
         },
         templateUrl: 'app/components/board/board.html',
-        controller: ['$rootScope', '$scope', '$location', '$filter', '$log', '$timeout',
+        controller: ['EventBus', '$location', '$filter', '$log', '$timeout',
                      'Board', 'Card', 'Project', 'LabelCache', 'Search', 'StompClient', 'User', 'Notification', BoardController],
     });
 
-    function BoardController($rootScope, $scope, $location, $filter, $log, $timeout,
+    function BoardController(EventBus, $location, $filter, $log, $timeout,
         Board, Card, Project, LabelCache, Search, StompClient, User, Notification) {
 
         var ctrl = this;
@@ -32,6 +32,7 @@
         
         
         var metadataSubscription = angular.noop;
+        var refreshSearchSub = angular.noop;
         var stompSub = angular.noop;
         
         ctrl.$onInit = function init() {
@@ -57,11 +58,30 @@
             ctrl.columnState = {};
             
             ctrl.toggledSidebar = false;
+            
+            
+            refreshSearchSub = EventBus.on('refreshSearch', function(ev, searchFilter) {
+                try {
+                    Search.buildSearchFilter(searchFilter.searchFilter, ctrl.columns, ctrl.user.id).then(function(filterFun) {
+                        ctrl.searchFilter.cardFilter = filterFun;
+                        ctrl.query = searchFilter.location.q;
+                        $timeout(function() {
+                            $location.search(searchFilter.location);
+                            EventBus.emit('updatedQueryOrPage', searchFilter);
+                        });
+                    });
+
+                } catch(e) {
+                    $log.debug('parsing exception', e);
+                }
+            });
+            
         }
         
         ctrl.$onDestroy = function onDestroy() {
         	metadataSubscription();
         	stompSub();
+        	refreshSearchSub();
         }
         
         
@@ -99,11 +119,11 @@
         //
 
         function selectAll() {
-            $scope.$broadcast('selectall');
+            EventBus.emit('selectall');
         }
 
         function unSelectAll() {
-            $scope.$broadcast('unselectall');
+            EventBus.emit('unselectall');
         }
 
         function selectedVisibleCardsId() {
@@ -135,32 +155,13 @@
         function selectedVisibleCount() {
         	return selectedVisibleCardsId().length;
         }
-
-
-        $scope.$on('refreshSearch', function(ev, searchFilter) {
-            User.currentCachedUser().then(function(user) {
-                try {
-                    Search.buildSearchFilter(searchFilter.searchFilter, ctrl.columns, user.id).then(function(filterFun) {
-                        ctrl.searchFilter.cardFilter = filterFun;
-                        ctrl.query = searchFilter.location.q;
-                        $timeout(function() {
-                            $location.search(searchFilter.location);
-                            $scope.$broadcast('updatedQueryOrPage', searchFilter);
-                        });
-                    });
-
-                } catch(e) {
-                    $log.debug('parsing exception', e);
-                }
-            });
-        });
         //
 
         //-----------------------------------------------------------------------------------------------------
 
         function assignToColumn(columns) {
             ctrl.columns = columns;
-            $rootScope.$broadcast('requestSearch');
+            EventBus.emit('requestSearch');
         };
 
         //-----------------------------------------------------------------------------------------------------

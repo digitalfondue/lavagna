@@ -11,12 +11,12 @@
             dueDates: '<'
         },
         templateUrl: 'app/components/card/metadata/card-metadata.html',
-        controller: ['$rootScope', 'Card', 'User', 'StompClient', 'Notification', 'Board', 'BulkOperations', CardMetadataController]
+        controller: ['EventBus', 'Card', 'User', 'StompClient', 'Notification', 'Board', 'BulkOperations', CardMetadataController]
     });
 
     var COMPONENT_PERMISSIONS = ['UPDATE_CARD','MOVE_CARD'];
 
-    function CardMetadataController($rootScope, Card, User, StompClient, Notification, Board, BulkOperations) {
+    function CardMetadataController(EventBus, Card, User, StompClient, Notification, Board, BulkOperations) {
     	
         var ctrl = this;
         //
@@ -93,7 +93,7 @@
                         key: 'notification.card.moveToColumn.success',
                         parameters: { columnName: column.name }
                     }, false);
-                    $rootScope.$emit('card.moved.event');
+                    EventBus.emit('card.moved.event');
                 }, function(error) {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {
@@ -108,7 +108,7 @@
                         key: 'notification.card.moveToLocation.success',
                         parameters: { location: column.location }
                     }, false);
-                    $rootScope.$emit('card.moved.event');
+                    EventBus.emit('card.moved.event');
                 }, function(error) {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {

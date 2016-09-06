@@ -15,10 +15,10 @@
             userRef:'&'
         },
         templateUrl: 'app/components/board/column/board-column.html',
-        controller: ['$scope', '$filter', '$mdDialog', '$translate', 'Project', 'Board', 'Card', 'Label', 'Notification', 'StompClient', 'BulkOperations', 'SharedBoardDataService', BoardColumnController],
+        controller: ['$filter', '$mdDialog', '$translate', 'Project', 'Board', 'Card', 'Label', 'Notification', 'StompClient', 'BulkOperations', 'SharedBoardDataService', 'EventBus', BoardColumnController],
     });
 
-    function BoardColumnController($scope, $filter, $mdDialog, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService) {
+    function BoardColumnController($filter, $mdDialog, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService, EventBus) {
         var ctrl = this;
         
         //
@@ -49,8 +49,8 @@
 	        initializeColumn();
 	        //capture all status variables
 	        ctrl.columnState = {};
-	        $scope.$on('selectall', selectAllInColumn);
-	        $scope.$on('unselectall', unSelectAllInColumn);
+	        EventBus.on('selectall', selectAllInColumn);
+	        EventBus.on('unselectall', unSelectAllInColumn);
 		}
 		
 		ctrl.$onDestroy = function onDestroy() {
@@ -93,8 +93,6 @@
             };
             
             stompSub = StompClient.subscribe('/event/column/'+columnId+'/card', loadCards);
-
-            $scope.$on('loadcards', loadCards);
             loadCards();
         };
         
@@ -168,14 +166,14 @@
             	}
                 ctrl.selectedCards[ctrl.column.id][c.id] = true;
             });
-            $scope.$broadcast('updatecheckbox');
+            EventBus.emit('updatecheckbox');
         }
         
         function unSelectAllInColumn() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
                 delete ctrl.selectedCards[ctrl.column.id];
             });
-            $scope.$broadcast('updatecheckbox');
+            EventBus.emit('updatecheckbox');
         };
 
 

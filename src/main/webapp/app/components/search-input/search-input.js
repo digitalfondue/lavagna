@@ -5,93 +5,54 @@
     var rootSearchFilter;
     var locationSearch = {};
     
-
-    function tryParse(q, Search, $log) {
-    	if(q === null || q === undefined || q.trim() === '') {
-    		return false;
-    	}
-        try {
-            return Search.parse(q);
-        } catch (e) {
-            $log.debug("parsing failure", e);
-            return false;
-        }
-    }
-
-    function queryIsNotEmpty(res) {
-        return res && res.length >= 1 && res[0] && res[0].type !== 'WHITE_SPACE';
-    }
-
-    function parseAndBroadcastForBoardSearch(query, $log, $rootScope, Search) {
-
-        var r = tryParse(query, Search, $log);
-
-        var locSearch = {};
-        var searchFilterRes = undefined;
-        if (queryIsNotEmpty(r)) {
-            locSearch = {q: query};
-            searchFilterRes = r;
-        }
-
-        rootSearchFilter = searchFilterRes;
-        locationSearch = locSearch;
-
-        if (r !== false || (r === false && query === "")) {
-            $rootScope.$broadcast('refreshSearch', {searchFilter: searchFilterRes, location: locSearch});
-        }
-
-    }
-
-    function fromTagsToQuery(tags) {
-
-        if (!angular.isArray(tags)) {
-            return '';
-        }
-
-        var res = '';
-
-        angular.forEach(tags, function (v) {
-            res += v.value + ' ';
-        });
-
-        return res.trim();
-    }
-
-    function fromQueryToTags(query) {
-
-        var res = [];
-
-        angular.forEach(query, function (v) {
-            var r = {};
-            if (v.type !== 'FREETEXT') {
-                r = {value: (v.type === 'USER_LABEL' ? '#' : '') + v.name + (v.value ? (':' + (v.value.originalValue || v.value.value)) : '')};
-            } else {
-                r = {value: v.value.value};
-            }
-            res.push(r);
-        });
-
-        return res;
-    }
-
-    function quoteIfHasSpace(str) {
-        if (str.indexOf(' ') > -1 && str[0] !== '\'' && str.slice(-1) !== '\'') {
-            return "'" + str + "'";
-        } else {
-            return str;
-        }
-    }
-
     angular.module('lavagna.components').component('lvgSearchInput', {
             bindings: {
-                project: '=',
-                board: '='
+                project: '<',
+                board: '<'
             },
             templateUrl: 'app/components/search-input/search-input.html',
-            controller: function ($scope, $log, $location, $rootScope, $timeout, $http, Search) {
+            controller: function ($scope, $log, $location, EventBus, $timeout, $http, Search) {
 
             	var ctrl = this;
+            	//
+                ctrl.selectedItemChange = selectedItemChange;
+                ctrl.transformChip = transformChip;
+                ctrl.submit = submit;
+                ctrl.querySearch = autocompleteProvider;
+            	//
+                
+                var requestSearchSubscription = angular.noop;
+                
+                ctrl.$onInit = function init() {
+                	ctrl.toSearch = {};
+                    ctrl.selected = [];
+                    var search = $location.search();
+                    if (search && search.q) {
+                        var res = tryParse(search.q, Search, $log);
+                        if (queryIsNotEmpty(res)) {
+                        	ctrl.selected = fromQueryToTags(res);
+                            rootSearchFilter = res;
+                            locationSearch = {q: search.q};
+                        }
+                    }
+                    
+                    
+                    requestSearchSubscription = EventBus.on('requestSearch', function () {
+                    	EventBus.emit('refreshSearch', {searchFilter: rootSearchFilter, location: locationSearch});
+                    });
 
+                    $scope.$watch('$ctrl.toSearch', function () {
+                        if (ctrl.board !== undefined) {
+                            parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, EventBus, Search);
+                        }
+                    }, true);
+                };
+                
+                ctrl.$onDestroy = function() {
+                	requestSearchSubscription();
+                }
+            	
+            	//
             	function toParams(input, prefix) {
                     var q = input.substr(prefix.length).trim();
                     var params = {term: q};
@@ -162,8 +123,6 @@
                         return data;
                     });
                 }
-
-                ctrl.toSearch = {};
                 
                 function autocompleteProvider(input) {
 
@@ -277,11 +236,10 @@
 
                 
                 //NEW AUTOCOMPLETE
-                ctrl.querySearch = autocompleteProvider;
-                ctrl.selected = [];
-                ctrl.selectedItemChange = function(item) {
-                };
-                ctrl.transformChip = function(chip) {
+                function selectedItemChange(item) {
+                }
+                
+                function transformChip(chip) {
                 	if(chip.type === 'example') {
                 		ctrl.searchText = chip.value;
                 		return null;
@@ -294,40 +252,96 @@
                 }
                 //
 
-                $rootScope.$on('requestSearch', function () {
-                    $rootScope.$broadcast('refreshSearch', {searchFilter: rootSearchFilter, location: locationSearch});
-                });
-
-                $scope.$watch('$ctrl.toSearch', function () {
+                function submit() {
                     if (ctrl.board !== undefined) {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, $rootScope, Search);
-                    }
-                }, true);
-
-                ctrl.submit = function () {
-                    if (ctrl.board !== undefined) {
-                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, $rootScope, Search);
+                        parseAndBroadcastForBoardSearch(fromTagsToQuery(ctrl.selected), $log, EventBus, Search);
                     } else if (ctrl.project !== undefined) {
                         $location.url('/' + ctrl.project.shortName + '/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected))+"&page=1");
-                        $rootScope.$broadcast('refreshSearch');
+                        EventBus.emit('refreshSearch');
                     } else {
                         $location.url('/search/?q=' + encodeURIComponent(fromTagsToQuery(ctrl.selected))+"&page=1");
-                        $rootScope.$broadcast('refreshSearch');
-                    }
-                };
-
-                //on first load:
-                var search = $location.search();
-                if (search && search.q) {
-                    var res = tryParse(search.q, Search, $log);
-                    if (queryIsNotEmpty(res)) {
-                    	ctrl.selected = fromQueryToTags(res);
-                        rootSearchFilter = res;
-                        locationSearch = {q: search.q};
+                        EventBus.emit('refreshSearch');
                     }
                 }
-
             }
     });
+    
+    
+    
+    function tryParse(q, Search, $log) {
+    	if(q === null || q === undefined || q.trim() === '') {
+    		return false;
+    	}
+        try {
+            return Search.parse(q);
+        } catch (e) {
+            $log.debug("parsing failure", e);
+            return false;
+        }
+    }
+
+    function queryIsNotEmpty(res) {
+        return res && res.length >= 1 && res[0] && res[0].type !== 'WHITE_SPACE';
+    }
+
+    function parseAndBroadcastForBoardSearch(query, $log, EventBus, Search) {
+
+        var r = tryParse(query, Search, $log);
+
+        var locSearch = {};
+        var searchFilterRes = undefined;
+        if (queryIsNotEmpty(r)) {
+            locSearch = {q: query};
+            searchFilterRes = r;
+        }
+
+        rootSearchFilter = searchFilterRes;
+        locationSearch = locSearch;
+
+        if (r !== false || (r === false && query === "")) {
+        	EventBus.emit('refreshSearch', {searchFilter: searchFilterRes, location: locSearch});
+        }
+
+    }
+
+    function fromTagsToQuery(tags) {
+
+        if (!angular.isArray(tags)) {
+            return '';
+        }
+
+        var res = '';
+
+        angular.forEach(tags, function (v) {
+            res += v.value + ' ';
+        });
+
+        return res.trim();
+    }
+
+    function fromQueryToTags(query) {
+
+        var res = [];
+
+        angular.forEach(query, function (v) {
+            var r = {};
+            if (v.type !== 'FREETEXT') {
+                r = {value: (v.type === 'USER_LABEL' ? '#' : '') + v.name + (v.value ? (':' + (v.value.originalValue || v.value.value)) : '')};
+            } else {
+                r = {value: v.value.value};
+            }
+            res.push(r);
+        });
+
+        return res;
+    }
+
+    function quoteIfHasSpace(str) {
+        if (str.indexOf(' ') > -1 && str[0] !== '\'' && str.slice(-1) !== '\'') {
+            return "'" + str + "'";
+        } else {
+            return str;
+        }
+    }
 
 })();

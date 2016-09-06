@@ -6,7 +6,7 @@
 
     components.component('lvgSearch', {
         bindings: {
-            project: '=',
+            project: '<',
             user:'<'
         },
     	controller: SearchCtrl,
@@ -14,8 +14,47 @@
     });
 
 
-	function SearchCtrl($scope, $location, $http, $log, $filter, Search, User, LabelCache, Card) {
+	function SearchCtrl($location, $http, $log, $filter, Search, User, LabelCache, Card, EventBus) {
 		var ctrl = this;
+		
+		//
+		ctrl.selectedCardsCount = selectedCardsCount;
+		ctrl.collectIdsByProject = collectIdsByProject;
+		ctrl.triggerSearch = triggerSearch;
+		ctrl.deselectAllInPage = deselectAllInPage; 
+		ctrl.selectAllInPage = selectAllInPage;
+		ctrl.moveToPage = moveToPage;
+		//
+		
+		var refreshSearchSub = angular.noop;
+		
+		ctrl.$onInit = function init() {
+			ctrl.queryString = { params: {}};
+			ctrl.selected = {};
+			ctrl.inProject = ctrl.project !== undefined;
+
+			if(ctrl.project !== undefined) {
+				ctrl.queryString.params.projectName = ctrl.project.shortName;
+
+				LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(res) {
+					ctrl.labels = res;
+					for(var k in res) {
+						if(res[k].domain === 'SYSTEM' && res[k].name === 'MILESTONE') {
+							ctrl.milestoneLabel = res[k];
+							break;
+						}
+					}
+				});
+			}
+			triggerSearch();
+			refreshSearchSub = EventBus.on('refreshSearch', function() {ctrl.selected = {}; triggerSearch();});
+		}
+		
+		ctrl.$onDestroy = function onDestroy() {
+			refreshSearchSub();
+		}
+		
+		//
 
 		function triggerSearch() {
 
@@ -26,9 +65,9 @@
 
 			try {
 				var r = Search.parse(searchParams.q);
-				queryString.params.q = JSON.stringify(r);
-				queryString.params.page = ctrl.page - 1;
-				$http.get('api/search/card', queryString).then(function(res) {
+				ctrl.queryString.params.q = JSON.stringify(r);
+				ctrl.queryString.params.page = ctrl.page - 1;
+				$http.get('api/search/card', ctrl.queryString).then(function(res) {
 					ctrl.found = res.data.found.slice(0, res.data.countPerPage);
 					ctrl.count = res.data.count;
 					ctrl.currentPage = res.data.currentPage+1;
@@ -44,16 +83,14 @@
 			}
 		}
 
-		var queryString = { params: {}};
-
-		ctrl.moveToPage = function(page) {
+		
+		function moveToPage(page) {
 			var loc = $location.search();
 			loc.page = page;
 			$location.search(loc);
 			triggerSearch();
 		};
 
-		ctrl.selected = {};
 
 		function selectedCardsCount() {
 			var cnt = 0;
@@ -67,26 +104,7 @@
 			return cnt;
 		}
 
-		ctrl.selectedCardsCount = selectedCardsCount;
-
-		ctrl.inProject = ctrl.project !== undefined;
-
-		if(ctrl.project !== undefined) {
-			queryString.params.projectName = ctrl.project.shortName;
-
-			LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(res) {
-
-				ctrl.labels = res;
-				for(var k in res) {
-					if(res[k].domain === 'SYSTEM' && res[k].name === 'MILESTONE') {
-						ctrl.milestoneLabel = res[k];
-						break;
-					}
-				}
-			});
-		}
-
-		ctrl.selectAllInPage = function() {
+		function selectAllInPage() {
 
 			var projects = {};
 
@@ -108,24 +126,20 @@
 							ctrl.selected[shortProjectName][idsToSetAsTrue[i]] = true;
 						}
 						
-						$scope.$broadcast('updatecheckbox');
+						EventBus.emit('updatecheckbox');
 					}
 				})(projects[proj], proj));
 			};
-		};
+		}
 
-		ctrl.deselectAllInPage = function() {
+		function deselectAllInPage() {
 			for(var project in ctrl.selected) {
 				for(var i = 0;i<ctrl.found.length;i++) {
 					delete ctrl.selected[project][ctrl.found[i].id];
 				}
 			}
-			$scope.$broadcast('updatecheckbox');
-		};
-
-		triggerSearch();
-
-		$scope.$on('refreshSearch', function() {ctrl.selected = {}; triggerSearch();});
+			EventBus.emit('updatecheckbox');
+		}
 
 		function collectIdsByProject() {
 			var res = {};
@@ -142,11 +156,6 @@
 			}
 			return res;
 		}
-
-		ctrl.collectIdsByProject = collectIdsByProject;
-
-		ctrl.triggerSearch = triggerSearch;
-
 		//
 	}
 

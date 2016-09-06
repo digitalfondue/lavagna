@@ -7,10 +7,10 @@
             user: '<'
         },
         templateUrl: 'app/components/card/activity/card-activity.html',
-        controller: ['$rootScope', '$q', 'Card', 'StompClient', CardActivityController]
+        controller: ['EventBus', '$q', 'Card', 'StompClient', CardActivityController]
     });
 
-    function CardActivityController($rootScope, $q, Card, StompClient) {
+    function CardActivityController(EventBus, $q, Card, StompClient) {
         var ctrl = this;
         
         //
@@ -39,7 +39,7 @@
             });
             
             // reload activities when the card is moved/renamed
-            unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, function() {
+            unbindCardCache = EventBus.on('refreshCardCache-' + ctrl.card.id, function() {
                 loadData({activities: loadActivity()});
             });
         }

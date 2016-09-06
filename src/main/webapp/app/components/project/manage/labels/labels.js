@@ -11,7 +11,7 @@
         templateUrl: 'app/components/project/manage/labels/labels.html'
     });
 
-    function ProjectManageLabelsController($rootScope, $q, $filter, $translate, $mdDialog, Notification, LabelCache, Label) {
+    function ProjectManageLabelsController(EventBus, $q, $filter, $translate, $mdDialog, Notification, LabelCache, Label) {
         var ctrl = this;
 
         var projectName = ctrl.project.shortName;
@@ -32,7 +32,7 @@
         };
         loadLabels();
 
-        var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabels);
+        var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabels);
 
         ctrl.$onDestroy = function() {
         	unbind();

@@ -4,13 +4,13 @@
 
 	var services = angular.module('lavagna.services');
 
-	services.factory('BaseCache', function ($rootScope) {
+	services.factory('BaseCache', function (EventBus) {
 		return {
 			removeFromCacheAndEmit: function (id, cache, emitPrefix) {
 				if (id in cache) {
 					delete cache[id];
 				}
-				$rootScope.$emit(emitPrefix + id, {});
+				EventBus.emit(emitPrefix + id, {});
 			},
 			parseEventAndEmitUpdate: function (message, cache, emitPrefix) {
 				var id = JSON.parse(message.body)["payload"];
@@ -19,13 +19,13 @@
 		}
 	});
 
-	services.factory('UserCache', function ($rootScope, StompClient, BaseCache, User) {
+	services.factory('UserCache', function (StompClient, BaseCache, User) {
 
 		var userCache = {};
 
 		StompClient.subscribe('/event/user', function (message) {
 			BaseCache.parseEventAndEmitUpdate(message, userCache, 'refreshUserCache-');
-		}, $rootScope);
+		});
 
 		return {
 			user: function (userId) {
@@ -37,13 +37,13 @@
 		}
 	});
 
-	services.factory('ProjectCache', function ($rootScope, StompClient, BaseCache, Project) {
+	services.factory('ProjectCache', function (StompClient, BaseCache, Project) {
 
 		var projectCache = {};
 
 		StompClient.subscribe('/event/project', function (message) {
 			BaseCache.parseEventAndEmitUpdate(message, projectCache, 'refreshProjectCache-');
-		}, $rootScope);
+		});
 
 		return {
 			project: function (shortName) {
@@ -59,7 +59,7 @@
 		}
 	});
 
-	services.factory('BoardCache', function ($rootScope, StompClient, BaseCache, Board) {
+	services.factory('BoardCache', function (StompClient, BaseCache, Board) {
 
 		var boardCache = {};
 		var columnCache = {};
@@ -70,7 +70,7 @@
 					boardCache[shortName] = Board.findByShortName(shortName);
 					StompClient.subscribe('/event/board/' + shortName, function () {
 						BaseCache.removeFromCacheAndEmit(shortName, boardCache, 'refreshBoardCache-');
-					}, $rootScope);
+					});
 				}
 				return boardCache[shortName];
 			},
@@ -83,7 +83,7 @@
 		}
 	});
 
-	services.factory('CardCache', function ($rootScope, StompClient, BaseCache, Card) {
+	services.factory('CardCache', function (StompClient, BaseCache, Card) {
 
 		var cardDataCache = {};
 
@@ -99,7 +99,7 @@
 				if (!(path in subscribedBoardCards)) {
 					StompClient.subscribe(path, function (message) {
 						BaseCache.parseEventAndEmitUpdate(message, cardCache, 'refreshCardCache-');
-					}, $rootScope);
+					});
 					subscribedBoardCards[path] = true;
 				}
 				return card;
@@ -134,7 +134,7 @@
 		}
 	});
 
-	services.factory('LabelCache', function ($rootScope, StompClient, BaseCache, Label) {
+	services.factory('LabelCache', function (StompClient, BaseCache, Label) {
 
 		var labelListValues = {};
 		var labelsByProjectCache = {};
@@ -150,7 +150,7 @@
 							// TODO clear only the labels associated to the subscribed project
 							labelListValues = {};
 							BaseCache.removeFromCacheAndEmit(shortName, labelsByProjectCache, 'refreshLabelCache-');
-						}, $rootScope);
+						});
 						subscribedProjects[path] = true;
 					}
 				}

@@ -9,10 +9,10 @@
 			valueRef: '&',
 			projectMetadataRef:'&'
 		},
-		controller: ['$filter', '$element', '$rootScope', '$state', '$window', 'CardCache', 'UserCache', lvgLabelValV2Ctrl]
+		controller: ['$filter', '$element', 'EventBus', '$state', '$window', 'CardCache', 'UserCache', lvgLabelValV2Ctrl]
 	});
 
-	function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $window, CardCache, UserCache) {
+	function lvgLabelValV2Ctrl($filter, $element, EventBus, $state, $window, CardCache, UserCache) {
 		var ctrl = this;
 
 		ctrl.$postLink = function postLink() {
@@ -75,7 +75,7 @@
 
 				updateCardClass(card, element);
 
-				var toDismiss = $rootScope.$on('refreshCardCache-' + cardId, function () {
+				var toDismiss = EventBus.on('refreshCardCache-' + cardId, function () {
 					CardCache.card(cardId).then(function (card) {
 						updateCardClass(card, element);
 					});

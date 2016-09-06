@@ -11,7 +11,7 @@
         templateUrl: 'app/components/project/manage/milestones/milestones.html'
     });
 
-    function ProjectManageMilestonesController($rootScope, $mdDialog, $translate, LabelCache, Label, Notification) {
+    function ProjectManageMilestonesController(EventBus, $mdDialog, $translate, LabelCache, Label, Notification) {
 
         var ctrl = this;
         ctrl.view = {};
@@ -35,7 +35,7 @@
         };
         loadLabel();
 
-        var unbind = $rootScope.$on('refreshLabelCache-' + projectName, loadLabel);
+        var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabel);
         ctrl.$onDestroy = function() {
         	unbind();
         }

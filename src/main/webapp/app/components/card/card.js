@@ -12,10 +12,10 @@
             card: '<',
             user: '<'
         },
-        controller: ['$rootScope', 'CardCache', 'Card', 'LabelCache', 'Label', 'StompClient', 'Title', CardController]
+        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Label', 'StompClient', 'Title', CardController]
     });
 
-    function CardController($rootScope, CardCache, Card, LabelCache, Label, StompClient, Title) {
+    function CardController(EventBus, CardCache, Card, LabelCache, Label, StompClient, Title) {
         var ctrl = this;
         
         var unbindCardCache = angular.noop;
@@ -31,9 +31,9 @@
             ctrl.dueDates = [];
             ctrl.userLabels = {};
             
-            unbindCardCache = $rootScope.$on('refreshCardCache-' + ctrl.card.id, reloadCard);
+            unbindCardCache = EventBus.on('refreshCardCache-' + ctrl.card.id, reloadCard);
             
-            unbindLabelCache = $rootScope.$on('refreshLabelCache-' + ctrl.project.shortName, loadLabel);
+            unbindLabelCache = EventBus.on('refreshLabelCache-' + ctrl.project.shortName, loadLabel);
             
             //the /card-data has various card data related event that are pushed from the server that we must react
             unbindStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
