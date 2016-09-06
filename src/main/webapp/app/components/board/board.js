@@ -4,39 +4,77 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgBoard', {
-        controller: BoardController,
         bindings: {
-            project: '=',
-            board: '=',
+            project: '<',
+            board: '<',
             userReference: '&'
         },
-        templateUrl: 'app/components/board/board.html'
+        templateUrl: 'app/components/board/board.html',
+        controller: ['$rootScope', '$scope', '$location', '$filter', '$log', '$timeout',
+                     'Board', 'Card', 'Project', 'LabelCache', 'Search', 'StompClient', 'User', 'Notification', BoardController],
     });
 
     function BoardController($rootScope, $scope, $location, $filter, $log, $timeout,
         Board, Card, Project, LabelCache, Search, StompClient, User, Notification) {
 
         var ctrl = this;
-        ctrl.searchFilter = {};
-
-        var boardName = ctrl.board.shortName;
-        var projectName = ctrl.project.shortName;
-
-        ctrl.user = ctrl.userReference();
-        ctrl.currentUserId = ctrl.user.id;
-
-        Project.loadMetadataAndSubscribe(projectName, ctrl, $scope);
+        //
+        ctrl.moveCard = moveCard;
+        ctrl.backFromLocation = backFromLocation;
+        ctrl.dropColumn = dropColumn;
+        ctrl.selectAll = selectAll;
+        ctrl.unSelectAll = unSelectAll;
+        ctrl.toggleSidebar = toggleSidebar;
+        ctrl.formatBulkRequest = formatBulkRequest;
+        ctrl.selectedVisibleCardsIdByColumnId = selectedVisibleCardsIdByColumnId;
+        ctrl.selectedVisibleCount = selectedVisibleCount;
+        //
         
-        ctrl.moveCard = function(card, location) {
-            Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);
-        };
+        
+        var metadataSubscription = angular.noop;
+        var stompSub = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	ctrl.searchFilter = {};
+            ctrl.user = ctrl.userReference();
+            ctrl.currentUserId = ctrl.user.id;
+            
+            metadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl);
+            
+            // keep track of the selected cards
+            ctrl.selectedCards = {};
+            ctrl.columnsLocation = 'BOARD';
+            
+            stompSub = StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', function() {
+                Board.columnsByLocation(ctrl.board.shortName, ctrl.columnsLocation).then(assignToColumn);
+            });
 
-        ctrl.backFromLocation = function() {
+            Board.columnsByLocation(ctrl.board.shortName, 'BOARD').then(assignToColumn);
+
+            //-------------        
+
+            //will be used as a map columnState[columnId].editColumnName = true/false
+            ctrl.columnState = {};
+            
+            ctrl.toggledSidebar = false;
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	metadataSubscription();
+        	stompSub();
+        }
+        
+        
+        function moveCard(card, location) {
+            Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);
+        }
+
+        function backFromLocation() {
             ctrl.locationOpened=false;
             ctrl.sideBarLocation=undefined;
-        };
+        }
 
-        ctrl.dropColumn = function(index, oldIndex) {
+        function dropColumn(index, oldIndex) {
         	var currentColIdx = oldIndex;
         	var column = ctrl.columns[oldIndex];
         	//same position, ignore drop
@@ -53,27 +91,22 @@
         		colPos.push(col.id);
         	});
         	
-        	Board.reorderColumn(boardName, ctrl.columnsLocation, colPos).catch(function(error) {
+        	Board.reorderColumn(ctrl.board.shortName, ctrl.columnsLocation, colPos).catch(function(error) {
         		Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
         	});
             
         }
         //
 
-        //keep track of the selected cards
-        ctrl.selectedCards = {};
-        //ctrl.foundCards = {};
-
-
-        ctrl.selectAll = function() {
+        function selectAll() {
             $scope.$broadcast('selectall');
-        };
+        }
 
-        ctrl.unSelectAll = function() {
+        function unSelectAll() {
             $scope.$broadcast('unselectall');
-        };
+        }
 
-        var selectedVisibleCardsId = function() {
+        function selectedVisibleCardsId() {
             var ids = [];
 
             angular.forEach(selectedVisibleCardsIdByColumnId(), function(val) {
@@ -81,9 +114,9 @@
             });
 
             return ids;
-        };
+        }
 
-        var selectedVisibleCardsIdByColumnId = function() {
+        function selectedVisibleCardsIdByColumnId() {
             var res = {};
             angular.forEach(ctrl.selectedCards, function(column, columnId) {
             	angular.forEach(column, function(isSelected, cardId) {
@@ -97,11 +130,11 @@
             	})
             });
             return res;
-        };
+        }
 
-        ctrl.selectedVisibleCount = function() {
+        function selectedVisibleCount() {
         	return selectedVisibleCardsId().length;
-        };
+        }
 
 
         $scope.$on('refreshSearch', function(ev, searchFilter) {
@@ -125,44 +158,24 @@
 
         //-----------------------------------------------------------------------------------------------------
 
-        //----------
-        ctrl.columnsLocation = 'BOARD';
-
-        var assignToColumn = function(columns) {
+        function assignToColumn(columns) {
             ctrl.columns = columns;
             $rootScope.$broadcast('requestSearch');
         };
 
-        StompClient.subscribe('/event/board/'+boardName+'/location/BOARD/column', function() {
-            Board.columnsByLocation(boardName, ctrl.columnsLocation).then(assignToColumn);
-        }, $scope);
-
-        Board.columnsByLocation(boardName, 'BOARD').then(assignToColumn);
-
-        //-------------        
-
-        //will be used as a map columnState[columnId].editColumnName = true/false
-        ctrl.columnState = {};
-
-
-
         //-----------------------------------------------------------------------------------------------------
 
-        var formatBulkRequest = function() {
+        function formatBulkRequest() {
             var r = {};
-            r[projectName] = selectedVisibleCardsId();
+            r[ctrl.project.shortName] = selectedVisibleCardsId();
             return r;
         };
-
-        ctrl.formatBulkRequest = formatBulkRequest;
-        ctrl.selectedVisibleCardsIdByColumnId = selectedVisibleCardsIdByColumnId;
 
         //-----------------------------------------------------------------------------------------------------
 
         //some sidebar controls
-        ctrl.toggledSidebar = false;
 
-        ctrl.toggleSidebar = function() {
+        function toggleSidebar() {
             ctrl.toggledSidebar = !ctrl.toggledSidebar;
         };
     }

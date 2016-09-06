@@ -10,10 +10,10 @@
             user: '<'
         },
         templateUrl: 'app/components/project/boards/project-boards.html',
-        controller: ['$scope', '$mdDialog', 'Project', 'Board', 'User', 'Notification', 'StompClient', ProjectController],
+        controller: ['$mdDialog', 'Project', 'Board', 'User', 'Notification', 'StompClient', ProjectController],
     });
 
-    function ProjectController($scope, $mdDialog, Project, Board, User, Notification, StompClient) {
+    function ProjectController($mdDialog, Project, Board, User, Notification, StompClient) {
         var ctrl = this;
         
         //
@@ -22,6 +22,7 @@
         //
         
         var onDestroyStomp = angular.noop;
+        var metadataSubscription = angular.noop;
         
         ctrl.$onInit = function init() {
         	
@@ -30,7 +31,7 @@
             ctrl.maxVisibleBoardPages = 3;
             ctrl.cardProjectPage = 1;
         	
-            Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl, $scope);
+            metadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl);
             
             loadBoardsInProject();
             loadUserCardsInProject(ctrl.cardProjectPage - 1);
@@ -39,6 +40,7 @@
         }
         
         ctrl.$onDestroy = function onDestroy() {
+        	metadataSubscription();
         	onDestroyStomp();
         }
 

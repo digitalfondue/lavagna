@@ -114,7 +114,7 @@
                 return $http.get('api/project/' + shortName + '/columns-in/').then(extractData);
             },
 
-            loadMetadataAndSubscribe: function(shortName, targetObject, $scope, assignToMap) {
+            loadMetadataAndSubscribe: function(shortName, targetObject, assignToMap) {
 
             	var Project = this;
 
@@ -130,11 +130,11 @@
 
                 loadProjectMetadata();
 
-                StompClient.subscribe('/event/project/' + shortName, function(ev) {
+                return StompClient.subscribe('/event/project/' + shortName, function(ev) {
                 	if(ev.body === '"PROJECT_METADATA_HAS_CHANGED"') {
                 		loadProjectMetadata();
                 	}
-                }, $scope);
+                });
             }
 		};
 	});

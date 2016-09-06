@@ -9,10 +9,10 @@
     		user:'<'
     	},
         templateUrl: 'app/components/dashboard/dashboard.html',
-        controller: ['$scope', '$mdDialog', 'Project', 'User', 'Notification', 'StompClient', DashboardController],
+        controller: ['$mdDialog', 'Project', 'User', 'Notification', 'StompClient', DashboardController],
     });
 
-    function DashboardController($scope, $mdDialog, Project, User, Notification, StompClient) {
+    function DashboardController($mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
         
@@ -23,6 +23,7 @@
         //
         
         var onDestroyStomp = angular.noop;
+        var projectMetadataSubscriptions = [];
         
         ctrl.$onInit = function init() {
         	ctrl.view = {
@@ -42,6 +43,9 @@
         
         ctrl.$onDestroy = function onDestroy() {
         	onDestroyStomp();
+        	angular.forEach(projectMetadataSubscriptions, function(subscription) {
+        		subscription();
+        	});
         }
 
         
@@ -63,7 +67,7 @@
                     	var projectShortName = ctrl.userCards[i].projectShortName;
                     	if(!ctrl.metadatas[projectShortName]) {
                     		ctrl.metadatas[projectShortName] = {};
-                    		Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas, $scope, true);
+                    		projectMetadataSubscriptions.push(Project.loadMetadataAndSubscribe(projectShortName, ctrl.metadatas, true));
                     	}
                     }
                 });

@@ -17,24 +17,27 @@
         	countPerPage:'<',
         	currentPage:'<'
         },
-        controller: function(Project, $scope) {
+        controller: function(Project) {
         	var ctrl = this;
         	
-        	
         	var projects = {};
-        	
         	ctrl.metadatas = {};
         	
         	ctrl.$onChanges = function(changesObj) {
         		if(ctrl.found && ctrl.found.length) {
 	        		for(var i = 0; i < ctrl.found.length;i++) {
 	        			var card = ctrl.found[i];
-	        			if(!projects[card.projectShortName]) {
-	        				projects[card.projectShortName] = true;
-	        				Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, $scope, true);
+	        			if(projects[card.projectShortName] === undefined) {
+	        				projects[card.projectShortName] = Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, true);
 	        			}
 	        		}
         		}
+        	}
+        	
+        	ctrl.$onDestroy = function onDestroy() {
+        		angular.forEach(projects, function(subscription) {
+        			subscription();
+        		});
         	}
         }
     });
