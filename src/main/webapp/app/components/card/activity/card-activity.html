@@ -4,17 +4,17 @@
             <div class="row row-inherit">
                 <div class="lvg-headline"><span data-translate>card.activity</span></div>
                 <span class="flex"></span>
-                <md-radio-group class="lvg-card-activity__filter" ng-model="activityFilter" ng-init="activityFilter = 'COMMENT_CREATE';">
-                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="COMMENT_CREATE" ng-checked="true">Comments</md-radio-button>
-                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" value="">All</md-radio-button>
+                <md-radio-group class="lvg-card-activity__filter" ng-model="$ctrl.activityFilterValue">
+                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="'COMMENT'" ng-checked="true">{{'card.activity.comments' | translate}}</md-radio-button>
+                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="null">{{'card.activity.all' | translate}}</md-radio-button>
                 </md-radio-group>
             </div>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div ng-repeat="activity in $ctrl.activities | filter:{event: activityFilter} | orderBy:'+id' track by activity.id" class="lvg-card-comment">
-            <div ng-switch="::activity.event">
-                <lvg-card-comment ng-switch-when="COMMENT_CREATE" comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id" class="lvg-card-comment">
+            <div ng-switch="::activity.cardEvent">
+                <lvg-card-comment ng-switch-when="COMMENT" comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
                 <lvg-activity ng-switch-default event="activity"></lvg-activity>
             </div>
         </div>
