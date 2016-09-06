@@ -8,17 +8,19 @@
     	bindings: {
     		user:'<'
     	},
-        controller: DashboardController,
-        templateUrl: 'app/components/dashboard/dashboard.html'
+        templateUrl: 'app/components/dashboard/dashboard.html',
+        controller: ['$mdDialog', 'Project', 'User', 'Notification', 'StompClient', DashboardController],
     });
 
-    function DashboardController($scope, $mdDialog, Project, User, Notification, StompClient) {
+    function DashboardController($mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
         
         ctrl.fetchUserCardsPage = fetchUserCardsPage;
         ctrl.getMetadatasHash = getMetadatasHash;
         ctrl.showProjectDialog = showProjectDialog;
+        
+        var onDestroy = angular.noop;
         
         ctrl.$onInit = function init() {
         	ctrl.view = {
@@ -30,11 +32,14 @@
         	
         	ctrl.metadatas = {};
         	
-        	StompClient.subscribe('/event/project', loadProjects, $scope);
+        	onDestroy = StompClient.subscribe('/event/project', loadProjects);
         	
         	loadProjects();
         	loadUserCards(ctrl.view.cardPage - 1);
-        	
+        }
+        
+        ctrl.$onDestroy = function() {
+        	onDestroy();
         }
 
         

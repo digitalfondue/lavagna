@@ -23,7 +23,7 @@
 		};
 
 		defer.promise.subscribe = function (path, callback, scope) {
-			this.then(function (v) {
+			var onDestroyPromise = this.then(function (v) {
 				
 				var identifier = '__id__'+(cnt++);
 				if(!callbacks[path] || callbacks[path].count == 0) {
@@ -62,8 +62,18 @@
 					}
 				}
 				
-				scope.$on('$destroy', destroyCallback);
+				if(scope) {
+					scope.$on('$destroy', destroyCallback);
+				}
+				
+				return destroyCallback;
 			});
+			
+			return function() {
+				onDestroyPromise.then(function(c) {
+					c();
+				});
+			};
 		};
 
 		var ignoreErrorOnApplicationDestroy = false;
