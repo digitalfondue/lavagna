@@ -20,7 +20,7 @@
         ctrl.getMetadatasHash = getMetadatasHash;
         ctrl.showProjectDialog = showProjectDialog;
         
-        var onDestroy = angular.noop;
+        var onDestroyStomp = angular.noop;
         
         ctrl.$onInit = function init() {
         	ctrl.view = {
@@ -32,14 +32,14 @@
         	
         	ctrl.metadatas = {};
         	
-        	onDestroy = StompClient.subscribe('/event/project', loadProjects);
+        	onDestroyStomp = StompClient.subscribe('/event/project', loadProjects);
         	
         	loadProjects();
         	loadUserCards(ctrl.view.cardPage - 1);
         }
         
-        ctrl.$onDestroy = function() {
-        	onDestroy();
+        ctrl.$onDestroy = function onDestroy() {
+        	onDestroyStomp();
         }
 
         

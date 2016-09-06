@@ -5,14 +5,35 @@
         bindings: {
                     card: '<'
         },
-        controller: CardActionListsController,
-        templateUrl: 'app/components/card/action-lists/card-action-lists.html'
+        templateUrl: 'app/components/card/action-lists/card-action-lists.html',
+        controller: ['Card', 'StompClient', CardActionListsController]
     });
 
-    function CardActionListsController($scope, Card, StompClient) {
+    function CardActionListsController(Card, StompClient) {
         var ctrl = this;
+        
+        ctrl.addActionList = addActionList;
+        ctrl.dropActionLists = dropActionLists;
+        
+        var onDestroyStomp = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	loadActionLists();
+        	
+            //the /card-data has various card data related event that are pushed from the server that we must react
+        	onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+                var type = JSON.parse(e.body).type;
+                if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
+                    loadActionLists();
+                }
+            });
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	onDestroyStomp();
+        }
 
-        var loadActionLists = function() {
+        function loadActionLists() {
             Card.actionLists(ctrl.card.id).then(function(actionLists) {
                 ctrl.actionLists = [];
 
@@ -24,9 +45,9 @@
                 }
             });
         };
-        loadActionLists();
         
-        ctrl.dropActionLists = function(index, oldIndex) {
+        
+        function dropActionLists(index, oldIndex) {
         	var item = ctrl.actionLists[oldIndex];
         	
         	ctrl.actionLists.splice(oldIndex, 1);
@@ -46,19 +67,12 @@
             });
         }
 
-        ctrl.addActionList = function(actionList) {
+        function addActionList(actionList) {
             Card.addActionList(ctrl.card.id, actionList.name).then(function() {
                 actionList.name = null;
             });
-        };
+        }
 
-        //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
-            var type = JSON.parse(e.body).type;
-            if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
-                loadActionLists();
-            }
-        }, $scope);
     }
 
 })();

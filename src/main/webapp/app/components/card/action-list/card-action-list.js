@@ -9,8 +9,8 @@
         transclude: {
             handle: 'handle'
         },
+        templateUrl: 'app/components/card/action-list/card-action-list.html',
         controller: CardActionListController,
-        templateUrl: 'app/components/card/action-list/card-action-list.html'
     });
     
     var dndActionListCtrl;

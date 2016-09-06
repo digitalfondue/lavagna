@@ -7,44 +7,58 @@
             card: '<',
             labelValues: '<'
         },
-        controller: CardDescriptionController,
-        templateUrl: 'app/components/card/description/card-description.html'
+        templateUrl: 'app/components/card/description/card-description.html',
+        controller: ['$rootScope', 'BulkOperations', 'Card', 'StompClient', CardDescriptionController],
     });
 
-    function CardDescriptionController($rootScope, $scope, BulkOperations, Card, StompClient) {
+    function CardDescriptionController($rootScope, BulkOperations, Card, StompClient) {
         var ctrl = this;
+        
+        ctrl.hideAddPanel = hideAddPanel;
+        ctrl.updateCardName = updateCardName;
+        ctrl.updateDescription = updateDescription;
+        
+        //
+        
+        var onDestroyStomp = angular.noop;
+        
+        ctrl.$onInit = function init() {
+        	loadDescription();
+        	
+            //the /card-data has various card data related event that are pushed from the server that we must react
+        	onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+                var type = JSON.parse(e.body).type;
+                if(type === 'UPDATE_DESCRIPTION') {
+                    loadDescription();
+                }
+            });
+        }
+        
+        ctrl.$onDestroy = function onDestroy() {
+        	onDestroyStomp();
+        }
 
         // -----
-        ctrl.updateCardName = function(newName) {
+        function updateCardName(newName) {
             Card.update(ctrl.card.id, newName).then( function() {
                 $rootScope.$emit('card.renamed.event');
             });
         };
 
-        ctrl.updateDescription = function(description) {
+        function updateDescription(description) {
             Card.updateDescription(ctrl.card.id, description);
         };
 
-        ctrl.hideAddPanel = function() {
+        function hideAddPanel() {
             ctrl.addLabelPanel = false;
         };
 
-        // -----
-        var loadDescription = function() {
+        function loadDescription() {
             Card.description(ctrl.card.id).then(function(description) {
                 ctrl.description = description;
             });
         };
 
-        loadDescription();
-
-        //the /card-data has various card data related event that are pushed from the server that we must react
-        StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
-            var type = JSON.parse(e.body).type;
-            if(type === 'UPDATE_DESCRIPTION') {
-                loadDescription();
-            }
-        }, $scope);
     }
 
 })();
