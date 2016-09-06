@@ -12,15 +12,26 @@
             submit: '&', // $permissionsToEnable
             cancel: '&' // 
         },
-        controller: ManageRolePermissionsController,
+        controller: [ManageRolePermissionsController],
         controllerAs: 'managePermsCtrl',
         templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions.html'
     });
 
     function ManageRolePermissionsController() {
         var ctrl = this;
+        
+        //
+        ctrl.save = save;
+        ctrl.hasChanged = hasChanged;
+        ctrl.hasPermission = hasPermission;
+        ctrl.hasCategory = hasCategory;
+        //
+        
+        ctrl.$onInit = function() {
+        	ctrl.assignStatus = {};
+        }
 
-        ctrl.save = function() {
+        function save() {
             var permissionsToEnable = [];
             angular.forEach(ctrl.assignStatus, function(value, key) {
                 if(value.checked) {
@@ -28,9 +39,9 @@
                 }
             });
             ctrl.submit({$permissionsToEnable: permissionsToEnable});
-        };
+        }
 
-        var hasChanges = function() {
+        function hasChanges() {
             var result = false;
 
             //perhaps slower than foreach probably, but avoid traversing the entire object
@@ -40,17 +51,15 @@
                 if(change) { return true; }
             }
             return false;
-        };
+        }
 
-        ctrl.assignStatus = {};
-
-        ctrl.hasChanged = function(permission, assignedPermissions, currentStatus) {
+        function hasChanged(permission, assignedPermissions, currentStatus) {
             var status = ctrl.hasPermission(permission, assignedPermissions);
             return status != currentStatus;
         }
 
         /* TODO could remove the linear probe... */
-        ctrl.hasPermission = function(permission, assignedPermissions) {
+        function hasPermission(permission, assignedPermissions) {
             if(permission == undefined || assignedPermissions == undefined) {
                 return;
             }
@@ -61,15 +70,15 @@
                 }
             }
             return false;
-        };
+        }
 
-        ctrl.hasCategory = function(categoryName) {
+        function hasCategory(categoryName) {
             for(var p in ctrl.permissionsByCategory) {
                 if(p == categoryName) {
                     return true;
                 }
             }
             return false;
-        };
+        }
     };
 })();

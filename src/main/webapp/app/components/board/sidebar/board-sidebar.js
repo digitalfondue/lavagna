@@ -13,20 +13,38 @@
             user: '<'
         },
         templateUrl: 'app/components/board/sidebar/board-sidebar.html',
-        controller: BoardSidebarController,
+        controller: ['Board', 'Card', 'StompClient', 'SharedBoardDataService', BoardSidebarController],
     });
 
 
-    function BoardSidebarController($scope, Board, Card, StompClient, SharedBoardDataService) {
+    function BoardSidebarController(Board, Card, StompClient, SharedBoardDataService) {
 
         var ctrl = this;
-        var boardShortName = ctrl.board.shortName;
-        var projectShortName = ctrl.project.shortName;
-
-        ctrl.sidebarLoaded = false;
-
+        
+        //
+        ctrl.dropCard = dropCard;
+        ctrl.nextPage = nextPage;
+        ctrl.prevPage = prevPage;
+        ctrl.dragStartCard = dragStartCard;
+        ctrl.removeCard = removeCard;
+        //
+        
+        
+        var startDragListener = angular.noop;
+        var stopDragListener = angular.noop;
+        var stompSubscription = angular.noop;
+        
         ctrl.$onInit = function() {
+        	ctrl.sidebarLoaded = false;
+        	
             switchLocation();
+            
+            startDragListener = SharedBoardDataService.listenToDragStart(function() {
+            	ctrl.dragFromBoard = true;
+            });
+            stopDragListener = SharedBoardDataService.listenToDragEnd(function() {
+            	ctrl.dragFromBoard = false;
+            });
         };
 
         ctrl.$onChanges = function(changes) {
@@ -35,28 +53,18 @@
             }
         };
 
-        ctrl.dropCard = dropCard;
-
-        var startDragListener = SharedBoardDataService.listenToDragStart(function() {
-        	ctrl.dragFromBoard = true;
-        });
-
-        var stopDragListener = SharedBoardDataService.listenToDragEnd(function() {
-        	ctrl.dragFromBoard = false;
-        });
-
-
         ctrl.$onDestroy = function() {
         	startDragListener();
         	stopDragListener();
+        	stompSubscription();
         }
 
         function sideBarLoad(direction) {
             ctrl.sidebar = ctrl.sidebar || {currentPage: 0};
 
-            Board.cardsInLocationPaginated(boardShortName, ctrl.sideBarLocation, ctrl.sidebar.currentPage + direction).then(function (res) {
+            Board.cardsInLocationPaginated(ctrl.board.shortName, ctrl.sideBarLocation, ctrl.sidebar.currentPage + direction).then(function (res) {
                 if (res.length === 0) {
-                    Board.cardsInLocationPaginated(boardShortName, ctrl.sideBarLocation, 0).then(function (res) {
+                    Board.cardsInLocationPaginated(ctrl.board.shortName, ctrl.sideBarLocation, 0).then(function (res) {
                         ctrl.sidebar = {currentPage: 0, cards: res.slice(0, 10), hasMore: res.length === 11};
                     });
                 } else {
@@ -66,20 +74,20 @@
             });
         }
 
-        ctrl.nextPage = function() {
+        function nextPage() {
             sideBarLoad(1);
-        };
+        }
 
-        ctrl.prevPage = function() {
+        function prevPage() {
             sideBarLoad(-1);
-        };
+        }
 
-        ctrl.dragStartCard = function(item) {
+        function dragStartCard(item) {
         	SharedBoardDataService.dndColumnOrigin = ctrl;
         	SharedBoardDataService.dndCardOrigin = item;
         }
 
-        ctrl.removeCard = function(card) {
+        function removeCard(card) {
         	var cards = ctrl.sidebar.cards;
         	for(var i = 0; i < cards.length; i++) {
         		if(cards[i].id === card.id) {
@@ -94,20 +102,18 @@
         	Card.moveAllFromColumnToLocation(card.columnId, [card.id], ctrl.sideBarLocation);
         }
 
-        var subscriptionScope;
-
         function switchLocation() {
-            if (subscriptionScope !== undefined) {
-                subscriptionScope.$destroy();
+            if (stompSubscription !== angular.noop) {
+            	stompSubscription();
+            	stompSubscription = angular.noop;
             }
 
             if(ctrl.sideBarLocation && ctrl.sideBarLocation != 'NONE') {
-                subscriptionScope = $scope.$new();
                 sideBarLoad(0);
 
-                StompClient.subscribe('/event/board/' + boardShortName + '/location/' + ctrl.sideBarLocation + '/card', function () {
+                stompSubscription = StompClient.subscribe('/event/board/' + ctrl.board.shortName + '/location/' + ctrl.sideBarLocation + '/card', function () {
                     sideBarLoad(0);
-                }, subscriptionScope);
+                });
             }
         };
     }
