@@ -9,7 +9,6 @@
 			model: '=ngModel',
 			label: '=',
 			board: '=',
-			group: '=',
 			projectName: '<'
 		},
 		controller: function (LabelCache, User, Search, $scope) {
