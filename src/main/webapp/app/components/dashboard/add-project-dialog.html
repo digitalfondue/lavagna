@@ -1,11 +1,10 @@
-<form class="flex column"
-      data-ng-submit="projectDialogCtrl.createBoard(board); preview.show = false; projectDialogCtrl.close();">
+<form class="flex column" ng-submit="projectDialogCtrl.createProject(project); preview.show = false">
     <md-dialog-content class="md-dialog-content">
         <h2 class="md-title" translate>dashboard.create.project</h2>
         <md-input-container class="md-block">
             <label data-translate>label.name</label>
             <input type="text" id="name" placeholder="" required autocomplete="off"
-                   data-ng-model="project.name" data-ng-keyup="projectDialogCtrl.suggestProjectShortName(board)" maxlength="128">
+                   data-ng-model="project.name" data-ng-keyup="projectDialogCtrl.suggestProjectShortName(project)" maxlength="128">
         </md-input-container>
         <md-input-container class="md-block" data-ng-class="{'md-input-invalid': projectDialogCtrl.errors.shortName}">
             <label data-translate>label.shortName</label>

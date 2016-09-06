@@ -15,37 +15,43 @@
     function DashboardController($scope, $mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
+        
+        ctrl.fetchUserCardsPage = fetchUserCardsPage;
+        ctrl.getMetadatasHash = getMetadatasHash;
+        ctrl.showProjectDialog = showProjectDialog;
+        
+        ctrl.$onInit = function init() {
+        	ctrl.view = {
+        			projectPage : 1,
+        			projectsPerPage : 10,
+        			maxVisibleProjectPages : 3,
+        			cardPage: 1
+        	};
+        	
+        	ctrl.metadatas = {};
+        	
+        	StompClient.subscribe($scope, '/event/project', loadProjects);
+        	
+        	loadProjects();
+        	loadUserCards(ctrl.view.cardPage - 1);
+        	
+        }
 
-        ctrl.view = {};
+        
 
-        ctrl.view.projectPage = 1;
-        ctrl.view.projectsPerPage = 10;
-        ctrl.view.maxVisibleProjectPages = 3;
-
-        var loadProjects = function() {
+        function loadProjects() {
             Project.list().then(function(projects) {
                 ctrl.projects = projects;
             });
         };
 
-        loadProjects();
-
-
-        ctrl.view.cardPage = 1;
-
-
-        ctrl.metadatas = {};
-
-        var loadUserCards = function(page) {
+        function loadUserCards(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
                 User.cards(page).then(function(cards) {
-
-
                 	ctrl.userCards = cards.found.slice(0, cards.countPerPage);
                     ctrl.totalOpenCards = cards.count;
                     ctrl.cardsCurrentPage = cards.currentPage+1;
 					ctrl.cardsTotalPages = cards.totalPages;
-
                     for(var i = 0;i < ctrl.userCards.length; i++) {
                     	var projectShortName = ctrl.userCards[i].projectShortName;
                     	if(!ctrl.metadatas[projectShortName]) {
@@ -57,15 +63,11 @@
             });
         };
 
-        loadUserCards(ctrl.view.cardPage - 1);
-
-        ctrl.fetchUserCardsPage = function(page) {
+        function fetchUserCardsPage(page) {
             loadUserCards(page - 1);
-        };
+        }
 
-        //
-
-        ctrl.getMetadatasHash = function getMetadatasHash() {
+        function getMetadatasHash() {
         	var hash = '';
         	for(var k in ctrl.metadatas) {
         		if(ctrl.metadatas[k].hash) {
@@ -74,13 +76,8 @@
         	}
         	return hash;
         }
-        //
 
-        StompClient.subscribe($scope, '/event/project', loadProjects);
-
-
-
-        ctrl.showProjectDialog = function($event) {
+        function showProjectDialog($event) {
         	$mdDialog.show({
             	templateUrl: 'app/components/dashboard/add-project-dialog.html',
             	targetEvent: $event,
@@ -95,6 +92,7 @@
                         project.shortName = project.shortName.toUpperCase();
                         Project.create(project).then(function() {
                             Notification.addAutoAckNotification('success', {key: 'notification.project.creation.success'}, false);
+                            ctrl.close();
                         }, function(error) {
                             Notification.addAutoAckNotification('error', {key: 'notification.project.creation.error'}, false);
                         });
