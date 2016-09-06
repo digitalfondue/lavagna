@@ -22,7 +22,7 @@
 			});
 		};
 
-		defer.promise.subscribe = function (path, callback, scope) {
+		defer.promise.subscribe = function (path, callback) {
 			var onDestroyPromise = this.then(function (v) {
 				
 				var identifier = '__id__'+(cnt++);
@@ -60,10 +60,6 @@
 						$log.log('stomp client unsubscribe from', path);
 						callbacks[path].subscription.unsubscribe();
 					}
-				}
-				
-				if(scope) {
-					scope.$on('$destroy', destroyCallback);
 				}
 				
 				return destroyCallback;
