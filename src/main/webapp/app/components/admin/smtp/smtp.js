@@ -10,19 +10,25 @@
 
     function AdminSmtpController($mdDialog, Admin, Notification) {
         var ctrl = this;
+        
+        ctrl.toggleSmtp = toggleSmtp;
+        ctrl.saveSmtpConfig = saveSmtpConfig;
+        ctrl.openSmtpConfigModal = openSmtpConfigModal;
+        
+        ctrl.$onInit = function init() {
+        	loadConfiguration();
+        }
 
-        var loadConfiguration = function () {
+        function loadConfiguration() {
 			Admin.findByKey('SMTP_ENABLED').then(function (enabled) {
 				ctrl.smtpEnabled = enabled.second ? JSON.parse(enabled.second) : false;
 			});
 			Admin.findByKey('SMTP_CONFIG').then(function (configuration) {
 				ctrl.configuration = configuration.second ? JSON.parse(configuration.second) : {};
 			});
-		};
+		}
 
-		loadConfiguration();
-
-		ctrl.toggleSmtp = function(value) {
+		function toggleSmtp(value) {
 		    ctrl.smtpEnabled = value;
 			Admin.updateConfiguration(
                 {
@@ -33,9 +39,9 @@
 						key: 'notification.admin-manage-smtp-configuration.updateConfiguration.error'
 					}, false);
 				}).then(loadConfiguration);
-		};
+		}
 
-		ctrl.saveSmtpConfig = function (conf) {
+		function saveSmtpConfig(conf) {
 			Admin.updateConfiguration({
 				toUpdateOrCreate: [
 					{first: 'SMTP_CONFIG', second: JSON.stringify(conf)}
@@ -49,9 +55,9 @@
 					key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.error'
 				}, false);
 			}).then(loadConfiguration);
-		};
+		}
 
-		ctrl.openSmtpConfigModal = function () {
+		function openSmtpConfigModal() {
 			$mdDialog.show({
 				templateUrl: 'app/components/admin/smtp/smtp-modal.html',
 				controller: function ($scope, configuration, User, Notification) {

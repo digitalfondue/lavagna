@@ -11,8 +11,23 @@
     function AdminUserController($mdDialog, User, UsersAdministration, Admin, Permission, Notification) {
 
         var ctrl = this;
-        ctrl.view = {};
-        ctrl.isOpen = false
+        
+        ctrl.updateUserStatus = updateUserStatus;
+        ctrl.showAddUserDialog = showAddUserDialog;
+        ctrl.showImportDialog = showImportDialog;
+        ctrl.showUserPermissions = showUserPermissions;
+        
+        
+        ctrl.$onInit = function init() {
+        	ctrl.view = {};
+            ctrl.isOpen = false
+            loadCurrentUser();
+            Admin.findAllLoginHandlers().then(function(loginProviders) {
+                ctrl.loginProviders = loginProviders;
+            });
+            loadUsers();
+            loadRoles();
+        };
 
         function loadUsers() {
             User.list().then(function(l) {
@@ -25,8 +40,6 @@
                 ctrl.currentUser = user;
             });
         }
-
-        loadCurrentUser();
 
         function loadRoles() {
             Permission.findAllRolesAndRelatedPermissions().then(function(res) {
@@ -55,14 +68,7 @@
             };
         }
 
-        Admin.findAllLoginHandlers().then(function(loginProviders) {
-            ctrl.loginProviders = loginProviders;
-        });
-
-        loadUsers();
-        loadRoles();
-
-        ctrl.updateUserStatus = function(userId, enabled) {
+        function updateUserStatus(userId, enabled) {
             UsersAdministration.toggle(userId, enabled).then(loadUsers, function(error) {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.admin-manage-users.toggle.error'
@@ -70,7 +76,7 @@
             });
         };
 
-        ctrl.showAddUserDialog = function($event) {
+        function showAddUserDialog($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/admin/users/add-user-dialog.html',
         		controller: function() {
@@ -102,7 +108,7 @@
         	});
         };
 
-        ctrl.showImportDialog = function($event) {
+        function showImportDialog($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/admin/users/import-dialog.html',
         		controller: function() {
@@ -144,10 +150,7 @@
         	});
         };
 
-
-
-        // ------- user pagination
-        ctrl.showUserPermissions = function(user) {
+        function showUserPermissions(user) {
             $mdDialog.show({
                 templateUrl: 'app/components/admin/users/user-permissions-modal.html',
                 controller: function ($scope) {

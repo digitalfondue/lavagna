@@ -12,8 +12,14 @@
         var ctrl = this;
         
         var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'USE_HTTPS', 'EMAIL_NOTIFICATION_TIMESPAN'];
+        
+        ctrl.updateAllChangedConfiguration = updateAllChangedConfiguration;
+        
+        ctrl.$onInit = function init() {
+        	loadAll();
+        }
 
-        var loadAll = function() {
+        function loadAll() {
             ctrl.configurable = {};
             angular.forEach(configurableKeys, function(v) {
                 Admin.findByKey(v).then(function(res) {
@@ -26,9 +32,9 @@
             });
         };
 
-        loadAll();
         
-        ctrl.updateAllChangedConfiguration = function() {
+        
+        function updateAllChangedConfiguration() {
         	Admin.findAllConfiguration().then(function (res) {
         		//fetch all changed keys
         		var changedKey = [];
@@ -54,7 +60,7 @@
         		//trigger refresh
         		$q.all(updated).then(loadAll)
         	});
-        };
+        }
 
         function updateConfiguration(k,v) {
             return Admin.updateKeyConfiguration(k,v).then(function() {
@@ -68,7 +74,7 @@
                     parameters: { parameterName : k }
                 }, false);
             });
-        };
+        }
 
         function deleteConfiguration(k) {
             return Admin.deleteKeyConfiguration(k).then(function() {
@@ -82,6 +88,6 @@
                     parameters: { parameterName : k }
                 }, false);
             });
-        };
+        }
     };
 })();

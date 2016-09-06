@@ -23,7 +23,7 @@
                 </tr>
 			</thead>
 			<tbody>
-                <tr ng-repeat="u in $ctrl.users | usersInList:$ctrl.view.userList">
+                <tr ng-repeat="u in $ctrl.users">
                     <td ng-bind="u.provider"></td>
                     <td>
                         <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" ng-bind="u.username"></a>
