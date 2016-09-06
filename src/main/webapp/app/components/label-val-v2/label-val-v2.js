@@ -14,14 +14,14 @@
 
 	function lvgLabelValV2Ctrl($filter, $element, $rootScope, $state, $window, CardCache, UserCache) {
 		var ctrl = this;
-		var ctrl_value = ctrl.valueRef();
 
-		var metadata = ctrl.projectMetadataRef();
-
-		var type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
-		var value = ctrl_value.value || ctrl_value;
-
-		ctrl.$postLink = function lvgLabelValV2PostLink() {
+		ctrl.$postLink = function postLink() {
+			
+			var ctrl_value = ctrl.valueRef();
+			var metadata = ctrl.projectMetadataRef();
+			var type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
+			var value = ctrl_value.value || ctrl_value;
+			
 			if (type === 'STRING') {
 				appendValueToElement(value.valueString);
 			} else if (type === 'INT') {

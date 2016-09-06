@@ -16,11 +16,14 @@
 
     function lvgLabelV2Ctrl($window, $element) {
     	var ctrl = this;
-    	var domElem = $element[0];
-    	ctrl.value = ctrl.valueRef();
-    	ctrl.projectMetadata = ctrl.projectMetadataRef();
+    	
+    	ctrl.$onInit = function init() {
+    		ctrl.value = ctrl.valueRef();
+        	ctrl.projectMetadata = ctrl.projectMetadataRef();
+    	}
 
-    	ctrl.$postLink = function lvgLabelV2PostLink() {
+    	ctrl.$postLink = function postLink() {
+    		var domElem = $element[0];
     		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
         	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
     		var nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));

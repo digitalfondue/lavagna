@@ -9,8 +9,8 @@
             roleDesc: '<',
             permissionsByCategory: '<permissions',
             project: '<',
-            submit: '&',
-            cancel: '&'
+            submit: '&', // $permissionsToEnable
+            cancel: '&' // 
         },
         controller: ManageRolePermissionsController,
         controllerAs: 'managePermsCtrl',

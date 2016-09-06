@@ -8,23 +8,21 @@
             colorHex: '@',
             bgColorHex: '@'
         },
-        controller: UserAvatarController,
+        controller: ['UserCache', UserAvatarController],
         templateUrl: 'app/components/user-avatar/user-avatar.html'
     });
 
     function UserAvatarController(UserCache) {
         var ctrl = this;
-
-        ctrl.size = ctrl.size || 28;
-        ctrl.colorHex = ctrl.colorHex || '#333';
-        ctrl.bgColorHex = ctrl.bgColorHex || '#e5e5e5';
-
-        function loadUser() {
+        
+        ctrl.$onInit = function init() {
+        	ctrl.size = ctrl.size || 28;
+            ctrl.colorHex = ctrl.colorHex || '#333';
+            ctrl.bgColorHex = ctrl.bgColorHex || '#e5e5e5';
+            
             UserCache.user(ctrl.userId).then(function (user) {
                 ctrl.user = user;
             });
         }
-
-        loadUser();
     };
 })();
