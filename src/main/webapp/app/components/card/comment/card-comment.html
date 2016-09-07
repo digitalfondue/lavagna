@@ -25,7 +25,7 @@
                     </md-button>
                 </div>
             </div>
-            <div class="lvg-card-comment__content" ng-uf="!$ctrl.editComment"
+            <div class="lvg-card-comment__content" ng-if="!$ctrl.editComment"
                  data-ng-bind-html="$ctrl.comment.content | markdown">
             </div>
             <div class="lvg-card-comment__edit" ng-if="$ctrl.editComment">
