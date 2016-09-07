@@ -571,7 +571,10 @@
 	 */
 
 	module.factory('lavagnaHttpInterceptor', function($q, $window) {
-		var csrfToken = null;
+		// initialize
+		var csrfToken = $window.document.children[0].getAttribute('lavagna-csrf');
+		$window.csrfToken = csrfToken;
+		//
 		return {
 			'request' : function(config) {
 				if (csrfToken != null) {

@@ -17,8 +17,11 @@
 	        </label>
 			
 			<div class="md-block">
-				<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
+				<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration" ng-disabled="$ctrl.importing"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
 			</div>
+		</div>
+		<div ng-if="$ctrl.importing" class="lvg-admin-content__padding">
+		  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
 		</div>
 		
 		<md-button type="submit" class="md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">

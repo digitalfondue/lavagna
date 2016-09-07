@@ -43,7 +43,7 @@ public class CSFRFilter extends AbstractBaseFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         
-        String token = (String) req.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
+        String token = CSRFToken.getToken(req);
         if (token == null) {
             token = UUID.randomUUID().toString();
             req.getSession().setAttribute(CSRFToken.CSRF_TOKEN, token);

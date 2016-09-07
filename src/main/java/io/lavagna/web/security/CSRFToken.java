@@ -16,6 +16,8 @@
  */
 package io.lavagna.web.security;
 
+import javax.servlet.http.HttpServletRequest;
+
 public final class CSRFToken {
 
 	private CSRFToken() {
@@ -23,4 +25,9 @@ public final class CSRFToken {
 
 	//
 	public static final String CSRF_TOKEN = CSRFToken.class.getName() + ".CSRF_TOKEN";
+	
+	
+	public static String getToken(HttpServletRequest req) {
+	    return (String) req.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
+	}
 }

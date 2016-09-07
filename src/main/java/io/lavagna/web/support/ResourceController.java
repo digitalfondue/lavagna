@@ -21,6 +21,7 @@ import io.lavagna.common.Json;
 import io.lavagna.common.Version;
 import io.lavagna.model.Permission;
 import io.lavagna.web.helper.ExpectPermission;
+import io.lavagna.web.security.CSRFToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -200,11 +201,12 @@ public class ResourceController {
 		try (OutputStream os = response.getOutputStream()) {
 			response.setContentType("text/html; charset=UTF-8");
 
-			Map<String, Object> localizationData = new HashMap<>();
+			Map<String, Object> info = new HashMap<>();
 			Locale currentLocale = ObjectUtils.firstNonNull(request.getLocale(), Locale.ENGLISH);
-			localizationData.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
+			info.put("firstDayOfWeek", Calendar.getInstance(currentLocale).getFirstDayOfWeek());
+			info.put("csrf", CSRFToken.getToken(request));
 
-			StreamUtils.copy(indexTopTemplate.get().execute(localizationData).getBytes(StandardCharsets.UTF_8), os);
+			StreamUtils.copy(indexTopTemplate.get().execute(info).getBytes(StandardCharsets.UTF_8), os);
 			StreamUtils.copy(indexCache.get(), os);
 		}
 	}

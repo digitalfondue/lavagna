@@ -30,6 +30,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,8 @@ public class ResourceControllerTest {
 	private HttpServletResponse response;
 	@Mock
 	private ServletContext context;
+	@Mock
+	private HttpSession session;
 
 	Set<String> s = new HashSet<>();
 
@@ -66,6 +69,7 @@ public class ResourceControllerTest {
 				new ByteArrayInputStream("<body>test ${inlineTemplates}</body>".getBytes("UTF-8")));
 		when(response.getOutputStream()).thenReturn(mock(ServletOutputStream.class));
 		when(request.getServletContext()).thenReturn(context);
+		when(request.getSession()).thenReturn(session);
 	}
 
 	@Test
