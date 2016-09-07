@@ -13,7 +13,7 @@
                 <div class="flex"></div>
                 <div class="flex no-grow">
                     <md-button data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
-                               data-ng-click="commentEdit = $ctrl.comment.content; editComment = true;" ng-hide="editComment"
+                               data-ng-click="$ctrl.commentEdit = $ctrl.comment.content; $ctrl.editComment = true;" ng-hide="$ctrl.editComment"
                                class="lvg-small-icon-button">
                         <md-tooltip>{{::('card.comment.edit.tooltip' | translate)}}</md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>
@@ -25,30 +25,30 @@
                     </md-button>
                 </div>
             </div>
-            <div class="lvg-card-comment__content" ng-hide="editComment"
+            <div class="lvg-card-comment__content" ng-uf="!$ctrl.editComment"
                  data-ng-bind-html="$ctrl.comment.content | markdown">
             </div>
-            <div class="lvg-card-comment__edit" ng-show="editComment">
-                <form data-ng-submit="$ctrl.updateComment(commentEdit); editComment = false; commentPreviewMode = false;">
-                    <div data-ng-hide="commentPreviewMode">
+            <div class="lvg-card-comment__edit" ng-if="$ctrl.editComment">
+                <form data-ng-submit="$ctrl.updateComment($ctrl.commentEdit); $ctrl.editComment = false; $ctrl.commentPreviewMode = false;">
+                    <div data-ng-hide="$ctrl.commentPreviewMode">
                         <textarea class="lvg-card-activity__actions-textarea"
-                            ng-model="commentEdit" rows="5" lvg-focus-on="editComment"></textarea>
+                            ng-model="$ctrl.commentEdit" rows="5" lvg-focus-on="$ctrl.editComment"></textarea>
                     </div>
-                    <div data-ng-show="commentPreviewMode"
-                         data-ng-bind-html="commentEdit | markdown"></div>
+                    <div data-ng-show="$ctrl.commentPreviewMode"
+                         data-ng-bind-html="$ctrl.commentEdit | markdown"></div>
                     <div class="lvg-card-comment__actions-button-row">
                         <md-button class="md-primary" type="submit">
                             <span data-translate>button.update</span>
                         </md-button>
-                        <md-button data-ng-hide="commentPreviewMode"
-                                   data-ng-click="commentPreviewMode = true" type="button">
+                        <md-button data-ng-hide="$ctrl.commentPreviewMode"
+                                   data-ng-click="$ctrl.commentPreviewMode = true" type="button">
                             <span data-translate>button.preview</span>
                         </md-button>
-                        <md-button data-ng-show="commentPreviewMode"
-                                   data-ng-click="commentPreviewMode = false" type="button">
+                        <md-button data-ng-show="$ctrl.commentPreviewMode"
+                                   data-ng-click="$ctrl.commentPreviewMode = false" type="button">
                             <span data-translate>button.closePreview</span>
                         </md-button>
-                        <md-button ng-click="editComment = false; commentPreviewMode = false;">
+                        <md-button ng-click="$ctrl.editComment = false; $ctrl.commentPreviewMode = false;">
                             <span data-translate>button.cancel</span>
                         </md-button>
                     </div>
