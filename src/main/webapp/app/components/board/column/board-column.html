@@ -46,7 +46,7 @@
                   data-ng-submit="$ctrl.saveNewColumnName($ctrl.columnState.newColumnName); $ctrl.columnState.editColumnName=false">
                 <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="$ctrl.columnState.newColumnName">
+                        <input ng-model="$ctrl.columnState.newColumnName" lvg-focus-on="$ctrl.columnState.editColumnName">
                     </md-input-container>
                 </div>
                 <div class="flex no-grow">

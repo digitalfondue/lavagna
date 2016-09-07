@@ -35,7 +35,7 @@
                 <form data-ng-submit="$ctrl.updateComment(commentEdit); editComment = false; commentPreviewMode = false;">
                     <div data-ng-hide="commentPreviewMode">
                         <textarea class="lvg-card-activity__actions-textarea"
-                            ng-model="commentEdit" rows="5" md-select-on-focus></textarea>
+                            ng-model="commentEdit" rows="5" lvg-focus-on="editComment"></textarea>
                     </div>
                     <div data-ng-show="commentPreviewMode"
                          data-ng-bind-html="commentEdit | markdown"></div>
