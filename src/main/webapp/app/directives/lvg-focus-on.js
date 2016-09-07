@@ -12,7 +12,7 @@
 				var expression = $parse(attrs.lvgFocusOn);
 				$scope.$watch(function() {return expression($scope)}, function(newValue) {
 					if(newValue == true) {
-						$timeout(function() {$element.focus()});
+						$timeout(function() {$element.focus()}, 0, false);
 					}
 				})
 			}

@@ -12,7 +12,7 @@
                    required="required" data-ng-model="project.shortName" maxlength="8"
                    ng-change="projectDialogCtrl.checkProjectShortName(project.shortName)">
             <div ng-messages="projectDialogCtrl.errors">
-                <div ng-message="shortName">{{'project.add-project.dialog.shortname.error' | translate}}</div>
+                <div ng-message="shortName" translate>dashboard.add-project.dialog.shortname.error</div>
             </div>
         </md-input-container>
         <md-input-container class="md-block" data-ng-hide="preview.show">
