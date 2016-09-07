@@ -12,6 +12,9 @@
 	if(window.location.href.indexOf('#') === (window.location.href.length-1) && supports_history_api()) {
 		window.history.pushState("", document.title, window.location.pathname);
 	}
+	
+	
+	window.csrfToken = window.document.documentElement.getAttribute('lavagna-csrf');;
 
     // set momentjs to use the current locale
     var locale = navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage);
@@ -571,9 +574,6 @@
 	 */
 
 	module.factory('lavagnaHttpInterceptor', function($q, $window) {
-		// initialize
-		var csrfToken = $window.document.children[0].getAttribute('lavagna-csrf');
-		$window.csrfToken = csrfToken;
 		//
 		return {
 			'request' : function(config) {
@@ -585,8 +585,7 @@
 			'response' : function(response) {
 				var headers = response.headers();
 				if(headers['content-type'] && headers['content-type'].indexOf('application/json') === 0 && headers['x-csrf-token']) {
-					csrfToken = response.headers()['x-csrf-token'];
-					$window.csrfToken = csrfToken;
+					$window.csrfToken = response.headers()['x-csrf-token'];
 				}
 				return response;
 			},
