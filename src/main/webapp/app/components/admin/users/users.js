@@ -5,18 +5,18 @@
 
     components.component('lvgAdminUsers', {
     	templateUrl: 'app/components/admin/users/users.html',
-        controller: AdminUserController
+        controller: ['$mdDialog', 'User', 'UsersAdministration', 'Admin', 'Permission', 'Notification', AdminUserController]
     });
 
     function AdminUserController($mdDialog, User, UsersAdministration, Admin, Permission, Notification) {
 
         var ctrl = this;
-        
+        //
         ctrl.updateUserStatus = updateUserStatus;
         ctrl.showAddUserDialog = showAddUserDialog;
         ctrl.showImportDialog = showImportDialog;
         ctrl.showUserPermissions = showUserPermissions;
-        
+        //
         
         ctrl.$onInit = function init() {
         	ctrl.view = {};
