@@ -78,10 +78,9 @@
 		    	targetEvent: $event,
 		    	fullscreen: true,
 		    	controllerAs: 'boardDialogCtrl',
+		    	locals: {projectName : ctrl.project.shortName},
+		    	bindToController:true,
 		    	controller: function() {
-		    		//
-		    		var projectName =  ctrl.project.shortName;
-		    		//
 		    		var ctrl = this;
 
 		    		ctrl.board = {};
@@ -110,7 +109,7 @@
 
 		            ctrl.createBoard = function(board) {
 		                board.shortName = board.shortName.toUpperCase();
-		                Project.createBoard(projectName, board).then(function() {
+		                Project.createBoard(ctrl.projectName, board).then(function() {
 		                    board.name = null;
 		                    board.description = null;
 		                    board.shortName = null;
