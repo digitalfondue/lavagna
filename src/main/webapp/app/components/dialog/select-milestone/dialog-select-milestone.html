@@ -1,7 +1,7 @@
 <form name="dialogSelectMilestone" data-ng-submit="$ctrl.ok(milestone)" class="lvg-dialog__content">
 	<md-dialog-content class="md-dialog-content">
 		<h2 class="md-title" translate>dialog-select-milestone.title</h2>
-			<md-select ng-model="milestone" required placeholder="{{::('dialog-select-milestone.milestone' | translate)}}">
+			<md-select ng-model="milestone" required placeholder="{{::('dialog-select-milestone.milestone' | translate)}}" md-autofocus>
                 <md-select-header class="lvg-dialog-select-milestone__search-header">
                      <input ng-model="$ctrl.toSearch" type="text" placeholder="{{::('dialog-select-milestone.search' | translate)}}" class="md-text lvg-dialog-select-milestone__input" ng-keyup="$ctrl.reFilter()">
                 </md-select-header>

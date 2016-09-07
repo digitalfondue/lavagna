@@ -2,7 +2,7 @@
 	<md-dialog-content class="md-dialog-content">
 		<h2 class="md-title" translate>{{::('dialog-select-label.'+$ctrl.dialogTitle)}}</h2>
 		<div>
-			<md-select ng-model="$ctrl.selectedLabel.label" required>
+			<md-select ng-model="$ctrl.selectedLabel.label" required md-autofocus>
 	          <md-option ng-value="m" ng-repeat="m in $ctrl.userLabels">
 	            {{m.name}}
 	          </md-option>

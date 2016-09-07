@@ -5,7 +5,7 @@
         <md-input-container class="md-block">
             <label data-translate>label.name</label>
             <input type="text" id="name" placeholder="" required autocomplete="off"
-                   data-ng-model="board.name" data-ng-keyup="boardDialogCtrl.suggestBoardShortName(board)" maxlength="128">
+                   data-ng-model="board.name" data-ng-keyup="boardDialogCtrl.suggestBoardShortName(board)" maxlength="128" md-autofocus>
         </md-input-container>
         <md-input-container class="md-block" data-ng-class="{'md-input-invalid': boardDialogCtrl.errors.shortName}">
             <label data-translate>label.shortName</label>
