@@ -155,6 +155,8 @@
                 templateUrl: 'app/components/admin/users/user-permissions-modal.html',
                 controller: function ($scope) {
 
+                	$scope.user = user;
+                	
                     Permission.findUserRoles(user.id).then(function(rolesByProject) {
                         $scope.rolesByProject = rolesByProject;
                     });

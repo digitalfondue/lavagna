@@ -1,39 +1,37 @@
-<md-dialog>
+<md-toolbar>
+	<div class="md-toolbar-tools">
+        <h2><span translate>partials.admin.manage-users.roles</span> {{user.username}}</h2>
+        <span class="flex"></span>
+        <md-button class="md-icon-button" ng-click="close()">
+            <md-icon md-svg-icon="close"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-dialog-content class="md-dialog-content admin-users-permissions-modal__content">
 
-	<md-toolbar>
-		<div class="md-toolbar-tools">
-      		<h2 data-translate>partials.admin.manage-users.roles</h2>
-      	</div>
-    </md-toolbar>
-
-	<md-dialog-content>
-		<div class="md-dialog-content">
-			<div class="lavagna-panel" data-ng-if="rolesByProject.globalRoles.length > 0">
-		        <div class="head clearfix headonly">
-		            <div class="title title-bold col-xs-9" data-translate>partials.admin.manage-users.global</div>
-		
-		        </div>
-		        <div class="body separated">
-		            <div class="form-group" data-ng-repeat="role in rolesByProject.globalRoles">
-		                {{role}}
-		                </div>
-		            </div>
-		    </div>
-		
-		    <div class="lavagna-panel" data-ng-repeat="(name, roles) in rolesByProject.rolesByProject">
-		        <div class="head clearfix headonly">
-		            <div class="title title-bold col-xs-9"> {{name}}</div>
-		
-		        </div>
-		        <div class="body separated">
-		            <div class="form-group" data-ng-repeat="role in roles">
-		                {{role}}
-		            </div>
-		        </div>
-		    </div>
-		</div>
-	</md-dialog-content>
-	<md-dialog-actions>
-		<md-button ng-click="close()"><span data-translate>button.close</span></md-button>
-	</md-dialog-actions>
-</md-dialog>
+    <md-card ng-if="rolesByProject.globalRoles.length > 0">
+        <md-card-title>
+            <md-card-title-text>
+                <div class="lvg-headline" translate>partials.admin.manage-users.global</div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <p ng-repeat="role in rolesByProject.globalRoles">{{role}}</p>
+        </md-card-content>
+    </md-card>
+    
+    <md-card ng-repeat="(name, roles) in rolesByProject.rolesByProject">
+        <md-card-title>
+            <md-card-title-text>
+                <div class="lvg-headline"><span translate>partials.admin.manage-users.project</span> {{name}}</div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <p ng-repeat="role in roles">{{role}}</p>
+        </md-card-content>
+    </md-card>
+    
+</md-dialog-content>
+<md-dialog-actions class="admin-users-permissions-modal__content">
+	<md-button ng-click="close()"><span translate>button.close</span></md-button>
+</md-dialog-actions>
