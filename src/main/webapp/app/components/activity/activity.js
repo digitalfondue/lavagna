@@ -3,8 +3,10 @@
 
     angular.module('lavagna.components').component('lvgActivity', {
         bindings: {
-            event: '<'
+            event: '<',
+            project: '<'
         },
+        transclude: true,
         controller: [ActivityController],
         templateUrl: 'app/components/activity/activity.html'
     });

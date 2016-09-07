@@ -12,10 +12,20 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id" class="lvg-card-comment">
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id + '-' + activity.cardEvent" class="lvg-card-comment">
             <div ng-switch="::activity.cardEvent">
-                <lvg-card-comment ng-switch-when="COMMENT" comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
-                <lvg-activity ng-switch-default event="activity"></lvg-activity>
+                <div ng-switch-when="COMMENT">
+                    <lvg-card-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
+                </div>
+                <div ng-switch-default>
+                    <lvg-activity event="activity" project="$ctrl.project">
+                        <div class="flex no grow">
+                            <lvg-user-link class="lvg-card-activity__user" user-id="activity.userId"></lvg-user-link>
+                            <span class="lvg-card-activity__time">{{ activity.time | dateIncremental }}</span>
+                        </div>
+                        <div class="flex"></div>
+                    </lvg-activity>
+                </div>
             </div>
         </div>
     </md-card-content>

@@ -4,6 +4,7 @@
     angular.module('lavagna.components').component('lvgCardActivity', {
         bindings: {
             card: '<',
+            project: '<',
             user: '<'
         },
         templateUrl: 'app/components/card/activity/card-activity.html',
