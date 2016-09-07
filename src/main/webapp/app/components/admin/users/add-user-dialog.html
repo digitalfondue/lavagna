@@ -4,7 +4,7 @@
         
         <md-input-container class="md-block">
             <label translate>partials.admin.manage-users.provider</label>
-            <md-select ng-model="addUserDialogCtrl.userToAdd.provider" required>
+            <md-select ng-model="addUserDialogCtrl.userToAdd.provider" required md-autofocus>
                 <md-option ng-value="val" ng-repeat="val in addUserDialogCtrl.loginProviders">{{::val}}</md-option>
             </md-select>
         </md-input-container>

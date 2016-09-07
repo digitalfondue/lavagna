@@ -4,7 +4,7 @@
         
         <md-input-container class="md-block">
             <label translate>partials.admin.configure-login.oauth.type</label>
-            <md-select ng-model="oauthNewProvider.type" required>
+            <md-select ng-model="oauthNewProvider.type" required md-autofocus>
                 <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">{{::provider.name}}</md-option>
             </md-select>
         </md-input-container>
