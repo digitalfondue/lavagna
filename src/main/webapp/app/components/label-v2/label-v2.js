@@ -11,10 +11,10 @@
 			projectMetadataRef:'&'
     	},
     	transclude: true,
-    	controller: ['$window', '$element', lvgLabelV2Ctrl]
+    	controller: ['$window', '$element', LabelV2Controller]
     })
 
-    function lvgLabelV2Ctrl($window, $element) {
+    function LabelV2Controller($window, $element) {
     	var ctrl = this;
     	
     	ctrl.$onInit = function init() {

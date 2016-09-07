@@ -10,10 +10,10 @@
 				action: '&', // $milestone
 				projectName: '<'
 			},
-			controller: ['$mdDialog', '$element', '$filter', 'Project', dialogSelectMilestoneCtrl]
+			controller: ['$mdDialog', '$element', '$filter', 'Project', DialogSelectMilestoneController]
 		});
 	
-	function dialogSelectMilestoneCtrl($mdDialog, $element, $filter, Project) {
+	function DialogSelectMilestoneController($mdDialog, $element, $filter, Project) {
 		var ctrl = this;
 		
 		ctrl.ok = ok;

@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgCardFragmentV2Menu', {
-		controller: ['BulkOperations', 'Card', 'Board', 'Notification', 'Project', '$filter', lvgCardFragmentV2MenuCtrl],
+		controller: ['BulkOperations', 'Card', 'Board', 'Notification', 'Project', '$filter', CardFragmentV2MenuController],
 		templateUrl: 'app/components/card-fragment-v2/menu/card-fragment-v2-menu.html',
 		bindings: {
 			mdPanelRef:'<',
@@ -14,16 +14,8 @@
 	});
 	
 	
-	function lvgCardFragmentV2MenuCtrl(BulkOperations, Card, Board, Notification, Project, $filter) {
+	function CardFragmentV2MenuController(BulkOperations, Card, Board, Notification, Project, $filter) {
 		var ctrl = this;
-		
-		ctrl.$onInit = function lvgCardFragmentV2MenuCtrlOnInit() {
-			ctrl.moveColumnFlag = false;
-			ctrl.cloneCardFlag = false;
-			loadColumns();
-			loadAllProjectColumns();
-		}
-		
 		
 		ctrl.close = close;
 		ctrl.watchCard = watchCard;
@@ -33,6 +25,15 @@
 		ctrl.moveCard = moveCard;
 		ctrl.moveToColumn = moveToColumn;
 		ctrl.cloneCard = cloneCard;
+		
+		//
+		ctrl.$onInit = function init() {
+			ctrl.moveColumnFlag = false;
+			ctrl.cloneCardFlag = false;
+			loadColumns();
+			loadAllProjectColumns();
+		}
+		//
 		
 		
 		var cardByProject = {};

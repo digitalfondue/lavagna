@@ -10,10 +10,10 @@
 			    dialogTitle: '<',
 				action: '&' // $user
 			},
-			controller: ['$mdDialog', 'User', dialogSelectUserCtrl]
+			controller: ['$mdDialog', 'User', DialogSelectUserController]
 		});
 	
-	function dialogSelectUserCtrl($mdDialog, User) {
+	function DialogSelectUserController($mdDialog, User) {
 		var ctrl = this;
 		
 		ctrl.searchUser = searchUser;

@@ -12,10 +12,10 @@
 			user: '<'
 		}, 
 		
-		controller: ['$mdDialog', '$state', cardModalCtrl]
+		controller: ['$mdDialog', '$state', CardModalController]
 	});
 	
-	function cardModalCtrl($mdDialog, $state) {
+	function CardModalController($mdDialog, $state) {
 		
 		var ctrl = this;
 		

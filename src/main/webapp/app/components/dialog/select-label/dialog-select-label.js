@@ -13,11 +13,11 @@
 				withLabelValuePicker: '<',
 				projectName: '<'
 			},
-			controller: ['$mdDialog', 'Project', '$filter', dialogSelectLabelCtrl]
+			controller: ['$mdDialog', 'Project', '$filter', DialogSelectLabelController]
 		});
 	
 	
-	function dialogSelectLabelCtrl($mdDialog, Project, $filter) {
+	function DialogSelectLabelController($mdDialog, Project, $filter) {
 		var ctrl = this;
 		
 		ctrl.ok = ok; 

@@ -7,10 +7,10 @@
 	components.component('lvgColorPickerV2', {
 		require: {ngModel: 'ngModel'},
 		template: '<div role="button" class="lvg-color-picker-v2__button" ng-style="{\'background-color\': $ctrl.ngModel.$modelValue}" ng-click="$ctrl.showPicker($event)"></div>',
-		controller: ['$mdPanel', '$element', lvgColorPickerV2Ctrl]
+		controller: ['$mdPanel', '$element', ColorPickerV2Controller]
 	});
 	
-	function lvgColorPickerV2Ctrl($mdPanel, $element) {
+	function ColorPickerV2Controller($mdPanel, $element) {
 		var ctrl = this;
 		
 		ctrl.showPicker = showPicker;
@@ -23,7 +23,7 @@
 			
 			var conf = {
 					attachTo: angular.element(document.body),
-					controller: panelCtrl,
+					controller: PanelController,
 					controllerAs: '$ctrl',
 					template: panelTemplate,
 					position: position,
@@ -44,7 +44,7 @@
 						+'<div role="button" class="lvg-color-picker-v2__button lvg-color-picker-v2__button_in-panel" ng-repeat="color in $ctrl.colors" ng-style="{\'background-color\' : color.value}" ng-click="$ctrl.selectColor(color)"><md-tooltip>{{::color.name}}</md-tooltip></div>'
 						+'</div>';
 	
-	function panelCtrl(mdPanelRef) {
+	function PanelController(mdPanelRef) {
 		var ctrl = this;
 		ctrl.colors = [{name:'Red', 		value: '#F44336'},
 		               {name:'Pink', 		value: '#E91E63'},

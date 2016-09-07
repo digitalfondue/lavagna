@@ -10,10 +10,10 @@
 				boardName: '<',
 				columnsDefinition: '<'
 			},
-			controller: ['$mdDialog', 'Board', 'Notification', dialogNewColumnCtrl]
+			controller: ['$mdDialog', 'Board', 'Notification', DialogNewColumnController]
 		});
 
-	function dialogNewColumnCtrl($mdDialog, Board, Notification) {
+	function DialogNewColumnController($mdDialog, Board, Notification) {
 		var ctrl = this;
 		
 		ctrl.cancel = cancel;

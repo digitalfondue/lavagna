@@ -1,8 +1,8 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <h2>{{::managePermsCtrl.roleName}}</h2>
+        <h2>{{::$ctrl.roleName}}</h2>
         <span class="flex"></span>
-        <md-button class="md-icon-button" ng-click="managePermsCtrl.cancel()">
+        <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
             <md-icon md-svg-icon="close"></md-icon>
         </md-button>
     </div>
@@ -10,7 +10,7 @@
 <md-dialog-content class="md-dialog-content">
     <div class="row row-inherit">
         <div class="col-md-6 col-xs-12">
-            <div data-ng-if="managePermsCtrl.hasCategory('APPLICATION')">
+            <div data-ng-if="$ctrl.hasCategory('APPLICATION')">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -19,13 +19,13 @@
                     </md-card-title>
                     <md-card-content class="lvg-manage-role-permissions__panel">
                         <div class="lvg-manage-role-permissions__role"
-                             ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'APPLICATION'"
-                             data-ng-class="{'lvg-manage-role-permissions__role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}"
-                             data-ng-init="managePermsCtrl.assignStatus[permission] = {}">
+                             ng-repeat="permission in $ctrl.permissionsByCategory | permissionsByCategory:'APPLICATION'"
+                             data-ng-class="{'lvg-manage-role-permissions__role-change' : $ctrl.hasChanged(permission, $ctrl.roleDesc.roleAndPermissions, $ctrl.assignStatus[permission].checked)}"
+                             data-ng-init="$ctrl.assignStatus[permission] = {}">
                             <md-checkbox class="lvg-manage-role-permissions__role-checkbox"
-                                         data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
-                                         data-ng-model="managePermsCtrl.assignStatus[permission].checked"
-                                         data-ng-disabled="managePermsCtrl.roleDesc.readOnly">
+                                         data-ng-init="$ctrl.assignStatus[permission].checked = $ctrl.hasPermission(permission, $ctrl.roleDesc.roleAndPermissions)"
+                                         data-ng-model="$ctrl.assignStatus[permission].checked"
+                                         data-ng-disabled="$ctrl.roleDesc.readOnly">
                                 <div class="lvg-manage-role-permissions__role-name">{{'manage.role.permissions.permission.APPLICATION.' + permission + '.name' | translate}}</div>
                                 <div class="lvg-manage-role-permissions__role-description">{{'manage.role.permissions.permission.APPLICATION.' + permission + '.desc' | translate}}</div>
                             </md-checkbox>
@@ -33,7 +33,7 @@
                     </md-card-content>
                 </md-card>
             </div>
-            <div data-ng-if="managePermsCtrl.hasCategory('PROJECT')">
+            <div data-ng-if="$ctrl.hasCategory('PROJECT')">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -42,13 +42,13 @@
                     </md-card-title>
                     <md-card-content class="lvg-manage-role-permissions__panel">
                         <div class="lvg-manage-role-permissions__role"
-                             ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'PROJECT'"
-                             data-ng-class="{'lvg-manage-role-permissions__role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}"
-                             data-ng-init="managePermsCtrl.assignStatus[permission] = {}">
+                             ng-repeat="permission in $ctrl.permissionsByCategory | permissionsByCategory:'PROJECT'"
+                             data-ng-class="{'lvg-manage-role-permissions__role-change' : $ctrl.hasChanged(permission, $ctrl.roleDesc.roleAndPermissions, $ctrl.assignStatus[permission].checked)}"
+                             data-ng-init="$ctrl.assignStatus[permission] = {}">
                             <md-checkbox class="lvg-manage-role-permissions__role-checkbox"
-                                         data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
-                                         data-ng-model="managePermsCtrl.assignStatus[permission].checked"
-                                         data-ng-disabled="managePermsCtrl.roleDesc.readOnly">
+                                         data-ng-init="$ctrl.assignStatus[permission].checked = $ctrl.hasPermission(permission, $ctrl.roleDesc.roleAndPermissions)"
+                                         data-ng-model="$ctrl.assignStatus[permission].checked"
+                                         data-ng-disabled="$ctrl.roleDesc.readOnly">
                                 <div class="lvg-manage-role-permissions__role-name">{{'manage.role.permissions.permission.PROJECT.' + permission + '.name' | translate}}</div>
                                 <div class="lvg-manage-role-permissions__role-description">{{'manage.role.permissions.permission.PROJECT.' + permission + '.desc' | translate}}</div>
                             </md-checkbox>
@@ -56,7 +56,7 @@
                     </md-card-content>
                 </md-card>
             </div>
-            <div data-ng-if="managePermsCtrl.hasCategory('BOARD')">
+            <div data-ng-if="$ctrl.hasCategory('BOARD')">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -65,13 +65,13 @@
                     </md-card-title>
                     <md-card-content class="lvg-manage-role-permissions__panel">
                         <div class="lvg-manage-role-permissions__role"
-                             ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'BOARD'"
-                             data-ng-class="{'lvg-manage-role-permissions__role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}"
-                             data-ng-init="managePermsCtrl.assignStatus[permission] = {}">
+                             ng-repeat="permission in $ctrl.permissionsByCategory | permissionsByCategory:'BOARD'"
+                             data-ng-class="{'lvg-manage-role-permissions__role-change' : $ctrl.hasChanged(permission, $ctrl.roleDesc.roleAndPermissions, $ctrl.assignStatus[permission].checked)}"
+                             data-ng-init="$ctrl.assignStatus[permission] = {}">
                             <md-checkbox class="lvg-manage-role-permissions__role-checkbox"
-                                         data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
-                                         data-ng-model="managePermsCtrl.assignStatus[permission].checked"
-                                         data-ng-disabled="managePermsCtrl.roleDesc.readOnly">
+                                         data-ng-init="$ctrl.assignStatus[permission].checked = $ctrl.hasPermission(permission, $ctrl.roleDesc.roleAndPermissions)"
+                                         data-ng-model="$ctrl.assignStatus[permission].checked"
+                                         data-ng-disabled="$ctrl.roleDesc.readOnly">
                                 <div class="lvg-manage-role-permissions__role-name">{{'manage.role.permissions.permission.BOARD.' + permission + '.name' | translate}}</div>
                                 <div class="lvg-manage-role-permissions__role-description">{{'manage.role.permissions.permission.BOARD.' + permission + '.desc' | translate}}</div>
                             </md-checkbox>
@@ -79,7 +79,7 @@
                     </md-card-content>
                 </md-card>
             </div>
-            <div data-ng-if="managePermsCtrl.hasCategory('COLUMN')">
+            <div data-ng-if="$ctrl.hasCategory('COLUMN')">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -88,13 +88,13 @@
                     </md-card-title>
                     <md-card-content class="lvg-manage-role-permissions__panel">
                         <div class="lvg-manage-role-permissions__role"
-                             ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'COLUMN'"
-                             data-ng-class="{'lvg-manage-role-permissions__role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}"
-                             data-ng-init="managePermsCtrl.assignStatus[permission] = {}">
+                             ng-repeat="permission in $ctrl.permissionsByCategory | permissionsByCategory:'COLUMN'"
+                             data-ng-class="{'lvg-manage-role-permissions__role-change' : $ctrl.hasChanged(permission, $ctrl.roleDesc.roleAndPermissions, $ctrl.assignStatus[permission].checked)}"
+                             data-ng-init="$ctrl.assignStatus[permission] = {}">
                             <md-checkbox class="lvg-manage-role-permissions__role-checkbox"
-                                         data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
-                                         data-ng-model="managePermsCtrl.assignStatus[permission].checked"
-                                         data-ng-disabled="managePermsCtrl.roleDesc.readOnly">
+                                         data-ng-init="$ctrl.assignStatus[permission].checked = $ctrl.hasPermission(permission, $ctrl.roleDesc.roleAndPermissions)"
+                                         data-ng-model="$ctrl.assignStatus[permission].checked"
+                                         data-ng-disabled="$ctrl.roleDesc.readOnly">
                                 <div class="lvg-manage-role-permissions__role-name">{{'manage.role.permissions.permission.COLUMN.' + permission + '.name' | translate}}</div>
                                 <div class="lvg-manage-role-permissions__role-description">{{'manage.role.permissions.permission.COLUMN.' + permission + '.desc' | translate}}</div>
                             </md-checkbox>
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="col-md-6 col-xs-12">
-            <div data-ng-if="managePermsCtrl.hasCategory('CARD')">
+            <div data-ng-if="$ctrl.hasCategory('CARD')">
                 <md-card>
                     <md-card-title>
                         <md-card-title-text>
@@ -113,13 +113,13 @@
                     </md-card-title>
                     <md-card-content class="lvg-manage-role-permissions__panel">
                         <div class="lvg-manage-role-permissions__role"
-                             ng-repeat="permission in managePermsCtrl.permissionsByCategory | permissionsByCategory:'CARD'"
-                             data-ng-class="{'lvg-manage-role-permissions__role-change' : managePermsCtrl.hasChanged(permission, managePermsCtrl.roleDesc.roleAndPermissions, managePermsCtrl.assignStatus[permission].checked)}"
-                             data-ng-init="managePermsCtrl.assignStatus[permission] = {}">
+                             ng-repeat="permission in $ctrl.permissionsByCategory | permissionsByCategory:'CARD'"
+                             data-ng-class="{'lvg-manage-role-permissions__role-change' : $ctrl.hasChanged(permission, $ctrl.roleDesc.roleAndPermissions, $ctrl.assignStatus[permission].checked)}"
+                             data-ng-init="$ctrl.assignStatus[permission] = {}">
                             <md-checkbox class="lvg-manage-role-permissions__role-checkbox"
-                                         data-ng-init="managePermsCtrl.assignStatus[permission].checked = managePermsCtrl.hasPermission(permission, managePermsCtrl.roleDesc.roleAndPermissions)"
-                                         data-ng-model="managePermsCtrl.assignStatus[permission].checked"
-                                         data-ng-disabled="managePermsCtrl.roleDesc.readOnly">
+                                         data-ng-init="$ctrl.assignStatus[permission].checked = $ctrl.hasPermission(permission, $ctrl.roleDesc.roleAndPermissions)"
+                                         data-ng-model="$ctrl.assignStatus[permission].checked"
+                                         data-ng-disabled="$ctrl.roleDesc.readOnly">
                                 <div class="lvg-manage-role-permissions__role-name">{{'manage.role.permissions.permission.CARD.' + permission + '.name' | translate}}</div>
                                 <div class="lvg-manage-role-permissions__role-description">{{'manage.role.permissions.permission.CARD.' + permission + '.desc' | translate}}</div>
                             </md-checkbox>
@@ -132,12 +132,12 @@
 </md-dialog-content>
 
 <md-dialog-actions class="lvg-manage-role-permissions__background">
-    <md-button ng-click="managePermsCtrl.cancel()">
+    <md-button ng-click="$ctrl.cancel()">
         <span translate>button.cancel</span>
     </md-button>
     <md-button type="submit" class="md-primary"
-               ng-click="managePermsCtrl.save()"
-               ng-show="!managePermsCtrl.roleDesc.readOnly">
+               ng-click="$ctrl.save()"
+               ng-show="!$ctrl.roleDesc.readOnly">
         <span translate>button.update</span>
     </md-button>
 </md-dialog-actions>

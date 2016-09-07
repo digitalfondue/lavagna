@@ -9,10 +9,10 @@
 			valueRef: '&',
 			projectMetadataRef:'&'
 		},
-		controller: ['$filter', '$element', 'EventBus', '$state', '$window', 'CardCache', 'UserCache', lvgLabelValV2Ctrl]
+		controller: ['$filter', '$element', 'EventBus', '$state', '$window', 'CardCache', 'UserCache', LabelValV2Controller]
 	});
 
-	function lvgLabelValV2Ctrl($filter, $element, EventBus, $state, $window, CardCache, UserCache) {
+	function LabelValV2Controller($filter, $element, EventBus, $state, $window, CardCache, UserCache) {
 		var ctrl = this;
 
 		ctrl.$postLink = function postLink() {

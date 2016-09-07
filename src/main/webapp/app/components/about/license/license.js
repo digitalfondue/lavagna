@@ -3,11 +3,11 @@
 
     angular.module('lavagna.components').component('lvgAboutLicense', {
     	templateUrl: 'app/components/about/license/license.html',
-        controller: ['$http', licenseCtrl]
+        controller: ['$http', LicenseController]
     });
     
     
-    function licenseCtrl($http) {
+    function LicenseController($http) {
         var ctrl = this;
 
         ctrl.$onInit = function init() {

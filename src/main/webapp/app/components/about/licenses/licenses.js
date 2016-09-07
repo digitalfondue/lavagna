@@ -3,12 +3,12 @@
 
     angular.module('lavagna.components').component('lvgAboutLicenses', {
     	templateUrl: 'app/components/about/licenses/licenses.html',
-        controller: ['$http', licensesCtrl]
+        controller: ['$http', LicensesController]
     });
     
     
     
-    function licensesCtrl($http) {
+    function LicensesController($http) {
         var ctrl = this;
         
         ctrl.$onInit = function init() {

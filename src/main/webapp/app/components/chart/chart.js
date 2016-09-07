@@ -13,11 +13,11 @@
 			width: "@",
 			height: "@"
 		},
-		controller: ['$element', chartCtrl]
+		controller: ['$element', ChartController]
 	});
 	
 	
-	function chartCtrl($element) {
+	function ChartController($element) {
 		
 		var ctrl = this;
 		

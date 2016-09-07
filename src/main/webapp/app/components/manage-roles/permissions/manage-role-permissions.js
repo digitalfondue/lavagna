@@ -13,7 +13,6 @@
             cancel: '&' // 
         },
         controller: [ManageRolePermissionsController],
-        controllerAs: 'managePermsCtrl',
         templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions.html'
     });
 

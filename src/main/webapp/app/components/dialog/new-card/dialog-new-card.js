@@ -11,10 +11,10 @@
 				columns: '<',
 				column: '<'
 			},
-			controller: ['$mdDialog', 'Board', 'Notification', dialogNewCardCtrl]
+			controller: ['$mdDialog', 'Board', 'Notification', DialogNewCardController]
 		});
 
-	function dialogNewCardCtrl($mdDialog, Board, Notification) {
+	function DialogNewCardController($mdDialog, Board, Notification) {
 		var ctrl = this;
 			
 		ctrl.cancel = cancel;

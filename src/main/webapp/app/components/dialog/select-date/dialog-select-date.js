@@ -10,10 +10,10 @@
 				dialogTitle: '<',
 				action: '&'
 			},
-			controller: ['$mdDialog', dialogSelectDateCtrl]
+			controller: ['$mdDialog', DialogSelectDateController]
 		});
 	
-	function dialogSelectDateCtrl($mdDialog) {
+	function DialogSelectDateController($mdDialog) {
 		var ctrl = this;
 		
 		ctrl.cancel = cancel;
