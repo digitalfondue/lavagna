@@ -5,7 +5,7 @@
 
     components.component('lvgAdminSmtp', {
     	templateUrl: 'app/components/admin/smtp/smtp.html',
-        controller: AdminSmtpController
+        controller: ['$mdDialog', 'Admin', 'Notification', AdminSmtpController]
     })
 
     function AdminSmtpController($mdDialog, Admin, Notification) {

@@ -5,7 +5,7 @@
         bindings: {
             event: '<'
         },
-        controller: ActivityController,
+        controller: [ActivityController],
         templateUrl: 'app/components/activity/activity.html'
     });
 

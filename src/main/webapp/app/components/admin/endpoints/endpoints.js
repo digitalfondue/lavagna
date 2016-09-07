@@ -5,14 +5,18 @@
 
     components.component('lvgAdminEndpoints', {
     	templateUrl: 'app/components/admin/endpoints/endpoints.html',
-        controller: function(Admin) {
-            var ctrl = this;
-            
-            ctrl.$onInit = function init() {
-            	Admin.endpointInfo().then(function (res) {
-                    ctrl.endpointInfo = res;
-                });
-            }
-        }
+        controller: ['Admin', AdminEndpointsController]
     });
+    
+    
+    function AdminEndpointsController(Admin) {
+        var ctrl = this;
+        
+        ctrl.$onInit = function init() {
+        	Admin.endpointInfo().then(function (res) {
+                ctrl.endpointInfo = res;
+            });
+        }
+    }
+    
 })();

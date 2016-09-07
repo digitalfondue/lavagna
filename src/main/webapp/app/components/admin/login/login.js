@@ -7,13 +7,9 @@
         bindings: {
             oauthProviders: '='
         },
-        controller: AdminLoginController,
-        templateUrl: 'app/components/admin/login/login.html'
+        templateUrl: 'app/components/admin/login/login.html',
+        controller: ['$window', '$mdDialog', '$q', 'Admin', 'Permission', 'Notification', 'User', 'CONTEXT_PATH', AdminLoginController],
     });
-
-    function getPort(window) {
-        return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
-    }
 
     function AdminLoginController($window, $mdDialog, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
         var ctrl = this;
@@ -266,8 +262,6 @@
 
 			Permission.toggleSearchPermissionForAnonymousUsers(value).then(load);
 		};
-
-
     }
 
 })();

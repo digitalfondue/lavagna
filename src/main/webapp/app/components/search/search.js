@@ -9,12 +9,12 @@
             project: '<',
             user:'<'
         },
-    	controller: SearchCtrl,
+    	controller: ['$location', '$http', '$log', '$filter', 'Search', 'User', 'LabelCache', 'Card', 'EventBus', SearchController],
     	templateUrl: 'app/components/search/search.html'
     });
 
 
-	function SearchCtrl($location, $http, $log, $filter, Search, User, LabelCache, Card, EventBus) {
+	function SearchController($location, $http, $log, $filter, Search, User, LabelCache, Card, EventBus) {
 		var ctrl = this;
 		
 		//

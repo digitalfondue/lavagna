@@ -10,8 +10,8 @@
         	provider: '<',
         	isCurrentUser: '<'
         },
-        controller: AccountController,
-        templateUrl: 'app/components/account/account.html'
+        templateUrl: 'app/components/account/account.html',
+        controller: ['$window', 'User', 'Notification', AccountController],
     });
 
     function AccountController($window, User, Notification) {

@@ -4,8 +4,8 @@
     var components =  angular.module('lavagna.components');
 
     components.component('lvgAdmin', {
-        controller: AdminController,
-        templateUrl: 'app/components/admin/admin.html'
+        templateUrl: 'app/components/admin/admin.html',
+        controller: ['Admin', AdminController],
     });
 
     function AdminController(Admin) {

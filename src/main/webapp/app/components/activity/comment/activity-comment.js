@@ -5,12 +5,11 @@
         bindings: {
             event: '<'
         },
-        controller: ['CardCache', ActivityCommentController],
+        controller: [ActivityCommentController],
         templateUrl: 'app/components/activity/comment/activity-comment.html'
     });
 
-    function ActivityCommentController(UserCache, CardCache) {
+    function ActivityCommentController() {
         var ctrl = this;
-
     }
 })();

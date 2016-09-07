@@ -5,7 +5,7 @@
 
     components.component('lvgAdminExportImport', {
     	templateUrl: 'app/components/admin/export-import/export-import.html',
-        controller: AdminExportImportController
+        controller: ['$window', 'Notification', 'Admin', AdminExportImportController]
     });
 
     function AdminExportImportController($window, Notification, Admin) {
