@@ -8,19 +8,19 @@
                 <div class="flex no grow">
                     <lvg-user-link class="lvg-card-comment__user" user-id="$ctrl.comment.userId"></lvg-user-link>
                     <span class="lvg-card-comment__time">{{ $ctrl.comment.time | dateIncremental }}</span>
-                    <span class="lvg-card-comment__edited" ng-if="$ctrl.comment.updatedCount">{{ 'label.edited' | translate }}</span>
+                    <span class="lvg-card-comment__edited" ng-if="$ctrl.comment.updatedCount">{{::('label.edited' | translate)}}</span>
                 </div>
                 <div class="flex"></div>
                 <div class="flex no-grow">
                     <md-button data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
                                data-ng-click="commentEdit = $ctrl.comment.content; editComment = true;" ng-hide="editComment"
                                class="lvg-small-icon-button">
-                        <md-tooltip>{{'card.comment.edit.tooltip' | translate}}</md-tooltip>
+                        <md-tooltip>{{::('card.comment.edit.tooltip' | translate)}}</md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>
                     </md-button>
                     <md-button data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
                                data-ng-click="$ctrl.delete()" class="lvg-small-icon-button">
-                        <md-tooltip>{{'card.comment.delete.tooltip' | translate}}</md-tooltip>
+                        <md-tooltip>{{::('card.comment.delete.tooltip' | translate)}}</md-tooltip>
                         <md-icon md-svg-icon="delete"></md-icon>
                     </md-button>
                 </div>

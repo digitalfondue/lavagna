@@ -8,11 +8,11 @@
                 <md-button data-lvg-has-permission="MANAGE_ACTION_LIST"
                            class="lvg-small-icon-button"
                            ng-click="newListName = $ctrl.actionList.content; editListName = true;">
-                    <md-tooltip>{{'card.action.list.tooltip.edit.name' | translate}}</md-tooltip>
+                    <md-tooltip>{{::('card.action.list.tooltip.edit.name' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="edit"></md-icon>
                 </md-button>
                 <md-button data-lvg-has-permission="MANAGE_ACTION_LIST" class="lvg-small-icon-button" ng-click="$ctrl.deleteList()">
-                    <md-tooltip>{{'card.action.list.tooltip.delete.list' | translate}}</md-tooltip>
+                    <md-tooltip>{{::('card.action.list.tooltip.delete.list' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="delete"></md-icon>
                 </md-button>
             </div>
@@ -55,11 +55,11 @@
                 </md-checkbox>
                 <p class="flex" data-ng-hide="editName">{{ item.content }}</p>
                 <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="editName = true">
-                    <md-tooltip>{{'card.action.list.tooltip.edit.item' | translate}}</md-tooltip>
+                    <md-tooltip>{{::('card.action.list.tooltip.edit.item' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="edit"></md-icon>
                 </md-button>
                 <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" data-ng-hide="editName" ng-click="$ctrl.deleteAction(item);">
-                    <md-tooltip>{{'card.action.list.tooltip.delete.item' | translate}}</md-tooltip>
+                    <md-tooltip>{{::('card.action.list.tooltip.delete.item' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="delete"></md-icon>
                 </md-button>
                 <form class="row" data-ng-show="editName" data-ng-submit="$ctrl.saveAction(item.id, item.content); editName = false">
@@ -87,7 +87,7 @@
             <div class="row margin-8">
                 <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="newAction.name" placeholder="{{'card.action.list.placeholder.item'|translate}}">
+                        <input ng-model="newAction.name" placeholder="{{::('card.action.list.placeholder.item'|translate)}}">
                     </md-input-container>
                 </div>
                 <div class="flex no-grow">
