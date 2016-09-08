@@ -6,7 +6,7 @@
         <md-button class="md-icon-button"
             data-ui-sref="projectManage.project({projectName: $ctrl.project.shortName})"
             data-lvg-has-permission="PROJECT_ADMINISTRATION">
-            <md-tooltip>{{'common.project-settings' | translate}}</md-tooltip>
+            <md-tooltip>{{::('common.project-settings' | translate)}}</md-tooltip>
             <md-icon md-svg-icon="settings"></md-icon>
         </md-button>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
