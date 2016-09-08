@@ -9,7 +9,10 @@
             bgColorHex: '@'
         },
         controller: ['UserCache', UserAvatarController],
-        templateUrl: 'app/components/user-avatar/user-avatar.html'
+        template: '<ng-avatar ng-if="::$ctrl.user" width="{{::$ctrl.size}}" class="lvg-user-avatar" bg-color="{{::$ctrl.bgColorHex}}" '
+            			+' color="{{::$ctrl.colorHex}}" round-shape="true" initials="{{::($ctrl.user | userInitials)}}">'
+            			+'</ng-avatar>'
+
     });
 
     function UserAvatarController(UserCache) {
