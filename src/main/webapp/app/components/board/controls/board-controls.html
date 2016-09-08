@@ -47,7 +47,7 @@
         </md-menu>
     </div>
 
-    <div class="flex no-grow" ng-show="$ctrl.selectedVisibleCount() > 0">
+    <div class="no-grow lvg-board-controls__action-icons" ng-show="$ctrl.selectedVisibleCount() > 0">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="folder-move"></md-icon>
@@ -59,9 +59,7 @@
                 <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.moveToTrash($ctrl.selectedVisibleCardsIdByColumnId())"><span translate>partials.board.bulkop.moveTrash</span></md-button></md-menu-item>
             </md-menu-content>
         </md-menu>
-    </div>
 
-    <div class="flex no-grow" ng-show="$ctrl.selectedVisibleCount() > 0">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="person"></md-icon>
@@ -73,9 +71,7 @@
                 <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.reAssignTo($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.reassign</span></md-button></md-menu-item>
             </md-menu-content>
         </md-menu>
-    </div>
 
-    <div class="flex no-grow" ng-show="$ctrl.selectedVisibleCount() > 0">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="calendar"></md-icon>
@@ -86,9 +82,7 @@
                 <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeDueDate($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.removeDueDate</span></md-button></md-menu-item>
             </md-menu-content>
         </md-menu>
-    </div>
 
-    <div class="flex no-grow" ng-show="$ctrl.selectedVisibleCount() > 0">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="milestone"></md-icon>
@@ -99,9 +93,7 @@
                 <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeMilestone($ctrl.formatBulkRequest())"><span translate>partials.board.bulkop.removeMilestone</span></md-button></md-menu-item>
             </md-menu-content>
         </md-menu>
-    </div>
 
-    <div class="flex no-grow" ng-show="$ctrl.selectedVisibleCount() > 0">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="label"></md-icon>
