@@ -37,7 +37,7 @@
                 <md-button data-ng-click="$ctrl.addLabelPanel = true"
                            md-no-ink
                            class="lvg-small-icon-button lvg-card-description__labels-add-button">
-                    <md-tooltip>{{'card.labels.add.tooltip' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.labels.add.tooltip</span></md-tooltip>
                     <md-icon md-menu-origin md-svg-icon="add"></md-icon>
                 </md-button>
             </span>
@@ -114,7 +114,7 @@
                 <div class="lvg-card-description__edit-button">
                     <md-button ng-click="descriptionToEdit = $ctrl.description.content; editDescription = true;"
                                class="lvg-small-icon-button" data-lvg-has-permission="UPDATE_CARD">
-                        <md-tooltip>{{'card.description.edit.tooltip' | translate}}</md-tooltip>
+                        <md-tooltip><span translate>card.description.edit.tooltip</span></md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>
                     </md-button>
                 </div>

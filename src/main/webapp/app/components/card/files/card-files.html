@@ -15,17 +15,17 @@
                     <div class="lvg-card-file__metadata lvg-card-file__metadata-progress" ng-class="{'lvg-card-file__action-retry':item.isError}">
                         <md-progress-linear ng-if="item.isReady || item.isUploading" md-mode="determinate" value="{{item.progress}}"></md-progress-linear>
                         <md-button ng-if="item.isError" class="lvg-small-icon-button" ng-click="item.upload()">
-                            <md-tooltip>{{'card.files.tooltip.retry' | translate}}</md-tooltip>
+                            <md-tooltip><span translate>card.files.tooltip.retry</span></md-tooltip>
                             <md-icon md-svg-icon="replay"></md-icon>
                         </md-button>
                     </div>
                     <div class="lvg-card-file__metadata lvg-card-file__action">
                         <md-button ng-if="item.isError || item.isReady && !item.isUploading" class="lvg-small-icon-button" ng-click="item.remove()">
-                            <md-tooltip>{{'card.files.tooltip.abort' | translate}}</md-tooltip>
+                            <md-tooltip><span translate>card.files.tooltip.abort</span></md-tooltip>
                             <md-icon md-svg-icon="delete"></md-icon>
                         </md-button>
                         <md-button ng-if="item.isUploading" class="lvg-small-icon-button" ng-click="item.cancel()">
-                            <md-tooltip>{{'card.files.tooltip.abort' | translate}}</md-tooltip>
+                            <md-tooltip><span translate>card.files.tooltip.abort</span></md-tooltip>
                             <md-icon md-svg-icon="close"></md-icon>
                         </md-button>
                     </div>

@@ -15,12 +15,12 @@
                     <md-button data-lvg-has-permission="UPDATE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
                                data-ng-click="$ctrl.commentEdit = $ctrl.comment.content; $ctrl.editComment = true;" ng-hide="$ctrl.editComment"
                                class="lvg-small-icon-button">
-                        <md-tooltip>{{::('card.comment.edit.tooltip' | translate)}}</md-tooltip>
+                        <md-tooltip><span translate>card.comment.edit.tooltip</span></md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>
                     </md-button>
                     <md-button data-lvg-has-permission="DELETE_CARD_COMMENT" data-owner-id="$ctrl.comment.userId"
                                data-ng-click="$ctrl.delete()" class="lvg-small-icon-button">
-                        <md-tooltip>{{::('card.comment.delete.tooltip' | translate)}}</md-tooltip>
+                        <md-tooltip><span translate>card.comment.delete.tooltip</span></md-tooltip>
                         <md-icon md-svg-icon="delete"></md-icon>
                     </md-button>
                 </div>

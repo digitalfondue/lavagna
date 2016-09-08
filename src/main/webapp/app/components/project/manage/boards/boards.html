@@ -7,15 +7,15 @@
                     <span class="flex"></span>
                     <md-button class="lvg-small-icon-button" ng-click="edit = true" ng-hide="edit">
                         <md-icon md-svg-icon="edit" aria-label="{{::('common.edit' | translate)}}"></md-icon>
-                        <md-tooltip><span ng-bind="::('common.edit' | translate)"></span></md-tooltip>
+                        <md-tooltip><span translate>common.edit</span></md-tooltip>
                     </md-button>
                     <md-button class="lvg-small-icon-button" ng-click="$ctrl.archive(ab);" ng-if="!ab.archived">
                         <md-icon md-svg-icon="archive" aria-label="{{::('common.archive' | translate)}}"></md-icon>
-                        <md-tooltip><span ng-bind="::('common.archive' | translate)"></span></md-tooltip>
+                        <md-tooltip><span translate>common.archive</span></md-tooltip>
                     </md-button>
                     <md-button class="lvg-small-icon-button" ng-click="$ctrl.unarchive(ab);" ng-if="ab.archived">
                         <md-icon md-svg-icon="unarchive" aria-label="{{::('common.unarchive' | translate)}}"></md-icon>
-                        <md-tooltip><span ng-bind="::('common.unarchive' | translate)"></span></md-tooltip>
+                        <md-tooltip><span translate>common.unarchive</span></md-tooltip>
                     </md-button>
                 </div>
             </md-card-title-text>

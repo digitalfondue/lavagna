@@ -5,19 +5,19 @@
                 <div class="lvg-headline"><span data-translate>card.people</span></div>
                 <span class="flex"></span>
                 <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.take()">
-                    <md-tooltip>{{'card.people.take' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.take</span></md-tooltip>
                     <md-icon md-svg-icon="take"></md-icon>
                 </md-button>
                 <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.surrender()">
-                    <md-tooltip>{{'card.people.surrender' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.surrender</span></md-tooltip>
                     <md-icon md-svg-icon="surrender"></md-icon>
                 </md-button>
                 <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.watchCard()">
-                    <md-tooltip>{{'card.people.watch' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.watch</span></md-tooltip>
                     <md-icon md-svg-icon="notifications"></md-icon>
                 </md-button>
                 <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isWatching()" class="lvg-small-icon-button" ng-click="$ctrl.unWatchCard()">
-                    <md-tooltip>{{'card.people.unwatch' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.unwatch</span></md-tooltip>
                     <md-icon md-svg-icon="notifications-off"></md-icon>
                 </md-button>
             </div>
@@ -29,7 +29,7 @@
                 <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.assignedUsers">
                     <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
                     <md-button class="lvg-small-icon-button md-secondary" data-lvg-has-permission="UPDATE_CARD" ng-click="$ctrl.removeAssignForUser(user);">
-                        <md-tooltip>{{'card.people.unassign' | translate}}</md-tooltip>
+                        <md-tooltip><span translate>card.people.unassign</span></md-tooltip>
                         <md-icon md-svg-icon="close"></md-icon>
                     </md-button>
                 </md-list-item>
@@ -44,11 +44,11 @@
                      'other': ('card.people.watchedByMany' | translate:{count: '{{$ctrl.watchingUsers.length}}'})}">
                 </ng-pluralize>
                 <md-button ng-hide="watchExpanded" class="lvg-small-icon-button" ng-click="watchExpanded = true;">
-                    <md-tooltip>{{'card.people.showWatchedUsers' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.showWatchedUsers</span></md-tooltip>
                     <md-icon md-svg-icon="expand_more"></md-icon>
                 </md-button>
                 <md-button ng-show="watchExpanded" class="lvg-small-icon-button" ng-click="watchExpanded = false;">
-                    <md-tooltip>{{'card.people.hideWatchedUsers' | translate}}</md-tooltip>
+                    <md-tooltip><span translate>card.people.hideWatchedUsers</span></md-tooltip>
                     <md-icon md-svg-icon="expand_less"></md-icon>
                 </md-button>
             </div>
