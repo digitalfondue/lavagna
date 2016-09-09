@@ -21,6 +21,8 @@
 		
 		var ctrl = this;
 		
+		var chartInstance = undefined;
+		
 		ctrl.$onChanges = function onChanges(changes) {
 			if(changes.data || changes.options) {
 				var value = ctrl.data;
@@ -38,9 +40,21 @@
 				canvas.height = ctrl.height || baseHeight;
 				context.canvas.style.maxHeight = canvas.height + "px";
 
-				var chart = new Chart(context);
+				if(chartInstance !== undefined) {
+					chartInstance.destroy();
+					chartInstance = undefined;
+				}
+				
+				chartInstance = new Chart(context);
 				var chartType = ctrl.type || "Line";
-				chart[chartType](ctrl.data, ctrl.options);
+				chartInstance[chartType](ctrl.data, ctrl.options);
+			}
+		}
+		
+		ctrl.$onDestroy = function onDestroy() {
+			if(chartInstance) {
+				chartInstance.destroy();
+				chartInstance = undefined;
 			}
 		}
 	}

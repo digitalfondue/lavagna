@@ -40,6 +40,8 @@
         //
 		
 		var stompSub = angular.noop;
+		var selectAllSub = angular.noop;
+		var unselectAllSub = angular.noop;
 		
 		ctrl.$onInit = function init() {
 			ctrl.user = ctrl.userRef();
@@ -49,12 +51,14 @@
 	        initializeColumn();
 	        //capture all status variables
 	        ctrl.columnState = {};
-	        EventBus.on('selectall', selectAllInColumn);
-	        EventBus.on('unselectall', unSelectAllInColumn);
+	        selectAllSub = EventBus.on('selectall', selectAllInColumn);
+	        unselectAllSub = EventBus.on('unselectall', unSelectAllInColumn);
 		}
 		
 		ctrl.$onDestroy = function onDestroy() {
 			stompSub();
+			selectAllSub();
+			unselectAllSub();
 		}
         //
 		

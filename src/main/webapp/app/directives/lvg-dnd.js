@@ -95,7 +95,11 @@
 					return $parse(listAndFilterExpression)($scope);
 				}
 				
-				Sortable.create($element[0], opts);
+				var sortableInstance = Sortable.create($element[0], opts);
+				
+				$scope.$on('$destroy', function() {
+					sortableInstance.destroy();
+				})
 			}
 		};
 	});
