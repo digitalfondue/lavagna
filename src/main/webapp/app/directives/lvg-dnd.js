@@ -97,7 +97,7 @@
 				
 				var sortableInstance = Sortable.create($element[0], opts);
 				
-				$scope.$on('$destroy', function() {
+				$scope.$on('$destroy', function onDestroySortable() {
 					sortableInstance.destroy();
 				})
 			}

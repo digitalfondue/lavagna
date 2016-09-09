@@ -45,9 +45,9 @@
 					chartInstance = undefined;
 				}
 				
-				chartInstance = new Chart(context);
+				var chart = new Chart(context);
 				var chartType = ctrl.type || "Line";
-				chartInstance[chartType](ctrl.data, ctrl.options);
+				chartInstance = chart[chartType](ctrl.data, ctrl.options);
 			}
 		}
 		
