@@ -79,8 +79,6 @@
         	headCtrl.$onDestroy();
         	dataInfoCtrl.$onDestroy();
         }
-        
-        
 	}
 	
 	
@@ -109,10 +107,10 @@
 			if (parent.boardView && !parent.readOnly) {
 
 				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox());
+					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
 				}
 
-				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true);
+				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
 				
 				//card fragment menu
@@ -120,7 +118,12 @@
 					var button = createElem('button');
 					button.className = 'lvg-card-fragment-v2__menu';
 					baseDiv.appendChild(button);
-					button.addEventListener('click', prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata));
+					
+					var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
+					button.addEventListener('click', menuEventListener);
+					subscribers.push(function() {
+						button.removeEventListener('click', menuEventListener);
+					});
 				}
 			} else if (parent.boardView && parent.readOnly) {
 				baseDiv.appendChild(createText(parent.shortCardName));
@@ -129,17 +132,17 @@
 				button.className = 'lvg-card-fragment-v2__menu';
 				baseDiv.appendChild(button);
 			} else if (parent.listView) {
-				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false);
+				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
-				baseDiv.appendChild(lastUpdateTime(parent.card.lastUpdateTime));
+				baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
 			} else if (parent.searchView) {
 
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox());
+					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
 				}
 
 				var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
-				var a = createLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true);
+				var a = createLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
 				baseDiv.appendChild(lastUpdateTime(parent.card.lastUpdateTime));
 			}
@@ -152,93 +155,95 @@
 				subscribers[i]();
 			}
 		};
+	}
+	
+	
+	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope) {
+		var c = createElem("input");
+		c.type = 'checkbox';
+		
 
-		function lastUpdateTime(lastUpdateTime) {
-			var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
-			e.textContent = $filter('dateIncremental')(lastUpdateTime);
-			return e;
-		}
-
-		function checkbox() {
-			var c = createElem("input");
-			c.type = 'checkbox';
-			var parent = ctrl.lvgCardFragmentV2;
-
-
-			var selected = parent.selected;
-			var card = parent.card;
-
-			function isSelected() {
-				if(parent.boardView) {
-					return (selected[card.columnId] && (selected[card.columnId][card.id])) === true;
-				} else {
-					return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
-				}
-			};
-
-			function updateCheckbox() {
-				c.checked = isSelected();
-			};
-
-			updateCheckbox();
-
-			subscribers.push(EventBus.on('updatecheckbox', updateCheckbox));
-
-			if(parent.boardView) {
-				c.addEventListener('click', function() {
-					$scope.$applyAsync(function() {
-						selected[card.columnId] = selected[card.columnId] || {};
-						selected[card.columnId][card.id] = c.checked;
-					});
-    			});
+		function isSelected() {
+			if(isBoardView) {
+				return (selected[card.columnId] && (selected[card.columnId][card.id])) === true;
 			} else {
-				c.addEventListener('click', function() {
-					$scope.$applyAsync(function() {
-						selected[card.projectShortName] = selected[card.projectShortName] || {};
-						selected[card.projectShortName][card.id] = c.checked;
-					});
+				return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
+			}
+		};
+
+		function updateCheckbox() {
+			c.checked = isSelected();
+		};
+
+		updateCheckbox();
+
+		subscribers.push(EventBus.on('updatecheckbox', updateCheckbox));
+		
+		var handleClickEvent;
+
+		if(isBoardView) {
+			handleClickEvent = function handleClickEventBoardView() {
+				$scope.$applyAsync(function() {
+					selected[card.columnId] = selected[card.columnId] || {};
+					selected[card.columnId][card.id] = c.checked;
 				});
-			}
-
-			return c;
-		}
-
-		function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink) {
-			var a = createElem("a");
-			a.className = 'lvg-card-fragment-v2__card-link';
-			a.textContent = boardShortName + ' - ' + sequenceNumber;
-			a.href = updateUrl($location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
-			if(isDynamicLink) {
-				var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
-					a.href = updateUrl(searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
+			};
+		} else {
+			handleClickEvent = function handleClickEventBoardView() {
+				$scope.$applyAsync(function() {
+					selected[card.projectShortName] = selected[card.projectShortName] || {};
+					selected[card.projectShortName][card.id] = c.checked;
 				});
-				
-				subscribers.push(onUpdateQueryOrPageSub);
-			}
-			return a;
+			};
 		}
 		
+		c.addEventListener('click', handleClickEvent);
+		subscribers.push(function() {
+			c.removeEventListener('click', handleClickEvent);
+		});
 
-		function updateUrl(q, page, targetState, projectName, boardShortName, sequenceNumber) {
+		return c;
+	}
+	
+	function createLastUpdateTime(lastUpdateTime, $filter) {
+		var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
+		e.textContent = $filter('dateIncremental')(lastUpdateTime);
+		return e;
+	}
+	
+	
+	function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, $state, $location, subscribers, EventBus) {
+		var a = createElem("a");
+		a.className = 'lvg-card-fragment-v2__card-link';
+		a.textContent = boardShortName + ' - ' + sequenceNumber;
+		a.href = updateUrl($state, $location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
+		if(isDynamicLink) {
+			var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
+				a.href = updateUrl($state, searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
+			});
 			
-			if(targetState === 'board.card') {
-				var cardUrl = BASE_URL+projectName+'/'+boardShortName+'-'+sequenceNumber;
-				if(q !== undefined) {
-					cardUrl+='?q='+encodeURIComponent(q);
-				}
-				return cardUrl;
+			subscribers.push(onUpdateQueryOrPageSub);
+		}
+		return a;
+	}
+	
+	
+	function updateUrl($state, q, page, targetState, projectName, boardShortName, sequenceNumber) {
+		
+		if(targetState === 'board.card') {
+			var cardUrl = BASE_URL+projectName+'/'+boardShortName+'-'+sequenceNumber;
+			if(q !== undefined) {
+				cardUrl+='?q='+encodeURIComponent(q);
 			}
-			
-			return $state.href(targetState, {
-				projectName: projectName,
-				shortName: boardShortName,
-				seqNr: sequenceNumber,
-				q:  q,
-				page: page});
+			return cardUrl;
 		}
 		
-		//--------------------------------------
-		
+		return $state.href(targetState, {
+			projectName: projectName,
+			shortName: boardShortName,
+			seqNr: sequenceNumber,
+			q:  q,
+			page: page});
 	}
 	
 	
@@ -655,7 +660,6 @@
 				    }
 			};
 			$mdPanel.open(conf);
-			
 		}
 	}
 	
