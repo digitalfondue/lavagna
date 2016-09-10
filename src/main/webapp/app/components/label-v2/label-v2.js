@@ -16,7 +16,7 @@
 
     function LabelV2Controller($window, $element) {
     	var ctrl = this;
-    	
+
     	ctrl.$onInit = function init() {
     		ctrl.value = ctrl.valueRef();
         	ctrl.projectMetadata = ctrl.projectMetadataRef();
@@ -24,8 +24,8 @@
 
     	ctrl.$postLink = function postLink() {
     		var domElem = $element[0];
-    		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type) !== 'NULL';
-        	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
+    		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type || ctrl.value.labelType) !== 'NULL';
+        	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels && ctrl.value.labelId) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
     		var nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));
     		domElem.insertBefore(nameAndSeparator, domElem.firstChild);
     	}

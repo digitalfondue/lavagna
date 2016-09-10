@@ -1,0 +1,9 @@
+.lvg-card-comment__avatar {
+    margin-right: 15px;
+}
+
+.lvg-card-comment__edited {
+    margin-left: 10px;
+    color: red;
+    text-transform: uppercase
+}

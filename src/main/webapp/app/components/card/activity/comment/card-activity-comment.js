@@ -1,15 +1,15 @@
 (function() {
     'use strict';
 
-    angular.module('lavagna.components').component('lvgCardComment', {
+    angular.module('lavagna.components').component('lvgCardActivityComment', {
         bindings: {
             comment: '<'
         },
-        controller: CardCommentController,
-        templateUrl: 'app/components/card/comment/card-comment.html'
+        controller: CardActivityCommentController,
+        templateUrl: 'app/components/card/activity/comment/card-activity-comment.html'
     });
 
-    function CardCommentController(Card, Notification) {
+    function CardActivityCommentController(Card, Notification) {
         var ctrl = this;
 
         ctrl.updateComment = function(commentToEdit) {

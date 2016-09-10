@@ -12,10 +12,10 @@
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id + '-' + activity.cardEvent" class="lvg-card-comment">
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
             <div ng-switch="::activity.cardEvent">
                 <div ng-switch-when="COMMENT">
-                    <lvg-card-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-comment>
+                    <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
                 </div>
                 <div ng-switch-default>
                     <lvg-activity event="activity" project="$ctrl.project">
@@ -27,6 +27,9 @@
                     </lvg-activity>
                 </div>
             </div>
+        </div>
+        <div ng-if="$ctrl.activityFilterValue == 'COMMENT' && $ctrl.comments != {}" class="lvg-card-activity">
+            <i class="lvg-card-activity__no-comments" translate="card.activity.no.comments"></i>
         </div>
     </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
