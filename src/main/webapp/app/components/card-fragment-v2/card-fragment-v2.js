@@ -144,7 +144,7 @@
 				var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
 				var a = createLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
-				baseDiv.appendChild(lastUpdateTime(parent.card.lastUpdateTime));
+				baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
 			}
 			domElement.appendChild(baseDiv);
 			domElement.appendChild(createText(parent.card.name))
