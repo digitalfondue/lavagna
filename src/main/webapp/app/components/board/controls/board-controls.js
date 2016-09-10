@@ -21,7 +21,6 @@
         	var ctrl = this;
         	
         	ctrl.$onChanges = function(change) {
-        		console.log(change)
         		if(change.columns.currentValue) {
         			ctrl.createColumnTooltipVisibility = change.columns.currentValue.length === 0;
         		}
