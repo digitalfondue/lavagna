@@ -25,7 +25,7 @@
     	ctrl.$postLink = function postLink() {
     		var domElem = $element[0];
     		var addSeparator = (ctrl.value.labelValueType || ctrl.value.type || ctrl.value.labelType) !== 'NULL';
-        	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels && ctrl.value.labelId) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
+        	var name = (ctrl.projectMetadata && ctrl.projectMetadata.labels && ctrl.value.labelId != null) ? ctrl.projectMetadata.labels[ctrl.value.labelId].name : ctrl.value.labelName;
     		var nameAndSeparator = $window.document.createTextNode(name + (addSeparator ? ': ' : '' ));
     		domElem.insertBefore(nameAndSeparator, domElem.firstChild);
     	}
