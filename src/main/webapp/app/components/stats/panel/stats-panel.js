@@ -15,6 +15,8 @@
 		
 		var ctrl = this;
 		
+		var colorFilter = $filter('color');
+		
 		ctrl.$onInit = function init() {
 			ctrl.chartOptions = {animation : false};
 			
@@ -31,10 +33,10 @@
 
 		function createNormalizedData(stats) {
 			var normalizedStats = [];
-			normalizedStats.push({value: stats.openTaskCount, color: $filter('color')(stats.openTaskColor).color});
-			normalizedStats.push({value: stats.closedTaskCount, color: $filter('color')(stats.closedTaskColor).color});
-			normalizedStats.push({value: stats.backlogTaskCount, color: $filter('color')(stats.backlogTaskColor).color});
-			normalizedStats.push({value: stats.deferredTaskCount, color: $filter('color')(stats.deferredTaskColor).color});
+			normalizedStats.push({value: stats.openTaskCount, color: colorFilter(stats.openTaskColor).color});
+			normalizedStats.push({value: stats.closedTaskCount, color: colorFilter(stats.closedTaskColor).color});
+			normalizedStats.push({value: stats.backlogTaskCount, color: colorFilter(stats.backlogTaskColor).color});
+			normalizedStats.push({value: stats.deferredTaskCount, color: colorFilter(stats.deferredTaskColor).color});
 			return normalizedStats;
 		}
 

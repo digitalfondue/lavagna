@@ -21,27 +21,24 @@
 			var metadata = ctrl.projectMetadataRef();
 			var type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
 			var value = ctrl_value.value || ctrl_value;
+			var elementDom = $element[0];
 			
 			if (type === 'STRING') {
-				appendValueToElement(value.valueString);
+				elementDom.textContent = value.valueString;
 			} else if (type === 'INT') {
-				appendValueToElement(value.valueInt);
+				elementDom.textContent = value.valueInt;
 			} else if (type === 'USER') {
 				handleUser(value.valueUser);
 			} else if (type === 'CARD') {
 				handleCard(value.valueCard);
 			} else if (type === 'LIST' && metadata && metadata.labelListValues && metadata.labelListValues[value.valueList]) {
-				appendValueToElement(metadata.labelListValues[value.valueList].value);
+				elementDom.textContent = metadata.labelListValues[value.valueList].value;
 			} else if (type === 'TIMESTAMP') {
-				appendValueToElement($filter('date')(value.valueTimestamp, 'dd.MM.yyyy'));
+				elementDom.textContent = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
 			}
 		}
 
 		//-------------
-
-		function appendValueToElement(value) {
-			$element[0].textContent = value;
-		}
 
 		function handleUser(userId) {
 
@@ -86,13 +83,13 @@
 				};
 			});
 		}
-
-		function updateCardClass(card, element) {
-			if (card.columnDefinition != 'CLOSED') {
-				element.removeClass('lavagna-closed-card');
-			} else {
-				element.addClass('lavagna-closed-card');
-			}
+	}
+	
+	function updateCardClass(card, element) {
+		if (card.columnDefinition !== 'CLOSED') {
+			element.removeClass('lavagna-closed-card');
+		} else {
+			element.addClass('lavagna-closed-card');
 		}
 	}
 
