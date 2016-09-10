@@ -623,11 +623,13 @@
 		return function(event) {
 			
 			var scopeForCardFragment = $scope.$new();
-			scopeForCardFragment['style'] = getStyle(cardFragmentElement);
 			scopeForCardFragment['card'] = card;
 			scopeForCardFragment['user'] = user;
 			scopeForCardFragment['metadata'] = metadata;
-			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata" ng-style="style"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
+			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
+			
+			copyPositionAndSize(cardFragmentElement, readOnlyCard);
+			
 			window.document.body.appendChild(readOnlyCard);
 			var position = $mdPanel.newPanelPosition()
 				.relativeTo($element)
@@ -639,6 +641,7 @@
 					attachTo: angular.element(document.body),
 					controller: function(mdPanelRef) {
 						this.mdPanelRef = mdPanelRef;
+						readOnlyCard.style.display = 'block';
 					},
 					controllerAs: '$ctrl',
 					template: '<lvg-card-fragment-v2-menu md-panel-ref="$ctrl.mdPanelRef" card="$ctrl.card" current-user-id="$ctrl.currentUserId" is-self-watching="$ctrl.isSelfWatching" is-assigned-to-card="$ctrl.isAssignedToCard" class="lvg-card-fragment-v2-menu md-whiteframe-z2"></lvg-card-fragment-v2-menu>',
@@ -664,9 +667,15 @@
 	}
 	
 	
-	function getStyle(element) {
+	function copyPositionAndSize(element, readOnlyCard) {
 		var r = element.getBoundingClientRect();
-		return {position:'absolute', left: (r.left + window.scrollX)+'px',top: (r.top + window.scrollY)+'px', height: (r.height-2)+'px', width:(r.width-2)+'px'}
+		
+		readOnlyCard.style.position = 'absolute';
+		readOnlyCard.style.left = (r.left + window.scrollX)+'px';
+		readOnlyCard.style.top = (r.top + window.scrollY)+'px';
+		readOnlyCard.style.height = (r.height-2)+'px';
+		readOnlyCard.style.width = (r.width-2)+'px';
+		readOnlyCard.style.display = 'none';
 	}
 	
 
