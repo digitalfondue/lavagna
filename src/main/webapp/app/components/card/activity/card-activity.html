@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div ng-if="$ctrl.activityFilterValue == 'COMMENT' && $ctrl.comments != {}" class="lvg-card-activity">
+        <div ng-if="$ctrl.activityFilterValue == 'COMMENT' && !$ctrl.hasComments" class="lvg-card-activity">
             <i class="lvg-card-activity__no-comments" translate="card.activity.no.comments"></i>
         </div>
     </md-card-content>

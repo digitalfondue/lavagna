@@ -7,3 +7,11 @@
     color: red;
     text-transform: uppercase
 }
+
+.lvg-card-comment__edit-headline {
+    height: 30px;
+}
+
+.lvg-card-comment__edit-content {
+    margin-top: 10px;
+}

@@ -3,7 +3,7 @@
 
     angular.module('lavagna.components').component('lvgUserAvatar', {
         bindings: {
-            userId: '<',
+            userId: '&',
             size: '@',
             colorHex: '@',
             bgColorHex: '@'
@@ -17,13 +17,13 @@
 
     function UserAvatarController(UserCache) {
         var ctrl = this;
-        
+
         ctrl.$onInit = function init() {
         	ctrl.size = ctrl.size || 28;
             ctrl.colorHex = ctrl.colorHex || '#333';
             ctrl.bgColorHex = ctrl.bgColorHex || '#e5e5e5';
-            
-            UserCache.user(ctrl.userId).then(function (user) {
+
+            UserCache.user(ctrl.userId()).then(function (user) {
                 ctrl.user = user;
             });
         }

@@ -73,6 +73,7 @@
         function loadData(promisesObject) {
             $q.all(promisesObject).then(function(result) {
                 if(result.comments) {
+                    ctrl.hasComments = result.comments.length > 0;
                     ctrl.comments = {};
                     angular.forEach(result.comments, function(comment) {
                         ctrl.comments[comment.id] = comment;

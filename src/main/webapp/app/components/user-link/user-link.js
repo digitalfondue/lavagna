@@ -3,7 +3,7 @@
 
     angular.module('lavagna.components').component('lvgUserLink', {
         bindings: {
-            userId: '<'
+            userId: '&'
         },
         template: '<a ng-if="::$ctrl.user" class="lvg-user-link" '
         	      	+ ' ui-sref="user.dashboard(::({provider: $ctrl.user.provider, username: $ctrl.user.username}))" '
@@ -15,11 +15,11 @@
 
     function UserLinkController(UserCache) {
         var ctrl = this;
-        
+
         ctrl.$onInit = loadUser;
 
         function loadUser() {
-            UserCache.user(ctrl.userId).then(function (user) {
+            UserCache.user(ctrl.userId()).then(function (user) {
                 ctrl.user = user;
             });
         }

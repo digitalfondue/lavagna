@@ -21,7 +21,7 @@
                   class="row row-inherit start-xs middle-xs">
                 <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="$ctrl.actionList.editName">
+                        <input ng-model="$ctrl.actionList.editName" required>
                     </md-input-container>
                 </div>
                 <div class="flex no-grow">
@@ -44,19 +44,18 @@
              lvg-dnd-opts="{group: 'actionlist', animation: 150, handle: '.lvg-card-action-list__item-handle'}"
              class="lvg-card-action-list__container">
             <div class="lvg-card-action-list__item"
-                 data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id">
+                 data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id + item.content">
                 <div ng-if="!item.edit" class="row row-inherit start-xs middle-xs">
                     <div class="lvg-card-action-list__item-icon lvg-card-action-list__item-handle flex no-grow"
                          data-lvg-has-permission="MANAGE_ACTION_LIST"></div>
                     <md-checkbox data-lvg-has-permission="MANAGE_ACTION_LIST"
                                  class="lvg-card-action-list__item-checkbox flex no-grow"
-                                 ng-disabled="editName"
                                  ng-model="item.type"
                                  ng-change="$ctrl.toggleAction(item)"
                                  ng-true-value="'ACTION_CHECKED'"
                                  ng-false-value="'ACTION_UNCHECKED'">
                     </md-checkbox>
-                    <div class="flex">{{ item.content }}</div>
+                    <div class="flex">{{::item.content}}</div>
                     <div class="flex no-grow">
                         <md-button class="lvg-small-icon-button flex flex-no-grow" data-lvg-has-permission="MANAGE_ACTION_LIST" ng-click="item.edit = true">
                             <md-tooltip><span translate>card.action.list.tooltip.edit.item</span></md-tooltip>
@@ -71,11 +70,11 @@
                 <form class="row row-inherit start-xs middle-xs" ng-if="item.edit" data-ng-submit="$ctrl.saveAction(item.id, item.content); item.edit = false">
                     <div class="flex">
                         <md-input-container md-no-float class="lvg-input-container__inline">
-                            <input ng-model="item.content">
+                            <input ng-model="item.content" required>
                         </md-input-container>
                     </div>
                     <div class="flex no-grow">
-                        <md-button class="lvg-small-icon-button" type="submit" ng-disabled="!item.content">
+                        <md-button class="lvg-small-icon-button" type="submit">
                             <md-icon md-svg-icon="ok"></md-icon>
                         </md-button>
                     </div>
