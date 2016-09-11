@@ -1,14 +1,15 @@
-.lvg-card-people__assigned md-list {
-    padding: 0 0;
-}
-
 .lvg-card-people__toolbar {
     background-color: inherit;
 }
 
 .lvg-card-people__user {
-    margin: 0;
-    padding: 0 !important;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+.lvg-card-people__user:last-child {
+    margin-bottom: 0;
+    padding: 0;
 }
 
 .lvg-card-people__actions {

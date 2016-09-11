@@ -25,15 +25,14 @@
     </md-card-title>
     <md-card-content>
         <div class="lvg-card-people__assigned">
-            <md-list ng-if="$ctrl.assignedUsers">
-                <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.assignedUsers">
-                    <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
-                    <md-button class="lvg-small-icon-button md-secondary" data-lvg-has-permission="UPDATE_CARD" ng-click="$ctrl.removeAssignForUser(user);">
-                        <md-tooltip><span translate>card.people.unassign</span></md-tooltip>
-                        <md-icon md-svg-icon="close"></md-icon>
-                    </md-button>
-                </md-list-item>
-            </md-list>
+            <div ng-repeat="user in $ctrl.assignedUsers"
+                 class="row row-inherit start-xs middle-xs lvg-card-people__user">
+                <lvg-card-people-user user-id="user.value.valueUser" class="flex"></lvg-card-people-user>
+                <md-button class="lvg-small-icon-button flex no-grow" data-lvg-has-permission="UPDATE_CARD" ng-click="$ctrl.removeAssignForUser(user);">
+                    <md-tooltip><span translate>card.people.unassign</span></md-tooltip>
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
             <div ng-if="!$ctrl.assignedUsers"><i class="lvg-card-people__no-user" data-translate>card.people.assignedToNone</i></div>
         </div>
         <div class="lvg-card-people__watching" ng-if="$ctrl.watchingUsers">
@@ -53,11 +52,10 @@
                 </md-button>
             </div>
             <div ng-if="watchExpanded">
-                <md-list>
-                    <md-list-item class="lvg-card-people__user" data-ng-repeat="user in $ctrl.watchingUsers">
-                        <lvg-card-people-user user-id="user.value.valueUser"></lvg-card-people-user>
-                    </md-list-item>
-                </md-list>
+                <div ng-repeat="user in $ctrl.watchingUsers"
+                     class="row row-inherit start-xs middle-xs lvg-card-people__user">
+                    <lvg-card-people-user user-id="user.value.valueUser" class="flex"></lvg-card-people-user>
+                </div>
             </div>
         </div>
     </md-card-content>

@@ -3,16 +3,16 @@
 
     angular.module('lavagna.components').component('lvgCardActionList', {
         bindings: {
-            card: '=',
-            actionList: '='
+            card: '<',
+            actionList: '<'
         },
         transclude: {
             handle: 'handle'
         },
         templateUrl: 'app/components/card/action-list/card-action-list.html',
-        controller: CardActionListController,
+        controller: ['Card', 'Notification', CardActionListController]
     });
-    
+
     var dndActionListCtrl;
     var dndActionListItem;
 
@@ -38,20 +38,20 @@
         ctrl.toggleAction = function(action) {
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
-        
-        
+
+
         ctrl.dragStartActionList = function(item) {
         	dndActionListItem = item;
         	dndActionListCtrl = ctrl;
         }
-        
+
         ctrl.dropActionList = function(index, oldIndex) {
-        	
+
         	var item = dndActionListCtrl.actionList.items[oldIndex];
-        	
+
         	dndActionListCtrl.actionList.items.splice(oldIndex, 1);
         	ctrl.actionList.items.splice(index, 0, item);
-        	
+
         	if(ctrl === dndActionListCtrl) {
             	ctrl.actionList.items.forEach(function(v, i) {
             		v.order = i;
