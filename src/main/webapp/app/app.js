@@ -12,8 +12,8 @@
 	if(window.location.href.indexOf('#') === (window.location.href.length-1) && supports_history_api()) {
 		window.history.pushState("", document.title, window.location.pathname);
 	}
-	
-	
+
+
 	window.csrfToken = window.document.documentElement.getAttribute('lavagna-csrf');;
 
     // set momentjs to use the current locale
@@ -31,7 +31,7 @@
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ngMessages',
 			'pascalprecht.translate',
-			'angularFileUpload', 'ngMaterial', 'ngAvatar']);
+			'angularFileUpload', 'ngMaterial']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));

@@ -237,9 +237,6 @@ public class ResourceController {
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
-                    "/js/angular-avatar.min.js",//
-
-
                     //
                     "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
 

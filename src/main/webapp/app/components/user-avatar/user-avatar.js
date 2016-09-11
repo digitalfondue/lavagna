@@ -8,14 +8,12 @@
             colorHex: '@',
             bgColorHex: '@'
         },
-        controller: ['UserCache', UserAvatarController],
-        template: '<ng-avatar ng-if="::$ctrl.user" width="{{::$ctrl.size}}" class="lvg-user-avatar" bg-color="{{::$ctrl.bgColorHex}}" '
-            			+' color="{{::$ctrl.colorHex}}" round-shape="true" initials="{{::($ctrl.user | userInitials)}}">'
-            			+'</ng-avatar>'
+        controller: ['UserCache', '$element', UserAvatarController],
+        template: '<div class="lvg-user-avatar"><span ng-if="::$ctrl.user">{{::($ctrl.user | userInitials)}}</span></div>'
 
     });
 
-    function UserAvatarController(UserCache) {
+    function UserAvatarController(UserCache, $element) {
         var ctrl = this;
 
         ctrl.$onInit = function init() {
@@ -26,6 +24,20 @@
             UserCache.user(ctrl.userId()).then(function (user) {
                 ctrl.user = user;
             });
-        }
+        };
+
+        ctrl.$postLink = function postLink() {
+            var innerSize = ctrl.size / 2; // we assume we always use even numbers
+            $element.children().css({
+                'width': ctrl.size + 'px',
+                'height': ctrl.size + 'px',
+                'color': ctrl.colorHex,
+                'background-color': ctrl.bgColorHex,
+                'border-radius': innerSize + 'px',
+                'font-size': innerSize + 'px',
+                'text-align': 'center',
+                'line-height': ctrl.size + 'px'
+            });
+        };
     };
 })();
