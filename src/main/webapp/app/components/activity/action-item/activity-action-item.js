@@ -6,7 +6,7 @@
             event: '<'
         },
         controller: ['CardCache', ActivityActionItemController],
-        templateUrl: 'app/components/activity/action-item/activity-action-item.html'
+        template: '<span translate translate-values="{name: $ctrl.actionItem.content, list: $ctrl.actionList.content}">{{\'activity.action.item.\' + $ctrl.event.event}}</span>'
     });
 
     function ActivityActionItemController(CardCache) {

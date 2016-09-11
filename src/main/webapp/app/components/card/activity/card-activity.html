@@ -18,7 +18,7 @@
                     <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
                 </div>
                 <div ng-switch-default>
-                    <lvg-activity event="activity" project="$ctrl.project">
+                    <lvg-activity event="activity" project="$ctrl.project" event-type="{{::activity.cardEvent}}">
                         <div class="flex no grow">
                             <lvg-user-link class="lvg-card-activity__user" user-id="activity.userId"></lvg-user-link>
                             <span class="lvg-card-activity__time">{{ activity.time | dateIncremental }}</span>

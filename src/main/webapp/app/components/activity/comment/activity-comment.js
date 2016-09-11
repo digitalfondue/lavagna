@@ -6,7 +6,7 @@
             event: '<'
         },
         controller: [ActivityCommentController],
-        templateUrl: 'app/components/activity/comment/activity-comment.html'
+        template: '<span translate>{{\'activity.comment.\' + $ctrl.event.event}}</span>'
     });
 
     function ActivityCommentController() {
