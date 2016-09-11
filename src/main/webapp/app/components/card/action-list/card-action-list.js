@@ -3,7 +3,6 @@
 
     angular.module('lavagna.components').component('lvgCardActionList', {
         bindings: {
-            card: '<',
             actionList: '<'
         },
         transclude: {

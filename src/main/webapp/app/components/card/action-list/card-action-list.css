@@ -69,3 +69,7 @@
 .lvg-card-action-list__item-delete-icon {
     background-image: url('../svg/trash.svg');
 }
+
+.lvg-card-action-list__container {
+    min-height: 34px;
+}

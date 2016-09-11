@@ -3,9 +3,8 @@
 
     angular.module('lavagna.components').component('lvgCardActivity', {
         bindings: {
-            card: '<',
-            project: '<',
-            user: '<'
+            card: '&',
+            project: '&'
         },
         templateUrl: 'app/components/card/activity/card-activity.html',
         controller: ['EventBus', '$q', 'Card', 'StompClient', CardActivityController]
@@ -13,6 +12,8 @@
 
     function CardActivityController(EventBus, $q, Card, StompClient) {
         var ctrl = this;
+
+        var card = ctrl.card();
 
         ctrl.activityFilterValue = 'COMMENT';
 
@@ -41,7 +42,7 @@
 
 
             //the /card-data has various card data related event that are pushed from the server that we must react
-            stompSubscription = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+            stompSubscription = StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
 
                 var promisesObject = {activities: loadActivity()};
@@ -52,7 +53,7 @@
             });
 
             // reload activities when the card is moved/renamed
-            unbindCardCache = EventBus.on('refreshCardCache-' + ctrl.card.id, function() {
+            unbindCardCache = EventBus.on('refreshCardCache-' + card.id, function() {
                 loadData({activities: loadActivity()});
             });
         }
@@ -63,11 +64,11 @@
         }
 
         function loadComments() {
-            return Card.comments(ctrl.card.id);
+            return Card.comments(card.id);
         }
 
         function loadActivity() {
-            return Card.activity(ctrl.card.id);
+            return Card.activity(card.id);
         }
 
         function loadData(promisesObject) {
@@ -92,7 +93,7 @@
         }
 
         function addComment(comment) {
-            Card.addComment(ctrl.card.id, comment).then(function() {
+            Card.addComment(card.id, comment).then(function() {
                 comment.content = null;
             });
         }

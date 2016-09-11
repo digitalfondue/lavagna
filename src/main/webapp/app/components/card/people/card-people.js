@@ -3,11 +3,11 @@
 
     angular.module('lavagna.components').component('lvgCardPeople', {
         bindings: {
-            project: '<',
-            card: '<',
+            project: '&',
+            card: '&',
             assignedUsers: '<',
             watchingUsers: '<',
-            user: '<'
+            user: '&'
         },
         controller: CardPeopleController,
         templateUrl: 'app/components/card/people/card-people.html'
@@ -16,9 +16,13 @@
     function CardPeopleController (BulkOperations, User) {
         var ctrl = this;
 
+        var card = ctrl.card();
+        var project = ctrl.project();
+        var user = ctrl.user();
+
         var currentCard = function() {
             var cardByProject = {};
-            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
+            cardByProject[project.shortName] = [card.id];
             return cardByProject;
         };
 
@@ -36,27 +40,27 @@
         }
 
         ctrl.isWatching = function() {
-            return isUserInList(ctrl.watchingUsers, ctrl.user);
+            return isUserInList(ctrl.watchingUsers, user);
         }
 
         ctrl.isAssigned = function() {
-            return isUserInList(ctrl.assignedUsers, ctrl.user);
+            return isUserInList(ctrl.assignedUsers, user);
         }
 
         ctrl.watchCard = function() {
-            BulkOperations.watch(currentCard(), ctrl.user);
+            BulkOperations.watch(currentCard(), user);
         };
 
         ctrl.unWatchCard = function() {
-            BulkOperations.unWatch(currentCard(), ctrl.user);
+            BulkOperations.unWatch(currentCard(), user);
         };
 
         ctrl.take = function() {
-            BulkOperations.assign(currentCard(), ctrl.user);
+            BulkOperations.assign(currentCard(), user);
         };
 
         ctrl.surrender = function() {
-             BulkOperations.removeAssign(currentCard(), {id: ctrl.user.id});
+             BulkOperations.removeAssign(currentCard(), {id: user.id});
         };
 
         ctrl.searchUser = function(text) {

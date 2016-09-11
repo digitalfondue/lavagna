@@ -3,7 +3,6 @@
 
     angular.module('lavagna.components').component('lvgCardFile', {
         bindings: {
-            card: '<',
             file: '<'
         },
         controller: CardFileController,
