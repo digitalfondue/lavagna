@@ -19,7 +19,7 @@ let tools = new MaterialTools({
   version: '1.1.1',
   modules: ['core', 'animate', 'layout', /*'gestures',*/ 'theming', 'palette', 'autocomplete', 'icon', /*'virtualRepeat', */
   'showHide', 'backdrop', /*'bottomSheet',*/ 'button', 'card', 'checkbox', 'chips', 'colors', 'content', 'datepicker', 
-  'dialog', 'divider', 'fabActions', 'fabShared', 'fabSpeedDial', /*'fabToolbar', 'gridList',*/ 'input', 'list', 'menu', 
+  'dialog', 'divider', 'fabActions', 'fabShared', 'fabSpeedDial', /*'fabToolbar', 'gridList',*/ 'input', /*'list',*/ 'menu', 
   'menuBar',/* 'navBar',*/ 'panel', 'progressCircular', 'progressLinear', 'radioButton', 'select', 'sidenav', /*'slider', 
   'sticky' , 'subheader', 'swipe', 'switch',*/ 'tabs', /*'toast',*/ 'toolbar', 'tooltip', 'whiteframe'],
 
