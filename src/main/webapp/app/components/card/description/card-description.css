@@ -6,6 +6,12 @@
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.lvg-card-description__content pre {
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
+}
+
 .lvg-card-description__footer > div {
     display: inline-block;
 }

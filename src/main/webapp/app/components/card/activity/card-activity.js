@@ -121,7 +121,7 @@
 
                 // update the number of rendered comments when going above threshold
                 if(ctrl.renderedItems <= NUMBER_OF_COMMENTS) {
-                    loadMore();
+                    ctrl.loadMore();
                 }
             });
         }

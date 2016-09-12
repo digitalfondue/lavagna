@@ -13,31 +13,31 @@
                 var boundElement = $element[0];
                 var loading = false;
 
-                var shouldLoadMoreOnBoundElement = function () {
+                function shouldLoadMoreOnBoundElement () {
                     var elementRect = element.getBoundingClientRect();
                     var boundElementRect = boundElement.getBoundingClientRect();
 
                     return boundElementRect.bottom < elementRect.bottom;
-                };
+                }
 
-                var shouldLoadMoreOnElement = function () {
+                function shouldLoadMoreOnElement () {
                     return element.scrollTop >= element.scrollHeight - element.offsetHeight - parseInt(element.offsetHeight / 2, 10);
-                };
+                }
 
-                var shouldLoadMore = function () {
+                function shouldLoadMore () {
                     return boundElement == element ? shouldLoadMoreOnElement() : shouldLoadMoreOnBoundElement();
                 };
 
-                var scrollHandler = function () {
+                function scrollHandler () {
                     var loadMore = shouldLoadMore();
 
                     if(!loading && loadMore) {
                         loading = true;
-                        scope.$apply(scope.call);
+                        scope.$applyAsync(scope.call);
                     }
 
                     loading = loading && loadMore;
-                };
+                }
 
                 angular.element(element).bind("scroll", scrollHandler);
 

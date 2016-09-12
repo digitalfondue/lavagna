@@ -7,12 +7,12 @@
         },
         controller: ['Card', 'Notification', CardActivityCommentController],
         template: '<div class="row row-inherit">'
-                   + '<div class="lvg-card-comment__avatar flex no-grow">'
+                   + '<div class="lvg-card-comment__avatar">'
                    +     '<lvg-user-avatar user-id="$ctrl.comment.userId"></lvg-user-avatar>'
                    + '</div>'
-                   + '<div class="flex">'
-                   +     '<lvg-rebuild-if-change to-watch="$ctrl.comment.updatedCount">'
-                   +         '<div class="lvg-card-comment__body flex column" ng-if="!$ctrl.editComment">'
+                   + '<div class="lvg-card-comment__container">'
+                   +     '<lvg-rebuild-if-change to-watch="$ctrl.comment.updatedCount" class="row row-inherit">'
+                   +         '<div class="lvg-card-comment__body" ng-if="!$ctrl.editComment">'
                    +             '<div class="lvg-card-comment__headline row row-inherit start-xs middle-xs">'
                    +                 '<div class="flex no grow">'
                    +                     '<lvg-user-link class="lvg-card-activity__user" user-id="$ctrl.comment.userId"></lvg-user-link>'

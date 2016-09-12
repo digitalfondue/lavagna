@@ -1,5 +1,6 @@
 .lvg-card-comment__avatar {
     margin-right: 15px;
+    flex: 0 0 28px;
 }
 
 .lvg-card-comment__edited {
@@ -14,4 +15,28 @@
 
 .lvg-card-comment__edit-content {
     margin-top: 10px;
+}
+
+.lvg-card-comment__container {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.lvg-card-comment__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.lvg-card-comment__content {
+    min-width: 0;
+}
+
+.lvg-card-comment__content pre {
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
 }
