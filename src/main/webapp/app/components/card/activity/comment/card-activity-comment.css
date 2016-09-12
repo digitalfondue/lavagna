@@ -33,6 +33,7 @@
 
 .lvg-card-comment__content {
     min-width: 0;
+    word-wrap: break-word;
 }
 
 .lvg-card-comment__content pre {

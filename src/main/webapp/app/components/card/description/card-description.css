@@ -6,6 +6,10 @@
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.lvg-card-description__content {
+    word-wrap: break-word;
+}
+
 .lvg-card-description__content pre {
     white-space: pre;
     word-wrap: normal;
