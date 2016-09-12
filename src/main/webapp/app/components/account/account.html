@@ -4,10 +4,10 @@
     data-is-current-user="$ctrl.isCurrentUser">
 </lvg-navbar-user>
 
-<div class="lvg-content lavagna-container-margin lvg-container-bg" md-whiteframe="1" lvg-has-permission="UPDATE_PROFILE">
+<div class="lvg-content lvg-content__row-item " md-whiteframe="1" lvg-has-permission="UPDATE_PROFILE">
 	<md-content>
 	<form role="form" ng-submit="$ctrl.update($ctrl.profile)">
-		<md-content layout-padding>
+		<md-content class="lvg-panel__body">
 			<md-input-container class="md-block">
 				<label><span translate>partials.me.displayName</span></label>
 				<input type="text" ng-model="$ctrl.profile.displayName" placeholder="{{'partials.me.displayName.placeholder' | translate}}">
@@ -22,15 +22,15 @@
 			<div>
 				<md-checkbox ng-model="$ctrl.profile.skipOwnNotifications"><span translate>partials.me.enableSkipOwnNotifications</span></md-checkbox>
 			</div>
-			<div>
-				<md-button type="submit" class="md-primary md-raised"><span translate>partials.me.update</span></md-button>
-			</div>
 		</md-content>
+		<div>
+			<md-button type="submit" class="md-primary"><span translate>partials.me.update</span></md-button>
+		</div>
 	</form>
 	
 	<md-divider></md-divider>
 
-	<md-content layout-padding>
+	<md-content class="lvg-panel__body">
 		<div>
 			<md-checkbox ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"><span translate>partials.me.calendar.disableFeed</span></md-checkbox>
 		</div>
@@ -41,7 +41,7 @@
 	<md-divider></md-divider>
 	
 	
-	<md-content layout-padding>
+	<md-content>
 		<div>
 			<md-button ng-click="$ctrl.clearAllTokens()"><span translate>partials.me.clearAllTokens</span></md-button>
 		</div>
