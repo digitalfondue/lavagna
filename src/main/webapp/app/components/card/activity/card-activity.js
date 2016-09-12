@@ -7,15 +7,20 @@
             project: '&'
         },
         templateUrl: 'app/components/card/activity/card-activity.html',
-        controller: ['EventBus', '$q', 'Card', 'StompClient', CardActivityController]
+        controller: ['EventBus', '$element', '$q', 'Card', 'StompClient', CardActivityController]
     });
 
-    function CardActivityController(EventBus, $q, Card, StompClient) {
+    function CardActivityController(EventBus, $element, $q, Card, StompClient) {
         var ctrl = this;
 
         var card = ctrl.card();
+        var NUMBER_OF_COMMENTS;
+        var NUMBER_OF_ACTIVITIES;
 
         ctrl.activityFilterValue = 'COMMENT';
+        ctrl.renderedItems = 10;
+
+        var ITEMS_INCREMENT = 10;
 
         function activityFilter (activity, index, activities) {
             if(ctrl.activityFilterValue === null) {
@@ -24,6 +29,18 @@
 
             return activity.cardEvent === ctrl.activityFilterValue && ctrl.comments[activity.dataId] !== undefined;
         }
+
+        ctrl.resetVisibleCount = function () {
+            ctrl.renderedItems = 10;
+        }
+
+        ctrl.loadMore = function () {
+            if(ctrl.renderedItems >= (ctrl.activityFilter == 'COMMENT' ? NUMBER_OF_COMMENTS : NUMBER_OF_ACTIVITIES)) {
+                return;
+            }
+
+            ctrl.renderedItems += ITEMS_INCREMENT;
+        };
 
         //
         ctrl.addComment = addComment;
@@ -63,6 +80,10 @@
         	unbindCardCache();
         }
 
+        ctrl.$postLink = function postLink() {
+
+        }
+
         function loadComments() {
             return Card.comments(card.id);
         }
@@ -74,13 +95,15 @@
         function loadData(promisesObject) {
             $q.all(promisesObject).then(function(result) {
                 if(result.comments) {
-                    ctrl.hasComments = result.comments.length > 0;
+                    NUMBER_OF_COMMENTS = result.comments.length;
+                    ctrl.hasComments = NUMBER_OF_COMMENTS > 0;
                     ctrl.comments = {};
                     angular.forEach(result.comments, function(comment) {
                         ctrl.comments[comment.id] = comment;
                     });
                 }
                 if(result.activities) {
+                    NUMBER_OF_ACTIVITIES = result.activities.length;
                     ctrl.activities = [];
                     angular.forEach(result.activities, function(activity) {
                         activity.cardEvent = activity.event === 'COMMENT_CREATE' && ctrl.comments[activity.dataId] !== undefined ?
@@ -95,6 +118,11 @@
         function addComment(comment) {
             Card.addComment(card.id, comment).then(function() {
                 comment.content = null;
+
+                // update the number of rendered comments when going above threshold
+                if(ctrl.renderedItems <= NUMBER_OF_COMMENTS) {
+                    loadMore();
+                }
             });
         }
     };

@@ -4,16 +4,16 @@
             <div class="row row-inherit">
                 <div class="lvg-headline"><span data-translate>card.activity</span></div>
                 <span class="flex"></span>
-                <md-radio-group class="lvg-card-activity__filter" ng-model="$ctrl.activityFilterValue">
+                <md-radio-group class="lvg-card-activity__filter" ng-model="$ctrl.activityFilterValue" ng-change="$ctrl.resetVisibleCount()">
                     <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="'COMMENT'" ng-checked="true">{{'card.activity.comments' | translate}}</md-radio-button>
                     <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="null">{{'card.activity.all' | translate}}</md-radio-button>
                 </md-radio-group>
             </div>
         </md-card-title-text>
     </md-card-title>
-    <md-card-content>
-        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
-            <div ng-switch="::activity.cardEvent">
+    <md-card-content lvg-infinite-scroll listen=".lvg-card-modal__background" call="$ctrl.loadMore()">
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' | limitTo:$ctrl.renderedItems track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
+            <div ng-switch="::activity.cardEvent" >
                 <div ng-switch-when="COMMENT">
                     <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
                 </div>
