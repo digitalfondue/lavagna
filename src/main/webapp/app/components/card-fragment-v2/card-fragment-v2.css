@@ -1,6 +1,7 @@
 lvg-card-fragment-v2 {
 	display: block;
 	overflow: hidden;
+	padding: 8px;
 }
 
 lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
@@ -25,9 +26,9 @@ lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
 	margin-top: 8px;
 	margin-bottom: 0;
 	padding-right: 5px;
-	padding-left:26px;
+	padding-left:20px;
 	color: #aaaaaa;
-	background-size: 24px 24px;
+	background-size: 18px 18px;
     background-repeat: no-repeat;
     height:24px;
     line-height: 24px;
