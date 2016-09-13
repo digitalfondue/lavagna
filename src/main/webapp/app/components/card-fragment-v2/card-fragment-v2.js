@@ -673,8 +673,8 @@
 		readOnlyCard.style.position = 'absolute';
 		readOnlyCard.style.left = (r.left + window.scrollX)+'px';
 		readOnlyCard.style.top = (r.top + window.scrollY)+'px';
-		readOnlyCard.style.height = (r.height-2)+'px';
-		readOnlyCard.style.width = (r.width-2)+'px';
+		readOnlyCard.style.height = (r.height-2-16)+'px';
+		readOnlyCard.style.width = (r.width-2-16)+'px';
 		readOnlyCard.style.display = 'none';
 	}
 	
