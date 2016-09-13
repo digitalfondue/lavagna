@@ -31,11 +31,14 @@
 	<md-divider></md-divider>
 
 	<md-content class="lvg-panel__body">
-		<div>
+		<p>
 			<md-checkbox ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"><span translate>partials.me.calendar.disableFeed</span></md-checkbox>
-		</div>
-		<div translate>partials.me.calendar.description</div>
-		<div>{{$ctrl.calendarFeedUrl}}</div>
+		</p>
+		
+		<md-input-container class="md-block">
+		  <label><span translate>partials.me.calendar.description</span></label>
+		  <input type="text" disabled ng-model="$ctrl.calendarFeedUrl">
+		</md-input-container>
 	</md-content>
 	
 	<md-divider></md-divider>
