@@ -7,7 +7,7 @@ lvg-user-dashboard .padding-left {
 	padding-left:16px;
 }
 
-/*
-lvg-user-dashboard lvg-card-activity  div {
-	display: inline;
-}*/
+.lvg-user-dashboard__project md-card {
+	margin-left:0!important;
+	margin-right:0!important;
+}
