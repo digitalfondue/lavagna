@@ -119,7 +119,7 @@ public class StatisticsService {
 	private Map<Long, Pair<Long, Long>> mergeCounts(List<EventsCount> createdCards, List<EventsCount> closedCards) {
 		Map<Long, Pair<Long, Long>> counts = new HashMap<>();
 		for (EventsCount count : createdCards) {
-			counts.put(count.getDate(), new Pair<>(count.getCount(), 0l));
+			counts.put(count.getDate(), new Pair<>(count.getCount(), 0L));
 		}
 		for (EventsCount count : closedCards) {
 			long created = 0;

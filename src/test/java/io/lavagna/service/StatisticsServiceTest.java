@@ -345,10 +345,10 @@ public class StatisticsServiceTest {
 		events = statisticsService.getCreatedAndClosedCardsByBoard(board.getId(), oneMonthAgo);
 
 		Assert.assertEquals(2, events.size());
-		Assert.assertEquals(1l, events.get(today.getTime()).getFirst().longValue());
-		Assert.assertEquals(0l, events.get(today.getTime()).getSecond().longValue());
-		Assert.assertEquals(2l, events.get(yesterday.getTime()).getFirst().longValue());
-		Assert.assertEquals(1l, events.get(yesterday.getTime()).getSecond().longValue());
+		Assert.assertEquals(1L, events.get(today.getTime()).getFirst().longValue());
+		Assert.assertEquals(0L, events.get(today.getTime()).getSecond().longValue());
+		Assert.assertEquals(2L, events.get(yesterday.getTime()).getFirst().longValue());
+		Assert.assertEquals(1L, events.get(yesterday.getTime()).getSecond().longValue());
 	}
 
 	@Test
@@ -369,10 +369,10 @@ public class StatisticsServiceTest {
 		events = statisticsService.getCreatedAndClosedCardsByProject(board.getProjectId(), oneMonthAgo);
 
 		Assert.assertEquals(2, events.size());
-		Assert.assertEquals(1l, events.get(today.getTime()).getFirst().longValue());
-		Assert.assertEquals(0l, events.get(today.getTime()).getSecond().longValue());
-		Assert.assertEquals(2l, events.get(yesterday.getTime()).getFirst().longValue());
-		Assert.assertEquals(1l, events.get(yesterday.getTime()).getSecond().longValue());
+		Assert.assertEquals(1L, events.get(today.getTime()).getFirst().longValue());
+		Assert.assertEquals(0L, events.get(today.getTime()).getSecond().longValue());
+		Assert.assertEquals(2L, events.get(yesterday.getTime()).getFirst().longValue());
+		Assert.assertEquals(1L, events.get(yesterday.getTime()).getSecond().longValue());
 	}
 
 	// Most active card

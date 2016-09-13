@@ -61,7 +61,7 @@ public class ExportImportController {
 	@RequestMapping(value = "/api/export", method = RequestMethod.POST)
 	public void export(HttpServletResponse resp) throws IOException {
 		resp.setHeader("Content-Disposition", "attachment; filename=\"lavagna-export-"
-				+ new SimpleDateFormat("YYYY-MM-dd").format(new Date()) + ".zip\"");
+				+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".zip\"");
 		resp.setContentType("application/octet-stream");
 		exportImportService.exportData(resp.getOutputStream());
 	}
