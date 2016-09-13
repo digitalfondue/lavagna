@@ -1,7 +1,7 @@
 <div class="lvg-content">
 	<h2 translate class="md-title">partials.user.generalInfo</h2>
 
-	<md-content class="lvg-panel__body" md-whiteframe="1" class="lvg-container-bg">
+	<md-content class="lvg-panel__body" md-whiteframe="1">
 		<table>
 			<tbody>
 				<tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
@@ -13,13 +13,13 @@
 	</md-content>
 </div>
 
-<div class="lvg-content lavagna-container-margin" ng-if="$ctrl.activeProjects.length > 0">
+<div class="lvg-content" ng-if="$ctrl.activeProjects.length > 0">
 	<h2 translate class="md-title">partials.user.mostActiveProjects</h2>
 	
 	<lvg-stats-panel-project data-ng-repeat="ab in $ctrl.profile.activeProjects | limitTo: 5" project="ab.project" class="lvg-user-dashboard__project"></lvg-stats-panel-project>
 </div>
 
-<div class="lvg-content lavagna-container-margin">
+<div class="lvg-content">
 	<h2 translate class="md-title">partials.user.latestActivity</h2>
 	
 	<md-content md-whiteframe="1" class="lvg-container-bg">
@@ -40,7 +40,7 @@
 				<md-list-item ng-repeat="activity in $ctrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id" class="md-2-line">
 					<div class="md-list-item-text">
 						<h3><span ng-bind="activity.time | dateIncremental"></span>: <lvg-card-link card-id="activity.cardId"></lvg-card-link></h3> 
-						<p><lvg-card-activity></lvg-card-activity></p>
+						<p><lvg-activity event="activity"></lvg-activity></p>
 					</div>
 					<md-divider ng-if="!$last"></md-divider>
 				</md-list-item>

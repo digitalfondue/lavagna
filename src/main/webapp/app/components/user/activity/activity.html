@@ -1,15 +1,15 @@
-<div class="lvg-content lavagna-container-margin">
-	<div md-whiteframe="1" class="lvg-container-bg">
+<div class="lvg-content lvg-content__row-item">
+	<md-content md-whiteframe="1">
 		<div ng-repeat="activity in $ctrl.latestActivity20">
-					<span ng-bind="::(activity.time | dateIncremental)"></span>: 
-					<lvg-card-link card-id="activity.cardId"></lvg-card-link>
-				<p><lvg-activity event="activity"></lvg-activity></p>
-			</div>
-			<md-divider ng-if="!$last"></md-divider>
-		</div>
-	</div>
+            <div>
+                <span ng-bind="::(activity.time | dateIncremental)"></span>:  <lvg-card-link card-id="activity.cardId"></lvg-card-link>
+                <div><lvg-activity event="activity"></lvg-activity></div>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+        </div>
+    </md-content>
 	
-	<div ng-show="$ctrl.page != 0 || $ctrl.hasMore" class="lavagna-container-margin">
+	<div ng-show="$ctrl.page != 0 || $ctrl.hasMore">
 		<md-button ng-show="$ctrl.page != 0" ng-click="$ctrl.loadFor($ctrl.page - 1)" class="pull-left"><span translate="button.next"></span></md-button>
 		<md-button ng-show="$ctrl.hasMore" ng-click="$ctrl.loadFor($ctrl.page + 1)" class="pull-right"><span translate="button.previous"></span></md-button>
 		<div class="clearfix"></div>
