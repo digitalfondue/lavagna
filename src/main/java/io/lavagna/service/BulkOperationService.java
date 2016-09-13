@@ -127,8 +127,8 @@ public class BulkOperationService {
 	public List<Integer> removeUserLabel(String projectShortName, int labelId, LabelValue value, List<Integer> cardIds, User user) {
 		CardLabel cl = cardLabelRepository.findLabelById(labelId);
 		Validate.isTrue(cl.getDomain() == LabelDomain.USER);
-		Project p = projectService.findByShortName(projectShortName);
-		Validate.isTrue(cl.getProjectId() == p.getId());
+		int projectId = projectService.findIdByShortName(projectShortName);
+		Validate.isTrue(cl.getProjectId() == projectId);
 		
 		return value == null ? removeLabelWithName(projectShortName, cardIds, user, cl.getName(), LabelDomain.USER) : 
 			removeLabelWithNameAndValue(projectShortName, cardIds, user, cl.getName(), LabelDomain.USER, value);
@@ -143,8 +143,8 @@ public class BulkOperationService {
 
 	private List<Integer> addLabel(String projectShortName, LabelValue value, List<Integer> cardIds, User user, CardLabel cl) {
 		int labelId = cl.getId();
-		Project p = projectService.findByShortName(projectShortName);
-		Validate.isTrue(cl.getProjectId() == p.getId());
+		int projectId = projectService.findIdByShortName(projectShortName);
+		Validate.isTrue(cl.getProjectId() == projectId);
 
 		List<Integer> filteredCardIds = keepCardIdsInProject(cardIds, projectShortName);
 
@@ -314,7 +314,7 @@ public class BulkOperationService {
 	}
 
 	private CardLabel findBy(String shortName, String name, LabelDomain labelDomain) {
-		return cardLabelRepository
-				.findLabelByName(projectService.findByShortName(shortName).getId(), name, labelDomain);
+	    int projectId = projectService.findIdByShortName(shortName);
+		return cardLabelRepository.findLabelByName(projectId, name, labelDomain);
 	}
 }

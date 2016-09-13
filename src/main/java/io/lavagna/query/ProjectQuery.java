@@ -49,6 +49,9 @@ public interface ProjectQuery {
 
 	@Query("SELECT * FROM LA_PROJECT WHERE PROJECT_ID = :projectId")
 	Project findById(@Bind("projectId") int projectId);
+	
+	@Query("SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = :shortName")
+	int findIdByShortName(@Bind("shortName") String shortName);
 
 	@Query("SELECT * FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = :shortName")
 	Project findByShortName(@Bind("shortName") String shortName);

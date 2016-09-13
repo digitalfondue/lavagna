@@ -34,7 +34,6 @@ import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Pair;
 import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
 import io.lavagna.model.ProjectAndBoard;
 import io.lavagna.model.SearchResults;
 import io.lavagna.model.User;
@@ -114,18 +113,18 @@ public class CardController {
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone", method = RequestMethod.GET)
 	public Milestones findCardsByMilestone(@PathVariable("projectShortName") String projectShortName) {
-		Project project = projectService.findByShortName(projectShortName);
+		int projectId = projectService.findIdByShortName(projectShortName);
 		Map<Integer, Integer> milestoneToIndex = new HashMap<>();
 		List<MilestoneInfo> milestones = new ArrayList<>();
-		getMilestones(project.getId(), milestoneToIndex, milestones);
+		getMilestones(projectId, milestoneToIndex, milestones);
 
-		for (MilestoneCount count : statisticsService.findCardsCountByMilestone(project.getId())) {
+		for (MilestoneCount count : statisticsService.findCardsCountByMilestone(projectId)) {
 			MilestoneInfo md = milestones.get(milestoneToIndex.get(count.getMilestoneId()));
 			md.getCardsCountByStatus().put(count.getColumnDefinition(), count.getCount());
 		}
 
 		Map<ColumnDefinition, Integer> statusColors = new EnumMap<>(ColumnDefinition.class);
-		for (BoardColumnDefinition cd : projectService.findColumnDefinitionsByProjectId(project.getId())) {
+		for (BoardColumnDefinition cd : projectService.findColumnDefinitionsByProjectId(projectId)) {
 			statusColors.put(cd.getValue(), cd.getColor());
 		}
 
@@ -159,7 +158,7 @@ public class CardController {
 	public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("milestone") String milestone, UserWithPermission user) {
 
-		int projectId = projectService.findByShortName(projectShortName).getId();
+		int projectId = projectService.findIdByShortName(projectShortName);
 		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
 		List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelIdAndValue(label.getId(), milestone);
 
@@ -360,7 +359,7 @@ public class CardController {
 	public SearchResults getOpenCardsByProjectShortName(
 			@PathVariable(value = "projectShortName") String shortName, @PathVariable(value = "page") int page,
 			UserWithPermission user) {
-	    return searchService.find(TO_ME_STATUS_OPEN, projectService.findByShortName(shortName).getId(), null, user, page);
+	    return searchService.find(TO_ME_STATUS_OPEN, projectService.findIdByShortName(shortName), null, user, page);
 	}
 
 	@Getter

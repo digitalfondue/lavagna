@@ -129,7 +129,7 @@ public class SearchController {
         if (term != null && splitted.length > 0) {
             String value = splitted.length == 1 ? splitted[0] : splitted[1];
             return useProjectSearch ?
-                userRepository.findUsers(value, projectService.findByShortName(projectName).getId(), Permission.READ) :
+                userRepository.findUsers(value, projectService.findIdByShortName(projectName), Permission.READ) :
                 userRepository.findUsers(value);
         } else {
             return Collections.emptyList();
@@ -185,6 +185,6 @@ public class SearchController {
     }
 
     private Integer toProjectId(String projectName) {
-        return projectName == null ? null : projectService.findByShortName(projectName).getId();
+        return projectName == null ? null : projectService.findIdByShortName(projectName);
     }
 }

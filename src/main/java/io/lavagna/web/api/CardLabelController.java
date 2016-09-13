@@ -64,8 +64,8 @@ public class CardLabelController {
 	@RequestMapping(value = "/api/project/{projectShortName}/labels", method = RequestMethod.GET)
 	public Map<Integer, CardLabel> findLabelsByProjectId(@PathVariable("projectShortName") String projectShortName) {
 		Map<Integer, CardLabel> res = new TreeMap<>();
-		Project project = projectService.findByShortName(projectShortName);
-		for (CardLabel cl : cardLabelRepository.findLabelsByProject(project.getId())) {
+		int projectId = projectService.findIdByShortName(projectShortName);
+		for (CardLabel cl : cardLabelRepository.findLabelsByProject(projectId)) {
 			res.put(cl.getId(), cl);
 		}
 		return res;
@@ -80,10 +80,10 @@ public class CardLabelController {
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/project/{projectShortName}/labels", method = RequestMethod.POST)
 	public CardLabel addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody Label label) {
-		Project project = projectService.findByShortName(projectShortName);
-		CardLabel cl = cardLabelRepository.addLabel(project.getId(), label.isUnique(), label.getType(),
+		int projectId = projectService.findIdByShortName(projectShortName);
+		CardLabel cl = cardLabelRepository.addLabel(projectId, label.isUnique(), label.getType(),
 				LabelDomain.USER, label.getName(), label.getColor());
-		eventEmitter.emitAddLabel(project.getShortName());
+		eventEmitter.emitAddLabel(projectShortName);
 		return cl;
 	}
 

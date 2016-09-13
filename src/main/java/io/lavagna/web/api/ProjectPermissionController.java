@@ -18,7 +18,6 @@ package io.lavagna.web.api;
 
 import io.lavagna.model.Permission;
 import io.lavagna.model.PermissionCategory;
-import io.lavagna.model.Project;
 import io.lavagna.model.Role;
 import io.lavagna.model.RoleAndMetadata;
 import io.lavagna.model.User;
@@ -62,15 +61,15 @@ public class ProjectPermissionController {
 	@RequestMapping(value = "/api/project/{projectShortName}/role", method = RequestMethod.GET)
 	public Map<String, RoleAndPermissions> findAllRolesAndRelatedPermissions(
 			@PathVariable("projectShortName") String projectShortName) {
-		Project project = projectService.findByShortName(projectShortName);
-		return permissionService.findAllRolesAndRelatedPermissionInProjectId(project.getId());
+		int projectId = projectService.findIdByShortName(projectShortName);
+		return permissionService.findAllRolesAndRelatedPermissionInProjectId(projectId);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role", method = RequestMethod.POST)
 	public int createRole(@PathVariable("projectShortName") String projectShortName, @RequestBody CreateRole newRole) {
-		Project project = projectService.findByShortName(projectShortName);
-		int res = permissionService.createRoleInProjectId(new Role(newRole.getName()), project.getId());
-		eventEmitter.emitCreateRole(project.getShortName());
+	    int projectId = projectService.findIdByShortName(projectShortName);
+		int res = permissionService.createRoleInProjectId(new Role(newRole.getName()), projectId);
+		eventEmitter.emitCreateRole(projectShortName);
 		return res;
 	}
 
@@ -78,54 +77,51 @@ public class ProjectPermissionController {
 	public void updateRole(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("roleName") String roleName, @RequestBody UpdateRole updateRole) {
 
-		Project project = projectService.findByShortName(projectShortName);
-		RoleAndMetadata role = permissionService.findRoleInProjectByName(project.getId(),
-				roleName);
+	    int projectId = projectService.findIdByShortName(projectShortName);
+		RoleAndMetadata role = permissionService.findRoleInProjectByName(projectId, roleName);
 
 		Validate.isTrue(!role.isReadOnly());
 
-		permissionService.updatePermissionsToRoleInProjectId(new Role(roleName), updateRole.getPermissions(),
-				project.getId());
-		eventEmitter.emitUpdatePermissionsToRole(project.getShortName());
+		permissionService.updatePermissionsToRoleInProjectId(new Role(roleName), updateRole.getPermissions(), projectId);
+		eventEmitter.emitUpdatePermissionsToRole(projectShortName);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role/{roleName}", method = RequestMethod.DELETE)
 	public void deleteRole(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("roleName") String roleName) {
-		Project project = projectService.findByShortName(projectShortName);
+	    int projectId = projectService.findIdByShortName(projectShortName);
 
-		RoleAndMetadata role = permissionService.findRoleInProjectByName(project.getId(),
-				roleName);
+		RoleAndMetadata role = permissionService.findRoleInProjectByName(projectId, roleName);
 
 		Validate.isTrue(role.isRemovable());
 
-		permissionService.deleteRoleInProjectId(new Role(roleName), project.getId());
-		eventEmitter.emitDeleteRole(project.getShortName());
+		permissionService.deleteRoleInProjectId(new Role(roleName), projectId);
+		eventEmitter.emitDeleteRole(projectShortName);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role/{roleName}/users/", method = RequestMethod.GET)
 	public List<User> findUserByRole(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("roleName") String roleName) {
-		Project project = projectService.findByShortName(projectShortName);
-		return permissionService.findUserByRoleAndProjectId(new Role(roleName), project.getId());
+	    int projectId = projectService.findIdByShortName(projectShortName);
+		return permissionService.findUserByRoleAndProjectId(new Role(roleName), projectId);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role/{roleName}/users/", method = RequestMethod.POST)
 	public void assignUsersToRole(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("roleName") String roleName, @RequestBody Users usersToAdd) {
 
-		Project project = projectService.findByShortName(projectShortName);
-		permissionService.assignRoleToUsersInProjectId(new Role(roleName), usersToAdd.getUserIds(), project.getId());
-		eventEmitter.emitAssignRoleToUsers(roleName, project.getShortName());
+	    int projectId = projectService.findIdByShortName(projectShortName);
+		permissionService.assignRoleToUsersInProjectId(new Role(roleName), usersToAdd.getUserIds(), projectId);
+		eventEmitter.emitAssignRoleToUsers(roleName, projectShortName);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role/{roleName}/remove/", method = RequestMethod.POST)
 	public void removeRoleToUsers(@PathVariable("projectShortName") String projectShortName,
 			@PathVariable("roleName") String roleName, @RequestBody Users usersToRemove) {
 
-		Project project = projectService.findByShortName(projectShortName);
-		permissionService.removeRoleToUsersInProjectId(new Role(roleName), usersToRemove.getUserIds(), project.getId());
-		eventEmitter.emitRemoveRoleToUsers(roleName, project.getShortName());
+	    int projectId = projectService.findIdByShortName(projectShortName);
+		permissionService.removeRoleToUsersInProjectId(new Role(roleName), usersToRemove.getUserIds(), projectId);
+		eventEmitter.emitRemoveRoleToUsers(roleName, projectShortName);
 	}
 
 	@RequestMapping(value = "/api/project/{projectShortName}/role/available-permissions", method = RequestMethod.GET)

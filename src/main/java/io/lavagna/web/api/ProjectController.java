@@ -110,15 +110,15 @@ public class ProjectController {
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/definitions", method = RequestMethod.GET)
     public List<BoardColumnDefinition> findColumnDefinitions(@PathVariable("projectShortName") String shortName) {
-        Project project = projectService.findByShortName(shortName);
-        return projectService.findColumnDefinitionsByProjectId(project.getId());
+        int projectId = projectService.findIdByShortName(shortName);
+        return projectService.findColumnDefinitionsByProjectId(projectId);
     }
 
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/board", method = RequestMethod.GET)
     public List<BoardInfo> findBoards(@PathVariable("projectShortName") String shortName) {
-        Project project = projectService.findByShortName(shortName);
-        return boardRepository.findBoardInfo(project.getId());
+        int projectId = projectService.findIdByShortName(shortName);
+        return boardRepository.findBoardInfo(projectId);
     }
     
     @ExpectPermission(Permission.READ)
@@ -131,17 +131,17 @@ public class ProjectController {
     @RequestMapping(value = "/api/project/{projectShortName}/board", method = RequestMethod.POST)
     public void createBoard(@PathVariable("projectShortName") String shortName, @RequestBody CreateRequest board) {
         checkShortName(board.getShortName());
-        Project project = projectService.findByShortName(shortName);
-        boardRepository.createNewBoard(board.getName(), board.getShortName(), board.getDescription(), project.getId());
-        eventEmitter.emitCreateBoard(project.getShortName());
+        int projectId = projectService.findIdByShortName(shortName);
+        boardRepository.createNewBoard(board.getName(), board.getShortName(), board.getDescription(), projectId);
+        eventEmitter.emitCreateBoard(shortName);
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}/definition", method = RequestMethod.PUT)
     public int updateColumnDefinition(@PathVariable("projectShortName") String shortName,
         @RequestBody UpdateColumnDefinition columnDefinition) {
-        Project project = projectService.findByShortName(shortName);
-        int res = projectService.updateColumnDefinition(project.getId(), columnDefinition.getDefinition(),
+        int projectId = projectService.findIdByShortName(shortName);
+        int res = projectService.updateColumnDefinition(projectId, columnDefinition.getDefinition(),
             columnDefinition.getColor());
         eventEmitter.emitUpdateColumnDefinition(shortName);
         return res;
@@ -151,8 +151,8 @@ public class ProjectController {
     @RequestMapping(value = "/api/project/{projectShortName}", method = RequestMethod.POST)
     public Project updateProject(@PathVariable("projectShortName") String shortName,
         @RequestBody UpdateRequest updatedProject) {
-        Project project = projectService.findByShortName(shortName);
-        project = projectService.updateProject(project.getId(), updatedProject.getName(),
+        int projectId = projectService.findIdByShortName(shortName);
+        Project project = projectService.updateProject(projectId, updatedProject.getName(),
             updatedProject.getDescription(), updatedProject.isArchived());
         eventEmitter.emitUpdateProject(shortName);
         return project;
@@ -162,7 +162,7 @@ public class ProjectController {
     @RequestMapping(value = "/api/project/{projectShortName}/task-statistics", method = RequestMethod.GET)
     public TaskStatistics projectTaskStatistics(@PathVariable("projectShortName") String projectShortName,
         UserWithPermission user) {
-        int projectId = projectService.findByShortName(projectShortName).getId();
+        int projectId = projectService.findIdByShortName(projectShortName);
 
         Map<ColumnDefinition, Integer> tasks = searchService
             .findTaksByColumnDefinition(projectId, null, true, user);
@@ -177,7 +177,7 @@ public class ProjectController {
     @RequestMapping(value = "/api/project/{projectShortName}/statistics/{fromDate}", method = RequestMethod.GET)
     public TaskStatisticsAndHistory projectStatistics(@PathVariable("projectShortName") String projectShortName,
         @PathVariable("fromDate") Date fromDate, UserWithPermission user) {
-        int projectId = projectService.findByShortName(projectShortName).getId();
+        int projectId = projectService.findIdByShortName(projectShortName);
 
         Map<ColumnDefinition, Integer> tasks = searchService
             .findTaksByColumnDefinition(projectId, null, true, user);
@@ -218,8 +218,8 @@ public class ProjectController {
 
         List<ProjectColumn> list = new ArrayList<>();
 
-        Project project = projectService.findByShortName(shortName);
-        for (BoardInfo bInfo : boardRepository.findBoardInfo(project.getId())) {
+        int projectId = projectService.findIdByShortName(shortName);
+        for (BoardInfo bInfo : boardRepository.findBoardInfo(projectId)) {
             int boardId = boardRepository.findBoardIdByShortName(bInfo.getShortName());
             for (BoardColumn bc : boardColumnRepository.findAllColumnsFor(boardId)) {
                 if (bc.getLocation().equals(BoardColumn.BoardColumnLocation.BOARD)) {

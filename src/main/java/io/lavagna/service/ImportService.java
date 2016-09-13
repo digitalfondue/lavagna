@@ -23,7 +23,6 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event;
-import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.web.api.model.TrelloImportRequest;
 import io.lavagna.web.api.model.TrelloImportRequest.BoardIdAndShortName;
@@ -246,8 +245,8 @@ public class ImportService {
 
 	@Transactional(readOnly = false)
 	public void saveTrelloBoardsToDb(String projectShortName, TrelloImportResponse tImport, User user) {
-		Project project = projectService.findByShortName(projectShortName);
-		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
+		int projectId = projectService.findIdByShortName(projectShortName);
+		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(projectId);
 		BoardColumnDefinition openDefinition = null;
 		for (BoardColumnDefinition def : definitions) {
 			if (openDefinition == null || openDefinition.getValue() != ColumnDefinition.OPEN) {
@@ -262,7 +261,7 @@ public class ImportService {
 
 		// Labels
 		Map<String, CardLabel> lavagnaLabels = new HashMap<>();
-		for (CardLabel cl : cardLabelRepository.findLabelsByProject(project.getId())) {
+		for (CardLabel cl : cardLabelRepository.findLabelsByProject(projectId)) {
 			if (cl.getDomain().equals(CardLabel.LabelDomain.USER)) {
 				lavagnaLabels.put(cl.getName(), cl);
 			}
@@ -270,22 +269,21 @@ public class ImportService {
 
 		for (String labelName : tImport.labels.keySet()) {
 			if (!lavagnaLabels.containsKey(labelName)) {
-				CardLabel cl = cardLabelRepository.addLabel(project.getId(), true, CardLabel.LabelType.NULL,
+				CardLabel cl = cardLabelRepository.addLabel(projectId, true, CardLabel.LabelType.NULL,
 						CardLabel.LabelDomain.USER, labelName, getColorFromTrelloColor(tImport.labels.get(labelName)));
 				lavagnaLabels.put(labelName, cl);
 			}
 		}
 
-		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE",
+		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(projectId, "DUE_DATE",
 				CardLabel.LabelDomain.SYSTEM);
 
-		CardLabel assignedLabel = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED",
+		CardLabel assignedLabel = cardLabelRepository.findLabelByName(projectId, "ASSIGNED",
 				CardLabel.LabelDomain.SYSTEM);
 
 		// Import the boards
 		for (TrelloBoard tBoard : tImport.boards) {
-			int boardId = boardRepository.createNewBoard(tBoard.getName(), tBoard.getShortName(), tBoard.getDesc(),
-					project.getId()).getId();
+			int boardId = boardRepository.createNewBoard(tBoard.getName(), tBoard.getShortName(), tBoard.getDesc(), projectId).getId();
 			for (Integer trelloColumnPos : tBoard.columns.keySet()) {
 				TrelloBoardColumn trelloColumn = tBoard.columns.get(trelloColumnPos);
 

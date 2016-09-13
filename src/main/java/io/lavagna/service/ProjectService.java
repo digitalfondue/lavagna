@@ -151,6 +151,10 @@ public class ProjectService {
 	public Project findByShortName(String shortName) {
 		return queries.findByShortName(shortName);
 	}
+	
+	public int findIdByShortName(String shortName) {
+	    return queries.findIdByShortName(shortName);
+	}
 
 
     public List<Project> findAllProjects(UserWithPermission user) {
@@ -248,14 +252,14 @@ public class ProjectService {
 
     public ProjectMetadata getMetadata(String shortName) {
         SortedMap<Integer, CardLabel> res = new TreeMap<>();
-        Project project = findByShortName(shortName);
-        for (CardLabel cl : cardLabelRepository.findLabelsByProject(project.getId())) {
+        int projectId = findIdByShortName(shortName);
+        for (CardLabel cl : cardLabelRepository.findLabelsByProject(projectId)) {
             res.put(cl.getId(), cl);
         }
         
-        SortedMap<Integer, LabelListValueWithMetadata> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(project.getId());
+        SortedMap<Integer, LabelListValueWithMetadata> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(projectId);
         
-        Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(project.getId());
+        Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(projectId);
         
         return new ProjectMetadata(res, labelListValues, columnsDefinition);
     }

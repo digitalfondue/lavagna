@@ -195,7 +195,7 @@ public class CardControllerTest {
 	public void testFindCardsByMilestone() {
 		when(cardLabelRepository.findLabelByName(1, "MILESTONE", CardLabel.LabelDomain.SYSTEM)).thenReturn(
 				new CardLabel(1, 1, true, CardLabel.LabelType.STRING, CardLabel.LabelDomain.SYSTEM, "MILESTONE", 0));
-		when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
+		when(projectService.findIdByShortName("TEST")).thenReturn(1);
 
 		List<MilestoneCount> counts = new ArrayList<>();
 		MilestoneCount count = new MilestoneCount(null, ColumnDefinition.OPEN, 1);

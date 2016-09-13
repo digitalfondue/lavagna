@@ -22,7 +22,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.CardLabel;
-import io.lavagna.model.Project;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.CardLabelRepository;
 import io.lavagna.service.CardRepository;
@@ -130,12 +129,11 @@ public class SearchControllerTest {
 
 	@Test
 	public void testSearch() {
-		Project p = new Project(4, "TEST", "SHORT", "desc", false);
-		when(projectService.findByShortName(p.getShortName())).thenReturn(p);
+		when(projectService.findIdByShortName("SHORT")).thenReturn(42);
 
 		searchController.search(null, "SHORT", 0, user);
 
-		verify(projectService).findByShortName("SHORT");
-		verify(searchService).find(anyListOf(SearchFilter.class), eq(4), any(Integer.class), eq(user), eq(0));
+		verify(projectService).findIdByShortName("SHORT");
+		verify(searchService).find(anyListOf(SearchFilter.class), eq(42), any(Integer.class), eq(user), eq(0));
 	}
 }
