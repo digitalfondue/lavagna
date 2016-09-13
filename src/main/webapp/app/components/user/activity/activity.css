@@ -1,0 +1,12 @@
+.user-activity__activity-container {
+	padding:8px;
+}
+
+.user-activity__activity {
+	padding-top:8px
+}
+
+.user-activity__time {
+	color: #aaa;
+}
+    
