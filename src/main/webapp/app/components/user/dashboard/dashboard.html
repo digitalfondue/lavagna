@@ -1,13 +1,13 @@
-<div class="lvg-content lavagna-container-margin">
+<div class="lvg-content">
 	<h2 translate class="md-title">partials.user.generalInfo</h2>
 
-	<md-content layout-padding md-whiteframe="1" class="lvg-container-bg">
-		<table class="user-info">
+	<md-content class="lvg-panel__body" md-whiteframe="1" class="lvg-container-bg">
+		<table>
 			<tbody>
-				<tr><th translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
-				<tr><th translate>partials.user.username</th><td>{{::$ctrl.userName}}</td></tr>
-				<tr ng-if="$ctrl.user.displayName != null"><th translate>partials.user.displayName</th><td>{{::$ctrl.user.displayName}}</td></tr>
-				<tr><th translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
+				<tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
+				<tr><th class="lvg-user-dashboard__user-info__th"  translate>partials.user.username</th><td>{{::$ctrl.userName}}</td></tr>
+				<tr ng-if="$ctrl.user.displayName != null"><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.displayName</th><td>{{::$ctrl.user.displayName}}</td></tr>
+				<tr><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
 			</tbody>
 		</table>
 	</md-content>
@@ -23,13 +23,13 @@
 	<h2 translate class="md-title">partials.user.latestActivity</h2>
 	
 	<md-content md-whiteframe="1" class="lvg-container-bg">
-		<div id="cal-heatmap" class="user-heathmap" layout-padding></div>
+		<div id="cal-heatmap" class="user-heathmap"></div>
 		
 		
 		<div ng-repeat="dateKey in $ctrl.eventsGroupedByDate.keyOrder">
 			<md-divider></md-divider>
-			<div ng-init="$ctrl.view.showList[$index] = false" layout="row">
-				<span flex class="lvg-line-height-as-md-button padding-left">{{dateKey}} : {{$ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events</span>
+			<div ng-init="$ctrl.view.showList[$index] = false">
+				<span class="lvg-line-height-as-md-button lvg-user-dashboard__padding-left">{{dateKey}} : {{$ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events</span>
 				<md-button class="md-icon-button" ng-click="$ctrl.view.showList[$index] = !$ctrl.view.showList[$index]">
 					<md-icon md-svg-icon="expand_more" ng-hide="$ctrl.view.showList[$index]"></md-icon>
 					<md-icon md-svg-icon="expand_less" ng-show="$ctrl.view.showList[$index]"></md-icon>

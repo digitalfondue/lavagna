@@ -1,9 +1,9 @@
-lvg-user-dashboard .user-info th {
+.lvg-user-dashboard__user-info__th {
 	text-align: left;
 	padding-right:8px;
 }
 
-lvg-user-dashboard .padding-left {
+.lvg-user-dashboard__padding-left {
 	padding-left:16px;
 }
 
