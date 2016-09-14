@@ -102,7 +102,7 @@ public class SecurityFilter extends AbstractBaseFilter {
 
 	private static boolean canApplyNoCachingHeaders(HttpServletRequest req) {
 		String u = req.getRequestURI();
-		return !("/".equals(u) || u.matches(".*\\.(css|gif|js|png|html|eot|svg|ttf|woff)$"));
+		return !("/".equals(u) || u.matches(".*\\.(css|gif|js|png|html|eot|svg|ttf|woff|woff2)$"));
 	}
 
 	/**
