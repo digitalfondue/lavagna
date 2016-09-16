@@ -1,9 +1,9 @@
 <div class="lvg-content lvg-content__row-item">
 	<md-content md-whiteframe="1">
 		<div ng-repeat="activity in $ctrl.latestActivity20">
-            <div class="user-activity__activity-container">
-                <span ng-bind="::(activity.time | dateIncremental)" class="user-activity__time"></span> <lvg-card-link card-id="activity.cardId"></lvg-card-link>
-                <div class="user-activity__activity"><lvg-activity event="activity"></lvg-activity></div>
+            <div class="lvg-user-activity__activity-container">
+                <span ng-bind="::(activity.time | dateIncremental)" class="lvg-user-activity__time"></span> <lvg-card-link card-id="activity.cardId"></lvg-card-link>
+                <div class="lvg-user-activity__activity"><lvg-activity event="activity"></lvg-activity></div>
             </div>
             <md-divider ng-if="!$last"></md-divider>
         </div>

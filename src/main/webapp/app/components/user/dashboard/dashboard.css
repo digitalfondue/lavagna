@@ -7,6 +7,11 @@
 	padding-left:16px;
 }
 
+.lvg-user-dashboard__padding-top-bottom {
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
 .lvg-user-dashboard__project md-card {
 	margin-left:0!important;
 	margin-right:0!important;
