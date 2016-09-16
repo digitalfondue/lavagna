@@ -3,8 +3,7 @@
 
     angular.module('lavagna.components').component('lvgActivityLabel', {
         bindings: {
-            event: '<',
-            projectMetadata: '<'
+            event: '<'
         },
         controller: [ActivityLabelController],
         template: '<span data-ng-switch="::$ctrl.event.labelName">'

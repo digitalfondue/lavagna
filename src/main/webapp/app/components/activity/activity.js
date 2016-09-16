@@ -4,7 +4,6 @@
     angular.module('lavagna.components').component('lvgActivity', {
         bindings: {
             event: '<',
-            projectMetadata: '<'
         },
         transclude: true,
         controller: [ActivityController],
@@ -31,8 +30,8 @@
                    +           '<div ng-switch-when="FILE_DELETE"><span translate translate-values="{name: $ctrl.event.valueString}">activity.file.delete</span></div>'
                    +           '<div ng-switch-when="DESCRIPTION_CREATE"><span translate>activity.description.create</span></div>'
                    +           '<div ng-switch-when="DESCRIPTION_UPDATE"><span translate>activity.description.update</span></div>'
-                   +           '<div ng-switch-when="LABEL_CREATE"><lvg-activity-label event="$ctrl.event" projectMetadata="$ctrl.projectMetadata"></lvg-activity-label></div>'
-                   +           '<div ng-switch-when="LABEL_DELETE"><lvg-activity-label event="$ctrl.event" projectMetadata="$ctrl.projectMetadata"></lvg-activity-label></div>'
+                   +           '<div ng-switch-when="LABEL_CREATE"><lvg-activity-label event="$ctrl.event"></lvg-activity-label></div>'
+                   +           '<div ng-switch-when="LABEL_DELETE"><lvg-activity-label event="$ctrl.event"></lvg-activity-label></div>'
                    +       '</div>'
                    +   '</div>'
     });

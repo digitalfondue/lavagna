@@ -18,7 +18,6 @@ package io.lavagna.service;
 
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
-import io.lavagna.model.Project;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.LabelAndValue;

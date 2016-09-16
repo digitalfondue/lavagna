@@ -9,9 +9,8 @@
         </div>
     </md-content>
 	
-	<div ng-show="$ctrl.page != 0 || $ctrl.hasMore">
-		<md-button ng-show="$ctrl.page != 0" ng-click="$ctrl.loadFor($ctrl.page - 1)" class="pull-left"><span translate="button.next"></span></md-button>
-		<md-button ng-show="$ctrl.hasMore" ng-click="$ctrl.loadFor($ctrl.page + 1)" class="pull-right"><span translate="button.previous"></span></md-button>
-		<div class="clearfix"></div>
+	<div ng-show="$ctrl.page != 0 || $ctrl.hasMore" class="row row-inherit middle-xs between-xs">
+		<div><md-button ng-show="$ctrl.page != 0" ng-click="$ctrl.loadFor($ctrl.page - 1)"><span translate="button.next"></span></md-button></div>
+		<div><md-button ng-show="$ctrl.hasMore" ng-click="$ctrl.loadFor($ctrl.page + 1)"><span translate="button.previous"></span></md-button></div>
 	</div>
 </div>
