@@ -73,7 +73,6 @@ lvg-board-column {
 	background-size: 24px 24px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url('../svg/ic_playlist_add_black_48px.svg')
 }
 
 .lvg-board-column__menu-button {
@@ -84,7 +83,6 @@ lvg-board-column {
 	background-size: 24px 24px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url('../svg/ic_more_vert_black_48px.svg')
 }
 
 .lvg-board__dragging-columns lvg-board-column {

@@ -14,22 +14,22 @@
 		},
 		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', 'EventBus', 'UserCache', 'CardCache', '$mdPanel', CardFragmentV2Controller]
 	});
-	
+
 	//
 	var BASE_URL = document.querySelector('base').href;
 	if(BASE_URL[BASE_URL.length-1] !== '/') {
 		BASE_URL += '/';
 	}
 	//
-	
+
 
 
 	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, EventBus, UserCache, CardCache, $mdPanel) {
 		var ctrl = this;
-		
-		
+
+
 		var container = $element[0];
-		
+
 		ctrl.card = ctrl.cardRef();
 		//
 		ctrl.boardShortName = ctrl.card.boardShortName,
@@ -55,33 +55,33 @@
         ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
         ctrl.isAssignedToCard = Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
         //
-        
-        
+
+
         var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
-        
-        
+
+
         var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $state, EventBus, UserCache, CardCache);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
-        
-        
+
+
         if(!ctrl.listView && ctrl.isSelfWatching) {
         	container.className += ' lavagna-is-watching';
 		}
-        
+
         if(ctrl.boardView) {
         	container.className += ' lavagna-board-panel';
         }
-        
+
         ctrl.$onDestroy = function() {
         	headCtrl.$onDestroy();
         	dataInfoCtrl.$onDestroy();
         }
 	}
-	
-	
+
+
 	function createElem(name) {
 		return window.document.createElement(name);
 	}
@@ -89,15 +89,15 @@
 	function createText(value) {
 		return window.document.createTextNode(value);
 	}
-	
-	
-	
+
+
+
 	//--------------------
 	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {
 		var ctrl = this;
-		
+
 		var subscribers = [];
-		
+
 		ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
 			var parent = ctrl.lvgCardFragmentV2;
 
@@ -112,13 +112,13 @@
 
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
-				
+
 				//card fragment menu
 				if(User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					var button = createElem('button');
-					button.className = 'lvg-card-fragment-v2__menu';
+					button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
 					baseDiv.appendChild(button);
-					
+
 					var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
 					button.addEventListener('click', menuEventListener);
 					subscribers.push(function() {
@@ -129,7 +129,7 @@
 				baseDiv.appendChild(createText(parent.shortCardName));
 				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 				var button = createElem('button');
-				button.className = 'lvg-card-fragment-v2__menu';
+				button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
 				baseDiv.appendChild(button);
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
@@ -149,19 +149,19 @@
 			domElement.appendChild(baseDiv);
 			domElement.appendChild(createText(parent.card.name))
 		}
-		
+
 		ctrl.$onDestroy = function onDestroy() {
 			for(var i = 0; i < subscribers.length; i++) {
 				subscribers[i]();
 			}
 		};
 	}
-	
-	
+
+
 	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope) {
 		var c = createElem("input");
 		c.type = 'checkbox';
-		
+
 
 		function isSelected() {
 			if(isBoardView) {
@@ -178,7 +178,7 @@
 		updateCheckbox();
 
 		subscribers.push(EventBus.on('updatecheckbox', updateCheckbox));
-		
+
 		var handleClickEvent;
 
 		if(isBoardView) {
@@ -196,7 +196,7 @@
 				});
 			};
 		}
-		
+
 		c.addEventListener('click', handleClickEvent);
 		subscribers.push(function() {
 			c.removeEventListener('click', handleClickEvent);
@@ -204,14 +204,14 @@
 
 		return c;
 	}
-	
+
 	function createLastUpdateTime(lastUpdateTime, $filter) {
 		var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
 		e.textContent = $filter('dateIncremental')(lastUpdateTime);
 		return e;
 	}
-	
-	
+
+
 	function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, $state, $location, subscribers, EventBus) {
 		var a = createElem("a");
 		a.className = 'lvg-card-fragment-v2__card-link';
@@ -221,15 +221,15 @@
 			var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
 				a.href = updateUrl($state, searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 			});
-			
+
 			subscribers.push(onUpdateQueryOrPageSub);
 		}
 		return a;
 	}
-	
-	
+
+
 	function updateUrl($state, q, page, targetState, projectName, boardShortName, sequenceNumber) {
-		
+
 		if(targetState === 'board.card') {
 			var cardUrl = BASE_URL+projectName+'/'+boardShortName+'-'+sequenceNumber;
 			if(q !== undefined) {
@@ -237,7 +237,7 @@
 			}
 			return cardUrl;
 		}
-		
+
 		return $state.href(targetState, {
 			projectName: projectName,
 			shortName: boardShortName,
@@ -245,8 +245,8 @@
 			q:  q,
 			page: page});
 	}
-	
-	
+
+
 	function appendIfNotNull(parent, child) {
 		if(child) {
 			parent.appendChild(child);
@@ -272,8 +272,8 @@
     		li.className += ' lvg-card-fragment-v2__card-data__due-date-past lvg-card-fragment-v2__card-data__white';
     	}
     }
-	
-	
+
+
 	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $state, EventBus, UserCache, CardCache) {
 		var ctrl = this;
 
@@ -333,18 +333,18 @@
         function filterSystemLabelByName(labelName) {
         	var res = [];
         	for(var i = 0; i < card.labels.length;i++) {
-        		var label = card.labels[i]; 
+        		var label = card.labels[i];
         		if(label.labelDomain === 'SYSTEM' && label.labelName === labelName) {
         			res.push(label);
         		}
         	}
         	return res;
         }
-        
+
         function filterUserLabels() {
         	var res = [];
         	for(var i = 0; i < card.labels.length;i++) {
-        		var label = card.labels[i]; 
+        		var label = card.labels[i];
         		if(label.labelDomain === 'USER') {
         			res.push(label);
         		}
@@ -421,7 +421,7 @@
         	//inline daysDiff filter
         	var dueDate = moment(dueDateLabel.labelValueTimestamp);
         	var daysDiff = moment().startOf('day').diff(dueDate, 'days');
-        	
+
 
         	var isTomorrow = notClosed  && daysDiff == -1;
         	var isNow = notClosed && daysDiff == 0;
@@ -456,12 +456,12 @@
 
         	var releaseDateStr = undefined;
         	var metadata = projectMetadata;
-        	
+
         	var hasMilestoneMetadata = milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList];
         	if(!hasMilestoneMetadata) {
         		return null;
         	}
-        	
+
         	if(hasMilestoneMetadata && metadata.labelListValues[milestoneLabel.labelValueList].metadata) {
         		releaseDateStr = metadata.labelListValues[milestoneLabel.labelValueList].metadata.releaseDate;
         	}
@@ -520,7 +520,7 @@
 
         	var divWrapper = createElem('div');
         	divWrapper.className = 'lvg-card-fragment-v2__label-container';
-        	
+
         	for(var i = 0; i < userCreatedLabels.length; i++) {
         		var value = userCreatedLabels[i];
         		var bg = labelBackground(projectMetadata.labels[value.labelId].color);
@@ -617,19 +617,19 @@
 			return a;
 		}
 	}
-	
-	
+
+
 	function prepareOpenCardMenu(cardFragmentElement, $scope, $compile, $mdPanel, $element, card, isSelfWatching, isAssignedToCard, user, metadata) {
 		return function(event) {
-			
+
 			var scopeForCardFragment = $scope.$new();
 			scopeForCardFragment['card'] = card;
 			scopeForCardFragment['user'] = user;
 			scopeForCardFragment['metadata'] = metadata;
 			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
-			
+
 			copyPositionAndSize(cardFragmentElement, readOnlyCard);
-			
+
 			window.document.body.appendChild(readOnlyCard);
 			var position = $mdPanel.newPanelPosition()
 				.relativeTo($element)
@@ -665,11 +665,11 @@
 			$mdPanel.open(conf);
 		}
 	}
-	
-	
+
+
 	function copyPositionAndSize(element, readOnlyCard) {
 		var r = element.getBoundingClientRect();
-		
+
 		readOnlyCard.style.position = 'absolute';
 		readOnlyCard.style.left = (r.left + window.scrollX)+'px';
 		readOnlyCard.style.top = (r.top + window.scrollY)+'px';
@@ -677,6 +677,6 @@
 		readOnlyCard.style.width = (r.width-2-16)+'px';
 		readOnlyCard.style.display = 'none';
 	}
-	
+
 
 })();

@@ -1,0 +1,36 @@
+.lvg-icon-18 {
+    background-color: transparent;
+    outline: 0;
+    border:none;
+    margin:0;
+    display:inline-block;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    height:18px;
+    width:18px;
+    line-height: 18px;
+}
+
+.lvg-icon__drag-handle {
+    background-image: url('../svg/drag.svg');
+}
+
+.lvg-icon__edit {
+    background-image: url('../svg/ic_mode_edit_black_48px.svg');
+}
+
+.lvg-icon__delete {
+    background-image: url('../svg/ic_delete_black_48px.svg');
+}
+
+.lvg-icon__add-card {
+    background-image: url('../svg/ic_playlist_add_black_48px.svg')
+}
+
+.lvg-icon__menu-vertical {
+    background-image: url('../svg/ic_more_vert_black_48px.svg')
+}
+
+.lvg-icon__expand-more {
+    background-image: url('../svg/ic_expand_more_black_48px.svg')
+}

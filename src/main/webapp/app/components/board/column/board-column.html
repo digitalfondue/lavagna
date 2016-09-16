@@ -10,14 +10,14 @@
                 <span ng-if="$ctrl.cardsInColumn.length > 0" ng-bind="'('+$ctrl.cardsInColumn.length+')'"></span>
             </div>
             <div class="lvg-board-column__header-add-card flex no-grow">
-                <md-button class="md-icon-button lvg-board-column__add-card-button" ng-click="$ctrl.newCard()">
+                <md-button class="md-icon-button lvg-board-column__add-card-button lvg-icon__add-card" ng-click="$ctrl.newCard()">
                     <md-tooltip>{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-tooltip>
                 </md-button>
             </div>
             <div class="lvg-board-column__header-menu flex no-grow"
                  data-lvg-has-at-least-one-permission="CREATE_CARD,RENAME_COLUMN,MOVE_CARD,MOVE_COLUMN">
                 <md-menu>
-                    <md-button class="md-icon-button lvg-board-column__menu-button" ng-click="$mdOpenMenu($event)"></md-button>
+                    <md-button class="md-icon-button lvg-board-column__menu-button lvg-icon__menu-vertical" ng-click="$mdOpenMenu($event)"></md-button>
                     <md-menu-content>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>

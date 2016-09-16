@@ -33,6 +33,14 @@
     height: 34px;
 }
 
+.lvg-card-action-list__item-controls {
+    display: none;
+}
+
+.lvg-card-action-list__item:hover .lvg-card-action-list__item-controls {
+    display: flex;
+}
+
 .lvg-card-action-list__item:last-child {
     margin-bottom: 0;
 }
@@ -42,32 +50,8 @@
 }
 
 .lvg-card-action-list__item-checkbox {
-    margin-bottom: 0;
-}
-
-.lvg-card-action-list__item-icon {
-    background-color: transparent;
-    outline: 0;
-    border:none;
-    margin:0;
-    display:inline-block;
-    background-size: 18px 18px;
-    background-repeat: no-repeat;
-    height:18px;
-    width:18px;
-    line-height: 18px;
-}
-
-.lvg-card-action-list__item-handle {
-    background-image: url('../svg/drag.svg');
-}
-
-.lvg-card-action-list__item-edit-icon {
-    background-image: url('../svg/ic_mode_edit_black_48px.svg');
-}
-
-.lvg-card-action-list__item-delete-icon {
-    background-image: url('../svg/trash.svg');
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .lvg-card-action-list__container {

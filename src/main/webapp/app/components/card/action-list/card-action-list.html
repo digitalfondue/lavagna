@@ -46,7 +46,7 @@
             <div class="lvg-card-action-list__item"
                  data-ng-repeat="item in $ctrl.actionList.items | orderBy:'order' track by item.id + item.content">
                 <div ng-if="!item.edit" class="row row-inherit start-xs middle-xs">
-                    <div class="lvg-card-action-list__item-icon lvg-card-action-list__item-handle flex no-grow"
+                    <div class="lvg-card-action-list__item-icon lvg-card-action-list__item-handle lvg-icon__drag-handle flex no-grow"
                          data-lvg-has-permission="MANAGE_ACTION_LIST"></div>
                     <md-checkbox data-lvg-has-permission="MANAGE_ACTION_LIST"
                                  class="lvg-card-action-list__item-checkbox flex no-grow"
@@ -56,14 +56,14 @@
                                  ng-false-value="'ACTION_UNCHECKED'">
                     </md-checkbox>
                     <div class="flex">{{::item.content}}</div>
-                    <div class="flex no-grow">
+                    <div class="flex no-grow lvg-card-action-list__item-controls">
                         <md-button class="lvg-small-icon-button flex flex-no-grow" data-lvg-has-permission="MANAGE_ACTION_LIST" ng-click="item.edit = true">
                             <md-tooltip><span translate>card.action.list.tooltip.edit.item</span></md-tooltip>
-                            <div class="lvg-card-action-list__item-icon lvg-card-action-list__item-edit-icon"></div>
+                            <div class="lvg-icon-18 lvg-icon__edit"></div>
                         </md-button>
                         <md-button class="lvg-small-icon-button" data-lvg-has-permission="MANAGE_ACTION_LIST" ng-click="$ctrl.deleteAction(item);">
                             <md-tooltip><span translate>card.action.list.tooltip.delete.item</span></md-tooltip>
-                            <div class="lvg-card-action-list__item-icon lvg-card-action-list__item-delete-icon"></div>
+                            <div class="lvg-icon-18 lvg-icon__delete"></div>
                         </md-button>
                     </div>
                 </div>
