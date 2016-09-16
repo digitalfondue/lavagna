@@ -102,7 +102,9 @@
                         </div>
                         <div data-ng-if="$ctrl.milestones[0]">
                             <a data-ui-sref="project.milestones({projectName: $ctrl.project.shortName})">
-                                <lvg-label-val-v2 value-ref="$ctrl.milestones[0]" project-metadata-ref="$ctrl.project.metadata"></lvg-label-val-v2>
+                                <lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash">
+                                    <lvg-label-val-v2 value-ref="$ctrl.milestones[0]" project-metadata-ref="$ctrl.project.metadata"></lvg-label-val-v2>
+                                </lvg-rebuild-if-change>
                             </a>
                         </div>
                     </div>
