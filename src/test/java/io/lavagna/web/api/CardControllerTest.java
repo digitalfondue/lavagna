@@ -24,34 +24,24 @@ import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
-import io.lavagna.model.CardLabel;
 import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectAndBoard;
 import io.lavagna.model.User;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.CardDataRepository;
-import io.lavagna.service.CardLabelRepository;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.CardService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
 import io.lavagna.web.api.CardController.CardData;
 import io.lavagna.web.api.CardController.ColumnOrders;
-import io.lavagna.web.api.model.MilestoneInfo;
-import io.lavagna.web.api.model.Milestones;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,15 +60,11 @@ public class CardControllerTest {
 	@Mock
 	private CardDataRepository cardDataRepository;
 	@Mock
-	private CardLabelRepository cardLabelRepository;
-	@Mock
 	private BoardRepository boardRepository;
 	@Mock
 	private ProjectService projectService;
 	@Mock
 	private BoardColumnRepository boardColumnRepository;
-	@Mock
-	private StatisticsService statisticsService;
 	@Mock
 	private SearchService searchService;
 	@Mock
@@ -98,8 +84,8 @@ public class CardControllerTest {
 
 	@Before
 	public void prepare() {
-		cardController = new CardController(cardRepository, cardService, cardLabelRepository, boardRepository,
-				projectService, boardColumnRepository, statisticsService, searchService, eventEmitter);
+		cardController = new CardController(cardRepository, cardService, boardRepository,
+				projectService, boardColumnRepository, searchService, eventEmitter);
 
 		ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
 				project.getDescription(), project.isArchived(), board.getId(), board.getShortName(), board.getName(),
@@ -189,27 +175,5 @@ public class CardControllerTest {
 	public void updateCardOrder() {
 		when(boardColumnRepository.findById(columnId)).thenReturn(boardColumn);
 		cardController.updateCardOrder(columnId, Arrays.<Number>asList(1, 2, 3));
-	}
-
-	@Test
-	public void testFindCardsByMilestone() {
-		when(cardLabelRepository.findLabelByName(1, "MILESTONE", CardLabel.LabelDomain.SYSTEM)).thenReturn(
-				new CardLabel(1, 1, true, CardLabel.LabelType.STRING, CardLabel.LabelDomain.SYSTEM, "MILESTONE", 0));
-		when(projectService.findIdByShortName("TEST")).thenReturn(1);
-
-		List<MilestoneCount> counts = new ArrayList<>();
-		MilestoneCount count = new MilestoneCount(null, ColumnDefinition.OPEN, 1);
-		counts.add(count);
-		when(statisticsService.findCardsCountByMilestone(1)).thenReturn(counts);
-
-		List<LabelListValueWithMetadata> listValues = new ArrayList<>();
-		when(cardLabelRepository.findListValuesByLabelId(1)).thenReturn(listValues);
-
-		Milestones cardsByMilestone = cardController.findCardsByMilestone("TEST");
-
-		Assert.assertEquals(1, cardsByMilestone.getMilestones().size());
-		MilestoneInfo md = cardsByMilestone.getMilestones().get(0);
-		Assert.assertEquals("Unassigned", md.getLabelListValue().getValue());
-		Assert.assertEquals(0, cardsByMilestone.getStatusColors().size());
 	}
 }

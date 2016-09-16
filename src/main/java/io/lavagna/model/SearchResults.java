@@ -35,7 +35,7 @@ public class SearchResults {
 		this.count = count;
 		this.currentPage = currentPage;
 		this.countPerPage = countPerPage;
-		totalPages = paginate ? ((count + countPerPage - 1) / countPerPage) : 1;
+		this.totalPages = paginate ? ((count + countPerPage - 1) / countPerPage) : 1;
 		this.paginate = paginate;
 	}
 }

@@ -18,21 +18,13 @@ package io.lavagna.web.api;
 
 import static io.lavagna.service.SearchFilter.FilterType;
 import static io.lavagna.service.SearchFilter.ValueType;
-import static io.lavagna.service.SearchFilter.filter;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.MilestoneCount;
-import io.lavagna.model.Pair;
 import io.lavagna.model.Permission;
 import io.lavagna.model.ProjectAndBoard;
 import io.lavagna.model.SearchResults;
@@ -40,7 +32,6 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardLabelRepository;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.CardService;
 import io.lavagna.service.EventEmitter;
@@ -48,27 +39,18 @@ import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchFilter;
 import io.lavagna.service.SearchFilter.SearchFilterValue;
 import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
-import io.lavagna.web.api.model.MilestoneDetail;
-import io.lavagna.web.api.model.MilestoneInfo;
-import io.lavagna.web.api.model.Milestones;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,26 +62,22 @@ public class CardController {
 
 	private final CardRepository cardRepository;
 	private final CardService cardService;
-	private final CardLabelRepository cardLabelRepository;
 	private final BoardRepository boardRepository;
 	private final ProjectService projectService;
 	private final BoardColumnRepository boardColumnRepository;
-	private final StatisticsService statisticsService;
 	private final SearchService searchService;
 	private final EventEmitter eventEmitter;
 
 	
 	public CardController(CardRepository cardRepository, CardService cardService,
-			CardLabelRepository cardLabelRepository, BoardRepository boardRepository, ProjectService projectService,
-			BoardColumnRepository boardColumnRepository, StatisticsService statisticsService,
+			BoardRepository boardRepository, ProjectService projectService,
+			BoardColumnRepository boardColumnRepository,
 			SearchService searchService, EventEmitter eventEmitter) {
 		this.cardRepository = cardRepository;
 		this.cardService = cardService;
-		this.cardLabelRepository = cardLabelRepository;
 		this.boardRepository = boardRepository;
 		this.projectService = projectService;
 		this.boardColumnRepository = boardColumnRepository;
-		this.statisticsService = statisticsService;
 		this.searchService = searchService;
 		this.eventEmitter = eventEmitter;
 	}
@@ -108,77 +86,6 @@ public class CardController {
 	@RequestMapping(value = "/api/column/{columnId}/card", method = RequestMethod.GET)
 	public List<CardFullWithCounts> fetchAllInColumn(@PathVariable("columnId") int columnId) {
 		return cardService.fetchAllInColumn(columnId);
-	}
-
-	@ExpectPermission(Permission.READ)
-	@RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone", method = RequestMethod.GET)
-	public Milestones findCardsByMilestone(@PathVariable("projectShortName") String projectShortName) {
-		int projectId = projectService.findIdByShortName(projectShortName);
-		Map<Integer, Integer> milestoneToIndex = new HashMap<>();
-		List<MilestoneInfo> milestones = new ArrayList<>();
-		getMilestones(projectId, milestoneToIndex, milestones);
-
-		for (MilestoneCount count : statisticsService.findCardsCountByMilestone(projectId)) {
-			MilestoneInfo md = milestones.get(milestoneToIndex.get(count.getMilestoneId()));
-			md.getCardsCountByStatus().put(count.getColumnDefinition(), count.getCount());
-		}
-
-		Map<ColumnDefinition, Integer> statusColors = new EnumMap<>(ColumnDefinition.class);
-		for (BoardColumnDefinition cd : projectService.findColumnDefinitionsByProjectId(projectId)) {
-			statusColors.put(cd.getValue(), cd.getColor());
-		}
-
-		return new Milestones(milestones, statusColors);
-	}
-
-	private void getMilestones(int projectId, Map<Integer, Integer> milestoneToIndex, List<MilestoneInfo> milestones) {
-		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
-		List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelId(label.getId());
-		int foundUnassignedIndex = -1;
-		int mIndex = 0;
-		for (LabelListValue milestone : listValues) {
-			milestones.add(new MilestoneInfo(milestone, new EnumMap<ColumnDefinition, Long>(ColumnDefinition.class)));
-			milestoneToIndex.put(milestone.getId(), mIndex);
-			if ("Unassigned".equals(milestone.getValue())) {
-				foundUnassignedIndex = mIndex;
-			}
-			mIndex++;
-		}
-		if (foundUnassignedIndex < 0) {
-			LabelListValue unassigned = new LabelListValue(-1, 0, Integer.MAX_VALUE, "Unassigned");
-			milestones.add(new MilestoneInfo(unassigned, new EnumMap<ColumnDefinition, Long>(ColumnDefinition.class)));
-			milestoneToIndex.put(null, milestoneToIndex.size());
-		} else {
-			milestoneToIndex.put(null, foundUnassignedIndex);
-		}
-	}
-
-	@ExpectPermission(Permission.READ)
-	@RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}", method = RequestMethod.GET)
-	public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
-			@PathVariable("milestone") String milestone, UserWithPermission user) {
-
-		int projectId = projectService.findIdByShortName(projectShortName);
-		CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
-		List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelIdAndValue(label.getId(), milestone);
-
-		SearchFilter filter;
-		Map<Long, Pair<Long, Long>> assignedAndClosedCards;
-
-		if (listValues.size() > 0) {
-			filter = filter(FilterType.MILESTONE, ValueType.STRING, milestone);
-			assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(listValues.get(0),
-					DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
-		} else {
-			filter = filter(FilterType.MILESTONE, ValueType.UNASSIGNED, null);
-			assignedAndClosedCards = null;
-		}
-
-        SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION, SearchFilter.ValueType.STRING,
-            BoardColumnLocation.TRASH.toString());
-
-		SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), projectId, null, user);
-		return new MilestoneDetail(cards, assignedAndClosedCards);
 	}
 
 	/**

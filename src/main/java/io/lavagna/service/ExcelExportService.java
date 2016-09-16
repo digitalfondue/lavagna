@@ -214,7 +214,7 @@ public class ExcelExportService {
     public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user)
         throws IOException {
 
-        int projectId = projectService.findByShortName(projectShortName).getId();
+        int projectId = projectService.findIdByShortName(projectShortName);
         LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
         if (ms == null)
             throw new IllegalArgumentException();

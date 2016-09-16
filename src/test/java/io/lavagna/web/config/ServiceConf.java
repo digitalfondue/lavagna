@@ -35,6 +35,7 @@ import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.EventService;
+import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.ExportImportService;
 import io.lavagna.service.ImportService;
 import io.lavagna.service.LabelService;
@@ -202,5 +203,10 @@ public class ServiceConf {
 	@Bean
 	public OAuthLogin getOAuthLogin() {
 	    return mock(OAuthLogin.class);
+	}
+	
+	@Bean
+	public ExcelExportService getMilestoneExportService() {
+	    return mock(ExcelExportService.class);
 	}
 }
