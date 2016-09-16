@@ -12,29 +12,31 @@
             card: '<',
             user: '<'
         },
-        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Label', 'StompClient', 'Title', CardController]
+        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Label', 'Project', 'StompClient', 'Title', CardController]
     });
 
-    function CardController(EventBus, CardCache, Card, LabelCache, Label, StompClient, Title) {
+    function CardController(EventBus, CardCache, Card, LabelCache, Label, Project, StompClient, Title) {
         var ctrl = this;
-        
+
         var unbindCardCache = angular.noop;
         var unbindLabelCache = angular.noop;
         var unbindStomp = angular.noop;
-        
+
+        var projectMetadataSubscription;
+
         ctrl.$onInit = function() {
-        	
+
         	ctrl.labels = ctrl.project.metadata.labels;
             ctrl.assignedUsers = [];
             ctrl.watchingUsers = [];
             ctrl.milestones = [];
             ctrl.dueDates = [];
             ctrl.userLabels = {};
-            
+
             unbindCardCache = EventBus.on('refreshCardCache-' + ctrl.card.id, reloadCard);
-            
+
             unbindLabelCache = EventBus.on('refreshLabelCache-' + ctrl.project.shortName, loadLabel);
-            
+
             //the /card-data has various card data related event that are pushed from the server that we must react
             unbindStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
@@ -43,17 +45,20 @@
                     reloadCard();
                 }
             });
-            
+
             loadLabelValues();
+
+            projectMetadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl.project);
         }
-        
+
         ctrl.$onDestroy = function onDestroy() {
         	unbindCardCache();
         	unbindLabelCache();
         	unbindStomp();
+        	projectMetadataSubscription();
         }
-        
-        
+
+
 
         //------------------
 

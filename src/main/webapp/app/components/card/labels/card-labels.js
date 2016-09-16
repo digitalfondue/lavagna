@@ -16,19 +16,18 @@
         var ctrl = this;
         var project = ctrl.project;
         var card = ctrl.card;
-        ctrl.labels = ctrl.project.metadata.userLabels;
-        
-        ctrl.hasUserLabels = function(userLabels, labelValues) {
-            if(userLabels === undefined || labelValues === undefined) {
+
+        ctrl.hasUserLabels = function() {
+            if(project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
                 return false;
             }
-            
-            for(var v in userLabels) {
-            	if(labelValues[userLabels[v].id] !== undefined) {
+
+            for(var v in project.metadata.userLabels) {
+            	if(ctrl.labelValues[project.metadata.userLabels[v].id] !== undefined) {
             		return true;
             	}
             }
-            
+
             return false;
         };
 

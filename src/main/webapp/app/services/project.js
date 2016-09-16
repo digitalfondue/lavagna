@@ -120,6 +120,7 @@
 
             	function loadProjectMetadata() {
                 	Project.getMetadata(shortName).then(function(metadata) {
+                	    metadata = extractMetadata({data: metadata});
                 		if(assignToMap) {
                 			targetObject[shortName] = metadata;
                 		} else {
