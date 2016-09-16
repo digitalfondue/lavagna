@@ -1,7 +1,7 @@
 <div class="lvg-content">
 	<h2 translate class="md-title">partials.user.generalInfo</h2>
 
-	<md-content class="lvg-panel__body" md-whiteframe="1">
+	<md-content class="lvg-panel__body lvg-user-dashboard__white-bg" md-whiteframe="1">
 		<table>
 			<tbody>
 				<tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
@@ -23,9 +23,8 @@
 	<h2 translate class="md-title">partials.user.latestActivity</h2>
 	
 	<md-content md-whiteframe="1" class="lvg-container-bg">
-		<div id="cal-heatmap" class="user-heathmap"></div>
-		
-		
+		<div id="cal-heatmap" class="lvg-user-dashboard__heatmap"></div>
+
 		<div ng-repeat="dateKey in $ctrl.eventsGroupedByDate.keyOrder">
 			<md-divider></md-divider>
 			<div ng-init="$ctrl.view.showList[$index] = false">

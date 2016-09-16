@@ -8,16 +8,33 @@
         bindings: {
             profile: '<'
         },
-        controller: UserDashboardController,
+        controller: ['$filter', 'User', UserDashboardController],
         templateUrl: 'app/components/user/dashboard/dashboard.html'
     });
 
     function UserDashboardController($filter, User) {
         var ctrl = this;
+        
+        ctrl.$onInit = function init() {
+        	ctrl.view = {};
+            ctrl.userProvider = ctrl.profile.user.provider;
+            ctrl.userName = ctrl.profile.user.username;
 
-        ctrl.view = {};
+            //init
+            loadUser(ctrl.profile);
 
-        var showCalHeatMap = function (dailyActivity) {
+            showCalHeatMap(ctrl.profile.dailyActivity);
+
+            User.getUserActivity(ctrl.profile.user.provider, ctrl.profile.user.username).then(function (activities) {
+                ctrl.eventsGroupedByDate = groupByDate(activities);
+            });        	
+        }
+        
+        ctrl.$onDestroy = function destroy() {
+        	ctrl.cal.destroy();
+        }
+
+        function showCalHeatMap(dailyActivity) {
 
             var parser = function (data) {
                 var stats = {};
@@ -50,7 +67,7 @@
             }
         };
 
-        var groupByDate = function (events) {
+        function groupByDate(events) {
 
             var groupedByDate = {};
             var keyOrder = [];
@@ -68,22 +85,10 @@
             return {groupedByDate: groupedByDate, keyOrder: keyOrder};
         };
 
-        var loadUser = function (profile) {
+        function loadUser(profile) {
             ctrl.profile = profile;
             ctrl.user = profile.user;
             ctrl.activeProjects = profile.activeProjects;
         };
-
-        ctrl.userProvider = ctrl.profile.user.provider;
-        ctrl.userName = ctrl.profile.user.username;
-
-        //init
-        loadUser(ctrl.profile);
-
-        showCalHeatMap(ctrl.profile.dailyActivity);
-
-        User.getUserActivity(ctrl.profile.user.provider, ctrl.profile.user.username).then(function (activities) {
-            ctrl.eventsGroupedByDate = groupByDate(activities);
-        });
     }
 })();
