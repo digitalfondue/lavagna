@@ -6,6 +6,10 @@
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.lavagna-card-title-main {
+    width: 100%;
+}
+
 .lvg-card-description__content {
     word-wrap: break-word;
 }

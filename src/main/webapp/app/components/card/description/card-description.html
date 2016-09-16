@@ -1,14 +1,14 @@
 <md-card>
     <md-card-title>
-        <div data-ng-hide="editCardName">
+        <div class="min-width-0" data-ng-hide="editCardName">
             <md-card-title-text>
-                <span class="md-headline" data-lvg-has-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"
-                      data-ng-click="cardNameToEdit = $ctrl.card.name; editCardName=true"></span>
-                <span class="md-headline" data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"></span>
+                <div class="md-headline overflow-ellipsis" data-lvg-has-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"
+                      data-ng-click="cardNameToEdit = $ctrl.card.name; editCardName=true"></div>
+                <div class="md-headline overflow-ellipsis" data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"></div>
             </md-card-title-text>
         </div>
         <div class="lavagna-card-title-main" data-ng-show="editCardName">
-            <form class="row" data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
+            <form class="row row-inherit" data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
                 <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
                         <input required ng-model="cardNameToEdit" lvg-focus-on="editCardName">

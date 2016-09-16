@@ -141,6 +141,16 @@ html, body {
 
 */
 
+.row, .flex, .min-width-0 {
+    min-width: 0;
+}
+
+.overflow-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .padding-8 {
     padding: 8px;
 }

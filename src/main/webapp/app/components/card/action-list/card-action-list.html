@@ -1,10 +1,9 @@
 <md-card>
     <md-card-title>
-        <md-card-title-text>
-            <div class="row row-inherit" data-ng-if="!$ctrl.actionList.edit">
-                <span ng-transclude="handle" data-lvg-has-permission="MANAGE_ACTION_LIST"></span>
-                <div class="lvg-headline"><span data-translate>{{$ctrl.actionList.content}}</span></div>
-                <span class="flex"></span>
+        <div class="row row-inherit start-xs middle-xs" data-ng-if="!$ctrl.actionList.edit">
+            <div class="flex no-grow" ng-transclude="handle" data-lvg-has-permission="MANAGE_ACTION_LIST"></div>
+            <div class="flex overflow-ellipsis lvg-headline">{{$ctrl.actionList.content}}</div>
+            <div class="flex no-grow">
                 <md-button data-lvg-has-permission="MANAGE_ACTION_LIST"
                            class="lvg-small-icon-button"
                            ng-click="$ctrl.actionList.editName = $ctrl.actionList.content; $ctrl.actionList.edit = true;">
@@ -16,26 +15,26 @@
                     <md-icon md-svg-icon="delete"></md-icon>
                 </md-button>
             </div>
-            <form ng-if="$ctrl.actionList.edit"
-                  data-ng-submit="$ctrl.saveName($ctrl.actionList.editName); $ctrl.actionList.edit = false"
-                  class="row row-inherit start-xs middle-xs">
-                <div class="flex">
-                    <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input ng-model="$ctrl.actionList.editName" required>
-                    </md-input-container>
-                </div>
-                <div class="flex no-grow">
-                    <md-button type="submit" class="lvg-small-icon-button">
-                        <md-icon md-svg-icon="ok"></md-icon>
-                    </md-button>
-                </div>
-                <div class="flex no-grow">
-                    <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.actionList.edit = false">
-                        <md-icon md-svg-icon="close"></md-icon>
-                    </md-button>
-                </div>
-            </form>
-        </md-card-title-text>
+        </div>
+        <form ng-if="$ctrl.actionList.edit"
+              data-ng-submit="$ctrl.saveName($ctrl.actionList.editName); $ctrl.actionList.edit = false"
+              class="row row-inherit start-xs middle-xs">
+            <div class="flex">
+                <md-input-container md-no-float class="lvg-input-container__inline">
+                    <input ng-model="$ctrl.actionList.editName" required>
+                </md-input-container>
+            </div>
+            <div class="flex no-grow">
+                <md-button type="submit" class="lvg-small-icon-button">
+                    <md-icon md-svg-icon="ok"></md-icon>
+                </md-button>
+            </div>
+            <div class="flex no-grow">
+                <md-button class="lvg-small-icon-button" data-ng-click="$ctrl.actionList.edit = false">
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
+        </form>
     </md-card-title>
     <md-card-content>
         <div lvg-dnd="$ctrl.actionList.items"
@@ -55,7 +54,7 @@
                                  ng-true-value="'ACTION_CHECKED'"
                                  ng-false-value="'ACTION_UNCHECKED'">
                     </md-checkbox>
-                    <div class="flex">{{::item.content}}</div>
+                    <div class="flex overflow-ellipsis">{{::item.content}}</div>
                     <div class="flex no-grow lvg-card-action-list__item-controls">
                         <md-button class="lvg-small-icon-button flex flex-no-grow" data-lvg-has-permission="MANAGE_ACTION_LIST" ng-click="item.edit = true">
                             <md-tooltip><span translate>card.action.list.tooltip.edit.item</span></md-tooltip>
