@@ -13,3 +13,7 @@
 .lvg-stats-panel__icon {
 	display:inline-block;
 }
+
+.lvg-stats-panel__chart {
+    flex: 0 0 150px;
+}

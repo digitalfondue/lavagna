@@ -1,6 +1,7 @@
 <div class="row row-inherit">
 	<div data-ng-bind-html="$ctrl.item.description | markdown" class="lvg-stats-panel__description flex"></div>
-	<div data-ng-if="!$ctrl.item.archived && $ctrl.chartData">
+    <div class="flex"></div>
+	<div data-ng-if="!$ctrl.item.archived && $ctrl.chartData" class="lvg-stats-panel__chart">
 		<lvg-chart type="Doughnut" data="$ctrl.chartData" options="$ctrl.chartOptions"></lvg-chart>
 	</div>
 </div>
