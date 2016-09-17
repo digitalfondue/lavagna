@@ -20,12 +20,6 @@ ul.statistics-definition li.stat {
 	margin-right: 5px;
 }
 
-.lvg-progress {
-	border-radius: 0px;
-	margin-bottom: 5px;
-	height: 5px;
-}
-
 .lvg-milestone-clickable {
 	cursor: pointer;
 }
