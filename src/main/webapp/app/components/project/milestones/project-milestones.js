@@ -7,22 +7,13 @@
             project: '<'
         },
         templateUrl: 'app/components/project/milestones/project-milestones.html',
-        controller: ['EventBus', 'Card', 'User', 'Label', 'Notification', 'StompClient', ProjectMilestonesController],
+        controller: ['Card', 'EventBus', 'User', 'StompClient', ProjectMilestonesController],
     });
 
-    function ProjectMilestonesController(EventBus, Card, User, Label, Notification, StompClient) {
+    function ProjectMilestonesController(Card, EventBus, User, StompClient) {
         var ctrl = this;
         //
         ctrl.showArray = showArray;
-    	ctrl.closeMilestone = closeMilestone;
-		ctrl.openMilestone = openMilestone;
-		ctrl.orderCardByStatus = orderCardByStatus;
-		ctrl.moveDetailToPage = moveDetailToPage;
-		ctrl.clearMilestoneDetail = clearMilestoneDetail;
-		ctrl.loadMilestoneDetail = loadMilestoneDetail;
-    	ctrl.toggleMilestoneOpenStatus = toggleMilestoneOpenStatus;
-    	ctrl.updateMilestone = updateMilestone;
-		ctrl.updateMilestoneDate = updateMilestoneDate;
       	//
 		
 		var unbindLabelValue = angular.noop;
@@ -46,7 +37,6 @@
 			unbindMovedEvent();
 			unbindRenamedEvent();
 		};
-
         
 
         function showArray(array, minLength) {
@@ -54,18 +44,6 @@
                 return false;
             }
             return Object.keys(array).length > minLength;
-        }
-
-        function closeMilestone(val) {
-            Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
-        }
-
-        function openMilestone(val) {
-            Label.removeLabelListValueMetadata(val.id, 'status');
-        }
-
-        function orderCardByStatus(card) {
-            return card.columnDefinition == "CLOSED" ? 1 : 0;
         }
 
         function orderByStatus(milestone) {
@@ -85,14 +63,6 @@
             ctrl.cardsCountByStatus[milestone.labelListValue.value] = sorted;
         }
 
-        function moveDetailToPage(milestone, page) {
-            User.hasPermission('READ', ctrl.project.shortName).then(function () {
-                return Card.findCardsByMilestoneDetail(ctrl.project.shortName, milestone.labelListValue.value);
-            }).then(function (response) {
-                milestone.detail = response;
-            });
-        }
-
         function loadMilestonesInProject() {
             User.hasPermission('READ', ctrl.project.shortName).then(function () {
                 return Card.findCardsByMilestone(ctrl.project.shortName);
@@ -102,43 +72,9 @@
                 for (var index in response.milestones) {
                     var milestone = response.milestones[index];
                     orderByStatus(milestone);
-                    if (ctrl.milestoneOpenStatus[milestone.labelListValue.value]) {
-                        ctrl.moveDetailToPage(milestone, 0);
-                    }
                 }
                 ctrl.statusColors = response.statusColors;
             });
-        }
-        
-        function clearMilestoneDetail(milestone) {
-            milestone.detail = null;
-            milestone.currentPage = 1;
-        }
-
-        function loadMilestoneDetail(milestone) {
-            ctrl.moveDetailToPage(milestone, 0);
-        }
-
-        function toggleMilestoneOpenStatus(milestone) {
-            var currentOpenStatus = ctrl.milestoneOpenStatus[milestone.labelListValue.value];
-            currentOpenStatus ? ctrl.clearMilestoneDetail(milestone) : ctrl.loadMilestoneDetail(milestone);
-            ctrl.milestoneOpenStatus[milestone.labelListValue.value] = !currentOpenStatus;
-        }
-
-        function updateMilestone(milestone, newName) {
-            var newLabelValue = angular.extend({}, milestone.labelListValue);
-            newLabelValue.value = newName;
-            Label.updateLabelListValue(newLabelValue).catch(function(error) {
-                Notification.addAutoAckNotification('error', {key: 'notification.project-milestones.update.error'}, false);
-            });
-        }
-
-        function updateMilestoneDate(milestoneId, newDate) {
-            if (newDate) {
-                Label.updateLabelListValueMetadata(milestoneId, 'releaseDate', newDate);
-            } else {
-                Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
-            }
         }
 
     }
