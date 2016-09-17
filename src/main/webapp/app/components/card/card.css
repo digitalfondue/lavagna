@@ -1,12 +1,6 @@
-/*
-	- contains card style
-*/
-
-/*
-===================================
-==== misc =========================
-===================================
-*/
+lvg-component-card {
+    display: block;
+}
 
 .lavagna-closed-card {
 	color: #999;
