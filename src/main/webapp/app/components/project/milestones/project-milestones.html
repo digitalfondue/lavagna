@@ -8,19 +8,29 @@
             </div>
         </div>
         <md-card-title>
-            <md-card-title-text ng-bind="milestone.labelListValue.value" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}"></md-card-title-text>
+            <md-card-title-text>
+                <div class="row">
+	                <span class="col-xs-3" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="milestone.labelListValue.value"></span>
+	                <span class="col-xs-9 lvg-project-milestones__align-right">
+		                <span ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.value]" class="lvg-project-milestones__status">
+		                    <md-icon md-svg-icon="task" ng-style="$ctrl.statusColors[item.status]|color"></md-icon>
+		                    <span>{{item.status | capitalize}}:</span>
+		                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+		                </span>
+	                </span>
+                </div>
+            </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div data-ng-hide="milestone.totalCards > 0" translate>partials.project.milestones.noCards</div>
-            <div data-ng-hide="milestone.totalCards == 0">
-                <div ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.value]">
-                    <md-icon md-svg-icon="task" ng-style="$ctrl.statusColors[item.status]|color"></md-icon>
-                    <span>{{item.status | capitalize}}:</span>
-                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+            <div class="row">
+                <div class="col-xs-6">
+                    <span ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate}}</span>
+                    <span ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</span>
                 </div>
-                <div><span translate>project.milestones.total-cards</span>{{milestone.totalCards}}</div>
-                <div ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate}}</div>
-                <div ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</div>
+                <div class="col-xs-6 lvg-project-milestones__align-right">
+                    <div ng-hide="milestone.totalCards > 0" translate>partials.project.milestones.noCards</div>
+                    <div ng-hide="milestone.totalCards == 0"><span translate>project.milestones.total-cards</span>{{milestone.totalCards}}</div>
+                </div>
             </div>
         </md-card-content>
     </md-card>

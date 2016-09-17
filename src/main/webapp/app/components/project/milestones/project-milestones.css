@@ -7,3 +7,12 @@
 	height:5px;
 	float:left;
 }
+
+.lvg-project-milestones__align-right {
+	text-align: right;
+}
+
+.lvg-project-milestones__status {
+	display: inline-block;
+	margin-right:2px;
+}
