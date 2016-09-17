@@ -195,25 +195,6 @@ lvg-board {
 	font-size: 14px;
 }
 
-ul.assigned-users {
-	margin: 0;
-	padding: 0;
-}
-
-ul.assigned-users li.assigned-user {
-	list-style-type: none;
-	display: block;
-	color: #aaaaaa;
-	padding: 0;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
-ul.assigned-users li.assigned-user:first-child {
-	margin-top: 8px;
-}
-
 .lavagna-board-panel .body .card-info .fa, .lavagna-board-panel .body .card-data .fa {
 	color: #aaaaaa;
 }

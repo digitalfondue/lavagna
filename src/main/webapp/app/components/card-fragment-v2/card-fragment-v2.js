@@ -263,13 +263,13 @@
 
 	function addDueDateClasses(li, isTomorrow, isNow, isPast) {
     	if(isTomorrow) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow lvg-card-fragment-v2__card-data__white';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-tomorrow';
     	}
     	if(isNow) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now lvg-card-fragment-v2__card-data__white';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-now';
     	}
     	if(isPast) {
-    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past lvg-card-fragment-v2__card-data__white';
+    		li.className += ' lvg-card-fragment-v2__card-data__due-date-past';
     	}
     }
 
@@ -290,6 +290,12 @@
 			projectMetadata = ctrl.lvgCardFragmentV2.projectMetadata;
 	        notClosed = card.columnDefinition !== 'CLOSED';
 
+	        // labels
+	        handleLabels();
+
+	        // users
+	        handleAssigned();
+
 			// metadata
 			var liComment = handleComment();
 			var liActionList = handleActionList();
@@ -307,10 +313,6 @@
 				appendIfNotNull(divWrapper, liDueDate);
 				appendIfNotNull(divWrapper, liMilestone);
 			}
-
-			handleAssigned();
-
-			handleLabels();
 		}
 
 		ctrl.$onDestroy = function lvgCardFragmentV2DataInfoCtrlOnDestroy() {
@@ -382,11 +384,11 @@
 
     		var counts = card.counts;
 
-    		if(checkedCount > 0 && uncheckedCount == 0) {
-    			div.className += ' lvg-card-fragment-v2__card-data__action-full lvg-card-fragment-v2__card-data__white';
-    		}
+    		/*if(checkedCount > 0 && uncheckedCount == 0) {
+    			div.className += ' lvg-card-fragment-v2__card-data__action-full';
+    		}*/
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
-    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done lvg-card-fragment-v2__card-data__white';
+    			div.className += ' lvg-card-fragment-v2__card-data__action-not-done';
     		}
 
     		appendIconAndText(div, 'list', actionItemsSummary);

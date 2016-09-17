@@ -1,9 +1,10 @@
 .lvg-label {
 	display: inline-block;
 	margin-bottom: 5px;
-	margin-right: 2px;
-	padding: .5em .9em .5em .6em;
-	font-size: 11px;
+	margin-right: 5px;
+	padding: .5em .8em .5em .6em;
+	font-size: 12px;
+	border-radius: 4px;
 }
 
 .lvg-label.white a {
