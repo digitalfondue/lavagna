@@ -6,7 +6,7 @@
             event: '<'
         },
         controller: ['BoardCache', ActivityCardMoveController],
-        template: '<span translate translate-values="{from: $ctrl.columnFrom, to: $ctrl.columnTo}">activity.card.move</span>'
+        template: '<div translate translate-values="{from: $ctrl.columnFrom, to: $ctrl.columnTo}">activity.card.move</div>'
     });
 
     function ActivityCardMoveController(BoardCache) {

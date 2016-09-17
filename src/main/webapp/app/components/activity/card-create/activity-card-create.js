@@ -6,7 +6,7 @@
             event: '<'
         },
         controller: ['BoardCache', ActivityCardCreateController],
-        template: '<span translate translate-values="{card: $ctrl.event.valueString, column: $ctrl.columnName}">activity.card.create</span>'
+        template: '<div translate translate-values="{card: $ctrl.event.valueString, column: $ctrl.columnName}">activity.card.create</div>'
     });
 
     function ActivityCardCreateController(BoardCache) {

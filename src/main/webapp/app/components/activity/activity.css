@@ -1,0 +1,4 @@
+.lvg-activity__content span {
+    display: inline-block;
+    word-break: break-all;
+}
