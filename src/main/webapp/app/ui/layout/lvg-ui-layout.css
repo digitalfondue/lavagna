@@ -141,8 +141,9 @@ html, body {
 
 */
 
-.row, .flex, .min-width-0 {
+.flex-width {
     min-width: 0;
+    width: 100%;
 }
 
 .overflow-ellipsis {
