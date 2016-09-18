@@ -22,4 +22,29 @@
 	        </md-card-title-text>
         </md-card-title>
     </md-card>
+    
+    <md-card ng-if="$ctrl.detail.cards.found.length > 0">
+        <md-card-content>
+	        <table class="lvg-table">
+	            <thead>
+	                <tr>
+	                    <th data-translate>project.milestone.card-id</th>
+	                    <th data-translate>project.milestone.card-name</th>
+	                    <th data-translate>project.milestone.column</th>
+	                    <th data-translate>project.milestone.assigned-to</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr ng-repeat="card in $ctrl.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
+	                    <td>
+	                        <span ng-bind="::(card.boardShortName + '-' + card.sequence)"></span>
+	                    </td>
+	                    <td ng-bind="::card.name"></td>
+	                    <td ng-init="$ctrl.loadColumn(card)" ng-bind="::card.column.columnName"></td>
+	                    <td><span ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><lvg-user-link user-id="assigned.labelValueUser"></lvg-user-link> </span></td>
+	                </tr>
+	            </tbody>
+	        </table>
+        </md-card-content>
+    </md-card>
 </div>

@@ -10,7 +10,7 @@
         <md-card-title>
             <md-card-title-text>
                 <div class="row">
-	                <span class="col-xs-3">
+	                <span class="col-xs-3" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}">
 	                   <a ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ui-sref="project.milestone({projectName: $ctrl.project.shortName, id: milestone.labelListValue.id})" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="milestone.labelListValue.value"></a>
 	                   <span ng-if="(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ng-bind="milestone.labelListValue.value"></span>
                     </span>
