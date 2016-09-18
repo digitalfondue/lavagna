@@ -1,10 +1,10 @@
 .lvg-input-file__input {
-    width: 0.1px;
-    height: 0.1px;
+    width: 1px;
+    height: 1px;
     opacity: 0;
     overflow: hidden;
-    position: absolute;
     z-index: -1;
+    display: none;
 }
 
 .lvg-input-file__label {
