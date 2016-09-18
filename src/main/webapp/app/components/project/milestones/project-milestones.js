@@ -46,33 +46,12 @@
             return Object.keys(array).length > minLength;
         }
 
-        function orderByStatus(milestone) {
-            var insertStatusIfExists = function (milestone, source, target, status) {
-                if (source[status] != undefined) {
-                    target[target.length] = {status: status, count: source[status]};
-                    milestone.totalCards += source[status];
-                }
-            };
-
-            milestone.totalCards = 0;
-            var sorted = [];
-            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "BACKLOG");
-            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "OPEN");
-            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "DEFERRED");
-            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "CLOSED");
-            ctrl.cardsCountByStatus[milestone.labelListValue.value] = sorted;
-        }
-
         function loadMilestonesInProject() {
             User.hasPermission('READ', ctrl.project.shortName).then(function () {
                 return Card.findCardsByMilestone(ctrl.project.shortName);
             }).then(function (response) {
                 ctrl.cardsByMilestone = response.milestones;
-                ctrl.cardsCountByStatus = [];
-                for (var index in response.milestones) {
-                    var milestone = response.milestones[index];
-                    orderByStatus(milestone);
-                }
+                ctrl.cardsCountByStatus = response.cardsCountByStatus;
                 ctrl.statusColors = response.statusColors;
             });
         }

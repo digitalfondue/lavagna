@@ -378,7 +378,13 @@
             template: '<lvg-project-milestones project="rslvr.project"></lvg-project-milestones>'
         }).state('project.milestone', {
         	url: 'milestones/:id/',
-        	template: '<lvg-project-milestone></lvg-project-milestone>'
+        	template: '<lvg-project-milestone project="rslvr.project" id="rslvr.id"></lvg-project-milestone>',
+        	controllerAs: 'rslvr',
+        	controller: function(project, $stateParams) {
+        		this.project = project;
+        		this.id = $stateParams.id;
+        	},
+        	resolve: {project : function(ProjectCache, $stateParams) {return ProjectCache.project($stateParams.projectName);}}
         })/*.state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',

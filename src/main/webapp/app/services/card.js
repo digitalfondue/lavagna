@@ -46,7 +46,32 @@
 				return $http.get('api/card/' + id).then(extractData);
 			},
 			findCardsByMilestone: function (projectName) {
-				return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData);
+				
+				function insertStatusIfExists (milestone, source, target, status) {
+		            if (source[status] != undefined) {
+		                target[target.length] = {status: status, count: source[status]};
+		                milestone.totalCards += source[status];
+		            }
+		        }
+
+		        function orderByStatus(milestone) {
+		            milestone.totalCards = 0;
+		            var sorted = [];
+		            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "BACKLOG");
+		            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "OPEN");
+		            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "DEFERRED");
+		            insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "CLOSED");
+		            return sorted;
+		        }
+				
+				return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData).then(function(response) {
+					response.cardsCountByStatus = {};
+	                for (var index in response.milestones) {
+	                    var milestone = response.milestones[index];
+	                    response.cardsCountByStatus[milestone.labelListValue.id] = orderByStatus(milestone);
+	                }
+	                return response;
+				});
 			},
 			findCardsByMilestoneDetail: function (projectName, milestone) {
 				return $http.get('api/project/' + projectName + '/cards-by-milestone-detail/' + milestone).then(extractData);
