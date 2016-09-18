@@ -42,6 +42,7 @@ import io.lavagna.web.api.model.Milestones;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -90,17 +91,17 @@ public class MilestoneController {
     }
 
     @ExpectPermission(Permission.READ)
-    @RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestone}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/project/{projectShortName}/cards-by-milestone-detail/{milestoneId}", method = RequestMethod.GET)
     public MilestoneDetail findCardsByMilestoneDetail(@PathVariable("projectShortName") String projectShortName,
-        @PathVariable("milestone") String milestone, UserWithPermission user) {
+        @PathVariable("milestoneId") int milestoneId, UserWithPermission user) {
 
         int projectId = projectService.findIdByShortName(projectShortName);
-        LabelListValueWithMetadata ms = excelExportService.getMilestone(projectId, milestone);
+        LabelListValueWithMetadata ms = cardLabelRepository.findListValueById(milestoneId);
         if (ms == null) {
             throw new IllegalArgumentException("Milestone not found");
         }
 
-        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, milestone);
+        SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING, ms.getValue());
         List<MilestoneCount> mcs = statisticsService.findCardsCountByMilestone(projectId, ms.getId());
         Map<Long, Pair<Long, Long>> assignedAndClosedCards = statisticsService.getAssignedAndClosedCardsByMilestone(ms,
             DateUtils.addWeeks(DateUtils.truncate(new Date(), Calendar.DATE), -2));
@@ -165,6 +166,8 @@ public class MilestoneController {
         HSSFWorkbook wb = excelExportService.exportMilestoneToExcel(projectShortName, milestone, user);
 
         resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + "-" + milestone + ".xls");
-        wb.write(resp.getOutputStream());
+        try (OutputStream os = resp.getOutputStream()) {
+            wb.write(os);
+        }
     }
 }

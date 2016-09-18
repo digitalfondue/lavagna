@@ -73,8 +73,8 @@
 	                return response;
 				});
 			},
-			findCardsByMilestoneDetail: function (projectName, milestone) {
-				return $http.get('api/project/' + projectName + '/cards-by-milestone-detail/' + milestone).then(extractData);
+			findCardsByMilestoneDetail: function (projectName, milestoneId) {
+				return $http.get('api/project/' + projectName + '/cards-by-milestone-detail/' + milestoneId).then(extractData);
 			},
 			findByColumn: function (columnId) {
 				return $http.get('api/column/' + columnId + '/card').then(extractData);

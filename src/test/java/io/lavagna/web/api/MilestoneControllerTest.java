@@ -122,7 +122,7 @@ public class MilestoneControllerTest {
 
         when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
 
-        milestoneController.findCardsByMilestoneDetail("TEST", "1.0", user);
+        milestoneController.findCardsByMilestoneDetail("TEST", 1, user);
 
     }
 
@@ -133,12 +133,12 @@ public class MilestoneControllerTest {
 
         LabelListValue llv = new LabelListValue(1, 6, 0, "1.0");
         LabelListValueWithMetadata llvm = new LabelListValueWithMetadata(llv, new HashMap<String, String>());
-        when(excelExportService.getMilestone(1, "1.0")).thenReturn(llvm);
+        when(cardLabelRepository.findListValueById(1)).thenReturn(llvm);
 
 
-        milestoneController.findCardsByMilestoneDetail("TEST", "1.0", user);
+        milestoneController.findCardsByMilestoneDetail("TEST", 1, user);
 
-        verify(excelExportService).getMilestone(eq(1), eq("1.0"));
+        verify(cardLabelRepository).findListValueById(eq(1));
 
     }
 
