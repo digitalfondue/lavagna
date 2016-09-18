@@ -186,7 +186,7 @@
 		$stateProvider.state('home', {
 			url : '/',
 			abstract: true,
-			templateUrl: 'app/components/home/home.html',
+			template: '<md-toolbar><lvg-navbar-dashboard></lvg-navbar-dashboard></md-toolbar><div data-ui-view></div>',
 			onEnter: function(Title) {
 				Title.set('title.dashboard');
 			}
@@ -204,7 +204,7 @@
 		.state('about', {
 			url:'/about/',
 			abstract: true,
-			templateUrl: 'app/components/about/about.html',
+			template: '<lvg-navbar-about></lvg-navbar-about><div data-ui-view data-autoscroll="false" class="lvg-content"></div>',
             onEnter: function(Title) {
                 Title.set('title.about');
             }
@@ -234,7 +234,7 @@
 		}).state('user', {
             url :'/user/:provider/:username/',
             abstract: true,
-            templateUrl: 'app/components/user/user.html',
+            template: '<lvg-navbar-user data-username="rslvr.username" data-provider="rslvr.provider" data-is-current-user="rslvr.isCurrentUser"> </lvg-navbar-user><div data-ui-view data-autoscroll="false"></div>',
             controller: function(user, isCurrentUser) {
                 this.user = user;
                 this.username = user.user.username;
@@ -321,7 +321,7 @@
 		//---- MANAGE PROJECT ----
 		.state('projectManage', {
         	url : '/:projectName/manage/',
-			templateUrl : 'app/components/project/manage/manage.html',
+			template : '<lvg-navbar-project-manage project="rslvr.project"></lvg-navbar-project-manage><div data-ui-view data-autoscroll="false"></div>',
 			abstract: true,
           	controller : function(project) {
                 this.project = project;
@@ -365,7 +365,7 @@
             },
             controllerAs: 'rslvr',
             resolve : projectResolver,
-            templateUrl: 'app/components/project/project.html'
+            template: '<lvg-navbar-project project="rslvr.project"></lvg-navbar-project><div data-ui-view data-autoscroll="false"></div>'
 		})
 		.state('project.boards', {
 			url: '',
@@ -376,7 +376,10 @@
 		}).state('project.milestones', {
             url : 'milestones/',
             template: '<lvg-project-milestones project="rslvr.project"></lvg-project-milestones>'
-        }).state('project.milestones.card', {
+        }).state('project.milestone', {
+        	url: 'milestones/:id/',
+        	template: '<lvg-project-milestone></lvg-project-milestone>'
+        })/*.state('project.milestones.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user, metadata) {
@@ -389,7 +392,7 @@
             },
             controllerAs : 'rslvr',
             resolve : cardProjectResolver
-        })
+        })*/
 
         //---- PROJECT SEARCH ----
         .state('projectSearch', {
