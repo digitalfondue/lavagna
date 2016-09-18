@@ -39,11 +39,11 @@
 		};
         
 
-        function showArray(array, minLength) {
+        function showArray(array) {
             if (!array) {
                 return false;
             }
-            return Object.keys(array).length > minLength;
+            return Object.keys(array).length > 0;
         }
 
         function loadMilestonesInProject() {

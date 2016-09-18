@@ -1,11 +1,25 @@
 <div class="lvg-content">
-    <md-card class="lvg-content__row lvg-content__row-item _md">
-        <md-card-title-text>
-                <div class="row">
-                    <span class="col-xs-3"  ng-class="{'strike': $ctrl.milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="$ctrl.milestone.labelListValue.value"></span>
-                    <span class="col-xs-9 lvg-project-milestones__align-right">
-                    </span>
-                </div>
-        </md-card-title-text>
+
+    <md-card class="lvg-content__row lvg-content__row-item">
+        <div class="lvg-project-milestone__progress" ng-if="$ctrl.showArray($ctrl.milestone.cardsCountByStatus)" ng-style="{'background-color': ($ctrl.statusColors[$ctrl.cardsCountByStatus.slice(-1)[0].status] | color).color}">
+            <div class="lvg-project-milestone__progress-bar"
+                ng-repeat="item in $ctrl.cardsCountByStatus" ng-if="!$last"
+                ng-style="{'width': (item.count * 100.0 / $ctrl.milestone.totalCards  | number:2) + '%', 'background-color': ($ctrl.statusColors[item.status] | color).color}">
+            </div>
+        </div>
+        <md-card-title>
+	        <md-card-title-text>
+	                <div class="row">
+	                    <span class="col-xs-3"  ng-class="{'strike': $ctrl.milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="$ctrl.milestone.labelListValue.value"></span>
+	                    <span class="col-xs-9 lvg-project-milestone__align-right">
+	                        <span ng-repeat="item in $ctrl.cardsCountByStatus" class="lvg-project-milestone__status">
+	                            <md-icon md-svg-icon="task" ng-style="$ctrl.statusColors[item.status]|color"></md-icon>
+	                            <span>{{item.status | capitalize}}:</span>
+	                            {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+	                        </span>
+	                    </span>
+	                </div>
+	        </md-card-title-text>
+        </md-card-title>
     </md-card>
 </div>

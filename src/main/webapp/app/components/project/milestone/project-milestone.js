@@ -14,6 +14,8 @@
     function ProjectMilestoneController(Card, User) {
         var ctrl = this;
         
+        ctrl.showArray = showArray;
+        
         ctrl.$onInit = function init() {
         	 User.hasPermission('READ', ctrl.project.shortName).then(function () {
                  return Card.findCardsByMilestone(ctrl.project.shortName);
@@ -34,11 +36,19 @@
             	 if(ctrl.milestone) {
             		 ctrl.cardsCountByStatus = response.cardsCountByStatus[ctrl.milestone.labelListValue.id];
             	 }
+            	 console.log(ctrl);
              });
         }
         
         function isUnassigned(milestone) {
         	return milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned';
+        }
+        
+        function showArray(array) {
+            if (!array) {
+                return false;
+            }
+            return Object.keys(array).length > 0;
         }
     }
 })();
