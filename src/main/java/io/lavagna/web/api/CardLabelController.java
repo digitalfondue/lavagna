@@ -102,7 +102,7 @@ public class CardLabelController {
 	}
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/system-label/{labelId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/label/{labelId}/system", method = RequestMethod.POST)
 	public void updateSystemLabel(@PathVariable("labelId") int labelId, @RequestBody Label label) {
 		CardLabel cl = cardLabelRepository.updateSystemLabel(labelId, label);
 		Project project = projectService.findById(cl.getProjectId());

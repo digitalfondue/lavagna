@@ -88,7 +88,7 @@
 			},
 
 			moveCardToColumnEnd: function (cardId, previousColumnId, newColumnId) {
-                return $http.post('api/card/' + cardId + '/from-column/' + previousColumnId + '/to-column-end/' + newColumnId)
+                return $http.post('api/card/' + cardId + '/from-column/' + previousColumnId + '/to-column/' + newColumnId+'/end')
                     .then(extractData);
             },
 

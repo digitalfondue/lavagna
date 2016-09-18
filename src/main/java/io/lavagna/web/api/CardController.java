@@ -120,7 +120,7 @@ public class CardController {
 	}
 
     @ExpectPermission(Permission.CREATE_CARD)
-    @RequestMapping(value = "/api/card/{cardId}/clone/{columnId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/card/{cardId}/clone-to/column/{columnId}", method = RequestMethod.POST)
     public void clone(@PathVariable("cardId") int cardId, @PathVariable("columnId") int columnId, User user) {
         Card clonedCard = cardService.cloneCard(cardId, columnId, user);
         emitCreateCard(columnId, clonedCard);
@@ -197,7 +197,7 @@ public class CardController {
 	}
 
     @ExpectPermission(Permission.MOVE_CARD)
-    @RequestMapping(value = "/api/card/{cardId}/from-column/{previousColumnId}/to-column-end/{newColumnId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/card/{cardId}/from-column/{previousColumnId}/to-column/{newColumnId}/end", method = RequestMethod.POST)
     public Event moveCardToColumn(@PathVariable("cardId") int id,
                                   @PathVariable("previousColumnId") int previousColumnId, @PathVariable("newColumnId") int newColumnId,
                                   User user) {

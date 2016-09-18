@@ -38,7 +38,7 @@
 
 			/* label format is {name : string, color : int}*/
 			updateSystemLabel: function(labelId, label) {
-				return $http.post('api/system-label/'+labelId, label).then(extractData);
+				return $http.post('api/label/'+labelId+'/system', label).then(extractData);
 			},
 
 			findLabelListValues: function(labelId) {

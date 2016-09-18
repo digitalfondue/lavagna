@@ -89,7 +89,7 @@
 				return $http.get('api/card/' + id + '/description').then(extractData);
 			},
             clone: function (cardId, columnId) {
-                return $http.post('api/card/' + cardId + '/clone/' + columnId).then(extractData);
+                return $http.post('api/card/' + cardId + '/clone-to/column/' + columnId).then(extractData);
             },
 
             updateDescription: function (id, description) {

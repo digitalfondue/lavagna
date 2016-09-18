@@ -87,6 +87,7 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		p.add(new AbstractPermissionUrlPath.LabelValueIdUrlPath("/card-label-value/{labelValueId}", "labelValueId"));
 		
 		p.add(new AbstractPermissionUrlPath.LabelListValuedIdPath("/label-list-values/{labelListValueId}", "labelListValueId"));
+		p.add(new AbstractPermissionUrlPath.LabelListValuedIdPath("/cards-by-milestone-detail/{milestoneId}", "milestoneId"));
 		
 		p.add(new AbstractPermissionUrlPath.ColumnDefinitionIdUrlPath("/redefine/{newDefinitionId}", "newDefinitionId"));
 
