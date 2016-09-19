@@ -385,7 +385,7 @@
         		this.id = $stateParams.id;
         	},
         	resolve: {project : function(ProjectCache, $stateParams) {return ProjectCache.project($stateParams.projectName);}}
-        })/*.state('project.milestones.card', {
+        }).state('project.milestones.milestone.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
             controller : function(Title, card, project, board, user, metadata) {
@@ -398,7 +398,7 @@
             },
             controllerAs : 'rslvr',
             resolve : cardProjectResolver
-        })*/
+        })
 
         //---- PROJECT SEARCH ----
         .state('projectSearch', {
