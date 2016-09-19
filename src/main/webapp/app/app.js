@@ -540,6 +540,7 @@
             .icon('add-to-list',        'svg/ic_playlist_add_black_48px.svg')
             .icon('chevron-left',       'svg/ic_chevron_left_black_48px.svg')
             .icon('chevron-right',      'svg/ic_chevron_right_black_48px.svg')
+            .icon('file-excel',      	'svg/file-excel.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

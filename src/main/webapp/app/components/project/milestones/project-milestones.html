@@ -35,6 +35,24 @@
                 </div>
             </div>
         </md-card-content>
+        <md-card-actions ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')">
+            <md-card-icon-actions>
+                <md-button class="md-icon-button" ng-if="milestone.labelListValue.metadata.status === 'CLOSED'" ng-click="$ctrl.openMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                    <md-tooltip>{{'project.milestones.open'|translate}}</md-tooltip>
+                    <md-icon md-svg-icon="milestone_closed"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-if="milestone.labelListValue.metadata.status !== 'CLOSED'" ng-click="$ctrl.closeMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                    <md-tooltip>{{'project.milestones.close'|translate}}</md-tooltip>
+                    <md-icon md-svg-icon="milestone_open"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" 
+                    ng-href="api/project/{{$ctrl.project.shortName}}/export-milestone/{{milestone.labelListValue.value}}"
+                    target="_blank" rel="nofollow me noopener noreferrer">
+                    <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
+                    <md-icon md-svg-icon="file-excel"></md-icon>
+                </md-button>
+            </md-card-icon-actions>
+        </md-card-actions>
     </md-card>
     
     <div data-ui-view data-autoscroll="false"></div>

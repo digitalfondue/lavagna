@@ -7,15 +7,17 @@
             project: '<'
         },
         templateUrl: 'app/components/project/milestones/project-milestones.html',
-        controller: ['Card', 'EventBus', 'User', 'StompClient', ProjectMilestonesController],
+        controller: ['Card', 'EventBus', 'User', 'StompClient', 'Label', ProjectMilestonesController],
     });
 
-    function ProjectMilestonesController(Card, EventBus, User, StompClient) {
+    function ProjectMilestonesController(Card, EventBus, User, StompClient, Label) {
         var ctrl = this;
         //
         ctrl.showArray = showArray;
         ctrl.select = select;
         ctrl.unselect = unselect;
+        ctrl.openMilestone = openMilestone;
+        ctrl.closeMilestone = closeMilestone;
       	//
 		
 		var unbindLabelValue = angular.noop;
@@ -65,6 +67,14 @@
         
         function unselect() {
         	ctrl.selectedMilestone = undefined;
+        }
+        
+        function openMilestone(val) {
+        	Label.removeLabelListValueMetadata(val.id, 'status');
+        }
+        
+        function closeMilestone(val) {
+        	Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
         }
 
     }
