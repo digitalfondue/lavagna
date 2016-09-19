@@ -234,7 +234,7 @@ public class ProjectController {
 
     @ExpectPermission(Permission.READ)
     @RequestMapping(value = "/api/project/{projectShortName}/columns-in/", method = RequestMethod.GET)
-    public List<ProjectColumn> fetchAllColumns(@PathVariable("shortName") String shortName) {
+    public List<ProjectColumn> fetchAllColumns(@PathVariable("projectShortName") String shortName) {
 
         List<ProjectColumn> list = new ArrayList<>();
 

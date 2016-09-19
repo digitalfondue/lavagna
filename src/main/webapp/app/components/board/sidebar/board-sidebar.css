@@ -54,6 +54,9 @@ lvg-board-sidebar {
     padding: 0 8px 0 8px;
 }
 
+.lvg-board-sidebar__content .lvg-card-fragment-v2__menu {
+	display: none!important;
+}
 
 .lavagna-sidebar-cards {
     position: relative;
