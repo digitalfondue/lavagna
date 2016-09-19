@@ -11,13 +11,13 @@
         </md-button>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
     </div>
-    <md-tabs md-center-tabs>
+    <md-tabs md-center-tabs md-no-select-click>
         <md-tab data-ui-sref="project.boards({projectName: $ctrl.project.shortName})" md-active="$ctrl.$state.is('project.boards')">
             <md-tab-label>
                 <span data-translate>partials.project.fragments.navbar.project</span>
             </md-tab-label>
         </md-tab>
-        <md-tab data-ui-sref="project.milestones({projectName: $ctrl.project.shortName})" md-active="$ctrl.$state.is('project.milestones')">
+        <md-tab data-ui-sref="project.milestones({projectName: $ctrl.project.shortName})" md-active="$ctrl.$state.is('project.milestones') || $ctrl.$state.is('project.milestones.milestone')">
             <md-tab-label>
                 <span data-translate>partials.project.fragments.navbar.milestones</span>
             </md-tab-label>

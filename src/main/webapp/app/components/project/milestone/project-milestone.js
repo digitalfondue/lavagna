@@ -7,6 +7,7 @@
             project: '<',
             id:'<'
         },
+        require: {projectMilestones: '^^lvgProjectMilestones'},
         templateUrl: 'app/components/project/milestone/project-milestone.html',
         controller: ['Card', 'User', 'BoardCache', ProjectMilestoneController],
     });
@@ -14,11 +15,11 @@
     function ProjectMilestoneController(Card, User, BoardCache) {
         var ctrl = this;
         
-        ctrl.showArray = showArray;
         ctrl.loadColumn = loadColumn;
         
         ctrl.$onInit = function init() {
         	
+        	ctrl.projectMilestones.select(parseInt(ctrl.id));
         	
         	 User.hasPermission('READ', ctrl.project.shortName).then(function () {
                  return Card.findCardsByMilestone(ctrl.project.shortName);
@@ -44,19 +45,16 @@
              });
         }
         
+        ctrl.$onDestroy = function destroy() {
+        	ctrl.projectMilestones.unselect();
+        }
+        
         function loadColumn(card) {
             BoardCache.column(card.columnId).then(function (col) {
                 card.column = col;
             });
         }
                 
-        function showArray(array) {
-            if (!array) {
-                return false;
-            }
-            return Object.keys(array).length > 0;
-        }
-        
         function loadMilestoneDetail(page) {
             return User.hasPermission('READ', ctrl.project.shortName).then(function () {
                 return Card.findCardsByMilestoneDetail(ctrl.project.shortName, ctrl.milestone.labelListValue.id).then(function (detail) {

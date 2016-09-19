@@ -1,6 +1,5 @@
 <div class="lvg-content">
-
-    <md-card class="lvg-content__row lvg-content__row-item" ng-repeat="milestone in $ctrl.cardsByMilestone">
+    <md-card class="lvg-content__row lvg-content__row-item" ng-repeat="milestone in $ctrl.cardsByMilestone" ng-if="$ctrl.selectedMilestone === undefined || $ctrl.selectedMilestone === milestone.labelListValue.id">
         <div class="lvg-project-milestones__progress" ng-if="$ctrl.showArray(milestone.cardsCountByStatus)" data-ng-style="{'background-color': ($ctrl.statusColors[$ctrl.cardsCountByStatus[milestone.labelListValue.id].slice(-1)[0].status] | color).color}">
             <div class="lvg-project-milestones__progress-bar"
                 ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.id]" ng-if="!$last"
@@ -11,7 +10,7 @@
             <md-card-title-text>
                 <div class="row">
 	                <span class="col-xs-3" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}">
-	                   <a ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ui-sref="project.milestone({projectName: $ctrl.project.shortName, id: milestone.labelListValue.id})" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="milestone.labelListValue.value"></a>
+	                   <a ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ui-sref="project.milestones.milestone({projectName: $ctrl.project.shortName, id: milestone.labelListValue.id})" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="milestone.labelListValue.value"></a>
 	                   <span ng-if="(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ng-bind="milestone.labelListValue.value"></span>
                     </span>
 	                <span class="col-xs-9 lvg-project-milestones__align-right">
@@ -37,4 +36,6 @@
             </div>
         </md-card-content>
     </md-card>
+    
+    <div data-ui-view data-autoscroll="false"></div>
 </div>

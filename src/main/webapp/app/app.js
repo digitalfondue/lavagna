@@ -376,8 +376,8 @@
 		}).state('project.milestones', {
             url : 'milestones/',
             template: '<lvg-project-milestones project="rslvr.project"></lvg-project-milestones>'
-        }).state('project.milestone', {
-        	url: 'milestones/:id/',
+        }).state('project.milestones.milestone', {
+        	url: ':id/',
         	template: '<lvg-project-milestone project="rslvr.project" id="rslvr.id"></lvg-project-milestone>',
         	controllerAs: 'rslvr',
         	controller: function(project, $stateParams) {

@@ -14,6 +14,8 @@
         var ctrl = this;
         //
         ctrl.showArray = showArray;
+        ctrl.select = select;
+        ctrl.unselect = unselect;
       	//
 		
 		var unbindLabelValue = angular.noop;
@@ -22,6 +24,7 @@
 		var unbindRenamedEvent = angular.noop;
 		
 		ctrl.$onInit = function init() {
+			
 			ctrl.milestoneOpenStatus = {};
 			loadMilestonesInProject();
 			
@@ -54,6 +57,14 @@
                 ctrl.cardsCountByStatus = response.cardsCountByStatus;
                 ctrl.statusColors = response.statusColors;
             });
+        }
+        
+        function select(id) {
+        	ctrl.selectedMilestone = id;
+        }
+        
+        function unselect() {
+        	ctrl.selectedMilestone = undefined;
         }
 
     }
