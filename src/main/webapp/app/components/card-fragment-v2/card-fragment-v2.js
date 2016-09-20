@@ -107,7 +107,7 @@
 			if (parent.boardView && !parent.readOnly) {
 
 				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
+					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement)
 				}
 
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
@@ -138,7 +138,7 @@
 			} else if (parent.searchView) {
 
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
+					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
 				}
 
 				var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
@@ -158,10 +158,25 @@
 	}
 
 
-	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope) {
-		var c = createElem("input");
-		c.type = 'checkbox';
+	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope, domElement) {
+		
+		
+		
+		var c = createElem("div");
+		c.className = 'lvg-card-fragment-v2__checkbox-container';
+		var fakeCheckbox = createElem("div");
+		fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
+		var attrRole = document.createAttribute('role');
+		attrRole.value='button';
+		fakeCheckbox.attributes.setNamedItem(attrRole);
+		var tabIndex= document.createAttribute('tabindex');
+		tabIndex.value='0';
+		fakeCheckbox.attributes.setNamedItem(tabIndex);
+		c.appendChild(fakeCheckbox);
+		domElement.appendChild(c);
+		
 
+		var selectedState = isSelected();
 
 		function isSelected() {
 			if(isBoardView) {
@@ -170,9 +185,19 @@
 				return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
 			}
 		};
+		
+		function updateStyle() {
+			
+			if(selectedState) {
+				domElement.classList.add('lvg-card-fragment-v2__selected')
+			} else {
+				domElement.classList.remove('lvg-card-fragment-v2__selected')
+			}
+		}
 
 		function updateCheckbox() {
-			c.checked = isSelected();
+			selectedState = isSelected();
+			updateStyle();
 		};
 
 		updateCheckbox();
@@ -184,25 +209,28 @@
 		if(isBoardView) {
 			handleClickEvent = function handleClickEventBoardView() {
 				$scope.$applyAsync(function() {
+					selectedState = !selectedState;
 					selected[card.columnId] = selected[card.columnId] || {};
-					selected[card.columnId][card.id] = c.checked;
+					selected[card.columnId][card.id] = selectedState;
+					updateStyle();
 				});
 			};
 		} else {
 			handleClickEvent = function handleClickEventBoardView() {
 				$scope.$applyAsync(function() {
+					selectedState = !selectedState;
 					selected[card.projectShortName] = selected[card.projectShortName] || {};
-					selected[card.projectShortName][card.id] = c.checked;
+					selected[card.projectShortName][card.id] = selectedState;
+					updateStyle();
 				});
 			};
 		}
-
-		c.addEventListener('click', handleClickEvent);
+		
+		
+		fakeCheckbox.addEventListener('click', handleClickEvent);
 		subscribers.push(function() {
-			c.removeEventListener('click', handleClickEvent);
+			fakeCheckbox.removeEventListener('click', handleClickEvent);
 		});
-
-		return c;
 	}
 
 	function createLastUpdateTime(lastUpdateTime, $filter) {
