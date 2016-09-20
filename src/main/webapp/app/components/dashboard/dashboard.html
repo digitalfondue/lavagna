@@ -11,7 +11,7 @@
         <div class="lvg-dashboard__tasks" data-translate>dashboard.my.tasks</div>
         <lvg-rebuild-if-change to-watch="$ctrl.getMetadatasHash()">
 	        <div data-ng-if="$ctrl.totalOpenCards > 0">
-                <lvg-card-fragment-v2 ng-repeat="card in $ctrl.userCards track by (card.hash+$ctrl.metadatas[card.projectShortName].hash)"
+                <lvg-card-fragment-v2 tabindex="0" ng-repeat="card in $ctrl.userCards track by (card.hash+$ctrl.metadatas[card.projectShortName].hash)"
                                       view="list"
                                       card-ref="card"
                                       user-ref="$ctrl.user"

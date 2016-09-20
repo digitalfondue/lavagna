@@ -69,6 +69,7 @@
          lvg-dnd-dragend="$ctrl.dragEndCard()"
          lvg-dnd-opts="{group: 'card', animation: 150, filter:'input'}">
         <lvg-card-fragment-v2
+         tabindex="0"
          ng-repeat="card in $ctrl.cardsInColumn | filter : $ctrl.searchFilter.cardFilter track by (card.hash+$ctrl.metadataRef().hash)"
          view="board"
          card-ref="card"

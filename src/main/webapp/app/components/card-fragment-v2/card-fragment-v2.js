@@ -226,10 +226,18 @@
 			};
 		}
 		
+		function handleKeyEvents(ev) {
+			if(ev.keyCode === 13 || ev.keyCode === 32) {
+				handleClickEvent();
+				ev.preventDefault();
+			}
+		}
 		
 		fakeCheckbox.addEventListener('click', handleClickEvent);
+		fakeCheckbox.addEventListener('keydown', handleKeyEvents);
 		subscribers.push(function() {
 			fakeCheckbox.removeEventListener('click', handleClickEvent);
+			fakeCheckbox.removeEventListener('keydown', handleKeyEvents);
 		});
 	}
 

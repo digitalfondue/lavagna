@@ -2,7 +2,8 @@ lvg-card-fragment-v2 {
 	display: block;
 	/*overflow: hidden;*/
 	padding: 8px;
-	word-break: break-all
+	word-break: break-all;
+	outline: none!important;
 }
 
 lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
@@ -206,7 +207,9 @@ ul.assigned-users li.assigned-user {
     box-shadow: 0 1px 1px 1px rgba(0,0,0,.2);
 }
 
-lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox-container,  .lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox-container {
+lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox-container,
+lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox-container,
+.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox-container {
 	display: block;
 }
 
