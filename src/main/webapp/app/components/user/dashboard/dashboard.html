@@ -35,7 +35,7 @@
 				</md-button>
 			</div>
 			
-			<md-list ng-if="$ctrl.view.showList[$index]" layout-padding>
+			<md-list ng-if="$ctrl.view.showList[$index]">
 				<md-list-item ng-repeat="activity in $ctrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id">
 					<div class="lvg-user-dashboard__padding-left lvg-user-dashboard__padding-top-bottom">
 						<span ng-bind="::(activity.time | dateIncremental)"></span>: <lvg-card-link card-id="activity.cardId"></lvg-card-link> 
