@@ -189,7 +189,7 @@ ul.assigned-users li.assigned-user {
 	width:0;
 	transform: translate(-16px,-16px);
 	float:left;
-	display:none;
+	/*display:none;*/
 }
 
 .lvg-card-fragment-v2__selected {
@@ -209,12 +209,21 @@ ul.assigned-users li.assigned-user {
     background-size: 16px 16px;
     background-position:50% 50%;
     background-repeat: no-repeat;
+    border:1px solid transparent;
+    opacity: 0;
 }
 
-lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox-container,
-lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox-container,
-.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox-container {
+.lvg-card-fragment-v2__checkbox:focus {
+	border-color:rgba(0,0,0,0.5);
 	display: block;
+	opacity: 1;
+}
+
+lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox,
+lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox,
+.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
+	display: block;
+	opacity: 1;
 }
 
 lvg-card-fragment-v2.sortable-drag {
