@@ -5,7 +5,7 @@
         bindings: {
             card: '<',
             project: '<',
-            labelValues: '<'
+            labelValues: '<',
         },
         controller: CardLabelsController,
         templateUrl: 'app/components/card/labels/card-labels.html'
@@ -14,16 +14,28 @@
     function CardLabelsController(Label, BulkOperations, Notification) {
 
         var ctrl = this;
-        var project = ctrl.project;
-        var card = ctrl.card;
+        
+        ctrl.hasUserLabels = hasUserLabels;
+        ctrl.removeLabelValue = removeLabelValue;
+        
+        
+        ctrl.$onInit = function init() {
+        	ctrl.labelValuesCntUpdate = 0;
+        }
+        
+        ctrl.$onChanges = function onChanges(changes) {
+        	if(changes.labelValues) {
+        		ctrl.labelValuesCntUpdate++;
+        	}
+        }
 
-        ctrl.hasUserLabels = function() {
-            if(project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
+        function hasUserLabels() {
+            if(ctrl.project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
                 return false;
             }
 
-            for(var v in project.metadata.userLabels) {
-            	if(ctrl.labelValues[project.metadata.userLabels[v].id] !== undefined) {
+            for(var v in ctrl.project.metadata.userLabels) {
+            	if(ctrl.labelValues[ctrl.project.metadata.userLabels[v].id] !== undefined) {
             		return true;
             	}
             }
@@ -31,13 +43,13 @@
             return false;
         };
 
-        var currentCard = function() {
+        function currentCard() {
             var cardByProject = {};
-            cardByProject[project.shortName] = [card.id];
+            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
             return cardByProject;
         };
 
-        ctrl.removeLabelValue = function(label, labelValue) {
+        function removeLabelValue(label, labelValue) {
 
             BulkOperations.removeLabel(currentCard(), {id: labelValue.labelId}, labelValue.value).then(function(data) {
 
