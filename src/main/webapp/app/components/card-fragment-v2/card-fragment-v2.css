@@ -217,6 +217,14 @@ lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox-container,
 	display: block;
 }
 
+lvg-card-fragment-v2.sortable-drag {
+	border: 1px solid #d0d0d0!important;
+}
+
+lvg-card-fragment-v2.sortable-drag .lvg-card-fragment-v2__checkbox-container, lvg-card-fragment-v2.sortable-ghost .lvg-card-fragment-v2__checkbox-container {
+	display:none!important;
+}
+
 .lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
 	background-color: rgb(96,125,139);
 	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L3N2Zz4=");

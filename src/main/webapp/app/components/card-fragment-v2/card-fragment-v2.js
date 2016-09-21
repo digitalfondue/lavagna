@@ -116,7 +116,7 @@
 				//card fragment menu
 				if(User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					var button = createElem('button');
-					button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
+					button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
 					baseDiv.appendChild(button);
 
 					var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
@@ -129,7 +129,7 @@
 				baseDiv.appendChild(createText(parent.shortCardName));
 				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 				var button = createElem('button');
-				button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
+				button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
 				baseDiv.appendChild(button);
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
