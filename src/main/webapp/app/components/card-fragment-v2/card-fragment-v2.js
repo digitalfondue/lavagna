@@ -131,6 +131,17 @@
 				var button = createElem('button');
 				button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
 				baseDiv.appendChild(button);
+				
+				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+					var c = createElem("div");
+					c.className = 'lvg-card-fragment-v2__checkbox-container';
+					var fakeCheckbox = createElem("div");
+					fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
+					var attrRole = document.createAttribute('role');
+					c.appendChild(fakeCheckbox);
+					domElement.appendChild(c);
+				}
+				
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
@@ -664,7 +675,7 @@
 			scopeForCardFragment['card'] = card;
 			scopeForCardFragment['user'] = user;
 			scopeForCardFragment['metadata'] = metadata;
-			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
+			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata" class="lvg-card-fragment-v2__static"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
 
 			copyPositionAndSize(cardFragmentElement, readOnlyCard);
 
@@ -714,6 +725,9 @@
 		readOnlyCard.style.height = (r.height-2-16)+'px';
 		readOnlyCard.style.width = (r.width-2-16)+'px';
 		readOnlyCard.style.display = 'none';
+		if(element.classList.contains('lvg-card-fragment-v2__selected')) {
+			readOnlyCard.classList.add('lvg-card-fragment-v2__selected');
+		}
 	}
 
 

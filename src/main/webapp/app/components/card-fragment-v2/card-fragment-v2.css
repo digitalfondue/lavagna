@@ -226,7 +226,8 @@ ul.assigned-users li.assigned-user {
 
 lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox,
 lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox,
-.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
+.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox,
+.lvg-card-fragment-v2__static .lvg-card-fragment-v2__checkbox {
 	display: block;
 	opacity: 1;
 }
