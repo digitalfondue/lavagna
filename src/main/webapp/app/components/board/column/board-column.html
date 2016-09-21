@@ -22,8 +22,8 @@
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">
-                            <md-menu>
-                                <md-button ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
+                            <md-menu class="lvg-board-column__menu-status">
+                                <md-button class="lvg-board-column__menu-status-button" ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
                                 <md-menu-content>
                                     <md-menu-item data-ng-repeat="definition in $ctrl.metadata.columnsDefinition | addColDefOrder | orderBy:'order'">
                                         <md-button data-ng-click="$ctrl.setColumnDefinition(definition.id);"><span data-ng-style="::(definition.color | color)" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
