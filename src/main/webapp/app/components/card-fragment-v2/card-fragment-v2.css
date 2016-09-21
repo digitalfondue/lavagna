@@ -61,6 +61,11 @@ lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
     -moz-appearance: none;
     appearance: none;
     float: right;
+    border-radius: 50%;
+}
+
+.lvg-card-fragment-v2__menu:focus {
+	background-color: rgba(158, 158, 158, 0.2);
 }
 
 /*
