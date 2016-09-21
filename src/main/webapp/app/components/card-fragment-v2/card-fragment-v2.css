@@ -193,7 +193,7 @@ ul.assigned-users li.assigned-user {
 }
 
 .lvg-card-fragment-v2__selected {
-	border:1px solid #aaa;
+	border:1px solid rgb(96,125,139);
 }
 
 .lvg-card-fragment-v2__checkbox {
@@ -205,6 +205,10 @@ ul.assigned-users li.assigned-user {
 	cursor: pointer;
     outline: none!important;
     box-shadow: 0 1px 1px 1px rgba(0,0,0,.2);
+    background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTkgMTYuMTdMNC44MyAxMmwtMS40MiAxLjQxTDkgMTkgMjEgN2wtMS40MS0xLjQxeiIvPjwvc3ZnPg==");
+    background-size: 16px 16px;
+    background-position:50% 50%;
+    background-repeat: no-repeat;
 }
 
 lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox-container,
@@ -214,5 +218,6 @@ lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox-container,
 }
 
 .lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
-	background-color: #aaa;
+	background-color: rgb(96,125,139);
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L3N2Zz4=");
 }
