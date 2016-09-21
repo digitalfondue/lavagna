@@ -25,7 +25,7 @@
 }
 
 
-.lvg-card-fragment-v2-menu__button:hover {
+.lvg-card-fragment-v2-menu__button:hover,.lvg-card-fragment-v2-menu__button:focus {
 	background-color:rgba(158,158,158,0.2); 
 }
 
