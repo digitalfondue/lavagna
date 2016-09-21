@@ -63,6 +63,7 @@ lvg-board-column {
     background-color: #fafafa;
     padding-left: 8px;
     padding-right: 8px;
+    padding-top: 8px;
 }
 
 .lvg-board-column__add-card-button {

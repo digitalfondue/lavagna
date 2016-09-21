@@ -35,7 +35,7 @@
 
 				var resizeHandler = function() {
 				    var wHeight = $window.innerHeight;//
-                    var maxHeight = wHeight - 90; //fixed header + board-controls
+                    var maxHeight = wHeight - 96; //fixed header + board-controls
 
 				    var head = domElement.querySelector('.lvg-board-column__header');
                     var panelHeadHeight = head ? head.offsetHeight : 0;
@@ -62,7 +62,7 @@
 
 				var resizeHandler = function lvgFillSidebarCardsHeightResizeHandler(hasMore) {
 				    var wHeight = $window.innerHeight;//
-                    var maxHeight = wHeight - 90; //fixed header + board-controls
+                    var maxHeight = wHeight - 96; //fixed header + board-controls
 
                     var head = domElement.querySelector('.lvg-board-sidebar__header');
                     var panelHeadHeight = head ? head.offsetHeight : 0;
