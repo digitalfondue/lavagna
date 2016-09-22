@@ -1,4 +1,4 @@
-<ul class="lvg-card-fragment-v2-menu__button_list" ng-hide="$ctrl.moveColumnFlag || $ctrl.cloneCardFlag" role="menu">
+<ul class="lvg-card-fragment-v2-menu__button_list" ng-hide="$ctrl.moveColumnFlag || $ctrl.cloneCardFlag" role="menu" ng-keydown="$ctrl.handleKey($event)">
     <li lvg-has-permission="MOVE_CARD">
         <button class="lvg-card-fragment-v2-menu__button" ng-click="$ctrl.moveColumnFlag = true;" role="menuitem" translate>partials.fragments.card-fragment.moveToColumn</button>
     </li>
@@ -31,7 +31,7 @@
     <md-dialog class="md-transition-in">
         <form ng-submit="$ctrl.cloneCard(toColumn)">
             <md-dialog-content class="md-dialog-content">
-                <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select">
+                <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select" lvg-focus-on="$ctrl.cloneCardFlag">
                     <md-optgroup label="{{::columnByProject[0].board}}" ng-repeat="columnByProject in $ctrl.columnsByProject">
                         <md-option ng-value="opt" ng-repeat="opt in columnByProject">{{::opt.columnName}}</md-option>
                     </md-optgroup>
@@ -48,7 +48,7 @@
     <md-dialog class="md-transition-in">
         <form ng-submit="$ctrl.moveToColumn(toColumn)">
 		    <md-dialog-content class="md-dialog-content">
-			    <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select">
+			    <md-select ng-model="toColumn" required class="lvg-card-fragment-v2-menu__select" lvg-focus-on="$ctrl.moveColumnFlag">
 			        <md-option ng-value="opt" ng-repeat="opt in $ctrl.moveColumns">{{::opt.name}}</md-option>
 			    </md-select>
 	        </md-dialog-content>
