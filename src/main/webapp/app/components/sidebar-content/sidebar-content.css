@@ -1,0 +1,64 @@
+.lvg-sidebar-content__user {
+    background-color: rgb(96,125,139);
+    color: #fff;
+    height: 64px;
+    min-height: 64px;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+}
+
+.lvg-sidebar-content__user-avatar {
+    flex: 0 0 40px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.lvg-sidebar-content__user-info {
+    flex: 0 1 auto;
+    flex-direction: row;
+}
+
+.lvg-sidebar-content__user-info-name {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.lvg-sidebar-content__user-info-email {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.lvg-sidebar-content__user-logout {
+    flex: 0 0 48px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.lvg-sidebar-content__links {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.lvg-sidebar-content__link {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    min-height: 48px;
+    text-decoration: none;
+}
+
+.lvg-sidebar-content__link:hover {
+    text-decoration: none;
+}
+
+.lvg-sidebar-content__link-icon {
+    flex: 0 0 24px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.lvg-sidebar-content__link-text {
+    text-transform: uppercase;
+}

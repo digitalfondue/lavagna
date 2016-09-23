@@ -1,20 +1,42 @@
-<ul>
-    <li>
-        <a data-ui-sref="home.dashboard"> <span data-translate>partials.fragments.sidebar.home</span></a>
-    </li>
-    <li data-lvg-has-permission="UPDATE_PROFILE">
-        <a data-ui-sref="account"> <span data-translate>partials.fragments.sidebar.profile</span></a>
-    </li>
-    <li>
-        <a href="/help/" target="_sef"> <span data-translate>partials.fragments.sidebar.help</span></a>
-    </li>
-    <li>
-        <a data-ui-sref="about.lavagna"> <span data-translate>partials.fragments.sidebar.about</span></a>
-    </li>
-    <li data-lvg-has-permission="ADMINISTRATION">
-        <a data-ui-sref="admin.home"> <span data-translate>partials.fragments.sidebar.settings</span></a>
-    </li>
-    <li data-lvg-is-authenticated>
-        <a href="#" data-ng-click="$event.preventDefault();$ctrl.logout()"> <span data-translate>partials.fragments.sidebar.logout</span></a>
-    </li>
-</ul>
+<div class="lvg-sidebar-content__user start-xs middle-xs" ng-if="$ctrl.user">
+    <div class="lvg-sidebar-content__user-avatar">
+        <lvg-user-avatar user-id="$ctrl.user.id" size="40"></lvg-user-avatar>
+    </div>
+    <div class="lvg-sidebar-content__user-info overflow-ellipsis">
+        <div class="lvg-sidebar-content__user-info-name">
+            {{$ctrl.user | formatUser}}
+        </div>
+        <div class="lvg-sidebar-content__user-info-email overflow-ellipsis" ng-if="$ctrl.user.email">
+            {{$ctrl.user.email}}
+        </div>
+    </div>
+    <div class="flex"></div>
+    <div class="lvg-sidebar-content__user-logout">
+        <md-button class="md-icon-button" ng-click="$ctrl.logout()">
+            <md-tooltip>Logout</md-tooltip>
+            <md-icon md-svg-icon="logout"></md-icon>
+        </md-button>
+    </div>
+</div>
+<div class="lvg-sidebar-content__links" >
+    <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="home.dashboard">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="dashboard"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.home</span>
+    </a>
+    <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="account" data-lvg-has-permission="UPDATE_PROFILE">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="person_black"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.profile</span>
+    </a>
+    <a class="lvg-sidebar-content__link start-xs middle-xs" href="/help/" target="_sef">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="help"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.help</span>
+    </a>
+    <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="about.lavagna">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="info"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.about</span>
+    </a>
+    <a class="lvg-sidebar-content__link lvg-sidebar-content__link-special start-xs middle-xs" data-ui-sref="admin.home" data-lvg-has-permission="ADMINISTRATION">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="settings"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.settings</span>
+    </a>
+</div>

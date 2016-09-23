@@ -494,6 +494,7 @@
 			.icon('menu', 				'svg/ic_menu_white_48px.svg')
 			.icon('settings', 			'svg/ic_settings_white_48px.svg')
 			.icon('person', 			'svg/ic_person_white_48px.svg')
+            .icon('person_black', 		'svg/ic_person_black_48px.svg')
 			.icon('group_add_black', 	'svg/ic_group_add_black_48px.svg')
 			.icon('person_add_black', 	'svg/ic_person_add_black_48px.svg')
 			.icon('circle',             'svg/ic_circle_black_48px.svg')
@@ -511,6 +512,7 @@
 			.icon('expand_less',		'svg/ic_expand_less_black_48px.svg')
 			.icon('expand_more',		'svg/ic_expand_more_black_48px.svg')
 			.icon('info',				'svg/ic_info_black_48px.svg')
+			.icon('help',				'svg/ic_help_black_48px.svg')
 			.icon('search',				'svg/ic_search_black_48px.svg')
 			.icon('delete',             'svg/ic_delete_black_48px.svg')
 			.icon('drag',               'svg/drag.svg')
@@ -541,6 +543,7 @@
             .icon('chevron-left',       'svg/ic_chevron_left_black_48px.svg')
             .icon('chevron-right',      'svg/ic_chevron_right_black_48px.svg')
             .icon('file-excel',      	'svg/file-excel.svg')
+            .icon('logout',      	    'svg/logout.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {
