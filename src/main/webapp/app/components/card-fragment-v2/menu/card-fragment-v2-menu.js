@@ -25,6 +25,7 @@
 		ctrl.moveCard = moveCard;
 		ctrl.moveToColumn = moveToColumn;
 		ctrl.cloneCard = cloneCard;
+		ctrl.handleKey = handleKey;
 		
 		//
 		ctrl.$onInit = function init() {
@@ -109,7 +110,21 @@
 		function close() {
 			ctrl.mdPanelRef.close();
 		}
-		
+
+		//navigate up/down in the menu
+		function handleKey(event) {
+			if(event.keyCode === 40 || event.keyCode === 38) {
+				var currentNode = document.activeElement.parentNode;
+				var attrName = event.keyCode === 40 ? 'nextElementSibling' : 'previousElementSibling';
+				while(currentNode[attrName] != null) {
+					currentNode = currentNode[attrName];
+					if(!currentNode.classList.contains('lavagna-hide')) {
+						break;
+					}
+				}
+				currentNode.children[0].focus();
+			}
+		}
 	};
 	
 })();

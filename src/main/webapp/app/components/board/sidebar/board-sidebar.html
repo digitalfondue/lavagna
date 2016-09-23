@@ -14,6 +14,7 @@
                                lvg-dnd-opts="{sort:false, group: 'card', animation: 150}"
                                lvg-dnd-dragstart="$ctrl.dragStartCard($item)">
             <lvg-card-fragment-v2
+                tabindex="0"
                 ng-repeat="card in $ctrl.sidebar.cards track by (card.hash+$ctrl.metadataRef().hash)"
                 view="board"
                 hide-select="true"

@@ -63,6 +63,7 @@ lvg-board-column {
     background-color: #fafafa;
     padding-left: 8px;
     padding-right: 8px;
+    padding-top: 8px;
 }
 
 .lvg-board-column__add-card-button {
@@ -125,4 +126,25 @@ lvg-board-column.sortable-drag {
 
 lvg-board-column.sortable-drag {
     background-color: #fcfcfc;
+}
+
+.lvg-board-column__menu-status {
+	padding-left: 0;
+    padding-right: 0;
+    height: 100%;
+}
+
+.lvg-board-column__menu-status-button {
+	margin: auto 0!important;
+    padding-left: 16px!important;
+    padding-right: 16px!important;
+    width: 100%!important;
+    text-transform: none!important;
+    text-align: left!important;
+    display: inline-block;
+    border-radius: 0!important;
+    font-size: 15px!important;
+    text-transform: none!important;
+    font-weight: 400!important;
+    height: 100%!important;
 }

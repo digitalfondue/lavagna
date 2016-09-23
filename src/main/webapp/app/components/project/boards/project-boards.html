@@ -11,7 +11,7 @@
          data-lvg-has-permission="SEARCH">
 	    <div class="lvg-project-boards__tasks" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.tasks</div>
 	    <lvg-rebuild-if-change to-watch="$ctrl.metadata.hash">
-            <lvg-card-fragment-v2 ng-repeat="card in $ctrl.userProjectCards track by card.hash+$ctrl.metadata.hash"
+            <lvg-card-fragment-v2 tabindex="0" ng-repeat="card in $ctrl.userProjectCards track by card.hash+$ctrl.metadata.hash"
                                   view="list"
                                   card-ref="::card"
                                   user-ref="::$ctrl.user"

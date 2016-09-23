@@ -1,5 +1,5 @@
 <span data-ng-if="$ctrl.hasUserLabels()">
-    <lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash">
+    <lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash+$ctrl.labelValuesCntUpdate">
         <span ng-repeat="l in ::$ctrl.project.metadata.userLabels" ng-if="::$ctrl.labelValues[l.id] !== undefined">
             <span ng-repeat="val in ::$ctrl.labelValues[l.id]" class="lvg-label" data-ng-style="::(l.color|labelBackground)" data-ng-class="::(l.color|labelBackgroundClass)">
                 <lvg-label-v2

@@ -12,6 +12,7 @@
 				<li class="lavagna-home-card" ng-repeat="card in $ctrl.found">
 				    <lvg-rebuild-if-change to-watch="$ctrl.metadatas[card.projectShortName].hash+card.hash">
 				        <lvg-card-fragment-v2
+				            tabindex="0"
                             card-ref="card" 
                             search-type="{{::($ctrl.project ? 'projectSearch' : 'globalSearch')}}" 
                             user-ref="$ctrl.user"

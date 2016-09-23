@@ -3,11 +3,11 @@
 </md-toolbar>
 
 
-<div class="alert alert-danger" data-ng-if="$ctrl.httpsConfigurationCheck.length > 0">
-    <h3 data-translate>partials.admin.admin.httpsRelatedProblems</h3>
+<div class="alert alert-danger" ng-if="$ctrl.httpsConfigurationCheck.length > 0">
+    <h3 translate>partials.admin.admin.httpsRelatedProblems</h3>
 
-    <p data-ng-repeat="desc in $ctrl.httpsConfigurationCheck">{{::desc}}</p>
+    <p ng-repeat="desc in $ctrl.httpsConfigurationCheck">{{::desc}}</p>
 </div>
 
-<div layout-fill layout="column" data-ui-view data-autoscroll="false" class="lvg-content lavagna-container-top-margin"></div>
+<div ui-view data-autoscroll="false" class="lvg-content lavagna-container-top-margin"></div>
 

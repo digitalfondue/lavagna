@@ -107,7 +107,7 @@
 			if (parent.boardView && !parent.readOnly) {
 
 				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
+					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement)
 				}
 
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
@@ -116,7 +116,7 @@
 				//card fragment menu
 				if(User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					var button = createElem('button');
-					button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
+					button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
 					baseDiv.appendChild(button);
 
 					var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
@@ -129,8 +129,19 @@
 				baseDiv.appendChild(createText(parent.shortCardName));
 				angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 				var button = createElem('button');
-				button.className = 'lvg-card-fragment-v2__menu lvg-icon__expand-more';
+				button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
 				baseDiv.appendChild(button);
+				
+				if(parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+					var c = createElem("div");
+					c.className = 'lvg-card-fragment-v2__checkbox-container';
+					var fakeCheckbox = createElem("div");
+					fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
+					var attrRole = document.createAttribute('role');
+					c.appendChild(fakeCheckbox);
+					domElement.appendChild(c);
+				}
+				
 			} else if (parent.listView) {
 				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
@@ -138,7 +149,7 @@
 			} else if (parent.searchView) {
 
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-					baseDiv.appendChild(checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope));
+					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
 				}
 
 				var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
@@ -158,10 +169,25 @@
 	}
 
 
-	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope) {
-		var c = createElem("input");
-		c.type = 'checkbox';
+	function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope, domElement) {
+		
+		
+		
+		var c = createElem("div");
+		c.className = 'lvg-card-fragment-v2__checkbox-container';
+		var fakeCheckbox = createElem("div");
+		fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
+		var attrRole = document.createAttribute('role');
+		attrRole.value='button';
+		fakeCheckbox.attributes.setNamedItem(attrRole);
+		var tabIndex= document.createAttribute('tabindex');
+		tabIndex.value='0';
+		fakeCheckbox.attributes.setNamedItem(tabIndex);
+		c.appendChild(fakeCheckbox);
+		domElement.appendChild(c);
+		
 
+		var selectedState = isSelected();
 
 		function isSelected() {
 			if(isBoardView) {
@@ -170,9 +196,19 @@
 				return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
 			}
 		};
+		
+		function updateStyle() {
+			
+			if(selectedState) {
+				domElement.classList.add('lvg-card-fragment-v2__selected')
+			} else {
+				domElement.classList.remove('lvg-card-fragment-v2__selected')
+			}
+		}
 
 		function updateCheckbox() {
-			c.checked = isSelected();
+			selectedState = isSelected();
+			updateStyle();
 		};
 
 		updateCheckbox();
@@ -184,25 +220,36 @@
 		if(isBoardView) {
 			handleClickEvent = function handleClickEventBoardView() {
 				$scope.$applyAsync(function() {
+					selectedState = !selectedState;
 					selected[card.columnId] = selected[card.columnId] || {};
-					selected[card.columnId][card.id] = c.checked;
+					selected[card.columnId][card.id] = selectedState;
+					updateStyle();
 				});
 			};
 		} else {
 			handleClickEvent = function handleClickEventBoardView() {
 				$scope.$applyAsync(function() {
+					selectedState = !selectedState;
 					selected[card.projectShortName] = selected[card.projectShortName] || {};
-					selected[card.projectShortName][card.id] = c.checked;
+					selected[card.projectShortName][card.id] = selectedState;
+					updateStyle();
 				});
 			};
 		}
-
-		c.addEventListener('click', handleClickEvent);
+		
+		function handleKeyEvents(ev) {
+			if(ev.keyCode === 13 || ev.keyCode === 32) {
+				handleClickEvent();
+				ev.preventDefault();
+			}
+		}
+		
+		fakeCheckbox.addEventListener('click', handleClickEvent);
+		fakeCheckbox.addEventListener('keydown', handleKeyEvents);
 		subscribers.push(function() {
-			c.removeEventListener('click', handleClickEvent);
+			fakeCheckbox.removeEventListener('click', handleClickEvent);
+			fakeCheckbox.removeEventListener('keydown', handleKeyEvents);
 		});
-
-		return c;
 	}
 
 	function createLastUpdateTime(lastUpdateTime, $filter) {
@@ -628,7 +675,7 @@
 			scopeForCardFragment['card'] = card;
 			scopeForCardFragment['user'] = user;
 			scopeForCardFragment['metadata'] = metadata;
-			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
+			var readOnlyCard = $compile('<lvg-card-fragment-v2 view="board" read-only="true" card-ref="card" user-ref="user" project-metadata-ref="metadata" class="lvg-card-fragment-v2__static"></lvg-card-fragment-v2>')(scopeForCardFragment)[0];
 
 			copyPositionAndSize(cardFragmentElement, readOnlyCard);
 
@@ -678,6 +725,9 @@
 		readOnlyCard.style.height = (r.height-2-16)+'px';
 		readOnlyCard.style.width = (r.width-2-16)+'px';
 		readOnlyCard.style.display = 'none';
+		if(element.classList.contains('lvg-card-fragment-v2__selected')) {
+			readOnlyCard.classList.add('lvg-card-fragment-v2__selected');
+		}
 	}
 
 

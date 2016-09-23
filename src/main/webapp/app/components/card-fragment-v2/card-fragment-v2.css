@@ -1,8 +1,9 @@
 lvg-card-fragment-v2 {
 	display: block;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	padding: 8px;
-	word-break: break-all
+	word-break: break-all;
+	outline: none!important;
 }
 
 lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
@@ -60,6 +61,11 @@ lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
     -moz-appearance: none;
     appearance: none;
     float: right;
+    border-radius: 50%;
+}
+
+.lvg-card-fragment-v2__menu:focus {
+	background-color: rgba(158, 158, 158, 0.2);
 }
 
 /*
@@ -181,4 +187,60 @@ ul.assigned-users li.assigned-user {
 	white-space: nowrap;
 	overflow: hidden;
 	max-width: 100%;
+}
+
+.lvg-card-fragment-v2__checkbox-container {
+	height:0;
+	width:0;
+	transform: translate(-16px,-16px);
+	float:left;
+	/*display:none;*/
+}
+
+.lvg-card-fragment-v2__selected {
+	border:1px solid rgb(96,125,139);
+}
+
+.lvg-card-fragment-v2__checkbox {
+	background-color: white;
+	position:absolute;
+	height:22px;
+	width:22px;
+	border-radius: 50%;
+	cursor: pointer;
+    outline: none!important;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0,.2);
+    background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjQ4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSI0OCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTkgMTYuMTdMNC44MyAxMmwtMS40MiAxLjQxTDkgMTkgMjEgN2wtMS40MS0xLjQxeiIvPjwvc3ZnPg==");
+    background-size: 16px 16px;
+    background-position:50% 50%;
+    background-repeat: no-repeat;
+    border:1px solid transparent;
+    opacity: 0;
+}
+
+.lvg-card-fragment-v2__checkbox:focus {
+	border-color:rgba(0,0,0,0.5);
+	display: block;
+	opacity: 1;
+}
+
+lvg-card-fragment-v2:focus .lvg-card-fragment-v2__checkbox,
+lvg-card-fragment-v2:hover .lvg-card-fragment-v2__checkbox,
+.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox,
+.lvg-card-fragment-v2__static .lvg-card-fragment-v2__checkbox {
+	display: block;
+	opacity: 1;
+}
+
+lvg-card-fragment-v2.sortable-drag {
+	border: 1px solid #d0d0d0!important;
+}
+
+lvg-card-fragment-v2.sortable-drag .lvg-card-fragment-v2__checkbox-container, lvg-card-fragment-v2.sortable-ghost .lvg-card-fragment-v2__checkbox-container {
+	display:none!important;
+}
+
+.lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
+	background-color: rgb(96,125,139);
+	background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik05IDE2LjE3TDQuODMgMTJsLTEuNDIgMS40MUw5IDE5IDIxIDdsLTEuNDEtMS40MXoiLz48L3N2Zz4=");
 }
