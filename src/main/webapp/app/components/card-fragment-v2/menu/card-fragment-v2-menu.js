@@ -110,27 +110,21 @@
 		function close() {
 			ctrl.mdPanelRef.close();
 		}
-		
+
+		//navigate up/down in the menu
 		function handleKey(event) {
-			var currentNode = document.activeElement.parentNode;
-			if(event.keyCode === 40) { //down
-				while(currentNode.nextElementSibling != null) {
-					currentNode = currentNode.nextElementSibling;
+			if(event.keyCode === 40 || event.keyCode === 38) {
+				var currentNode = document.activeElement.parentNode;
+				var attrName = event.keyCode === 40 ? 'nextElementSibling' : 'previousElementSibling';
+				while(currentNode[attrName] != null) {
+					currentNode = currentNode[attrName];
 					if(!currentNode.classList.contains('lavagna-hide')) {
 						break;
 					}
 				}
-			} else if(event.keyCode === 38) { //up
-				while(currentNode.previousElementSibling != null) {
-					currentNode = currentNode.previousElementSibling;
-					if(!currentNode.classList.contains('lavagna-hide')) {
-						break;
-					}
-				}
+				currentNode.children[0].focus();
 			}
-			currentNode.children[0].focus();
 		}
-		
 	};
 	
 })();
