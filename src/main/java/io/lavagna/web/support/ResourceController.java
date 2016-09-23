@@ -71,6 +71,7 @@ public class ResourceController {
 	private final AtomicReference<Template> indexTopTemplate = new AtomicReference<>();
 	private final AtomicReference<byte[]> indexCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> jsCache = new AtomicReference<>();
+	private final AtomicReference<byte[]> jsLoginCache = new AtomicReference<>();
 	private final AtomicReference<byte[]> cssCache = new AtomicReference<>();
 	private final String version;
 
@@ -211,6 +212,31 @@ public class ResourceController {
 			StreamUtils.copy(indexCache.get(), os);
 		}
 	}
+	
+	@RequestMapping(value = "/resource-login/app-login-{version:.+}.js", method = RequestMethod.GET)
+	public void handleJsLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	    if (contains(env.getActiveProfiles(), "dev") || jsLoginCache.get() == null) {
+	        ServletContext context = request.getServletContext();
+	        BeforeAfter ba = new JS();
+            ByteArrayOutputStream allJs = new ByteArrayOutputStream();
+            for (String res : Arrays.asList(
+                    "/js/angular.min.js", "/js/angular-sanitize.min.js",//
+                    //
+                    "/js/angular-animate.min.js", "/js/angular-aria.min.js",
+                    "/js/angular-messages.min.js", "/js/angular-material.min.js")) {
+                output(res, context, allJs, ba);
+            }
+            concatenateResourcesWithExtension(context, "/app-login/", ".js", allJs, ba);
+            //
+
+            jsLoginCache.set(allJs.toByteArray());
+	    }
+	    
+	    try (OutputStream os = response.getOutputStream()) {
+            response.setContentType("text/javascript");
+            StreamUtils.copy(jsLoginCache.get(), os);
+        }
+	}
 
 	/**
 	 * Dynamically load and concatenate the js present in the configured directories
@@ -224,7 +250,6 @@ public class ResourceController {
 
 		if (contains(env.getActiveProfiles(), "dev") || jsCache.get() == null) {
 			ServletContext context = request.getServletContext();
-			response.setContentType("text/javascript");
 			BeforeAfter ba = new JS();
 			ByteArrayOutputStream allJs = new ByteArrayOutputStream();
 

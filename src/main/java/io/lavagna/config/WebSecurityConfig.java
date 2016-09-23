@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                 .sessionHandler(sessionHandler)
                 .request("/favicon.ico").permitAll()
                 .request("/css/**").permitAll()
+                .request("/resource-login/**").permitAll()
                 .request("/setup/**").denyAll()
                 .request("/api/calendar/**").permitAll()
                 .request("/api/**").requireAuthenticated(false)
@@ -82,7 +83,6 @@ public class WebSecurityConfig {
         
         return new SecurityConfiguration().requestMatcher(onlyWhenSetupIsNotComplete(configurationRepository))
                 .request("/setup/**").permitAll()
-                .request("/bootstrap-3.0/**").permitAll()
                 .request("/css/**").permitAll()
                 .request("/js/**").permitAll()
                 .request("/help/**").permitAll()
