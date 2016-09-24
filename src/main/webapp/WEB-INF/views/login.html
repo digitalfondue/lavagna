@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="lavagnaLogin">
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta charset="utf-8">
@@ -22,7 +22,7 @@
 /* ------------------------------------------------ */
 </style>
 </head>
-<body id="lvg-login">
+<body id="lvg-login" ng-cloak>
 
 
 
@@ -43,14 +43,14 @@
 						<div class="lvg-login-or login-box-0-separator"><hr><span>or</span></div>
 						<div class="error-message-demo">Username/Password is not correct or the account is not enabled</div>
 						<form method="post" action="login/demo/">
-							<p class="form-group">
-								<label for="demo-username">Demo Username</label>
-								<input id="demo-username" type="text" placeholder="User name" name="username" autocomplete="off" class="form-control" required>
-							</p>
-							<p class="form-group">
-								<label for="demo-password">Demo Password </label>
-								<input id="demo-password" type="password" placeholder="Password" name="password" autocomplete="off" class="form-control" required>
-							</p>
+						  <md-input-container class="md-block">
+                               <label for="demo-username">Demo Username</label>
+                               <input id="demo-username" type="text" placeholder="User name" name="username" autocomplete="off" class="form-control" required>
+						  </md-input-container>
+						  <md-input-container class="md-block">
+                            <label for="demo-password">Demo Password </label>
+                            <input id="demo-password" type="password" placeholder="Password" name="password" autocomplete="off" class="form-control" required>
+						  </md-input-container>
 							<p class="single-button">
 								<button type="submit" class="lvg-button lvg-button-submit">Log in</button>
 								<input type="hidden" name="_csrf" value="{{csrfToken}}"> 
@@ -65,14 +65,14 @@
 						<div class="lvg-login-or login-box-1-separator"><hr><span>or</span></div>
 						<form method="post" action="login/ldap/">
 							<div class="error-message-ldap">Username/Password is not correct or the account is not enabled</div>
-							<p class="form-group">
+							<md-input-container class="md-block">
 								<label for="ldap-username">Username</label>
 								<input id="ldap-username" type="text" placeholder="User name" name="username" autocomplete="off" class="form-control" required>
-							</p>
-							<p class="form-group">
+							</md-input-container>
+							<md-input-container class="md-block">
 								<label for="ldap-password">Password</label>
 								<input id="ldap-password" type="password" placeholder="Password" name="password" autocomplete="off" class="form-control" required>
-							</p>
+							</md-input-container>
 							<p class="single-button">
 								<button type="submit" class="lvg-button lvg-button-submit">Log in</button>
 								<input type="hidden" name="_csrf" value="{{csrfToken}}"> 
