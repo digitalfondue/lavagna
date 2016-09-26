@@ -103,8 +103,9 @@ public class WebSecurityConfig {
                 }
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType("text/html");
+                model.put("json", Json.GSON.toJson(model));
                 try (InputStream is = req.getServletContext().getResourceAsStream("/WEB-INF/views/login.html")) {
-                    Mustache.compiler().defaultValue("").compile(new InputStreamReader(is, StandardCharsets.UTF_8)).execute(model, resp.getWriter());
+                    Mustache.compiler().escapeHTML(false).defaultValue("").compile(new InputStreamReader(is, StandardCharsets.UTF_8)).execute(model, resp.getWriter());
                 }
             }
         };

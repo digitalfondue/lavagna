@@ -1,7 +1,7 @@
 
-#lvg-login {
+/*#lvg-login {
 	padding-top:20px;
-}
+}*/
 
 #lvg-login h1 {
 	font-size: 16px;
@@ -77,26 +77,6 @@
 #lvg-login .single-button {
 	margin-bottom:10px;
 	text-align: center;	
-}
-
-#lvg-login .login-demo {
-	display: none;
-}
-
-#lvg-login .login-ldap {
-	display: none;
-}
-
-#lvg-login .login-oauth {
-	display: none;
-}
-
-#lvg-login .login-persona {
-	display: none;
-}
-
-#lvg-login #login-persona- {
-	display: none;
 }
 
 .lvg-login-or {
