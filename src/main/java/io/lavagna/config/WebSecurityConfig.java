@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                 .sessionHandler(sessionHandler)
                 .request("/favicon.ico").permitAll()
                 .request("/css/**").permitAll()
+                .request("/fonts/**").permitAll()
                 .request("/resource-login/**").permitAll()
                 .request("/setup/**").denyAll()
                 .request("/api/calendar/**").permitAll()
