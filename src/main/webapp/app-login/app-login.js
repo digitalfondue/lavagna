@@ -9,9 +9,9 @@
 	
 	//-----------------
 	module.component('demoLogin', {
-		template: ['<div ng-if="$ctrl.show">',
+		template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
 			'<div class="error-message-demo">Username/Password is not correct or the account is not enabled</div>',
-			'<form method="post" action="login/demo/">',
+			'<form method="post" action="login/demo/" class="lvg-panel__body">',
 			  '<md-input-container class="md-block">',
                    '<label for="demo-username">Demo Username</label>',
                    '<input id="demo-username" type="text" placeholder="User name" name="username" autocomplete="off" required>',
@@ -43,8 +43,8 @@
 	//-----------------
 	
 	module.component('ldapLogin', {
-        template: ['<div ng-if="$ctrl.show">',
-		           		'<form method="post" action="login/ldap/">',
+        template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
+		           		'<form method="post" action="login/ldap/" class="lvg-panel__body">',
 		           			'<div class="error-message-ldap">Username/Password is not correct or the account is not enabled</div>',
 		           			'<md-input-container class="md-block">',
 		           				'<label for="ldap-username">Username</label>',
@@ -76,7 +76,8 @@
 	
 	
 	module.component('oauthLogin', {
-		template: ['<div ng-if="$ctrl.show">',
+		template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
+        '<div class="lvg-panel__body">',
 		'<div class="error-message-oauth">Username/Password is not correct or the account is not enabled</div>',
 		'<div class="single-button" ng-repeat="provider in $ctrl.configuration.loginOauthProviders">',
 			'<form method="post" action="{{::$ctrl.url(provider)}}">',
@@ -89,7 +90,7 @@
 	
 		'<p  class="single-button">',
 			'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
-		'</p>'].join(''),
+		'</p></div></div>'].join(''),
 		controller: ['configuration', oauthLoginCtrl]
 	});
 	

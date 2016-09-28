@@ -1,6 +1,5 @@
-#lvg-login h1 {
-	font-size: 16px;
-	text-align: center;
+.lvg-login-padding-top {
+	padding-top:20px;
 }
 
 #lvg-login .md-button {
