@@ -1,19 +1,13 @@
-
-/*#lvg-login {
-	padding-top:20px;
-}*/
-
 #lvg-login h1 {
 	font-size: 16px;
 	text-align: center;
 }
 
-#lvg-login .lvg-button-submit {
+#lvg-login .md-button {
 	width: 200px;
 }
 
-#lvg-login .btn-oauth, #lvg-login .btn-persona {
-	width: 200px;
+#lvg-login .btn-oauth {
 	text-transform:capitalize;
 	color: white;
 }
@@ -53,13 +47,6 @@
 
 #lvg-login button[class*="btn-gitlab"]:hover {
 	background-color: #392e5c;
-}
-
-#lvg-login .btn-persona {
-	background-color: #f4a32d;
-}
-#lvg-login .btn-persona:hover {
-	background-color: #ee9c26;
 }
 
 #lvg-login .error-message-demo,
