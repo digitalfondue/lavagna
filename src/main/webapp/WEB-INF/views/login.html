@@ -5,6 +5,76 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/all-{{version}}.css" type="text/css">
+<style>
+
+.lvg-login-padding-top {
+    padding-top:20px;
+}
+
+.md-button {
+    width: 200px;
+}
+
+.btn-oauth {
+    text-transform:capitalize;
+    color: white;
+}
+
+.btn-github {
+    background-color: #444;
+}
+
+.btn-github:hover {
+    background-color: #303030;
+}
+
+.btn-bitbucket {
+    background-color: #205081;
+}
+
+.btn-bitbucket:hover {
+    background-color: #183c60;
+}
+
+.btn-google {
+    background-color: #dd4b39;
+}
+
+.btn-google:hover {
+    background-color: #ca3523;
+}
+
+.btn-twitter {
+    background-color: #55acee;
+}
+
+.btn-twitter:hover {
+    background-color: #309aea;
+}
+
+button[class*="btn-gitlab"] {
+    background-color: #548;
+}
+
+button[class*="btn-gitlab"]:hover {
+    background-color: #392e5c;
+}
+
+.single-button {
+    margin-bottom:10px;
+    text-align: center;     
+}
+
+.error-message  {
+    margin-bottom: 10px;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    padding: 15px;
+}
+
+
+</style>
 <script type="text/json" id="app-configuration">{{json}}</script>
 <script src="resource-login/app-login-{{version}}.js"></script>
 <title>Login in Lavagna</title>

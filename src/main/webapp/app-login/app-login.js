@@ -6,11 +6,18 @@
 	var module = angular.module('lavagnaLogin', ['ngSanitize', 'ngMessages', 'ngMaterial']);
 	module.value('configuration', JSON.parse(document.getElementById('app-configuration').textContent))
 	
+	function hasErrorInQueryString($window, error) {
+		return $window.location.search.indexOf("?"+error)  !== -1 || $window.location.search.indexOf("&"+error)  !== -1;
+	}
+	
+	module.config(['$mdThemingProvider', '$compileProvider', function ($mdThemingProvider, $compileProvider) {
+		$compileProvider.debugInfoEnabled(false);
+		$mdThemingProvider.disableTheming();
+	}]);
 	
 	//-----------------
 	module.component('demoLogin', {
 		template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
-			'<div class="error-message-demo">Username/Password is not correct or the account is not enabled</div>',
 			'<form method="post" action="login/demo/" class="lvg-panel__body">',
 			  '<md-input-container class="md-block">',
                    '<label for="demo-username">Demo Username</label>',
@@ -20,32 +27,33 @@
                 '<label for="demo-password">Demo Password </label>',
                 '<input id="demo-password" type="password" placeholder="Password" name="password" autocomplete="off" required>',
 			  '</md-input-container>',
+			  '<div ng-if="$ctrl.errorDemo" class="error-message">Username/Password is not correct or the account is not enabled</div>',
+			  '<p>',
+				'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
+			  '</p>',
 				'<p class="single-button">',
 					'<md-button type="submit" class="md-primary">Log in</md-button>',
 					'<input type="hidden" name="_csrf" value="{{::$ctrl.configuration.csrfToken}}"> ',
 					'<input type="hidden" name="reqUrl" value="{{::$ctrl.configuration.reqUrl}}">',
 					'<input type="hidden" name="rememberMe" value="{{$ctrl.rememberMe}}" />',
 				'</p>',
-				'<p class="single-button">',
-					'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
-				'</p>',
 			'</form>',
 		'</div>'].join(''),
-		controller: ['configuration', demoLoginCtrl]
+		controller: ['configuration', '$window', demoLoginCtrl]
 	});
 	
 	
-	function demoLoginCtrl(configuration) {
+	function demoLoginCtrl(configuration, $window) {
 		var ctrl = this;
 		ctrl.configuration = configuration;
 		ctrl.show = configuration.loginDemo === 'block';
+		ctrl.errorDemo = hasErrorInQueryString($window, 'error-demo');
 	}
 	//-----------------
 	
 	module.component('ldapLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
 		           		'<form method="post" action="login/ldap/" class="lvg-panel__body">',
-		           			'<div class="error-message-ldap">Username/Password is not correct or the account is not enabled</div>',
 		           			'<md-input-container class="md-block">',
 		           				'<label for="ldap-username">Username</label>',
 		           				'<input id="ldap-username" type="text" placeholder="User name" name="username" autocomplete="off" required>',
@@ -54,31 +62,33 @@
 		           				'<label for="ldap-password">Password</label>',
 		           				'<input id="ldap-password" type="password" placeholder="Password" name="password" autocomplete="off" required>',
 		           			'</md-input-container>',
+		           			'<div ng-if="$ctrl.errorLdap" class="error-message">Username/Password is not correct or the account is not enabled</div>',
+		           			'<p>',
+	           					'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
+	           				'</p>',
 		           			'<p class="single-button">',
 		           				'<md-button type="submit" class="md-primary">Log in</md-button>',
 		           				'<input type="hidden" name="_csrf" value="{{::$ctrl.configuration.csrfToken}}"> ',
 		           				'<input type="hidden" name="reqUrl" value="{{::$ctrl.configuration.reqUrl}}">',
 		           				'<input type="hidden" name="rememberMe" value="{{$ctrl.rememberMe}}" />',
 		           			'</p>',
-		           			'<p class="single-button">',
-		           				'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
-		           			'</p>',
 		           		'</form>',
 		           	'</div>'].join(''),
-		controller: ['configuration', ldapLoginCtrl] 
+		controller: ['configuration', '$window', ldapLoginCtrl] 
 	});
 	
-	function ldapLoginCtrl(configuration) {
+	function ldapLoginCtrl(configuration, $window) {
 		var ctrl = this;
 		ctrl.configuration = configuration;
 		ctrl.show = configuration.loginLdap === 'block';
+		ctrl.errorLdap = hasErrorInQueryString($window, 'error-ldap');
 	}
 	
 	
 	module.component('oauthLogin', {
 		template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
         '<div class="lvg-panel__body">',
-		'<div class="error-message-oauth">Username/Password is not correct or the account is not enabled</div>',
+		'<div ng-if="$ctrl.errorOauth" class="error-message">Username/Password is not correct or the account is not enabled</div>',
 		'<div class="single-button" ng-repeat="provider in $ctrl.configuration.loginOauthProviders">',
 			'<form method="post" action="{{::$ctrl.url(provider)}}">',
 				'<md-button type="submit" class="btn-oauth btn-{{::provider}}">Login with {{::provider}}</md-button>',
@@ -91,16 +101,17 @@
 		'<p  class="single-button">',
 			'<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> remember me</md-checkbox>',
 		'</p></div></div>'].join(''),
-		controller: ['configuration', oauthLoginCtrl]
+		controller: ['configuration', '$window', oauthLoginCtrl]
 	});
 	
-	function oauthLoginCtrl(configuration) {
+	function oauthLoginCtrl(configuration, $window) {
 		var ctrl = this;
 		ctrl.configuration = configuration;
 		ctrl.show = configuration.loginOauth === 'block';
 		ctrl.url = function url(provider) {
 			return 'login/oauth/'+provider;
 		}
+		ctrl.errorOauth = hasErrorInQueryString($window, 'error-oauth');
 		
 	}
 	
