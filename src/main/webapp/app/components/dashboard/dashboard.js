@@ -91,7 +91,6 @@
         function showProjectDialog($event) {
         	$mdDialog.show({
             	templateUrl: 'app/components/dashboard/add-project-dialog.html',
-            	targetEvent: $event,
             	fullscreen:true,
             	controllerAs: 'projectDialogCtrl',
             	controller: function() {

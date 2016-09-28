@@ -223,7 +223,6 @@
         function showAddRoleDialog($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/manage-roles/add-role-dialog.html',
-        		targetEvent: $event,
         		controller: function() {
         			var ctrl = this;
         			ctrl.createRole = createRole;

@@ -100,7 +100,6 @@
         ctrl.showAddMilestoneDialog = function showAddMilestoneDialog($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
-        		targetEvent: $event,
         		controller: function() {
         			var ctrl = this;
         			ctrl.view = {};

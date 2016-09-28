@@ -75,7 +75,6 @@
         function showBoardDialog($event) {
 		    $mdDialog.show({
 		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
-		    	targetEvent: $event,
 		    	fullscreen: true,
 		    	controllerAs: 'boardDialogCtrl',
 		    	locals: {projectName : ctrl.project.shortName},

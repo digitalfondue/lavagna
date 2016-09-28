@@ -104,7 +104,6 @@
         			roles: ctrl.roles,
         			loginProviders : ctrl.loginProviders
         		},
-        		targetEvent: $event
         	});
         };
 
@@ -146,7 +145,6 @@
                     }
         		},
         		controllerAs: 'importDialogCtrl',
-        		targetEvent: $event
         	});
         };
 

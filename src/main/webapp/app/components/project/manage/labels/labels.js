@@ -41,7 +41,6 @@
         ctrl.showAddLabelDialog = function($event) {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
-        		targetEvent: $event,
         		controller: function(labelOptions) {
         			var ctrl = this;
         			ctrl.labelOptions = labelOptions;
