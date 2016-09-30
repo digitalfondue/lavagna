@@ -8,21 +8,21 @@
 	});
 	
 	
-	function SetupUserCtrl($window, $rootScope, $http, $state) {
+	function SetupUserCtrl($window, Configuration, $http, $state) {
 		
 		var ctrl = this;
 
-		ctrl.authMethod = $rootScope.selectedAuthMethod;
-		ctrl.loginType = $rootScope.loginType;
+		ctrl.authMethod = Configuration.selectedAuthMethod;
+		ctrl.loginType = Configuration.loginType;
 		
 
-		if ($rootScope.toSave.user && $rootScope.loginType.indexOf($rootScope.toSave.user.provider) > -1) {
-			ctrl.accountProvider = $rootScope.toSave.user.provider;
-			ctrl.username = $rootScope.toSave.user.username;
+		if (Configuration.toSave.user && Configuration.loginType.indexOf(Configuration.toSave.user.provider) > -1) {
+			ctrl.accountProvider = Configuration.toSave.user.provider;
+			ctrl.username = Configuration.toSave.user.username;
 		}
 
 		ctrl.saveUser = function () {
-			$rootScope.toSave.user = {
+			Configuration.toSave.user = {
 				provider: ctrl.accountProvider,
 				username: ctrl.username,
 				enabled: true,
@@ -30,6 +30,10 @@
 			};
 			$state.go('fourth-step');
 		};
+		
+		ctrl.back = function() {
+			$state.go('second-step');
+		}
 	}
 	
 })();

@@ -7,16 +7,16 @@
 		templateUrl: 'components/first-step/first-step.html'
 	});
 	
-	function SetupCtrl($window, $rootScope, $http, $state) {
+	function SetupCtrl($window, Configuration, $http, $state) {
 		
 		var ctrl = this;
 
-		$rootScope.fromFirstStep = true;
+		Configuration.fromFirstStep = true;
 
 		ctrl.baseUrlPlaceholder = getOrigin($window) + window.location.pathname.replace(/setup\/$/, '');
 
-		if ($rootScope.toSave.first) {
-			ctrl.baseUrl = $rootScope.toSave.first[0].second;
+		if (Configuration.toSave.first) {
+			ctrl.baseUrl = Configuration.toSave.first[0].second;
 		} else {
 			ctrl.baseUrl = ctrl.baseUrlPlaceholder;
 		}
@@ -42,8 +42,7 @@
 			//add '/' at the end if missing
 			var baseUrl = /\/$/.test(ctrl.baseUrl) ? ctrl.baseUrl : (ctrl.baseUrl + "/");
 
-			$rootScope.toSave.first = [{first: 'BASE_APPLICATION_URL', second: baseUrl}];
-			//$rootScope.oauth.baseUrl = baseUrl;
+			Configuration.toSave.first = [{first: 'BASE_APPLICATION_URL', second: baseUrl}];
 			$state.go('second-step');
 		}
 	}

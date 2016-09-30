@@ -9,12 +9,12 @@
 	});
 	
 	
-	function SetupLoginCtrl ($window, $rootScope, $http, $state) {
+	function SetupLoginCtrl ($window, Configuration, $http, $state) {
 		
 		var ctrl = this;
 		
 		ctrl.ldap = {};
-		ctrl.oauth = {baseUrl: $rootScope.toSave.first[0].second};
+		ctrl.oauth = {baseUrl: Configuration.toSave.first[0].second};
 		ctrl.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
 		ctrl.oauthCustomizable = ['gitlab'];
 		ctrl.oauthNewProvider = {};
@@ -23,8 +23,8 @@
 		});
 
 
-		if ($rootScope.selectedAuthMethod) {
-			ctrl.authMethod = $rootScope.selectedAuthMethod;
+		if (Configuration.selectedAuthMethod) {
+			ctrl.authMethod = Configuration.selectedAuthMethod;
 		} else if (!ctrl.authMethod) {
 			ctrl.authMethod = 'DEMO';
 		}
@@ -44,6 +44,10 @@
 				}
 			}
 			return selectedCount;
+		}
+		
+		ctrl.back = function() {
+			$state.go('first-step');
 		}
 
 		ctrl.submitConfiguration = function () {
@@ -86,16 +90,16 @@
 				}
 
 				config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
-				$rootScope.selectedNewOauthConf = newOauthConf;
+				Configuration.selectedNewOauthConf = newOauthConf;
 			} else if (ctrl.authMethod == 'DEMO') {
 				loginType = ['demo'];
 			}
 
-			$rootScope.toSave.second = config;
+			Configuration.toSave.second = config;
 
-			$rootScope.loginType = loginType;
-			$rootScope.accountProvider = loginType[0];
-			$rootScope.selectedAuthMethod = ctrl.authMethod;
+			Configuration.loginType = loginType;
+			Configuration.accountProvider = loginType[0];
+			Configuration.selectedAuthMethod = ctrl.authMethod;
 			$state.go('third-step');
 		};
 	}

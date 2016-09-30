@@ -1,16 +1,6 @@
 (function () {
 	'use strict';
 
-	function getOrigin(window) {
-		if (!window.location.origin) {
-			window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-		}
-		return window.location.origin;
-	}
-
-	function getPort(window) {
-		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
-	}
 
 	var module = angular.module('lavagna-setup', ['ui.router', 'ngSanitize', 'ngMessages', 'ngMaterial']);
 
@@ -51,31 +41,20 @@
 			};
 		});
 	});
+	
+	module.service('Configuration', function () {
+		var conf = {
+				toSave : {first: undefined, second: undefined, user: undefined}
+		};
+		return conf;
+	});
 
-	module.run(function ($rootScope, $state, $window) {
-
-		/*$rootScope.ldap = {};*/
-		/*$rootScope.oauth = {baseUrl: getOrigin($window) + $window.location.pathname.replace(/setup\/$/, '')};*/
-		/*$rootScope.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
-		$rootScope.oauthCustomizable = ['gitlab'];*/
-		/*$rootScope.oauthNewProvider = {};
-		angular.forEach($rootScope.oauthProviders, function (p) {
-			$rootScope.oauth[p] = {present: false};
-		});*/
-
-		$rootScope.toSave = {first: undefined, second: undefined, user: undefined};
-
-
+	module.run(function (Configuration, $state, $window) {
 		//redirect to first page if the user is bypassing it (as we are using the rootscope for propagating the values)
-		if (!$rootScope.fromFirstStep) {
+		if (!Configuration.fromFirstStep) {
 			$state.go('first-step');
 		}
 	});
-
-	function goToRootApp() {
-		window.location.href = getOrigin(window) + window.location.pathname.replace(/setup\/$/, '');
-	}
-	
 	
 
 	module.filter('mask', function ($filter) {
