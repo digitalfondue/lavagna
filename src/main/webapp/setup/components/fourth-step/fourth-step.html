@@ -1,0 +1,38 @@
+<div class="head clearfix headonly">
+        <div class="title title-bold">Setup Lavagna, step 4/4: confirm and activate</div>
+    </div>
+    <div class="body separated">
+        <p>Confirm the configuration values:</p>
+
+        <ul>
+            <li>Base application url: {{$ctrl.toSave.first[0].second}}
+            <li style="margin-top:20px;">Authentication method: {{$ctrl.selectedAuthMethod}}
+                <div data-ng-if="$ctrl.selectedAuthMethod == 'OAUTH'">
+                    Oauth parameters:
+                    <ul>
+                        <li>Base url: {{$ctrl.selectedNewOauthConf.baseUrl}}</li>
+                        <li data-ng-repeat="v in $ctrl.selectedNewOauthConf.providers" style="margin-top:10px;">
+                            <div>Provider: {{v.provider}}</div>
+                            <div ng-if="v.hasCustomBaseAndProfileUrl">Base url for custom provider: {{v.baseUrl}}</div>
+                            <div>Api Key: {{v.apiKey}}</div>
+                            <div>Api Secret: {{v.apiSecret}}</div>
+                        </li>
+                    </ul>
+                </div>
+                <div data-ng-if="$ctrl.selectedAuthMethod == 'LDAP'">
+                    Ldap parameters:
+                    <ul>
+                        <li data-ng-repeat="v in $ctrl.toSave.second.slice(1)">{{v.first}} : {{ v.first === 'LDAP_MANAGER_PASSWORD' ? (v.second | mask) : v.second  }}
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li style="margin-top:20px;">Admin account: provider: {{$ctrl.toSave.user.provider}}, username : {{$ctrl.toSave.user.username}}
+        </ul>
+        <form data-ng-submit="$ctrl.activate()" class="form-inline">
+            <p class="buttons">
+                <button class="lvg-button lvg-button-submit">Activate</button>
+                <button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="$ctrl.back('third-step')">Back</button>
+            </p>
+        </form>
+    </div>

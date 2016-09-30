@@ -1,0 +1,118 @@
+(function() {
+	
+	var module = angular.module('lavagna-setup');
+	
+	
+	module.component('setupSecondStep', {
+		controller: SetupLoginCtrl,
+		templateUrl: 'components/second-step/second-step.html'
+	});
+	
+	
+	function SetupLoginCtrl ($window, $rootScope, $http, $state) {
+		
+		var ctrl = this;
+		
+		ctrl.ldap = {};
+		ctrl.oauth = {baseUrl: $rootScope.toSave.first[0].second};
+		ctrl.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
+		ctrl.oauthCustomizable = ['gitlab'];
+		ctrl.oauthNewProvider = {};
+		angular.forEach(ctrl.oauthProviders, function (p) {
+			ctrl.oauth[p] = {present: false};
+		});
+
+
+		if ($rootScope.selectedAuthMethod) {
+			ctrl.authMethod = $rootScope.selectedAuthMethod;
+		} else if (!ctrl.authMethod) {
+			ctrl.authMethod = 'DEMO';
+		}
+
+		ctrl.checkLdapConfiguration = function (ldap, usernameAndPwd) {
+			$http.post('api/check-ldap/', angular.extend({}, ldap, usernameAndPwd)).then(function (r) {
+				ctrl.ldapCheckResult = r.data;
+			});
+		}
+
+		ctrl.countSelectedOauth = function () {
+
+			var selectedCount = 0;
+			for (var k in ctrl.oauth) {
+				if (ctrl.oauth[k].present) {
+					selectedCount++;
+				}
+			}
+			return selectedCount;
+		}
+
+		ctrl.submitConfiguration = function () {
+			var config = [];
+
+			var loginType = [];
+
+
+			config.push({first: 'AUTHENTICATION_METHOD', second: JSON.stringify([ctrl.authMethod])});
+
+			//ugly D:
+			if (ctrl.authMethod == 'LDAP') {
+				loginType = ['ldap'];
+				config.push({first: 'LDAP_SERVER_URL', second: ctrl.ldap.serverUrl});
+				config.push({first: 'LDAP_MANAGER_DN', second: ctrl.ldap.managerDn});
+				config.push({first: 'LDAP_MANAGER_PASSWORD', second: ctrl.ldap.managerPassword});
+				config.push({first: 'LDAP_USER_SEARCH_BASE', second: ctrl.ldap.userSearchBase});
+				config.push({first: 'LDAP_USER_SEARCH_FILTER', second: ctrl.ldap.userSearchFilter});
+			} else if (ctrl.authMethod == 'OAUTH') {
+				var newOauthConf = {baseUrl: ctrl.oauth.baseUrl, providers: []};
+
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth['bitbucket'], 'bitbucket') && loginType.push('oauth.bitbucket');
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth['gitlab'], 'gitlab') && loginType.push('oauth.gitlab');
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth['github'], 'github') && loginType.push('oauth.github');
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth['google'], 'google') && loginType.push('oauth.google');
+				addProviderIfPresent(newOauthConf.providers, ctrl.oauth['twitter'], 'twitter') && loginType.push('oauth.twitter');
+
+				if(ctrl.oauthNewProvider.type) {
+					var providerName = ctrl.oauthNewProvider.type+'-'+ctrl.oauthNewProvider.name;
+					newOauthConf.providers.push({
+						provider: providerName,
+						apiKey: ctrl.oauthNewProvider.apiKey,
+						apiSecret: ctrl.oauthNewProvider.apiSecret,
+						hasCustomBaseAndProfileUrl: true,
+						baseProvider: ctrl.oauthNewProvider.type,
+						baseUrl: ctrl.oauthNewProvider.baseUrl
+					});
+
+					loginType.push('oauth.'+providerName);
+				}
+
+				config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
+				$rootScope.selectedNewOauthConf = newOauthConf;
+			} else if (ctrl.authMethod == 'DEMO') {
+				loginType = ['demo'];
+			}
+
+			$rootScope.toSave.second = config;
+
+			$rootScope.loginType = loginType;
+			$rootScope.accountProvider = loginType[0];
+			$rootScope.selectedAuthMethod = ctrl.authMethod;
+			$state.go('third-step');
+		};
+	}
+	
+	function addProviderIfPresent(list, conf, provider) {
+		if (conf && conf.present) {
+			list.push({provider: provider, apiKey: conf.apiKey, apiSecret: conf.apiSecret});
+			return true;
+		}
+		return false;
+	}
+
+	function getOrigin(window) {
+		if (!window.location.origin) {
+			window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+		}
+		return window.location.origin;
+	}
+	
+})();

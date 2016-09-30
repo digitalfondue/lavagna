@@ -1,0 +1,151 @@
+<div class="head clearfix headonly">
+        <div class="title title-bold">Setup Lavagna, step 2/4: select login type</div>
+    </div>
+    <div class="body separated">
+        <form data-ng-submit="$ctrl.submitConfiguration()">
+            <div>
+                <label><input type="radio" data-ng-model="$ctrl.authMethod"
+                    name="authMethod" value="DEMO"> Demo</label>
+            </div>
+            <div>
+                <label><input type="radio" data-ng-model="$ctrl.authMethod"
+                    name="authMethod" value="LDAP"> Ldap</label>
+                <div data-ng-if="$ctrl.authMethod == 'LDAP'">
+                    <div class="form-group">
+                        <label for="ldap-serverUrl">Server URL</label> <input class="form-control" type="text"
+                            id="ldap-serverUrl"
+                            placeholder="ldap://localhost:10389"
+                            data-ng-model="$ctrl.ldap.serverUrl"
+                            data-ng-required="$ctrl.authMethod == 'LDAP'">
+                    </div>
+                    <div class="form-group">
+                        <label for="ldap-managerDn">Manager DN</label>
+                        <input class="form-control" type="text"
+                            id="ldap-managerDn"
+                            placeholder="uid=admin,ou=system"
+                            data-ng-model="$ctrl.ldap.managerDn"
+                            data-ng-required="$ctrl.authMethod == 'LDAP'">
+                    </div>
+                    <div class="form-group">
+                        <label for="ldap-managerPassword">Manager Password</label>
+                        <input class="form-control" type="password"
+                            id="ldap-managerPassword"
+                            placeholder="secret"
+                            data-ng-model="$ctrl.ldap.managerPassword"
+                            data-ng-required="$ctrl.authMethod == 'LDAP'">
+                    </div>
+                    <div class="form-group">
+                        <label for="ldap-userSearchBase">User Search Base</label> <input class="form-control"
+                            id="ldap-userSearchBase"
+                            type="text" placeholder="ou=system"
+                            data-ng-model="$ctrl.ldap.userSearchBase"
+                            data-ng-required="$ctrl.authMethod == 'LDAP'">
+                    </div>
+                    <div class="form-group">
+                        <label for="ldap-userSearchFilter">User Search Filter</label> <input class="form-control"
+                            id="ldap-userSearchFilter"
+                            type="text" placeholder="uid={0}"
+                            data-ng-model="$ctrl.ldap.userSearchFilter"
+                            data-ng-required="$ctrl.authMethod == 'LDAP'">
+                    </div>
+                    <div class="col-md-12">
+                        <h4>Check ldap configuration</h4>
+                        <div class="form-group">
+                            <label for="checkLdap-username">Username</label> <input type="text" class="form-control"
+                                id="checkLdap-username"
+                                data-ng-model="$ctrl.checkLdap.username">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkLdap-password">Password</label> <input type="password"
+                                id="checkLdap-password"
+                                class="form-control" data-ng-model="$ctrl.checkLdap.password">
+                        </div>
+                        <div class="form-group">
+                            <button class="lvg-button lvg-button-default" data-ng-click="$ctrl.checkLdapConfiguration($ctrl.ldap, $ctrl.checkLdap)"
+                                type="button">Check</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div>
+                        <div data-ng-show="$ctrl.ldapCheckResult">
+                            <span data-ng-show="$ctrl.ldapCheckResult.first">Everything seems Ok:</span>
+                            <span data-ng-show="!$ctrl.ldapCheckResult.first">An error occured, trace is:</span>
+                            <ul>
+                                <li data-ng-repeat="msg in $ctrl.ldapCheckResult.second">{{msg}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label><input type="radio" data-ng-model="$ctrl.authMethod"
+                    name="authMethod" value="OAUTH"> Oauth</label>
+                <div data-ng-if="$ctrl.authMethod == 'OAUTH'">
+                    <div class="form-group">
+                        <label for="oauth-baseUrl">Base url for callback urls</label> <input
+                            id="oauth-baseUrl"
+                            class="form-control" type="text" data-ng-model="$ctrl.oauth.baseUrl"
+                            data-ng-required="$ctrl.authMethod == 'OAUTH'">
+                    </div>
+                    <ul>
+                        <li data-ng-repeat="provider in $ctrl.oauthProviders">
+                            <div class="checkbox">
+                                <label class="capitalize"><input type="checkbox"
+                                    data-ng-model="$ctrl.oauth[provider].present"
+                                    data-ng-required="$ctrl.countSelectedOauth() == 0 && $ctrl.oauthNewProvider.type == null"> {{provider}}</label>
+                            </div>
+                            <div data-ng-if="$ctrl.oauth[provider].present">
+                                <div class="form-group">
+                                    <label for="oauth-provider-api-key-{{provider}}">Api key</label> <input class="form-control" type="text"
+                                        id="oauth-provider-api-key-{{provider}}"
+                                        data-ng-model="$ctrl.oauth[provider].apiKey"
+                                        data-ng-required="$ctrl.authMethod == 'OAUTH'">
+                                </div>
+                                <div class="form-group">
+                                    <label for="oauth-provider-api-secret-{{provider}}">Secret</label> <input class="form-control" type="text"
+                                        id="oauth-provider-api-secret-{{provider}}"
+                                        data-ng-model="$ctrl.oauth[provider].apiSecret"
+                                        data-ng-required="$ctrl.authMethod == 'OAUTH'">
+                                </div>
+                                <div>Callback url is: {{$ctrl.oauth.baseUrl}}login/oauth/{{provider}}/callback</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="or"><hr><span>Or</span></div>
+                    <div>Custom OAuth provider:</div>
+                    <div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.type">Type</label>
+                            <select class="form-control" data-ng-model="$ctrl.oauthNewProvider.type" id="oauthNewProvider.type" ng-required data-ng-options="name for name in $ctrl.oauthCustomizable">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.name">Name</label>
+                            <input class="form-control" type="text" data-ng-model="$ctrl.oauthNewProvider.name" id="oauthNewProvider.name" ng-required="$ctrl.oauthNewProvider.type.length > 0" pattern="[a-z]*" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.baseUrl">Base url</label>
+                            <input class="form-control" type="text" data-ng-model="$ctrl.oauthNewProvider.baseUrl" id="oauthNewProvider.baseUrl" ng-required="$ctrl.oauthNewProvider.type.length > 0">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.apiKey">Api Key</label>
+                            <input class="form-control" type="text" data-ng-model="$ctrl.oauthNewProvider.apiKey" id="oauthNewProvider.apiKey" ng-required="$ctrl.oauthNewProvider.type.length > 0">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.apiSecret">Api Secret</label>
+                            <input class="form-control" type="text" data-ng-model="$ctrl.oauthNewProvider.apiSecret" id="oauthNewProvider.apiSecret" ng-required="$ctrl.oauthNewProvider.type.length > 0">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthNewProvider.callback">Callback url is:</label>
+                            <input id="oauthNewProvider.callback" class="form-control form-selectable" type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{$ctrl.oauthNewProvider.type}}-{{$ctrl.oauthNewProvider.name}}/callback">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div  class="buttons" style="margin-top:10px">
+                <input type="submit" value="Next" class="lvg-button lvg-button-submit">
+                <button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="$ctrl.back('first-step')">Back</button>
+            </div>
+        </form>
+    </div>

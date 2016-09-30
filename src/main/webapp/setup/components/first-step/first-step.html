@@ -1,0 +1,22 @@
+<div class="head clearfix headonly">
+        <div class="title title-bold">Setup Lavagna, step 1/4: set base url</div>
+    </div>
+    <div class="body separated">
+        <form ng-submit="$ctrl.submitBaseUrl()">
+            <div class="form-group">
+                <label for="baseUrl">Base url</label> <input class="form-control" type="text" id="baseUrl" data-ng-model="$ctrl.baseUrl" required placeholder="{{$ctrl.baseUrlPlaceholder}}">
+                <p class="help-block">The base url of the application. The proposed url is most likely correct.</p>
+            </div>
+            <input type="submit" value="Next" class="lvg-button lvg-button-submit">
+        </form>
+        <div class="or"><hr><span>Or</span></div>
+
+        <p><strong>Import</strong></p>
+        <form data-ng-submit="$ctrl.submitImport()" class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="file" name="file" id="import-lavagna"> <input type="submit" value="Import" class="lvg-button lvg-button-submit">
+                </div>
+            </div>
+        </form>
+    </div>

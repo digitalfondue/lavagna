@@ -1,0 +1,22 @@
+<div class="head clearfix headonly">
+        <div class="title title-bold">Setup Lavagna, step 3/4: insert admin user</div>
+    </div>
+    <div class="body separated">
+        <form data-ng-submit="$ctrl.saveUser()" class="form-inline">
+            <p data-ng-show="$ctrl.authMethod == 'DEMO'">Demo account: the password will be equal to the username. Use only for demo purpose.</p>
+            <p data-ng-show="$ctrl.authMethod == 'LDAP'">Ldap account. Insert username.</p>
+            <p data-ng-show="$ctrl.authMethod == 'OAUTH'">Oauth: insert username for gitlab/github/bitbucket/twitter. Insert email in case of google.</p>
+            <div class="form-group">
+                <div class="input-group">
+                    <select data-ng-model="$ctrl.accountProvider" data-ng-options="l for l in $ctrl.loginType" class="form-control"></select>
+                </div>
+                <div class="input-group">
+                    <input data-ng-model="$ctrl.username" required class="form-control">
+                </div>
+            </div>
+            <div style="margin-top:10px"  class="buttons">
+                <button class="lvg-button lvg-button-submit">Next</button>
+                <button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="$ctrl.back('second-step')">Back</button>
+            </div>
+        </form>
+    </div>
