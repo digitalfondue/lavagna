@@ -86,6 +86,7 @@ public class WebSecurityConfig {
                 .request("/setup/**").permitAll()
                 .request("/css/**").permitAll()
                 .request("/js/**").permitAll()
+                .request("/fonts/**").permitAll()
                 .request("/help/**").permitAll()
                 .request("/about/**").permitAll()
                 .request("/**").redirectTo("/setup/")

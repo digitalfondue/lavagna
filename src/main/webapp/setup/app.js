@@ -20,7 +20,7 @@
 		return window.location.port || (window.location.protocol === "https:" ? "443" : "80")
 	}
 
-	var module = angular.module('lavagna-setup', ['ui.router']);
+	var module = angular.module('lavagna-setup', ['ui.router', 'ngSanitize', 'ngMessages', 'ngMaterial']);
 
 	module.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 		$stateProvider.state('first-step', {
