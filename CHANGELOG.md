@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1-M0 (2016-10-02)
+
+ - first pre-release of the 1.1 version. The user interface and experience has been completely revisited
+
+## 1.0.7.2 (2016-10-02)
+
+ - fix clone card issue (duplicated comments)
+ - update dependencies
+
 ## 1.0.7 (2016-08-28)
 
  - better performance when handling boards with many custom labels or more than 200 cards
