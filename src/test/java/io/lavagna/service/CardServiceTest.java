@@ -204,7 +204,8 @@ public class CardServiceTest {
     @Test
     public void testCloneCard() {
         Card c1 = cardService.createCardFromTop("1", col.getId(), new Date(), user);
-        cardDataService.createComment(c1.getId(), "Comment", new Date(), user.getId());
+        CardData comment = cardDataService.createComment(c1.getId(), "Comment", new Date(), user.getId());
+        cardDataService.updateComment(comment.getId(), "Comment updated", new Date(), user);
         cardDataService.updateDescription(c1.getId(), "Desc", new Date(), user.getId());
         CardData list = cardDataService.createActionList(c1.getId(), "List", user.getId(), new Date());
         cardDataService.createActionItem(c1.getId(), list.getId(), "Chk1", user.getId(), new Date());
@@ -218,5 +219,6 @@ public class CardServiceTest {
         Assert.assertEquals(
             cardDataService.findLatestDescriptionByCardId(c1.getId()).getContent(),
             cardDataService.findLatestDescriptionByCardId(clone.getId()).getContent());
+        Assert.assertEquals(1, cardDataService.findAllCommentsByCardId(clone.getId()).size());
     }
 }
