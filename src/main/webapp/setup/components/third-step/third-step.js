@@ -15,12 +15,15 @@
 		ctrl.authMethod = Configuration.selectedAuthMethod;
 		ctrl.loginType = Configuration.loginType;
 		
-
+		if(ctrl.loginType.length === 1) {
+			ctrl.accountProvider = ctrl.loginType[0];
+		}
+		
 		if (Configuration.toSave.user && Configuration.loginType.indexOf(Configuration.toSave.user.provider) > -1) {
 			ctrl.accountProvider = Configuration.toSave.user.provider;
 			ctrl.username = Configuration.toSave.user.username;
 		}
-
+		
 		ctrl.saveUser = function () {
 			Configuration.toSave.user = {
 				provider: ctrl.accountProvider,

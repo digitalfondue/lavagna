@@ -1,9 +1,7 @@
-<div class="head clearfix headonly">
-        <div class="title title-bold">Setup Lavagna, step 4/4: confirm and activate</div>
-    </div>
-    <div class="body separated">
+<md-content md-whiteframe="1">
+    <div>Setup Lavagna, step 4/4: confirm and activate</div>
+    <div class="lvg-login__padding">
         <p>Confirm the configuration values:</p>
-
         <ul>
             <li>Base application url: {{$ctrl.toSave.first[0].second}}
             <li style="margin-top:20px;">Authentication method: {{$ctrl.selectedAuthMethod}}
@@ -29,10 +27,11 @@
             </li>
             <li style="margin-top:20px;">Admin account: provider: {{$ctrl.toSave.user.provider}}, username : {{$ctrl.toSave.user.username}}
         </ul>
-        <form data-ng-submit="$ctrl.activate()" class="form-inline">
-            <p class="buttons">
-                <button class="lvg-button lvg-button-submit">Activate</button>
-                <button type="button" class="lvg-button lvg-button-default back-button" data-ng-click="$ctrl.back('third-step')">Back</button>
+        <form ng-submit="$ctrl.activate()" class="form-inline">
+            <p>
+                <md-button type="submit">Activate</md-button>
+                <md-button type="button" ng-click="$ctrl.back('third-step')">Back</md-button>
             </p>
         </form>
     </div>
+</md-content>    
