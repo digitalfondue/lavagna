@@ -1,5 +1,5 @@
 <h1 class="md-title">Setup Lavagna, step 2/4: select login type</h1>
-<md-content md-whiteframe="1">
+<md-content md-whiteframe="1" class="lvg-login__margin-bottom">
     <div class="lvg-login__padding">
         <form ng-submit="$ctrl.submitConfiguration()">
 	        <md-radio-group ng-model="$ctrl.authMethod">
@@ -58,6 +58,7 @@
 	                 <label for="oauth-baseUrl">Base url for callback urls</label> 
 	                 <input id="oauth-baseUrl" type="text" ng-model="$ctrl.oauth.baseUrl" ng-required="$ctrl.authMethod == 'OAUTH'">
 	             </md-input-container>
+	             <h3 class="md-body-2">OAuth provider:</h3>
 	             <div data-ng-repeat="provider in $ctrl.oauthProviders">
 	                     <div>
 	                         <md-checkbox ng-model="$ctrl.oauth[provider].present" ng-required="$ctrl.countSelectedOauth() == 0 && $ctrl.oauthNewProvider.type == null"> {{provider}}</md-checkbox>
@@ -77,9 +78,7 @@
                           </md-input-container>
 	                     </div>
 	             </div>
-	             
-	             <div><span>Or</span></div>
-	             <div>Custom OAuth provider:</div>
+	             <h3 class="md-body-2">Custom OAuth provider:</h3>
 	             <div>
 	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.type">Type</label>
@@ -111,8 +110,8 @@
 	         </div>
 	     </div>
 	     <div>
-	         <md-button type="submit">Next</md-button>
 	         <md-button type="button" ng-click="$ctrl.back('first-step')">Back</md-button>
+	         <md-button type="submit" class="md-primary">Continue</md-button>
 	     </div>
         </form>
     </div>

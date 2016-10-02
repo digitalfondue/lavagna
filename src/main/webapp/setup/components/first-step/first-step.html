@@ -1,22 +1,22 @@
 <h1 class="md-title">Setup Lavagna, step 1/4: set base url</h1>
-<md-content md-whiteframe="1">
+<md-content md-whiteframe="1" class="lvg-login__margin-bottom">
     <div class="lvg-login__padding">
+        <h2 class="md-body-2">New configuration</h2>
         <form ng-submit="$ctrl.submitBaseUrl()">
-	            <md-input-container class="md-block">
-	                <label for="baseUrl">Base url</label>
-	                <input type="text" id="baseUrl" ng-model="$ctrl.baseUrl" required placeholder="{{$ctrl.baseUrlPlaceholder}}">
-	            </md-input-container>
-                <p>The base url of the application. The proposed url is most likely correct.</p>
-	            <md-button type="submit">Next</md-button>
+	        <md-input-container class="md-block">
+	            <label for="baseUrl">Base url</label>
+	            <input type="text" id="baseUrl" ng-model="$ctrl.baseUrl" required placeholder="{{$ctrl.baseUrlPlaceholder}}">
+	        </md-input-container>
+            <p>The base url of the application. The proposed url is most likely correct.</p>
+	        <div>
+	           <md-button type="submit" class="md-primary">Continue</md-button>
+	        </div>
         </form>
-        
-        <div><span>Or</span></div>
-
-        <p><strong>Import</strong></p>
+        <h2 class="md-body-2">Import configuration</h2>
         <form ng-submit="$ctrl.submitImport()">
             <md-button type="button"><label for="import-lavagna">Select file</label></md-button>
             <input type="file" name="file" id="import-lavagna" class="lvg-input-file__input">
-            <md-button type="submit">Import</md-button>
+            <md-button type="submit" class="md-primary">Import</md-button>
         </form>
     </div>
 </md-content>

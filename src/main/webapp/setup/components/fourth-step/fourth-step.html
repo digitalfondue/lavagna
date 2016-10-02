@@ -1,10 +1,10 @@
 <h1 class="md-title">Setup Lavagna, step 4/4: confirm and activate</h1>
-<md-content md-whiteframe="1">
+<md-content md-whiteframe="1" class="lvg-login__margin-bottom">
     <div class="lvg-login__padding">
         <p>Confirm the configuration values:</p>
         <ul>
             <li>Base application url: {{$ctrl.toSave.first[0].second}}
-            <li style="margin-top:20px;">Authentication method: {{$ctrl.selectedAuthMethod}}
+            <li>Authentication method: {{$ctrl.selectedAuthMethod}}
                 <div data-ng-if="$ctrl.selectedAuthMethod == 'OAUTH'">
                     Oauth parameters:
                     <ul>
@@ -20,18 +20,15 @@
                 <div data-ng-if="$ctrl.selectedAuthMethod == 'LDAP'">
                     Ldap parameters:
                     <ul>
-                        <li data-ng-repeat="v in $ctrl.toSave.second.slice(1)">{{v.first}} : {{ v.first === 'LDAP_MANAGER_PASSWORD' ? (v.second | mask) : v.second  }}
-                        </li>
+                        <li data-ng-repeat="v in $ctrl.toSave.second.slice(1)">{{v.first}} : {{ v.first === 'LDAP_MANAGER_PASSWORD' ? (v.second | mask) : v.second}}</li>
                     </ul>
                 </div>
             </li>
-            <li style="margin-top:20px;">Admin account: provider: {{$ctrl.toSave.user.provider}}, username : {{$ctrl.toSave.user.username}}
+            <li>Admin account: provider: {{$ctrl.toSave.user.provider}}, username : {{$ctrl.toSave.user.username}}
         </ul>
         <form ng-submit="$ctrl.activate()" class="form-inline">
-            <p>
-                <md-button type="submit">Activate</md-button>
-                <md-button type="button" ng-click="$ctrl.back('third-step')">Back</md-button>
-            </p>
+            <md-button type="button" ng-click="$ctrl.back('third-step')">Back</md-button>
+            <md-button type="submit" class="md-primary">Activate</md-button>
         </form>
     </div>
 </md-content>    
