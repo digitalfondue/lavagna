@@ -71,39 +71,42 @@
 	                         <label for="oauth-provider-api-secret-{{provider}}">Secret</label>
 	                         <input type="text" id="oauth-provider-api-secret-{{provider}}" data-ng-model="$ctrl.oauth[provider].apiSecret" data-ng-required="$ctrl.authMethod == 'OAUTH'">
 	                      </md-input-container>
-	                      <div>Callback url is: {{$ctrl.oauth.baseUrl}}login/oauth/{{provider}}/callback</div>
+	                      <md-input-container class="md-block">
+                            <label>Callback url is:</label>
+                            <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider}}/callback">
+                          </md-input-container>
 	                     </div>
 	             </div>
 	             
-	             <div><hr><span>Or</span></div>
+	             <div><span>Or</span></div>
 	             <div>Custom OAuth provider:</div>
 	             <div>
-	                 <div>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.type">Type</label>
-	                     <select data-ng-model="$ctrl.oauthNewProvider.type" id="oauthNewProvider.type" ng-required data-ng-options="name for name in $ctrl.oauthCustomizable">
-	                         <option></option>
-	                     </select>
-	                 </div>
-	                 <div>
+	                     <md-select ng-model="$ctrl.oauthNewProvider.type" required id="oauthNewProvider.type">
+                            <md-option ng-repeat="name in $ctrl.oauthCustomizable" ng-value="name">{{::name}}</md-option>
+                        </md-select>
+	                 </md-input-container>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.name">Name</label>
 	                     <input type="text" data-ng-model="$ctrl.oauthNewProvider.name" id="oauthNewProvider.name" ng-required="$ctrl.oauthNewProvider.type.length > 0" pattern="[a-z]*" maxlength="10">
-	                 </div>
-	                 <div>
+	                 </md-input-container>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.baseUrl">Base url</label>
 	                     <input type="text" data-ng-model="$ctrl.oauthNewProvider.baseUrl" id="oauthNewProvider.baseUrl" ng-required="$ctrl.oauthNewProvider.type.length > 0">
-	                 </div>
-	                 <div>
+	                 </md-input-container>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.apiKey">Api Key</label>
 	                     <input type="text" data-ng-model="$ctrl.oauthNewProvider.apiKey" id="oauthNewProvider.apiKey" ng-required="$ctrl.oauthNewProvider.type.length > 0">
-	                 </div>
-	                 <div>
+	                 </md-input-container>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.apiSecret">Api Secret</label>
 	                     <input type="text" data-ng-model="$ctrl.oauthNewProvider.apiSecret" id="oauthNewProvider.apiSecret" ng-required="$ctrl.oauthNewProvider.type.length > 0">
-	                 </div>
-	                 <div>
+	                 </md-input-container>
+	                 <md-input-container class="md-block">
 	                     <label for="oauthNewProvider.callback">Callback url is:</label>
-	                     <input id="oauthNewProvider.callback" class="form-control form-selectable" type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{$ctrl.oauthNewProvider.type}}-{{$ctrl.oauthNewProvider.name}}/callback">
-	                 </div>
+	                     <input id="oauthNewProvider.callback" type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{$ctrl.oauthNewProvider.type}}-{{$ctrl.oauthNewProvider.name}}/callback">
+	                 </md-input-container>
 	             </div>
 	         </div>
 	     </div>
