@@ -157,7 +157,9 @@ public class CardService {
 
         // Copy comments
         for (CardDataFull cData : cardDataService.findAllCommentsByCardId(cardToCopyId)) {
-            cardDataService.createComment(newCard.getId(), cData.getContent(), cData.getTime(), cData.getUserId());
+            if(cData.getEventType() == EventType.COMMENT_CREATE) {
+                cardDataService.createComment(newCard.getId(), cData.getContent(), cData.getTime(), cData.getUserId());
+            }
         }
 
         // Copy action lists
