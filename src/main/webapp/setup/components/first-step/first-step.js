@@ -3,7 +3,7 @@
 	var module = angular.module('lavagna-setup');
 	
 	module.component('setupFirstStep', {
-		controller: SetupCtrl,
+		controller: ['$window', 'Configuration', '$http', '$state', SetupCtrl],
 		templateUrl: 'components/first-step/first-step.html'
 	});
 	

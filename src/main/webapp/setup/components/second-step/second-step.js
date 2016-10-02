@@ -4,7 +4,7 @@
 	
 	
 	module.component('setupSecondStep', {
-		controller: SetupLoginCtrl,
+		controller: ['$window', 'Configuration', '$http', '$state', SetupLoginCtrl],
 		templateUrl: 'components/second-step/second-step.html'
 	});
 	

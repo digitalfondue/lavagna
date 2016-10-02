@@ -4,7 +4,7 @@
 
 	var module = angular.module('lavagna-setup', ['ui.router', 'ngSanitize', 'ngMessages', 'ngMaterial']);
 
-	module.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+	module.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
 		$stateProvider.state('first-step', {
 			url: '/',
 			template: '<setup-first-step></setup-first-step>',
@@ -40,7 +40,7 @@
 				}
 			};
 		});
-	});
+	}]);
 	
 	module.service('Configuration', function () {
 		var conf = {
@@ -61,22 +61,22 @@
 		return conf;
 	});
 
-	module.run(function (Configuration, $state, $window) {
+	module.run(['Configuration', '$state', function (Configuration, $state) {
 		//redirect to first page if the user is bypassing it (as we are using the rootscope for propagating the values)
 		if (!Configuration.fromFirstStep) {
 			$state.go('first-step');
 		}
-	});
+	}]);
 	
 
-	module.filter('mask', function ($filter) {
+	module.filter('mask', ['$filter', function ($filter) {
 		return function (text) {
 			if (text === undefined) {
 				return null;
 			}
 			return text.replace(/./gi, "*");
 		};
-	});
+	}]);
 
 
 })();
