@@ -13,16 +13,14 @@
 		
 		var ctrl = this;
 		
-		ctrl.ldap = {};
-		ctrl.oauth = {baseUrl: Configuration.toSave.first[0].second};
-		ctrl.oauthProviders = ['bitbucket', 'gitlab', 'github', 'google', 'twitter'];
-		ctrl.oauthCustomizable = ['gitlab'];
-		ctrl.oauthNewProvider = {};
-		angular.forEach(ctrl.oauthProviders, function (p) {
-			ctrl.oauth[p] = {present: false};
-		});
-
-
+		ctrl.ldap = Configuration.secondStep.ldap;
+		ctrl.oauth = Configuration.secondStep.oauth;
+		ctrl.oauth.baseUrl = Configuration.toSave.first[0].second;
+		
+		ctrl.oauthProviders = Configuration.secondStep.oauthProviders;
+		ctrl.oauthCustomizable = Configuration.secondStep.oauthCustomizable;
+		ctrl.oauthNewProvider = Configuration.secondStep.oauthNewProvider;
+		
 		if (Configuration.selectedAuthMethod) {
 			ctrl.authMethod = Configuration.selectedAuthMethod;
 		} else if (!ctrl.authMethod) {

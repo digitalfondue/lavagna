@@ -44,8 +44,20 @@
 	
 	module.service('Configuration', function () {
 		var conf = {
-				toSave : {first: undefined, second: undefined, user: undefined}
+				toSave : {first: undefined, second: undefined, user: undefined},
+				secondStep: {
+					ldap: {}, 
+					oauth: {}, 
+					oauthProviders: ['bitbucket', 'gitlab', 'github', 'google', 'twitter'],
+					oauthCustomizable : ['gitlab'],
+					oauthNewProvider : {}
+				}
 		};
+		
+		angular.forEach(conf.secondStep.oauthProviders, function (p) {
+			conf.secondStep.oauth[p] = {present: false};
+		});
+		
 		return conf;
 	});
 
