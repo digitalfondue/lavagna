@@ -1,7 +1,7 @@
 <md-toolbar class="lvg-navbar">
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
-        <h2><a ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a> / <span translate>common.project-settings</span></h2>
+        <h2><a class="lvg-navbar-link" ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a> / <span translate>common.project-settings</span></h2>
         <lvg-search-input project="$ctrl.project" data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
     </div>

@@ -3,7 +3,7 @@
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="!$ctrl.project" data-translate>partials.search.title</span>
-            <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> <a ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a></span></span>
+            <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> <a class="lvg-navbar-link" ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a></span></span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
         </h2>
         <lvg-search-input data-lvg-has-permission="SEARCH" project="$ctrl.project" class="flex"></lvg-search-input>

@@ -64,6 +64,22 @@ html, body {
 	font-size: 14px;
 }
 
+a,
+a:link,
+a:hover,
+a:focus,
+a:visited,
+a:active {
+    color: #428bca;
+    text-decoration: none;
+}
+
+a:focus,
+a:hover {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
 /*
 
  Define various max-size for the content.

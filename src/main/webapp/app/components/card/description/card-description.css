@@ -48,6 +48,14 @@
     display: inline-block;
 }
 
+.lvg-card-description__divider {
+    margin: 5px 0;
+}
+
+.lvg-card-description__no-label {
+    font-style: italic;
+}
+
 .lvg-card-description__labels-add-button.md-button {
     min-height: 24px;
     height: 24px;

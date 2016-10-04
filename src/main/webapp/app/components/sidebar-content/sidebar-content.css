@@ -1,7 +1,5 @@
 .lvg-sidebar-container {
     background-color: #ececec;
-    -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
 }
 
@@ -52,16 +50,20 @@
     flex: 0 0 auto;
     flex-direction: row;
     min-height: 48px;
-    text-decoration: none;
-    color: #333;
 }
 
-.lvg-sidebar-content__link:visited, .lvg-sidebar-content__link:focus, .lvg-sidebar-content__link:active {
+.lvg-sidebar-content__link,
+.lvg-sidebar-content__link:link,
+.lvg-sidebar-content__link:hover,
+.lvg-sidebar-content__link:active,
+.lvg-sidebar-content__link:focus,
+.lvg-sidebar-content__link:visited {
     color: #333;
+    text-decoration: none;
 }
 
-.lvg-sidebar-content__link:hover {
-    text-decoration: none;
+.lvg-sidebar-content__link:hover,
+ .lvg-sidebar-content__link:focus {
     background-color: #ddd;
 }
 
