@@ -1,3 +1,7 @@
+.lvg-sidebar-container {
+    background-color: #ececec;
+}
+
 .lvg-sidebar-content__user {
     background-color: rgb(96,125,139);
     color: #fff;
@@ -38,7 +42,6 @@
 .lvg-sidebar-content__links {
     display: flex;
     flex-direction: column;
-
 }
 
 .lvg-sidebar-content__link {
@@ -47,10 +50,16 @@
     flex-direction: row;
     min-height: 48px;
     text-decoration: none;
+    color: #333;
+}
+
+.lvg-sidebar-content__link:visited, .lvg-sidebar-content__link:focus, .lvg-sidebar-content__link:active {
+    color: #333;
 }
 
 .lvg-sidebar-content__link:hover {
     text-decoration: none;
+    background-color: #ddd;
 }
 
 .lvg-sidebar-content__link-icon {
