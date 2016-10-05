@@ -42,6 +42,7 @@ public final class UserSession {
 	private static final String AUTH_KEY = UserSession.class.getName() + ".AUTH_KEY";
 	private static final String AUTH_USER_ID = UserSession.class.getName() + ".AUTH_USER_ID";
 	private static final String AUTH_USER_IS_ANONYMOUS = UserSession.class.getName() + ".AUTH_USER_IS_ANONYMOUS";
+	public static final String REMEMBER_ME_COOKIE = "LAVAGNA_REMEMBER_ME";
 
 	public static boolean isUserAuthenticated(HttpServletRequest req) {
 		return Boolean.TRUE.equals(req.getSession().getAttribute(AUTH_KEY));
@@ -53,7 +54,7 @@ public final class UserSession {
 
 	public static void authenticateUserIfRemembered(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
 		Cookie c;
-		if (isUserAuthenticated(req) || (c = getCookie(req, "LAVAGNA_REMEMBER_ME")) == null) {
+		if (isUserAuthenticated(req) || (c = getCookie(req, REMEMBER_ME_COOKIE)) == null) {
 			return;
 		}
 
@@ -79,7 +80,7 @@ public final class UserSession {
 
 	public static void invalidate(HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
 		req.getSession().invalidate();
-		Cookie c = getCookie(req, "LAVAGNA_REMEMBER_ME");
+		Cookie c = getCookie(req, REMEMBER_ME_COOKIE);
 		if (c != null) {
 			deleteTokenIfExist(c.getValue(), userRepository);
 			c.setMaxAge(0);
@@ -147,7 +148,7 @@ public final class UserSession {
 
 		String token = userRepository.createRememberMeToken(userId);
 		//
-		Cookie c = new Cookie("LAVAGNA_REMEMBER_ME", userId + "," + token);
+		Cookie c = new Cookie(REMEMBER_ME_COOKIE, userId + "," + token);
 		c.setPath(req.getContextPath() + "/");
 		c.setHttpOnly(true);
 		c.setMaxAge(60 * 60 * 24 * 365); // 1 year

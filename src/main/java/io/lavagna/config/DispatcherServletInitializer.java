@@ -36,6 +36,8 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    
+    public static final String SESSION_COOKIE_NAME = "LAVAGNA_SESSION_ID"; 
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
@@ -81,7 +83,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 		
 		servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
 		servletContext.getSessionCookieConfig().setHttpOnly(true);
-		servletContext.getSessionCookieConfig().setName("LAVAGNA_SESSION_ID");
+		servletContext.getSessionCookieConfig().setName(SESSION_COOKIE_NAME);
 	}
 
     private static void addFilter(ServletContext context, String filterName, Class<? extends Filter> filterClass, String... urlPatterns) {
