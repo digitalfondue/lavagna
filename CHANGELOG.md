@@ -1,10 +1,19 @@
 # Changelog
 
+
+## 1.1-M1 (2016-10-06)
+
+ - Update the pre-release: ui/ux fixes.
+
+## 1.0.7.2 (2016-10-06)
+
+ - fix java7 compatibility
+
 ## 1.1-M0 (2016-10-02)
 
  - first pre-release of the 1.1 version. The user interface and experience has been completely revisited
 
-## 1.0.7.2 (2016-10-02)
+## 1.0.7.1 (2016-10-02)
 
  - fix clone card issue (duplicated comments)
  - update dependencies
