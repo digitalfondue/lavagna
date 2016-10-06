@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import io.lavagna.common.CookieNames;
 import io.lavagna.model.User;
 import io.lavagna.service.UserRepository;
 
@@ -67,7 +68,7 @@ public class UserSessionTest {
 
 		MockHttpServletRequest req = new MockHttpServletRequest();
 		HttpServletResponse resp = new MockHttpServletResponse();
-		Cookie cookie = new Cookie(UserSession.REMEMBER_ME_COOKIE, "2,056a8421-7448-4753-a932-13dc7e4cd510");
+		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2,056a8421-7448-4753-a932-13dc7e4cd510");
 		req.setCookies(cookie);
 		UserRepository userRepository = Mockito.mock(UserRepository.class);
 		UserSession.setUser(1, true, req, resp, userRepository);

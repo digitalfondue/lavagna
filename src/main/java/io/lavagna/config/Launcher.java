@@ -35,6 +35,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.webapp.WebInfConfiguration;
 import org.eclipse.jetty.webapp.WebXmlConfiguration;
 
+import io.lavagna.common.CookieNames;
+
 public class Launcher {
     
     public static void main(String[] args) throws Exception {
@@ -54,6 +56,7 @@ public class Launcher {
         ArgumentAcceptingOptionSpec<String> bindAddressOption = parser.accepts("bindAddress", "Accept connections only on address addr (default: accept on any address)").withRequiredArg().ofType(String.class);
         ArgumentAcceptingOptionSpec<String> tmpDirOption = parser.accepts("tmpDir", "Temporary directory").withRequiredArg().ofType(String.class);
         ArgumentAcceptingOptionSpec<String> contextPathOption = parser.accepts("contextPath", "Set context path (default: /)").withRequiredArg().ofType(String.class);
+        ArgumentAcceptingOptionSpec<String> cookiePrefixOption = parser.accepts("cookiePrefix", "Prefix the cookies").withRequiredArg().ofType(String.class);
         OptionSpecBuilder helpOption = parser.accepts("help", "Print this help message");
         parser.accepts("headless", "legacy parameter, ignored");
         parser.accepts("forwarded", "legacy parameter, ignored");
@@ -69,6 +72,10 @@ public class Launcher {
         int port = options.has(portOption) ? options.valueOf(portOption) : 8080;
         String bindAddress = options.has(bindAddressOption) ? options.valueOf(bindAddressOption) : "0.0.0.0";
         String contextPath = options.has(contextPathOption) ? options.valueOf(contextPathOption) : "/";
+        
+        if (options.has(cookiePrefixOption)) {
+            CookieNames.updatePrefix(options.valueOf(cookiePrefixOption));
+        }
         
         InetSocketAddress address = new InetSocketAddress(bindAddress, port);
         Server server = new Server(address);

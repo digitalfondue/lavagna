@@ -16,6 +16,7 @@
  */
 package io.lavagna.config;
 
+import io.lavagna.common.CookieNames;
 import io.lavagna.web.security.AnonymousUserFilter;
 import io.lavagna.web.security.CSFRFilter;
 import io.lavagna.web.security.HSTSFilter;
@@ -37,8 +38,6 @@ import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     
-    public static final String SESSION_COOKIE_NAME = "LAVAGNA_SESSION_ID"; 
-
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] { DataSourceConfig.class,//
@@ -83,7 +82,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 		
 		servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
 		servletContext.getSessionCookieConfig().setHttpOnly(true);
-		servletContext.getSessionCookieConfig().setName(SESSION_COOKIE_NAME);
+		servletContext.getSessionCookieConfig().setName(CookieNames.getSessionCookieName());
 	}
 
     private static void addFilter(ServletContext context, String filterName, Class<? extends Filter> filterClass, String... urlPatterns) {

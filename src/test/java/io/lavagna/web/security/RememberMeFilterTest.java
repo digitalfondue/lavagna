@@ -39,6 +39,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.lavagna.common.CookieNames;
 import io.lavagna.model.Key;
 import io.lavagna.model.User;
 import io.lavagna.service.ConfigurationRepository;
@@ -84,7 +85,7 @@ public class RememberMeFilterTest {
 		RememberMeFilter rmf = new RememberMeFilter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.getSession().setAttribute(AUTH_KEY, false);
-		Cookie cookie = new Cookie(UserSession.REMEMBER_ME_COOKIE, "2,056a8421-7448-4753-a932-13dc7e4cd510");
+		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2,056a8421-7448-4753-a932-13dc7e4cd510");
 		request.setCookies(cookie);
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
@@ -111,7 +112,7 @@ public class RememberMeFilterTest {
 		RememberMeFilter rmf = new RememberMeFilter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.getSession().setAttribute(AUTH_KEY, false);
-		Cookie cookie = new Cookie(UserSession.REMEMBER_ME_COOKIE, "2,056a8421-7448-4753-a932-13dc7e4cd510");
+		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2,056a8421-7448-4753-a932-13dc7e4cd510");
 		request.setCookies(cookie);
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
