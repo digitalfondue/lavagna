@@ -1,13 +1,11 @@
-<span data-ng-if="$ctrl.hasUserLabels()">
-    <lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash+$ctrl.labelValuesCntUpdate">
-        <span ng-repeat="l in ::$ctrl.project.metadata.userLabels" ng-if="::$ctrl.labelValues[l.id] !== undefined">
-            <span ng-repeat="val in ::$ctrl.labelValues[l.id]" class="lvg-label" data-ng-style="::(l.color|labelBackground)" data-ng-class="::(l.color|labelBackgroundClass)">
-                <lvg-label-v2
-                    value-ref="val"
-                    project-metadata-ref="$ctrl.project.metadata">
-                    <md-icon class="lvg-card-metadata-labels__label-remove lvg-cursor-pointer" md-svg-icon="close" data-ng-click="$ctrl.removeLabelValue(l, val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
-                </lvg-label-v2>
-            </span>
+<lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash+$ctrl.labelValuesCntUpdate">
+    <span ng-repeat="l in ::$ctrl.project.metadata.userLabels" ng-if="::$ctrl.labelValues[l.id] !== undefined">
+        <span ng-repeat="val in ::$ctrl.labelValues[l.id]" class="lvg-label" data-ng-style="::(l.color|labelBackground)" data-ng-class="::(l.color|labelBackgroundClass)">
+            <lvg-label-v2
+                value-ref="val"
+                project-metadata-ref="$ctrl.project.metadata">
+                <md-icon class="lvg-card-metadata-labels__label-remove lvg-cursor-pointer" md-svg-icon="close" data-ng-click="$ctrl.removeLabelValue(l, val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
+            </lvg-label-v2>
         </span>
-    </lvg-rebuild-if-change>
-</span>
+    </span>
+</lvg-rebuild-if-change>

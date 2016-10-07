@@ -32,8 +32,9 @@
             <lvg-card-labels
                 card="$ctrl.card"
                 project="$ctrl.project"
-                label-values="$ctrl.labelValues"></lvg-card-labels>
-            <span class="lvg-card-description__no-label" translate>card.labels.no.labels</span>
+                label-values="$ctrl.labelValues"
+                ng-if="$ctrl.hasUserLabels()"></lvg-card-labels>
+            <span class="lvg-card-description__no-label" ng-if="!$ctrl.hasUserLabels()" translate>card.labels.no.labels</span>
             <span class="lvg-card-description-labels-add" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.addLabelPanel">
                 <md-button data-ng-click="$ctrl.addLabelPanel = true"
                            md-no-ink

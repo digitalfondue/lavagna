@@ -13,18 +13,19 @@
 
     function CardDescriptionController(EventBus, BulkOperations, Card, StompClient) {
         var ctrl = this;
-        
+
         ctrl.hideAddPanel = hideAddPanel;
         ctrl.updateCardName = updateCardName;
         ctrl.updateDescription = updateDescription;
-        
+        ctrl.hasUserLabels = hasUserLabels;
+
         //
-        
+
         var onDestroyStomp = angular.noop;
-        
+
         ctrl.$onInit = function init() {
         	loadDescription();
-        	
+
             //the /card-data has various card data related event that are pushed from the server that we must react
         	onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
@@ -33,7 +34,7 @@
                 }
             });
         }
-        
+
         ctrl.$onDestroy = function onDestroy() {
         	onDestroyStomp();
         }
@@ -57,6 +58,20 @@
             Card.description(ctrl.card.id).then(function(description) {
                 ctrl.description = description;
             });
+        };
+
+        function hasUserLabels() {
+            if(ctrl.project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
+                return false;
+            }
+
+            for(var v in ctrl.project.metadata.userLabels) {
+                if(ctrl.labelValues[ctrl.project.metadata.userLabels[v].id] !== undefined) {
+                    return true;
+                }
+            }
+
+            return false;
         };
 
     }

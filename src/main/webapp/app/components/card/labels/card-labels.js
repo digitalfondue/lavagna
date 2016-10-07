@@ -14,34 +14,19 @@
     function CardLabelsController(Label, BulkOperations, Notification) {
 
         var ctrl = this;
-        
-        ctrl.hasUserLabels = hasUserLabels;
+
         ctrl.removeLabelValue = removeLabelValue;
-        
-        
+
+
         ctrl.$onInit = function init() {
         	ctrl.labelValuesCntUpdate = 0;
         }
-        
+
         ctrl.$onChanges = function onChanges(changes) {
         	if(changes.labelValues) {
         		ctrl.labelValuesCntUpdate++;
         	}
         }
-
-        function hasUserLabels() {
-            if(ctrl.project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
-                return false;
-            }
-
-            for(var v in ctrl.project.metadata.userLabels) {
-            	if(ctrl.labelValues[ctrl.project.metadata.userLabels[v].id] !== undefined) {
-            		return true;
-            	}
-            }
-
-            return false;
-        };
 
         function currentCard() {
             var cardByProject = {};

@@ -10,45 +10,58 @@
 			board: '<',
 			card: '<',
 			user: '<'
-		}, 
-		
-		controller: ['$mdDialog', '$state', CardModalController]
+		},
+        templateUrl: 'app/components/card-modal/card-modal.html',
+		controller: ['$document', '$state', CardModalController],
+		controllerAs: 'modalCtrl',
 	});
-	
-	function CardModalController($mdDialog, $state) {
-		
+
+	function CardModalController($document, $state) {
+
 		var ctrl = this;
-		
-		ctrl.$onInit = function init() {
-			$mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'app/components/card-modal/card-modal.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                fullscreen: true,
-                locals: {
-                    project: ctrl.project,
-                    board: ctrl.board,
-                    card: ctrl.card,
-                    user: ctrl.user
-                },
-                bindToController: true,
-                controllerAs: 'modalCtrl',
-                onRemoving: function goBack() {
-                    $state.go('^');
-                }
-            });
-		}
-		
+		var body = $document[0].body;
+		var backDrop;
+		var container;
+
+		function close () {
+            $state.go('^');
+        }
+
+        function escapeHandler($event) {
+            if ($event.keyCode == 27) {
+                close();
+            }
+        }
+
+        function closeHandler($event) {
+            if($event.target == container) {
+                close();
+            }
+        }
+
+        function cleanup() {
+            container.removeEventListener('click', closeHandler);
+            window.document.removeEventListener('keyup', escapeHandler);
+            body.removeChild(backDrop);
+        }
+
+		ctrl.$postLink = function postLink() {
+		    backDrop = window.document.createElement('div');
+		    backDrop.className = 'lvg-card-modal__backdrop';
+		    body.appendChild(backDrop);
+
+		    container = window.document.querySelector('.lvg-card-modal');
+            angular.element(window.document.querySelector('.lvg-card-modal__dialog')).addClass('md-transition-in');
+
+            container.addEventListener('click', closeHandler);
+            window.document.addEventListener('keyup', escapeHandler);
+		};
+
 		ctrl.$onDestroy = function() {
-			$mdDialog.cancel();
+			cleanup();
 		}
 
-		function DialogController($mdDialog) {
-            this.close = function() {
-                $mdDialog.cancel();
-            };
-        }
-	}	
+		ctrl.close = close;
+	}
 
 })();

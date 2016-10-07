@@ -1,18 +1,20 @@
-<md-dialog class="lvg-card-modal__dialog">
-	<md-toolbar>
-	    <div class="md-toolbar-tools">
-	        <h2>{{::modalCtrl.project.shortName}} / {{::modalCtrl.board.shortName}}-{{::modalCtrl.card.sequence}}</h2>
-	        <span class="flex"></span>
-	        <md-button class="md-icon-button" ng-click="modalCtrl.close()">
-	            <md-icon md-svg-icon="close"></md-icon>
-	        </md-button>
-	    </div>
-	</md-toolbar>
-	<md-dialog-content class="lvg-card-modal__background">
-        <lvg-component-card
-            card="modalCtrl.card"
-            board="modalCtrl.board"
-            project="modalCtrl.project"
-            user="modalCtrl.user"></lvg-component-card>
-	</md-dialog-content>
-</md-dialog>
+<div class="md-dialog-container lvg-card-modal">
+    <md-dialog class="lvg-card-modal__dialog md-dialog-fullscreen md-content-overflow">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{::modalCtrl.project.shortName}} / {{::modalCtrl.board.shortName}}-{{::modalCtrl.card.sequence}}</h2>
+                <span class="flex"></span>
+                <md-button class="md-icon-button" ng-click="modalCtrl.close()">
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="lvg-card-modal__background">
+            <lvg-component-card
+                card="modalCtrl.card"
+                board="modalCtrl.board"
+                project="modalCtrl.project"
+                user="modalCtrl.user"></lvg-component-card>
+        </md-dialog-content>
+    </md-dialog>
+</div>

@@ -10,3 +10,15 @@
 .lvg-card-modal__background {
     background-color: #eee;
 }
+
+.lvg-card-modal__backdrop {
+    position: fixed;
+    background-color: rgba(33,33,33,1.0);
+    opacity: .48;
+    z-index: 79;
+    transition: opacity 450ms;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
