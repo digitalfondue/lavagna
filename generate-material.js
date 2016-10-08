@@ -8,7 +8,7 @@
 //
 // then run node generate-material.js
 //
-// copy angular.min.js, angular-material.layout-none.css in their dirs
+// copy angular-material.min.js, angular-material.layout-none.min.css in their dirs
 // currently the theme does not work correctly (check why) the tab colors are not correct
 
 'use strict';
@@ -21,7 +21,7 @@ let tools = new MaterialTools({
   'showHide', 'backdrop', /*'bottomSheet',*/ 'button', 'card', 'checkbox', 'chips', 'colors', 'content', 'datepicker', 
   'dialog', 'divider', 'fabActions', 'fabShared', 'fabSpeedDial', /*'fabToolbar', 'gridList',*/ 'input', /*'list',*/ 'menu', 
   'menuBar',/* 'navBar',*/ 'panel', 'progressCircular', 'progressLinear', 'radioButton', 'select', 'sidenav', /*'slider', 
-  'sticky' , 'subheader', 'swipe', 'switch',*/ 'tabs', /*'toast',*/ 'toolbar', 'tooltip', 'whiteframe'],
+  'sticky' , 'subheader', 'swipe',*/ 'switch', 'tabs', /*'toast',*/ 'toolbar', 'tooltip', 'whiteframe'],
 
   
   
