@@ -15,16 +15,17 @@
     function DashboardController($mdDialog, Project, User, Notification, StompClient) {
 
         var ctrl = this;
-        
+
         ctrl.fetchUserCardsPage = fetchUserCardsPage;
         ctrl.getMetadatasHash = getMetadatasHash;
         ctrl.showProjectDialog = showProjectDialog;
-        
+        ctrl.updateShowArchivedItems = updateShowArchivedItems;
+
         //
-        
+
         var onDestroyStomp = angular.noop;
         var projectMetadataSubscriptions = [];
-        
+
         ctrl.$onInit = function init() {
         	ctrl.view = {
         			projectPage : 1,
@@ -32,15 +33,17 @@
         			maxVisibleProjectPages : 3,
         			cardPage: 1
         	};
-        	
+
         	ctrl.metadatas = {};
-        	
+
         	onDestroyStomp = StompClient.subscribe('/event/project', loadProjects);
-        	
+
         	loadProjects();
         	loadUserCards(ctrl.view.cardPage - 1);
+
+        	ctrl.showArchivedItems = ctrl.user.userMetadata && ctrl.user.userMetadata.showArchivedItems || false;
         }
-        
+
         ctrl.$onDestroy = function onDestroy() {
         	onDestroyStomp();
         	angular.forEach(projectMetadataSubscriptions, function(subscription) {
@@ -48,7 +51,7 @@
         	});
         }
 
-        
+
 
         function loadProjects() {
             Project.list().then(function(projects) {
@@ -132,6 +135,15 @@
                     	$mdDialog.hide();
                     }
             	}
+            });
+        }
+
+        function updateShowArchivedItems(value) {
+            var metadata = ctrl.user.userMetadata || {};
+            metadata.showArchivedItems = value;
+            User.updateMetadata(metadata).then(User.current, User.current).then(function(user) {
+                ctrl.user = user;
+                ctrl.showArchivedItems = user.userMetadata.showArchivedItems;
             });
         }
     }

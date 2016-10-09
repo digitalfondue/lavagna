@@ -27,6 +27,7 @@ import ch.digitalfondue.npjt.Bind;
 import ch.digitalfondue.npjt.Query;
 import ch.digitalfondue.npjt.QueryRepository;
 import ch.digitalfondue.npjt.QueryType;
+import io.lavagna.model.UserMetadata;
 
 @QueryRepository
 public interface UserQuery {
@@ -35,8 +36,8 @@ public interface UserQuery {
 	int createUser(@Bind("provider") String provider, @Bind("userName") String username, @Bind("email") String email,
 			@Bind("displayName") String displayName, @Bind("enabled") boolean enabled);
 
-	@Query(type = QueryType.TEMPLATE, value = "INSERT INTO LA_USER(USER_PROVIDER, USER_NAME, USER_EMAIL, USER_DISPLAY_NAME, USER_ENABLED, USER_EMAIL_NOTIFICATION, USER_MEMBER_SINCE, USER_SKIP_OWN_NOTIFICATIONS) VALUES "
-			+ " (:provider, :userName, :email, :displayName, :enabled, :emailNotification, :memberSince, :skipOwnNotifications)")
+	@Query(type = QueryType.TEMPLATE, value = "INSERT INTO LA_USER(USER_PROVIDER, USER_NAME, USER_EMAIL, USER_DISPLAY_NAME, USER_ENABLED, USER_EMAIL_NOTIFICATION, USER_MEMBER_SINCE, USER_SKIP_OWN_NOTIFICATIONS, USER_METADATA) VALUES "
+			+ " (:provider, :userName, :email, :displayName, :enabled, :emailNotification, :memberSince, :skipOwnNotifications, :metadata)")
 	String createUserFull();
 
 	@Query("SELECT * FROM LA_USER WHERE USER_NAME = :userName AND USER_PROVIDER = :provider")
@@ -80,6 +81,9 @@ public interface UserQuery {
 	@Query("UPDATE LA_USER SET USER_EMAIL = :email, USER_DISPLAY_NAME = :displayName, USER_EMAIL_NOTIFICATION = :emailNotification, USER_SKIP_OWN_NOTIFICATIONS = :skipOwnNotifications WHERE USER_ID = :userId")
 	int updateProfile(@Bind("email") String email, @Bind("displayName") String displayName,
 			@Bind("emailNotification") boolean emailNotification, @Bind("skipOwnNotifications") boolean skipOwnNotifications, @Bind("userId") int userId);
+
+    @Query("UPDATE LA_USER SET USER_METADATA = :metadata WHERE USER_ID = :userId")
+    int updateMetadata(@Bind("metadata") String metadata, @Bind("userId") int userId);
 
 	@Query("SELECT * FROM LA_USER ORDER BY USER_PROVIDER, USER_NAME")
 	List<User> findAll();

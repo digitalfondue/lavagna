@@ -18,8 +18,11 @@ package io.lavagna.web.config;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import io.lavagna.common.Json;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
+import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
@@ -83,7 +86,7 @@ public class ServiceConf {
 	@Bean
 	public UserService getUserService() {
 		UserService u = mock(UserService.class);
-		User user = new User(0, "test", "test-user", null, null, true, true, new Date(), false);
+		User user = new User(0, "test", "test-user", null, null, true, true, new Date(), false, Json.GSON.toJson(new UserMetadata(false)));
 		UserWithPermission uwp = new UserWithPermission(user, EnumSet.allOf(Permission.class),
 				Collections.<String, Set<Permission>> emptyMap(), Collections.<Integer, Set<Permission>> emptyMap());
 		when(u.findUserWithPermission(0)).thenReturn(uwp);
@@ -204,7 +207,7 @@ public class ServiceConf {
 	public OAuthLogin getOAuthLogin() {
 	    return mock(OAuthLogin.class);
 	}
-	
+
 	@Bean
 	public ExcelExportService getMilestoneExportService() {
 	    return mock(ExcelExportService.class);

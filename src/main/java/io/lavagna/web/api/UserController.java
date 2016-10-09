@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.lavagna.model.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,12 +31,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.lavagna.model.Event;
-import io.lavagna.model.EventsCount;
-import io.lavagna.model.Permission;
-import io.lavagna.model.ProjectWithEventCounts;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
@@ -52,7 +47,7 @@ public class UserController {
     private final EventRepository eventRepository;
     private final ProjectService projectService;
 
-    
+
     public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
         ProjectService projectService) {
         this.userRepository = userRepository;
@@ -73,6 +68,14 @@ public class UserController {
     }
 
     @ExpectPermission(Permission.UPDATE_PROFILE)
+    @RequestMapping(value = "/api/self/metadata", method = RequestMethod.POST)
+    public int updateMetadata(UserWithPermission user, @RequestBody UserMetadata metadata) {
+        int result = userRepository.updateMetadata(user.getId(), metadata);
+        eventEmitter.emitUpdateUserProfile(user.getId());
+        return result;
+    }
+
+    @ExpectPermission(Permission.UPDATE_PROFILE)
     @RequestMapping(value = "/api/self", method = RequestMethod.POST)
     public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
         int result = userRepository.updateProfile(user, toUpdate.getEmail(), toUpdate.getDisplayName(),
@@ -85,7 +88,7 @@ public class UserController {
     public User getUser(@PathVariable("userId") int userId) {
         return userRepository.findById(userId);
     }
-    
+
     @RequestMapping(value = "/api/user/bulk", method = RequestMethod.GET)
     public Map<Integer, User> getUsers(@RequestParam("ids") List<Integer> userIds) {
         Map<Integer, User> found = new HashMap<>();
@@ -181,7 +184,8 @@ public class UserController {
             List<ProjectWithEventCounts> activeProjects, List<Event> latestActivityByPage) {
             // we remove the email
             this.user = new User(user.getId(), user.getProvider(), user.getUsername(), null, user.getDisplayName(),
-                user.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications());
+                user.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications(),
+                user.getUserMetadataRaw());
             this.activeProjects = activeProjects;
             this.dailyActivity = dailyActivity;
             this.latestActivityByPage = latestActivityByPage;

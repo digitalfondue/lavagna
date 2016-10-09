@@ -35,7 +35,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class DataSourceConfig {
 
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("15");
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("16");
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(Environment env) throws URISyntaxException {

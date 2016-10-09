@@ -15,39 +15,39 @@
 
     function ProjectController($mdDialog, Project, Board, User, Notification, StompClient) {
         var ctrl = this;
-        
+
         //
         ctrl.fetchUserCardsInProjectPage = fetchUserCardsInProjectPage;
         ctrl.showBoardDialog = showBoardDialog;
+        ctrl.updateShowArchivedItems = updateShowArchivedItems;
         //
-        
+
         var onDestroyStomp = angular.noop;
         var metadataSubscription = angular.noop;
-        
+
         ctrl.$onInit = function init() {
-        	
+
         	ctrl.boardPage = 1;
             ctrl.boardsPerPage = 10;
             ctrl.maxVisibleBoardPages = 3;
             ctrl.cardProjectPage = 1;
-        	
+
             metadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl);
-            
+
             loadBoardsInProject();
             loadUserCardsInProject(ctrl.cardProjectPage - 1);
-            
+
             onDestroyStomp = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/board', loadBoardsInProject);
+
+            ctrl.showArchivedItems = ctrl.user.userMetadata && ctrl.user.userMetadata.showArchivedItems || false;
         }
-        
+
         ctrl.$onDestroy = function onDestroy() {
         	metadataSubscription();
         	onDestroyStomp();
         }
 
-        
         //
-
-        
 
         function loadBoardsInProject() {
             User.hasPermission('READ', ctrl.project.shortName).then(function() {
@@ -71,7 +71,7 @@
         function fetchUserCardsInProjectPage(page) {
             loadUserCardsInProject(page - 1);
         }
-        
+
         function showBoardDialog($event) {
 		    $mdDialog.show({
 		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
@@ -124,6 +124,15 @@
                     }
 		    	}
 		    });
+        }
+
+        function updateShowArchivedItems(value) {
+            var metadata = ctrl.user.userMetadata || {};
+            metadata.showArchivedItems = value;
+            User.updateMetadata(metadata).then(User.current, User.current).then(function(user) {
+                ctrl.user = user;
+                ctrl.showArchivedItems = user.userMetadata.showArchivedItems;
+            });
         }
     }
 

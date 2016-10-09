@@ -17,20 +17,20 @@
             currentUser.permissionsForProject[projectName] !== undefined &&
             currentUser.permissionsForProject[projectName][permissionToCheck] !== undefined));
         };
-        
-        
+
+
         var pendingUserRequests = null;
         var usersToRequestMap = {};
 
         return {
         	checkPermissionInstant : checkPermission,
-        	
+
         	loginUrl: function() {
         		var baseHref = $window.document.querySelector('base').attributes.href.value;
                 var reqUrlWithoutContextPath = $window.location.pathname.substr(baseHref.length - 1);
                 return 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
         	},
-        	
+
             current: function () {
                 var u = $http.get('api/self').then(extractData);
                 cached = u;
@@ -60,6 +60,9 @@
             },
             updateProfile: function (profile) {
                 return $http.post('api/self', profile);
+            },
+            updateMetadata: function (metadata) {
+                return $http.post('api/self/metadata', metadata);
             },
 
             clearAllTokens: function () {
@@ -97,33 +100,33 @@
             },
 
             user: function (userId) {
-            	
+
             	//try to accumulate enough requests to do a bulk one, this avoid a storm of little requests
-            	
+
             	if(pendingUserRequests) {
             		//remove pending requests
             		$timeout.cancel(pendingUserRequests);
             		pendingUserRequests = null;
             	}
-            	
+
             	if(usersToRequestMap[userId]) {
             		return usersToRequestMap[userId].promise;
             	}
 
             	usersToRequestMap[userId] = $q.defer();
             	var deferred = usersToRequestMap[userId];
-            	
+
             	pendingUserRequests = $timeout(function() {
-            		
+
             		pendingUserRequests = null;
             		var reqMap = angular.copy(usersToRequestMap);
             		usersToRequestMap = {};
-            		
+
             		var ids = [];
             		angular.forEach(reqMap, function(v, uid) {
             			ids.push(uid);
             		});
-            		
+
             		$http.get('api/user/bulk', {params: {ids: ids}}).then(function(res) {
             			angular.forEach(reqMap, function(v, uid) {
             				reqMap[uid].resolve(res.data[uid]);
@@ -131,7 +134,7 @@
             		});
 
             	}, 50);
-            	
+
             	return deferred.promise;
             },
 

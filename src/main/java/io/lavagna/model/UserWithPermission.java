@@ -37,7 +37,7 @@ public class UserWithPermission extends User {
 	public UserWithPermission(User user, Set<Permission> permissions,
 			Map<String, Set<Permission>> permissionsForProject, Map<Integer, Set<Permission>> permissionsForProjectId) {
 		super(user.getId(), user.getProvider(), user.getUsername(), user.getEmail(), user.getDisplayName(), user
-				.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications());
+				.isEnabled(), user.isEmailNotification(), user.getMemberSince(), user.isSkipOwnNotifications(), user.getUserMetadataRaw());
 		// identity map
 		this.basePermissions = identityMap(permissions);
 

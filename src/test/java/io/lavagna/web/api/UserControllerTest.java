@@ -22,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
+import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
@@ -90,6 +91,15 @@ public class UserControllerTest {
         userController.updateUserProfile(user, d);
 
         verify(userRepository).updateProfile(user, "email", "displayName", true, true);
+    }
+
+    @Test
+    public void updateMetadata() {
+        UserMetadata metadata = new UserMetadata(true);
+
+        userController.updateMetadata(user, metadata);
+
+        verify(userRepository).updateMetadata(user.getId(), metadata);
     }
 
     @Test

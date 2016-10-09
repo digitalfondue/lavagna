@@ -18,6 +18,7 @@ package io.lavagna.model;
 
 import java.util.Date;
 
+import io.lavagna.common.Json;
 import lombok.Getter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column;
 @Getter
 public class User {
 
-	private final int id;
+    private final int id;
 	private final String provider;
 	private final String username;
 	private final String email;
@@ -38,12 +39,19 @@ public class User {
 	private final boolean emailNotification;
 	private final Date memberSince;
     private final boolean skipOwnNotifications;
+    private transient String userMetadataRaw;
+    private final UserMetadata userMetadata;
 
-	public User(@Column("USER_ID") int id, @Column("USER_PROVIDER") String provider,
-			@Column("USER_NAME") String username, @Column("USER_EMAIL") String email,
-			@Column("USER_DISPLAY_NAME") String displayName, @Column("USER_ENABLED") Boolean enabled,
-			@Column("USER_EMAIL_NOTIFICATION") boolean emailNotification, @Column("USER_MEMBER_SINCE") Date memberSince,
-            @Column("USER_SKIP_OWN_NOTIFICATIONS") boolean skipOwnNotifications) {
+	public User(@Column("USER_ID") int id,
+                @Column("USER_PROVIDER") String provider,
+                @Column("USER_NAME") String username,
+                @Column("USER_EMAIL") String email,
+                @Column("USER_DISPLAY_NAME") String displayName,
+                @Column("USER_ENABLED") Boolean enabled,
+                @Column("USER_EMAIL_NOTIFICATION") boolean emailNotification,
+                @Column("USER_MEMBER_SINCE") Date memberSince,
+                @Column("USER_SKIP_OWN_NOTIFICATIONS") boolean skipOwnNotifications,
+                @Column("USER_METADATA") String userMetadata) {
 		this.id = id;
 		this.username = username;
 		this.provider = provider;
@@ -53,6 +61,8 @@ public class User {
 		this.emailNotification = emailNotification;
 		this.memberSince = memberSince;
         this.skipOwnNotifications = skipOwnNotifications;
+        this.userMetadataRaw = userMetadata;
+        this.userMetadata = Json.GSON.fromJson(userMetadata, UserMetadata.class);
 	}
 
 	@Override
@@ -63,7 +73,8 @@ public class User {
 		User u = (User) obj;
 		return new EqualsBuilder().append(id, u.id).append(provider, u.provider).append(username, u.username)
             .append(email, u.email).append(displayName, u.displayName).append(enabled, u.enabled)
-            .append(emailNotification, u.emailNotification).append(skipOwnNotifications, u.skipOwnNotifications).isEquals();
+            .append(emailNotification, u.emailNotification).append(skipOwnNotifications, u.skipOwnNotifications)
+            .append(userMetadata, u.userMetadata).isEquals();
 	}
 
 	@Override

@@ -17,9 +17,12 @@
 package io.lavagna.service;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
+
+import io.lavagna.common.Json;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
+import io.lavagna.model.UserMetadata;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.query.UserQuery;
 
@@ -56,7 +59,7 @@ public class UserRepository {
     private final NamedParameterJdbcTemplate jdbc;
     private final UserQuery queries;
 
-    
+
     public UserRepository(NamedParameterJdbcTemplate jdbc, UserQuery queries) {
         this.jdbc = jdbc;
         this.queries = queries;
@@ -113,7 +116,8 @@ public class UserRepository {
             .addValue("displayName", trimToNull(user.getDisplayName())).addValue("enabled", user.isEnabled())
             .addValue("emailNotification", user.isEmailNotification())
             .addValue("memberSince", ObjectUtils.firstNonNull(user.getMemberSince(), new Date()))
-            .addValue("skipOwnNotifications", user.isSkipOwnNotifications());
+            .addValue("skipOwnNotifications", user.isSkipOwnNotifications())
+            .addValue("metadata", user.getUserMetadataRaw());
     }
 
     @Transactional(readOnly = false)
@@ -123,8 +127,13 @@ public class UserRepository {
 
     @Transactional(readOnly = false)
     public int updateProfile(User user, String email, String displayName, boolean emailNotification, boolean skipOwnNotifications) {
-        return queries.updateProfile(trimToNull(email), trimToNull(displayName), emailNotification,skipOwnNotifications,
+        return queries.updateProfile(trimToNull(email), trimToNull(displayName), emailNotification, skipOwnNotifications,
             user.getId());
+    }
+
+    @Transactional(readOnly = false)
+    public int updateMetadata(int userId, UserMetadata metadata) {
+        return queries.updateMetadata(Json.GSON.toJson(metadata), userId);
     }
 
     @Transactional(readOnly = false)

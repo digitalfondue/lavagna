@@ -1,7 +1,13 @@
 <div class="row lvg-content">
 	<div class="col-md-6 col-xs-12 first-md">
-        <div class="lvg-project-boards__tasks" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards</div>
-        <lvg-stats-panel-board data-ng-repeat="board in $ctrl.boards"
+        <div class="lvg-project-boards__tasks row row-inherit start-xs top-xs">
+            <div class="lvg-project-boards__tasks-title flex" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards</div>
+            <div class="lvg-project-boards__tasks-switch">
+                <md-switch ng-model="$ctrl.showArchivedItems" ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
+                <md-tooltip>{{($ctrl.showArchivedItems ? 'common.hide.archived' : 'common.show.archived') | translate}}</md-tooltip>
+            </div>
+        </div>
+        <lvg-stats-panel-board data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
                                board="board"
                                project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
 	</div>

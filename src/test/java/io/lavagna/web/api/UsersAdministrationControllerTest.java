@@ -22,7 +22,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import io.lavagna.common.Json;
 import io.lavagna.model.User;
+import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserToCreate;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.UserRepository;
@@ -52,7 +55,7 @@ public class UsersAdministrationControllerTest {
 
 	@Mock
 	private UserService userService;
-	
+
 	@Mock
 	private EventEmitter eventEmitter;
 
@@ -65,7 +68,7 @@ public class UsersAdministrationControllerTest {
 
 	@Test
 	public void toggleUser() {
-		User u = new User(42, "demo", "a", null, null, true, true, new Date(), false);
+		User u = new User(42, "demo", "a", null, null, true, true, new Date(), false, Json.GSON.toJson(new UserMetadata(false)));
 		Update up = new Update();
 		up.setEnabled(false);
 		usersAdministrationController.toggle(0, u, up);
@@ -92,7 +95,7 @@ public class UsersAdministrationControllerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void sameUser() {
-		User u = new User(0, "demo", "a", null, null, true, true, new Date(), false);
+		User u = new User(0, "demo", "a", null, null, true, true, new Date(), false, Json.GSON.toJson(new UserMetadata(false)));
 		Update up = new Update();
 		up.setEnabled(false);
 		usersAdministrationController.toggle(0, u, up);
