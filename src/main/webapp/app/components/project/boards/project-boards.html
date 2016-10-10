@@ -4,7 +4,7 @@
             <div class="lvg-project-boards__tasks-title flex" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards</div>
             <div class="lvg-project-boards__tasks-switch">
                 <md-switch ng-model="$ctrl.showArchivedItems" ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
-                <md-tooltip>{{($ctrl.showArchivedItems ? 'common.hide.archived' : 'common.show.archived') | translate}}</md-tooltip>
+                <md-tooltip>{{($ctrl.showArchivedItems ? 'projects.boards.hide.archived' : 'projects.boards.show.archived') | translate}}</md-tooltip>
             </div>
         </div>
         <lvg-stats-panel-board data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"

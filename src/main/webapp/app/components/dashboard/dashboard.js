@@ -41,7 +41,7 @@
         	loadProjects();
         	loadUserCards(ctrl.view.cardPage - 1);
 
-        	ctrl.showArchivedItems = ctrl.user.userMetadata && ctrl.user.userMetadata.showArchivedItems || false;
+        	ctrl.showArchivedItems = ctrl.user.userMetadata && ctrl.user.userMetadata.showArchivedProjects || false;
         }
 
         ctrl.$onDestroy = function onDestroy() {
@@ -140,10 +140,10 @@
 
         function updateShowArchivedItems(value) {
             var metadata = ctrl.user.userMetadata || {};
-            metadata.showArchivedItems = value;
+            metadata.showArchivedProjects = value;
             User.updateMetadata(metadata).then(User.current, User.current).then(function(user) {
                 ctrl.user = user;
-                ctrl.showArchivedItems = user.userMetadata.showArchivedItems;
+                ctrl.showArchivedItems = user.userMetadata.showArchivedProjects;
             });
         }
     }

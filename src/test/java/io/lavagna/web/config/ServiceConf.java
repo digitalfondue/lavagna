@@ -86,7 +86,7 @@ public class ServiceConf {
 	@Bean
 	public UserService getUserService() {
 		UserService u = mock(UserService.class);
-		User user = new User(0, "test", "test-user", null, null, true, true, new Date(), false, Json.GSON.toJson(new UserMetadata(false)));
+		User user = new User(0, "test", "test-user", null, null, true, true, new Date(), false, Json.GSON.toJson(new UserMetadata(false, false)));
 		UserWithPermission uwp = new UserWithPermission(user, EnumSet.allOf(Permission.class),
 				Collections.<String, Set<Permission>> emptyMap(), Collections.<Integer, Set<Permission>> emptyMap());
 		when(u.findUserWithPermission(0)).thenReturn(uwp);

@@ -95,7 +95,7 @@ public class UserControllerTest {
 
     @Test
     public void updateMetadata() {
-        UserMetadata metadata = new UserMetadata(true);
+        UserMetadata metadata = new UserMetadata(true, false);
 
         userController.updateMetadata(user, metadata);
 

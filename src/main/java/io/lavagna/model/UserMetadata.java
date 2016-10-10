@@ -21,9 +21,12 @@ import lombok.Getter;
 @Getter
 public class UserMetadata {
 
-    private final boolean showArchivedItems;
+    private final boolean showArchivedProjects;
+    private final boolean showArchivedBoards;
 
-    public UserMetadata(boolean showArchivedItems) {
-        this.showArchivedItems = showArchivedItems;
+    public UserMetadata(boolean showArchivedProjects,
+                        boolean showArchivedBoards) {
+        this.showArchivedProjects = showArchivedProjects;
+        this.showArchivedBoards = showArchivedBoards;
     }
 }
