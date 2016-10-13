@@ -32,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
 import javax.servlet.SessionTrackingMode;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
@@ -59,6 +60,12 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
+		
+		// initialize cookie
+		if(StringUtils.isNotEmpty(System.getProperty(CookieNames.PROPERTY_NAME))) {
+			CookieNames.updatePrefix(System.getProperty(CookieNames.PROPERTY_NAME));
+		}
+		//
 		
 		//definition order = execution order, the first executed filter is HSTSFilter
 		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");

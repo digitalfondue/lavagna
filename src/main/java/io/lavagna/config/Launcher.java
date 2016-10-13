@@ -74,7 +74,9 @@ public class Launcher {
         String contextPath = options.has(contextPathOption) ? options.valueOf(contextPathOption) : "/";
         
         if (options.has(cookiePrefixOption)) {
-            CookieNames.updatePrefix(options.valueOf(cookiePrefixOption));
+        	String cookiePrefixValue = options.valueOf(cookiePrefixOption);
+        	System.out.println("Using cookie prefix " + cookiePrefixValue);
+        	System.setProperty(CookieNames.PROPERTY_NAME, cookiePrefixValue);
         }
         
         InetSocketAddress address = new InetSocketAddress(bindAddress, port);

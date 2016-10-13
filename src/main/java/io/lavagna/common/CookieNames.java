@@ -21,6 +21,8 @@ public class CookieNames {
 
     private static String SESSION_COOKIE_NAME = "LAVAGNA_SESSION_ID";
     private static String REMEMBER_ME_COOKIE = "LAVAGNA_REMEMBER_ME";
+    
+    public static final String PROPERTY_NAME = "cookiePrefix";
 
     public static void updatePrefix(String prefix) {
         SESSION_COOKIE_NAME = prefix + "-LAVAGNA_SESSION_ID";
