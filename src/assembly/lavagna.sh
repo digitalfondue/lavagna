@@ -54,6 +54,7 @@
 # --bindAddress addr  - Accept connections only on address addr (default: accept on any address)
 # --contextPath /path - Set context path (default: /)
 # --tmpDir /path      - Temporary directory, default is /tmp
+# --cookiePrefix NAME - Set a prefix to the cookie name, so you can have multiple lavagna instances on the same hostname
 #
 # example: java -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
 

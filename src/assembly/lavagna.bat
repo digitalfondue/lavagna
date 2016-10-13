@@ -53,6 +53,7 @@ rem --port n            - Create an HTTP listener on port n (default 8080)
 rem --bindAddress addr  - Accept connections only on address addr (default: accept on any address)
 rem --contextPath /path - Set context path (default: /)
 rem --tmpDir /path      - Temporary directory, default is /tmp
+rem --cookiePrefix NAME - Set a prefix to the cookie name, so you can have multiple lavagna instances on the same hostname
 rem
 rem example: java -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
 
