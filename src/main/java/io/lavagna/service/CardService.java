@@ -32,14 +32,7 @@ import io.lavagna.model.Event.EventType;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.stereotype.Service;
@@ -72,6 +65,16 @@ public class CardService {
         return r;
     }
 
+    public CardFullWithCounts findFullBy(int cardId) {
+        CardFull card = cardRepository.findFullBy(cardId);
+        return fetchCardFull(Collections.singletonList(card)).get(0);
+    }
+
+    public CardFullWithCounts findFullBy(String boardShortName, int seqNumber) {
+        CardFull card = cardRepository.findFullBy(boardShortName, seqNumber);
+        return fetchCardFull(Collections.singletonList(card)).get(0);
+    }
+
     public List<CardFullWithCounts> fetchAllInColumn(int columnId) {
 
         List<CardFull> cards = cardRepository.findAllByColumnId(columnId);
@@ -90,7 +93,7 @@ public class CardService {
         return res;
     }
 
-    
+
 
     List<CardFullWithCounts> fetchCardFull(List<CardFull> cards) {
         List<Integer> ids = fetchIds(cards);
@@ -103,7 +106,7 @@ public class CardService {
         }
         return res;
     }
-    
+
     public List<CardFullWithCounts> fetchPaginatedByBoardIdAndLocation(int boardId, BoardColumnLocation location, int page) {
     	List<Integer> ids = cardRepository.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
 		if (ids.isEmpty()) {
@@ -120,7 +123,7 @@ public class CardService {
     	return res;
 	}
 
-    
+
 
 	@Transactional(readOnly = false)
     public void moveCardsToColumn(List<Integer> cardIds, int previousColumnId, int columnId, int userId,
@@ -227,7 +230,7 @@ public class CardService {
 
         return r;
     }
-    
+
     private static Map<Integer, CardFull> aggregateCardFullByCardId(List<CardFull> cards) {
 		Map<Integer, CardFull> res = new HashMap<>();
 		for(CardFull card : cards) {
@@ -236,6 +239,6 @@ public class CardService {
 		return res;
 	}
 
-	
+
 
 }

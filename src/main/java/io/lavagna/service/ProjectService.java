@@ -62,7 +62,7 @@ public class ProjectService {
 	private final PermissionService permissionService;
 	private final ProjectQuery queries;
 
-	
+
 	public ProjectService(NamedParameterJdbcTemplate jdbc, ProjectQuery queries,
 			CardLabelRepository cardLabelRepository, PermissionService permissionService) {
 		this.jdbc = jdbc;
@@ -151,7 +151,7 @@ public class ProjectService {
 	public Project findByShortName(String shortName) {
 		return queries.findByShortName(shortName);
 	}
-	
+
 	public int findIdByShortName(String shortName) {
 	    return queries.findIdByShortName(shortName);
 	}
@@ -256,11 +256,11 @@ public class ProjectService {
         for (CardLabel cl : cardLabelRepository.findLabelsByProject(projectId)) {
             res.put(cl.getId(), cl);
         }
-        
+
         SortedMap<Integer, LabelListValueWithMetadata> labelListValues = cardLabelRepository.findLabeListValueAggregatedByCardLabelId(projectId);
-        
+
         Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition = findMappedColumnDefinitionsByProjectId(projectId);
-        
-        return new ProjectMetadata(res, labelListValues, columnsDefinition);
+
+        return new ProjectMetadata(shortName, res, labelListValues, columnsDefinition);
     }
 }

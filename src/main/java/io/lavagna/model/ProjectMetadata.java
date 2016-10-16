@@ -34,26 +34,30 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 @Getter
 public class ProjectMetadata {
+    private final String shortName;
     private final SortedMap<Integer, CardLabel> labels;
     private final SortedMap<Integer, LabelListValueWithMetadata> labelListValues;
     private final Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition;
     private final String hash;
 
-    public ProjectMetadata(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
+    public ProjectMetadata(String shortName, SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
             Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition) {
+        this.shortName = shortName;
         this.labels = labels;
         this.labelListValues = labelListValues;
         this.columnsDefinition = columnsDefinition;
-        this.hash = hash(labels, labelListValues, columnsDefinition);
+        this.hash = hash(shortName, labels, labelListValues, columnsDefinition);
     }
 
-    private static String hash(SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
+    private static String hash(String shortName, SortedMap<Integer, CardLabel> labels, SortedMap<Integer, LabelListValueWithMetadata> labelListValues,
             Map<ColumnDefinition, BoardColumnDefinition> columnsDefinition) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream daos = new DataOutputStream(baos);
 
         try {
+
+            hash(daos, shortName);
 
             for (CardLabel cl : labels.values()) {
                 hash(daos, cl);
@@ -72,6 +76,10 @@ public class ProjectMetadata {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    private static void hash(DataOutputStream daos, String s) throws IOException {
+        writeNotNull(daos, s);
     }
 
     private static void hash(DataOutputStream daos, BoardColumnDefinition b) throws IOException {

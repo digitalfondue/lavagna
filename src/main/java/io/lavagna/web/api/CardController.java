@@ -68,7 +68,7 @@ public class CardController {
 	private final SearchService searchService;
 	private final EventEmitter eventEmitter;
 
-	
+
 	public CardController(CardRepository cardRepository, CardService cardService,
 			BoardRepository boardRepository, ProjectService projectService,
 			BoardColumnRepository boardColumnRepository,
@@ -136,14 +136,14 @@ public class CardController {
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/card/{cardId}", method = RequestMethod.GET)
 	public CardFull findCardById(@PathVariable("cardId") int id) {
-		return cardRepository.findFullBy(id);
+		return cardService.findFullBy(id);
 	}
 
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/card-by-seq/{boardShortName:[A-Z0-9_]+}-{seqNr:[0-9]+}", method = RequestMethod.GET)
 	public CardFull findCardIdByBoardNameAndSeq(@PathVariable("boardShortName") String boardShortName,
 			@PathVariable("seqNr") int seqNr) {
-		return cardRepository.findFullBy(boardShortName, seqNr);
+		return cardService.findFullBy(boardShortName, seqNr);
 	}
 
 	@ExpectPermission(Permission.READ)
@@ -252,7 +252,7 @@ public class CardController {
 		eventEmitter.emitCardHasMoved(projectService.findRelatedProjectShortNameByBoardShortname(boardShortName),
 				boardShortName, cardIds.cardIds);
 	}
-	
+
 	private static final List<SearchFilter> TO_ME_STATUS_OPEN = Arrays.asList(new SearchFilter(FilterType.ASSIGNED, "to", new SearchFilterValue(ValueType.CURRENT_USER, "me")), SearchFilter.filter(FilterType.STATUS, ValueType.STRING, "OPEN"));
 
 	@ExpectPermission(Permission.SEARCH)
