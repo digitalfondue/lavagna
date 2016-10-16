@@ -71,41 +71,43 @@
                 ctrl.card = c;
                 refreshTitle();
             });
-        };
+        }
 
         function currentCard() {
             var cardByProject = {};
             cardByProject[ctrl.project.shortName] = [ctrl.card.id];
             return cardByProject;
-        };
+        }
 
         // ----
         function loadLabel() {
             LabelCache.findByProjectShortName(ctrl.project.shortName).then(function(labels) {
                 ctrl.labels = labels;
             });
-        };
+        }
 
         function loadLabelValues() {
-            Label.findValuesByCardId(ctrl.card.id).then(function(labelValues) {
-                ctrl.labelValues = labelValues;
+            Label.findValuesByCardId(ctrl.card.id).then(processLabelValues);
+        }
 
-                angular.forEach(ctrl.labels, function(value, key) {
-                    if(value.domain === 'SYSTEM') {
-                        if(value.name === 'ASSIGNED') {
-                            ctrl.assignedUsers = ctrl.labelValues[key];
-                        } else if(value.name === 'WATCHED_BY') {
-                            ctrl.watchingUsers = ctrl.labelValues[key];
-                        } else if(value.name === 'MILESTONE') {
-                            ctrl.milestones = ctrl.labelValues[key];
-                        } else if(value.name === 'DUE_DATE') {
-                            ctrl.dueDates = ctrl.labelValues[key];
-                        }
-                    } else {
-                        ctrl.userLabels[key] = value;
+        function processLabelValues(labelValues) {
+            ctrl.labelValues = labelValues;
+
+            angular.forEach(ctrl.labels, function(value, key) {
+                if(value.domain === 'SYSTEM') {
+                    if(value.name === 'ASSIGNED') {
+                        ctrl.assignedUsers = ctrl.labelValues[key];
+                    } else if(value.name === 'WATCHED_BY') {
+                        ctrl.watchingUsers = ctrl.labelValues[key];
+                    } else if(value.name === 'MILESTONE') {
+                        ctrl.milestones = ctrl.labelValues[key];
+                    } else if(value.name === 'DUE_DATE') {
+                        ctrl.dueDates = ctrl.labelValues[key];
                     }
-                });
+                } else {
+                    ctrl.userLabels[key] = value;
+                }
             });
-        };
+        }
     }
 })();

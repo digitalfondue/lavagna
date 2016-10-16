@@ -6,6 +6,16 @@ lvg-card-fragment-v2 {
 	outline: none!important;
 }
 
+lvg-card-fragment-v2 .md-panel {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+.lvg-card-fragment-v2__tooltip-panel {
+    width: 260px;
+    color: rgba(0,0,0,0.87) !important;
+    margin-bottom: 0 !important
+}
+
 lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
 	background-color: white;
     margin-bottom: 20px;
@@ -238,6 +248,13 @@ lvg-card-fragment-v2.sortable-drag {
 
 lvg-card-fragment-v2.sortable-drag .lvg-card-fragment-v2__checkbox-container, lvg-card-fragment-v2.sortable-ghost .lvg-card-fragment-v2__checkbox-container {
 	display:none!important;
+}
+
+lvg-card-fragment-v2.sortable-drag .md-panel-outer-wrapper,
+lvg-card-fragment-v2.sortable-drag .md-panel-outer-wrapper *,
+lvg-card-fragment-v2.sortable-ghost .md-panel-outer-wrapper,
+lvg-card-fragment-v2.sortable-ghost .md-panel-outer-wrapper * {
+    display: none !important;
 }
 
 .lvg-card-fragment-v2__selected .lvg-card-fragment-v2__checkbox {
