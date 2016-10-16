@@ -135,13 +135,13 @@ public class CardController {
 
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/card/{cardId}", method = RequestMethod.GET)
-	public CardFull findCardById(@PathVariable("cardId") int id) {
+	public CardFullWithCounts findCardById(@PathVariable("cardId") int id) {
 		return cardService.findFullBy(id);
 	}
 
 	@ExpectPermission(Permission.READ)
 	@RequestMapping(value = "/api/card-by-seq/{boardShortName:[A-Z0-9_]+}-{seqNr:[0-9]+}", method = RequestMethod.GET)
-	public CardFull findCardIdByBoardNameAndSeq(@PathVariable("boardShortName") String boardShortName,
+	public CardFullWithCounts findCardIdByBoardNameAndSeq(@PathVariable("boardShortName") String boardShortName,
 			@PathVariable("seqNr") int seqNr) {
 		return cardService.findFullBy(boardShortName, seqNr);
 	}
