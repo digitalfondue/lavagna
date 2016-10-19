@@ -16,7 +16,7 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
@@ -43,7 +43,6 @@ import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.Api;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
-import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 import org.springframework.mock.web.MockHttpSession;
@@ -80,7 +79,6 @@ public class HandlersTest {
 	private User user;
 
 	private MockHttpSession session;
-	private MockHttpSession session2;
 
 	private String key = "key";
 	private String secret = "secret";
@@ -104,7 +102,6 @@ public class HandlersTest {
 		when(sBuilder.build()).thenReturn(oauthService);
 
 		session = new MockHttpSession();
-		session2 = new MockHttpSession();
 
 		when(req2.getParameter("code")).thenReturn("code");
 		when(req2.getParameter("oauth_verifier")).thenReturn("code");
@@ -112,10 +109,6 @@ public class HandlersTest {
 		when(req.getSession()).thenReturn(session);
 
 		when(req2.getSession()).thenReturn(session);
-		when(req2.getSession(true)).thenReturn(session2);
-
-		when(req2.getServletContext()).thenReturn(servletContext);
-		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webappContext);
 
 		when(reqBuilder.req(any(Verb.class), any(String.class))).thenReturn(oauthReq);
 		when(oauthReq.send()).thenReturn(oauthRes);
@@ -150,7 +143,7 @@ public class HandlersTest {
 	
 	@Test
     public void handleTwitterFlowAuth() throws IOException {
-        when(oauthService.getAuthorizationUrl(any(Token.class))).thenReturn("redirect");
+        when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
         twitterHandler.handleAuthorizationUrl(req, resp);
         verify(resp).sendRedirect("redirect");
 

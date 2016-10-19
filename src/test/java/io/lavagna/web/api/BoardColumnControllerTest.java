@@ -121,7 +121,6 @@ public class BoardColumnControllerTest {
 	@Test
 	public void rename() {
 
-		when(boardRepository.findBoardIdByShortName(shortName)).thenReturn(0);
 		when(boardColumnRepository.findById(42)).thenReturn(column);
 
 		Board b = new Board(0, "name", shortName, null, 84, false);
@@ -149,8 +148,6 @@ public class BoardColumnControllerTest {
 
 	@Test
 	public void testGetColumnInfo() {
-		when(boardColumnRepository.findById(42)).thenReturn(column);
-
 		boardColumnController.getColumnInfo(42);
 	}
 

@@ -95,7 +95,6 @@ public class CardLabelControllerTest {
 	@Test
 	public void addLabelTest() {
 		Label label = new Label("test", false, LabelType.NULL, 42);
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		cardLabelController.addLabel(projectShortName, label);
 	}
 
@@ -106,14 +105,12 @@ public class CardLabelControllerTest {
 
 	@Test
 	public void findLabelsByBoardShortNameTest() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		cardLabelController.findLabelsByProjectId(projectShortName);
 	}
 
 	@Test
 	public void removeLabelTest() {
 		when(cardLabelRepository.findLabelById(labelId)).thenReturn(cardLabel);
-		when(boardRepository.findBoardById(cardLabel.getProjectId())).thenReturn(board);
 		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
 		cardLabelController.removeLabel(labelId);
 	}
@@ -161,7 +158,6 @@ public class CardLabelControllerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void swapWrongLabelListValuesTest() {
 		when(cardLabelRepository.findLabelById(0)).thenReturn(cardLabel);
-		when(projectService.findById(cardLabel.getProjectId())).thenReturn(project);
 		when(cardLabelRepository.findListValueById(1)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(1, 0, 0, "value1"), new HashMap<String, String>()));
 		when(cardLabelRepository.findListValueById(2)).thenReturn(new LabelListValueWithMetadata(new LabelListValue(2, 1, 0, "value2-of-another-label"), new HashMap<String, String>()));
 

@@ -16,8 +16,9 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -104,8 +105,6 @@ public class ProjectControllerTest {
 
 	@Test
 	public void update() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
-
 		UpdateRequest updatedProject = new UpdateRequest();
 		updatedProject.setName("New name");
 		updatedProject.setDescription("Updated desc");
@@ -117,8 +116,6 @@ public class ProjectControllerTest {
 
 	@Test
 	public void updateColumnDefinition() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
-
 		ProjectController.UpdateColumnDefinition updatedColumnDefinition = new ProjectController.UpdateColumnDefinition();
 		updatedColumnDefinition.setDefinition(10);
 		updatedColumnDefinition.setColor(5);
@@ -136,8 +133,6 @@ public class ProjectControllerTest {
 		cb.setName("name");
 		cb.setShortName("NAME");
 
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
-
 		projectController.createBoard("TEST", cb);
 
 		verify(boardRepository).createNewBoard("name", "NAME", "desc", project.getId());
@@ -146,7 +141,6 @@ public class ProjectControllerTest {
 
 	@Test
 	public void findBoards() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectController.findBoards(projectShortName);
 		verify(boardRepository).findBoardInfo(0);
 	}
@@ -178,7 +172,6 @@ public class ProjectControllerTest {
 
 	@Test
 	public void projectStatistics() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		UserWithPermission readProject = new UserWithPermission(user, EnumSet.of(Permission.READ),
 				Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
 
@@ -196,7 +189,7 @@ public class ProjectControllerTest {
 		tasks.put(ColumnDefinition.CLOSED, 0);
 		tasks.put(ColumnDefinition.BACKLOG, 0);
 		tasks.put(ColumnDefinition.DEFERRED, 0);
-		when(searchService.findTaksByColumnDefinition(eq(project.getId()), any(Integer.class), any(Boolean.class),
+		when(searchService.findTaksByColumnDefinition(eq(project.getId()), isNull(Integer.class), any(Boolean.class),
 				eq(readProject))).thenReturn(tasks);
 
 		projectController.projectStatistics(projectShortName, new Date(), readProject);

@@ -28,7 +28,6 @@ import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.MilestoneCount;
 import io.lavagna.model.Project;
-import io.lavagna.model.ProjectAndBoard;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
@@ -88,11 +87,6 @@ public class MilestoneControllerTest {
     public void prepare() {
         milestoneController = new MilestoneController(cardLabelRepository, projectService,
             statisticsService, searchService, excelExportService);
-
-        ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
-            project.getDescription(), project.isArchived(), board.getId(), board.getShortName(), board.getName(),
-            board.getDescription(), board.isArchived());
-        when(boardRepository.findProjectAndBoardByColumnId(boardColumn.getId())).thenReturn(pab);
     }
 
     @Test
@@ -119,11 +113,7 @@ public class MilestoneControllerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindCardsByMilestoneDetailWrongValue() {
-
-        when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
-
         milestoneController.findCardsByMilestoneDetail("TEST", 1, user);
-
     }
 
     @Test

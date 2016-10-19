@@ -156,7 +156,6 @@ public class CardControllerTest {
 				ColumnDefinition.OPEN.getDefaultColor());
 		when(boardColumnRepository.findById(0)).thenReturn(boardColumn);
 		when(boardColumnRepository.findById(1)).thenReturn(col2);
-		when(boardRepository.findBoardById(0)).thenReturn(board);
 		when(cardRepository.findBy(0)).thenReturn(new Card(0, "name", 42, 42, 42, 42));
 		ColumnOrders columnOrders = new ColumnOrders();
 		cardController.moveCardToColumn(0, 0, 1, columnOrders, user);
@@ -173,7 +172,6 @@ public class CardControllerTest {
 
 	@Test
 	public void updateCardOrder() {
-		when(boardColumnRepository.findById(columnId)).thenReturn(boardColumn);
 		cardController.updateCardOrder(columnId, Arrays.<Number>asList(1, 2, 3));
 	}
 }

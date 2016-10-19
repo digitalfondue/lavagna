@@ -38,7 +38,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,10 +67,6 @@ public class DemoLoginTest {
 	public void prepare() {
 		dl = new DemoLogin(users, sessionHandler, errorPage);
 		when(req.getMethod()).thenReturn("POST");
-		when(req.getServletContext()).thenReturn(context);
-		when(context.getContextPath()).thenReturn("");
-
-		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
 
 	@Test
@@ -104,7 +99,6 @@ public class DemoLoginTest {
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("not same as user");
 		when(req.getContextPath()).thenReturn("");
-		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		Assert.assertTrue(dl.doAction(req, resp));
 		verify(resp).sendRedirect("/" + errorPage);
 	}
@@ -122,8 +116,6 @@ public class DemoLoginTest {
 		});
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("user");
-		when(req.getSession()).thenReturn(session);
-		when(req.getSession(true)).thenReturn(session);
 		when(users.userExistsAndEnabled(DemoLogin.USER_PROVIDER, "user")).thenReturn(true);
 		when(req.getContextPath()).thenReturn("/context-path");
 		Assert.assertTrue(dl.doAction(req, resp));
@@ -133,7 +125,6 @@ public class DemoLoginTest {
 
 	@Test
 	public void testLogoutWithoutSession() throws IOException, ServletException {
-		when(req.getSession()).thenReturn(session);
 		Assert.assertTrue(dl.handleLogout(req, resp));
 
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
@@ -142,14 +133,6 @@ public class DemoLoginTest {
 
 	@Test
 	public void testLogoutWithActiveSession() throws IOException, ServletException {
-
-		MockHttpSession unauthMockSession = new MockHttpSession();
-		MockHttpSession mockSession = new MockHttpSession();
-
-		when(req.getSession()).thenReturn(unauthMockSession, mockSession);
-		when(req.getSession(true)).thenReturn(mockSession);
-
-
 		Assert.assertTrue(dl.handleLogout(req, resp));
 		verify(resp).setStatus(HttpServletResponse.SC_OK);
 		verify(sessionHandler).invalidate(req, resp);

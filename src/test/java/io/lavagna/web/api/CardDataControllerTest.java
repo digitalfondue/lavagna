@@ -119,8 +119,6 @@ public class CardDataControllerTest {
 		cardData.add(cardDataFull3);
 		cardData.add(cardDataFull1);
 
-		when(cardDataService.findDescriptionByCardId(cardId)).thenReturn(cardData);
-
 		cardDataController.description(cardId);
 	}
 
@@ -304,10 +302,12 @@ public class CardDataControllerTest {
 	@Test
 	public void uploadFiles() throws NoSuchAlgorithmException, IOException {
 		MultipartFile f = mock(MultipartFile.class);
+		when(f.getOriginalFilename()).thenReturn("fileName");
+		when(f.getSize()).thenReturn(7L);
 		when(f.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[] { 42, 42, 42, 42, 84, 84, 84 }));
 		when(
 				cardDataService
-						.createFile(any(String.class), any(String.class), any(Integer.class), any(Integer.class),
+						.createFile(any(String.class), any(String.class), any(Long.class), any(Integer.class),
 								any(InputStream.class), any(String.class), any(User.class), any(Date.class)))
 				.thenReturn(ImmutablePair.of(true, mock(CardData.class)));
 		List<MultipartFile> files = Arrays.asList(f);

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.ValidationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +73,7 @@ public class CalendarController {
     @RequestMapping(value = "/api/calendar/{token}/calendar.ics",
         method = RequestMethod.GET, produces = "text/calendar")
     public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
-        throws IOException, ValidationException, URISyntaxException, ParseException {
+        throws IOException, URISyntaxException, ParseException {
         Calendar calendar = calendarService.getUserCalendar(userToken);
         response.setContentType("text/calendar");
         CalendarOutputter output = new CalendarOutputter(false); // <- no validation on the output

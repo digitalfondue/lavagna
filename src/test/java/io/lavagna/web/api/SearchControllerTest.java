@@ -16,9 +16,8 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.CardLabel;
@@ -97,7 +96,7 @@ public class SearchControllerTest {
 
 		searchController.findMilestones("test", null, user);
 
-		verify(cardLabelRepository).findListValuesBy(eq(CardLabel.LabelDomain.SYSTEM), eq("MILESTONE"), eq(term), any(Integer.class), eq(user));
+		verify(cardLabelRepository).findListValuesBy(eq(CardLabel.LabelDomain.SYSTEM), eq("MILESTONE"), eq(term), isNull(Integer.class), eq(user));
 	}
 
 	@Test
@@ -115,7 +114,7 @@ public class SearchControllerTest {
 
 		searchController.findLabel("test", null, user);
 
-		verify(cardLabelRepository).findUserLabelNameBy(eq(term), any(Integer.class), eq(user));
+		verify(cardLabelRepository).findUserLabelNameBy(eq(term), isNull(Integer.class), eq(user));
 	}
 
     @Test
@@ -124,7 +123,7 @@ public class SearchControllerTest {
 
         searchController.findLabel("test", null, user);
 
-        verify(cardLabelRepository).findUserLabelNameBy(eq(term), any(Integer.class), eq(user));
+        verify(cardLabelRepository).findUserLabelNameBy(eq(term), isNull(Integer.class), eq(user));
     }
 
 	@Test
@@ -134,6 +133,6 @@ public class SearchControllerTest {
 		searchController.search(null, "SHORT", 0, user);
 
 		verify(projectService).findIdByShortName("SHORT");
-		verify(searchService).find(anyListOf(SearchFilter.class), eq(42), any(Integer.class), eq(user), eq(0));
+		verify(searchService).find((List<SearchFilter>)isNull(List.class), eq(42), isNull(Integer.class), eq(user), eq(0));
 	}
 }

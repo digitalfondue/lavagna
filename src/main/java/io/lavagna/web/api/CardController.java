@@ -22,7 +22,6 @@ import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
-import io.lavagna.model.CardFull;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.Event;
 import io.lavagna.model.Permission;

@@ -71,7 +71,6 @@ public class OauthLoginTest {
 
 	private OAuthLogin oAuthLogin;
 
-	@SuppressWarnings("unchecked")
 	@Before
 	public void prepare() {
 	    
@@ -81,7 +80,6 @@ public class OauthLoginTest {
 	    
 		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationFetcher, serviceBuilder, errorPage);
 		when(configurationFetcher.fetch()).thenReturn(configuration);
-		when(serviceBuilder.provider(any(Class.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.provider(any(Api.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.apiKey(any(String.class))).thenReturn(serviceBuilder);
 		when(serviceBuilder.apiSecret(any(String.class))).thenReturn(serviceBuilder);

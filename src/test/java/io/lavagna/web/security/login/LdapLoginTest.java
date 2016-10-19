@@ -16,7 +16,6 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,9 +61,6 @@ public class LdapLoginTest {
 	@Before
 	public void prepare() {
 		ldapLogin = new LdapLogin(users, sessionHandler, ldap, "errorPage");
-
-		when(context.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(
-				webApplicationContext);
 	}
 
 	@Test
@@ -76,7 +71,6 @@ public class LdapLoginTest {
 	@Test
 	public void testMissingUsernameAndPassword() throws IOException {
 		when(req.getMethod()).thenReturn("POST");
-		when(req.getServletContext()).thenReturn(context);
 		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
 		verify(resp).sendRedirect("/errorPage");
@@ -86,7 +80,6 @@ public class LdapLoginTest {
 	public void testMissingPassword() throws IOException {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameter("username")).thenReturn("user");
-		when(req.getServletContext()).thenReturn(context);
 		when(req.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
@@ -98,7 +91,6 @@ public class LdapLoginTest {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("password");
-		when(req.getServletContext()).thenReturn(context);
 		when(req.getContextPath()).thenReturn("");
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
@@ -109,7 +101,6 @@ public class LdapLoginTest {
 		when(req.getMethod()).thenReturn("POST");
 		when(req.getParameter("username")).thenReturn("user");
 		when(req.getParameter("password")).thenReturn("password");
-		when(req.getServletContext()).thenReturn(context);
 		when(req.getContextPath()).thenReturn("");
 		when(users.userExistsAndEnabled(LdapLogin.USER_PROVIDER, "user")).thenReturn(true);
 	}
@@ -138,8 +129,6 @@ public class LdapLoginTest {
                 return 42;
             }
         });
-		when(req.getSession()).thenReturn(mock(HttpSession.class));
-		when(req.getSession(true)).thenReturn(mock(HttpSession.class));
 
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
 		verify(resp).sendRedirect("/");

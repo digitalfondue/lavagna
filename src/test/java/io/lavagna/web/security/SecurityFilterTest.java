@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
@@ -79,7 +78,6 @@ public class SecurityFilterTest {
 		//
 		
 		when(webApplicationContext.getBeansOfType(SecurityConfiguration.class)).thenReturn(paths);
-		when(webApplicationContext.getBean(ConfigurationRepository.class)).thenReturn(configurationRepository);
 		when(filterConfig.getServletContext()).thenReturn(servletContext);
 		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);
 	}
@@ -94,7 +92,6 @@ public class SecurityFilterTest {
 
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
-		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
 		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn("true");
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -115,7 +112,6 @@ public class SecurityFilterTest {
 
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "false");
-		when(configurationRepository.findConfigurationFor(Mockito.<Set<Key>> any())).thenReturn(conf);
 		when(configurationRepository.getValueOrNull(Mockito.eq(Key.SETUP_COMPLETE))).thenReturn(null);
 
 		MockHttpServletResponse response = new MockHttpServletResponse();

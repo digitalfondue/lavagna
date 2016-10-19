@@ -16,7 +16,7 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import io.lavagna.model.User;
@@ -84,6 +84,6 @@ public class ExportImportControllerTest {
 		importRequest.setSecret("SECRET");
 		importController.importFromTrello(importRequest, user);
 		verify(importService).saveTrelloBoardsToDb(eq(importRequest.getProjectShortName()),
-				any(ImportService.TrelloImportResponse.class), eq(user));
+				isNull(ImportService.TrelloImportResponse.class), eq(user));
 	}
 }

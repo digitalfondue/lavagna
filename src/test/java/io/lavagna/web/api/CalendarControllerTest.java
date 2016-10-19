@@ -37,7 +37,6 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.ValidationException;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.Method;
@@ -108,7 +107,7 @@ public class CalendarControllerTest {
     }
 
     @Test
-    public void testUserCalendar() throws IOException, ValidationException, URISyntaxException, ParseException {
+    public void testUserCalendar() throws IOException, URISyntaxException, ParseException {
         HttpServletResponse resp = mock(HttpServletResponse.class);
         final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
         when(resp.getOutputStream()).thenReturn(servletOutputStream);

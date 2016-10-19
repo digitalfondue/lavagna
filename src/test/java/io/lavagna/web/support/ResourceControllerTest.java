@@ -65,8 +65,6 @@ public class ResourceControllerTest {
 
 		when(context.getResourcePaths(anyString())).thenReturn(s);
 		when(context.getResourceAsStream(anyString())).thenReturn(new ByteArrayInputStream(new byte[] { 42, 42, 42 }));
-		when(context.getResourceAsStream("/index.html")).thenReturn(
-				new ByteArrayInputStream("<body>test ${inlineTemplates}</body>".getBytes("UTF-8")));
 		when(response.getOutputStream()).thenReturn(mock(ServletOutputStream.class));
 		when(request.getServletContext()).thenReturn(context);
 		when(request.getSession()).thenReturn(session);

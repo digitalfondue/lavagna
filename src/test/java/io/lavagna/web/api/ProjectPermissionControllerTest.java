@@ -18,16 +18,6 @@ package io.lavagna.web.api;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.Role;
-import io.lavagna.model.RoleAndMetadata;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.PermissionService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.web.api.model.CreateRole;
-import io.lavagna.web.api.model.UpdateRole;
-import io.lavagna.web.api.model.Users;
 
 import java.util.Collections;
 
@@ -36,6 +26,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import io.lavagna.model.Permission;
+import io.lavagna.model.Role;
+import io.lavagna.model.RoleAndMetadata;
+import io.lavagna.service.EventEmitter;
+import io.lavagna.service.PermissionService;
+import io.lavagna.service.ProjectService;
+import io.lavagna.web.api.model.CreateRole;
+import io.lavagna.web.api.model.UpdateRole;
+import io.lavagna.web.api.model.Users;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectPermissionControllerTest {
@@ -53,19 +53,15 @@ public class ProjectPermissionControllerTest {
 	private final int projectId = 0;
 	private String roleName = "ROLENAME";
 
-	private Project project;
-
 	@Before
 	public void prepare() {
 		projectPermissionController = new ProjectPermissionController(permissionService, eventEmitter, projectService);
-		project = new Project(projectId, "test", projectShortName, "Test Project", false);
 	}
 
 	@Test
 	public void assignUsersToRole() {
 		Users usersToAdd = new Users();
 		usersToAdd.setUserIds(Collections.singleton(1));
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.assignUsersToRole(projectShortName, roleName, usersToAdd);
 
 		verify(permissionService).assignRoleToUsersInProjectId(new Role(roleName), usersToAdd.getUserIds(), projectId);
@@ -76,7 +72,6 @@ public class ProjectPermissionControllerTest {
 	public void createRole() {
 		CreateRole newRole = new CreateRole();
 		newRole.setName("name");
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.createRole(projectShortName, newRole);
 
 		verify(permissionService).createRoleInProjectId(new Role("name"), projectId);
@@ -85,7 +80,6 @@ public class ProjectPermissionControllerTest {
 
 	@Test
 	public void deleteRole() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		when(permissionService.findRoleInProjectByName(projectId, roleName)).thenReturn(
 				new RoleAndMetadata(roleName, true, false, true));
 		projectPermissionController.deleteRole(projectShortName, roleName);
@@ -95,7 +89,6 @@ public class ProjectPermissionControllerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteUnremovableRole() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		when(permissionService.findRoleInProjectByName(projectId, roleName)).thenReturn(
 				new RoleAndMetadata(roleName, false, false, true));
 		projectPermissionController.deleteRole(projectShortName, roleName);
@@ -103,20 +96,17 @@ public class ProjectPermissionControllerTest {
 
 	@Test
 	public void existingPermissions() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.existingPermissions(projectShortName);
 	}
 
 	@Test
 	public void findAllRolesAndRelatedPermissions() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.findAllRolesAndRelatedPermissions(projectShortName);
 		verify(permissionService).findAllRolesAndRelatedPermissionInProjectId(projectId);
 	}
 
 	@Test
 	public void findUserByRole() {
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.findUserByRole(projectShortName, roleName);
 		verify(permissionService).findUserByRoleAndProjectId(new Role(roleName), projectId);
 	}
@@ -125,7 +115,6 @@ public class ProjectPermissionControllerTest {
 	public void removeRoleToUsers() {
 		Users usersToRemove = new Users();
 		usersToRemove.setUserIds(Collections.singleton(1));
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		projectPermissionController.removeRoleToUsers(projectShortName, roleName, usersToRemove);
 		verify(permissionService).removeRoleToUsersInProjectId(new Role(roleName), usersToRemove.getUserIds(),
 				projectId);
@@ -136,7 +125,6 @@ public class ProjectPermissionControllerTest {
 	public void updateRole() {
 		UpdateRole updateRole = new UpdateRole();
 		updateRole.setPermissions(Collections.singleton(Permission.ADMINISTRATION));
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		when(permissionService.findRoleInProjectByName(projectId, roleName)).thenReturn(
 				new RoleAndMetadata(roleName, true, false, false));
 
@@ -150,7 +138,6 @@ public class ProjectPermissionControllerTest {
 	public void updateReadOnlyRole() {
 		UpdateRole updateRole = new UpdateRole();
 		updateRole.setPermissions(Collections.singleton(Permission.ADMINISTRATION));
-		when(projectService.findByShortName(projectShortName)).thenReturn(project);
 		when(permissionService.findRoleInProjectByName(projectId, roleName)).thenReturn(
 				new RoleAndMetadata(roleName, true, false, true));
 
