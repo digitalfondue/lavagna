@@ -126,7 +126,7 @@ public class CalendarControllerTest {
         calendar.getComponents().add(event);
         when(calendarService.getCalDavCalendar(eq(token))).thenReturn(calendar);
 
-        calendarController.userCalendar(token, resp);
+        calendarController.userCalDavCalendar(token, resp);
 
         verify(calendarService).getCalDavCalendar(eq(token));
     }
