@@ -33,6 +33,10 @@ import io.lavagna.model.SearchResults;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
+import io.lavagna.service.calendarutils.CalendarEventHandler;
+import io.lavagna.service.calendarutils.CalendarVEventHandler;
+import io.lavagna.service.calendarutils.StandardCalendarEventHandler;
+import io.lavagna.service.calendarutils.CalendarEvent;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,24 +53,10 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Date;
-import net.fortuna.ical4j.model.DateTime;
-import net.fortuna.ical4j.model.Dur;
-import net.fortuna.ical4j.model.Property;
-import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.parameter.Cn;
-import net.fortuna.ical4j.model.parameter.Value;
-import net.fortuna.ical4j.model.property.Action;
 import net.fortuna.ical4j.model.property.CalScale;
-import net.fortuna.ical4j.model.property.Created;
-import net.fortuna.ical4j.model.property.Description;
-import net.fortuna.ical4j.model.property.LastModified;
 import net.fortuna.ical4j.model.property.Method;
-import net.fortuna.ical4j.model.property.Organizer;
 import net.fortuna.ical4j.model.property.ProdId;
-import net.fortuna.ical4j.model.property.Uid;
-import net.fortuna.ical4j.model.property.Url;
 import net.fortuna.ical4j.model.property.Version;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -133,45 +123,25 @@ public class CalendarService {
         if (!cache.containsKey(userId)) {
             User u = userRepository.findById(userId);
             String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
-            String email = String.format("MAILTO:%s", firstNonNull(u.getEmail(),  "unknown@unknown.com"));
+            String email = String.format("MAILTO:%s", firstNonNull(u.getEmail(), "unknown@unknown.com"));
             cache.put(userId, new UserDescription(name, email));
         }
         return cache.get(userId);
     }
 
-    public Calendar getUserCalendar(String userToken) throws URISyntaxException, ParseException {
-        UserWithPermission user;
+    private void addMilestoneEvents(CalendarEventHandler handler, UserWithPermission user)
+        throws URISyntaxException, ParseException {
 
-        try {
-            user = findUserFromCalendarToken(userToken);
-        } catch (EmptyResultDataAccessException ex) {
-            throw new SecurityException("Invalid token");
-        }
-
-        if (userRepository.isCalendarFeedDisabled(user)) {
-            throw new SecurityException("Calendar feed disabled");
-        }
-
-        final Calendar calendar = new Calendar();
-        calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
-        calendar.getProperties().add(Version.VERSION_2_0);
-        calendar.getProperties().add(CalScale.GREGORIAN);
-        calendar.getProperties().add(Method.PUBLISH);
-
-        final String applicationUrl = StringUtils.appendIfMissing(
-            configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
-
-        final List<VEvent> events = new ArrayList<>();
-
+        final String applicationUrl = StringUtils
+            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
         final SimpleDateFormat releaseDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
-        // Milestones
         List<Project> projects = projectService.findAllProjects(user);
         for (Project project : projects) {
             CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
                 CardLabel.LabelDomain.SYSTEM);
 
-            Url mUrl = new Url(new URI(String.format("%s%s/milestones/", applicationUrl, project.getShortName())));
+            URI uri = new URI(String.format("%s%s/milestones/", applicationUrl, project.getShortName()));
 
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
@@ -200,33 +170,24 @@ public class CalendarService {
                     final String name = String.format("%s - %s (%.0f%%)", project.getShortName(), m.getValue(),
                         total > 0 ? 100 * closed / total : 100);
 
-                    final VEvent event = new VEvent(new Date(date.getTime()), name);
-                    event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
-
-                    event.getProperties().add(new Description(descBuilder.toString()));
-
                     final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
-                    event.getProperties().add(new Uid(id.toString()));
 
-                    // Reminder on milestone's date
-                    if (!m.getMetadata().containsKey("status") || m.getMetadata().get("status").equals("CLOSED")) {
-                        final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-                        reminder.getProperties().add(Action.DISPLAY);
-                        reminder.getProperties().add(new Description(name));
-                        event.getAlarms().add(reminder);
-                    }
-
-                    // Url
-                    event.getProperties().add(mUrl);
-
-                    events.add(event);
+                    handler.addMilestoneEvent(id, name, date, descBuilder.toString(), uri,
+                        !m.getMetadata().containsKey("status") || !m.getMetadata().get("status").equals("CLOSED"));
                 }
             }
         }
 
-        // Cards
+    }
+
+    private void addCardEvents(CalendarEventHandler handler, UserWithPermission user)
+        throws URISyntaxException, ParseException {
+
         Map<Integer, UserDescription> usersCache = new HashMap<>();
         Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
+
+        final String applicationUrl = StringUtils
+            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
 
         SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
             BoardColumn.BoardColumnLocation.BOARD.toString());
@@ -245,49 +206,69 @@ public class CalendarService {
 
         for (CardFullWithCounts card : map.values()) {
 
-            Url cardUrl = new Url(new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
-                card.getBoardShortName(), card.getSequence())));
+            URI uri = new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
+                card.getBoardShortName(), card.getSequence()));
 
             CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
 
             for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
                 String name = getEventName(card);
 
-                final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
-                event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
-
-                event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
-                event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
-
-                final UUID id = new UUID(getLong(card.getColumnId(), card.getId()),
-                    getLong(lav.getLabelId(), lav.getLabelValueId()));
-                event.getProperties().add(new Uid(id.toString()));
-
-                // Reminder on label's date
-                if (card.getColumnDefinition() != ColumnDefinition.CLOSED) {
-                    final VAlarm reminder = new VAlarm(new Dur(0, 0, 0, 0));
-                    reminder.getProperties().add(Action.DISPLAY);
-                    reminder.getProperties().add(new Description(name));
-                    event.getAlarms().add(reminder);
-                }
+                final UUID id = new UUID(getLong(card.getColumnId(), card.getId()), getLong(lav.getLabelId(),
+                    lav.getLabelValueId()));
 
                 // Organizer
                 UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-                Organizer organizer = new Organizer(URI.create(ud.getEmail()));
-                organizer.getParameters().add(new Cn(ud.getName()));
-                event.getProperties().add(organizer);
 
-                // Url
-                event.getProperties().add(cardUrl);
-
-                // Description
-                if (cardDesc != null) {
-                    event.getProperties().add(new Description(cardDesc.getContent()));
-                }
-
-                events.add(event);
+                handler.addCardEvent(id, name, lav.getLabelValueTimestamp(), cardDesc, uri,
+                    card.getColumnDefinition() != ColumnDefinition.CLOSED,
+                    card.getCreationDate(), card.getLastUpdateTime(), ud.getName(), ud.getEmail());
             }
         }
+
+    }
+
+    public List<CalendarEvent> getUserCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
+
+        final List<CalendarEvent> events = new ArrayList<>();
+        final CalendarEventHandler handler = new StandardCalendarEventHandler(events);
+
+        // Milestones
+        addMilestoneEvents(handler, user);
+
+        // Cards
+        addCardEvents(handler, user);
+
+        return events;
+    }
+
+    public Calendar getCalDavCalendar(String userToken) throws URISyntaxException, ParseException {
+        UserWithPermission user;
+
+        try {
+            user = findUserFromCalendarToken(userToken);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new SecurityException("Invalid token");
+        }
+
+        if (userRepository.isCalendarFeedDisabled(user)) {
+            throw new SecurityException("Calendar feed disabled");
+        }
+
+        final Calendar calendar = new Calendar();
+        calendar.getProperties().add(new ProdId("-//Lavagna//iCal4j 1.0//EN"));
+        calendar.getProperties().add(Version.VERSION_2_0);
+        calendar.getProperties().add(CalScale.GREGORIAN);
+        calendar.getProperties().add(Method.PUBLISH);
+
+        final List<VEvent> events = new ArrayList<>();
+        final CalendarEventHandler handler = new CalendarVEventHandler(events);
+
+        // Milestones
+        addMilestoneEvents(handler, user);
+
+        // Cards
+        addCardEvents(handler, user);
 
         calendar.getComponents().addAll(events);
 

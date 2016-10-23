@@ -158,7 +158,7 @@ public class ResourceController {
 
 	@RequestMapping(value = { "/",//
 			"user/{provider}/{username}", "user/{provider}/{username}/projects/", "user/{provider}/{username}/activity/",//
-			"about", "about/third-party",//
+			"about", "about/third-party", "calendar", //
 			"search",//
 			"search/" + PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
 			PROJ_SHORT_NAME + "",//
@@ -212,7 +212,7 @@ public class ResourceController {
 			StreamUtils.copy(indexCache.get(), os);
 		}
 	}
-	
+
 	@RequestMapping(value = "/resource-login/app-login-{version:.+}.js", method = RequestMethod.GET)
 	public void handleJsLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    if (contains(env.getActiveProfiles(), "dev") || jsLoginCache.get() == null) {
@@ -231,7 +231,7 @@ public class ResourceController {
 
             jsLoginCache.set(allJs.toByteArray());
 	    }
-	    
+
 	    try (OutputStream os = response.getOutputStream()) {
             response.setContentType("text/javascript");
             StreamUtils.copy(jsLoginCache.get(), os);
@@ -263,6 +263,7 @@ public class ResourceController {
 					"/js/angular-ui-router.min.js",//
 					"/js/angular-file-upload.min.js",//
 					"/js/angular-translate.min.js",//
+                    "/js/angular-material-calendar.min.js",//
                     //
                     "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
 

@@ -1,0 +1,24 @@
+<lvg-navbar-search></lvg-navbar-search>
+<div data-ui-view data-autoscroll="false" class="lvg-content">
+    <md-card class="lvg-content__row-item">
+        <md-card-title>
+            <md-card-title-text>
+                <span></span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <div class="lvg-calendar__container">
+                <calendar-md class="layout-fill layout-row flex"
+                             on-prev-month="$ctrl.prevMonth"
+                             on-next-month="$ctrl.nextMonth"
+                             title-format="'MMMM y'"
+                             day-format="d"
+                             day-label-format="'EEE'"
+                             day-label-tooltip-format="'EEEE'"
+                             week-starts-on="weekStartsOn"
+                             start-date-of-month="1"
+                             no-of-days="30"></calendar-md>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

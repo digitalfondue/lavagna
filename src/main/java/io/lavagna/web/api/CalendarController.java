@@ -21,11 +21,13 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.CalendarService;
 import io.lavagna.service.UserRepository;
+import io.lavagna.service.calendarutils.CalendarEvent;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,7 +46,6 @@ public class CalendarController {
     private final UserRepository userRepository;
     private final CalendarService calendarService;
 
-    
     public CalendarController(UserRepository userRepository, CalendarService calendarService) {
         this.userRepository = userRepository;
         this.calendarService = calendarService;
@@ -70,11 +71,15 @@ public class CalendarController {
         return calendarService.findCalendarInfoFromUser(user);
     }
 
-    @RequestMapping(value = "/api/calendar/{token}/calendar.ics",
-        method = RequestMethod.GET, produces = "text/calendar")
-    public void userCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
+    @RequestMapping(value = "/api/calendar/user", method = RequestMethod.GET)
+    public List<CalendarEvent> userStandardCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
+        return calendarService.getUserCalendar(user);
+    }
+
+    @RequestMapping(value = "/api/calendar/{token}/calendar.ics", method = RequestMethod.GET, produces = "text/calendar")
+    public void userCalDavCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
         throws IOException, URISyntaxException, ParseException {
-        Calendar calendar = calendarService.getUserCalendar(userToken);
+        Calendar calendar = calendarService.getCalDavCalendar(userToken);
         response.setContentType("text/calendar");
         CalendarOutputter output = new CalendarOutputter(false); // <- no validation on the output
         output.output(calendar, response.getOutputStream());

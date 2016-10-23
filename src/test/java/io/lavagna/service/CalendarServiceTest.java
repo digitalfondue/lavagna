@@ -151,14 +151,14 @@ public class CalendarServiceTest {
 
     @Test(expected = SecurityException.class)
     public void testGetUserCalendarWithWrongToken() throws URISyntaxException, ParseException {
-        calendarService.getUserCalendar("abcd");
+        calendarService.getCalDavCalendar("abcd");
     }
 
     @Test
     public void testGetUserCalendarOnEmpty() throws URISyntaxException, ParseException {
         CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
 
-        Calendar calendar = calendarService.getUserCalendar(ci.getToken());
+        Calendar calendar = calendarService.getCalDavCalendar(ci.getToken());
 
         Assert.assertNotNull(calendar);
         Assert.assertEquals(0, calendar.getComponents().size());
@@ -170,7 +170,7 @@ public class CalendarServiceTest {
         CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
         calendarService.setCalendarFeedDisabled(user, true);
 
-        calendarService.getUserCalendar(ci.getToken());
+        calendarService.getCalDavCalendar(ci.getToken());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class CalendarServiceTest {
         labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
         labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 
-        Calendar calendar = calendarService.getUserCalendar(ci.getToken());
+        Calendar calendar = calendarService.getCalDavCalendar(ci.getToken());
 
         Assert.assertNotNull(calendar);
         Assert.assertEquals(2, calendar.getComponents().size());

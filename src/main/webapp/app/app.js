@@ -31,7 +31,7 @@
 			'lavagna.components', 'lavagna.filters', 'lavagna.directives',
 			'ngSanitize', 'ngMessages',
 			'pascalprecht.translate',
-			'angularFileUpload', 'ngMaterial']);
+			'angularFileUpload', 'ngMaterial', 'materialCalendar']);
 
 	module.constant('CONTEXT_PATH', document.getElementsByTagName("base")[0].href);
 	module.constant('LOCALE_FIRST_DAY_OF_WEEK', document.getElementsByTagName("html")[0].getAttribute('data-lavagna-first-day-of-week'));
@@ -231,7 +231,19 @@
             onEnter: function(Title) {
             	Title.set('title.account');
             }
-		}).state('user', {
+		}).state('calendar', {
+            url :'/calendar/',
+            template: '<lvg-calendar username="rslvr.username" provider="rslvr.provider"></lvg-calendar>',
+            controller: function(user) {
+                this.username = user.username;
+                this.provider = user.provider;
+            },
+            controllerAs: 'rslvr',
+            resolve : currentUserResolver,
+            onEnter: function(Title) {
+                Title.set('title.calendar');
+            }
+        }).state('user', {
             url :'/user/:provider/:username/',
             abstract: true,
             template: '<lvg-navbar-user data-username="rslvr.username" data-provider="rslvr.provider" data-is-current-user="rslvr.isCurrentUser"> </lvg-navbar-user><div data-ui-view data-autoscroll="false"></div>',

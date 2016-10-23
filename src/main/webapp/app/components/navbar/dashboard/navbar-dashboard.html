@@ -3,6 +3,10 @@
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2 data-translate>partials.home.title</h2>
         <lvg-search-input data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input>
+        <md-button class="md-icon-button" data-lvg-is-authenticated ui-sref="calendar">
+            <md-tooltip>{{::('navbar.common.calendar' | translate)}}</md-tooltip>
+            <md-icon md-svg-icon="calendar"></md-icon>
+        </md-button>
         <md-button class="md-icon-button" data-lvg-is-authenticated ui-sref="account">
             <md-tooltip>{{'partials.fragments.sidebar.profile' | translate}}</md-tooltip>
             <md-icon md-svg-icon="person"></md-icon>

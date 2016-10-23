@@ -124,11 +124,11 @@ public class CalendarControllerTest {
         Organizer organizer = new Organizer(URI.create("mailto:lavagna"));
         event.getProperties().add(organizer);
         calendar.getComponents().add(event);
-        when(calendarService.getUserCalendar(eq(token))).thenReturn(calendar);
+        when(calendarService.getCalDavCalendar(eq(token))).thenReturn(calendar);
 
         calendarController.userCalendar(token, resp);
 
-        verify(calendarService).getUserCalendar(eq(token));
+        verify(calendarService).getCalDavCalendar(eq(token));
     }
 
     class StubServletOutputStream extends ServletOutputStream {

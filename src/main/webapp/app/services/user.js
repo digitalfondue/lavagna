@@ -58,6 +58,10 @@
             deleteCalendarToken: function () {
                 return $http.delete('api/calendar/token').then(extractData);
             },
+            getCalendar: function () {
+                return $http.get('api/calendar/user').then(extractData);
+            },
+
             updateProfile: function (profile) {
                 return $http.post('api/self', profile);
             },
