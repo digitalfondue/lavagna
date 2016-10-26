@@ -17,16 +17,19 @@
 
 package io.lavagna.service.calendarutils;
 
-import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.LabelAndValue;
+import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.SearchResults;
 
-import java.net.URI;
-import java.util.UUID;
+import java.net.URISyntaxException;
+import java.util.Date;
 
 public interface CalendarEventHandler {
 
-    void addMilestoneEvent(UUID id, String name, java.util.Date date, String description, URI uri, boolean isActive);
 
-    void addCardEvent(UUID id, String name, java.util.Date date, CardDataHistory cardDesc, URI uri, boolean isActive,
-        java.util.Date creationDate, java.util.Date modifiedDate, String creatorName, String creatorEmail);
+    void addCardEvent(CardFullWithCounts card, LabelAndValue lav) throws URISyntaxException;
 
+    void addMilestoneEvent(String shortName, Date date, LabelListValueWithMetadata m, SearchResults cards)
+        throws URISyntaxException;
 }

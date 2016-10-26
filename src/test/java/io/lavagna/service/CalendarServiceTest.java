@@ -22,6 +22,7 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Card;
+import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
@@ -31,6 +32,8 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.Role;
 import io.lavagna.model.User;
+import io.lavagna.model.UserWithPermission;
+import io.lavagna.service.calendarutils.CalendarEvents;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.net.URISyntaxException;
@@ -39,6 +42,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -174,7 +178,41 @@ public class CalendarServiceTest {
     }
 
     @Test
-    public void testGetUserCalendar() throws URISyntaxException, ParseException {
+    public void testGetStandardCalendar() throws URISyntaxException, ParseException {
+
+        Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user.getId());
+
+        Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
+
+        Date now = new Date();
+
+        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
+            user, now);
+
+        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
+            user, now);
+
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+        labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+
+        UserWithPermission uwpGlobalRead = new UserWithPermission(user, EnumSet.of(Permission.READ),
+            Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+
+        CalendarEvents events = calendarService.getUserCalendar(uwpGlobalRead);
+
+        Assert.assertNotNull(events);
+        Assert.assertEquals(1, events.getCards().size());
+
+        Set<CardFullWithCounts> cards = events.getCards().get(now);
+        Assert.assertEquals(2, cards.size());
+    }
+
+    @Test
+    public void testGetCalDavCalendar() throws URISyntaxException, ParseException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
         cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user.getId());

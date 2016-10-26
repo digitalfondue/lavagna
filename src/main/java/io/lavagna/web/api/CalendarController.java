@@ -21,13 +21,12 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.CalendarService;
 import io.lavagna.service.UserRepository;
-import io.lavagna.service.calendarutils.CalendarEvent;
+import io.lavagna.service.calendarutils.CalendarEvents;
 import io.lavagna.web.helper.ExpectPermission;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -72,7 +71,7 @@ public class CalendarController {
     }
 
     @RequestMapping(value = "/api/calendar/user", method = RequestMethod.GET)
-    public List<CalendarEvent> userStandardCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
+    public CalendarEvents userStandardCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
         return calendarService.getUserCalendar(user);
     }
 

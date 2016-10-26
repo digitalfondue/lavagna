@@ -17,14 +17,11 @@
 package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
-import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Key;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.LabelListValueWithMetadata;
@@ -34,24 +31,23 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.service.calendarutils.CalendarEventHandler;
+import io.lavagna.service.calendarutils.CalendarEvents;
 import io.lavagna.service.calendarutils.CalendarVEventHandler;
 import io.lavagna.service.calendarutils.StandardCalendarEventHandler;
-import io.lavagna.service.calendarutils.CalendarEvent;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
@@ -110,30 +106,9 @@ public class CalendarService {
         return userService.findUserWithPermission(userId);
     }
 
-    private long getLong(int x, int y) {
-        return (((long) x) << 32) | (y & 0xffffffffL);
-    }
-
-    private String getEventName(CardFullWithCounts card) {
-        return String.format("%s-%s %s (%s)", card.getBoardShortName(), card.getSequence(), card.getName(),
-            card.getColumnDefinition());
-    }
-
-    private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
-        if (!cache.containsKey(userId)) {
-            User u = userRepository.findById(userId);
-            String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
-            String email = String.format("MAILTO:%s", firstNonNull(u.getEmail(), "unknown@unknown.com"));
-            cache.put(userId, new UserDescription(name, email));
-        }
-        return cache.get(userId);
-    }
-
     private void addMilestoneEvents(CalendarEventHandler handler, UserWithPermission user)
         throws URISyntaxException, ParseException {
 
-        final String applicationUrl = StringUtils
-            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
         final SimpleDateFormat releaseDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
         List<Project> projects = projectService.findAllProjects(user);
@@ -141,7 +116,6 @@ public class CalendarService {
             CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
                 CardLabel.LabelDomain.SYSTEM);
 
-            URI uri = new URI(String.format("%s%s/milestones/", applicationUrl, project.getShortName()));
 
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
@@ -155,25 +129,7 @@ public class CalendarService {
                     SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), project.getId(),
                         null, user);
 
-                    double closed = 0;
-                    double total = 0;
-                    StringBuilder descBuilder = new StringBuilder();
-                    for (CardFullWithCounts card : cards.getFound()) {
-                        if (card.getColumnDefinition() == ColumnDefinition.CLOSED) {
-                            closed++;
-                        }
-                        total++;
-                        descBuilder.append(getEventName(card));
-                        descBuilder.append("\n");
-                    }
-
-                    final String name = String.format("%s - %s (%.0f%%)", project.getShortName(), m.getValue(),
-                        total > 0 ? 100 * closed / total : 100);
-
-                    final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
-
-                    handler.addMilestoneEvent(id, name, date, descBuilder.toString(), uri,
-                        !m.getMetadata().containsKey("status") || !m.getMetadata().get("status").equals("CLOSED"));
+                    handler.addMilestoneEvent(project.getShortName(), date, m, cards);
                 }
             }
         }
@@ -183,11 +139,7 @@ public class CalendarService {
     private void addCardEvents(CalendarEventHandler handler, UserWithPermission user)
         throws URISyntaxException, ParseException {
 
-        Map<Integer, UserDescription> usersCache = new HashMap<>();
         Map<Integer, CardFullWithCounts> map = new LinkedHashMap<>();
-
-        final String applicationUrl = StringUtils
-            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
 
         SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
             BoardColumn.BoardColumnLocation.BOARD.toString());
@@ -206,31 +158,18 @@ public class CalendarService {
 
         for (CardFullWithCounts card : map.values()) {
 
-            URI uri = new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
-                card.getBoardShortName(), card.getSequence()));
-
-            CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
-
             for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
-                String name = getEventName(card);
-
-                final UUID id = new UUID(getLong(card.getColumnId(), card.getId()), getLong(lav.getLabelId(),
-                    lav.getLabelValueId()));
-
-                // Organizer
-                UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-
-                handler.addCardEvent(id, name, lav.getLabelValueTimestamp(), cardDesc, uri,
-                    card.getColumnDefinition() != ColumnDefinition.CLOSED,
-                    card.getCreationDate(), card.getLastUpdateTime(), ud.getName(), ud.getEmail());
+                handler.addCardEvent(card, lav);
             }
         }
 
     }
 
-    public List<CalendarEvent> getUserCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
+    public CalendarEvents getUserCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
 
-        final List<CalendarEvent> events = new ArrayList<>();
+        final CalendarEvents events = new CalendarEvents(new HashMap<Date, Set<LabelListValueWithMetadata>>(),
+            new HashMap<Date, Set<CardFullWithCounts>>());
+
         final CalendarEventHandler handler = new StandardCalendarEventHandler(events);
 
         // Milestones
@@ -262,7 +201,10 @@ public class CalendarService {
         calendar.getProperties().add(Method.PUBLISH);
 
         final List<VEvent> events = new ArrayList<>();
-        final CalendarEventHandler handler = new CalendarVEventHandler(events);
+        final String applicationUrl = StringUtils
+            .appendIfMissing(configurationRepository.getValue(Key.BASE_APPLICATION_URL), "/");
+        final CalendarEventHandler handler = new CalendarVEventHandler(applicationUrl, cardDataService, userRepository,
+            events);
 
         // Milestones
         addMilestoneEvents(handler, user);
@@ -273,12 +215,5 @@ public class CalendarService {
         calendar.getComponents().addAll(events);
 
         return calendar;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    static class UserDescription {
-        private String name;
-        private String email;
     }
 }

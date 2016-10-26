@@ -243,6 +243,19 @@
             onEnter: function(Title) {
                 Title.set('title.calendar');
             }
+        }).state('calendar.card', {
+            url : ':projectName/{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
+            template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
+            controller : function(Title, card, project, board, user, metadata) {
+                this.board = board;
+                this.card = card;
+                this.project = project;
+                this.user = user;
+                project.metadata = metadata;
+                Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
+            },
+            controllerAs : 'rslvr',
+            resolve : cardCtrlResolver
         }).state('user', {
             url :'/user/:provider/:username/',
             abstract: true,

@@ -107,7 +107,15 @@ public class CalendarControllerTest {
     }
 
     @Test
-    public void testUserCalendar() throws IOException, URISyntaxException, ParseException {
+    public void testUserStandardCalendar() throws IOException, URISyntaxException, ParseException {
+
+        calendarController.userStandardCalendar(user);
+
+        verify(calendarService).getUserCalendar(eq(user));
+    }
+
+    @Test
+    public void testUserCalDavCalendar() throws IOException, URISyntaxException, ParseException {
         HttpServletResponse resp = mock(HttpServletResponse.class);
         final StubServletOutputStream servletOutputStream = new StubServletOutputStream();
         when(resp.getOutputStream()).thenReturn(servletOutputStream);

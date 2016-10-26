@@ -17,34 +17,36 @@
 
 package io.lavagna.service.calendarutils;
 
-import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.LabelAndValue;
+import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.SearchResults;
 
-import java.net.URI;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashSet;
 
 public class StandardCalendarEventHandler implements CalendarEventHandler {
 
-    private final List<CalendarEvent> events;
+    private final CalendarEvents events;
 
-    public StandardCalendarEventHandler(List<CalendarEvent> events) {
+    public StandardCalendarEventHandler(CalendarEvents events) {
         this.events = events;
     }
 
-    public void addMilestoneEvent(UUID id, String name, Date date, String description, URI uri, boolean isActive) {
+    public void addMilestoneEvent(String shortName, Date date, LabelListValueWithMetadata m, SearchResults cards) {
 
-        final CalendarEvent event = new CalendarEvent(date, name, description, isActive, uri, null, null, null, null);
-
-        events.add(event);
+        if (!events.getMilestones().containsKey(date)) {
+            events.getMilestones().put(date, new HashSet<LabelListValueWithMetadata>());
+        }
+        events.getMilestones().get(date).add(m);
     }
 
-    public void addCardEvent(UUID id, String name, Date date, CardDataHistory cardDesc, URI uri, boolean isActive,
-        Date creationDate, Date modifiedDate, String creatorName, String creatorEmail) {
+    public void addCardEvent(CardFullWithCounts card, LabelAndValue lav) {
 
-        final CalendarEvent event = new CalendarEvent(date, name, cardDesc != null ? cardDesc.getContent() : null,
-            isActive, uri, creationDate, modifiedDate, creatorName, creatorEmail);
-
-        events.add(event);
+        Date date = lav.getLabelValueTimestamp();
+        if (!events.getCards().containsKey(date)) {
+            events.getCards().put(date, new HashSet<CardFullWithCounts>());
+        }
+        events.getCards().get(date).add(card);
     }
 }

@@ -16,23 +16,21 @@
  */
 package io.lavagna.service.calendarutils;
 
-import java.net.URI;
+import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.LabelListValueWithMetadata;
+
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CalendarEvent {
+public class CalendarEvents {
 
-    private Date date;
-    private String name;
-    private String description;
-    private boolean isActive;
-    private URI uri;
-    private Date creationDate;
-    private Date modifiedDate;
-    private String creatorName;
-    private String creatorEmail;
+    private Map<Date, Set<LabelListValueWithMetadata>> milestones;
+
+    private Map<Date, Set<CardFullWithCounts>> cards;
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of lavagna.
  *
  * lavagna is free software: you can redistribute it and/or modify
@@ -17,12 +17,26 @@
 
 package io.lavagna.service.calendarutils;
 
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.LabelAndValue;
+import io.lavagna.model.LabelListValueWithMetadata;
+import io.lavagna.model.SearchResults;
+import io.lavagna.model.User;
+import io.lavagna.service.CardDataService;
+import io.lavagna.service.UserRepository;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Dur;
@@ -41,10 +55,37 @@ import net.fortuna.ical4j.model.property.Url;
 
 public class CalendarVEventHandler implements CalendarEventHandler {
 
+    private final Map<Integer, UserDescription> usersCache = new HashMap<>();
+    private final String applicationUrl;
+    private final CardDataService cardDataService;
+    private final UserRepository userRepository;
     private final List<VEvent> events;
 
-    public CalendarVEventHandler(List<VEvent> events) {
+    public CalendarVEventHandler(String applicationUrl, CardDataService cardDataService, UserRepository userRepository,
+        List<VEvent> events) {
+        this.applicationUrl = applicationUrl;
+        this.cardDataService = cardDataService;
+        this.userRepository = userRepository;
         this.events = events;
+    }
+
+    private long getLong(int x, int y) {
+        return (((long) x) << 32) | (y & 0xffffffffL);
+    }
+
+    private String getEventName(CardFullWithCounts card) {
+        return String.format("%s-%s %s (%s)", card.getBoardShortName(), card.getSequence(), card.getName(),
+            card.getColumnDefinition());
+    }
+
+    private UserDescription getUserDescription(int userId, Map<Integer, UserDescription> cache) {
+        if (!cache.containsKey(userId)) {
+            User u = userRepository.findById(userId);
+            String name = firstNonNull(u.getDisplayName(), u.getEmail(), u.getUsername());
+            String email = String.format("MAILTO:%s", firstNonNull(u.getEmail(), "unknown@unknown.com"));
+            cache.put(userId, new UserDescription(name, email));
+        }
+        return cache.get(userId);
     }
 
     private VAlarm createReminder(String name) {
@@ -54,17 +95,37 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         return reminder;
     }
 
-    public void addMilestoneEvent(UUID id, String name, java.util.Date date, String description, URI uri, boolean isActive) {
+    public void addMilestoneEvent(String projectShortName, java.util.Date date, LabelListValueWithMetadata m,
+        SearchResults cards) throws URISyntaxException {
+
+        URI uri = new URI(String.format("%s%s/milestones/", applicationUrl, projectShortName));
+
+        double closed = 0;
+        double total = 0;
+        StringBuilder descBuilder = new StringBuilder();
+        for (CardFullWithCounts card : cards.getFound()) {
+            if (card.getColumnDefinition() == ColumnDefinition.CLOSED) {
+                closed++;
+            }
+            total++;
+            descBuilder.append(getEventName(card));
+            descBuilder.append("\n");
+        }
+
+        final String name = String.format("%s - %s (%.0f%%)", projectShortName, m.getValue(),
+            total > 0 ? 100 * closed / total : 100);
+
+        final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
 
         final VEvent event = new VEvent(new Date(date.getTime()), name);
         event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
 
-        event.getProperties().add(new Description(description));
+        event.getProperties().add(new Description(descBuilder.toString()));
 
         event.getProperties().add(new Uid(id.toString()));
 
         // Reminder on milestone's date
-        if (isActive) {
+        if (!m.getMetadata().containsKey("status") || !m.getMetadata().get("status").equals("CLOSED")) {
             event.getAlarms().add(createReminder(name));
         }
 
@@ -73,25 +134,37 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         events.add(event);
     }
 
-    public void addCardEvent(UUID id, String name, java.util.Date date, CardDataHistory cardDesc, URI uri, boolean isActive,
-        java.util.Date creationDate, java.util.Date modifiedDate, String creatorName, String creatorEmail) {
+    public void addCardEvent(CardFullWithCounts card, LabelAndValue lav) throws URISyntaxException {
 
-        final VEvent event = new VEvent(new Date(date), name);
+        URI uri = new URI(String.format("%s%s/%s-%s", applicationUrl, card.getProjectShortName(),
+            card.getBoardShortName(), card.getSequence()));
+
+        CardDataHistory cardDesc = cardDataService.findLatestDescriptionByCardId(card.getId());
+
+        String name = getEventName(card);
+
+        final UUID id = new UUID(getLong(card.getColumnId(), card.getId()), getLong(lav.getLabelId(),
+            lav.getLabelValueId()));
+
+        // Organizer
+        UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
+
+        final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
         event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
 
-        event.getProperties().add(new Created(new DateTime(creationDate)));
-        event.getProperties().add(new LastModified(new DateTime(modifiedDate)));
+        event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
+        event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
 
         event.getProperties().add(new Uid(id.toString()));
 
         // Reminder on label's date
-        if (isActive) {
+        if (card.getColumnDefinition() != ColumnDefinition.CLOSED) {
             event.getAlarms().add(createReminder(name));
         }
 
         // Organizer
-        Organizer organizer = new Organizer(URI.create(creatorEmail));
-        organizer.getParameters().add(new Cn(creatorName));
+        Organizer organizer = new Organizer(URI.create(ud.getEmail()));
+        organizer.getParameters().add(new Cn(ud.getName()));
         event.getProperties().add(organizer);
 
         // Url
@@ -103,5 +176,12 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         }
 
         events.add(event);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private class UserDescription {
+        private String name;
+        private String email;
     }
 }
