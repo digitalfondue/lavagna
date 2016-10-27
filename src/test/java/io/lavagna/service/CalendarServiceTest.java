@@ -207,7 +207,7 @@ public class CalendarServiceTest {
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.getCards().size());
 
-        Set<CardFullWithCounts> cards = events.getCards().get(now);
+        Set<CardFullWithCounts> cards = events.getCards().values().iterator().next();
         Assert.assertEquals(2, cards.size());
     }
 
