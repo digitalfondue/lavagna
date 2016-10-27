@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of lavagna.
  *
  * lavagna is free software: you can redistribute it and/or modify
