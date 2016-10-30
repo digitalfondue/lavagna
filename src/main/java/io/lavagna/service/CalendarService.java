@@ -36,8 +36,8 @@ import io.lavagna.service.calendarutils.CalendarVEventHandler;
 import io.lavagna.service.calendarutils.StandardCalendarEventHandler;
 
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -56,6 +55,7 @@ import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,18 +109,21 @@ public class CalendarService {
     private void addMilestoneEvents(CalendarEventHandler handler, UserWithPermission user)
         throws URISyntaxException, ParseException {
 
-        final SimpleDateFormat releaseDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-
         List<Project> projects = projectService.findAllProjects(user);
         for (Project project : projects) {
             CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
                 CardLabel.LabelDomain.SYSTEM);
 
-
             for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
                 if (m.getMetadata().containsKey("releaseDate")) {
 
-                    java.util.Date date = releaseDateFormatter.parse(m.getMetadata().get("releaseDate") + " 12:00");
+                    java.util.Date date = DateUtils.parseDate(m.getMetadata().get("releaseDate"),
+                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                        "dd.MM.yyyy");
+                    java.util.Calendar cal = java.util.Calendar.getInstance();
+                    cal.setTime(date);
+                    cal.set(java.util.Calendar.HOUR, 12);
+                    cal.set(java.util.Calendar.MINUTE, 0);
 
                     SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
                         m.getValue());
@@ -129,7 +132,7 @@ public class CalendarService {
                     SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), project.getId(),
                         null, user);
 
-                    handler.addMilestoneEvent(project.getShortName(), date, m, cards);
+                    handler.addMilestoneEvent(project.getShortName(), new Timestamp(cal.getTimeInMillis()), m, cards);
                 }
             }
         }
@@ -167,8 +170,7 @@ public class CalendarService {
 
     public CalendarEvents getUserCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
 
-        final CalendarEvents events = new CalendarEvents(new HashMap<Date, Set<LabelListValueWithMetadata>>(),
-            new HashMap<Date, Set<CardFullWithCounts>>());
+        final CalendarEvents events = new CalendarEvents(new HashMap<Date, CalendarEvents.MilestoneDayEvents>());
 
         final CalendarEventHandler handler = new StandardCalendarEventHandler(events);
 

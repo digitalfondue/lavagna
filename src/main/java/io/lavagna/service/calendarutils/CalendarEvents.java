@@ -30,7 +30,22 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CalendarEvents {
 
-    private Map<Date, Set<LabelListValueWithMetadata>> milestones;
+    private Map<Date, MilestoneDayEvents> dailyEvents;
 
-    private Map<Date, Set<CardFullWithCounts>> cards;
+    @Getter
+    @AllArgsConstructor
+    public static class MilestoneDayEvents {
+
+        private Set<MilestoneEvent> milestones;
+
+        private Set<CardFullWithCounts> cards;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class MilestoneEvent {
+        String projectShortName;
+        String name;
+        LabelListValueWithMetadata label;
+    }
 }

@@ -18,6 +18,7 @@
 package io.lavagna.service.calendarutils;
 
 import io.lavagna.model.CardFullWithCounts;
+import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.LabelListValueWithMetadata;
 import io.lavagna.model.SearchResults;
@@ -33,20 +34,37 @@ public class StandardCalendarEventHandler implements CalendarEventHandler {
         this.events = events;
     }
 
-    public void addMilestoneEvent(String shortName, Date date, LabelListValueWithMetadata m, SearchResults cards) {
-
-        if (!events.getMilestones().containsKey(date)) {
-            events.getMilestones().put(date, new HashSet<LabelListValueWithMetadata>());
+    private CalendarEvents.MilestoneDayEvents getDayEventsFromDate(Date date) {
+        if (!events.getDailyEvents().containsKey(date)) {
+            events.getDailyEvents().put(date, new CalendarEvents.MilestoneDayEvents(
+                new HashSet<CalendarEvents.MilestoneEvent>(),
+                new HashSet<CardFullWithCounts>()));
         }
-        events.getMilestones().get(date).add(m);
+        return events.getDailyEvents().get(date);
+    }
+
+    public void addMilestoneEvent(String projectShortName, Date date, LabelListValueWithMetadata m,
+        SearchResults cards) {
+
+        double closed = 0;
+        double total = 0;
+        for (CardFullWithCounts card : cards.getFound()) {
+            if (card.getColumnDefinition() == ColumnDefinition.CLOSED) {
+                closed++;
+            }
+            total++;
+        }
+
+        final String name = String.format("%s (%.0f%%)", m.getValue(), total > 0 ? 100 * closed / total : 100);
+
+        getDayEventsFromDate(date).getMilestones().add(new CalendarEvents.MilestoneEvent(projectShortName, name, m));
+
     }
 
     public void addCardEvent(CardFullWithCounts card, LabelAndValue lav) {
 
         Date date = lav.getLabelValueTimestamp();
-        if (!events.getCards().containsKey(date)) {
-            events.getCards().put(date, new HashSet<CardFullWithCounts>());
-        }
-        events.getCards().get(date).add(card);
+        getDayEventsFromDate(date).getCards().add(card);
+
     }
 }

@@ -22,7 +22,6 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Card;
-import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
@@ -205,10 +204,8 @@ public class CalendarServiceTest {
         CalendarEvents events = calendarService.getUserCalendar(uwpGlobalRead);
 
         Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.getCards().size());
+        Assert.assertEquals(2, events.getDailyEvents().get(now).getCards().size());
 
-        Set<CardFullWithCounts> cards = events.getCards().values().iterator().next();
-        Assert.assertEquals(2, cards.size());
     }
 
     @Test

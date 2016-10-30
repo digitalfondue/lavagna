@@ -13,7 +13,6 @@
         controller: ['$sanitize', '$state', '$mdDateLocale', 'User', 'MaterialCalendarData', CalendarController]
     });
 
-// TODO project calendar, fix day height and add missing arrows
     function CalendarController($sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
         var ctrl = this;
 
@@ -22,26 +21,41 @@
         ctrl.events = [];
 
         var syncCalendar = function () {
-            for (var date in ctrl.events.cards) {
 
-                var dayContent = '';
 
-                for (var i = 0; i < ctrl.events.cards[date].length; i++) {
-                    var card = ctrl.events.cards[date][i];
+            for (var date in ctrl.events.dailyEvents) {
+
+                var dayText = '';
+
+                var dailyEvents = ctrl.events.dailyEvents[date];
+
+                for (var i = 0; i < dailyEvents.milestones.length; i++) {
+                    var m = dailyEvents.milestones[i];
+
+                    var milestoneHref = $state.href('project.milestones.milestone', {
+                        projectName: m.projectShortName,
+                        id: m.label.id
+                    });
+                    var milestoneName = $sanitize(m.name);
+
+                    dayText += '<div class="lvg-calendar__day"><a href="' + milestoneHref + '" title="' + milestoneName + '">' + milestoneName + '</a></div>';
+                }
+
+                for (var i = 0; i < dailyEvents.cards.length; i++) {
+                    var card = dailyEvents.cards[i];
 
                     var cardHref = $state.href('calendar.card', {
-                        projectName: card.projectShortName,
-                        shortName: card.boardShortName,
-                        seqNr: card.sequence
+                        projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence
                     });
-
                     var cardTitle = $sanitize(card.boardShortName + '-' + card.sequence + ' ' + card.name);
                     var cardName = $sanitize(card.name);
 
-                    dayContent += '<div class="lvg-calendar__day"><a href="' + cardHref + '" title="' + cardName + '">' + cardTitle + '</a></div>';
+                    dayText += '<div class="lvg-calendar__day"><a href="' + cardHref + '" title="' + cardName + '">' + cardTitle + '</a></div>';
                 }
-                MaterialCalendarData.setDayContent(moment(date).toDate(), dayContent);
+
+                MaterialCalendarData.setDayContent(moment(date).toDate(), dayText);
             }
+
         };
 
         var refreshEvents = function () {

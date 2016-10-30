@@ -34,18 +34,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * 
+ *
  * Read/write json, derived from :
  * <ul>
  * <li>http://stackoverflow.com/a/5099622
  * <li>http://stackoverflow.com/a/8728500
  * </ul>
- * 
+ *
  * Used as a lightweight alternative to jackson.
  */
 public class GsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
-	private final Gson gson = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private final Gson gson = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 			.generateNonExecutableJson().create();
 
 	public GsonHttpMessageConverter() {
