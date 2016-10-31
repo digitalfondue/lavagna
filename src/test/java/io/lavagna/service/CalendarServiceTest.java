@@ -204,7 +204,7 @@ public class CalendarServiceTest {
         CalendarEvents events = calendarService.getUserCalendar(uwpGlobalRead);
 
         Assert.assertNotNull(events);
-        Assert.assertEquals(2, events.getDailyEvents().get(now).getCards().size());
+        Assert.assertEquals(2, events.getDailyEvents().values().iterator().next().getCards().size());
 
     }
 
