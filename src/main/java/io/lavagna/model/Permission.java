@@ -71,7 +71,14 @@ public enum Permission {
 	/* can update the _current_ user profile */
 	UPDATE_PROFILE(PermissionCategory.APPLICATION), //
 
-	SEARCH(PermissionCategory.APPLICATION);
+	SEARCH(PermissionCategory.APPLICATION),
+	
+	
+	//this permissions must be used for accessing the hook endpoints defined in ApiHooksController
+	//special "technical" users will be defined
+	GLOBAL_HOOK_API_ACCESS(PermissionCategory.APPLICATION, true),
+	PROJECT_HOOK_API_ACCESS(PermissionCategory.APPLICATION);
+	//
 
 	private final PermissionCategory category;
 
