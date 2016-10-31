@@ -10,10 +10,10 @@
             provider: '<'
         },
         templateUrl: 'app/components/calendar/calendar.html',
-        controller: ['$sanitize', '$state', '$mdDateLocale', 'User', 'MaterialCalendarData', CalendarController]
+        controller: ['$rootScope', '$sanitize', '$state', '$mdDateLocale', 'User', 'MaterialCalendarData', CalendarController]
     });
 
-    function CalendarController($sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
+    function CalendarController($rootScope, $sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
         var ctrl = this;
 
         ctrl.firstDayOfWeek = $mdDateLocale.firstDayOfWeek;
@@ -37,8 +37,12 @@
                         id: m.label.id
                     });
                     var milestoneName = $sanitize(m.name);
+                    var mClassTxt = '';
+                    if (m.label.metadata && m.label.metadata.status === 'CLOSED') {
+                        mClassTxt = 'class="lavagna-closed-milestone"';
+                    }
 
-                    dayText += '<div class="lvg-calendar__day"><a href="' + milestoneHref + '" title="' + milestoneName + '">' + milestoneName + '</a></div>';
+                    dayText += '<div class="lvg-calendar__day"><a href="' + milestoneHref + '" title="' + milestoneName + '" ' + mClassTxt + '>' + milestoneName + '</a></div>';
                 }
 
                 for (var i = 0; i < dailyEvents.cards.length; i++) {
@@ -49,8 +53,12 @@
                     });
                     var cardTitle = $sanitize(card.boardShortName + '-' + card.sequence + ' ' + card.name);
                     var cardName = $sanitize(card.name);
+                    var classTxt = '';
+                    if (card.columnDefinition === 'CLOSED') {
+                        classTxt = 'class="lavagna-closed-card"';
+                    }
 
-                    dayText += '<div class="lvg-calendar__day"><a href="' + cardHref + '" title="' + cardName + '">' + cardTitle + '</a></div>';
+                    dayText += '<div class="lvg-calendar__day"><a href="' + cardHref + '" title="' + cardName + '" ' + classTxt + '>' + cardTitle + '</a></div>';
                 }
 
                 MaterialCalendarData.setDayContent(moment(date).toDate(), dayText);
@@ -73,6 +81,16 @@
 
         ctrl.nextMonth = function () {
             syncCalendar();
+        };
+
+        var unregStateChanges = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            if (fromState.name === 'calendar.card' && toState.name === 'calendar') {
+                refreshEvents();
+            }
+        });
+
+        ctrl.$onDestroy = function onDestroy() {
+            unregStateChanges();
         };
 
     }

@@ -4,7 +4,16 @@
 
 .lvg-calendar__day {
     white-space: nowrap;
+}
 
+a.lavagna-closed-milestone {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.lavagna-closed-milestone {
+    color: #999;
+    text-decoration: line-through;
 }
 
 .lvg-calendar__container .flex .layout-column {
