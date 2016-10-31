@@ -10,15 +10,15 @@
              </tr>
          </thead>
          <tbody>
-             <tr ng-repeat="card in $ctrl.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
-                 <td>
+             <tr ng-repeat="card in $ctrl.detail.cards.found | orderBy:['-columnDefinition','boardShortName','sequence']">
+                 <td class="shrink">
                      <a ui-sref="project.milestones.milestone.card({projectName: card.projectShortName, id: $ctrl.id, shortName: card.boardShortName, seqNr: card.sequence})"
                         ng-bind="::(card.boardShortName + '-' + card.sequence)"
                         ng-class="::{'lavagna-closed-card': card.columnDefinition === 'CLOSED'}"></a>
                  </td>
-                 <td ng-bind="::card.name"></td>
-                 <td ng-init="$ctrl.loadColumn(card)" ng-bind="::card.column.columnName"></td>
-                 <td><span ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><lvg-user-link user-id="assigned.labelValueUser"></lvg-user-link> </span></td>
+                 <td ng-bind="::card.name" class="expand"></td>
+                 <td ng-init="$ctrl.loadColumn(card)" ng-bind="::card.column.columnName" class="shrink"></td>
+                 <td class="shrink lvg-assigned-to-col"><span ng-repeat="assigned in card.labels | filter:{labelName: 'ASSIGNED', labelDomain: 'SYSTEM'} "><lvg-user-link user-id="assigned.labelValueUser"></lvg-user-link> </span></td>
              </tr>
          </tbody>
      </table>

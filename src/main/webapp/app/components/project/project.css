@@ -8,6 +8,17 @@
 ===================================
 */
 
+table td.shrink {
+    white-space:nowrap
+}
+table td.expand {
+    width: 99%
+}
+
+.lvg-assigned-to-col {
+    min-width: 100px;
+}
+
 ul.statistics-definition {
 	padding: 0;
 	margin: 0;
