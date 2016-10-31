@@ -17,6 +17,8 @@
 package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
+
+import io.lavagna.common.Constants;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
@@ -118,8 +120,7 @@ public class CalendarService {
                 if (m.getMetadata().containsKey("releaseDate")) {
 
                     java.util.Date date = DateUtils.parseDate(m.getMetadata().get("releaseDate"),
-                        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                        "dd.MM.yyyy");
+                    		Constants.DATE_FORMAT, "dd.MM.yyyy");
                     java.util.Calendar cal = java.util.Calendar.getInstance();
                     cal.setTime(date);
                     cal.set(java.util.Calendar.HOUR, 12);

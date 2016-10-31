@@ -16,13 +16,8 @@
  */
 package io.lavagna.common;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+public class Constants {
+	
+	public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-public final class Json {
-
-    private Json() {
-    }
-
-    public static final Gson GSON = new GsonBuilder().serializeNulls().setDateFormat(Constants.DATE_FORMAT).create();
 }

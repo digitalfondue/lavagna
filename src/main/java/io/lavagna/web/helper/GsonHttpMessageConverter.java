@@ -33,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import io.lavagna.common.Constants;
+
 /**
  *
  * Read/write json, derived from :
@@ -45,7 +47,7 @@ import com.google.gson.JsonSyntaxException;
  */
 public class GsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
-	private final Gson gson = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private final Gson gson = new GsonBuilder().serializeNulls().setDateFormat(Constants.DATE_FORMAT)
 			.generateNonExecutableJson().create();
 
 	public GsonHttpMessageConverter() {
