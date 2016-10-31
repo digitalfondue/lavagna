@@ -12,7 +12,9 @@
          <tbody>
              <tr ng-repeat="card in $ctrl.detail.cards.found | orderBy:[orderCardByStatus,'boardShortName','sequence']">
                  <td>
-                     <a ui-sref="project.milestones.milestone.card({projectName: card.projectShortName, id: $ctrl.id, shortName: card.boardShortName, seqNr: card.sequence})" ng-bind="::(card.boardShortName + '-' + card.sequence)"></a>
+                     <a ui-sref="project.milestones.milestone.card({projectName: card.projectShortName, id: $ctrl.id, shortName: card.boardShortName, seqNr: card.sequence})"
+                        ng-bind="::(card.boardShortName + '-' + card.sequence)"
+                        ng-class="::{'lavagna-closed-card': card.columnDefinition === 'CLOSED'}"></a>
                  </td>
                  <td ng-bind="::card.name"></td>
                  <td ng-init="$ctrl.loadColumn(card)" ng-bind="::card.column.columnName"></td>

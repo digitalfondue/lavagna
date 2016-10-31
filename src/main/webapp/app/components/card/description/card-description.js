@@ -8,10 +8,10 @@
             labelValues: '<'
         },
         templateUrl: 'app/components/card/description/card-description.html',
-        controller: ['EventBus', 'BulkOperations', 'Card', 'StompClient', CardDescriptionController],
+        controller: ['Card', 'StompClient', CardDescriptionController],
     });
 
-    function CardDescriptionController(EventBus, BulkOperations, Card, StompClient) {
+    function CardDescriptionController(Card, StompClient) {
         var ctrl = this;
 
         ctrl.hideAddPanel = hideAddPanel;
@@ -33,32 +33,30 @@
                     loadDescription();
                 }
             });
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
         	onDestroyStomp();
-        }
+        };
 
         // -----
         function updateCardName(newName) {
-            Card.update(ctrl.card.id, newName).then( function() {
-            	EventBus.emit('card.renamed.event');
-            });
-        };
+            Card.update(ctrl.card.id, newName);
+        }
 
         function updateDescription(description) {
             Card.updateDescription(ctrl.card.id, description);
-        };
+        }
 
         function hideAddPanel() {
             ctrl.addLabelPanel = false;
-        };
+        }
 
         function loadDescription() {
             Card.description(ctrl.card.id).then(function(description) {
                 ctrl.description = description;
             });
-        };
+        }
 
         function hasUserLabels() {
             if(ctrl.project.metadata.userLabels === undefined || ctrl.labelValues === undefined) {
@@ -72,7 +70,7 @@
             }
 
             return false;
-        };
+        }
 
     }
 

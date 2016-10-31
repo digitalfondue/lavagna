@@ -602,7 +602,7 @@
 		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 			$mdSidenav('left').close()
 		});
-	})
+	});
 
 	/**
 	 * install CSRF token filter.

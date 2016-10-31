@@ -11,13 +11,13 @@
             dueDates: '<'
         },
         templateUrl: 'app/components/card/metadata/card-metadata.html',
-        controller: ['EventBus', 'Card', 'User', 'StompClient', 'Notification', 'Board', 'BulkOperations', CardMetadataController]
+        controller: ['Card', 'User', 'StompClient', 'Notification', 'Board', 'BulkOperations', CardMetadataController]
     });
 
     var COMPONENT_PERMISSIONS = ['UPDATE_CARD','MOVE_CARD'];
 
-    function CardMetadataController(EventBus, Card, User, StompClient, Notification, Board, BulkOperations) {
-    	
+    function CardMetadataController(Card, User, StompClient, Notification, Board, BulkOperations) {
+
         var ctrl = this;
         //
         ctrl.moveCard = moveCard;
@@ -27,21 +27,21 @@
         ctrl.setMilestone = setMilestone;
         ctrl.removeMilestone = removeMilestone;
         //
-        
-        
+
+
         var stompSubscription = angular.noop;
-        
+
         ctrl.$onInit = function init() {
         	stompSubscription = StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
             findAndAssignColumns();
             ctrl.userPermissions = {};
             loadUserPermissions();
         };
-        
+
         ctrl.$onDestroy = function onDestroy() {
         	stompSubscription();
         };
-        
+
 
         // return the current card in a bulk operation friendly data structure
         function currentCard() {
@@ -77,7 +77,7 @@
             });
         };
 
-        
+
         //
         function moveCard(column) {
             if(angular.isUndefined(column)) {
@@ -93,7 +93,6 @@
                         key: 'notification.card.moveToColumn.success',
                         parameters: { columnName: column.name }
                     }, false);
-                    EventBus.emit('card.moved.event');
                 }, function(error) {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {
@@ -108,7 +107,6 @@
                         key: 'notification.card.moveToLocation.success',
                         parameters: { location: column.location }
                     }, false);
-                    EventBus.emit('card.moved.event');
                 }, function(error) {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {
@@ -147,12 +145,12 @@
         };
         // ----
 
-        
+
         function loadUserPermissions() {
             User.hasPermissions(COMPONENT_PERMISSIONS, ctrl.project.shortName).then(function(permissions) {
                 ctrl.userPermissions = permissions;
             });
         }
-        
+
     };
 })();

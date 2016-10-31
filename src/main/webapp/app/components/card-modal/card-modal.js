@@ -13,7 +13,7 @@
 		},
         templateUrl: 'app/components/card-modal/card-modal.html',
 		controller: ['$document', '$state', CardModalController],
-		controllerAs: 'modalCtrl',
+		controllerAs: 'modalCtrl'
 	});
 
 	function CardModalController($document, $state) {
@@ -59,7 +59,7 @@
 
 		ctrl.$onDestroy = function() {
 			cleanup();
-		}
+		};
 
 		ctrl.close = close;
 	}

@@ -2,6 +2,11 @@ lvg-component-card {
     display: block;
 }
 
+a.lavagna-closed-card {
+    color: #999;
+    text-decoration: line-through;
+}
+
 .lavagna-closed-card {
 	color: #999;
 	text-decoration: line-through;
