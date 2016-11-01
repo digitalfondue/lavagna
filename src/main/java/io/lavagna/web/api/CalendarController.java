@@ -75,6 +75,13 @@ public class CalendarController {
         return calendarService.getUserCalendar(user);
     }
 
+    @RequestMapping(value = "/api/calendar/project/{projectName}", method = RequestMethod.GET)
+    public CalendarEvents projectStandardCalendar(@PathVariable("projectName") String projectName, UserWithPermission user)
+        throws URISyntaxException, ParseException {
+
+        return calendarService.getProjectCalendar(projectName, user);
+    }
+
     @RequestMapping(value = "/api/calendar/{token}/calendar.ics", method = RequestMethod.GET, produces = "text/calendar")
     public void userCalDavCalendar(@PathVariable("token") String userToken, HttpServletResponse response)
         throws IOException, URISyntaxException, ParseException {

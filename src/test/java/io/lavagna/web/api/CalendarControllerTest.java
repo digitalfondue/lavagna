@@ -107,6 +107,14 @@ public class CalendarControllerTest {
     }
 
     @Test
+    public void testProjectStandardCalendar() throws IOException, URISyntaxException, ParseException {
+
+        calendarController.projectStandardCalendar("name", user);
+
+        verify(calendarService).getProjectCalendar(eq("name"), eq(user));
+    }
+
+    @Test
     public void testUserStandardCalendar() throws IOException, URISyntaxException, ParseException {
 
         calendarController.userStandardCalendar(user);

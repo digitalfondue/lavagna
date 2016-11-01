@@ -7,13 +7,14 @@
     components.component('lvgCalendar', {
         bindings: {
             username: '<',
-            provider: '<'
+            provider: '<',
+            project: '<'
         },
         templateUrl: 'app/components/calendar/calendar.html',
-        controller: ['$rootScope', '$sanitize', '$state', '$mdDateLocale', 'User', 'MaterialCalendarData', CalendarController]
+        controller: ['$rootScope', '$filter', '$sanitize', '$state', '$mdDateLocale', 'User', 'MaterialCalendarData', CalendarController]
     });
 
-    function CalendarController($rootScope, $sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
+    function CalendarController($rootScope, $filter, $sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
         var ctrl = this;
 
         ctrl.firstDayOfWeek = $mdDateLocale.firstDayOfWeek;
@@ -45,10 +46,11 @@
                     dayText += '<div class="lvg-calendar__day"><a href="' + milestoneHref + '" title="' + milestoneName + '" ' + mClassTxt + '>' + milestoneName + '</a></div>';
                 }
 
-                for (var i = 0; i < dailyEvents.cards.length; i++) {
-                    var card = dailyEvents.cards[i];
+                var cards = $filter('orderBy')(dailyEvents.cards, ['-columnDefinition', 'boardShortName', 'sequence']);
+                for (var i = 0; i < cards.length; i++) {
+                    var card = cards[i];
 
-                    var cardHref = $state.href('calendar.card', {
+                    var cardHref = $state.href(ctrl.project ? 'project.calendar.card' : 'calendar.card', {
                         projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence
                     });
                     var cardTitle = $sanitize(card.boardShortName + '-' + card.sequence + ' ' + card.name);
@@ -66,8 +68,16 @@
 
         };
 
+        var getApiToCall = function () {
+            console.log(ctrl.project);
+            if (ctrl.project) {
+                return User.getProjectCalendar(ctrl.project.shortName);
+            }
+            return User.getCalendar();
+        };
+
         var refreshEvents = function () {
-            User.getCalendar().then(function (events) {
+            getApiToCall().then(function (events) {
                 ctrl.events = events;
                 syncCalendar();
             });

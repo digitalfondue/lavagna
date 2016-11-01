@@ -177,6 +177,30 @@ public class CalendarServiceTest {
     }
 
     @Test
+    public void testGetProjectStandardCalendar() throws URISyntaxException, ParseException {
+
+        Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);
+        cardDataService.updateDescription(assignedCard.getId(), "Desc", new Date(), user.getId());
+
+        Card watchedCard = cardService.createCard("card2", col.getId(), new Date(), user);
+
+        Date now = new Date();
+
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+        labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
+
+        UserWithPermission uwpGlobalRead = new UserWithPermission(user, EnumSet.of(Permission.READ),
+            Collections.<String, Set<Permission>>emptyMap(), Collections.<Integer, Set<Permission>>emptyMap());
+
+        CalendarEvents events = calendarService.getProjectCalendar(project.getShortName(), uwpGlobalRead);
+
+        Assert.assertNotNull(events);
+        Assert.assertEquals(2, events.getDailyEvents().values().iterator().next().getCards().size());
+
+    }
+
+    @Test
     public void testGetStandardCalendar() throws URISyntaxException, ParseException {
 
         Card assignedCard = cardService.createCard("card1", col.getId(), new Date(), user);

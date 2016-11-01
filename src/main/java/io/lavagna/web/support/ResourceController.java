@@ -159,13 +159,17 @@ public class ResourceController {
 
     @RequestMapping(value = { "/",//
         "user/{provider}/{username}", "user/{provider}/{username}/projects/", "user/{provider}/{username}/activity/",//
-        "about", "about/third-party", "calendar", //
+        "about", "about/third-party",
+        "calendar",
+        "calendar/" + PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,
         "search",//
         "search/" + PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,//
         PROJ_SHORT_NAME + "",//
         PROJ_SHORT_NAME + "/search",//
-        PROJ_SHORT_NAME + "/search/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,// /
+        PROJ_SHORT_NAME + "/search/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,
         PROJ_SHORT_NAME + "/" + BOARD_SHORT_NAME,//
+        PROJ_SHORT_NAME + "/calendar",
+        PROJ_SHORT_NAME + "/calendar/" + BOARD_SHORT_NAME + "-" + CARD_SEQ,
         PROJ_SHORT_NAME + "/statistics",//
         PROJ_SHORT_NAME + "/milestones",//
         PROJ_SHORT_NAME + "/milestones/{id}/",//

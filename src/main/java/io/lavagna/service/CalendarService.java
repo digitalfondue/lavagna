@@ -17,7 +17,6 @@
 package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
-
 import io.lavagna.common.Constants;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
@@ -108,34 +107,39 @@ public class CalendarService {
         return userService.findUserWithPermission(userId);
     }
 
+    private void getMilestoneEventsFromProject(CalendarEventHandler handler, UserWithPermission user, Project project)
+        throws ParseException, URISyntaxException {
+        CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
+            CardLabel.LabelDomain.SYSTEM);
+
+        for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
+            if (m.getMetadata().containsKey("releaseDate")) {
+
+                Date date = DateUtils.parseDate(m.getMetadata().get("releaseDate"),
+                    Constants.DATE_FORMAT, "dd.MM.yyyy");
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                cal.setTime(date);
+                cal.set(java.util.Calendar.HOUR, 12);
+                cal.set(java.util.Calendar.MINUTE, 0);
+
+                SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
+                    m.getValue());
+                SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION,
+                    SearchFilter.ValueType.STRING, BoardColumn.BoardColumnLocation.TRASH.toString());
+                SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), project.getId(),
+                    null, user);
+
+                handler.addMilestoneEvent(project.getShortName(), new Timestamp(cal.getTimeInMillis()), m, cards);
+            }
+        }
+    }
+
     private void addMilestoneEvents(CalendarEventHandler handler, UserWithPermission user)
         throws URISyntaxException, ParseException {
 
         List<Project> projects = projectService.findAllProjects(user);
         for (Project project : projects) {
-            CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
-                CardLabel.LabelDomain.SYSTEM);
-
-            for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
-                if (m.getMetadata().containsKey("releaseDate")) {
-
-                    java.util.Date date = DateUtils.parseDate(m.getMetadata().get("releaseDate"),
-                    		Constants.DATE_FORMAT, "dd.MM.yyyy");
-                    java.util.Calendar cal = java.util.Calendar.getInstance();
-                    cal.setTime(date);
-                    cal.set(java.util.Calendar.HOUR, 12);
-                    cal.set(java.util.Calendar.MINUTE, 0);
-
-                    SearchFilter filter = filter(SearchFilter.FilterType.MILESTONE, SearchFilter.ValueType.STRING,
-                        m.getValue());
-                    SearchFilter notTrashFilter = filter(SearchFilter.FilterType.NOTLOCATION,
-                        SearchFilter.ValueType.STRING, BoardColumn.BoardColumnLocation.TRASH.toString());
-                    SearchResults cards = searchService.find(Arrays.asList(filter, notTrashFilter), project.getId(),
-                        null, user);
-
-                    handler.addMilestoneEvent(project.getShortName(), new Timestamp(cal.getTimeInMillis()), m, cards);
-                }
-            }
+            getMilestoneEventsFromProject(handler, user, project);
         }
 
     }
@@ -169,15 +173,37 @@ public class CalendarService {
 
     }
 
+    public CalendarEvents getProjectCalendar(String projectShortName, UserWithPermission user)
+        throws URISyntaxException, ParseException {
+
+        final CalendarEvents events = new CalendarEvents(new HashMap<Date, CalendarEvents.MilestoneDayEvents>());
+        final CalendarEventHandler handler = new StandardCalendarEventHandler(events);
+
+        Project project = projectService.findByShortName(projectShortName);
+        // Milestones
+        getMilestoneEventsFromProject(handler, user, project);
+        // Cards
+        SearchFilter locationFilter = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.BOARD.toString());
+        for (CardFullWithCounts card : searchService.find(Arrays.asList(locationFilter), project.getId(), null, user)
+            .getFound()) {
+
+            for (LabelAndValue lav : card.getLabelsWithType(LabelType.TIMESTAMP)) {
+                handler.addCardEvent(card, lav);
+            }
+
+        }
+
+        return events;
+    }
+
     public CalendarEvents getUserCalendar(UserWithPermission user) throws URISyntaxException, ParseException {
 
         final CalendarEvents events = new CalendarEvents(new HashMap<Date, CalendarEvents.MilestoneDayEvents>());
-
         final CalendarEventHandler handler = new StandardCalendarEventHandler(events);
 
         // Milestones
         addMilestoneEvents(handler, user);
-
         // Cards
         addCardEvents(handler, user);
 

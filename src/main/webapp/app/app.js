@@ -233,7 +233,7 @@
             }
 		}).state('calendar', {
             url :'/calendar/',
-            template: '<lvg-calendar username="rslvr.username" provider="rslvr.provider"></lvg-calendar>',
+            template: '<lvg-navbar-search></lvg-navbar-search><lvg-calendar username="rslvr.username" provider="rslvr.provider"></lvg-calendar>',
             controller: function(user) {
                 this.username = user.username;
                 this.provider = user.provider;
@@ -398,6 +398,32 @@
 		}).state('project.statistics', {
 			url: 'statistics/',
 			template: '<lvg-project-statistics project="rslvr.project"></lvg-project-statistics>'
+        }).state('project.calendar', {
+            url :'calendar/',
+            template: '<lvg-calendar username="rslvr.username" provider="rslvr.provider" project="rslvr.project"></lvg-calendar>',
+            controller: function(project, user) {
+                this.username = user.username;
+                this.provider = user.provider;
+                this.project = project;
+            },
+            controllerAs: 'rslvr',
+            resolve : projectResolver,
+            onEnter: function(Title) {
+                Title.set('title.calendar');
+            }
+        }).state('project.calendar.card', {
+            url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
+            template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
+            controller : function(Title, card, project, board, user, metadata) {
+                this.board = board;
+                this.card = card;
+                this.project = project;
+                this.user = user;
+                project.metadata = metadata;
+                Title.set('title.card', { shortname: board.shortName, sequence: card.sequence, name: card.name });
+            },
+            controllerAs : 'rslvr',
+            resolve : cardCtrlResolver
 		}).state('project.milestones', {
             url : 'milestones/',
             template: '<lvg-project-milestones project="rslvr.project"></lvg-project-milestones>'
