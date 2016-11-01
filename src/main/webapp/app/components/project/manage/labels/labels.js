@@ -47,7 +47,7 @@
 
         			ctrl.add = function(labelToAdd) {
         			    $mdDialog.hide(labelToAdd);
-        			}
+        			};
 
         			ctrl.close = function() {
                     	$mdDialog.cancel();

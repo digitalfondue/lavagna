@@ -1,5 +1,5 @@
 (function() {
-	
+
 	'use strict';
 
 	angular
@@ -16,14 +16,14 @@
 
 	function DialogNewCardController($mdDialog, Board, Notification) {
 		var ctrl = this;
-			
+
 		ctrl.cancel = cancel;
 		ctrl.createCard = createCard;
 
 		ctrl.$onInit = function init() {
 			ctrl.columnId = ctrl.column.id;
-		}
-        
+		};
+
 		function cancel() {
 			$mdDialog.hide();
 		}
@@ -36,7 +36,7 @@
             }).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.board.create-card.error'}, false);
             });
-        };
+        }
 	}
-		
+
 })();

@@ -38,7 +38,7 @@
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabel);
         ctrl.$onDestroy = function() {
         	unbind();
-        }
+        };
 
         ctrl.update = function(val) {
             Label.updateLabelListValue(val).then(function() {
@@ -97,7 +97,7 @@
             Label.removeLabelListValueMetadata(milestoneId, 'releaseDate');
         };
 
-        ctrl.showAddMilestoneDialog = function showAddMilestoneDialog($event) {
+        ctrl.showAddMilestoneDialog = function showAddMilestoneDialog() {
         	$mdDialog.show({
         		templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
         		controller: function() {
@@ -114,6 +114,6 @@
 
         function addLabelListValue(val) {
             Label.addLabelListValue(ctrl.milestoneLabel.id, {value: val});
-        };
+        }
     }
 })();
