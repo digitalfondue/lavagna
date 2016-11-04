@@ -112,8 +112,10 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/description", method = RequestMethod.POST)
     @ResponseBody
     public int updateDescription(@PathVariable("cardId") int cardId, @RequestBody Content content, User user) {
+    	CardDataHistory previousDescription = cardDataService.findLatestDescriptionByCardId(cardId);
         int result = cardDataService.updateDescription(cardId, content.content, new Date(), user.getId());
-        eventEmitter.emitUpdateDescription(cardRepository.findBy(cardId).getColumnId(), cardId);
+        CardDataHistory newDescription = cardDataService.findLatestDescriptionByCardId(cardId);
+        eventEmitter.emitUpdateDescription(cardRepository.findColumnIdById(cardId), cardId, previousDescription, newDescription);
         return result;
     }
 
@@ -163,7 +165,7 @@ public class CardDataController {
     @ResponseBody
     public CardData createComment(@PathVariable("cardId") int cardId, @RequestBody Content commentData, User user) {
         CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user.getId());
-        eventEmitter.emitCreateComment(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId);
         return comment;
     }
 
@@ -248,7 +250,7 @@ public class CardDataController {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionListId).getCardId();
         CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content,
             user.getId(), new Date());
-        eventEmitter.emitCreateActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitCreateActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return actionItem;
     }
 
@@ -258,7 +260,7 @@ public class CardDataController {
     public Event deleteActionItem(@PathVariable("actionItemId") int actionItemId, User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
         Event res = cardDataService.deleteActionItem(actionItemId, user, new Date());
-        eventEmitter.emitDeleteActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitDeleteActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return res;
     }
 
@@ -283,7 +285,7 @@ public class CardDataController {
         User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
         int res = cardDataService.toggleActionItem(actionItemId, status, user.getId(), new Date());
-        eventEmitter.emitToggleActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitToggleActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return res;
     }
 
@@ -362,7 +364,7 @@ public class CardDataController {
                 LOG.debug("deleted temp file {}", p);
             }
         }
-        eventEmitter.emitUploadFile(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitUploadFile(cardRepository.findColumnIdById(cardId), cardId);
         return digests;
     }
 

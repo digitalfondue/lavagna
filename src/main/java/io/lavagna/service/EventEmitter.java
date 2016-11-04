@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
 
 import java.util.Collection;
@@ -213,9 +214,10 @@ public class EventEmitter {
 	}
 
 	// ------------ card description
-	public void emitUpdateDescription(int columnId, int cardId) {
+	public void emitUpdateDescription(int columnId, int cardId, CardDataHistory previousDescription, CardDataHistory newDescription) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_DESCRIPTION));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_DESCRIPTION));
+		apiHookService.updateCardDescription(cardId, previousDescription, newDescription);
 	}
 
 	// ------------ comment

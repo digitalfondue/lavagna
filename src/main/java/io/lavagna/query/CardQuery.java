@@ -150,4 +150,7 @@ public interface CardQuery {
 			+ " INNER JOIN LA_BOARD_COLUMN ON CARD_BOARD_COLUMN_ID_FK = BOARD_COLUMN_ID "
 			+ " INNER JOIN LA_BOARD ON BOARD_COLUMN_BOARD_ID_FK = BOARD_ID WHERE (BOARD_SHORT_NAME, CARD_SEQ_NUMBER) IN (:projShortNameAndCardSeq)")
 	String findCardsIs();
+
+	@Query("select CARD_BOARD_COLUMN_ID_FK from LA_CARD where CARD_ID = :cardId")
+	Integer findColumnIdById(@Bind("cardId") int cardId);
 }

@@ -132,7 +132,6 @@ public class CardDataControllerTest {
 	public void createActionItem() {
 
 		when(cardDataRepository.getUndeletedDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
-		when(cardRepository.findBy(0)).thenReturn(card);
 		Content actionItemData = new Content();
 		cardDataController.createActionItem(0, actionItemData, user);
 	}
@@ -157,7 +156,6 @@ public class CardDataControllerTest {
 		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
 		when(cardDataService.deleteActionItem(eq(itemId), eq(user), any(Date.class))).thenReturn(event);
 		when(eventRepository.getEventById(eventId)).thenReturn(event);
-		when(cardRepository.findBy(0)).thenReturn(card);
 		cardDataController.deleteActionItem(itemId, user);
 		cardDataController.undoDeleteActionItem(eventId, user);
 	}
@@ -273,7 +271,6 @@ public class CardDataControllerTest {
 
 	@Test
 	public void toggleActionItem() {
-		when(cardRepository.findBy(0)).thenReturn(card);
 		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
 		cardDataController.toggleActionItem(itemId, true, user);
 	}
