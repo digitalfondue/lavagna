@@ -73,7 +73,7 @@ public class ExportImportControllerTest {
 		boardIdAndShortName.setShortName("SHORT_NAME");
 		importRequest.setBoards(Arrays.asList(boardIdAndShortName));
 		importController.importFromTrello(importRequest, user);
-		verify(importService).importFromTrello(importRequest);
+		verify(importService).importFromTrello(importRequest, user);
 	}
 
 	@Test

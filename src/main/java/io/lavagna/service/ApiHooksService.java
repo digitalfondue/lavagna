@@ -70,4 +70,12 @@ public class ApiHooksService {
 		//FIXME run scripts
 	}
 
+	public void deletedComment(int cardId, CardData deletedComment) {
+		//FIXME run scripts
+	}
+
+	public void undeletedComment(int cardId, CardData undeletedComment) {
+		//FIXME run scripts
+	}
+
 }

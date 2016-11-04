@@ -22,6 +22,7 @@ import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
+import io.lavagna.model.User;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -76,34 +77,34 @@ public class EventEmitter {
 
 	// ------------ project
 
-	public void emitCreateProject(String projectShortName) {
+	public void emitCreateProject(String projectShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.CREATE_PROJECT, projectShortName));
 		apiHookService.createdProject(projectShortName);
 	}
 
-	public void emitUpdateProject(String projectShortName) {
+	public void emitUpdateProject(String projectShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.UPDATE_PROJECT, projectShortName));
 		apiHookService.updatedProject(projectShortName);
 	}
 
-	public void emitImportProject(String importId, int currentBoard, int boards, String boardName) {
+	public void emitImportProject(String importId, int currentBoard, int boards, String boardName, User user) {
 		messagingTemplate.convertAndSend("/event/import/" + importId, importEvent(currentBoard, boards, boardName));
 	}
 	
-	public void emitUpdateColumnDefinition(String shortName) {
-	    emitUpdateProject(shortName);
+	public void emitUpdateColumnDefinition(String shortName, User user) {
+	    emitUpdateProject(shortName, user);
 	    emitProjectMetadataHasChanged(shortName);
     }
 
 	// ------------ board
 
-	public void emitCreateBoard(String projectShortName, String boardShortName) {
+	public void emitCreateBoard(String projectShortName, String boardShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/board",
 				event(LavagnaEvent.CREATE_BOARD));
 		apiHookService.createdBoard(boardShortName);
 	}
 
-	public void emitUpdateBoard(String boardShortName) {
+	public void emitUpdateBoard(String boardShortName, User user) {
 		messagingTemplate.convertAndSend("/event/board/" + boardShortName, event(LavagnaEvent.UPDATE_BOARD));
 		apiHookService.updatedBoard(boardShortName);
 	}
@@ -233,14 +234,16 @@ public class EventEmitter {
 		apiHookService.updatedComment(cardId, previousComment, newComment);
 	}
 
-	public void emitDeleteComment(int columnId, int cardId) {
+	public void emitDeleteComment(int columnId, int cardId, CardData deletedComment) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_COMMENT));
+		apiHookService.deletedComment(cardId, deletedComment);
 	}
 
-	public void emitUndoDeleteComment(int columnId, int cardId) {
+	public void emitUndoDeleteComment(int columnId, int cardId, CardData undeletedComment) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_COMMENT));
+		apiHookService.undeletedComment(cardId, undeletedComment);
 	}
 
 	// ------------ action list handling

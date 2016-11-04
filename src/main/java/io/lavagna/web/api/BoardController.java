@@ -20,6 +20,7 @@ import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Permission;
+import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.ShortNameGenerator;
 import io.lavagna.service.BoardRepository;
@@ -74,11 +75,11 @@ public class BoardController {
 
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/board/{shortName}", method = RequestMethod.POST)
-	public Board updateBoard(@PathVariable("shortName") String shortName, @RequestBody UpdateRequest updatedBoard) {
+	public Board updateBoard(@PathVariable("shortName") String shortName, @RequestBody UpdateRequest updatedBoard, User user) {
 		Board board = boardRepository.findBoardByShortName(shortName);
 		board = boardRepository.updateBoard(board.getId(), updatedBoard.getName(), updatedBoard.getDescription(),
 				updatedBoard.isArchived());
-		eventEmitter.emitUpdateBoard(shortName);
+		eventEmitter.emitUpdateBoard(shortName, user);
 		return board;
 	}
 

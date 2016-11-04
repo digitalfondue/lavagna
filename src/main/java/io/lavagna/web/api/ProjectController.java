@@ -23,6 +23,7 @@ import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectMetadata;
+import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.ShortNameGenerator;
 import io.lavagna.service.BoardColumnRepository;
@@ -91,10 +92,10 @@ public class ProjectController {
 
     @ExpectPermission(Permission.ADMINISTRATION)
     @RequestMapping(value = "/api/project", method = RequestMethod.POST)
-    public void create(@RequestBody CreateRequest project) {
+    public void create(@RequestBody CreateRequest project, User user) {
         checkShortName(project.getShortName());
         projectService.create(project.getName(), project.getShortName(), project.getDescription());
-        eventEmitter.emitCreateProject(project.getShortName());
+        eventEmitter.emitCreateProject(project.getShortName(), user);
     }
 
     @ExpectPermission(Permission.ADMINISTRATION)
@@ -137,32 +138,32 @@ public class ProjectController {
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}/board", method = RequestMethod.POST)
-    public void createBoard(@PathVariable("projectShortName") String shortName, @RequestBody CreateRequest board) {
+    public void createBoard(@PathVariable("projectShortName") String shortName, @RequestBody CreateRequest board, User user) {
         checkShortName(board.getShortName());
         int projectId = projectService.findIdByShortName(shortName);
         boardRepository.createNewBoard(board.getName(), board.getShortName(), board.getDescription(), projectId);
-        eventEmitter.emitCreateBoard(shortName, board.getShortName());
+        eventEmitter.emitCreateBoard(shortName, board.getShortName(), user);
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}/definition", method = RequestMethod.PUT)
     public int updateColumnDefinition(@PathVariable("projectShortName") String shortName,
-        @RequestBody UpdateColumnDefinition columnDefinition) {
+        @RequestBody UpdateColumnDefinition columnDefinition, User user) {
         int projectId = projectService.findIdByShortName(shortName);
         int res = projectService.updateColumnDefinition(projectId, columnDefinition.getDefinition(), 
                 columnDefinition.getColor());
-        eventEmitter.emitUpdateColumnDefinition(shortName);
+        eventEmitter.emitUpdateColumnDefinition(shortName, user);
         return res;
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}", method = RequestMethod.POST)
     public Project updateProject(@PathVariable("projectShortName") String shortName,
-        @RequestBody UpdateRequest updatedProject) {
+        @RequestBody UpdateRequest updatedProject, User user) {
         int projectId = projectService.findIdByShortName(shortName);
         Project project = projectService.updateProject(projectId, updatedProject.getName(),
             updatedProject.getDescription(), updatedProject.isArchived());
-        eventEmitter.emitUpdateProject(shortName);
+        eventEmitter.emitUpdateProject(shortName, user);
         return project;
     }
 

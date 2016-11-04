@@ -182,8 +182,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteComment(@PathVariable("commentId") int commentId, User user) {
+    	CardData commentToDelete = cardDataRepository.getDataLightById(commentId);
         Event res = cardDataService.deleteComment(commentId, user, new Date());
-        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId());
+        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId(), commentToDelete);
         return res;
     }
 
@@ -195,7 +196,8 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.COMMENT_DELETE);
 
         cardDataService.undoDeleteComment(event);
-        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
+        CardData undeletedComment = cardDataRepository.getDataLightById(event.getDataId());
+        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), undeletedComment);
 
         return event.getDataId();
     }
