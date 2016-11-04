@@ -85,7 +85,7 @@ public class BoardColumnController {
 
 	@ExpectPermission(Permission.CREATE_COLUMN)
 	@RequestMapping(value = "/api/board/{shortName}/column", method = RequestMethod.POST)
-	public void create(@PathVariable("shortName") String shortName, @RequestBody BoardColumnToCreate column) {
+	public void create(@PathVariable("shortName") String shortName, @RequestBody BoardColumnToCreate column, User user) {
 		int boardId = boardRepository.findBoardIdByShortName(shortName);
 		LOG.debug("column: {}, definition: {}", column.name, column.definition);
 
@@ -94,26 +94,26 @@ public class BoardColumnController {
 
 		boardColumnRepository.addColumnToBoard(column.name, column.definition, BoardColumnLocation.BOARD, boardId);
 
-		eventEmitter.emitCreateColumn(shortName, BoardColumnLocation.BOARD, column.name);
+		eventEmitter.emitCreateColumn(shortName, BoardColumnLocation.BOARD, column.name, user);
 	}
 
 	@ExpectPermission(Permission.RENAME_COLUMN)
 	@RequestMapping(value = "/api/column/{columnId}/rename/{newName}", method = RequestMethod.POST)
-	public int rename(@PathVariable("columnId") int columnId, @PathVariable("newName") String newName) {
+	public int rename(@PathVariable("columnId") int columnId, @PathVariable("newName") String newName, User user) {
 		BoardColumn column = boardColumnRepository.findById(columnId);
 		Board board = boardRepository.findBoardById(column.getBoardId());
 		int res = boardColumnRepository.renameColumn(columnId, newName, column.getBoardId());
 		BoardColumn updatedColumn = boardColumnRepository.findById(columnId);
 
 		eventEmitter.emitUpdateColumn(board.getShortName(), boardColumnRepository.findById(columnId).getLocation(),
-				columnId, column, updatedColumn);
+				columnId, column, updatedColumn, user);
 
 		return res;
 	}
 
 	@ExpectPermission(Permission.RENAME_COLUMN)
 	@RequestMapping(value = "/api/column/{columnId}/redefine/{newDefinitionId}", method = RequestMethod.POST)
-	public int redefine(@PathVariable("columnId") int columnId, @PathVariable("newDefinitionId") int definitionId) {
+	public int redefine(@PathVariable("columnId") int columnId, @PathVariable("newDefinitionId") int definitionId, User user) {
 
 		Validate.isTrue(projectService.findRelatedProjectShortNameByColumnId(columnId).equals(
 				projectService.findRelatedProjectShortNameByColumnDefinitionId(definitionId)));
@@ -124,7 +124,7 @@ public class BoardColumnController {
 		BoardColumn updatedColumn = boardColumnRepository.findById(columnId);
 
 		eventEmitter.emitUpdateColumn(board.getShortName(), boardColumnRepository.findById(columnId).getLocation(),
-				columnId, column, updatedColumn);
+				columnId, column, updatedColumn, user);
 
 		return res;
 	}

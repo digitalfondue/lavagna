@@ -104,7 +104,7 @@ public class CardControllerTest {
 
 		verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
 		verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
-				card);
+				card, user);
 
 	}
 
@@ -119,7 +119,7 @@ public class CardControllerTest {
 
 		verify(cardService).createCardFromTop(eq("name"), eq(columnId), any(Date.class), eq(user));
 		verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
-				card);
+				card, user);
 
 	}
 

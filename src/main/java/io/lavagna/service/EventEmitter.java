@@ -79,12 +79,12 @@ public class EventEmitter {
 
 	public void emitCreateProject(String projectShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.CREATE_PROJECT, projectShortName));
-		apiHookService.createdProject(projectShortName);
+		apiHookService.createdProject(projectShortName, user);
 	}
 
 	public void emitUpdateProject(String projectShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.UPDATE_PROJECT, projectShortName));
-		apiHookService.updatedProject(projectShortName);
+		apiHookService.updatedProject(projectShortName, user);
 	}
 
 	public void emitImportProject(String importId, int currentBoard, int boards, String boardName, User user) {
@@ -101,27 +101,28 @@ public class EventEmitter {
 	public void emitCreateBoard(String projectShortName, String boardShortName, User user) {
 		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/board",
 				event(LavagnaEvent.CREATE_BOARD));
-		apiHookService.createdBoard(boardShortName);
+		apiHookService.createdBoard(boardShortName, user);
 	}
 
 	public void emitUpdateBoard(String boardShortName, User user) {
 		messagingTemplate.convertAndSend("/event/board/" + boardShortName, event(LavagnaEvent.UPDATE_BOARD));
-		apiHookService.updatedBoard(boardShortName);
+		apiHookService.updatedBoard(boardShortName, user);
 	}
 
 	// ------------ column
 
-	public void emitCreateColumn(String boardShortName, BoardColumnLocation location, String columnName) {
+	public void emitCreateColumn(String boardShortName, BoardColumnLocation location, String columnName, User user) {
 		messagingTemplate
 				.convertAndSend(columnDestination(boardShortName, location), event(LavagnaEvent.CREATE_COLUMN));
-		apiHookService.createdColumn(boardShortName, columnName);
+		apiHookService.createdColumn(boardShortName, columnName, user);
 	}
 
-	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId, BoardColumn column, BoardColumn updatedColumn) {
+	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId, 
+			BoardColumn column, BoardColumn updatedColumn, User user) {
 		messagingTemplate
 				.convertAndSend(columnDestination(boardShortName, location), event(LavagnaEvent.UPDATE_COLUMN));
 		messagingTemplate.convertAndSend("/event/column/" + columnId, event(LavagnaEvent.UPDATE_COLUMN));
-		apiHookService.updateColumn(boardShortName, column, updatedColumn);
+		apiHookService.updateColumn(boardShortName, column, updatedColumn, user);
 	}
 
 	public void emitUpdateColumnPosition(String boardShortName, BoardColumnLocation location) {
@@ -132,18 +133,18 @@ public class EventEmitter {
 
 	// ------------ card
 
-	public void emitCreateCard(String projectShortName, String boardShortName, int columnId, Card card) {
+	public void emitCreateCard(String projectShortName, String boardShortName, int columnId, Card card, User user) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_CARD));
 		messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
 				event(LavagnaEvent.CREATE_CARD, card.getId()));
-		apiHookService.createdCard(boardShortName, card);
+		apiHookService.createdCard(boardShortName, card, user);
 	}
 
-	public void emitUpdateCard(String projectShortName, String boardShortName, int columnId, Card beforeUpdate, Card newCard) {
+	public void emitUpdateCard(String projectShortName, String boardShortName, int columnId, Card beforeUpdate, Card newCard, User user) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_CARD));
 		messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
 				event(LavagnaEvent.UPDATE_CARD, beforeUpdate.getId()));
-		apiHookService.updatedCard(boardShortName, beforeUpdate, newCard);
+		apiHookService.updatedCard(boardShortName, beforeUpdate, newCard, user);
 	}
 
 	public void emitUpdateCardPosition(int columnId) {
@@ -216,34 +217,34 @@ public class EventEmitter {
 	}
 
 	// ------------ card description
-	public void emitUpdateDescription(int columnId, int cardId, CardDataHistory previousDescription, CardDataHistory newDescription) {
+	public void emitUpdateDescription(int columnId, int cardId, CardDataHistory previousDescription, CardDataHistory newDescription, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_DESCRIPTION));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_DESCRIPTION));
-		apiHookService.updateCardDescription(cardId, previousDescription, newDescription);
+		apiHookService.updateCardDescription(cardId, previousDescription, newDescription, user);
 	}
 
 	// ------------ comment
-	public void emitCreateComment(int columnId, int cardId, CardData comment) {
+	public void emitCreateComment(int columnId, int cardId, CardData comment, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_COMMENT));
-		apiHookService.createdComment(cardId, comment);
+		apiHookService.createdComment(cardId, comment, user);
 	}
 
-	public void emitUpdateComment(int cardId, CardData previousComment, String newComment) {
+	public void emitUpdateComment(int cardId, CardData previousComment, String newComment, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_COMMENT));
-		apiHookService.updatedComment(cardId, previousComment, newComment);
+		apiHookService.updatedComment(cardId, previousComment, newComment, user);
 	}
 
-	public void emitDeleteComment(int columnId, int cardId, CardData deletedComment) {
+	public void emitDeleteComment(int columnId, int cardId, CardData deletedComment, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_COMMENT));
-		apiHookService.deletedComment(cardId, deletedComment);
+		apiHookService.deletedComment(cardId, deletedComment, user);
 	}
 
-	public void emitUndoDeleteComment(int columnId, int cardId, CardData undeletedComment) {
+	public void emitUndoDeleteComment(int columnId, int cardId, CardData undeletedComment, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_COMMENT));
-		apiHookService.undeletedComment(cardId, undeletedComment);
+		apiHookService.undeletedComment(cardId, undeletedComment, user);
 	}
 
 	// ------------ action list handling

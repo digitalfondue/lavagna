@@ -115,7 +115,7 @@ public class CardDataController {
     	CardDataHistory previousDescription = cardDataService.findLatestDescriptionByCardId(cardId);
         int result = cardDataService.updateDescription(cardId, content.content, new Date(), user.getId());
         CardDataHistory newDescription = cardDataService.findLatestDescriptionByCardId(cardId);
-        eventEmitter.emitUpdateDescription(cardRepository.findColumnIdById(cardId), cardId, previousDescription, newDescription);
+        eventEmitter.emitUpdateDescription(cardRepository.findColumnIdById(cardId), cardId, previousDescription, newDescription, user);
         return result;
     }
 
@@ -165,7 +165,7 @@ public class CardDataController {
     @ResponseBody
     public CardData createComment(@PathVariable("cardId") int cardId, @RequestBody Content commentData, User user) {
         CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user.getId());
-        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId, comment);
+        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId, comment, user);
         return comment;
     }
 
@@ -175,7 +175,7 @@ public class CardDataController {
     public void updateComment(@PathVariable("commentId") int commentId, @RequestBody Content content, User user) {
     	CardData previousComment = cardDataRepository.getDataLightById(commentId);
         cardDataService.updateComment(commentId, content.content, new Date(), user);
-        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId(), previousComment, content.content);
+        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId(), previousComment, content.content, user);
     }
 
     @ExpectPermission(value = Permission.DELETE_CARD_COMMENT, ownershipChecker = CardCommentOwnershipChecker.class)
@@ -184,7 +184,7 @@ public class CardDataController {
     public Event deleteComment(@PathVariable("commentId") int commentId, User user) {
     	CardData commentToDelete = cardDataRepository.getDataLightById(commentId);
         Event res = cardDataService.deleteComment(commentId, user, new Date());
-        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId(), commentToDelete);
+        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId(), commentToDelete, user);
         return res;
     }
 
@@ -197,7 +197,7 @@ public class CardDataController {
 
         cardDataService.undoDeleteComment(event);
         CardData undeletedComment = cardDataRepository.getDataLightById(event.getDataId());
-        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), undeletedComment);
+        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), undeletedComment, user);
 
         return event.getDataId();
     }

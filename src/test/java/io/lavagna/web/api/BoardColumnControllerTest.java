@@ -97,11 +97,11 @@ public class BoardColumnControllerTest {
 				new BoardColumn(0, toCreate.getName(), 0, 0, BoardColumnLocation.BOARD, 0, ColumnDefinition.OPEN,
 						ColumnDefinition.OPEN.getDefaultColor()));
 
-		boardColumnController.create(shortName, toCreate);
+		boardColumnController.create(shortName, toCreate, user);
 
 		verify(boardRepository).findBoardIdByShortName(shortName);
 		verify(boardColumnRepository).addColumnToBoard(toCreate.getName(), 0, BoardColumnLocation.BOARD, 0);
-		verify(eventEmitter).emitCreateColumn(shortName, location, toCreate.getName());
+		verify(eventEmitter).emitCreateColumn(shortName, location, toCreate.getName(), user);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -115,7 +115,7 @@ public class BoardColumnControllerTest {
 		
 		when(boardRepository.findBoardIdByShortName(shortName)).thenReturn(0);
 
-		boardColumnController.create(shortName, toCreate);
+		boardColumnController.create(shortName, toCreate, user);
 
 	}
 
@@ -128,10 +128,10 @@ public class BoardColumnControllerTest {
 
 		when(boardRepository.findBoardById(column.getBoardId())).thenReturn(b);
 
-		boardColumnController.rename(42, "column2");
+		boardColumnController.rename(42, "column2", user);
 
 		verify(boardColumnRepository).renameColumn(42, "column2", 42);
-		verify(eventEmitter).emitUpdateColumn(eq(shortName), eq(column.getLocation()), eq(42), any(BoardColumn.class), any(BoardColumn.class));
+		verify(eventEmitter).emitUpdateColumn(eq(shortName), eq(column.getLocation()), eq(42), any(BoardColumn.class), any(BoardColumn.class), eq(user));
 	}
 
 	@Test

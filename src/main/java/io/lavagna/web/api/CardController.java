@@ -104,10 +104,10 @@ public class CardController {
 		return cardService.fetchPaginatedByBoardIdAndLocation(boardId, location, page);
 	}
 
-	private void emitCreateCard(int columnId, Card createdCard) {
+	private void emitCreateCard(int columnId, Card createdCard, User user) {
 		ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(columnId);
 		eventEmitter.emitCreateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
-				.getShortName(), columnId, createdCard);
+				.getShortName(), columnId, createdCard, user);
 	}
 
 	// TODO: check that columnId is effectively inside the board named shortName
@@ -115,21 +115,21 @@ public class CardController {
 	@RequestMapping(value = "/api/column/{columnId}/card", method = RequestMethod.POST)
 	public void create(@PathVariable("columnId") int columnId, @RequestBody CardData card, User user) {
 		Card createdCard = cardService.createCard(card.name, columnId, new Date(), user);
-		emitCreateCard(columnId, createdCard);
+		emitCreateCard(columnId, createdCard, user);
 	}
 
     @ExpectPermission(Permission.CREATE_CARD)
     @RequestMapping(value = "/api/card/{cardId}/clone-to/column/{columnId}", method = RequestMethod.POST)
     public void clone(@PathVariable("cardId") int cardId, @PathVariable("columnId") int columnId, User user) {
         Card clonedCard = cardService.cloneCard(cardId, columnId, user);
-        emitCreateCard(columnId, clonedCard);
+        emitCreateCard(columnId, clonedCard, user);
     }
 
 	@ExpectPermission(Permission.CREATE_CARD)
 	@RequestMapping(value = "/api/column/{columnId}/card-top", method = RequestMethod.POST)
 	public void createCardFromTop(@PathVariable("columnId") int columnId, @RequestBody CardData card, User user) {
 		Card createdCard = cardService.createCardFromTop(card.name, columnId, new Date(), user);
-		emitCreateCard(columnId, createdCard);
+		emitCreateCard(columnId, createdCard, user);
 	}
 
 	@ExpectPermission(Permission.READ)
@@ -162,7 +162,7 @@ public class CardController {
 		Card c = cardRepository.findBy(id);
 		ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(c.getColumnId());
 		eventEmitter.emitUpdateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
-				.getShortName(), c.getColumnId(), beforeUpdate, c);
+				.getShortName(), c.getColumnId(), beforeUpdate, c, user);
 	}
 
 	@ExpectPermission(Permission.MOVE_CARD)

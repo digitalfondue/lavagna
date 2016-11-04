@@ -22,59 +22,60 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.User;
 
 @Service
 public class ApiHooksService {
 
-	public void createdProject(String projectShortName) {
+	public void createdProject(String projectShortName, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedProject(String projectShortName) {
+	public void updatedProject(String projectShortName, User user) {
 		//FIXME run scripts
 	}
 
-	public void createdBoard(String boardShortName) {
+	public void createdBoard(String boardShortName, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedBoard(String boardShortName) {
+	public void updatedBoard(String boardShortName, User user) {
 		//FIXME run scripts
 	}
 
-	public void createdColumn(String boardShortName, String columnName) {
+	public void createdColumn(String boardShortName, String columnName, User user) {
 		//FIXME run scripts
 	}
 
-	public void updateColumn(String boardShortName, BoardColumn oldColumn, BoardColumn updatedColumn) {
+	public void updateColumn(String boardShortName, BoardColumn oldColumn, BoardColumn updatedColumn, User user) {
 		//FIXME run scripts
 	}
 
-	public void createdCard(String boardShortName, Card card) {
+	public void createdCard(String boardShortName, Card card, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard) {
+	public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard, User user) {
 		//FIXME run scripts
 	}
 
-	public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription) {
+	public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription, User user) {
 		//FIXME run scripts
 	}
 
-	public void createdComment(int cardId, CardData comment) {
+	public void createdComment(int cardId, CardData comment, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedComment(int cardId, CardData previousComment, String newComment) {
+	public void updatedComment(int cardId, CardData previousComment, String newComment, User user) {
 		//FIXME run scripts
 	}
 
-	public void deletedComment(int cardId, CardData deletedComment) {
+	public void deletedComment(int cardId, CardData deletedComment, User user) {
 		//FIXME run scripts
 	}
 
-	public void undeletedComment(int cardId, CardData undeletedComment) {
+	public void undeletedComment(int cardId, CardData undeletedComment, User user) {
 		//FIXME run scripts
 	}
 
