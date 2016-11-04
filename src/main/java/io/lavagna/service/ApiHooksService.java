@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.Card;
+import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
 
 @Service
@@ -58,6 +59,14 @@ public class ApiHooksService {
 	}
 
 	public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription) {
+		//FIXME run scripts
+	}
+
+	public void createdComment(int cardId, CardData comment) {
+		//FIXME run scripts
+	}
+
+	public void updatedComment(int cardId, CardData previousComment, String newComment) {
 		//FIXME run scripts
 	}
 

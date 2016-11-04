@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
+import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
 
@@ -221,13 +222,15 @@ public class EventEmitter {
 	}
 
 	// ------------ comment
-	public void emitCreateComment(int columnId, int cardId) {
+	public void emitCreateComment(int columnId, int cardId, CardData comment) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_COMMENT));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_COMMENT));
+		apiHookService.createdComment(cardId, comment);
 	}
 
-	public void emitUpdateComment(int cardId) {
+	public void emitUpdateComment(int cardId, CardData previousComment, String newComment) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_COMMENT));
+		apiHookService.updatedComment(cardId, previousComment, newComment);
 	}
 
 	public void emitDeleteComment(int columnId, int cardId) {

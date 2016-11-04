@@ -165,7 +165,7 @@ public class CardDataController {
     @ResponseBody
     public CardData createComment(@PathVariable("cardId") int cardId, @RequestBody Content commentData, User user) {
         CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user.getId());
-        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId);
+        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId, comment);
         return comment;
     }
 
@@ -173,8 +173,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.POST)
     @ResponseBody
     public void updateComment(@PathVariable("commentId") int commentId, @RequestBody Content content, User user) {
+    	CardData previousComment = cardDataRepository.getDataLightById(commentId);
         cardDataService.updateComment(commentId, content.content, new Date(), user);
-        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId());
+        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId(), previousComment, content.content);
     }
 
     @ExpectPermission(value = Permission.DELETE_CARD_COMMENT, ownershipChecker = CardCommentOwnershipChecker.class)
@@ -194,7 +195,7 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.COMMENT_DELETE);
 
         cardDataService.undoDeleteComment(event);
-        eventEmitter.emitUndoDeleteComment(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
+        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
 
         return event.getDataId();
     }
@@ -228,7 +229,7 @@ public class CardDataController {
 
         cardDataService.undoDeleteActionList(event);
         eventEmitter
-            .emitUndoDeleteActionList(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
+            .emitUndoDeleteActionList(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
 
         return event.getDataId();
     }
@@ -272,7 +273,7 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.ACTION_ITEM_DELETE);
 
         cardDataService.undoDeleteActionItem(event);
-        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findBy(event.getCardId()).getColumnId(),
+        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findColumnIdById(event.getCardId()),
             event.getCardId());
 
         return event.getDataId();
@@ -424,7 +425,7 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.FILE_DELETE);
 
         cardDataService.undoDeleteFile(event);
-        eventEmitter.emiteUndoDeleteFile(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
+        eventEmitter.emiteUndoDeleteFile(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
 
         return event.getDataId();
     }
