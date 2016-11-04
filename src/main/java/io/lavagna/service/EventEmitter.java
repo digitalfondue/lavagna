@@ -16,7 +16,9 @@
  */
 package io.lavagna.service;
 
+import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
 
 import java.util.Collection;
@@ -35,9 +37,11 @@ import org.springframework.stereotype.Component;
 public class EventEmitter {
 
 	private final SimpMessageSendingOperations messagingTemplate;
+	private final ApiHooksService apiHookService;
 
-	public EventEmitter(SimpMessageSendingOperations messageSendingOperations) {
+	public EventEmitter(SimpMessageSendingOperations messageSendingOperations, ApiHooksService apiHooksService) {
 		this.messagingTemplate = messageSendingOperations;
+		this.apiHookService = apiHooksService;
 	}
 
 	private static Event event(LavagnaEvent type) {
@@ -72,10 +76,12 @@ public class EventEmitter {
 
 	public void emitCreateProject(String projectShortName) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.CREATE_PROJECT, projectShortName));
+		apiHookService.createdProject(projectShortName);
 	}
 
 	public void emitUpdateProject(String projectShortName) {
 		messagingTemplate.convertAndSend("/event/project", event(LavagnaEvent.UPDATE_PROJECT, projectShortName));
+		apiHookService.updatedProject(projectShortName);
 	}
 
 	public void emitImportProject(String importId, int currentBoard, int boards, String boardName) {
@@ -89,49 +95,57 @@ public class EventEmitter {
 
 	// ------------ board
 
-	public void emitCreateBoard(String projectShortName) {
+	public void emitCreateBoard(String projectShortName, String boardShortName) {
 		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/board",
 				event(LavagnaEvent.CREATE_BOARD));
+		apiHookService.createdBoard(boardShortName);
 	}
 
 	public void emitUpdateBoard(String boardShortName) {
 		messagingTemplate.convertAndSend("/event/board/" + boardShortName, event(LavagnaEvent.UPDATE_BOARD));
+		apiHookService.updatedBoard(boardShortName);
 	}
 
 	// ------------ column
 
-	public void emitCreateColumn(String boardShortName, BoardColumnLocation location) {
+	public void emitCreateColumn(String boardShortName, BoardColumnLocation location, String columnName) {
 		messagingTemplate
 				.convertAndSend(columnDestination(boardShortName, location), event(LavagnaEvent.CREATE_COLUMN));
+		apiHookService.createdColumn(boardShortName, columnName);
 	}
 
-	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId) {
+	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId, BoardColumn column, BoardColumn updatedColumn) {
 		messagingTemplate
 				.convertAndSend(columnDestination(boardShortName, location), event(LavagnaEvent.UPDATE_COLUMN));
 		messagingTemplate.convertAndSend("/event/column/" + columnId, event(LavagnaEvent.UPDATE_COLUMN));
+		apiHookService.updateColumn(boardShortName, column, updatedColumn);
 	}
 
 	public void emitUpdateColumnPosition(String boardShortName, BoardColumnLocation location) {
 		messagingTemplate.convertAndSend(columnDestination(boardShortName, location),
 				event(LavagnaEvent.UPDATE_COLUMN_POSITION));
+		// updated position will not be exposed to the api hooks
 	}
 
 	// ------------ card
 
-	public void emitCreateCard(String projectShortName, String boardShortName, int columnId, int cardId) {
+	public void emitCreateCard(String projectShortName, String boardShortName, int columnId, Card card) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_CARD));
 		messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
-				event(LavagnaEvent.CREATE_CARD, cardId));
+				event(LavagnaEvent.CREATE_CARD, card.getId()));
+		apiHookService.createdCard(boardShortName, card);
 	}
 
-	public void emitUpdateCard(String projectShortName, String boardShortName, int columnId, int cardId) {
+	public void emitUpdateCard(String projectShortName, String boardShortName, int columnId, Card beforeUpdate, Card newCard) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_CARD));
 		messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
-				event(LavagnaEvent.UPDATE_CARD, cardId));
+				event(LavagnaEvent.UPDATE_CARD, beforeUpdate.getId()));
+		apiHookService.updatedCard(boardShortName, beforeUpdate, newCard);
 	}
 
 	public void emitUpdateCardPosition(int columnId) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_CARD_POSITION));
+		// updated position will not be exposed to the api hooks
 	}
 
 	public void emitMoveCardOutsideOfBoard(String boardShortName, BoardColumnLocation location) {

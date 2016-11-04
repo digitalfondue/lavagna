@@ -141,7 +141,7 @@ public class ProjectController {
         checkShortName(board.getShortName());
         int projectId = projectService.findIdByShortName(shortName);
         boardRepository.createNewBoard(board.getName(), board.getShortName(), board.getDescription(), projectId);
-        eventEmitter.emitCreateBoard(shortName);
+        eventEmitter.emitCreateBoard(shortName, board.getShortName());
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)

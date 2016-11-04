@@ -136,7 +136,7 @@ public class ProjectControllerTest {
 		projectController.createBoard("TEST", cb);
 
 		verify(boardRepository).createNewBoard("name", "NAME", "desc", project.getId());
-		verify(eventEmitter).emitCreateBoard("TEST");
+		verify(eventEmitter).emitCreateBoard("TEST", "NAME");
 	}
 
 	@Test

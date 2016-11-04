@@ -17,6 +17,7 @@
 package io.lavagna.web.api;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,7 +101,7 @@ public class BoardColumnControllerTest {
 
 		verify(boardRepository).findBoardIdByShortName(shortName);
 		verify(boardColumnRepository).addColumnToBoard(toCreate.getName(), 0, BoardColumnLocation.BOARD, 0);
-		verify(eventEmitter).emitCreateColumn(shortName, location);
+		verify(eventEmitter).emitCreateColumn(shortName, location, toCreate.getName());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -130,7 +131,7 @@ public class BoardColumnControllerTest {
 		boardColumnController.rename(42, "column2");
 
 		verify(boardColumnRepository).renameColumn(42, "column2", 42);
-		verify(eventEmitter).emitUpdateColumn(shortName, column.getLocation(), 42);
+		verify(eventEmitter).emitUpdateColumn(eq(shortName), eq(column.getLocation()), eq(42), any(BoardColumn.class), any(BoardColumn.class));
 	}
 
 	@Test

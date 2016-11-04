@@ -107,7 +107,7 @@ public class CardController {
 	private void emitCreateCard(int columnId, Card createdCard) {
 		ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(columnId);
 		eventEmitter.emitCreateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
-				.getShortName(), columnId, createdCard.getId());
+				.getShortName(), columnId, createdCard);
 	}
 
 	// TODO: check that columnId is effectively inside the board named shortName
@@ -154,12 +154,15 @@ public class CardController {
 	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/card/{cardId}", method = RequestMethod.POST)
 	public void updateCard(@PathVariable("cardId") int id, @RequestBody CardData updateCard, User user) {
+		
+		Card beforeUpdate = cardRepository.findBy(id);
+		
 		cardService.updateCard(id, updateCard.name, user, new Date());
 
 		Card c = cardRepository.findBy(id);
 		ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(c.getColumnId());
 		eventEmitter.emitUpdateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
-				.getShortName(), c.getColumnId(), id);
+				.getShortName(), c.getColumnId(), beforeUpdate, c);
 	}
 
 	@ExpectPermission(Permission.MOVE_CARD)

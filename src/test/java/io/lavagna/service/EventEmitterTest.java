@@ -71,6 +71,9 @@ public class EventEmitterTest {
 
 	@Mock
 	private SimpMessageSendingOperations simpMessageSendingOperations;
+	
+	@Mock
+	private ApiHooksService apiHooksService;
 
 	private EventEmitter eventEmitter;
 	private ArgumentCaptor<EventEmitter.Event> argument;
@@ -81,7 +84,7 @@ public class EventEmitterTest {
 	public void prepare() {
 		MockitoAnnotations.initMocks(this);
 
-		eventEmitter = new EventEmitter(simpMessageSendingOperations);
+		eventEmitter = new EventEmitter(simpMessageSendingOperations, apiHooksService);
 		argument = ArgumentCaptor.forClass(EventEmitter.Event.class);
 
 		Helper.createUser(userRepository, "test", "test-user");

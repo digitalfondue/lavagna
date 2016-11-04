@@ -94,7 +94,7 @@ public class BoardColumnController {
 
 		boardColumnRepository.addColumnToBoard(column.name, column.definition, BoardColumnLocation.BOARD, boardId);
 
-		eventEmitter.emitCreateColumn(shortName, BoardColumnLocation.BOARD);
+		eventEmitter.emitCreateColumn(shortName, BoardColumnLocation.BOARD, column.name);
 	}
 
 	@ExpectPermission(Permission.RENAME_COLUMN)
@@ -103,9 +103,10 @@ public class BoardColumnController {
 		BoardColumn column = boardColumnRepository.findById(columnId);
 		Board board = boardRepository.findBoardById(column.getBoardId());
 		int res = boardColumnRepository.renameColumn(columnId, newName, column.getBoardId());
+		BoardColumn updatedColumn = boardColumnRepository.findById(columnId);
 
 		eventEmitter.emitUpdateColumn(board.getShortName(), boardColumnRepository.findById(columnId).getLocation(),
-				columnId);
+				columnId, column, updatedColumn);
 
 		return res;
 	}
@@ -120,9 +121,10 @@ public class BoardColumnController {
 		BoardColumn column = boardColumnRepository.findById(columnId);
 		Board board = boardRepository.findBoardById(column.getBoardId());
 		int res = boardColumnRepository.redefineColumn(columnId, definitionId, column.getBoardId());
+		BoardColumn updatedColumn = boardColumnRepository.findById(columnId);
 
 		eventEmitter.emitUpdateColumn(board.getShortName(), boardColumnRepository.findById(columnId).getLocation(),
-				columnId);
+				columnId, column, updatedColumn);
 
 		return res;
 	}
