@@ -305,19 +305,22 @@ public class EventEmitter {
 	}
 
 	// ------------
-	public void emitUploadFile(int columnId, int cardId) {
+	public void emitUploadFile(int columnId, int cardId, List<String> fileNames) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_FILE));
+		apiHookService.uploadedFile(cardId, fileNames);
 	}
 
-	public void emitDeleteFile(int columnId, int cardId) {
+	public void emitDeleteFile(int columnId, int cardId, String fileName) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_FILE));
+		apiHookService.deletedFile(cardId, fileName);
 	}
 
-	public void emiteUndoDeleteFile(int columnId, int cardId) {
+	public void emiteUndoDeleteFile(int columnId, int cardId, String fileName) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_FILE));
+		apiHookService.undoDeletedFile(cardId, fileName);
 	}
 
 	// ------------

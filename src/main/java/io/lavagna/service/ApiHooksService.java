@@ -16,6 +16,8 @@
  */
 package io.lavagna.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import io.lavagna.model.BoardColumn;
@@ -76,6 +78,18 @@ public class ApiHooksService {
 	}
 
 	public void undeletedComment(int cardId, CardData undeletedComment, User user) {
+		//FIXME run scripts
+	}
+
+	public void uploadedFile(int cardId, List<String> fileNames) {
+		//FIXME run scripts		
+	}
+
+	public void deletedFile(int cardId, String fileName) {
+		//FIXME run scripts
+	}
+
+	public void undoDeletedFile(int cardId, String fileName) {
 		//FIXME run scripts
 	}
 

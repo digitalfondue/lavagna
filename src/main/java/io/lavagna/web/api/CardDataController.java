@@ -348,7 +348,8 @@ public class CardDataController {
             return Collections.emptyList();
         }
 
-        List<String> digests = new ArrayList<>();
+        List<String> digests = new ArrayList<>(files.size());
+        List<String> fileNames = new ArrayList<>(files.size());
         for (MultipartFile file : files) {
             Path p = Files.createTempFile("lavagna", "upload");
             try (InputStream fileIs = file.getInputStream()) {
@@ -361,13 +362,14 @@ public class CardDataController {
                     LOG.debug("file uploaded! size: {}, original name: {}, content-type: {}", file.getSize(),
                         file.getOriginalFilename(), file.getContentType());
                     digests.add(digest);
+                    fileNames.add(file.getOriginalFilename());
                 }
             } finally {
                 Files.delete(p);
                 LOG.debug("deleted temp file {}", p);
             }
         }
-        eventEmitter.emitUploadFile(cardRepository.findColumnIdById(cardId), cardId);
+        eventEmitter.emitUploadFile(cardRepository.findColumnIdById(cardId), cardId, fileNames);
         return digests;
     }
 
@@ -414,8 +416,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/file/{fileId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteFile(@PathVariable("fileId") int fileId, User user) {
+    	FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(fileId);
         Event result = cardDataService.deleteFile(fileId, user, new Date());
-        eventEmitter.emitDeleteFile(cardRepository.findBy(result.getCardId()).getColumnId(), result.getCardId());
+        eventEmitter.emitDeleteFile(cardRepository.findBy(result.getCardId()).getColumnId(), result.getCardId(), file.getName());
         return result;
     }
 
@@ -425,10 +428,9 @@ public class CardDataController {
     public int undoDeleteFile(@PathVariable("eventId") int eventId, User user) {
         Event event = eventRepository.getEventById(eventId);
         Validate.isTrue(event.getEvent() == EventType.FILE_DELETE);
-
         cardDataService.undoDeleteFile(event);
-        eventEmitter.emiteUndoDeleteFile(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
-
+        FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(event.getDataId());
+        eventEmitter.emiteUndoDeleteFile(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), file.getName());
         return event.getDataId();
     }
 
