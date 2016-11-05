@@ -24,6 +24,8 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
+import io.lavagna.model.CardFull;
+import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.User;
 
 @Service
@@ -90,6 +92,10 @@ public class ApiHooksService {
 	}
 
 	public void undoDeletedFile(int cardId, String fileName) {
+		//FIXME run scripts
+	}
+
+	public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
 		//FIXME run scripts
 	}
 

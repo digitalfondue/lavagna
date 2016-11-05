@@ -151,7 +151,7 @@ public class EventEmitterTest {
 		Card card = cardService.createCard("card1", col1.getId(), new Date(), user);
 		CardFull cardFull = cardRepository.findFullBy(card.getId());
 
-		eventEmitter.emitRemoveLabelValueToCards(Arrays.asList(cardFull));
+		eventEmitter.emitRemoveLabelValueToCards(Arrays.asList(cardFull), 0, null);
 
 		verifyLabelEvents(cardFull);
 	}

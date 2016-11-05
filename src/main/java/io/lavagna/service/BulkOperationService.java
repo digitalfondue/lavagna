@@ -313,6 +313,10 @@ public class BulkOperationService {
 		}
 		return res;
 	}
+	
+	public int findIdForSystemLabel(String shortName, String name) {
+		return findBy(shortName, name, LabelDomain.SYSTEM).getId();
+	}
 
 	private CardLabel findBy(String shortName, String name, LabelDomain labelDomain) {
 	    int projectId = projectService.findIdByShortName(shortName);

@@ -22,6 +22,7 @@ import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
 import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
+import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.User;
 
 import java.util.Collection;
@@ -337,8 +338,9 @@ public class EventEmitter {
 		return Triple.of(cardIds, columnIds, projectShortNames);
 	}
 
-	public void emitRemoveLabelValueToCards(List<CardFull> affectedCards) {
+	public void emitRemoveLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
 		sendEventForLabel(affectedCards, LavagnaEvent.REMOVE_LABEL_VALUE);
+		apiHookService.removedLabelValueToCards(affectedCards, labelId, labelValue);
 	}
 
 	private void sendEventForLabel(List<CardFull> affectedCards, LavagnaEvent ev) {
