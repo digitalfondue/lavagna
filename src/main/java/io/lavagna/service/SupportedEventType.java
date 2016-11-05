@@ -19,6 +19,8 @@ package io.lavagna.service;
 import static org.apache.commons.lang3.ArrayUtils.toArray;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import static org.apache.commons.lang3.tuple.ImmutablePair.of;
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.model.CardDataMetadata;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
@@ -203,10 +205,10 @@ enum SupportedEventType {
 		protected ImmutablePair<String, String[]> toKeyAndParam(Event e, EventsContext context,
 				CardDataRepository cardDataRepository) {
 			Map<String, String> messages = new HashMap<String, String>();
-			messages.put("MILESTONE", "User %s has added a Milestone: %s");
-			messages.put("DUE_DATE", "User %s added a due date for: %s");
-			messages.put("ASSIGNED", "User %s assigned the card to: %s");
-			messages.put("WATCHED_BY", "User %s is now watching this card");
+			messages.put(SYSTEM_LABEL_MILESTONE, "User %s has added a Milestone: %s");
+			messages.put(SYSTEM_LABEL_DUE_DATE, "User %s added a due date for: %s");
+			messages.put(SYSTEM_LABEL_ASSIGNED, "User %s assigned the card to: %s");
+			messages.put(SYSTEM_LABEL_WATCHED_BY, "User %s is now watching this card");
 			return handleLabelCreationAndDeletion(e, context, messages, this.name());
 		}
 	},
@@ -215,28 +217,28 @@ enum SupportedEventType {
 		protected ImmutablePair<String, String[]> toKeyAndParam(Event e, EventsContext context,
 				CardDataRepository cardDataRepository) {
 			Map<String, String> messages = new HashMap<String, String>();
-			messages.put("MILESTONE", "User %s removed a Milestone: %s");
-			messages.put("DUE_DATE", "User %s removed a due date for %s");
-			messages.put("ASSIGNED", "User %s removed %s from the assigned users");
-			messages.put("WATCHED_BY", "User %s is not watching this card anymore");
+			messages.put(SYSTEM_LABEL_MILESTONE, "User %s removed a Milestone: %s");
+			messages.put(SYSTEM_LABEL_DUE_DATE, "User %s removed a due date for %s");
+			messages.put(SYSTEM_LABEL_ASSIGNED, "User %s removed %s from the assigned users");
+			messages.put(SYSTEM_LABEL_WATCHED_BY, "User %s is not watching this card anymore");
 			return handleLabelCreationAndDeletion(e, context, messages, this.name());
 		}
 	};
 
 	private static ImmutablePair<String, String[]> handleLabelCreationAndDeletion(Event e, EventsContext context,
 			Map<String, String> msg, String defaultMessage) {
-		if ("MILESTONE".equals(e.getLabelName())) {
+		if (SYSTEM_LABEL_MILESTONE.equals(e.getLabelName())) {
 			return of("event." + defaultMessage + ".MILESTONE",
 					toArray(context.formatUser(e.getUserId()), e.getValueString()));
-		} else if ("DUE_DATE".equals(e.getLabelName())) {
+		} else if (SYSTEM_LABEL_DUE_DATE.equals(e.getLabelName())) {
 			return of(
 					"event." + defaultMessage + ".DUE_DATE",
 					toArray(context.formatUser(e.getUserId()),
 							new SimpleDateFormat("dd.MM.yyyy").format(e.getValueTimestamp())));
-		} else if ("ASSIGNED".equals(e.getLabelName())) {
+		} else if (SYSTEM_LABEL_ASSIGNED.equals(e.getLabelName())) {
 			return of("event." + defaultMessage + ".ASSIGNED",
 					toArray(context.formatUser(e.getUserId()), context.formatUser(e.getValueUser())));
-		} else if ("WATCHED_BY".equals(e.getLabelName())) {
+		} else if (SYSTEM_LABEL_WATCHED_BY.equals(e.getLabelName())) {
 			return of("event." + defaultMessage + ".WATCHED_BY", toArray(context.formatUser(e.getUserId())));
 		} else {
 			return of("event." + defaultMessage, toArray(context.formatUser(e.getUserId()), context.formatLabel(e)));

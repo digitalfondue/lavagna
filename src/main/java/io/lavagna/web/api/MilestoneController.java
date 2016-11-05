@@ -17,6 +17,7 @@
 
 package io.lavagna.web.api;
 
+import static io.lavagna.common.Constants.*;
 import static io.lavagna.service.SearchFilter.filter;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
@@ -136,7 +137,7 @@ public class MilestoneController {
     }
 
     private void getMilestones(int projectId, Map<Integer, Integer> milestoneToIndex, List<MilestoneInfo> milestones) {
-        CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
+        CardLabel label = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM);
         List<LabelListValueWithMetadata> listValues = cardLabelRepository.findListValuesByLabelId(label.getId());
         int foundUnassignedIndex = -1;
         int mIndex = 0;

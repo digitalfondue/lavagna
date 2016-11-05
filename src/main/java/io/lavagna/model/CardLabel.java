@@ -16,11 +16,6 @@
  */
 package io.lavagna.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.Getter;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -38,9 +33,6 @@ public class CardLabel {
 	private final boolean unique;
 	private final LabelType type;
 	private final LabelDomain domain;
-
-	public static final Set<String> RESERVED_SYSTEM_LABELS_NAME = Collections.unmodifiableSet(new HashSet<>(Arrays
-			.asList("ASSIGNED", "DUE_DATE", "MILESTONE", "WATCHED_BY")));
 
 	public CardLabel(@Column("CARD_LABEL_ID") int id, @Column("CARD_LABEL_PROJECT_ID_FK") int projectId,
 			@Column("CARD_LABEL_UNIQUE") boolean unique, @Column("CARD_LABEL_TYPE") LabelType type,

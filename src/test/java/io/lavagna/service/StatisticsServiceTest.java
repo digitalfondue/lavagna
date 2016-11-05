@@ -16,6 +16,8 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -119,7 +121,7 @@ public class StatisticsServiceTest {
 
 		card = cardService.createCard("card1", openCol.getId(), today, user);
 
-		assigned = cardLabelRepository.findLabelByName(p.getId(), "ASSIGNED", CardLabel.LabelDomain.SYSTEM);
+		assigned = cardLabelRepository.findLabelByName(p.getId(), SYSTEM_LABEL_ASSIGNED, CardLabel.LabelDomain.SYSTEM);
 		customLabel = cardLabelRepository.addLabel(p.getId(), true, CardLabel.LabelType.USER,
 				CardLabel.LabelDomain.USER, "Custom label", 0);
 		labelValueToUser = new CardLabelValue.LabelValue(null, null, null, null, user.getId(), null);
@@ -419,7 +421,7 @@ public class StatisticsServiceTest {
 	public void getCreatedAndClosedCardsByMilestoneTest() {
 		Card card2 = cardService.createCard("card2", openCol.getId(), yesterday, user);
 
-		CardLabel milestoneLabel = cardLabelRepository.findLabelByName(board.getProjectId(), "MILESTONE",
+		CardLabel milestoneLabel = cardLabelRepository.findLabelByName(board.getProjectId(), SYSTEM_LABEL_MILESTONE,
 				CardLabel.LabelDomain.SYSTEM);
 
 		LabelListValue milestone = cardLabelRepository.addLabelListValue(milestoneLabel.getId(), "Dummy milestone");
@@ -511,7 +513,7 @@ public class StatisticsServiceTest {
 
 		LabelListValue llv = null;
 		for (CardLabel cardLabel : cardLabelRepository.findLabelsByProject(board.getProjectId())) {
-			if (cardLabel.getDomain() == CardLabel.LabelDomain.SYSTEM && cardLabel.getName().equals("MILESTONE")) {
+			if (cardLabel.getDomain() == CardLabel.LabelDomain.SYSTEM && cardLabel.getName().equals(SYSTEM_LABEL_MILESTONE)) {
 				llv = cardLabelRepository.addLabelListValue(cardLabel.getId(), "v1.0");
 				cardLabelRepository.addLabelValueToCard(cardLabel, c3.getId(), new CardLabelValue.LabelValue(null,
 						null, null, null, null, llv.getId()));

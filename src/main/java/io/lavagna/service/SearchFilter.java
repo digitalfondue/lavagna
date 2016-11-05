@@ -21,6 +21,8 @@ import static org.apache.commons.lang3.time.DateUtils.addMonths;
 import static org.apache.commons.lang3.time.DateUtils.addWeeks;
 import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
 import static org.apache.commons.lang3.time.DateUtils.truncate;
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.SearchQuery;
@@ -105,7 +107,7 @@ public class SearchFilter {
 			public String toBaseQuery(SearchFilter sf, SearchQuery queries, List<Object> params,
 					SearchContext context) {
 
-				params.add("ASSIGNED");
+				params.add(SYSTEM_LABEL_ASSIGNED);
 
 				if (sf.value.type == ValueType.UNASSIGNED) {
 					return queries.findCardIdNotInOpen() + " " + queries.findBySystemLabel() + " "
@@ -138,7 +140,7 @@ public class SearchFilter {
 			@Override
 			public String toBaseQuery(SearchFilter sf, SearchQuery queries, List<Object> params,
 					SearchContext context) {
-				params.add("WATCHED_BY");
+				params.add(SYSTEM_LABEL_WATCHED_BY);
 
 				if (sf.value.type == ValueType.UNASSIGNED) {
 					return queries.findCardIdNotInOpen() + " " + queries.findBySystemLabel() + " "
@@ -154,7 +156,7 @@ public class SearchFilter {
 			public String toBaseQuery(SearchFilter sf, SearchQuery queries, List<Object> params,
 					SearchContext context) {
 
-				params.add("MILESTONE");
+				params.add(SYSTEM_LABEL_MILESTONE);
 
 				if (sf.value.type == ValueType.UNASSIGNED) {
 					return queries.findCardIdNotInOpen() + " " + queries.findBySystemLabel() + " "
@@ -173,7 +175,7 @@ public class SearchFilter {
 			public String toBaseQuery(SearchFilter sf, SearchQuery queries, List<Object> params,
 					SearchContext context) {
 
-				params.add("DUE_DATE");
+				params.add(SYSTEM_LABEL_DUE_DATE);
 
 				addDateParams(sf, params);
 

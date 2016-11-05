@@ -57,6 +57,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.lavagna.common.Constants.*;
+
 @Service
 public class ImportService {
 
@@ -275,10 +277,10 @@ public class ImportService {
 			}
 		}
 
-		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(projectId, "DUE_DATE",
+		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_DUE_DATE,
 				CardLabel.LabelDomain.SYSTEM);
 
-		CardLabel assignedLabel = cardLabelRepository.findLabelByName(projectId, "ASSIGNED",
+		CardLabel assignedLabel = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_ASSIGNED,
 				CardLabel.LabelDomain.SYSTEM);
 
 		// Import the boards

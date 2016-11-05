@@ -19,6 +19,8 @@ package io.lavagna.service;
 
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnInfo;
 import io.lavagna.model.CardFull;
@@ -75,7 +77,7 @@ public class ExcelExportService {
     }
 
     public LabelListValueWithMetadata getMilestone(int projectId, String milestone) {
-        CardLabel label = cardLabelRepository.findLabelByName(projectId, "MILESTONE", CardLabel.LabelDomain.SYSTEM);
+        CardLabel label = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM);
         List<LabelListValueWithMetadata> listValues = cardLabelRepository
             .findListValuesByLabelIdAndValue(label.getId(), milestone);
         return listValues.size() > 0 ? listValues.get(0) : null;
@@ -147,9 +149,9 @@ public class ExcelExportService {
             @Override
             public boolean evaluate(CardLabel cl) {
                 if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
-                    if (cl.getName().equals("ASSIGNED") ||
-                        cl.getName().equals("DUE_DATE") ||
-                        cl.getName().equals("MILESTONE")) {
+                    if (cl.getName().equals(SYSTEM_LABEL_ASSIGNED) ||
+                        cl.getName().equals(SYSTEM_LABEL_DUE_DATE) ||
+                        cl.getName().equals(SYSTEM_LABEL_MILESTONE)) {
                         return true;
                     }
                     return false;

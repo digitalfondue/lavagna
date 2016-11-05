@@ -16,6 +16,7 @@
  */
 package io.lavagna.service.importexport;
 
+import io.lavagna.common.Constants;
 import io.lavagna.model.Board;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
@@ -88,7 +89,7 @@ abstract class AbstractProcessLabelEvent extends AbstractProcessEvent {
 
 	protected CardLabel findLabelByEvent(EventFull e) {
 		Board b = boardRepository.findBoardByShortName(e.getBoardShortName());
-		LabelDomain domain = CardLabel.RESERVED_SYSTEM_LABELS_NAME.contains(e.getEvent().getLabelName()) ? LabelDomain.SYSTEM
+		LabelDomain domain = Constants.RESERVED_SYSTEM_LABELS_NAME.contains(e.getEvent().getLabelName()) ? LabelDomain.SYSTEM
 				: LabelDomain.USER;
 		List<CardLabel> r = cardLabelRepository.findLabelsByName(b.getProjectId(), e.getEvent().getLabelName(), domain);
 		return r.isEmpty() ? null : r.get(0);

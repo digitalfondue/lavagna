@@ -16,6 +16,8 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
@@ -57,7 +59,7 @@ public class BulkOperationService {
 	public List<Integer> assign(String projectShortName, List<Integer> cardIds, LabelValue value, User user) {
 
 		List<Integer> filteredCardIds = keepCardIdsInProject(cardIds, projectShortName);
-		int labelId = findBy(projectShortName, "ASSIGNED", LabelDomain.SYSTEM).getId();
+		int labelId = findBy(projectShortName, SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM).getId();
 
 		// we remove the cards that have _already_ the user assigned
 		Collection<Integer> alreadyWithUserAssigned = keepCardWithMatching(filteredCardIds,
@@ -71,7 +73,7 @@ public class BulkOperationService {
 
 	public List<Integer> removeAssign(String projectShortName, List<Integer> cardIds, LabelValue value, User user) {
 		List<Integer> filteredCardIds = keepCardIdsInProject(cardIds, projectShortName);
-		int labelId = findBy(projectShortName, "ASSIGNED", LabelDomain.SYSTEM).getId();
+		int labelId = findBy(projectShortName, SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM).getId();
 
 		List<Integer> removedIds = new ArrayList<>();
 		for (LabelAndValue lv : flatten(keepCardWithMatching(filteredCardIds,
@@ -85,7 +87,7 @@ public class BulkOperationService {
 
 	public List<Integer> reAssign(String projectShortName, List<Integer> cardIds, LabelValue value, User user) {
 		List<Integer> filteredCardIds = keepCardIdsInProject(cardIds, projectShortName);
-		int labelId = findBy(projectShortName, "ASSIGNED", LabelDomain.SYSTEM).getId();
+		int labelId = findBy(projectShortName, SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM).getId();
 
 		// remove all assigned labels
 		for (LabelAndValue lv : flatten(keepCardWithMatching(filteredCardIds, new FilterByLabelId(labelId)).values())) {
@@ -98,29 +100,29 @@ public class BulkOperationService {
 
 	public ImmutablePair<List<Integer>, List<Integer>> setDueDate(String projectShortName, List<Integer> cardIds,
 			LabelValue value, User user) {
-		return addLabelOrUpdate(projectShortName, cardIds, value, user, "DUE_DATE", LabelDomain.SYSTEM);
+		return addLabelOrUpdate(projectShortName, cardIds, value, user, SYSTEM_LABEL_DUE_DATE, LabelDomain.SYSTEM);
 	}
 
 	public List<Integer> removeDueDate(String projectShortName, List<Integer> cardIds, User user) {
-		return removeLabelWithName(projectShortName, cardIds, user, "DUE_DATE", LabelDomain.SYSTEM);
+		return removeLabelWithName(projectShortName, cardIds, user, SYSTEM_LABEL_DUE_DATE, LabelDomain.SYSTEM);
 	}
 
 	public ImmutablePair<List<Integer>, List<Integer>> setMilestone(String projectShortName, List<Integer> cardIds,
 			LabelValue value, User user) {
-		return addLabelOrUpdate(projectShortName, cardIds, value, user, "MILESTONE", LabelDomain.SYSTEM);
+		return addLabelOrUpdate(projectShortName, cardIds, value, user, SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
 	}
 
 	public List<Integer> removeMilestone(String projectShortName, List<Integer> cardIds, User user) {
-		return removeLabelWithName(projectShortName, cardIds, user, "MILESTONE", LabelDomain.SYSTEM);
+		return removeLabelWithName(projectShortName, cardIds, user, SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
 	}
 	
 	public List<Integer> watch(String projectShortName, List<Integer> cardIds, User user) {
-		CardLabel cl = findBy(projectShortName, "WATCHED_BY", LabelDomain.SYSTEM);
+		CardLabel cl = findBy(projectShortName, SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
 		return addLabel(projectShortName, new LabelValue(user.getId()), cardIds, user, cl);
 	}
 	
 	public List<Integer> removeWatch(String projectShortName, List<Integer> cardIds, User user) {
-		return removeLabelWithNameAndValue(projectShortName, cardIds, user, "WATCHED_BY", LabelDomain.SYSTEM, new LabelValue(user.getId()));
+		return removeLabelWithNameAndValue(projectShortName, cardIds, user, SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM, new LabelValue(user.getId()));
 	}
 
 	public List<Integer> removeUserLabel(String projectShortName, int labelId, LabelValue value, List<Integer> cardIds, User user) {

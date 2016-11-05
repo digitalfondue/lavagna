@@ -16,6 +16,8 @@
  */
 package io.lavagna.loader;
 
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -135,7 +137,7 @@ public class Loader {
 			}
 
 			// update milestone label
-			CardLabel milestoneLabel = clr.findLabelByName(p.getId(), "MILESTONE", LabelDomain.SYSTEM);
+			CardLabel milestoneLabel = clr.findLabelByName(p.getId(), SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
 			for (int j = 0; j < MILESTONES_PER_PROJECT; j++) {
 				milestonesIds.add(clr.addLabelListValue(milestoneLabel.getId(), Integer.toString(j)).getId());
 			}
@@ -263,7 +265,7 @@ public class Loader {
 			cds.updateDescription(c.getId(), commentGen(), new Date(), randomUser(users).getId());
 
 			// milestone
-			CardLabel clMilestone = clr.findLabelByName(p.getId(), "MILESTONE", LabelDomain.SYSTEM);
+			CardLabel clMilestone = clr.findLabelByName(p.getId(), SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
 			clr.addLabelValueToCard(
 					clMilestone,
 					c.getId(),
@@ -271,7 +273,7 @@ public class Loader {
 							MILESTONES_PER_PROJECT))));
 
 			// assigned user
-			CardLabel assigned = clr.findLabelByName(p.getId(), "ASSIGNED", LabelDomain.SYSTEM);
+			CardLabel assigned = clr.findLabelByName(p.getId(), SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM);
 			int userId1 = randomUser(users).getId();
 			clr.addLabelValueToCard(assigned, c.getId(), new LabelValue(null, null, null, null, userId1, null));
 			int userId2 = randomUser(users).getId();
@@ -280,7 +282,7 @@ public class Loader {
 			}
 
 			// watched by user
-			CardLabel watchedBy = clr.findLabelByName(p.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+			CardLabel watchedBy = clr.findLabelByName(p.getId(), SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
 			clr.addLabelValueToCard(watchedBy, c.getId(), new LabelValue(null, null, null, null, randomUser(users)
 					.getId(), null));
 
