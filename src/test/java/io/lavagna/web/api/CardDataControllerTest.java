@@ -188,6 +188,7 @@ public class CardDataControllerTest {
 		when(cardDataService.deleteFile(eq(itemId), eq(user), any(Date.class))).thenReturn(event);
 		when(eventRepository.getEventById(eventId)).thenReturn(event);
 		when(cardRepository.findBy(event.getCardId())).thenReturn(card);
+		when(cardDataRepository.getUndeletedFileByCardDataId(itemId)).thenReturn(Mockito.mock(FileDataLight.class));
 		cardDataController.deleteFile(itemId, user);
 		cardDataController.undoDeleteFile(eventId, user);
 	}
