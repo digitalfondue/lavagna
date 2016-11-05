@@ -99,4 +99,12 @@ public class ApiHooksService {
 		//FIXME run scripts
 	}
 
+	public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
+		//FIXME run scripts
+	}
+
+	public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue) {
+		//FIXME run scripts
+	}
+
 }

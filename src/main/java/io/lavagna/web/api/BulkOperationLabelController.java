@@ -67,7 +67,8 @@ public class BulkOperationLabelController {
 	public void assign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.assign(projectShortName, op.cardIds, op.value, user);
-		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_ASSIGNED);
+		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected), labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -84,7 +85,8 @@ public class BulkOperationLabelController {
 	public void reAssign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.reAssign(projectShortName, op.cardIds, op.value, user);
-		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_ASSIGNED);
+		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected), labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -93,8 +95,9 @@ public class BulkOperationLabelController {
 			User user) {
 		ImmutablePair<List<Integer>, List<Integer>> updatedAndAdded = bulkOperationService.setDueDate(projectShortName,
 				op.cardIds, op.value, user);
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_DUE_DATE);
 		eventEmitter.emitUpdateOrAddValueToCards(cardRepository.findAllByIds(updatedAndAdded.getLeft()),
-				cardRepository.findAllByIds(updatedAndAdded.getRight()));
+				cardRepository.findAllByIds(updatedAndAdded.getRight()), labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -111,7 +114,8 @@ public class BulkOperationLabelController {
 	public void watch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.watch(projectShortName, op.cardIds, user);
-		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_WATCHED_BY);
+		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected), labelId, op.value);
 	}
 	
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -129,8 +133,9 @@ public class BulkOperationLabelController {
 			User user) {
 		ImmutablePair<List<Integer>, List<Integer>> updatedAndAdded = bulkOperationService.setMilestone(
 				projectShortName, op.cardIds, op.value, user);
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_MILESTONE);
 		eventEmitter.emitUpdateOrAddValueToCards(cardRepository.findAllByIds(updatedAndAdded.getLeft()),
-				cardRepository.findAllByIds(updatedAndAdded.getRight()));
+				cardRepository.findAllByIds(updatedAndAdded.getRight()), labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -147,7 +152,7 @@ public class BulkOperationLabelController {
 	public void addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.addUserLabel(projectShortName, op.labelId, op.value, op.cardIds, user);
-		eventEmitter.emitUpdateOrAddValueToCards(Collections.<CardFull>emptyList(), cardRepository.findAllByIds(affected));
+		eventEmitter.emitUpdateOrAddValueToCards(Collections.<CardFull>emptyList(), cardRepository.findAllByIds(affected), op.labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
