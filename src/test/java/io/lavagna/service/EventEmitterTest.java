@@ -71,6 +71,9 @@ public class EventEmitterTest {
 
 	@Mock
 	private SimpMessageSendingOperations simpMessageSendingOperations;
+	
+	@Mock
+	private ApiHooksService apiHooksService;
 
 	private EventEmitter eventEmitter;
 	private ArgumentCaptor<EventEmitter.Event> argument;
@@ -81,7 +84,7 @@ public class EventEmitterTest {
 	public void prepare() {
 		MockitoAnnotations.initMocks(this);
 
-		eventEmitter = new EventEmitter(simpMessageSendingOperations);
+		eventEmitter = new EventEmitter(simpMessageSendingOperations, apiHooksService);
 		argument = ArgumentCaptor.forClass(EventEmitter.Event.class);
 
 		Helper.createUser(userRepository, "test", "test-user");
@@ -101,7 +104,7 @@ public class EventEmitterTest {
 
 	@Test
 	public void emitCreateProjectTest() {
-		eventEmitter.emitCreateProject("TEST");
+		eventEmitter.emitCreateProject("TEST", user);
 
 		verify(simpMessageSendingOperations).convertAndSend(eq("/event/project"), argument.capture());
 		assertEquals("TEST", argument.getValue().getPayload());
@@ -109,7 +112,7 @@ public class EventEmitterTest {
 
 	@Test
 	public void emitUpdateProjectTest() {
-		eventEmitter.emitUpdateProject("TEST");
+		eventEmitter.emitUpdateProject("TEST", user);
 
 		verify(simpMessageSendingOperations).convertAndSend(eq("/event/project"), argument.capture());
 		assertEquals("TEST", argument.getValue().getPayload());
@@ -148,7 +151,7 @@ public class EventEmitterTest {
 		Card card = cardService.createCard("card1", col1.getId(), new Date(), user);
 		CardFull cardFull = cardRepository.findFullBy(card.getId());
 
-		eventEmitter.emitRemoveLabelValueToCards(Arrays.asList(cardFull));
+		eventEmitter.emitRemoveLabelValueToCards(Arrays.asList(cardFull), 0, null);
 
 		verifyLabelEvents(cardFull);
 	}
@@ -165,7 +168,7 @@ public class EventEmitterTest {
 
 	@Test
 	public void emitUpdateBoardTest() {
-		eventEmitter.emitUpdateBoard("TEST");
+		eventEmitter.emitUpdateBoard("TEST", user);
 
 		verify(simpMessageSendingOperations).convertAndSend(eq("/event/board/TEST"), argument.capture());
 		assertEquals(null, argument.getValue().getPayload());

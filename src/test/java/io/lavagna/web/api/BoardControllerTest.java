@@ -118,7 +118,7 @@ public class BoardControllerTest {
 		updatedBoard.setName("New name");
 		updatedBoard.setDescription("Updated desc");
 
-		boardController.updateBoard(shortName, updatedBoard);
+		boardController.updateBoard(shortName, updatedBoard, user);
 
 		verify(boardRepository).updateBoard(eq(b.getId()), eq("New name"), eq("Updated desc"), eq(false));
 	}

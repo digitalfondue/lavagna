@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -126,7 +127,7 @@ public class ExcelExportServiceTest {
         Card card = cardService.createCard("card", column.getId(), new Date(), user);
 
         // Init milestone
-        CardLabel l = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE", CardLabel.LabelDomain.SYSTEM);
+        CardLabel l = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM);
         LabelListValue mlv = cardLabelRepository.addLabelListValue(l.getId(), "1.0");
 
         // Add labels

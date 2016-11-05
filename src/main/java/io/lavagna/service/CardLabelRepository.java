@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import io.lavagna.common.Constants;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
@@ -74,7 +75,7 @@ public class CardLabelRepository {
     @Transactional(readOnly = false)
     public CardLabel addLabel(int projectId, boolean unique, LabelType labelType, LabelDomain labelDomain, String name,
         int color) {
-        final boolean reservedName = CardLabel.RESERVED_SYSTEM_LABELS_NAME.contains(name);
+        final boolean reservedName = Constants.RESERVED_SYSTEM_LABELS_NAME.contains(name);
         Validate.isTrue((labelDomain == LabelDomain.SYSTEM && reservedName)
             || (labelDomain == LabelDomain.USER && !reservedName), name + " is a reserved system label name");
 

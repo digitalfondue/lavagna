@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import static io.lavagna.common.Constants.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,8 +92,8 @@ public class MilestoneControllerTest {
 
     @Test
     public void testFindCardsByMilestone() {
-        when(cardLabelRepository.findLabelByName(1, "MILESTONE", CardLabel.LabelDomain.SYSTEM)).thenReturn(
-            new CardLabel(1, 1, true, CardLabel.LabelType.STRING, CardLabel.LabelDomain.SYSTEM, "MILESTONE", 0));
+        when(cardLabelRepository.findLabelByName(1, SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM)).thenReturn(
+            new CardLabel(1, 1, true, CardLabel.LabelType.STRING, CardLabel.LabelDomain.SYSTEM, SYSTEM_LABEL_MILESTONE, 0));
         when(projectService.findByShortName("TEST")).thenReturn(new Project(1, "test", "TEST", "test project", false));
 
         List<MilestoneCount> counts = new ArrayList<>();

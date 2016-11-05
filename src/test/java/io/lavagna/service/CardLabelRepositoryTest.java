@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -103,7 +104,7 @@ public class CardLabelRepositoryTest {
 
 	@Test
 	public void testFindLabelByName() {
-		String milestoneName = "MILESTONE";
+		String milestoneName = SYSTEM_LABEL_MILESTONE;
 		Assert.assertEquals(milestoneName,
 				cardLabelRepository.findLabelByName(project.getId(), milestoneName, CardLabel.LabelDomain.SYSTEM)
 						.getName());
@@ -112,7 +113,7 @@ public class CardLabelRepositoryTest {
 	@Test
 	public void testFindLabelByNameWith2Projects() {
 		projectService.create("test2", "TEST2", "desc");
-		String milestoneName = "MILESTONE";
+		String milestoneName = SYSTEM_LABEL_MILESTONE;
 		Assert.assertEquals(milestoneName,
 				cardLabelRepository.findLabelByName(project.getId(), milestoneName, CardLabel.LabelDomain.SYSTEM)
 						.getName());

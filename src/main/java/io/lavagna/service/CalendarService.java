@@ -16,8 +16,9 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
 import static io.lavagna.service.SearchFilter.filter;
-import io.lavagna.common.Constants;
+
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.CardFullWithCounts;
@@ -109,14 +110,14 @@ public class CalendarService {
 
     private void getMilestoneEventsFromProject(CalendarEventHandler handler, UserWithPermission user, Project project)
         throws ParseException, URISyntaxException {
-        CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), "MILESTONE",
+        CardLabel milestoneLabel = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_MILESTONE,
             CardLabel.LabelDomain.SYSTEM);
 
         for (LabelListValueWithMetadata m : cardLabelRepository.findListValuesByLabelId(milestoneLabel.getId())) {
             if (m.getMetadata().containsKey("releaseDate")) {
 
                 Date date = DateUtils.parseDate(m.getMetadata().get("releaseDate"),
-                    Constants.DATE_FORMAT, "dd.MM.yyyy");
+                    DATE_FORMAT, "dd.MM.yyyy");
                 java.util.Calendar cal = java.util.Calendar.getInstance();
                 cal.setTime(date);
                 cal.set(java.util.Calendar.HOUR, 12);

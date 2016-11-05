@@ -16,6 +16,8 @@
  */
 package io.lavagna.web.api;
 
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Permission;
@@ -73,7 +75,8 @@ public class BulkOperationLabelController {
 	public void removeAssign(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.removeAssign(projectShortName, op.cardIds, op.value, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_ASSIGNED);
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, op.value);
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -99,7 +102,8 @@ public class BulkOperationLabelController {
 	public void removeDueDate(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.removeDueDate(projectShortName, op.cardIds, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_DUE_DATE);
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, null);
 	}
 	
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -115,7 +119,8 @@ public class BulkOperationLabelController {
 	public void unWatch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.removeWatch(projectShortName, op.cardIds, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_WATCHED_BY);
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, new LabelValue(user.getId()));
 	}
 
 	@ExpectPermission(Permission.UPDATE_CARD)
@@ -133,7 +138,8 @@ public class BulkOperationLabelController {
 	public void removeMilestone(@PathVariable("projectShortName") String projectShortName,
 			@RequestBody BulkOperation op, User user) {
 		List<Integer> affected = bulkOperationService.removeMilestone(projectShortName, op.cardIds, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_MILESTONE);
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, null);
 	}
 	
 	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
@@ -149,7 +155,7 @@ public class BulkOperationLabelController {
 	public void removeLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
 			User user) {
 		List<Integer> affected = bulkOperationService.removeUserLabel(projectShortName, op.labelId, op.value, op.cardIds, user);
-		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected));
+		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), op.labelId, op.value);
 	}
 
 	

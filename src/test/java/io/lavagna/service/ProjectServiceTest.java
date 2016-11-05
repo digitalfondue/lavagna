@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -266,7 +267,7 @@ public class ProjectServiceTest {
 	    
 	    CardLabel milestoneLabel = null;
         for (CardLabel cl : metadata.getLabels().values()) {
-            if ("MILESTONE".equals(cl.getName()) && cl.getDomain() == LabelDomain.SYSTEM) {
+            if (SYSTEM_LABEL_MILESTONE.equals(cl.getName()) && cl.getDomain() == LabelDomain.SYSTEM) {
                 milestoneLabel = cl;
             }
         }

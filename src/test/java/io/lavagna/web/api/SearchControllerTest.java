@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import static io.lavagna.common.Constants.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
@@ -96,7 +97,7 @@ public class SearchControllerTest {
 
 		searchController.findMilestones("test", null, user);
 
-		verify(cardLabelRepository).findListValuesBy(eq(CardLabel.LabelDomain.SYSTEM), eq("MILESTONE"), eq(term), isNull(Integer.class), eq(user));
+		verify(cardLabelRepository).findListValuesBy(eq(CardLabel.LabelDomain.SYSTEM), eq(SYSTEM_LABEL_MILESTONE), eq(term), isNull(Integer.class), eq(user));
 	}
 
 	@Test

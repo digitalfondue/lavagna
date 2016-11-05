@@ -97,10 +97,10 @@ public class ProjectControllerTest {
 		create.setShortName("NAME");
 		create.setName("name");
 
-		projectController.create(create);
+		projectController.create(create, user);
 
 		verify(projectService).create("name", "NAME", "desc");
-		verify(eventEmitter).emitCreateProject("NAME");
+		verify(eventEmitter).emitCreateProject("NAME", user);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class ProjectControllerTest {
 		updatedProject.setName("New name");
 		updatedProject.setDescription("Updated desc");
 
-		projectController.updateProject(projectShortName, updatedProject);
+		projectController.updateProject(projectShortName, updatedProject, user);
 
 		verify(projectService).updateProject(eq(project.getId()), eq("New name"), eq("Updated desc"), eq(false));
 	}
@@ -120,7 +120,7 @@ public class ProjectControllerTest {
 		updatedColumnDefinition.setDefinition(10);
 		updatedColumnDefinition.setColor(5);
 
-		projectController.updateColumnDefinition(project.getShortName(), updatedColumnDefinition);
+		projectController.updateColumnDefinition(project.getShortName(), updatedColumnDefinition, user);
 
 		verify(projectService).updateColumnDefinition(project.getId(), updatedColumnDefinition.getDefinition(),
 				updatedColumnDefinition.getColor());
@@ -133,10 +133,10 @@ public class ProjectControllerTest {
 		cb.setName("name");
 		cb.setShortName("NAME");
 
-		projectController.createBoard("TEST", cb);
+		projectController.createBoard("TEST", cb, user);
 
 		verify(boardRepository).createNewBoard("name", "NAME", "desc", project.getId());
-		verify(eventEmitter).emitCreateBoard("TEST");
+		verify(eventEmitter).emitCreateBoard("TEST", "NAME", user);
 	}
 
 	@Test

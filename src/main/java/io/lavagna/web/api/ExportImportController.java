@@ -95,7 +95,7 @@ public class ExportImportController {
 	@RequestMapping(value = "/api/import/trello", method = RequestMethod.POST)
 	@ResponseBody
 	public void importFromTrello(@RequestBody TrelloImportRequest importRequest, User user) {
-		TrelloImportResponse result = importService.importFromTrello(importRequest);
+		TrelloImportResponse result = importService.importFromTrello(importRequest, user);
 		importService.saveTrelloBoardsToDb(importRequest.getProjectShortName(), result, user);
 	}
 

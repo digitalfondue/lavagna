@@ -57,6 +57,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static io.lavagna.common.Constants.*;
+
 @Service
 public class ImportService {
 
@@ -114,7 +116,7 @@ public class ImportService {
 		return response;
 	}
 
-	public TrelloImportResponse importFromTrello(TrelloImportRequest importRequest) {
+	public TrelloImportResponse importFromTrello(TrelloImportRequest importRequest, User user) {
 		Trello trello = new TrelloImpl(importRequest.getApiKey(), importRequest.getSecret());
 
 		// Cache the user mappings
@@ -132,13 +134,13 @@ public class ImportService {
 				continue;
 			}
 
-			eventEmitter.emitImportProject(importRequest.getImportId(), currentBoard, boardsToImport, board.getName());
+			eventEmitter.emitImportProject(importRequest.getImportId(), currentBoard, boardsToImport, board.getName(), user);
 
 			TrelloBoard tBoard = new TrelloBoard(boardShortName, board.getName(), board.getDesc());
 			importBoard(trello, tImport, board, tBoard, lavagnaUsers, importRequest.isImportArchived());
 			tImport.boards.add(tBoard);
 		}
-		eventEmitter.emitImportProject(importRequest.getImportId(), boardsToImport, boardsToImport, "");
+		eventEmitter.emitImportProject(importRequest.getImportId(), boardsToImport, boardsToImport, "", user);
 		return tImport;
 	}
 
@@ -275,10 +277,10 @@ public class ImportService {
 			}
 		}
 
-		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(projectId, "DUE_DATE",
+		CardLabel dueDateLabel = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_DUE_DATE,
 				CardLabel.LabelDomain.SYSTEM);
 
-		CardLabel assignedLabel = cardLabelRepository.findLabelByName(projectId, "ASSIGNED",
+		CardLabel assignedLabel = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_ASSIGNED,
 				CardLabel.LabelDomain.SYSTEM);
 
 		// Import the boards

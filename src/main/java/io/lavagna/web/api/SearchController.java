@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import static io.lavagna.common.Constants.*;
 import io.lavagna.common.Json;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
@@ -157,7 +158,7 @@ public class SearchController {
         required = false) String projectName, UserWithPermission userWithPermission) {
         Integer projectId = toProjectId(projectName);
         return cardLabelRepository
-            .findListValuesBy(LabelDomain.SYSTEM, "MILESTONE", term, projectId, userWithPermission);
+            .findListValuesBy(LabelDomain.SYSTEM, SYSTEM_LABEL_MILESTONE, term, projectId, userWithPermission);
     }
 
     @RequestMapping(value = "/api/search/labels", method = RequestMethod.GET)

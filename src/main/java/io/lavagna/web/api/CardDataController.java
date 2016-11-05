@@ -112,8 +112,10 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/description", method = RequestMethod.POST)
     @ResponseBody
     public int updateDescription(@PathVariable("cardId") int cardId, @RequestBody Content content, User user) {
+    	CardDataHistory previousDescription = cardDataService.findLatestDescriptionByCardId(cardId);
         int result = cardDataService.updateDescription(cardId, content.content, new Date(), user.getId());
-        eventEmitter.emitUpdateDescription(cardRepository.findBy(cardId).getColumnId(), cardId);
+        CardDataHistory newDescription = cardDataService.findLatestDescriptionByCardId(cardId);
+        eventEmitter.emitUpdateDescription(cardRepository.findColumnIdById(cardId), cardId, previousDescription, newDescription, user);
         return result;
     }
 
@@ -163,7 +165,7 @@ public class CardDataController {
     @ResponseBody
     public CardData createComment(@PathVariable("cardId") int cardId, @RequestBody Content commentData, User user) {
         CardData comment = cardDataService.createComment(cardId, commentData.content, new Date(), user.getId());
-        eventEmitter.emitCreateComment(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitCreateComment(cardRepository.findColumnIdById(cardId), cardId, comment, user);
         return comment;
     }
 
@@ -171,16 +173,18 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.POST)
     @ResponseBody
     public void updateComment(@PathVariable("commentId") int commentId, @RequestBody Content content, User user) {
+    	CardData previousComment = cardDataRepository.getDataLightById(commentId);
         cardDataService.updateComment(commentId, content.content, new Date(), user);
-        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId());
+        eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId(), previousComment, content.content, user);
     }
 
     @ExpectPermission(value = Permission.DELETE_CARD_COMMENT, ownershipChecker = CardCommentOwnershipChecker.class)
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteComment(@PathVariable("commentId") int commentId, User user) {
+    	CardData commentToDelete = cardDataRepository.getDataLightById(commentId);
         Event res = cardDataService.deleteComment(commentId, user, new Date());
-        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId());
+        eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId(), commentToDelete, user);
         return res;
     }
 
@@ -192,7 +196,8 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.COMMENT_DELETE);
 
         cardDataService.undoDeleteComment(event);
-        eventEmitter.emitUndoDeleteComment(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
+        CardData undeletedComment = cardDataRepository.getDataLightById(event.getDataId());
+        eventEmitter.emitUndoDeleteComment(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), undeletedComment, user);
 
         return event.getDataId();
     }
@@ -226,7 +231,7 @@ public class CardDataController {
 
         cardDataService.undoDeleteActionList(event);
         eventEmitter
-            .emitUndoDeleteActionList(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
+            .emitUndoDeleteActionList(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
 
         return event.getDataId();
     }
@@ -248,7 +253,7 @@ public class CardDataController {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionListId).getCardId();
         CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content,
             user.getId(), new Date());
-        eventEmitter.emitCreateActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitCreateActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return actionItem;
     }
 
@@ -258,7 +263,7 @@ public class CardDataController {
     public Event deleteActionItem(@PathVariable("actionItemId") int actionItemId, User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
         Event res = cardDataService.deleteActionItem(actionItemId, user, new Date());
-        eventEmitter.emitDeleteActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitDeleteActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return res;
     }
 
@@ -270,7 +275,7 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.ACTION_ITEM_DELETE);
 
         cardDataService.undoDeleteActionItem(event);
-        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findBy(event.getCardId()).getColumnId(),
+        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findColumnIdById(event.getCardId()),
             event.getCardId());
 
         return event.getDataId();
@@ -283,7 +288,7 @@ public class CardDataController {
         User user) {
         int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
         int res = cardDataService.toggleActionItem(actionItemId, status, user.getId(), new Date());
-        eventEmitter.emitToggleActionItem(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitToggleActionItem(cardRepository.findColumnIdById(cardId), cardId);
         return res;
     }
 
@@ -343,7 +348,8 @@ public class CardDataController {
             return Collections.emptyList();
         }
 
-        List<String> digests = new ArrayList<>();
+        List<String> digests = new ArrayList<>(files.size());
+        List<String> fileNames = new ArrayList<>(files.size());
         for (MultipartFile file : files) {
             Path p = Files.createTempFile("lavagna", "upload");
             try (InputStream fileIs = file.getInputStream()) {
@@ -356,13 +362,14 @@ public class CardDataController {
                     LOG.debug("file uploaded! size: {}, original name: {}, content-type: {}", file.getSize(),
                         file.getOriginalFilename(), file.getContentType());
                     digests.add(digest);
+                    fileNames.add(file.getOriginalFilename());
                 }
             } finally {
                 Files.delete(p);
                 LOG.debug("deleted temp file {}", p);
             }
         }
-        eventEmitter.emitUploadFile(cardRepository.findBy(cardId).getColumnId(), cardId);
+        eventEmitter.emitUploadFile(cardRepository.findColumnIdById(cardId), cardId, fileNames);
         return digests;
     }
 
@@ -409,8 +416,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/file/{fileId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteFile(@PathVariable("fileId") int fileId, User user) {
+    	FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(fileId);
         Event result = cardDataService.deleteFile(fileId, user, new Date());
-        eventEmitter.emitDeleteFile(cardRepository.findBy(result.getCardId()).getColumnId(), result.getCardId());
+        eventEmitter.emitDeleteFile(cardRepository.findBy(result.getCardId()).getColumnId(), result.getCardId(), file.getName());
         return result;
     }
 
@@ -420,10 +428,9 @@ public class CardDataController {
     public int undoDeleteFile(@PathVariable("eventId") int eventId, User user) {
         Event event = eventRepository.getEventById(eventId);
         Validate.isTrue(event.getEvent() == EventType.FILE_DELETE);
-
         cardDataService.undoDeleteFile(event);
-        eventEmitter.emiteUndoDeleteFile(cardRepository.findBy(event.getCardId()).getColumnId(), event.getCardId());
-
+        FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(event.getDataId());
+        eventEmitter.emiteUndoDeleteFile(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), file.getName());
         return event.getDataId();
     }
 

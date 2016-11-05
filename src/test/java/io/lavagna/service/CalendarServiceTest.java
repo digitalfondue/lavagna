@@ -16,6 +16,8 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
+
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -186,7 +188,7 @@ public class CalendarServiceTest {
 
         Date now = new Date();
 
-        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_DUE_DATE, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
         labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 
@@ -210,15 +212,15 @@ public class CalendarServiceTest {
 
         Date now = new Date();
 
-        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
+        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
             user, now);
 
-        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
             user, now);
 
-        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_DUE_DATE, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
         labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 
@@ -242,17 +244,17 @@ public class CalendarServiceTest {
 
         Date now = new Date();
 
-        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
+        CardLabel assigned = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(assigned, assignedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
             user, now);
 
-        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+        CardLabel watched = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(watched, watchedCard.getId(), new CardLabelValue.LabelValue(user.getId()),
             user, now);
 
         CalendarInfo ci = calendarService.findCalendarInfoFromUser(user);
 
-        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), "DUE_DATE", LabelDomain.SYSTEM);
+        CardLabel dueDate = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_DUE_DATE, LabelDomain.SYSTEM);
         labelService.addLabelValueToCard(dueDate, assignedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
         labelService.addLabelValueToCard(dueDate, watchedCard.getId(), new CardLabelValue.LabelValue(now), user, now);
 

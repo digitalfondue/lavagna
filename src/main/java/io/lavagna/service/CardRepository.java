@@ -72,6 +72,10 @@ public class CardRepository {
 		}
 		return params;
 	}
+	
+	public Integer findColumnIdById(int cardId) {
+		return queries.findColumnIdById(cardId);
+	}
 
 	public List<CardFull> findAllByBoardShortName(String boardShortName) {
 		return queries.findAllByBoardShortName(boardShortName);

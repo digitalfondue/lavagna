@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -123,8 +124,8 @@ public class NotificationServiceTest {
 		card1 = cards.get(0);
 		card2 = cards.get(1);
 
-		assignedLabel = cardLabelRepository.findLabelByName(project.getId(), "ASSIGNED", LabelDomain.SYSTEM);
-		watchedLabel = cardLabelRepository.findLabelByName(project.getId(), "WATCHED_BY", LabelDomain.SYSTEM);
+		assignedLabel = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_ASSIGNED, LabelDomain.SYSTEM);
+		watchedLabel = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
 	}
 
 	@Test
