@@ -69,7 +69,6 @@
         };
 
         var getApiToCall = function () {
-            console.log(ctrl.project);
             if (ctrl.project) {
                 return User.getProjectCalendar(ctrl.project.shortName);
             }

@@ -25,7 +25,6 @@
 
                 if (hasTasks(stats)) {
                     ctrl.normalizedStats = createNormalizedData(stats);
-                    console.log(ctrl.normalizedStats);
                 }
 		    });
 		};
