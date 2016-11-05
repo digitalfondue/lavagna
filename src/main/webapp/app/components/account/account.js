@@ -11,10 +11,10 @@
         	isCurrentUser: '<'
         },
         templateUrl: 'app/components/account/account.html',
-        controller: ['$window', 'User', 'Notification', AccountController],
+        controller: ['$window', 'User', 'CopyToClipboard', 'Notification', AccountController],
     });
 
-    function AccountController($window, User, Notification) {
+    function AccountController($window, User, CopyToClipboard, Notification) {
         var ctrl = this;
 
         User.currentCachedUser().then(function (user) {
@@ -78,6 +78,14 @@
                 }, function () {
                     Notification.addAutoAckNotification('error', {key: 'notification.user.update.error'}, false);
                 });
+        }
+
+        ctrl.copyCalendarUrl = function() {
+            CopyToClipboard.copy(ctrl.calendarFeedUrl).then(function() {
+                Notification.addAutoAckNotification('success', {key: 'account.calendar.copy.success'}, false);
+            }, function() {
+                Notification.addAutoAckNotification('warning', {key: 'account.calendar.copy.failure'}, false);
+            })
         }
     };
 })();

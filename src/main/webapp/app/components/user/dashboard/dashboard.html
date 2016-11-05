@@ -1,6 +1,6 @@
 <div class="row lvg-content lvg-content__row">
     <div class="col-md-3 col-xs-12 lvg-content__row-item">
-        <h2 class="md-title">General Info</h2>
+        <h2 class="md-title" translate>user.dashboard.general</h2>
         <div class="row row-inherit">
             <div class="col-xs-12">
                 <md-card>
@@ -13,8 +13,9 @@
                     <md-card-content>
                         <table>
                             <tbody>
-                            <tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
-                            <tr><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
+                            <tr><th class="lvg-user-dashboard__user-info__th" translate>user.dashboard.general.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
+                            <tr><th class="lvg-user-dashboard__user-info__th" ng-if="$ctrl.user.email != null" translate>common.label.email</th><td>{{::$ctrl.user.email}}</td></tr>
+                            <tr><th  class="lvg-user-dashboard__user-info__th" translate>user.dashboard.general.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
                             </tbody>
                         </table>
                     </md-card-content>
@@ -23,7 +24,7 @@
         </div>
     </div>
     <div class="col-md-9 col-xs-12 lvg-content__row-item">
-        <h2 translate class="md-title">partials.user.mostActiveProjects</h2>
+        <h2 translate class="md-title">user.dashboard.mostActiveProjects</h2>
         <div class="row row-inherit">
             <div class="col-md-6 col-xs-12">
                 <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
@@ -39,7 +40,7 @@
             </div>
         </div>
 
-        <h2 translate class="md-title">partials.user.latestActivity</h2>
+        <h2 translate class="md-title">user.dashboard.latestActivity</h2>
         <md-card>
             <md-card-content>
                 <lvg-chart type="Line" data="$ctrl.activityChartData" height="220"
@@ -48,7 +49,10 @@
                 <div ng-repeat="dateKey in $ctrl.eventsGroupedByDate.keyOrder">
                     <md-divider></md-divider>
                     <div ng-init="$ctrl.view.showList[$index] = false" class="row row-inherit middle-xs between-xs">
-                        <span class="lvg-line-height-as-md-button lvg-user-dashboard__padding-left">{{dateKey}} : {{$ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events</span>
+                        <span class="lvg-line-height-as-md-button lvg-user-dashboard__padding-left"
+                              translate="user.dashboard.latestActivity.entry"
+                              translate-values="{ date: dateKey, events: $ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}">
+                        </span>
                         <md-button class="md-icon-button" ng-click="$ctrl.view.showList[$index] = !$ctrl.view.showList[$index]">
                             <md-icon md-svg-icon="expand_more" ng-hide="$ctrl.view.showList[$index]"></md-icon>
                             <md-icon md-svg-icon="expand_less" ng-show="$ctrl.view.showList[$index]"></md-icon>

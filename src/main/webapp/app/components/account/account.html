@@ -4,54 +4,61 @@
     data-is-current-user="$ctrl.isCurrentUser">
 </lvg-navbar-user>
 
-<div class="lvg-content lvg-content__row-item " md-whiteframe="1" lvg-has-permission="UPDATE_PROFILE">
-	<md-content>
-	<form role="form" ng-submit="$ctrl.update($ctrl.profile)">
-		<md-content class="lvg-panel__body">
-			<md-input-container class="md-block">
-				<label><span translate>partials.me.displayName</span></label>
-				<input type="text" ng-model="$ctrl.profile.displayName" placeholder="{{'partials.me.displayName.placeholder' | translate}}">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.me.email</span></label>
-				<input type="email" ng-model="$ctrl.profile.email" placeholder="{{'partials.me.email.placeholder' | translate}}">
-			</md-input-container>
-			<div>
-				<md-checkbox ng-model="$ctrl.profile.emailNotification"><span translate>partials.me.enableEmailNotification</span></md-checkbox>
-			</div>
-			<div>
-				<md-checkbox ng-model="$ctrl.profile.skipOwnNotifications"><span translate>partials.me.enableSkipOwnNotifications</span></md-checkbox>
-			</div>
-		</md-content>
-		<div>
-			<md-button type="submit" class="md-primary"><span translate>partials.me.update</span></md-button>
-		</div>
-	</form>
-	
-	<md-divider></md-divider>
-
-	<md-content class="lvg-panel__body">
-		<p>
-			<md-checkbox ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"><span translate>partials.me.calendar.disableFeed</span></md-checkbox>
-		</p>
-		
-		<md-input-container class="md-block">
-		  <label><span translate>partials.me.calendar.description</span></label>
-		  <input type="text" disabled ng-model="$ctrl.calendarFeedUrl">
-		</md-input-container>
-	</md-content>
-	
-	<md-divider></md-divider>
-	
-	
-	<md-content>
-		<div>
-			<md-button ng-click="$ctrl.clearAllTokens()"><span translate>partials.me.clearAllTokens</span></md-button>
-		</div>
-		<div>
-			<md-button ng-click="$ctrl.clearCalendarToken()"><span translate>partials.me.clearCalendarToken</span></md-button>
-		</div>
-	</md-content>
-	
-	</md-content>
+<div class="lvg-content lvg-content__row-item" lvg-has-permission="UPDATE_PROFILE">
+    <div class="row row-inherit">
+        <div class="col-md-6 col-xs-12">
+            <form role="form" ng-submit="$ctrl.update($ctrl.profile)">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="lvg-headline" translate>account.profile</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <md-input-container class="md-block">
+                            <label><span translate>common.label.displayName</span></label>
+                            <input type="text" ng-model="$ctrl.profile.displayName" placeholder="{{'account.profile.displayName.placeholder' | translate}}">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label><span translate>common.label.email</span></label>
+                            <input type="email" ng-model="$ctrl.profile.email" placeholder="{{'account.profile.email.placeholder' | translate}}">
+                        </md-input-container>
+                        <div>
+                            <md-checkbox ng-model="$ctrl.profile.emailNotification"><span translate>account.profile.enableEmailNotification</span></md-checkbox>
+                        </div>
+                        <div>
+                            <md-checkbox ng-model="$ctrl.profile.skipOwnNotifications"><span translate>account.profile.enableSkipOwnNotifications</span></md-checkbox>
+                        </div>
+                    </md-card-content>
+                    <md-card-actions>
+                        <md-button type="submit" class="md-primary"><span translate>button.update</span></md-button>
+                        <md-button type="button" class="md-default" ng-click="$ctrl.clearAllTokens()"><span translate>account.button.clearAllTokens</span></md-button>
+                    </md-card-actions>
+                </md-card>
+            </form>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="lvg-headline" translate>account.calendar</span>
+                        <span class="lvg-sub-headline" translate>account.calendar.description</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p class="break-all">
+                        {{::$ctrl.calendarFeedUrl}}
+                    </p>
+                    <md-divider></md-divider>
+                    <p>
+                        <md-checkbox ng-model="$ctrl.disabledFeed" ng-change="$ctrl.updateFeed()"><span translate>account.calendar.disableFeed</span></md-checkbox>
+                    </p>
+                </md-card-content>
+                <md-card-actions>
+                    <md-button ng-click="$ctrl.copyCalendarUrl()"><span translate>account.button.copyCalendarUrl</span></md-button>
+                    <md-button ng-click="$ctrl.clearCalendarToken()"><span translate>account.button.clearCalendarToken</span></md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
 </div>
