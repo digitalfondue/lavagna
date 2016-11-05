@@ -1,0 +1,10 @@
+.lvg-stats-panel-project-simple__title-tasks {
+    display: flex;
+    height: 5px;
+    width: 100%;
+}
+
+.lvg-stats-panel-project-simple__title-task {
+    display: inline-block;
+    height: 5px;
+}

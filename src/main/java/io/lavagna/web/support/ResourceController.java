@@ -271,8 +271,6 @@ public class ResourceController {
                 "/js/angular-translate.min.js",//
                 "/js/angular-material-calendar.min.js",//
                 //
-                "/js/d3.v3.min.js", "/js/cal-heatmap.min.js",//
-
                 "/js/highlight.pack.js",//
                 "/js/marked.js",//
                 "/js/Sortable.js",//

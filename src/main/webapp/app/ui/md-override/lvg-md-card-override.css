@@ -35,6 +35,13 @@ md-card .lvg-headline {
     text-overflow: ellipsis;
 }
 
+md-card .lvg-subhead {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0,0,0,0.54);
+    padding: 0
+}
+
 md-card .lvg-sub-headline {
     font-size: 12px;
     font-weight: 400;

@@ -12,19 +12,6 @@
 	padding-bottom:8px;
 }
 
-.lvg-user-dashboard__project md-card {
-	margin-left:0!important;
-	margin-right:0!important;
-}
-
-.lvg-user-dashboard__white-bg {
-	background-color: white;
-}
-
-.lvg-user-dashboard__heatmap {
-	margin-top:12px;
+.lvg-user-dashboard__activity-chart {
 	margin-bottom:12px;
-    width: 788px;
-    margin-left: auto;
-    margin-right: auto;
 }

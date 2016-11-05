@@ -1,49 +1,71 @@
-<div class="lvg-content">
-	<h2 translate class="md-title">partials.user.generalInfo</h2>
+<div class="row lvg-content lvg-content__row">
+    <div class="col-md-3 col-xs-12 lvg-content__row-item">
+        <h2 class="md-title">General Info</h2>
+        <div class="row row-inherit">
+            <div class="col-xs-12">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="lvg-headline">{{::($ctrl.user.displayName != null ? $ctrl.user.displayName : $ctrl.userName)}}</span>
+                            <span class="lvg-subhead" ng-if="$ctrl.user.displayName != null">{{::$ctrl.userName}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <table>
+                            <tbody>
+                            <tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
+                            <tr><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
+                            </tbody>
+                        </table>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 col-xs-12 lvg-content__row-item">
+        <h2 translate class="md-title">partials.user.mostActiveProjects</h2>
+        <div class="row row-inherit">
+            <div class="col-md-6 col-xs-12">
+                <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
+                                                project="ab.project"
+                                                class="lvg-user-dashboard__project">
+                </lvg-stats-panel-project-simple>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsRight | limitTo: 4"
+                                                project="ab.project"
+                                                class="lvg-user-dashboard__project">
+                </lvg-stats-panel-project-simple>
+            </div>
+        </div>
 
-	<md-content class="lvg-panel__body lvg-user-dashboard__white-bg" md-whiteframe="1">
-		<table>
-			<tbody>
-				<tr><th class="lvg-user-dashboard__user-info__th" translate>partials.user.provider</th><td>{{::$ctrl.userProvider}}</td></tr>
-				<tr><th class="lvg-user-dashboard__user-info__th"  translate>partials.user.username</th><td>{{::$ctrl.userName}}</td></tr>
-				<tr ng-if="$ctrl.user.displayName != null"><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.displayName</th><td>{{::$ctrl.user.displayName}}</td></tr>
-				<tr><th  class="lvg-user-dashboard__user-info__th" translate>partials.user.memberSince</th><td>{{::$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
-			</tbody>
-		</table>
-	</md-content>
-</div>
+        <h2 translate class="md-title">partials.user.latestActivity</h2>
+        <md-card>
+            <md-card-content>
+                <lvg-chart type="Line" data="$ctrl.activityChartData" height="220"
+                           options="$ctrl.activityChartOptions"
+                           class="img-responsive lvg-user-dashboard__activity-chart"></lvg-chart>
+                <div ng-repeat="dateKey in $ctrl.eventsGroupedByDate.keyOrder">
+                    <md-divider></md-divider>
+                    <div ng-init="$ctrl.view.showList[$index] = false" class="row row-inherit middle-xs between-xs">
+                        <span class="lvg-line-height-as-md-button lvg-user-dashboard__padding-left">{{dateKey}} : {{$ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events</span>
+                        <md-button class="md-icon-button" ng-click="$ctrl.view.showList[$index] = !$ctrl.view.showList[$index]">
+                            <md-icon md-svg-icon="expand_more" ng-hide="$ctrl.view.showList[$index]"></md-icon>
+                            <md-icon md-svg-icon="expand_less" ng-show="$ctrl.view.showList[$index]"></md-icon>
+                        </md-button>
+                    </div>
 
-<div class="lvg-content" ng-if="$ctrl.activeProjects.length > 0">
-	<h2 translate class="md-title">partials.user.mostActiveProjects</h2>
-	
-	<lvg-stats-panel-project data-ng-repeat="ab in $ctrl.profile.activeProjects | limitTo: 5" project="ab.project" class="lvg-user-dashboard__project"></lvg-stats-panel-project>
-</div>
-
-<div class="lvg-content">
-	<h2 translate class="md-title">partials.user.latestActivity</h2>
-	
-	<md-content md-whiteframe="1" class="lvg-container-bg">
-		<div id="cal-heatmap" class="lvg-user-dashboard__heatmap"></div>
-
-		<div ng-repeat="dateKey in $ctrl.eventsGroupedByDate.keyOrder">
-			<md-divider></md-divider>
-			<div ng-init="$ctrl.view.showList[$index] = false" class="row row-inherit middle-xs between-xs">
-				<span class="lvg-line-height-as-md-button lvg-user-dashboard__padding-left">{{dateKey}} : {{$ctrl.eventsGroupedByDate.groupedByDate[dateKey].length}} events</span>
-				<md-button class="md-icon-button" ng-click="$ctrl.view.showList[$index] = !$ctrl.view.showList[$index]">
-					<md-icon md-svg-icon="expand_more" ng-hide="$ctrl.view.showList[$index]"></md-icon>
-					<md-icon md-svg-icon="expand_less" ng-show="$ctrl.view.showList[$index]"></md-icon>
-				</md-button>
-			</div>
-			
-			<md-list ng-if="$ctrl.view.showList[$index]">
-				<md-list-item ng-repeat="activity in $ctrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id">
-					<div class="lvg-user-dashboard__padding-left lvg-user-dashboard__padding-top-bottom">
-						<span ng-bind="::(activity.time | dateIncremental)"></span>: <lvg-card-link card-id="activity.cardId"></lvg-card-link> 
-						<div><lvg-activity event="activity"></lvg-activity></div>
-					</div>
-					<md-divider ng-if="!$last"></md-divider>
-				</md-list-item>
-			</md-list>
-		</div>
-	</md-content>
+                    <md-list ng-if="$ctrl.view.showList[$index]">
+                        <md-list-item ng-repeat="activity in $ctrl.eventsGroupedByDate.groupedByDate[dateKey] | orderBy: '-time' track by activity.id">
+                            <div class="lvg-user-dashboard__padding-left lvg-user-dashboard__padding-top-bottom">
+                                <span ng-bind="::(activity.time | dateIncremental)"></span>: <lvg-card-link card-id="activity.cardId"></lvg-card-link>
+                                <div><lvg-activity event="activity"></lvg-activity></div>
+                            </div>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
 </div>
