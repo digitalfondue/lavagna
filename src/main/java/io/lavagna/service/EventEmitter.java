@@ -356,13 +356,17 @@ public class EventEmitter {
 		}
 	}
 
-	public void emitAddLabelValueToCards(List<CardFull> affectedCards) {
+	public void emitAddLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
 		sendEventForLabel(affectedCards, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
+		apiHookService.addLabelValueToCards(affectedCards, labelId, labelValue);
 	}
 
-	public void emitUpdateOrAddValueToCards(List<CardFull> updated, List<CardFull> added) {
+	public void emitUpdateOrAddValueToCards(List<CardFull> updated, List<CardFull> added, int labelId, LabelValue labelValue) {
 		sendEventForLabel(updated, LavagnaEvent.UPDATE_LABEL_VALUE);
 		sendEventForLabel(added, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
+		
+		apiHookService.addLabelValueToCards(added, labelId, labelValue);
+		apiHookService.updateLabelValueToCards(updated, labelId, labelValue);
 	}
 
 	public void emitAddLabel(String projectShortName) {

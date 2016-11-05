@@ -141,7 +141,7 @@ public class EventEmitterTest {
 		Card card = cardService.createCard("card1", col1.getId(), new Date(), user);
 		CardFull cardFull = cardRepository.findFullBy(card.getId());
 
-		eventEmitter.emitAddLabelValueToCards(Arrays.asList(cardFull));
+		eventEmitter.emitAddLabelValueToCards(Arrays.asList(cardFull), 0, null);
 
 		verifyLabelEvents(cardFull);
 	}
@@ -161,7 +161,7 @@ public class EventEmitterTest {
 		Card card = cardService.createCard("card1", col1.getId(), new Date(), user);
 		CardFull cardFull = cardRepository.findFullBy(card.getId());
 
-		eventEmitter.emitUpdateOrAddValueToCards(Arrays.asList(cardFull), new ArrayList<CardFull>());
+		eventEmitter.emitUpdateOrAddValueToCards(Arrays.asList(cardFull), new ArrayList<CardFull>(), 0, null);
 
 		verifyLabelEvents(cardFull);
 	}
