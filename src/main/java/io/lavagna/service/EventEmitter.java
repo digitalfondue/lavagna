@@ -270,9 +270,10 @@ public class EventEmitter {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.REORDER_ACTION_LIST));
 	}
 
-	public void emitCreateActionItem(int columnId, int cardId) {
+	public void emitCreateActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.REORDER_ACTION_LIST));
+		apiHookService.createActionItem(cardId, actionItemListName, actionItem);
 	}
 
 	public void emitDeleteActionItem(int columnId, int cardId) {
@@ -302,9 +303,10 @@ public class EventEmitter {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_ITEM));
 	}
 
-	public void emitUndoDeleteActionList(int columnId, int cardId) {
+	public void emitUndoDeleteActionList(int columnId, int cardId, String name) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
+		apiHookService.undeletedActionList(cardId, name);
 	}
 
 	// ------------

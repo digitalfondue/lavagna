@@ -118,5 +118,12 @@ public class ApiHooksService {
 	public void updatedNameActionList(int cardId, String oldName, String newName) {
 		//FIXME run scripts		
 	}
+	
+	public void undeletedActionList(int cardId, String name) {
+		//FIXME run scripts		
+	}
 
+	public void createActionItem(int cardId, String actionItemListName, String actionItem) {
+		//FIXME run scripts
+	}
 }

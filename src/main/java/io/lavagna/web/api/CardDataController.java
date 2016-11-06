@@ -229,11 +229,9 @@ public class CardDataController {
     public int undoDeleteActionList(@PathVariable("eventId") int eventId, User user) {
         Event event = eventRepository.getEventById(eventId);
         Validate.isTrue(event.getEvent() == EventType.ACTION_LIST_DELETE);
-
         cardDataService.undoDeleteActionList(event);
-        eventEmitter
-            .emitUndoDeleteActionList(cardRepository.findColumnIdById(event.getCardId()), event.getCardId());
-
+        CardData actionList = cardDataRepository.getDataLightById(event.getDataId());
+        eventEmitter.emitUndoDeleteActionList(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), actionList.getContent());
         return event.getDataId();
     }
 
@@ -252,10 +250,10 @@ public class CardDataController {
     @ResponseBody
     public CardData createActionItem(@PathVariable("actionListId") int actionListId,
         @RequestBody Content actionItemData, User user) {
-        int cardId = cardDataRepository.getUndeletedDataLightById(actionListId).getCardId();
-        CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content,
-            user.getId(), new Date());
-        eventEmitter.emitCreateActionItem(cardRepository.findColumnIdById(cardId), cardId);
+        CardData actionList = cardDataRepository.getUndeletedDataLightById(actionListId);
+        int cardId = actionList.getCardId();
+        CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content, user.getId(), new Date());
+        eventEmitter.emitCreateActionItem(cardRepository.findColumnIdById(cardId), cardId, actionList.getContent(), actionItemData.content);
         return actionItem;
     }
 
