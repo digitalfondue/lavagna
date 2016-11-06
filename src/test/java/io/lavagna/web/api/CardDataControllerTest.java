@@ -166,6 +166,7 @@ public class CardDataControllerTest {
 				null, null, 0, null, null, null, null, null, null, null);
 		when(cardDataService.deleteActionList(eq(itemId), eq(user), any(Date.class))).thenReturn(event);
 		when(eventRepository.getEventById(eventId)).thenReturn(event);
+		when(cardDataRepository.getDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
 		cardDataController.deleteActionList(itemId, user);
 		cardDataController.undoDeleteActionList(eventId, user);
 	}
@@ -285,7 +286,7 @@ public class CardDataControllerTest {
 
 	@Test
 	public void updateActionList() {
-		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
+		when(cardDataRepository.getDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
 		Content data = new Content();
 		cardDataController.updateActionList(itemId, data, user);
 	}

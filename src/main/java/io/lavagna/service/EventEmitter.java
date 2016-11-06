@@ -250,17 +250,20 @@ public class EventEmitter {
 
 	// ------------ action list handling
 
-	public void emitCreateActionList(int cardId) {
+	public void emitCreateActionList(int cardId, String name) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_ACTION_LIST));
+		apiHookService.createActionList(cardId, name);
 	}
 
-	public void emitDeleteActionList(int columnId, int cardId) {
+	public void emitDeleteActionList(int columnId, int cardId, String name) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_ACTION_LIST));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_ACTION_LIST));
+		apiHookService.deleteActionList(cardId, name);
 	}
 
-	public void emitUpdateActionList(int cardId) {
+	public void emitUpdateActionList(int cardId, String oldName, String newName) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_ACTION_LIST));
+		apiHookService.updatedNameActionList(cardId, oldName, newName);
 	}
 
 	public void emitReorderActionLists(int cardId) {
@@ -302,7 +305,6 @@ public class EventEmitter {
 	public void emitUndoDeleteActionList(int columnId, int cardId) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
-
 	}
 
 	// ------------

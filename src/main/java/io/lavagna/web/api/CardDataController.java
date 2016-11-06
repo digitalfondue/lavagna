@@ -209,7 +209,7 @@ public class CardDataController {
         User user) {
         CardData actionList = cardDataService.createActionList(cardId, actionListData.content, user.getId(),
             new Date());
-        eventEmitter.emitCreateActionList(cardId);
+        eventEmitter.emitCreateActionList(cardId, actionListData.content);
         return actionList;
     }
 
@@ -218,7 +218,8 @@ public class CardDataController {
     @ResponseBody
     public Event deleteActionList(@PathVariable("actionListId") int actionListId, User user) {
         Event res = cardDataService.deleteActionList(actionListId, user, new Date());
-        eventEmitter.emitDeleteActionList(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId());
+        CardData actionList = cardDataRepository.getDataLightById(actionListId);
+        eventEmitter.emitDeleteActionList(cardRepository.findColumnIdById(res.getCardId()), res.getCardId(), actionList.getContent());
         return res;
     }
 
@@ -240,8 +241,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionlist/{actionListId}/update", method = RequestMethod.POST)
     @ResponseBody
     public int updateActionList(@PathVariable("actionListId") int actionListId, @RequestBody Content data, User user) {
+    	CardData actionList = cardDataRepository.getDataLightById(actionListId);
         int res = cardDataService.updateActionList(actionListId, data.content);
-        eventEmitter.emitUpdateActionList(cardDataRepository.getUndeletedDataLightById(actionListId).getCardId());
+        eventEmitter.emitUpdateActionList(actionList.getCardId(), actionList.getContent(), data.content);
         return res;
     }
 
