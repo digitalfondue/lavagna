@@ -22,10 +22,6 @@ import io.lavagna.model.Project;
 import io.lavagna.model.Role;
 import io.lavagna.model.UserToCreate;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.PermissionService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.UserRepository;
-import io.lavagna.service.UserService;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Arrays;

@@ -35,9 +35,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +49,7 @@ public class CardLabelController {
 	private final EventEmitter eventEmitter;
 	private final ProjectService projectService;
 
-	
+
 	public CardLabelController(ProjectService projectService,
 			CardLabelRepository cardLabelRepository, EventEmitter eventEmitter) {
 		this.cardLabelRepository = cardLabelRepository;
@@ -238,18 +235,38 @@ public class CardLabelController {
 	}
 	//
 
-	@Getter
-	@Setter
 	public static class Value {
 		private String value;
-	}
 
-	@Getter
-	@Setter
+        public String getValue() {
+            return this.value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
 	public static class SwapListValue {
 		private int first;
 		private int second;
-	}
+
+        public int getFirst() {
+            return this.first;
+        }
+
+        public int getSecond() {
+            return this.second;
+        }
+
+        public void setFirst(int first) {
+            this.first = first;
+        }
+
+        public void setSecond(int second) {
+            this.second = second;
+        }
+    }
 
 	private static Map<Integer, List<CardLabelValue>> from(Map<CardLabel, List<CardLabelValue>> from) {
 		Map<Integer, List<CardLabelValue>> res = new TreeMap<>();

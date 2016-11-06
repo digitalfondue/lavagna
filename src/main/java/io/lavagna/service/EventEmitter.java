@@ -30,9 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
@@ -91,7 +88,8 @@ public class EventEmitter {
 	public void emitImportProject(String importId, int currentBoard, int boards, String boardName, User user) {
 		messagingTemplate.convertAndSend("/event/import/" + importId, importEvent(currentBoard, boards, boardName));
 	}
-	
+
+
 	public void emitUpdateColumnDefinition(String shortName, User user) {
 	    emitUpdateProject(shortName, user);
 	    emitProjectMetadataHasChanged(shortName);
@@ -118,7 +116,7 @@ public class EventEmitter {
 		apiHookService.createdColumn(boardShortName, columnName, user);
 	}
 
-	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId, 
+	public void emitUpdateColumn(String boardShortName, BoardColumnLocation location, int columnId,
 			BoardColumn column, BoardColumn updatedColumn, User user) {
 		messagingTemplate
 				.convertAndSend(columnDestination(boardShortName, location), event(LavagnaEvent.UPDATE_COLUMN));
@@ -335,7 +333,7 @@ public class EventEmitter {
 	}
 
 	// ------------
-	
+
 	private static Triple<Set<Integer>, Set<Integer>, Set<String>> extractFrom(List<CardFull> l) {
 		Set<Integer> cardIds = new HashSet<>();
 		Set<Integer> columnIds = new HashSet<>();
@@ -374,7 +372,7 @@ public class EventEmitter {
 	public void emitUpdateOrAddValueToCards(List<CardFull> updated, List<CardFull> added, int labelId, LabelValue labelValue, User user) {
 		sendEventForLabel(updated, LavagnaEvent.UPDATE_LABEL_VALUE);
 		sendEventForLabel(added, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
-		
+
 		apiHookService.addLabelValueToCards(added, labelId, labelValue, user);
 		apiHookService.updateLabelValueToCards(updated, labelId, labelValue, user);
 	}
@@ -393,7 +391,7 @@ public class EventEmitter {
 		messagingTemplate.convertAndSend("/event/project/" + projectShortName + "/label", event(LavagnaEvent.DELETE_LABEL, labelId));
 		emitProjectMetadataHasChanged(projectShortName);
 	}
-	
+
 
 	public void emitUpdateLabeListValueId(int labelListValueId) {
 		messagingTemplate.convertAndSend("/event/label-list-values/" + labelListValueId, event(LavagnaEvent.UPDATE_LABEL_LIST_VALUE, labelListValueId));
@@ -403,8 +401,8 @@ public class EventEmitter {
 	public void emitUpdateUserProfile(int userId) {
 		messagingTemplate.convertAndSend("/event/user", event(LavagnaEvent.UPDATE_USER, userId));
 	}
-	
-	
+
+
 	private void emitProjectMetadataHasChanged(String projectShortName) {
         messagingTemplate.convertAndSend("/event/project/" + projectShortName, LavagnaEvent.PROJECT_METADATA_HAS_CHANGED);
     }
@@ -415,7 +413,7 @@ public class EventEmitter {
 		CREATE_COLUMN, UPDATE_COLUMN, UPDATE_COLUMN_POSITION, //
 		CREATE_CARD, UPDATE_CARD, //
 		UPDATE_CARD_POSITION, //
-		
+
 		//
 		PROJECT_METADATA_HAS_CHANGED,
 		//
@@ -440,18 +438,48 @@ public class EventEmitter {
 
 	// ------------
 
-	@Getter
-	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class Event {
 		private final LavagnaEvent type;
 		private final Object payload;
-	}
 
-	@Getter
-	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+        @java.beans.ConstructorProperties({ "type", "payload" }) private Event(LavagnaEvent type,
+            Object payload) {
+            this.type = type;
+            this.payload = payload;
+        }
+
+        public LavagnaEvent getType() {
+            return this.type;
+        }
+
+        public Object getPayload() {
+            return this.payload;
+        }
+    }
+
 	public static class ImportEvent {
 		private final int currentBoard;
 		private final int boards;
 		private final String boardName;
-	}
+
+        @java.beans.ConstructorProperties({ "currentBoard", "boards", "boardName" }) private ImportEvent(
+            int currentBoard,
+            int boards, String boardName) {
+            this.currentBoard = currentBoard;
+            this.boards = boards;
+            this.boardName = boardName;
+        }
+
+        public int getCurrentBoard() {
+            return this.currentBoard;
+        }
+
+        public int getBoards() {
+            return this.boards;
+        }
+
+        public String getBoardName() {
+            return this.boardName;
+        }
+    }
 }

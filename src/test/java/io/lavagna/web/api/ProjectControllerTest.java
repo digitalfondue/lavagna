@@ -31,11 +31,11 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
-import io.lavagna.service.StatisticsService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ExcelExportService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
+import io.lavagna.service.StatisticsService;
 import io.lavagna.web.api.model.CreateRequest;
 import io.lavagna.web.api.model.UpdateRequest;
 
@@ -195,7 +195,7 @@ public class ProjectControllerTest {
 		projectController.projectStatistics(projectShortName, new Date(), readProject);
 
 	}
-	
+
     @Test
     public void testExportMilestoneToExcel() throws IOException {
         UserWithPermission readProject = new UserWithPermission(user, EnumSet.of(Permission.READ), Collections.<String, Set<Permission>>emptyMap(),

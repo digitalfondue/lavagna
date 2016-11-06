@@ -60,7 +60,7 @@ class LavagnaExporter {
 	private final CardDataRepository cardDataRepository;
 	private final StatisticsQuery statisticsQuery;
 
-	
+
 	public LavagnaExporter(ConfigurationRepository configurationRepository, UserRepository userRepository,
 			PermissionService permissionService, ProjectService projectService,
 			CardLabelRepository cardLabelRepository, BoardRepository boardRepository,
@@ -195,7 +195,7 @@ class LavagnaExporter {
 
 		List<Pair<CardLabel, List<LabelListValueWithMetadata>>> labels = new ArrayList<>();
 		for (CardLabel cl : cardLabelRepository.findLabelsByProject(p.getId())) {
-			labels.add(Pair.of(cl, cardLabelRepository.findListValuesByLabelId(cl.getId())));
+			labels.add(Pair.Companion.of(cl, cardLabelRepository.findListValuesByLabelId(cl.getId())));
 		}
 		writeEntry(projectNameDir + "/labels.json", labels, zf, osw);
 		writeEntry(projectNameDir + "/column-definitions.json",
@@ -208,7 +208,7 @@ class LavagnaExporter {
 
 	private void exportBoard(BoardInfo boardInfo, Project p, ZipOutputStream zf, OutputStreamWriter osw) {
 		String boardNameDir = "boards/" + boardInfo.getShortName();
-		writeEntry(boardNameDir + ".json", Pair.of(p.getShortName(), boardInfo), zf, osw);
+		writeEntry(boardNameDir + ".json", Pair.Companion.of(p.getShortName(), boardInfo), zf, osw);
 		int boardId = boardRepository.findBoardIdByShortName(boardInfo.getShortName());
 
 		writeEntry(boardNameDir + "/columns.json", boardColumnRepository.findAllColumnsFor(boardId), zf, osw);

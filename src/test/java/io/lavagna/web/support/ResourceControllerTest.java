@@ -19,7 +19,6 @@ package io.lavagna.web.support;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import io.lavagna.web.support.ResourceController;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

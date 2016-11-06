@@ -49,9 +49,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -150,7 +147,7 @@ public class ProjectController {
     public int updateColumnDefinition(@PathVariable("projectShortName") String shortName,
         @RequestBody UpdateColumnDefinition columnDefinition, User user) {
         int projectId = projectService.findIdByShortName(shortName);
-        int res = projectService.updateColumnDefinition(projectId, columnDefinition.getDefinition(), 
+        int res = projectService.updateColumnDefinition(projectId, columnDefinition.getDefinition(),
                 columnDefinition.getColor());
         eventEmitter.emitUpdateColumnDefinition(shortName, user);
         return res;
@@ -251,19 +248,61 @@ public class ProjectController {
         return list;
     }
 
-    @Getter
-    @Setter
     public static class UpdateColumnDefinition {
         private int definition;
         private int color;
+
+        public int getDefinition() {
+            return this.definition;
+        }
+
+        public int getColor() {
+            return this.color;
+        }
+
+        public void setDefinition(int definition) {
+            this.definition = definition;
+        }
+
+        public void setColor(int color) {
+            this.color = color;
+        }
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
     public static class ProjectColumn {
         private String board;
         private int columnId;
         private String columnName;
+
+        @java.beans.ConstructorProperties({ "board", "columnId", "columnName" }) public ProjectColumn(String board,
+            int columnId, String columnName) {
+            this.board = board;
+            this.columnId = columnId;
+            this.columnName = columnName;
+        }
+
+        public String getBoard() {
+            return this.board;
+        }
+
+        public int getColumnId() {
+            return this.columnId;
+        }
+
+        public String getColumnName() {
+            return this.columnName;
+        }
+
+        public void setBoard(String board) {
+            this.board = board;
+        }
+
+        public void setColumnId(int columnId) {
+            this.columnId = columnId;
+        }
+
+        public void setColumnName(String columnName) {
+            this.columnName = columnName;
+        }
     }
 }

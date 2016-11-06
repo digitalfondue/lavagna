@@ -248,7 +248,7 @@ public class CardLabelRepository {
         List<LabelListValue> res = queries.findListValuesByLabelIdAndValue(labelId, value);
         return addMetadata(res);
     }
-    
+
     public SortedMap<Integer, LabelListValueWithMetadata> findLabeListValueAggregatedByCardLabelId(int projectId) {
         SortedMap<Integer, LabelListValueWithMetadata> m = new TreeMap<>();
         for (LabelListValueWithMetadata l : addMetadata(queries.findListValueByProjectId(projectId))) {

@@ -32,9 +32,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +41,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.gson.reflect.TypeToken;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)
@@ -57,7 +53,7 @@ public class UsersAdministrationController {
 	private final UserService userService;
 	private final EventEmitter eventEmitter;
 
-	
+
 	public UsersAdministrationController(UserRepository userRepository, UserService userService, EventEmitter eventEmitter) {
 		this.userRepository = userRepository;
 		this.userService = userService;
@@ -85,9 +81,15 @@ public class UsersAdministrationController {
 		}
 	}
 
-	@Getter
-	@Setter
 	public static class Update {
 		private boolean enabled;
-	}
+
+        public boolean isEnabled() {
+            return this.enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+    }
 }

@@ -30,9 +30,6 @@ import io.lavagna.web.helper.ExpectPermission;
 import java.util.Collections;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +44,7 @@ public class BulkOperationLabelController {
 	private final CardRepository cardRepository;
 	private final EventEmitter eventEmitter;
 
-	
+
 	public BulkOperationLabelController(BulkOperationService bulkOperationService, CardRepository cardRepository,
 			EventEmitter eventEmitter) {
 		this.bulkOperationService = bulkOperationService;
@@ -57,7 +54,7 @@ public class BulkOperationLabelController {
 
 	/**
 	 * ASSIGN a user to the cards if it's not present.
-	 * 
+	 *
 	 * @param projectShortName
 	 * @param op
 	 * @param user
@@ -108,7 +105,7 @@ public class BulkOperationLabelController {
 		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_DUE_DATE);
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, null, user);
 	}
-	
+
 	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/watch", method = RequestMethod.POST)
 	public void watch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
@@ -117,7 +114,7 @@ public class BulkOperationLabelController {
 		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_WATCHED_BY);
 		eventEmitter.emitAddLabelValueToCards(cardRepository.findAllByIds(affected), labelId, op.value, user);
 	}
-	
+
 	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/remove-watch", method = RequestMethod.POST)
 	public void unWatch(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
@@ -146,7 +143,7 @@ public class BulkOperationLabelController {
 		int labelId = bulkOperationService.findIdForSystemLabel(projectShortName, SYSTEM_LABEL_MILESTONE);
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), labelId, null, user);
 	}
-	
+
 	@ExpectPermission(Permission.MANAGE_LABEL_VALUE)
 	@RequestMapping(value = "/api/project/{projectShortName}/bulk-op/add-label", method = RequestMethod.POST)
 	public void addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody BulkOperation op,
@@ -163,13 +160,35 @@ public class BulkOperationLabelController {
 		eventEmitter.emitRemoveLabelValueToCards(cardRepository.findAllByIds(affected), op.labelId, op.value, user);
 	}
 
-	
-	@Getter
-	@Setter
+
 	public static class BulkOperation {
 		private Integer labelId;// can be null
 		private LabelValue value;// can be null
 		private List<Integer> cardIds;
-	}
+
+        public Integer getLabelId() {
+            return this.labelId;
+        }
+
+        public LabelValue getValue() {
+            return this.value;
+        }
+
+        public List<Integer> getCardIds() {
+            return this.cardIds;
+        }
+
+        public void setLabelId(Integer labelId) {
+            this.labelId = labelId;
+        }
+
+        public void setValue(LabelValue value) {
+            this.value = value;
+        }
+
+        public void setCardIds(List<Integer> cardIds) {
+            this.cardIds = cardIds;
+        }
+    }
 
 }

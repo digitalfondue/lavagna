@@ -53,9 +53,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -82,10 +79,10 @@ public class CardDataController {
     private final EventEmitter eventEmitter;
     private final ConfigurationRepository configurationRepository;
 
-    
+
     public CardDataController(CardDataService cardDataService, CardDataRepository cardDataRepository,
-        CardRepository cardRepository, ConfigurationRepository configurationRepository,
-        EventRepository eventRepository, EventEmitter eventEmitter) {
+                              CardRepository cardRepository, ConfigurationRepository configurationRepository,
+                              EventRepository eventRepository, EventEmitter eventEmitter) {
         this.cardDataService = cardDataService;
         this.cardDataRepository = cardDataRepository;
         this.cardRepository = cardRepository;
@@ -112,7 +109,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/description", method = RequestMethod.POST)
     @ResponseBody
     public int updateDescription(@PathVariable("cardId") int cardId, @RequestBody Content content, User user) {
-    	CardDataHistory previousDescription = cardDataService.findLatestDescriptionByCardId(cardId);
+        CardDataHistory previousDescription = cardDataService.findLatestDescriptionByCardId(cardId);
         int result = cardDataService.updateDescription(cardId, content.content, new Date(), user.getId());
         CardDataHistory newDescription = cardDataService.findLatestDescriptionByCardId(cardId);
         eventEmitter.emitUpdateDescription(cardRepository.findColumnIdById(cardId), cardId, previousDescription, newDescription, user);
@@ -173,7 +170,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.POST)
     @ResponseBody
     public void updateComment(@PathVariable("commentId") int commentId, @RequestBody Content content, User user) {
-    	CardData previousComment = cardDataRepository.getDataLightById(commentId);
+        CardData previousComment = cardDataRepository.getDataLightById(commentId);
         cardDataService.updateComment(commentId, content.content, new Date(), user);
         eventEmitter.emitUpdateComment(cardDataRepository.getUndeletedDataLightById(commentId).getCardId(), previousComment, content.content, user);
     }
@@ -182,7 +179,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/comment/{commentId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteComment(@PathVariable("commentId") int commentId, User user) {
-    	CardData commentToDelete = cardDataRepository.getDataLightById(commentId);
+        CardData commentToDelete = cardDataRepository.getDataLightById(commentId);
         Event res = cardDataService.deleteComment(commentId, user, new Date());
         eventEmitter.emitDeleteComment(cardRepository.findBy(res.getCardId()).getColumnId(), res.getCardId(), commentToDelete, user);
         return res;
@@ -206,7 +203,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/actionlist", method = RequestMethod.POST)
     @ResponseBody
     public CardData createActionList(@PathVariable("cardId") int cardId, @RequestBody Content actionListData,
-        User user) {
+                                     User user) {
         CardData actionList = cardDataService.createActionList(cardId, actionListData.content, user.getId(),
             new Date());
         eventEmitter.emitCreateActionList(cardId, actionListData.content, user);
@@ -239,7 +236,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionlist/{actionListId}/update", method = RequestMethod.POST)
     @ResponseBody
     public int updateActionList(@PathVariable("actionListId") int actionListId, @RequestBody Content data, User user) {
-    	CardData actionList = cardDataRepository.getDataLightById(actionListId);
+        CardData actionList = cardDataRepository.getDataLightById(actionListId);
         int res = cardDataService.updateActionList(actionListId, data.content);
         eventEmitter.emitUpdateActionList(actionList.getCardId(), actionList.getContent(), data.content, user);
         return res;
@@ -249,7 +246,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionlist/{actionListId}/item", method = RequestMethod.POST)
     @ResponseBody
     public CardData createActionItem(@PathVariable("actionListId") int actionListId,
-        @RequestBody Content actionItemData, User user) {
+                                     @RequestBody Content actionItemData, User user) {
         CardData actionList = cardDataRepository.getUndeletedDataLightById(actionListId);
         int cardId = actionList.getCardId();
         CardData actionItem = cardDataService.createActionItem(cardId, actionListId, actionItemData.content, user.getId(), new Date());
@@ -261,9 +258,9 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionitem/{actionItemId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteActionItem(@PathVariable("actionItemId") int actionItemId, User user) {
-    	CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
-    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
-    	int cardId = actionItem.getCardId();
+        CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
+        CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+        int cardId = actionItem.getCardId();
         Event res = cardDataService.deleteActionItem(actionItemId, user, new Date());
         eventEmitter.emitDeleteActionItem(cardRepository.findColumnIdById(cardId), cardId, actionList.getContent(), actionItem.getContent(), user);
         return res;
@@ -277,10 +274,10 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.ACTION_ITEM_DELETE);
 
         cardDataService.undoDeleteActionItem(event);
-        
+
         CardData actionItem = cardDataRepository.getUndeletedDataLightById(event.getDataId());
-    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
-        
+        CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+
         eventEmitter.emiteUndoDeleteActionItem(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), actionList.getContent(), actionItem.getContent(), user);
 
         return event.getDataId();
@@ -290,13 +287,13 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/toggle/{status}", method = RequestMethod.POST)
     @ResponseBody
     public int toggleActionItem(@PathVariable("actionItemId") int actionItemId, @PathVariable("status") Boolean status,
-        User user) {
+                                User user) {
         CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
-    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
-    	int cardId = actionItem.getCardId();
-        
+        CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+        int cardId = actionItem.getCardId();
+
         int res = cardDataService.toggleActionItem(actionItemId, status, user.getId(), new Date());
-        
+
         eventEmitter.emitToggleActionItem(cardRepository.findColumnIdById(cardId), cardId, actionList.getContent(), actionItem.getContent(), status, user);
         return res;
     }
@@ -317,16 +314,16 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/move-to-actionlist/{to}", method = RequestMethod.POST)
     @ResponseBody
     public boolean moveActionItem(@PathVariable("actionItemId") int actionItemId,
-        @PathVariable("to") Integer newReferenceId, @RequestBody OrderData dataOrder, User user) {
-        
+                                  @PathVariable("to") Integer newReferenceId, @RequestBody OrderData dataOrder, User user) {
+
         CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);;
         CardData fromActionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
         CardData toActionList = cardDataRepository.getDataLightById(newReferenceId);
-        
+
         int cardId = actionItem.getCardId();
 
         cardDataService.moveActionItem(cardId, actionItemId, newReferenceId, dataOrder.newContainer, user, new Date());
-        
+
         eventEmitter.emitMoveActionItem(cardId, fromActionList.getContent(), toActionList.getContent(), actionItem.getContent(), user);
         return true;
     }
@@ -356,7 +353,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card/{cardId}/file", method = RequestMethod.POST)
     @ResponseBody
     public List<String> uploadFiles(@PathVariable("cardId") int cardId,
-        @RequestParam("files") List<MultipartFile> files, User user, HttpServletResponse resp) throws IOException {
+                                    @RequestParam("files") List<MultipartFile> files, User user, HttpServletResponse resp) throws IOException {
 
         LOG.debug("Files uploaded: {}", files.size());
 
@@ -405,10 +402,10 @@ public class CardDataController {
     }
 
     private static Set<String> WHITE_LIST_MIME_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(//
-            "image/gif", "image/jpeg", "image/png", "image/webp", "image/bmp",// images
-            "video/webm", "video/ogg", "video/mp4",//
-            "text/plain"//
-            )));
+        "image/gif", "image/jpeg", "image/png", "image/webp", "image/bmp",// images
+        "video/webm", "video/ogg", "video/mp4",//
+        "text/plain"//
+    )));
 
     // TODO: fix exception handling
     @ExpectPermission(Permission.READ)
@@ -433,7 +430,7 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/file/{fileId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteFile(@PathVariable("fileId") int fileId, User user) {
-    	FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(fileId);
+        FileDataLight file = cardDataRepository.getUndeletedFileByCardDataId(fileId);
         Event result = cardDataService.deleteFile(fileId, user, new Date());
         eventEmitter.emitDeleteFile(cardRepository.findBy(result.getCardId()).getColumnId(), result.getCardId(), file.getName(), user);
         return result;
@@ -466,16 +463,27 @@ public class CardDataController {
         return cardDataRepository.getDataLightById(id);
     }
 
-    @Getter
-    @Setter
     public static class Content {
         private String content;
+
+        public String getContent() {
+            return this.content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 
-    @Getter
-    @Setter
     public static class OrderData {
         private List<Integer> newContainer;
-    }
 
+        public List<Integer> getNewContainer() {
+            return this.newContainer;
+        }
+
+        public void setNewContainer(List<Integer> newContainer) {
+            this.newContainer = newContainer;
+        }
+    }
 }

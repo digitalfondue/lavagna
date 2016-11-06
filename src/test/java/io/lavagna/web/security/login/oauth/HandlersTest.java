@@ -22,9 +22,6 @@ import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-import io.lavagna.web.security.login.oauth.BitbucketHandler;
-import io.lavagna.web.security.login.oauth.GithubHandler;
-import io.lavagna.web.security.login.oauth.GoogleHandler;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
 
 import java.io.IOException;
@@ -140,7 +137,7 @@ public class HandlersTest {
 
         verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
-	
+
 	@Test
     public void handleTwitterFlowAuth() throws IOException {
         when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
@@ -188,15 +185,15 @@ public class HandlersTest {
 		when(users.userExistsAndEnabled("oauth.google", "email")).thenReturn(true);
 		when(users.findUserByName("oauth.google", "email")).thenReturn(user);
 		when(req2.getContextPath()).thenReturn("/context-path");
-		
+
 		Assert.assertTrue(!session.isInvalid());
 		googleHandler.handleCallback(req2, resp2);
 		verify(resp2).sendRedirect("/context-path/");
-		
+
 		verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
 	}
-	
-	
+
+
 	@Test
     public void handleGitlabFlowAuth() throws IOException {
         when(oauthService.getAuthorizationUrl(null)).thenReturn("redirect");
@@ -208,11 +205,11 @@ public class HandlersTest {
         when(users.userExistsAndEnabled("oauth.gitlab", "username")).thenReturn(true);
         when(users.findUserByName("oauth.gitlab", "username")).thenReturn(user);
         when(req2.getContextPath()).thenReturn("/context-path");
-        
+
         Assert.assertTrue(!session.isInvalid());
         gitlabHandler.handleCallback(req2, resp2);
         verify(resp2).sendRedirect("/context-path/");
-        
+
         verify(sessionHandler).setUser(user.getId(), user.isAnonymous(), req2, resp2);
     }
 }

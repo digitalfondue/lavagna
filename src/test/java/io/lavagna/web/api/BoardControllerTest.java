@@ -26,10 +26,10 @@ import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardRepository;
-import io.lavagna.service.StatisticsService;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
+import io.lavagna.service.StatisticsService;
 import io.lavagna.web.api.model.Suggestion;
 import io.lavagna.web.api.model.UpdateRequest;
 

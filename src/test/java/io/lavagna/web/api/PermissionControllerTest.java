@@ -16,7 +16,8 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import io.lavagna.model.Permission;
 import io.lavagna.model.Role;
 import io.lavagna.model.RoleAndMetadata;

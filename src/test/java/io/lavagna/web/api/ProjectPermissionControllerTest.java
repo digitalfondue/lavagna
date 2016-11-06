@@ -18,15 +18,6 @@ package io.lavagna.web.api;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import io.lavagna.model.Permission;
 import io.lavagna.model.Role;
 import io.lavagna.model.RoleAndMetadata;
@@ -36,6 +27,14 @@ import io.lavagna.service.ProjectService;
 import io.lavagna.web.api.model.CreateRole;
 import io.lavagna.web.api.model.UpdateRole;
 import io.lavagna.web.api.model.Users;
+
+import java.util.Collections;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectPermissionControllerTest {

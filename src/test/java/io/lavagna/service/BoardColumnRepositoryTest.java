@@ -16,6 +16,16 @@
  */
 package io.lavagna.service;
 
+import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Board;
+import io.lavagna.model.BoardColumn;
+import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.BoardColumnInfo;
+import io.lavagna.model.ColumnDefinition;
+import io.lavagna.model.User;
+import io.lavagna.service.config.TestServiceConfig;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,16 +42,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.BoardColumnInfo;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.User;
-import io.lavagna.service.config.TestServiceConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
@@ -120,7 +120,7 @@ public class BoardColumnRepositoryTest {
 		int colId2 = boardColumnRepository.addColumnToBoard("test", openDefinition().getId(),
 				BoardColumnLocation.BOARD, board.getId()).getId();
 		Assert.assertEquals(2, boardColumnRepository.findByIds(new HashSet<>(Arrays.asList(colId1, colId2))).size());
-		
+
 		Assert.assertTrue(boardColumnRepository.findByIds(Collections.<Integer>emptySet()).isEmpty());
 	}
 
@@ -227,7 +227,7 @@ public class BoardColumnRepositoryTest {
 		Assert.assertEquals(BoardColumnLocation.ARCHIVE, boardColumnRepository.findById(bc.getId()).getLocation());
 		Assert.assertEquals(closedDefinition().getId(), boardColumnRepository.findById(bc.getId()).getDefinitionId());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testMoveToLocationNotBoard() {
 		BoardColumn bc = boardColumnRepository.addColumnToBoard("test-1", openDefinition().getId(),

@@ -30,7 +30,6 @@ import java.text.ParseException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.AllArgsConstructor;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,8 +90,11 @@ public class CalendarController {
         output.output(calendar, response.getOutputStream());
     }
 
-    @AllArgsConstructor
     static class DisableCalendarRequest {
         private boolean isDisabled;
+
+        @java.beans.ConstructorProperties({ "isDisabled" }) public DisableCalendarRequest(boolean isDisabled) {
+            this.isDisabled = isDisabled;
+        }
     }
 }

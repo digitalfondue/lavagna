@@ -30,9 +30,9 @@ import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
-import io.lavagna.model.Key;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.Key;
 import io.lavagna.model.MailConfig;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
@@ -145,7 +145,7 @@ public class NotificationServiceTest {
 
 	@Test
 	public void sendEmailTest() {
-		
+
 		Date creationDate = DateUtils.addMinutes(new Date(), -3);
 
 		labelService.addLabelValueToCard(assignedLabel.getId(), card1.getId(), new CardLabelValue.LabelValue(null,
@@ -170,7 +170,7 @@ public class NotificationServiceTest {
 
     @Test
     public void sendEmailTestWithoutMyEvents() {
-    	
+
     	Date creationDate = DateUtils.addMinutes(new Date(), -3);
 
         userRepository.updateProfile(user, user.getEmail(), user.getDisplayName(), true, true);

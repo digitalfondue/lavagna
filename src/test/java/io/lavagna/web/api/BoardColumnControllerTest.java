@@ -20,17 +20,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
@@ -41,6 +30,16 @@ import io.lavagna.service.BoardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.web.api.BoardColumnController.BoardColumnToCreate;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BoardColumnControllerTest {
@@ -91,7 +90,7 @@ public class BoardColumnControllerTest {
 
 		when(projectService.findRelatedProjectShortNameByColumnDefinitionId(0)).thenReturn("PROJECT_SHORT_NAME");
 		when(projectService.findRelatedProjectShortNameByBoardShortname(shortName)).thenReturn("PROJECT_SHORT_NAME");
-		
+
 		when(boardRepository.findBoardIdByShortName(shortName)).thenReturn(0);
 		when(boardColumnRepository.addColumnToBoard(toCreate.getName(), 0, BoardColumnLocation.BOARD, 0)).thenReturn(
 				new BoardColumn(0, toCreate.getName(), 0, 0, BoardColumnLocation.BOARD, 0, ColumnDefinition.OPEN,
@@ -112,7 +111,7 @@ public class BoardColumnControllerTest {
 
 		when(projectService.findRelatedProjectShortNameByColumnDefinitionId(0)).thenReturn("ANOTHER_PROJECT_SHORT_NAME");
 		when(projectService.findRelatedProjectShortNameByBoardShortname(shortName)).thenReturn("PROJECT_SHORT_NAME");
-		
+
 		when(boardRepository.findBoardIdByShortName(shortName)).thenReturn(0);
 
 		boardColumnController.create(shortName, toCreate, user);

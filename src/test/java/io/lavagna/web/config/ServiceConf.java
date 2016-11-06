@@ -18,7 +18,6 @@ package io.lavagna.web.config;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import io.lavagna.common.Json;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
@@ -26,9 +25,8 @@ import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CalendarService;
-import io.lavagna.service.StatisticsService;
 import io.lavagna.service.BulkOperationService;
+import io.lavagna.service.CalendarService;
 import io.lavagna.service.CardDataRepository;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.CardLabelRepository;
@@ -48,6 +46,7 @@ import io.lavagna.service.PermissionService;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.SearchService;
 import io.lavagna.service.SetupService;
+import io.lavagna.service.StatisticsService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
 import io.lavagna.web.security.login.OAuthLogin;

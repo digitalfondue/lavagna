@@ -28,7 +28,7 @@ import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.api.UserController.DisplayNameEmail;
+import io.lavagna.web.api.model.DisplayNameEmail;
 
 import java.util.Collection;
 import java.util.Date;

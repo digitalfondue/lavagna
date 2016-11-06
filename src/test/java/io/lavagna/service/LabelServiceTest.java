@@ -16,6 +16,20 @@
  */
 package io.lavagna.service;
 
+import io.lavagna.config.PersistenceAndServiceConfig;
+import io.lavagna.model.Board;
+import io.lavagna.model.BoardColumn;
+import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import io.lavagna.model.BoardColumnDefinition;
+import io.lavagna.model.Card;
+import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelDomain;
+import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.Project;
+import io.lavagna.model.User;
+import io.lavagna.service.config.TestServiceConfig;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -31,20 +45,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
-import io.lavagna.service.config.TestServiceConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })

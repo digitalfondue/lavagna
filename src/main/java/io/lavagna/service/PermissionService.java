@@ -38,8 +38,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.apache.commons.lang3.Validate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -54,7 +52,7 @@ public class PermissionService {
     private final PermissionQuery queries;
     private final UserRepository userRepository;
 
-    
+
     public PermissionService(NamedParameterJdbcTemplate jdbc, PermissionQuery queries, UserRepository userRepository) {
         this.jdbc = jdbc;
         this.queries = queries;
@@ -264,7 +262,7 @@ public class PermissionService {
     public void updatePermissionsToRoleInProjectId(Role role, Set<Permission> permissions, int projectId) {
         Objects.requireNonNull(role);
         Objects.requireNonNull(permissions);
-        Permission.ensurePermissionForProject(permissions);
+        Permission.Companion.ensurePermissionForProject(permissions);
 
         // step 1: remove all permissions
         queries.deletePermissionsInProjectId(role.getName(), projectId);
@@ -387,7 +385,6 @@ public class PermissionService {
         return ret.toArray(new MapSqlParameterSource[ret.size()]);
     }
 
-    @Getter
     public static class RoleAndPermissions {
         private final String name;
         private final boolean removable;
@@ -401,9 +398,28 @@ public class PermissionService {
             this.hidden = base.isHidden();
             this.readOnly = base.isReadOnly();
         }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public boolean isRemovable() {
+            return this.removable;
+        }
+
+        public boolean isHidden() {
+            return this.hidden;
+        }
+
+        public boolean isReadOnly() {
+            return this.readOnly;
+        }
+
+        public List<RoleAndPermission> getRoleAndPermissions() {
+            return this.roleAndPermissions;
+        }
     }
 
-    @Getter
     public static class RoleAndPermissionsWithUsers extends RoleAndPermissions {
 
         private final List<UserIdentifier> assignedUsers;
@@ -412,19 +428,49 @@ public class PermissionService {
             super(base);
             this.assignedUsers = assignedUsers;
         }
+
+        public List<UserIdentifier> getAssignedUsers() {
+            return this.assignedUsers;
+        }
     }
 
-    @Getter
-    @AllArgsConstructor
     public static class ProjectRoleAndPermissionFullHolder {
         private final Map<String, Set<Permission>> permissionsByProject;
         private final Map<Integer, Set<Permission>> permissionsByProjectId;
+
+        @java.beans.ConstructorProperties({ "permissionsByProject",
+            "permissionsByProjectId" }) public ProjectRoleAndPermissionFullHolder(
+            Map<String, Set<Permission>> permissionsByProject,
+            Map<Integer, Set<Permission>> permissionsByProjectId) {
+            this.permissionsByProject = permissionsByProject;
+            this.permissionsByProjectId = permissionsByProjectId;
+        }
+
+        public Map<String, Set<Permission>> getPermissionsByProject() {
+            return this.permissionsByProject;
+        }
+
+        public Map<Integer, Set<Permission>> getPermissionsByProjectId() {
+            return this.permissionsByProjectId;
+        }
     }
 
-    @Getter
-    @AllArgsConstructor
     public static class ProjectRoleFullHolder {
         private final Set<String> globalRoles;
         private final Map<String, Set<String>> rolesByProject;
+
+        @java.beans.ConstructorProperties({ "globalRoles", "rolesByProject" }) public ProjectRoleFullHolder(
+            Set<String> globalRoles, Map<String, Set<String>> rolesByProject) {
+            this.globalRoles = globalRoles;
+            this.rolesByProject = rolesByProject;
+        }
+
+        public Set<String> getGlobalRoles() {
+            return this.globalRoles;
+        }
+
+        public Map<String, Set<String>> getRolesByProject() {
+            return this.rolesByProject;
+        }
     }
 }

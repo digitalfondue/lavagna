@@ -22,9 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.Ldap;
-import io.lavagna.service.LdapConnection;
 import io.lavagna.service.LdapConnection.InitialDirContextCloseable;
 
 import java.util.EnumMap;
