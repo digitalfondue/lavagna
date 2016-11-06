@@ -142,4 +142,9 @@ public class ApiHooksService {
 	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem) {
 		//FIXME run scripts
 	}
+
+	public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
+			String actionItem) {
+		//FIXME run scripts
+	}
 }

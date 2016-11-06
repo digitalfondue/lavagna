@@ -318,10 +318,16 @@ public class CardDataController {
     @ResponseBody
     public boolean moveActionItem(@PathVariable("actionItemId") int actionItemId,
         @PathVariable("to") Integer newReferenceId, @RequestBody OrderData dataOrder, User user) {
-        int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
+        
+        CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);;
+        CardData fromActionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+        CardData toActionList = cardDataRepository.getDataLightById(newReferenceId);
+        
+        int cardId = actionItem.getCardId();
 
         cardDataService.moveActionItem(cardId, actionItemId, newReferenceId, dataOrder.newContainer, user, new Date());
-        eventEmitter.emitMoveActionItem(cardId);
+        
+        eventEmitter.emitMoveActionItem(cardId, fromActionList.getContent(), toActionList.getContent(), actionItem.getContent());
         return true;
     }
 

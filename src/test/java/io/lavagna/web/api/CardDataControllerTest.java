@@ -256,6 +256,9 @@ public class CardDataControllerTest {
 	@Test
 	public void moveActionItem() {
 		when(cardDataRepository.getUndeletedDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
+		
+		when(cardDataRepository.getDataLightById(1)).thenReturn(Mockito.mock(CardData.class));
+		when(cardDataRepository.getDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
 		OrderData dataOrder = new OrderData();
 		cardDataController.moveActionItem(0, 1, dataOrder, user);
 	}

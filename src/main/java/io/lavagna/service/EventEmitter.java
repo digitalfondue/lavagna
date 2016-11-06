@@ -293,8 +293,9 @@ public class EventEmitter {
 		apiHookService.updatedActionItem(cardId, actionItemListName, oldActionItem, newActionItem);
 	}
 
-	public void emitMoveActionItem(int cardId) {
+	public void emitMoveActionItem(int cardId, String fromActionItemListName, String toActionItemListName, String actionItem) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.MOVE_ACTION_ITEM));
+		apiHookService.movedActionItem(cardId, fromActionItemListName, toActionItemListName, actionItem);
 	}
 
 	public void emitReorderActionItems(int cardId) {
