@@ -163,11 +163,12 @@ public class EventEmitter {
 				event(LavagnaEvent.UPDATE_CARD_POSITION));
 	}
 
-	public void emitCardHasMoved(String projectShortName, String boardShortName, Collection<Integer> affected) {
+	public void emitCardHasMoved(String projectShortName, String boardShortName, Collection<Integer> affected, BoardColumn from, BoardColumn to) {
 		for (Integer a : affected) {
 			messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
 					event(LavagnaEvent.UPDATE_CARD_POSITION, a));
 		}
+		apiHookService.moveCards(from, to, affected);
 	}
 
 	public void emitCreateRole() {

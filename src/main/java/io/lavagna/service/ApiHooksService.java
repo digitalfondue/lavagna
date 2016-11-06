@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -146,5 +147,9 @@ public class ApiHooksService {
 	public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
 			String actionItem) {
 		//FIXME run scripts
+	}
+
+	public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds) {
+		//FIXME run scripts		
 	}
 }

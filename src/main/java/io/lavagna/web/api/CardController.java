@@ -193,7 +193,7 @@ public class CardController {
 			eventEmitter.emitMoveCardFromOutsideOfBoard(board.getShortName(), prevCol.getLocation());
 		}
 		eventEmitter.emitCardHasMoved(projectService.findRelatedProjectShortNameByBoardShortname(board.getShortName()),
-				board.getShortName(), Collections.singletonList(id));
+				board.getShortName(), Collections.singletonList(id), prevCol, newCol);
 
 		return event;
 	}
@@ -252,7 +252,7 @@ public class CardController {
 		}
 
 		eventEmitter.emitCardHasMoved(projectService.findRelatedProjectShortNameByBoardShortname(boardShortName),
-				boardShortName, cardIds.cardIds);
+				boardShortName, cardIds.cardIds, col, destination);
 	}
 
 	private static final List<SearchFilter> TO_ME_STATUS_OPEN = Arrays.asList(new SearchFilter(FilterType.ASSIGNED, "to", new SearchFilterValue(ValueType.CURRENT_USER, "me")), SearchFilter.filter(FilterType.STATUS, ValueType.STRING, "OPEN"));
