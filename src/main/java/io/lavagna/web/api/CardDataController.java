@@ -261,9 +261,11 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionitem/{actionItemId}", method = RequestMethod.DELETE)
     @ResponseBody
     public Event deleteActionItem(@PathVariable("actionItemId") int actionItemId, User user) {
-        int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
+    	CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
+    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+    	int cardId = actionItem.getCardId();
         Event res = cardDataService.deleteActionItem(actionItemId, user, new Date());
-        eventEmitter.emitDeleteActionItem(cardRepository.findColumnIdById(cardId), cardId);
+        eventEmitter.emitDeleteActionItem(cardRepository.findColumnIdById(cardId), cardId, actionList.getContent(), actionItem.getContent());
         return res;
     }
 
@@ -275,8 +277,11 @@ public class CardDataController {
         Validate.isTrue(event.getEvent() == EventType.ACTION_ITEM_DELETE);
 
         cardDataService.undoDeleteActionItem(event);
-        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findColumnIdById(event.getCardId()),
-            event.getCardId());
+        
+        CardData actionItem = cardDataRepository.getUndeletedDataLightById(event.getDataId());
+    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+        
+        eventEmitter.emiteUndoDeleteActionItem(cardRepository.findColumnIdById(event.getCardId()), event.getCardId(), actionList.getContent(), actionItem.getContent());
 
         return event.getDataId();
     }
@@ -286,9 +291,13 @@ public class CardDataController {
     @ResponseBody
     public int toggleActionItem(@PathVariable("actionItemId") int actionItemId, @PathVariable("status") Boolean status,
         User user) {
-        int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
+        CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
+    	CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+    	int cardId = actionItem.getCardId();
+        
         int res = cardDataService.toggleActionItem(actionItemId, status, user.getId(), new Date());
-        eventEmitter.emitToggleActionItem(cardRepository.findColumnIdById(cardId), cardId);
+        
+        eventEmitter.emitToggleActionItem(cardRepository.findColumnIdById(cardId), cardId, actionList.getContent(), actionItem.getContent(), status);
         return res;
     }
 
@@ -296,9 +305,11 @@ public class CardDataController {
     @RequestMapping(value = "/api/card-data/actionitem/{actionItemId}/update", method = RequestMethod.POST)
     @ResponseBody
     public int updateActionItem(@PathVariable("actionItemId") int actionItemId, @RequestBody Content data, User user) {
-        int cardId = cardDataRepository.getUndeletedDataLightById(actionItemId).getCardId();
+        CardData actionItem = cardDataRepository.getUndeletedDataLightById(actionItemId);
+        CardData actionList = cardDataRepository.getDataLightById(actionItem.getReferenceId());
+        int cardId = actionItem.getCardId();
         int res = cardDataService.updateActionItem(actionItemId, data.content);
-        eventEmitter.emitUpdateUpdateActionItem(cardId);
+        eventEmitter.emitUpdateUpdateActionItem(cardId, actionList.getContent(), actionItem.getContent(), data.content);
         return res;
     }
 

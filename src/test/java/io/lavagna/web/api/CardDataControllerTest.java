@@ -155,6 +155,7 @@ public class CardDataControllerTest {
 				null, null, 0, null, null, null, null, null, null, null);
 		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
 		when(cardDataService.deleteActionItem(eq(itemId), eq(user), any(Date.class))).thenReturn(event);
+		when(cardDataRepository.getDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
 		when(eventRepository.getEventById(eventId)).thenReturn(event);
 		cardDataController.deleteActionItem(itemId, user);
 		cardDataController.undoDeleteActionItem(eventId, user);
@@ -274,12 +275,14 @@ public class CardDataControllerTest {
 	@Test
 	public void toggleActionItem() {
 		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
+		when(cardDataRepository.getDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
 		cardDataController.toggleActionItem(itemId, true, user);
 	}
 
 	@Test
 	public void updateActionItem() {
 		when(cardDataRepository.getUndeletedDataLightById(itemId)).thenReturn(Mockito.mock(CardData.class));
+		when(cardDataRepository.getDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
 		Content data = new Content();
 		cardDataController.updateActionItem(itemId, data, user);
 	}

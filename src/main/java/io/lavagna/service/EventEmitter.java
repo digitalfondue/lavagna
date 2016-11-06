@@ -276,18 +276,21 @@ public class EventEmitter {
 		apiHookService.createActionItem(cardId, actionItemListName, actionItem);
 	}
 
-	public void emitDeleteActionItem(int columnId, int cardId) {
+	public void emitDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_ACTION_ITEM));
+		apiHookService.deletedActionItem(cardId, actionItemListName, actionItem);
 	}
 
-	public void emitToggleActionItem(int columnId, int cardId) {
+	public void emitToggleActionItem(int columnId, int cardId, String actionItemListName, String actionItem, boolean toggle) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.TOGGLE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.TOGGLE_ACTION_ITEM));
+		apiHookService.toggledActionItem(cardId, actionItemListName, actionItem, toggle);
 	}
 
-	public void emitUpdateUpdateActionItem(int cardId) {
+	public void emitUpdateUpdateActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_ACTION_ITEM));
+		apiHookService.updatedActionItem(cardId, actionItemListName, oldActionItem, newActionItem);
 	}
 
 	public void emitMoveActionItem(int cardId) {
@@ -298,9 +301,10 @@ public class EventEmitter {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.REORDER_ACTION_ITEM));
 	}
 
-	public void emiteUndoDeleteActionItem(int columnId, int cardId) {
+	public void emiteUndoDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_ITEM));
+		apiHookService.undoDeleteActionItem(cardId, actionItemListName, actionItem);
 	}
 
 	public void emitUndoDeleteActionList(int columnId, int cardId, String name) {

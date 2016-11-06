@@ -126,4 +126,20 @@ public class ApiHooksService {
 	public void createActionItem(int cardId, String actionItemListName, String actionItem) {
 		//FIXME run scripts
 	}
+
+	public void deletedActionItem(int cardId, String actionItemListName, String actionItem) {
+		//FIXME run scripts
+	}
+
+	public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle) {
+		//FIXME run scripts
+	}
+
+	public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem) {
+		//FIXME run scripts		
+	}
+
+	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem) {
+		//FIXME run scripts
+	}
 }
