@@ -52,7 +52,7 @@
             }
 
 		    for(var i = 0; i < listeners.length; i++) {
-        				listeners[i]();
+                listeners[i]();
             }
 
             for(var i = 0; i < mouseOverElements.length; i++) {
@@ -80,7 +80,6 @@
                 .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
                 .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
             var conf = {
-                    //attachTo: angular.element($event.target),
                     controller: function(mdPanelRef) {
                         this.mdPanelRef = mdPanelRef;
                         mouseOverPanelRef = mdPanelRef;
@@ -151,10 +150,6 @@
 				});
 
 				listeners.push(toDismiss);
-
-				ctrl.$onDestroy = function onDestroy() {
-					toDismiss();
-				};
 			});
 		}
 	}
