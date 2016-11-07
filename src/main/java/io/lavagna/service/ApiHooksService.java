@@ -18,6 +18,11 @@ package io.lavagna.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 import org.springframework.stereotype.Service;
 
@@ -31,6 +36,15 @@ import io.lavagna.model.User;
 
 @Service
 public class ApiHooksService {
+	
+	private final ScriptEngine engine;
+	private final Executor executor;
+ 
+	public ApiHooksService() {
+		engine =  new ScriptEngineManager().getEngineByName("javascript");
+		executor = Executors.newFixedThreadPool(4);
+	}
+
 
 	public void createdProject(String projectShortName, User user) {
 		//FIXME run scripts
