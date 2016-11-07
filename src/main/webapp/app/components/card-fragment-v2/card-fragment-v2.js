@@ -57,8 +57,8 @@
         }
 
         //
-        ctrl.isSelfWatching = Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
-        ctrl.isAssignedToCard = Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
+        ctrl.isSelfWatching = ctrl.user && Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
+        ctrl.isAssignedToCard = ctrl.user && Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
         //
 
 
@@ -374,6 +374,10 @@
 		}
 
 		ctrl.$onDestroy = function lvgCardFragmentV2DataInfoCtrlOnDestroy() {
+		    if(mouseOverPanelRef) {
+                mouseOverPanelRef.close();
+            }
+
 			for(var i = 0; i < listeners.length; i++) {
 				listeners[i]();
 			}
@@ -409,7 +413,8 @@
                         mouseOverPanelRef = mdPanelRef;
                     },
                     controllerAs: '$ctrl',
-                    template: '<lvg-card-fragment-v2 view="board" hide-select="true" hide-menu="true" read-only="true" card-ref="$ctrl.card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadata" class="lvg-card-fragment-v2__tooltip-panel lvg-card-fragment-v2__static"></lvg-card-fragment-v2>',
+                    template: '<lvg-card-fragment-v2 view="board" hide-select="true" hide-menu="true" read-only="true" card-ref="$ctrl.card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadata" class="lvg-card-fragment-v2__tooltip lvg-card-fragment-v2__static"></lvg-card-fragment-v2>',
+                    panelClass: 'lvg-card-fragment-v2__tooltip-panel',
                     position: position,
                     focusOnOpen: false,
                     propagateContainerEvents: true,
