@@ -163,12 +163,12 @@ public class EventEmitter {
 				event(LavagnaEvent.UPDATE_CARD_POSITION));
 	}
 
-	public void emitCardHasMoved(String projectShortName, String boardShortName, Collection<Integer> affected, BoardColumn from, BoardColumn to) {
+	public void emitCardHasMoved(String projectShortName, String boardShortName, Collection<Integer> affected, BoardColumn from, BoardColumn to, User user) {
 		for (Integer a : affected) {
 			messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
 					event(LavagnaEvent.UPDATE_CARD_POSITION, a));
 		}
-		apiHookService.moveCards(from, to, affected);
+		apiHookService.moveCards(from, to, affected, user);
 	}
 
 	public void emitCreateRole() {
@@ -251,87 +251,87 @@ public class EventEmitter {
 
 	// ------------ action list handling
 
-	public void emitCreateActionList(int cardId, String name) {
+	public void emitCreateActionList(int cardId, String name, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_ACTION_LIST));
-		apiHookService.createActionList(cardId, name);
+		apiHookService.createActionList(cardId, name, user);
 	}
 
-	public void emitDeleteActionList(int columnId, int cardId, String name) {
+	public void emitDeleteActionList(int columnId, int cardId, String name, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_ACTION_LIST));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_ACTION_LIST));
-		apiHookService.deleteActionList(cardId, name);
+		apiHookService.deleteActionList(cardId, name, user);
 	}
 
-	public void emitUpdateActionList(int cardId, String oldName, String newName) {
+	public void emitUpdateActionList(int cardId, String oldName, String newName, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_ACTION_LIST));
-		apiHookService.updatedNameActionList(cardId, oldName, newName);
+		apiHookService.updatedNameActionList(cardId, oldName, newName, user);
 	}
 
 	public void emitReorderActionLists(int cardId) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.REORDER_ACTION_LIST));
 	}
 
-	public void emitCreateActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
+	public void emitCreateActionItem(int columnId, int cardId, String actionItemListName, String actionItem, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.REORDER_ACTION_LIST));
-		apiHookService.createActionItem(cardId, actionItemListName, actionItem);
+		apiHookService.createActionItem(cardId, actionItemListName, actionItem, user);
 	}
 
-	public void emitDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
+	public void emitDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_ACTION_ITEM));
-		apiHookService.deletedActionItem(cardId, actionItemListName, actionItem);
+		apiHookService.deletedActionItem(cardId, actionItemListName, actionItem, user);
 	}
 
-	public void emitToggleActionItem(int columnId, int cardId, String actionItemListName, String actionItem, boolean toggle) {
+	public void emitToggleActionItem(int columnId, int cardId, String actionItemListName, String actionItem, boolean toggle, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.TOGGLE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.TOGGLE_ACTION_ITEM));
-		apiHookService.toggledActionItem(cardId, actionItemListName, actionItem, toggle);
+		apiHookService.toggledActionItem(cardId, actionItemListName, actionItem, toggle, user);
 	}
 
-	public void emitUpdateUpdateActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem) {
+	public void emitUpdateUpdateActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UPDATE_ACTION_ITEM));
-		apiHookService.updatedActionItem(cardId, actionItemListName, oldActionItem, newActionItem);
+		apiHookService.updatedActionItem(cardId, actionItemListName, oldActionItem, newActionItem, user);
 	}
 
-	public void emitMoveActionItem(int cardId, String fromActionItemListName, String toActionItemListName, String actionItem) {
+	public void emitMoveActionItem(int cardId, String fromActionItemListName, String toActionItemListName, String actionItem, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.MOVE_ACTION_ITEM));
-		apiHookService.movedActionItem(cardId, fromActionItemListName, toActionItemListName, actionItem);
+		apiHookService.movedActionItem(cardId, fromActionItemListName, toActionItemListName, actionItem, user);
 	}
 
 	public void emitReorderActionItems(int cardId) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.REORDER_ACTION_ITEM));
 	}
 
-	public void emiteUndoDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem) {
+	public void emiteUndoDeleteActionItem(int columnId, int cardId, String actionItemListName, String actionItem, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_ACTION_ITEM));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_ITEM));
-		apiHookService.undoDeleteActionItem(cardId, actionItemListName, actionItem);
+		apiHookService.undoDeleteActionItem(cardId, actionItemListName, actionItem, user);
 	}
 
-	public void emitUndoDeleteActionList(int columnId, int cardId, String name) {
+	public void emitUndoDeleteActionList(int columnId, int cardId, String name, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_ACTION_LIST));
-		apiHookService.undeletedActionList(cardId, name);
+		apiHookService.undeletedActionList(cardId, name, user);
 	}
 
 	// ------------
-	public void emitUploadFile(int columnId, int cardId, List<String> fileNames) {
+	public void emitUploadFile(int columnId, int cardId, List<String> fileNames, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.CREATE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.CREATE_FILE));
-		apiHookService.uploadedFile(cardId, fileNames);
+		apiHookService.uploadedFile(cardId, fileNames, user);
 	}
 
-	public void emitDeleteFile(int columnId, int cardId, String fileName) {
+	public void emitDeleteFile(int columnId, int cardId, String fileName, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.DELETE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.DELETE_FILE));
-		apiHookService.deletedFile(cardId, fileName);
+		apiHookService.deletedFile(cardId, fileName, user);
 	}
 
-	public void emiteUndoDeleteFile(int columnId, int cardId, String fileName) {
+	public void emiteUndoDeleteFile(int columnId, int cardId, String fileName, User user) {
 		messagingTemplate.convertAndSend(cardData(cardId), event(LavagnaEvent.UNDO_DELETE_FILE));
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UNDO_DELETE_FILE));
-		apiHookService.undoDeletedFile(cardId, fileName);
+		apiHookService.undoDeletedFile(cardId, fileName, user);
 	}
 
 	// ------------
@@ -348,9 +348,9 @@ public class EventEmitter {
 		return Triple.of(cardIds, columnIds, projectShortNames);
 	}
 
-	public void emitRemoveLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
+	public void emitRemoveLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user) {
 		sendEventForLabel(affectedCards, LavagnaEvent.REMOVE_LABEL_VALUE);
-		apiHookService.removedLabelValueToCards(affectedCards, labelId, labelValue);
+		apiHookService.removedLabelValueToCards(affectedCards, labelId, labelValue, user);
 	}
 
 	private void sendEventForLabel(List<CardFull> affectedCards, LavagnaEvent ev) {
@@ -366,17 +366,17 @@ public class EventEmitter {
 		}
 	}
 
-	public void emitAddLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
+	public void emitAddLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user) {
 		sendEventForLabel(affectedCards, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
-		apiHookService.addLabelValueToCards(affectedCards, labelId, labelValue);
+		apiHookService.addLabelValueToCards(affectedCards, labelId, labelValue, user);
 	}
 
-	public void emitUpdateOrAddValueToCards(List<CardFull> updated, List<CardFull> added, int labelId, LabelValue labelValue) {
+	public void emitUpdateOrAddValueToCards(List<CardFull> updated, List<CardFull> added, int labelId, LabelValue labelValue, User user) {
 		sendEventForLabel(updated, LavagnaEvent.UPDATE_LABEL_VALUE);
 		sendEventForLabel(added, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
 		
-		apiHookService.addLabelValueToCards(added, labelId, labelValue);
-		apiHookService.updateLabelValueToCards(updated, labelId, labelValue);
+		apiHookService.addLabelValueToCards(added, labelId, labelValue, user);
+		apiHookService.updateLabelValueToCards(updated, labelId, labelValue, user);
 	}
 
 	public void emitAddLabel(String projectShortName) {

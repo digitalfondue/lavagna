@@ -84,72 +84,72 @@ public class ApiHooksService {
 		//FIXME run scripts
 	}
 
-	public void uploadedFile(int cardId, List<String> fileNames) {
+	public void uploadedFile(int cardId, List<String> fileNames, User user) {
 		//FIXME run scripts		
 	}
 
-	public void deletedFile(int cardId, String fileName) {
+	public void deletedFile(int cardId, String fileName, User user) {
 		//FIXME run scripts
 	}
 
-	public void undoDeletedFile(int cardId, String fileName) {
+	public void undoDeletedFile(int cardId, String fileName, User user) {
 		//FIXME run scripts
 	}
 
-	public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
+	public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user) {
 		//FIXME run scripts
 	}
 
-	public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue) {
+	public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user) {
 		//FIXME run scripts
 	}
 
-	public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue) {
+	public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue, User user) {
 		//FIXME run scripts
 	}
 
-	public void createActionList(int cardId, String name) {
+	public void createActionList(int cardId, String name, User user) {
 		//FIXME run scripts	
 	}
 
-	public void deleteActionList(int cardId, String name) {
+	public void deleteActionList(int cardId, String name, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedNameActionList(int cardId, String oldName, String newName) {
+	public void updatedNameActionList(int cardId, String oldName, String newName, User user) {
 		//FIXME run scripts		
 	}
 	
-	public void undeletedActionList(int cardId, String name) {
+	public void undeletedActionList(int cardId, String name, User user) {
 		//FIXME run scripts		
 	}
 
-	public void createActionItem(int cardId, String actionItemListName, String actionItem) {
+	public void createActionItem(int cardId, String actionItemListName, String actionItem, User user) {
 		//FIXME run scripts
 	}
 
-	public void deletedActionItem(int cardId, String actionItemListName, String actionItem) {
+	public void deletedActionItem(int cardId, String actionItemListName, String actionItem, User user) {
 		//FIXME run scripts
 	}
 
-	public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle) {
+	public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle, User user) {
 		//FIXME run scripts
 	}
 
-	public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem) {
+	public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem, User user) {
 		//FIXME run scripts		
 	}
 
-	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem) {
+	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem, User user) {
 		//FIXME run scripts
 	}
 
 	public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
-			String actionItem) {
+			String actionItem, User user) {
 		//FIXME run scripts
 	}
 
-	public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds) {
+	public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds, User user) {
 		//FIXME run scripts		
 	}
 }
