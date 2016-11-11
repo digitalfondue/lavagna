@@ -406,7 +406,6 @@
                 .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
                 .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
             var conf = {
-                    attachTo: angular.element($event.target),
                     controller: function(mdPanelRef, metadata) {
                         this.mdPanelRef = mdPanelRef;
                         this.metadata = metadata;
