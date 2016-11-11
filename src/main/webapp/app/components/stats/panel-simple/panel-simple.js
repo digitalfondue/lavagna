@@ -33,10 +33,18 @@
 
         function createNormalizedData(stats) {
             var normalizedStats = [];
-            normalizedStats.push({name: 'OPEN', value: stats.openTaskCount, percentage: stats.openTaskCount > 0 ? 1:0 , color: colorFilter(stats.openTaskColor).color});
-            normalizedStats.push({name: 'CLOSED', value: stats.closedTaskCount, percentage: stats.closedTaskCount > 0 ? 1:0, color: colorFilter(stats.closedTaskColor).color});
-            normalizedStats.push({name: 'BACKLOG', value: stats.backlogTaskCount, percentage: stats.backlogTaskCount > 0 ? 1:0, color: colorFilter(stats.backlogTaskColor).color});
-            normalizedStats.push({name: 'DEFERRED', value: stats.deferredTaskCount, percentage: stats.deferredTaskCount > 0 ? 1:0, color: colorFilter(stats.deferredTaskColor).color});
+            if(stats.openTaskCount) {
+                normalizedStats.push({name: 'OPEN', value: stats.openTaskCount, percentage: stats.openTaskCount > 0 ? 1:0 , color: colorFilter(stats.openTaskColor).color});
+            }
+            if(stats.closedTaskCount) {
+                normalizedStats.push({name: 'CLOSED', value: stats.closedTaskCount, percentage: stats.closedTaskCount > 0 ? 1:0, color: colorFilter(stats.closedTaskColor).color});
+            }
+            if(stats.backlogTaskCount) {
+                normalizedStats.push({name: 'BACKLOG', value: stats.backlogTaskCount, percentage: stats.backlogTaskCount > 0 ? 1:0, color: colorFilter(stats.backlogTaskColor).color});
+            }
+            if(stats.deferredTaskCount) {
+                normalizedStats.push({name: 'DEFERRED', value: stats.deferredTaskCount, percentage: stats.deferredTaskCount > 0 ? 1:0, color: colorFilter(stats.deferredTaskColor).color});
+            }
 
             var percentage = 100;
             var total = 0;
