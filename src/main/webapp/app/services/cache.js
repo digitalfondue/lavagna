@@ -107,8 +107,8 @@
 		};
 
 		return {
-			card: function (cardId) {
-				if (!(cardId in cardCache)) {
+			card: function (cardId, invalidate) {
+				if (invalidate || !(cardId in cardCache)) {
 					return addCardToCache(Card.findCardById(cardId));
 				}
 				return cardCache[cardId];

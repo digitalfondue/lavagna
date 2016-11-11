@@ -12,10 +12,10 @@
             card: '<',
             user: '<'
         },
-        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Label', 'Project', 'StompClient', 'Title', CardController]
+        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Project', 'StompClient', 'Title', CardController]
     });
 
-    function CardController(EventBus, CardCache, Card, LabelCache, Label, Project, StompClient, Title) {
+    function CardController(EventBus, CardCache, Card, LabelCache, Project, StompClient, Title) {
         var ctrl = this;
 
         var unbindCardCache = angular.noop;
@@ -41,12 +41,11 @@
             unbindStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
                 if(type.indexOf('LABEL') > -1) {
-                    loadLabelValues();
-                    reloadCard();
+                    reloadCard(true);
                 }
             });
 
-            loadLabelValues();
+            processCardLabels();
 
             projectMetadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl.project);
         }
@@ -58,18 +57,17 @@
         	projectMetadataSubscription();
         }
 
-
-
         //------------------
 
         function refreshTitle() {
         	Title.set('title.card', { shortname: ctrl.board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
         }
 
-        function reloadCard() {
-            CardCache.card(ctrl.card.id).then(function(c) {
+        function reloadCard(forceReload) {
+            CardCache.card(ctrl.card.id, forceReload).then(function(c) {
                 ctrl.card = c;
                 refreshTitle();
+                processCardLabels();
             });
         }
 
@@ -86,28 +84,37 @@
             });
         }
 
-        function loadLabelValues() {
-            Label.findValuesByCardId(ctrl.card.id).then(processLabelValues);
-        }
+        function processCardLabels() {
+            var assignedUsers = [];
+            var watchingUsers = [];
+            var milestones = [];
+            var dueDates = [];
+            var userLabels = [];
 
-        function processLabelValues(labelValues) {
-            ctrl.labelValues = labelValues;
-
-            angular.forEach(ctrl.labels, function(value, key) {
-                if(value.domain === 'SYSTEM') {
-                    if(value.name === 'ASSIGNED') {
-                        ctrl.assignedUsers = ctrl.labelValues[key];
-                    } else if(value.name === 'WATCHED_BY') {
-                        ctrl.watchingUsers = ctrl.labelValues[key];
-                    } else if(value.name === 'MILESTONE') {
-                        ctrl.milestones = ctrl.labelValues[key];
-                    } else if(value.name === 'DUE_DATE') {
-                        ctrl.dueDates = ctrl.labelValues[key];
+            angular.forEach(ctrl.card.labels, function(label) {
+                if(label.labelDomain === 'SYSTEM') {
+                    if(label.labelName === 'ASSIGNED') {
+                        assignedUsers.push(label);
+                    } else if(label.labelName === 'WATCHED_BY') {
+                        watchingUsers.push(label);
+                    } else if(label.labelName === 'MILESTONE') {
+                        milestones.push(label);
+                    } else if(label.labelName === 'DUE_DATE') {
+                        dueDates.push(label);
                     }
                 } else {
-                    ctrl.userLabels[key] = value;
+                    if(userLabels[label.labelId] === undefined) {
+                        userLabels[label.labelId] = [];
+                    }
+                    userLabels[label.labelId].push(label);
                 }
             });
+
+            ctrl.assignedUsers = assignedUsers;
+            ctrl.watchingUsers = watchingUsers;
+            ctrl.milestones = milestones;
+            ctrl.dueDates = dueDates;
+            ctrl.userLabels = userLabels;
         }
     }
 })();
