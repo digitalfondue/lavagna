@@ -168,6 +168,11 @@ a:hover {
     white-space: nowrap;
 }
 
+.overflow-break {
+    -ms-word-break: break-all;
+    word-break: break-all;
+}
+
 .padding-8 {
     padding: 8px;
 }

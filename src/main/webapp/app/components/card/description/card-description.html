@@ -2,9 +2,9 @@
     <md-card-title>
         <div class="flex-width" data-ng-hide="editCardName">
             <md-card-title-text>
-                <div class="md-headline overflow-ellipsis" data-lvg-has-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"
+                <div class="md-headline overflow-break" data-lvg-has-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"
                       data-ng-click="cardNameToEdit = $ctrl.card.name; editCardName=true"></div>
-                <div class="md-headline overflow-ellipsis" data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"></div>
+                <div class="md-headline overflow-break" data-lvg-has-not-permission="UPDATE_CARD" data-ng-bind="$ctrl.card.name"></div>
             </md-card-title-text>
         </div>
         <div class="lavagna-card-title-main" data-ng-show="editCardName">

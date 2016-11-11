@@ -1,17 +1,17 @@
-<md-card data-ng-class="{archived : $ctrl.project.archived}">
-    <div class="lvg-stats-panel-project-simple__title-tasks">
-        <div class="lvg-stats-panel-project-simple__title-task"
+<md-card data-ng-class="{archived : $ctrl.item.archived}">
+    <div class="lvg-stats-panel-simple__title-tasks">
+        <div class="lvg-stats-panel-simple__title-task"
              ng-repeat="stat in $ctrl.normalizedStats"
              ng-style="{'width' : stat.percentage + '%', 'background-color': stat.color}">
             <md-tooltip>{{::('stats.tasks.count.' + stat.name | translate:{ value: stat.value })}}</md-tooltip>
         </div>
     </div>
     <md-card-title>
-        <md-card-title-text>
+        <md-card-title-text ng-transclude>
             <a data-ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{$ctrl.project.shortName}} - {{$ctrl.project.name}}</a>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
-        <div data-ng-bind-html="$ctrl.project.description | markdown" class="lvg-stats-panel-project-simple__description"></div>
+        <div data-ng-bind-html="$ctrl.item.description | markdown" class="lvg-stats-panel-simple__description overflow-break"></div>
     </md-card-content>
 </md-card>

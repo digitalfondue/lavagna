@@ -2,23 +2,25 @@
 
 	'use strict';
 
-	angular.module('lavagna.components').component('lvgStatsPanelProjectSimple', {
-		templateUrl : 'app/components/stats/panel-project-simple/panel-project-simple.html',
+	angular.module('lavagna.components').component('lvgStatsPanelSimple', {
+		templateUrl : 'app/components/stats/panel-simple/panel-simple.html',
+		transclude: true,
 		bindings : {
-            project: '<'
+            item: '<',
+            statsFetcher: '&'
         },
-        controller : ['Project', '$filter', StatsPanelProjectSimpleController]
+        controller : ['$filter', StatsPanelSimpleController]
 	});
 
 
-	function StatsPanelProjectSimpleController(Project, $filter) {
+	function StatsPanelSimpleController($filter) {
 
 		var ctrl = this;
 
 		var colorFilter = $filter('color');
 
 		ctrl.$onInit = function onInit() {
-		    Project.taskStatistics(ctrl.project.shortName).then(function(stats) {
+		    ctrl.statsFetcher().then(function(stats) {
                 if (stats === undefined) {
                     return;
                 }
