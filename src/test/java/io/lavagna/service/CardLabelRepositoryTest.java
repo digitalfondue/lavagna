@@ -23,7 +23,9 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardLabel;
+import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
@@ -32,8 +34,6 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.service.config.TestServiceConfig;
 
 import java.util.Collections;

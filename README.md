@@ -70,8 +70,6 @@ Lavagna runs on Java 7, but requires Java 8 to build. (due to our documentation 
 
 ### IDE Configuration ###
 
-Lavagna uses project Lombok annotations, you will need to install the support in your IDE.
-
 Use UTF-8 encoding and 120 characters as line width.
 
 

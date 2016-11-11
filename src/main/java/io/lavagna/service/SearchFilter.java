@@ -34,9 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class SearchFilter {
 
 	private final FilterType type;
@@ -58,7 +55,6 @@ public class SearchFilter {
 	}
 
 
-	@Getter
 	public static class SearchContext {
 		private final UserWithPermission currentUser;
 		private final Map<String, Integer> userNameToId;
@@ -70,7 +66,19 @@ public class SearchFilter {
 			this.userNameToId = userNameToId;
 			this.cardNameToId = cardNameToId;
 		}
-	}
+
+        public UserWithPermission getCurrentUser() {
+            return this.currentUser;
+        }
+
+        public Map<String, Integer> getUserNameToId() {
+            return this.userNameToId;
+        }
+
+        public Map<String, Integer> getCardNameToId() {
+            return this.cardNameToId;
+        }
+    }
 
 	public enum FilterType {
 
@@ -349,12 +357,24 @@ public class SearchFilter {
 		BOOLEAN, STRING, CURRENT_USER, DATE_IDENTIFIER, UNASSIGNED
 	}
 
-	@Getter
-	@AllArgsConstructor
 	public static class SearchFilterValue {
 		private final ValueType type;
 		private final Object value;
-	}
+
+        @java.beans.ConstructorProperties({ "type", "value" }) public SearchFilterValue(ValueType type,
+            Object value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public ValueType getType() {
+            return this.type;
+        }
+
+        public Object getValue() {
+            return this.value;
+        }
+    }
 
 	private static void addUserToParam(UserWithPermission userWithPermission, List<Object> params,
 			Map<String, Integer> userNameToId, SearchFilter searchFilter) {

@@ -17,6 +17,12 @@
 package io.lavagna.web.security;
 
 import static org.mockito.Mockito.when;
+import io.lavagna.common.CookieNames;
+import io.lavagna.model.Key;
+import io.lavagna.model.User;
+import io.lavagna.service.ConfigurationRepository;
+import io.lavagna.service.UserRepository;
+import io.lavagna.web.helper.UserSession;
 
 import java.io.IOException;
 import java.util.EnumMap;
@@ -38,13 +44,6 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
-
-import io.lavagna.common.CookieNames;
-import io.lavagna.model.Key;
-import io.lavagna.model.User;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.UserSession;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RememberMeFilterTest {

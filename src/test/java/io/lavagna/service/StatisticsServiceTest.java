@@ -475,7 +475,7 @@ public class StatisticsServiceTest {
 		BoardColumn trashColumn = boardColumnRepository.findDefaultColumnFor(openCol.getBoardId(),
 				BoardColumn.BoardColumnLocation.TRASH);
 		cardService.moveCardsToColumn(trashedCardIds, openCol.getId(), trashColumn.getId(), user.getId(),
-				BoardColumn.BoardColumnLocation.MAPPING.get(BoardColumn.BoardColumnLocation.TRASH), new Date());
+				BoardColumn.BoardColumnLocation.Companion.getMAPPING().get(BoardColumn.BoardColumnLocation.TRASH), new Date());
 
 		Card card4 = cardService.createCard("card4", openCol.getId(), new Date(), user);
 		List<Integer> archivedCardIds = new ArrayList<>();
@@ -483,7 +483,7 @@ public class StatisticsServiceTest {
 		BoardColumn archiveColumn = boardColumnRepository.findDefaultColumnFor(openCol.getBoardId(),
 				BoardColumn.BoardColumnLocation.ARCHIVE);
 		cardService.moveCardsToColumn(archivedCardIds, openCol.getId(), archiveColumn.getId(), user.getId(),
-				BoardColumn.BoardColumnLocation.MAPPING.get(BoardColumn.BoardColumnLocation.ARCHIVE), new Date());
+				BoardColumn.BoardColumnLocation.Companion.getMAPPING().get(BoardColumn.BoardColumnLocation.ARCHIVE), new Date());
 
 		// Double check that everything is in the right place
 		Assert.assertEquals(3, cardRepository.findAllByColumnId(openCol.getId()).size());

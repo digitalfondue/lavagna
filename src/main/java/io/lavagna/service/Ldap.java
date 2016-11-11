@@ -46,7 +46,7 @@ public class Ldap {
 	private final ConfigurationRepository configurationRepository;
 	private final LdapConnection ldapConnection;
 
-	
+
 	public Ldap(ConfigurationRepository configurationRepository, LdapConnection ldapConnection) {
 		this.configurationRepository = configurationRepository;
 		this.ldapConnection = ldapConnection;
@@ -91,7 +91,7 @@ public class Ldap {
 						srs.size());
 				msgs.add(msg);
 				LOG.info(msg, username, srs.size());
-				return Pair.of(false, msgs);
+				return Pair.Companion.of(false, msgs);
 			}
 
 			msgs.add("user found, now will connect with given password [ok]");
@@ -101,13 +101,13 @@ public class Ldap {
 			try (InitialDirContextCloseable uctx = ldapConnection.context(providerUrl, sr.getNameInNamespace(),
 					password)) {
 				msgs.add("user authenticated, everything seems ok [ok]");
-				return Pair.of(true, msgs);
+				return Pair.Companion.of(true, msgs);
 			} catch (NamingException e) {
 				String msg = format("error while checking with username \"%s\" with message: %s [error]", username,
 						e.getMessage());
 				msgs.add(msg);
 				LOG.info(msg, e);
-				return Pair.of(false, msgs);
+				return Pair.Companion.of(false, msgs);
 			}
 		} catch (Throwable e) {
 			String errMsg = format(
@@ -115,7 +115,7 @@ public class Ldap {
 					e.getMessage());
 			msgs.add(errMsg);
 			LOG.error(errMsg, e);
-			return Pair.of(false, msgs);
+			return Pair.Companion.of(false, msgs);
 		}
 	}
 

@@ -21,8 +21,6 @@ import io.lavagna.config.WebSecurityConfig;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.UserRepository;
-import io.lavagna.web.security.SecurityConfiguration;
-import io.lavagna.web.security.SecurityFilter;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 
 import java.io.IOException;
@@ -54,10 +52,10 @@ public class SecurityFilterTest {
 
 	@Mock
 	private ConfigurationRepository configurationRepository;
-	
+
 	@Mock
 	private SessionHandler sessionHandler;
-	
+
 	@Mock
 	private UserRepository userRepository;
 
@@ -70,13 +68,13 @@ public class SecurityFilterTest {
 	@Before
 	public void prepare() {
 		WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
-		
+
 		//
 		Map<String, SecurityConfiguration> paths = new LinkedHashMap<>();
 		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, sessionHandler, webApplicationContext));
 		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
 		//
-		
+
 		when(webApplicationContext.getBeansOfType(SecurityConfiguration.class)).thenReturn(paths);
 		when(filterConfig.getServletContext()).thenReturn(servletContext);
 		when(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).thenReturn(webApplicationContext);

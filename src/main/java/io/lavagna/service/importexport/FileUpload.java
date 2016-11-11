@@ -33,9 +33,8 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 class FileUpload extends AbstractProcessEvent {
 

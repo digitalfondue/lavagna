@@ -22,7 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import io.lavagna.common.Json;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
@@ -38,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonParseException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

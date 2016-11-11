@@ -34,10 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = false)
@@ -115,12 +115,12 @@ public class BulkOperationService {
 	public List<Integer> removeMilestone(String projectShortName, List<Integer> cardIds, User user) {
 		return removeLabelWithName(projectShortName, cardIds, user, SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
 	}
-	
+
 	public List<Integer> watch(String projectShortName, List<Integer> cardIds, User user) {
 		CardLabel cl = findBy(projectShortName, SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM);
 		return addLabel(projectShortName, new LabelValue(user.getId()), cardIds, user, cl);
 	}
-	
+
 	public List<Integer> removeWatch(String projectShortName, List<Integer> cardIds, User user) {
 		return removeLabelWithNameAndValue(projectShortName, cardIds, user, SYSTEM_LABEL_WATCHED_BY, LabelDomain.SYSTEM, new LabelValue(user.getId()));
 	}
@@ -130,8 +130,8 @@ public class BulkOperationService {
 		Validate.isTrue(cl.getDomain() == LabelDomain.USER);
 		int projectId = projectService.findIdByShortName(projectShortName);
 		Validate.isTrue(cl.getProjectId() == projectId);
-		
-		return value == null ? removeLabelWithName(projectShortName, cardIds, user, cl.getName(), LabelDomain.USER) : 
+
+		return value == null ? removeLabelWithName(projectShortName, cardIds, user, cl.getName(), LabelDomain.USER) :
 			removeLabelWithNameAndValue(projectShortName, cardIds, user, cl.getName(), LabelDomain.USER, value);
 	}
 
@@ -163,20 +163,20 @@ public class BulkOperationService {
 		int labelId = findBy(projectShortName, labelName, labelDomain).getId();
 		return removeMatchingLabel(projectShortName, user, cardIds, new FilterByLabelId(labelId));
 	}
-	
+
 	private List<Integer> removeLabelWithNameAndValue(String projectShortName, List<Integer> cardIds, User user,
 			String labelName, LabelDomain labelDomain, LabelValue labelValue) {
-		
+
 		int labelId = findBy(projectShortName, labelName, labelDomain).getId();
 		return removeMatchingLabel(projectShortName, user, cardIds, new FilterByLabelIdAndLabelValue(labelId, labelValue));
 	}
 
 	private List<Integer> removeMatchingLabel(String projectShortName, User user, List<Integer> cardIds, FilterLabelAndValue filter) {
-		
+
 		List<Integer> affected = new ArrayList<>();
-		
+
 		List<Integer> filteredCardIds = keepCardIdsInProject(cardIds, projectShortName);
-		
+
 		for (LabelAndValue lv : flatten(keepCardWithMatching(filteredCardIds, filter).values())) {
 			labelService.removeLabelValue(lv.labelValue(), user, new Date());
 			affected.add(lv.getLabelValueCardId());

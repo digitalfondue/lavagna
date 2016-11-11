@@ -30,9 +30,6 @@ import io.lavagna.web.helper.ExpectPermission;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,7 +50,7 @@ public class BoardColumnController {
 	private final ProjectService projectService;
 	private final EventEmitter eventEmitter;
 
-	
+
 	public BoardColumnController(BoardColumnRepository boardColumnRepository, BoardRepository boardRepository,
 			ProjectService projectService, EventEmitter eventEmitter) {
 		this.boardColumnRepository = boardColumnRepository;
@@ -162,10 +159,24 @@ public class BoardColumnController {
 		// FIXME we should fetch the affected card ids and send a a card moved event
 	}
 
-	@Getter
-	@Setter
 	public static class BoardColumnToCreate {
 		private String name;
 		private Integer definition;
-	}
+
+        public String getName() {
+            return this.name;
+        }
+
+        public Integer getDefinition() {
+            return this.definition;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setDefinition(Integer definition) {
+            this.definition = definition;
+        }
+    }
 }

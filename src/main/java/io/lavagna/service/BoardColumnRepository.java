@@ -84,7 +84,7 @@ public class BoardColumnRepository {
 
 	/**
 	 * Returns the new Column
-	 * 
+	 *
 	 * @param name
 	 * @param boardId
 	 * @return
@@ -106,7 +106,7 @@ public class BoardColumnRepository {
 
 	/**
 	 * update column order in a given board/location. The column ids are filtered.
-	 * 
+	 *
 	 * @param columns
 	 * @param boardId
 	 * @param location
@@ -141,7 +141,7 @@ public class BoardColumnRepository {
 		int res = queries.moveToLocation(id, location.toString(), columnDefinitionId);
 
 		List<Integer> cardIds = queries.findCardsInColumnId(id);
-		eventRepository.insertCardEvent(cardIds, id, user.getId(), BoardColumnLocation.MAPPING.get(location),
+		eventRepository.insertCardEvent(cardIds, id, user.getId(), BoardColumnLocation.Companion.getMAPPING().get(location),
 				new Date());
 
 		return res;

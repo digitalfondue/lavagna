@@ -34,9 +34,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +50,7 @@ public class SetupController {
 	private final ExportImportService exportImportService2;
 	private final SetupService setupService;
 
-	
+
 	public SetupController(SetupService setupService, Ldap ldap, ExportImportService exportImportService2) {
 
 		this.ldap = ldap;
@@ -93,9 +90,15 @@ public class SetupController {
 		res.sendRedirect(req.getServletContext().getContextPath());
 	}
 
-	@Getter
-	@Setter
 	public static class ConfWithUser extends Conf {
 		private UserToCreate user;
-	}
+
+        public UserToCreate getUser() {
+            return this.user;
+        }
+
+        public void setUser(UserToCreate user) {
+            this.user = user;
+        }
+    }
 }

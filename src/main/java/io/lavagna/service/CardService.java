@@ -32,7 +32,14 @@ import io.lavagna.model.Event.EventType;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.stereotype.Service;

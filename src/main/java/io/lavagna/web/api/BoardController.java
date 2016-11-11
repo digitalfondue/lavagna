@@ -53,7 +53,7 @@ public class BoardController {
 	private final StatisticsService statisticsService;
 	private final EventEmitter eventEmitter;
 
-	
+
 	public BoardController(BoardRepository boardRepository, ProjectService projectService, SearchService searchService,
 			EventEmitter eventEmitter, StatisticsService statisticsService) {
 		this.boardRepository = boardRepository;

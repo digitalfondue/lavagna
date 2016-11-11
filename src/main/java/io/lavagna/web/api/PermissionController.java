@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +50,7 @@ public class PermissionController {
     private final PermissionService permissionService;
     private final EventEmitter eventEmitter;
 
-    
+
     public PermissionController(PermissionService permissionService, EventEmitter eventEmitter) {
         this.permissionService = permissionService;
         this.eventEmitter = eventEmitter;
@@ -83,10 +81,16 @@ public class PermissionController {
         eventEmitter.emitUpdatePermissionsToRole();
     }
 
-    @Getter
-    @Setter
     public static class ToggleSearchPermission {
         private boolean value;
+
+        public boolean isValue() {
+            return this.value;
+        }
+
+        public void setValue(boolean value) {
+            this.value = value;
+        }
     }
 
     @RequestMapping(value = "/api/role/{roleName}", method = RequestMethod.POST)

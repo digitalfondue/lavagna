@@ -17,9 +17,6 @@
 package io.lavagna.web.api;
 
 import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFull;
@@ -39,6 +36,8 @@ import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.LabelService;
 import io.lavagna.service.ProjectService;
+
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;

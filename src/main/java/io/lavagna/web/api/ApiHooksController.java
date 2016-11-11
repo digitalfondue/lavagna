@@ -16,6 +16,10 @@
  */
 package io.lavagna.web.api;
 
+import io.lavagna.model.Permission;
+import io.lavagna.web.api.model.PluginCode;
+import io.lavagna.web.helper.ExpectPermission;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -27,10 +31,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.lavagna.model.Permission;
-import io.lavagna.web.api.model.PluginCode;
-import io.lavagna.web.helper.ExpectPermission;
 
 @RestController
 public class ApiHooksController {
@@ -53,7 +53,7 @@ public class ApiHooksController {
 	public void deletePlugin(@PathVariable("name") String name) {
 		// FIXME remove plugin
 	}
-	
+
 	@ExpectPermission(Permission.GLOBAL_HOOK_API_ACCESS)
 	@RequestMapping(value = "/api/plugin/{name}/hook", method = {RequestMethod.GET, RequestMethod.POST})
 	public void handleHook(@PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
@@ -80,7 +80,7 @@ public class ApiHooksController {
 			@PathVariable("name") String name) {
 		// FIXME remove plugin
 	}
-	
+
 	@ExpectPermission(Permission.PROJECT_HOOK_API_ACCESS)
 	@RequestMapping(value = "/api/project/{projectShortName}/plugin/{name}/hook", method = {RequestMethod.GET, RequestMethod.POST})
 	public void handleHook(@PathVariable("projectShortName") String projectShortName, @PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {

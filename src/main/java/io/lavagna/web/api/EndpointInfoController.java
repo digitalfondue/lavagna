@@ -33,8 +33,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.Getter;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +48,7 @@ public class EndpointInfoController {
 
 	private final RequestMappingHandlerMapping handlerMapping;
 
-	
+
 	public EndpointInfoController(RequestMappingHandlerMapping handlerMapping) {
 		this.handlerMapping = handlerMapping;
 	}
@@ -85,7 +83,6 @@ public class EndpointInfoController {
 		return identifierAndPathVariable;
 	}
 
-	@Getter
 	public static class EndpointsInfo {
 		private final Set<String> idsPathVariable;
 		private final List<EndpointInfo> endpointsInfo;
@@ -98,9 +95,20 @@ public class EndpointInfoController {
 				matchedUrlPath.put(p.getPath(), p.getPath());
 			}
 		}
-	}
 
-	@Getter
+        public Set<String> getIdsPathVariable() {
+            return this.idsPathVariable;
+        }
+
+        public List<EndpointInfo> getEndpointsInfo() {
+            return this.endpointsInfo;
+        }
+
+        public Map<String, String> getMatchedUrlPath() {
+            return this.matchedUrlPath;
+        }
+    }
+
 	public static class EndpointInfo implements Comparable<EndpointInfo> {
 		private final Set<String> patterns;
 
@@ -141,5 +149,21 @@ public class EndpointInfoController {
 					.append(methods.isEmpty() ? null : methods.iterator().next(),
 							o.methods.isEmpty() ? null : o.methods.iterator().next()).toComparison();
 		}
-	}
+
+        public Set<String> getPatterns() {
+            return this.patterns;
+        }
+
+        public Permission getPermission() {
+            return this.permission;
+        }
+
+        public Set<RequestMethod> getMethods() {
+            return this.methods;
+        }
+
+        public String getHandler() {
+            return this.handler;
+        }
+    }
 }

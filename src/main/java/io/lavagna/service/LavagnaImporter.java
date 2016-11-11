@@ -57,10 +57,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.reflect.TypeToken;
 
 @Component
 class LavagnaImporter {
@@ -78,7 +77,7 @@ class LavagnaImporter {
 
 	private final ImportEvent importEvent;
 
-	
+
 	public LavagnaImporter(ConfigurationRepository configurationRepository, UserRepository userRepository,
 			PermissionService permissionService, ProjectService projectService, BoardRepository boardRepository,
 			BoardColumnRepository boardColumnRepository, CardLabelRepository cardLabelRepository,

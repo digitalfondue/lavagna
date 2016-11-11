@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Dur;
@@ -178,10 +176,21 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         events.add(event);
     }
 
-    @Getter
-    @AllArgsConstructor
     private class UserDescription {
         private String name;
         private String email;
+
+        @java.beans.ConstructorProperties({ "name", "email" }) public UserDescription(String name, String email) {
+            this.name = name;
+            this.email = email;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public String getEmail() {
+            return this.email;
+        }
     }
 }

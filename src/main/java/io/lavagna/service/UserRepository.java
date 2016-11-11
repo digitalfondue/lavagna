@@ -17,7 +17,6 @@
 package io.lavagna.service;
 
 import static org.apache.commons.lang3.StringUtils.trimToNull;
-
 import io.lavagna.common.Json;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;

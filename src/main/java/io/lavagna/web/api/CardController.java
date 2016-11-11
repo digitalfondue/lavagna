@@ -46,9 +46,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -238,7 +235,7 @@ public class CardController {
 		Validate.isTrue(col.getLocation() != destination.getLocation());
 
 		cardService.moveCardsToColumn(cardIds.cardIds, previousColumnId, destination.getId(), user.getId(),
-				BoardColumnLocation.MAPPING.get(location), new Date());
+				BoardColumnLocation.Companion.getMAPPING().get(location), new Date());
 
 		eventEmitter.emitUpdateCardPosition(previousColumnId);
 
@@ -271,21 +268,39 @@ public class CardController {
 	    return searchService.find(TO_ME_STATUS_OPEN, projectService.findIdByShortName(shortName), null, user, page);
 	}
 
-	@Getter
-	@Setter
 	public static class CardData {
 		private String name;
-	}
 
-	@Getter
-	@Setter
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
 	public static class ColumnOrders {
 		private List<Integer> newContainer;
-	}
 
-	@Getter
-	@Setter
+        public List<Integer> getNewContainer() {
+            return this.newContainer;
+        }
+
+        public void setNewContainer(List<Integer> newContainer) {
+            this.newContainer = newContainer;
+        }
+    }
+
 	public static class CardIds {
 		private List<Integer> cardIds;
-	}
+
+        public List<Integer> getCardIds() {
+            return this.cardIds;
+        }
+
+        public void setCardIds(List<Integer> cardIds) {
+            this.cardIds = cardIds;
+        }
+    }
 }

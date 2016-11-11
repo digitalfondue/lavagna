@@ -48,9 +48,6 @@ import com.julienvey.trello.domain.Member;
 import com.julienvey.trello.domain.Organization;
 import com.julienvey.trello.domain.TList;
 import com.julienvey.trello.impl.TrelloImpl;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -379,13 +376,17 @@ public class ImportService {
 		}
 	}
 
-	@AllArgsConstructor
 	static class TrelloChecklistItem {
 		private final String name;
 		private final boolean isChecked;
-	}
 
-	@Getter
+        @java.beans.ConstructorProperties({ "name", "isChecked" }) public TrelloChecklistItem(String name,
+            boolean isChecked) {
+            this.name = name;
+            this.isChecked = isChecked;
+        }
+    }
+
 	static class TrelloChecklist {
 		private final String name;
 
@@ -394,17 +395,41 @@ public class ImportService {
 		public TrelloChecklist(String name) {
 			this.name = name;
 		}
-	}
 
-	@Getter
-	@AllArgsConstructor
+        public String getName() {
+            return this.name;
+        }
+
+        public Map<Integer, TrelloChecklistItem> getItems() {
+            return this.items;
+        }
+    }
+
 	static class TrelloComment {
 		private final Date date;
 		private final User user;
 		private final String text;
-	}
 
-	@Getter
+        @java.beans.ConstructorProperties({ "date", "user", "text" }) public TrelloComment(Date date, User user,
+            String text) {
+            this.date = date;
+            this.user = user;
+            this.text = text;
+        }
+
+        public Date getDate() {
+            return this.date;
+        }
+
+        public User getUser() {
+            return this.user;
+        }
+
+        public String getText() {
+            return this.text;
+        }
+    }
+
 	static class TrelloCard {
 		private final String name;
 		private final String desc;
@@ -422,9 +447,40 @@ public class ImportService {
 			this.isClosed = isClosed;
 			this.dueDate = dueDate;
 		}
-	}
 
-	@Getter
+        public String getName() {
+            return this.name;
+        }
+
+        public String getDesc() {
+            return this.desc;
+        }
+
+        public boolean isClosed() {
+            return this.isClosed;
+        }
+
+        public Date getDueDate() {
+            return this.dueDate;
+        }
+
+        public List<TrelloComment> getComments() {
+            return this.comments;
+        }
+
+        public List<TrelloChecklist> getChecklists() {
+            return this.checklists;
+        }
+
+        public List<User> getAssignedUsers() {
+            return this.assignedUsers;
+        }
+
+        public List<String> getLabels() {
+            return this.labels;
+        }
+    }
+
 	static class TrelloBoardColumn {
 		private final String name;
 
@@ -433,9 +489,16 @@ public class ImportService {
 		public TrelloBoardColumn(String name) {
 			this.name = name;
 		}
-	}
 
-	@Getter
+        public String getName() {
+            return this.name;
+        }
+
+        public Map<Integer, TrelloCard> getCards() {
+            return this.cards;
+        }
+    }
+
 	public static class TrelloBoard {
 		private final String shortName;
 		private final String name;
@@ -448,29 +511,60 @@ public class ImportService {
 			this.name = name;
 			this.desc = desc;
 		}
-	}
 
-	@Getter
+        public String getShortName() {
+            return this.shortName;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public String getDesc() {
+            return this.desc;
+        }
+
+        public Map<Integer, TrelloBoardColumn> getColumns() {
+            return this.columns;
+        }
+    }
+
 	public static class TrelloImportResponse {
 		private final List<TrelloBoard> boards = new ArrayList<>();
 
 		private final Map<String, String> labels = new HashMap<>();
-	}
+
+        public List<TrelloBoard> getBoards() {
+            return this.boards;
+        }
+
+        public Map<String, String> getLabels() {
+            return this.labels;
+        }
+    }
 
 	public static class TrelloBoardsResponse {
 		private final List<TrelloOrganizationInfo> organizations = new ArrayList<>();
 	}
 
-	@AllArgsConstructor
-	@Getter
-	@Setter
 	public static class TrelloBoardInfo {
 		private final String id;
 		private final String name;
-	}
 
-	@Getter
-	@Setter
+        @java.beans.ConstructorProperties({ "id", "name" }) public TrelloBoardInfo(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
+
 	public static class TrelloOrganizationInfo {
 		private final String id;
 		private final String name;
@@ -480,5 +574,17 @@ public class ImportService {
 			this.id = id;
 			this.name = name;
 		}
-	}
+
+        public String getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public List<TrelloBoardInfo> getBoards() {
+            return this.boards;
+        }
+    }
 }

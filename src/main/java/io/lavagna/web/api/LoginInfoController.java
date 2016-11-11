@@ -36,16 +36,12 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
+import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import com.google.gson.reflect.TypeToken;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)
@@ -54,7 +50,7 @@ public class LoginInfoController {
     private final ConfigurationRepository configurationRepository;
     private final OAuthLogin oauthLogin;
 
-    
+
     public LoginInfoController(ConfigurationRepository configurationRepository, OAuthLogin oauthLogin) {
         this.configurationRepository = configurationRepository;
         this.oauthLogin = oauthLogin;
@@ -71,8 +67,6 @@ public class LoginInfoController {
         return res;
     }
 
-    @Getter
-    @AllArgsConstructor
     public static class OAuthProviderInfo implements Comparable<OAuthProviderInfo> {
         private final String name;
         private final boolean hasConfigurableBaseUrl;
@@ -81,6 +75,26 @@ public class LoginInfoController {
         @Override
         public int compareTo(OAuthProviderInfo o) {
             return name.compareTo(o.name);
+        }
+
+        @java.beans.ConstructorProperties({ "name", "hasConfigurableBaseUrl",
+            "isConfigurableInstance" }) public OAuthProviderInfo(String name, boolean hasConfigurableBaseUrl,
+            boolean isConfigurableInstance) {
+            this.name = name;
+            this.hasConfigurableBaseUrl = hasConfigurableBaseUrl;
+            this.isConfigurableInstance = isConfigurableInstance;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public boolean isHasConfigurableBaseUrl() {
+            return this.hasConfigurableBaseUrl;
+        }
+
+        public boolean isConfigurableInstance() {
+            return this.isConfigurableInstance;
         }
     }
 

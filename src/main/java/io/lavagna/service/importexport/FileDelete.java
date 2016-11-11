@@ -16,9 +16,6 @@
  */
 package io.lavagna.service.importexport;
 
-import java.nio.file.Path;
-import java.util.Date;
-
 import io.lavagna.model.Event;
 import io.lavagna.model.EventFull;
 import io.lavagna.model.ImportContext;
@@ -26,6 +23,9 @@ import io.lavagna.model.User;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.UserRepository;
+
+import java.nio.file.Path;
+import java.util.Date;
 
 class FileDelete extends AbstractProcessEvent {
 
