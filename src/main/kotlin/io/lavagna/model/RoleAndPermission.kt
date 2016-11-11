@@ -20,8 +20,8 @@ import java.util.Objects
 
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 
-class RoleAndPermission(@Column("ROLE_NAME") val roleName: String, @Column("ROLE_REMOVABLE") val isRemovable: Boolean,
-                        @Column("ROLE_HIDDEN") val isHidden: Boolean, @Column("ROLE_READONLY") val isReadOnly: Boolean,
+class RoleAndPermission(@Column("ROLE_NAME") val roleName: String, @Column("ROLE_REMOVABLE") val removable: Boolean,
+                        @Column("ROLE_HIDDEN") val hidden: Boolean, @Column("ROLE_READONLY") val readOnly: Boolean,
                         /** can be null  */
                         @Column("PERMISSION") val permission: Permission?) {
 

@@ -28,7 +28,7 @@ class UserPublicProfile(user: User, val dailyActivity: List<EventsCount>,
     init {
         // we remove the email
         this.user = User(user.id, user.provider, user.username, null, user.displayName,
-            user.isEnabled, user.isEmailNotification, user.memberSince, user.isSkipOwnNotifications,
+            user.enabled, user.emailNotification, user.memberSince, user.skipOwnNotifications,
             user.userMetadataRaw)
     }
 }

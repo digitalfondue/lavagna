@@ -43,7 +43,7 @@ public final class UserSession {
 	private static final String AUTH_KEY = UserSession.class.getName() + ".AUTH_KEY";
 	private static final String AUTH_USER_ID = UserSession.class.getName() + ".AUTH_USER_ID";
 	private static final String AUTH_USER_IS_ANONYMOUS = UserSession.class.getName() + ".AUTH_USER_IS_ANONYMOUS";
-	
+
 
 	public static boolean isUserAuthenticated(HttpServletRequest req) {
 		return Boolean.TRUE.equals(req.getSession().getAttribute(AUTH_KEY));
@@ -64,7 +64,7 @@ public final class UserSession {
 		if (uIdToken != null && userRepository.rememberMeTokenExists(uIdToken.getLeft(), uIdToken.getRight())) {
 			userRepository.deleteRememberMeToken(uIdToken.getLeft(), uIdToken.getRight());
 			User user = userRepository.findById(uIdToken.getLeft());
-			setUser(user.getId(), user.isAnonymous(), req, resp, userRepository, true);
+			setUser(user.getId(), user.getAnonymous(), req, resp, userRepository, true);
 		} else {
 			// delete cookie because it's invalid
 			c.setMaxAge(0);
@@ -139,7 +139,7 @@ public final class UserSession {
 		session.setAttribute(AUTH_USER_ID, userId);
 		session.setAttribute(AUTH_USER_IS_ANONYMOUS, isUserAnonymous);
 	}
-	
+
 	public static void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
 	    boolean rememberMe = "true".equals(req.getParameter("rememberMe")) || "true".equals(req.getAttribute("rememberMe"));
 	    setUser(userId, isUserAnonymous, req, resp, userRepository, rememberMe);

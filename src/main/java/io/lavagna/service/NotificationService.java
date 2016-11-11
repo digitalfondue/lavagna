@@ -86,7 +86,7 @@ public class NotificationService {
     private final Template emailTextTemplate;
     private final Template emailHtmlTemplate;
 
-    
+
     public NotificationService(ConfigurationRepository configurationRepository, UserRepository userRepository,
         CardDataRepository cardDataRepository, CardRepository cardRepository,
         BoardColumnRepository boardColumnRepository, MessageSource messageSource, NamedParameterJdbcTemplate jdbc,
@@ -219,10 +219,10 @@ public class NotificationService {
 
         Date fromDate = ObjectUtils.firstNonNull(lastSent, DateUtils.addDays(upTo, -1));
 
-        List<Event> events = user.isSkipOwnNotifications() ?
+        List<Event> events = user.getSkipOwnNotifications() ?
             queries.eventsForUserWithoutHisOwns(userId, fromDate, upTo) : queries.eventsForUser(userId, fromDate, upTo);
 
-        if (!events.isEmpty() && mailConfig != null && mailConfig.isMinimalConfigurationPresent() && emailEnabled
+        if (!events.isEmpty() && mailConfig != null && mailConfig.getMinimalConfigurationPresent() && emailEnabled
             && user.canSendEmail()) {
             try {
                 sendEmailToUser(user, events, mailConfig);

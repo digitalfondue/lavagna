@@ -41,7 +41,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PermissionService permissionService;
 
-	
+
 	public UserService(UserRepository userRepository, PermissionService permissionService) {
 		this.userRepository = userRepository;
 		this.permissionService = permissionService;
@@ -54,7 +54,7 @@ public class UserService {
 		requireNonNull(userToCreate.getUsername());
 
 		userRepository.createUser(userToCreate.getProvider(), userToCreate.getUsername(), userToCreate.getEmail(),
-				userToCreate.getDisplayName(), userToCreate.isEnabled());
+				userToCreate.getDisplayName(), userToCreate.getEnabled());
 
 		if (userToCreate.getRoles() == null) {
 			return;

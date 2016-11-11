@@ -97,7 +97,7 @@ public class PermissionController {
     public void updateRole(@PathVariable("roleName") String roleName, @RequestBody UpdateRole updateRole) {
 
         RoleAndMetadata role = permissionService.findRoleByName(roleName);
-        Validate.isTrue(!role.isReadOnly());
+        Validate.isTrue(!role.getReadOnly());
 
         permissionService.updatePermissionsToRole(new Role(roleName), updateRole.getPermissions());
         eventEmitter.emitUpdatePermissionsToRole();
@@ -107,7 +107,7 @@ public class PermissionController {
     public void deleteRole(@PathVariable("roleName") String roleName) {
 
         RoleAndMetadata role = permissionService.findRoleByName(roleName);
-        Validate.isTrue(role.isRemovable());
+        Validate.isTrue(role.getRemovable());
 
         permissionService.deleteRole(new Role(roleName));
         eventEmitter.emitDeleteRole();

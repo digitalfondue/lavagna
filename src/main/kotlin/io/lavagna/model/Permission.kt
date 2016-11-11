@@ -26,7 +26,7 @@ enum class Permission private constructor(
         /**
          * only for base permission, if false: cannot be used in Project level permission
          */
-        val isOnlyForBase: Boolean = false) {
+        val onlyForBase: Boolean = false) {
     /* access to the admin tool */
     ADMINISTRATION(PermissionCategory.APPLICATION, true), //
 
@@ -91,7 +91,7 @@ enum class Permission private constructor(
         init {
             val p = EnumSet.noneOf(Permission::class.java)
             for (perm in Permission.values()) {
-                if (!perm.isOnlyForBase) {
+                if (!perm.onlyForBase) {
                     p.add(perm)
                 }
             }

@@ -209,7 +209,7 @@ public class CardLabelRepository {
     @Transactional(readOnly = false)
     public CardLabelValue addLabelValueToCard(CardLabel label, int cardId, LabelValue val) {
 
-        queries.addLabelValueToCard(cardId, label.isUnique() ? true : null, label.getId(), label.getType().toString(),
+        queries.addLabelValueToCard(cardId, label.getUnique() ? true : null, label.getId(), label.getType().toString(),
             val.getValueString(), val.getValueTimestamp(), val.getValueInt(), val.getValueCard(),
             val.getValueUser(), val.getValueList());
 

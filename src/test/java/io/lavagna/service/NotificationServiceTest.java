@@ -158,7 +158,7 @@ public class NotificationServiceTest {
 		cardDataService.createComment(card2.getId(), "first comment on card 2", creationDate, user.getId());
 
 		MailConfig mc = mock(MailConfig.class);
-		when(mc.isMinimalConfigurationPresent()).thenReturn(true);
+		when(mc.getMinimalConfigurationPresent()).thenReturn(true);
 		when(mc.getFrom()).thenReturn("from@lavagna.io");
 		notificationService.notifyUser(user.getId(), new Date(), true, mc);
 
@@ -185,7 +185,7 @@ public class NotificationServiceTest {
         cardDataService.createComment(card2.getId(), "first comment on card 2", creationDate, otherUser.getId());
 
         MailConfig mc = mock(MailConfig.class);
-        when(mc.isMinimalConfigurationPresent()).thenReturn(true);
+        when(mc.getMinimalConfigurationPresent()).thenReturn(true);
         when(mc.getFrom()).thenReturn("from@lavagna.io");
         notificationService.notifyUser(user.getId(), new Date(), true, mc);
 

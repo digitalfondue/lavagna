@@ -22,13 +22,13 @@ enum class PermissionCategory {
     /**
      * only for base permission, if false: cannot be used in Project level permission
      */
-    val isOnlyForBase: Boolean
+    val onlyForBase: Boolean
 
     private constructor() {
-        isOnlyForBase = false
+        onlyForBase = false
     }
 
     private constructor(onlyForBase: Boolean) {
-        this.isOnlyForBase = onlyForBase
+        this.onlyForBase = onlyForBase
     }
 }

@@ -18,4 +18,4 @@ package io.lavagna.model
 
 import io.lavagna.model.CardLabel.LabelType
 
-class Label(val name: String, val isUnique: Boolean, val type: LabelType, val color: Int)
+class Label(val name: String, val unique: Boolean, val type: LabelType, val color: Int)

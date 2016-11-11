@@ -134,7 +134,7 @@ public class ProjectService {
 		for (Project p : projects) {
 			if (!usedShortNames.contains(p.getShortName())) {
 				Project createdProject = create(p.getName(), p.getShortName(), p.getDescription());
-				updateProject(createdProject.getId(), createdProject.getName(), createdProject.getDescription(), p.isArchived());
+				updateProject(createdProject.getId(), createdProject.getName(), createdProject.getDescription(), p.getArchived());
 				created.add(createdProject);
 			} else {
 				skipped.add(p);

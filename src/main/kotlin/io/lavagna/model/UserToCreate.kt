@@ -22,7 +22,7 @@ class UserToCreate {
     var username: String? = null
     var email: String? = null
     var displayName: String? = null
-    var isEnabled: Boolean = false
+    var enabled: Boolean = false
     var roles: List<String>? = null
 
     constructor() {
@@ -31,6 +31,6 @@ class UserToCreate {
     constructor(provider: String, username: String) {
         this.provider = provider
         this.username = username
-        isEnabled = true
+        enabled = true
     }
 }

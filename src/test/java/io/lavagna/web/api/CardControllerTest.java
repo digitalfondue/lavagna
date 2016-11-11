@@ -88,8 +88,8 @@ public class CardControllerTest {
 				projectService, boardColumnRepository, searchService, eventEmitter);
 
 		ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
-				project.getDescription(), project.isArchived(), board.getId(), board.getShortName(), board.getName(),
-				board.getDescription(), board.isArchived());
+				project.getDescription(), project.getArchived(), board.getId(), board.getShortName(), board.getName(),
+				board.getDescription(), board.getArchived());
 		when(boardRepository.findProjectAndBoardByColumnId(boardColumn.getId())).thenReturn(pab);
 	}
 

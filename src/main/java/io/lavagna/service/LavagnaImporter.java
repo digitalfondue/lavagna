@@ -315,7 +315,7 @@ class LavagnaImporter {
 			CardLabel label = pLabel.getFirst();
 
 			if (label.getDomain() == LabelDomain.USER) {
-				cardLabelRepository.addLabel(createdProject.getId(), label.isUnique(), label.getType(),
+				cardLabelRepository.addLabel(createdProject.getId(), label.getUnique(), label.getType(),
 						label.getDomain(), label.getName(), label.getColor());
 			}
 
@@ -351,7 +351,7 @@ class LavagnaImporter {
 	private void importMissingBoard(Project project, BoardInfo boardInfo, Path tempFile, ImportContext idMapping) {
 		Board createdBoard = boardRepository.createEmptyBoard(boardInfo.getName(), boardInfo.getShortName(), boardInfo.getDescription(),
 				project.getId());
-		boardRepository.updateBoard(createdBoard.getId(), createdBoard.getName(), createdBoard.getDescription(), boardInfo.isArchived());
+		boardRepository.updateBoard(createdBoard.getId(), createdBoard.getName(), createdBoard.getDescription(), boardInfo.getArchived());
 		List<BoardColumn> boardColumns = readObject("boards/" + boardInfo.getShortName() + "/columns.json", tempFile,
 				new TypeToken<List<BoardColumn>>() {
 				});

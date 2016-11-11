@@ -16,5 +16,5 @@
  */
 package io.lavagna.model
 
-class UserMetadata(val isShowArchivedProjects: Boolean,
-                   val isShowArchivedBoards: Boolean)
+class UserMetadata(val showArchivedProjects: Boolean,
+                   val showArchivedBoards: Boolean)

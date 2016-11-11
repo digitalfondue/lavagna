@@ -37,7 +37,7 @@ open class MailConfig(val host: String,
                       open val from: String,
                       val properties: String?) {
 
-    open val isMinimalConfigurationPresent: Boolean
+    open val minimalConfigurationPresent: Boolean
         get() = StringUtils.isNotBlank(host) && port != null && StringUtils.isNotBlank(protocol)
             && StringUtils.isNotBlank(from)
 

@@ -257,7 +257,7 @@ public class BulkOperationService {
 		public List<LabelAndValue> filter(List<LabelAndValue> lvs) {
 			List<LabelAndValue> matching = new ArrayList<>();
 			for (LabelAndValue lv : lvs) {
-				if (lv.getLabelId() == labelId && (lv.isLabelUnique() || lv.getValue().equals(value))) {
+				if (lv.getLabelId() == labelId && (lv.getLabelUnique() || lv.getValue().equals(value))) {
 					matching.add(lv);
 				}
 			}
@@ -313,7 +313,7 @@ public class BulkOperationService {
 		}
 		return res;
 	}
-	
+
 	public int findIdForSystemLabel(String shortName, String name) {
 		return findBy(shortName, name, LabelDomain.SYSTEM).getId();
 	}

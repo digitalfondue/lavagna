@@ -147,11 +147,11 @@ public class CalendarServiceTest {
 
     @Test
     public void testSetCalendarFeedDisabled() {
-        Assert.assertFalse(calendarService.findCalendarInfoFromUser(user).isDisabled());
+        Assert.assertFalse(calendarService.findCalendarInfoFromUser(user).getDisabled());
 
         calendarService.setCalendarFeedDisabled(user, true);
 
-        Assert.assertTrue(calendarService.findCalendarInfoFromUser(user).isDisabled());
+        Assert.assertTrue(calendarService.findCalendarInfoFromUser(user).getDisabled());
     }
 
     @Test(expected = SecurityException.class)

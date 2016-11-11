@@ -58,7 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
 @Transactional
 public class ProjectServiceTest {
-	
+
 	private static final String TEST_BOARD = "TEST-BRD";
 
 	@Autowired
@@ -69,16 +69,16 @@ public class ProjectServiceTest {
 
 	@Autowired
 	private PermissionService permissionService;
-	
+
 	@Autowired
 	private CardService cardService;
-	
+
 	@Autowired
 	private BoardColumnRepository boardColumnRepository;
-	
+
 	@Autowired
 	private BoardRepository boardRepository;
-	
+
 	@Autowired
 	private CardLabelRepository cardLabelRepository;
 
@@ -105,7 +105,7 @@ public class ProjectServiceTest {
 	public void updateProjectTest() {
 		Project p = projectService.create("test", "TEST", "desc");
 
-		Project newProject = projectService.updateProject(p.getId(), "new name", p.getDescription(), p.isArchived());
+		Project newProject = projectService.updateProject(p.getId(), "new name", p.getDescription(), p.getArchived());
 
 		Assert.assertEquals(p.getId(), newProject.getId());
 		Assert.assertEquals(p.getDescription(), newProject.getDescription());
@@ -197,10 +197,10 @@ public class ProjectServiceTest {
 		Assert.assertEquals(ColumnDefinition.DEFERRED.getDefaultColor(), definitions.get(ColumnDefinition.DEFERRED)
 				.getColor());
 	}
-	
+
 	private Pair<Project, User> prepareOneActivity() {
-		
-		
+
+
 		Helper.createUser(userRepository, "test", "test-user");
 		User user = userRepository.findUserByName("test", "test-user");
 
@@ -208,16 +208,16 @@ public class ProjectServiceTest {
 		Project project = projectService.findByShortName("TEST");
 		boardRepository.createNewBoard("TEST", TEST_BOARD, "TEST", project.getId());
 		Board board = boardRepository.findBoardByShortName(TEST_BOARD);
-		
+
 		List<BoardColumnDefinition> definitions = projectService.findColumnDefinitionsByProjectId(project.getId());
 		BoardColumn bc = boardColumnRepository.addColumnToBoard("col1", definitions.get(0).getId(),
 				BoardColumn.BoardColumnLocation.BOARD, board.getId());
 		cardService.createCard("card1", bc.getId(), new Date(), user);
-		
+
 		return Pair.of(project, user);
 	}
-	
-	
+
+
 	@Test
 	public void testFindBoardsByUserActivityWithGlobalPermissions() {
 		Pair<Project, User> prep = prepareOneActivity();
@@ -239,32 +239,32 @@ public class ProjectServiceTest {
 	public void testFindBoardsByUserActivityWithNoPermissionsOnTest() {
 		Helper.createUser(userRepository, "test", "test-user");
 		User user = userRepository.findUserByName("test", "test-user");
-		
+
 		List<ProjectWithEventCounts> projects = projectService.findProjectsActivityByUserInProjects(user.getId(),
 				Collections.<Integer>emptyList());
 		Assert.assertEquals(0, projects.size());
 	}
-	
+
 	@Test
 	public void testExistsWithShortName() {
 	    Assert.assertFalse(projectService.existsWithShortName(null));
 	    Assert.assertFalse(projectService.existsWithShortName(""));
 	    Assert.assertFalse(projectService.existsWithShortName("PROJECT"));
-	    
+
 	    projectService.create("PROJECT", "PROJECT", "desc");
 	    Assert.assertTrue(projectService.existsWithShortName("PROJECT"));
 	}
-	
+
 	@Test
 	public void testProjectMetadata() {
 	    projectService.create("test", "TEST", "desc");
 	    ProjectMetadata metadata = projectService.getMetadata("TEST");
-	    
+
 	    Assert.assertEquals(4, metadata.getColumnsDefinition().size());
-	    
+
 	    //4 system labels
 	    Assert.assertEquals(4, metadata.getLabels().size());
-	    
+
 	    CardLabel milestoneLabel = null;
         for (CardLabel cl : metadata.getLabels().values()) {
             if (SYSTEM_LABEL_MILESTONE.equals(cl.getName()) && cl.getDomain() == LabelDomain.SYSTEM) {
@@ -272,27 +272,27 @@ public class ProjectServiceTest {
             }
         }
 	    Assert.assertTrue(metadata.getLabelListValues().isEmpty());
-	    
+
 	    cardLabelRepository.addLabelListValue(milestoneLabel.getId(), "1.0.0");
-	    
+
 	    ProjectMetadata metadata2 = projectService.getMetadata("TEST");
-	    
+
 	    Assert.assertEquals(1, metadata2.getLabelListValues().size());
-	    
-	    
+
+
 	    LabelListValueWithMetadata llval = metadata2.getLabelListValues().values().iterator().next();
 	    Assert.assertEquals("1.0.0", llval.getValue());
 	    Assert.assertTrue(llval.getMetadata().isEmpty());
-	    
-	    
+
+
 	    cardLabelRepository.createLabelListMetadata(llval.getId(), "muh", "perfs");
-	    
-	    
+
+
 	    ProjectMetadata metadata3 = projectService.getMetadata("TEST");
-	    
+
 	    LabelListValueWithMetadata llval3 = metadata3.getLabelListValues().get(llval.getId());
         Assert.assertFalse(llval3.getMetadata().isEmpty());
         Assert.assertEquals("perfs", llval3.getMetadata().get("muh"));
-	    
+
 	}
 }

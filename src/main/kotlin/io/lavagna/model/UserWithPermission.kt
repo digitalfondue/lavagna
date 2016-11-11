@@ -22,7 +22,7 @@ import java.util.*
 open class UserWithPermission(user: User,
                               permissions: Set<Permission>,
                               permissionsForProject: Map<String, Set<Permission>>,
-                              permissionsForProjectId: Map<Int, Set<Permission>>) : User(user.id, user.provider, user.username, user.email, user.displayName, user.isEnabled, user.isEmailNotification, user.memberSince, user.isSkipOwnNotifications, user.userMetadataRaw) {
+                              permissionsForProjectId: Map<Int, Set<Permission>>) : User(user.id, user.provider, user.username, user.email, user.displayName, user.enabled, user.emailNotification, user.memberSince, user.skipOwnNotifications, user.userMetadataRaw) {
 
     open val basePermissions: Map<Permission, Permission>
     private val permissionsForProject: MutableMap<String, Map<Permission, Permission>>

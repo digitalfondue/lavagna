@@ -29,15 +29,15 @@ open class User(@Column("USER_ID") val id: Int,
                 @Column("USER_EMAIL") val email: String?,
                 @Column("USER_DISPLAY_NAME") val displayName: String?,
                 @Column("USER_ENABLED") enabled: Boolean?,
-                @Column("USER_EMAIL_NOTIFICATION") val isEmailNotification: Boolean,
+                @Column("USER_EMAIL_NOTIFICATION") val emailNotification: Boolean,
                 @Column("USER_MEMBER_SINCE") val memberSince: Date?,
-                @Column("USER_SKIP_OWN_NOTIFICATIONS") val isSkipOwnNotifications: Boolean,
+                @Column("USER_SKIP_OWN_NOTIFICATIONS") val skipOwnNotifications: Boolean,
                 @Column("USER_METADATA") @Transient val userMetadataRaw: String?) {
-    val isEnabled: Boolean
+    val enabled: Boolean
     val userMetadata: UserMetadata?
 
     init {
-        this.isEnabled = enabled ?: true
+        this.enabled = enabled ?: true
         this.userMetadata = Json.GSON.fromJson(userMetadataRaw, UserMetadata::class.java)
     }
 
@@ -45,17 +45,17 @@ open class User(@Column("USER_ID") val id: Int,
         if (obj == null || obj !is User) {
             return false
         }
-        return EqualsBuilder().append(id, obj.id).append(provider, obj.provider).append(username, obj.username).append(email, obj.email).append(displayName, obj.displayName).append(isEnabled, obj.isEnabled).append(isEmailNotification, obj.isEmailNotification).append(isSkipOwnNotifications, obj.isSkipOwnNotifications).append(userMetadata, obj.userMetadata).isEquals
+        return EqualsBuilder().append(id, obj.id).append(provider, obj.provider).append(username, obj.username).append(email, obj.email).append(displayName, obj.displayName).append(enabled, obj.enabled).append(emailNotification, obj.emailNotification).append(skipOwnNotifications, obj.skipOwnNotifications).append(userMetadata, obj.userMetadata).isEquals
     }
 
     public open override fun hashCode(): Int {
-        return HashCodeBuilder().append(id).append(provider).append(username).append(email).append(displayName).append(isEnabled).append(isEmailNotification).append(isSkipOwnNotifications).toHashCode()
+        return HashCodeBuilder().append(id).append(provider).append(username).append(email).append(displayName).append(enabled).append(emailNotification).append(skipOwnNotifications).toHashCode()
     }
 
-    val isAnonymous: Boolean
+    val anonymous: Boolean
         get() = "system" == provider && "anonymous" == username
 
     fun canSendEmail(): Boolean {
-        return isEnabled && isEmailNotification && StringUtils.isNotBlank(email)
+        return enabled && emailNotification && StringUtils.isNotBlank(email)
     }
 }

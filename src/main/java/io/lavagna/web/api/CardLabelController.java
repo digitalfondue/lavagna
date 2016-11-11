@@ -78,7 +78,7 @@ public class CardLabelController {
 	@RequestMapping(value = "/api/project/{projectShortName}/labels", method = RequestMethod.POST)
 	public CardLabel addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody Label label) {
 		int projectId = projectService.findIdByShortName(projectShortName);
-		CardLabel cl = cardLabelRepository.addLabel(projectId, label.isUnique(), label.getType(),
+		CardLabel cl = cardLabelRepository.addLabel(projectId, label.getUnique(), label.getType(),
 				LabelDomain.USER, label.getName(), label.getColor());
 		eventEmitter.emitAddLabel(projectShortName);
 		return cl;

@@ -112,10 +112,10 @@ public class UserRepository {
     private static SqlParameterSource prepareUserParameterSource(User user) {
         return new MapSqlParameterSource("provider", trimToNull(user.getProvider()))
             .addValue("userName", trimToNull(user.getUsername())).addValue("email", trimToNull(user.getEmail()))
-            .addValue("displayName", trimToNull(user.getDisplayName())).addValue("enabled", user.isEnabled())
-            .addValue("emailNotification", user.isEmailNotification())
+            .addValue("displayName", trimToNull(user.getDisplayName())).addValue("enabled", user.getEnabled())
+            .addValue("emailNotification", user.getEmailNotification())
             .addValue("memberSince", ObjectUtils.firstNonNull(user.getMemberSince(), new Date()))
-            .addValue("skipOwnNotifications", user.isSkipOwnNotifications())
+            .addValue("skipOwnNotifications", user.getSkipOwnNotifications())
             .addValue("metadata", user.getUserMetadataRaw());
     }
 

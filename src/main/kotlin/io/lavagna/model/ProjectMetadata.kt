@@ -79,7 +79,7 @@ class ProjectMetadata(val shortName: String, val labels: SortedMap<Int, CardLabe
         writeInts(daos, cl.id, cl.projectId)
         writeNotNull(daos, cl.name)
         writeInts(daos, cl.color)
-        writeNotNull(daos, cl.isUnique)
+        writeNotNull(daos, cl.unique)
         writeEnum(daos, cl.type)
         writeEnum(daos, cl.domain)
     }

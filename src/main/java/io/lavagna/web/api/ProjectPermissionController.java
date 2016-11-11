@@ -50,7 +50,7 @@ public class ProjectPermissionController {
 	private final EventEmitter eventEmitter;
 	private final ProjectService projectService;
 
-	
+
 	public ProjectPermissionController(PermissionService permissionService, EventEmitter eventEmitter,
 			ProjectService projectService) {
 		this.permissionService = permissionService;
@@ -80,7 +80,7 @@ public class ProjectPermissionController {
 	    int projectId = projectService.findIdByShortName(projectShortName);
 		RoleAndMetadata role = permissionService.findRoleInProjectByName(projectId, roleName);
 
-		Validate.isTrue(!role.isReadOnly());
+		Validate.isTrue(!role.getReadOnly());
 
 		permissionService.updatePermissionsToRoleInProjectId(new Role(roleName), updateRole.getPermissions(), projectId);
 		eventEmitter.emitUpdatePermissionsToRole(projectShortName);
@@ -93,7 +93,7 @@ public class ProjectPermissionController {
 
 		RoleAndMetadata role = permissionService.findRoleInProjectByName(projectId, roleName);
 
-		Validate.isTrue(role.isRemovable());
+		Validate.isTrue(role.getRemovable());
 
 		permissionService.deleteRoleInProjectId(new Role(roleName), projectId);
 		eventEmitter.emitDeleteRole(projectShortName);
@@ -129,12 +129,12 @@ public class ProjectPermissionController {
 			@PathVariable("projectShortName") String projectShortName) {
 		Map<PermissionCategory, List<Permission>> byCategory = new LinkedHashMap<>();
 		for (PermissionCategory pc : PermissionCategory.values()) {
-			if (!pc.isOnlyForBase()) {
+			if (!pc.getOnlyForBase()) {
 				byCategory.put(pc, new ArrayList<Permission>());
 			}
 		}
 		for (Permission permission : Permission.values()) {
-			if (!permission.isOnlyForBase() && byCategory.containsKey(permission.getCategory())) {
+			if (!permission.getOnlyForBase() && byCategory.containsKey(permission.getCategory())) {
 				byCategory.get(permission.getCategory()).add(permission);
 			}
 		}

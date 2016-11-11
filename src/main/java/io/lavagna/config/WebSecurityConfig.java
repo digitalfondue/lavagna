@@ -63,7 +63,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityConfiguration configuredApp(ConfigurationRepository configurationRepository, UserRepository userRepository, SessionHandler sessionHandler, ApplicationContext context) {
-        
+
         return new SecurityConfiguration().requestMatcher(onlyWhenSetupComplete(configurationRepository))
                 .loginHandlerFinder(loginHandlerFinder(configurationRepository, context))
                 .sessionHandler(sessionHandler)
@@ -78,10 +78,10 @@ public class WebSecurityConfig {
                 .login("/login/**", "/login", loginPageGenerator())
                 .logout("/logout/**", "/logout");
     }
-    
+
     @Bean
     public SecurityConfiguration unconfiguredApp(ConfigurationRepository configurationRepository) {
-        
+
         return new SecurityConfiguration().requestMatcher(onlyWhenSetupIsNotComplete(configurationRepository))
                 .request("/setup/**").permitAll()
                 .request("/css/**").permitAll()
@@ -92,10 +92,10 @@ public class WebSecurityConfig {
                 .request("/**").redirectTo("/setup/")
                 .disableLogin();
     }
-    
+
     private LoginPageGenerator loginPageGenerator() {
         return new LoginPageGenerator() {
-            
+
             @Override
             public void generate(HttpServletRequest req, HttpServletResponse resp, Map<String, LoginHandler> handlers) throws IOException {
                 Map<String, Object> model = new HashMap<>();
@@ -112,7 +112,7 @@ public class WebSecurityConfig {
             }
         };
     }
-    
+
     @Bean
     public SessionHandler sessionHandler(final UserRepository userRepository) {
         return new SessionHandler() {
@@ -125,7 +125,7 @@ public class WebSecurityConfig {
             public boolean isUserAuthenticated(HttpServletRequest req) {
                 return UserSession.isUserAuthenticated(req);
             }
-            
+
             @Override
             public boolean isUserAnonymous(HttpServletRequest req) {
                 return UserSession.isUserAnonymous(req);
@@ -142,15 +142,15 @@ public class WebSecurityConfig {
             }
         };
     }
-    
+
     private static class WebSecurityUser implements User {
-        
+
         private final int id;
         private final boolean anonymous;
-        
+
         private WebSecurityUser(io.lavagna.model.User user) {
             this.id = user.getId();
-            this.anonymous = user.isAnonymous();
+            this.anonymous = user.getAnonymous();
         }
 
         @Override
@@ -162,9 +162,9 @@ public class WebSecurityConfig {
         public boolean isAnonymous() {
             return anonymous;
         }
-        
+
     }
-    
+
     @Bean
     private Users users(final UserRepository userRepository) {
         return new Users() {
@@ -178,7 +178,7 @@ public class WebSecurityConfig {
             }
         };
     }
-    
+
     private LoginHandlerFinder loginHandlerFinder(final ConfigurationRepository configurationRepository, final ApplicationContext context) {
         return new LoginHandlerFinder() {
             @Override
@@ -206,7 +206,7 @@ public class WebSecurityConfig {
         private final String pathAfterLogin;
     }
 
-    
+
     private static SecurityConfiguration.RequestMatcher onlyWhenSetupComplete(final ConfigurationRepository configurationRepository) {
         return new SecurityConfiguration.RequestMatcher() {
             @Override
@@ -215,7 +215,7 @@ public class WebSecurityConfig {
             }
         };
     }
-    
+
     private static SecurityConfiguration.RequestMatcher onlyWhenSetupIsNotComplete(final ConfigurationRepository configurationRepository) {
         return new SecurityConfiguration.RequestMatcher() {
             @Override
@@ -246,14 +246,14 @@ public class WebSecurityConfig {
     @Lazy
     @Bean
     public LdapLogin ldapLogin(Users users, SessionHandler sessionHandler, final Ldap ldap) {
-        
+
         LdapAuthenticator authenticator = new LdapAuthenticator() {
             @Override
             public boolean authenticate(String username, String password) {
                 return ldap.authenticate(username, password);
             }
         };
-        
+
         return new LdapLogin(users, sessionHandler, authenticator, "/login?error-ldap");
     }
 

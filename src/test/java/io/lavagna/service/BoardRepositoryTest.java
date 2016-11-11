@@ -75,7 +75,7 @@ public class BoardRepositoryTest {
 	public void updateBoardTest() {
 		Board b = boardRepository.createNewBoard("TEST", "TEST-BR2", "TEST", project.getId());
 
-		Board newBoard = boardRepository.updateBoard(b.getId(), "new name", b.getDescription(), b.isArchived());
+		Board newBoard = boardRepository.updateBoard(b.getId(), "new name", b.getDescription(), b.getArchived());
 
 		Assert.assertEquals(b.getId(), newBoard.getId());
 		Assert.assertEquals(b.getDescription(), newBoard.getDescription());
@@ -139,5 +139,5 @@ public class BoardRepositoryTest {
 		Assert.assertEquals(project.getId(), pab.getProject().getId());
 		Assert.assertEquals(board.getId(), pab.getBoard().getId());
 	}
-	
+
 }

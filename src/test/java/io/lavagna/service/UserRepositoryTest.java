@@ -217,11 +217,11 @@ public class UserRepositoryTest {
 	public void testToggle() {
 		Helper.createUser(userRepository, "test", TEST_USER_NAME);
 		User u = userRepository.findUserByName("test", TEST_USER_NAME);
-		Assert.assertTrue(u.isEnabled());
+		Assert.assertTrue(u.getEnabled());
 		userRepository.toggle(u.getId(), false);
-		Assert.assertFalse(userRepository.findUserByName("test", TEST_USER_NAME).isEnabled());
+		Assert.assertFalse(userRepository.findUserByName("test", TEST_USER_NAME).getEnabled());
 		userRepository.toggle(u.getId(), true);
-		Assert.assertTrue(userRepository.findUserByName("test", TEST_USER_NAME).isEnabled());
+		Assert.assertTrue(userRepository.findUserByName("test", TEST_USER_NAME).getEnabled());
 	}
 
 	@Test(expected = EmptyResultDataAccessException.class)

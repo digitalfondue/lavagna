@@ -25,7 +25,7 @@ import java.util.*
 
 class LabelAndValue(@Column("CARD_LABEL_ID") val labelId: Int,
                     @Column("CARD_LABEL_PROJECT_ID_FK") val labelProjectId: Int,
-                    @Column("CARD_LABEL_UNIQUE") val isLabelUnique: Boolean,
+                    @Column("CARD_LABEL_UNIQUE") val labelUnique: Boolean,
                     @Column("CARD_LABEL_TYPE") val labelType: LabelType,
                     @Column("CARD_LABEL_DOMAIN") val labelDomain: LabelDomain,
                     @Column("CARD_LABEL_NAME") val labelName: String,
@@ -52,7 +52,7 @@ class LabelAndValue(@Column("CARD_LABEL_ID") val labelId: Int,
     }// /
 
     fun label(): CardLabel {
-        return CardLabel(labelId, labelProjectId, isLabelUnique, labelType, labelDomain, labelName, labelColor)
+        return CardLabel(labelId, labelProjectId, labelUnique, labelType, labelDomain, labelName, labelColor)
     }
 
     fun labelValue(): CardLabelValue {

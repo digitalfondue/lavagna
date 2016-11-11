@@ -195,7 +195,7 @@ public class PermissionService {
         for (Entry<RoleAndPermission, Set<Permission>> kv : rolesWithPermissions.entrySet()) {
             RoleAndPermission rp = kv.getKey();
             if (!currentRoles.contains(rp.getRoleName())) {
-                queries.createFullRole(rp.getRoleName(), rp.isRemovable(), rp.isHidden(), rp.isHidden());
+                queries.createFullRole(rp.getRoleName(), rp.getRemovable(), rp.getHidden(), rp.getHidden());
             }
             updatePermissionsToRole(new Role(rp.getRoleName()), kv.getValue());
         }
@@ -217,8 +217,8 @@ public class PermissionService {
             for (Entry<RoleAndPermission, Set<Permission>> kv : projIdToRolesAndPermissions.getValue().entrySet()) {
                 RoleAndPermission rp = kv.getKey();
                 if (!currentRoles.contains(rp.getRoleName())) {
-                    createFullRoleInProjectId(new Role(rp.getRoleName()), projectId, rp.isRemovable(), rp.isHidden(),
-                        rp.isReadOnly());
+                    createFullRoleInProjectId(new Role(rp.getRoleName()), projectId, rp.getRemovable(), rp.getHidden(),
+                        rp.getReadOnly());
                 }
                 updatePermissionsToRoleInProjectId(new Role(rp.getRoleName()), kv.getValue(), projectId);
             }
@@ -273,7 +273,7 @@ public class PermissionService {
     private void checkRoleCondition(String roleName, Set<Integer> usersId) {
         if ("ANONYMOUS".equals(roleName) && !usersId.isEmpty()) {
             Validate.isTrue(usersId.size() == 1);
-            Validate.isTrue(userRepository.findById(usersId.iterator().next()).isAnonymous());
+            Validate.isTrue(userRepository.findById(usersId.iterator().next()).getAnonymous());
         }
     }
 
@@ -394,9 +394,9 @@ public class PermissionService {
 
         private RoleAndPermissions(RoleAndPermission base) {
             this.name = base.getRoleName();
-            this.removable = base.isRemovable();
-            this.hidden = base.isHidden();
-            this.readOnly = base.isReadOnly();
+            this.removable = base.getRemovable();
+            this.hidden = base.getHidden();
+            this.readOnly = base.getReadOnly();
         }
 
         public String getName() {
