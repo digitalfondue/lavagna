@@ -64,13 +64,15 @@ See the guide at http://lavagna.io/help/openshift/
 
 ## Develop ##
 
-### Java ###
+### Java and Kotlin ###
 
-Lavagna runs on Java 7, but requires Java 8 to build. (due to our documentation library)
+Lavagna runs on a Java 7 jvm, but requires Java 8 to build. (due to our documentation library).
+Some parts of Lavagna are made with Kotlin.
 
 ### IDE Configuration ###
 
 Use UTF-8 encoding and 120 characters as line width.
+You will need a Java _and_ Kotlin aware IDE. (Currently tested with intellij, eclipse has still an issue!)
 
 
 ### Execute ###
