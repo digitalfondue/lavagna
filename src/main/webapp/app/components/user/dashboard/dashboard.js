@@ -126,7 +126,7 @@
                     descriptionCount += newLineMatch != newLineMatch ? newLineMatch.length * 50 : 0;
                 }
 
-                if(leftCount === 0 || leftCount + descriptionCount < rightCount) {
+                if(leftCount <= rightCount) {
                     leftCount += descriptionCount;
                     activeProjectsLeft.push(projects[i]);
                 } else {

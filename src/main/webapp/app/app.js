@@ -617,7 +617,7 @@
 		//
 	});
 
-	module.run(function($rootScope, $state, $mdSidenav, $log) {
+	module.run(function($rootScope, $state, $mdSidenav, $log, $mdMedia) {
 		$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
 		    event.preventDefault();
 		    $log.debug(error);

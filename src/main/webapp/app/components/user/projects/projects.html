@@ -1,3 +1,17 @@
 <div class="lvg-content lvg-content__row-item">
-    <lvg-stats-panel-project data-ng-repeat="ab in $ctrl.profile.activeProjects" project="ab.project"></lvg-stats-panel-project>
+    <lvg-stats-panel-project ng-if="!$ctrl.$mdMedia('(min-width: 768px)')" data-ng-repeat="ab in $ctrl.profile.activeProjects" project="ab.project"></lvg-stats-panel-project>
+    <div ng-if="$ctrl.$mdMedia('(min-width: 768px)')" class="row row-inherit">
+        <div class="col-sm-6 col-xs-12">
+            <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
+                                            project="ab.project"
+                                            class="lvg-user-dashboard__project">
+            </lvg-stats-panel-project-simple>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsRight | limitTo: 4"
+                                            project="ab.project"
+                                            class="lvg-user-dashboard__project">
+            </lvg-stats-panel-project-simple>
+        </div>
+    </div>
 </div>

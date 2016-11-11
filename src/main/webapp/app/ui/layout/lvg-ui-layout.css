@@ -111,8 +111,6 @@ a:hover {
 
 
 @media (min-width: 768px) {
-    .lvg-content {width: 750px;}
-
     .lvg-manage-dialog {
         -webkit-box-flex: 1;
         -webkit-flex: 1 1 100%;
@@ -124,8 +122,6 @@ a:hover {
 }
 
 @media (min-width: 992px) {
-    .lvg-content {width: 970px;}
-
     .lvg-manage-dialog {
         -webkit-box-flex: 1;
         -webkit-flex: 1 1 66.66%;

@@ -1,6 +1,6 @@
 <md-card ng-class="{archived : $ctrl.item.archived}">
     <div class="lvg-stats-panel-simple__title-tasks_container">
-        <div class="lvg-stats-panel-simple__title-tasks">
+        <div class="lvg-stats-panel-simple__title-tasks" ng-style="{'background-color': $ctrl.ctrl.normalizedStatsBGColor}">
             <div class="lvg-stats-panel-simple__title-task"
                  ng-repeat="stat in $ctrl.normalizedStats"
                  ng-style="{'width' : stat.percentage + '%', 'background-color': stat.color}">
@@ -15,5 +15,30 @@
     </md-card-title>
     <md-card-content>
         <div data-ng-bind-html="$ctrl.item.description | markdown" class="lvg-stats-panel-simple__description overflow-break"></div>
+        <div data-ng-if="$ctrl.statistics" class="lvg-stats-panel__count">
+            <span class="lvg-stats-panel__icon">
+                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.openTaskColor|color"></md-icon>
+                <span data-translate>common.column.definition.OPEN</span>
+                {{$ctrl.statistics.openTaskCount}}
+            </span>
+
+                    <span class="lvg-stats-panel__icon">
+                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.closedTaskColor|color"></md-icon>
+                <span data-translate>common.column.definition.CLOSED</span>
+                {{$ctrl.statistics.closedTaskCount}}
+            </span>
+
+                    <span class="lvg-stats-panel__icon">
+                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.backlogTaskColor|color"></md-icon>
+                <span data-translate>common.column.definition.DEFERRED</span>
+                {{$ctrl.statistics.backlogTaskCount}}
+            </span>
+
+                    <span class="lvg-stats-panel__icon">
+                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
+                <span data-translate>common.column.definition.BACKLOG</span>
+                {{$ctrl.statistics.deferredTaskCount}}
+            </span>
+        </div>
     </md-card-content>
 </md-card>

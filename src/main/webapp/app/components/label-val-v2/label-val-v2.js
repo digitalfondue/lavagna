@@ -67,11 +67,17 @@
 
 		//-------------
 
+		function closeTooltips(ignore) {
+            angular.forEach($mdPanel._trackedPanels, function(value, id) {
+                if(id !== ignore && id.indexOf('lvg-tooltip') === 0) {
+                    value.close();
+                }
+            });
+        }
+
 		function handleMouseEnter($event) {
 
-            if(mouseOverPanelRef) {
-                mouseOverPanelRef.close();
-            }
+            closeTooltips('lvg-tooltip-card-' + $event.target.card.id);
 
             var position = $mdPanel.newPanelPosition()
                 .relativeTo($event.target)
@@ -80,6 +86,7 @@
                 .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
                 .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
             var conf = {
+                    id: 'lvg-tooltip-card-' + $event.target.card.id,
                     controller: function(mdPanelRef) {
                         this.mdPanelRef = mdPanelRef;
                         mouseOverPanelRef = mdPanelRef;
