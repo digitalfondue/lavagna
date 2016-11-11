@@ -17,6 +17,8 @@
 package io.lavagna.model
 
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
+import org.apache.commons.lang3.builder.EqualsBuilder
+import org.apache.commons.lang3.builder.HashCodeBuilder
 
 open class LabelListValue(@Column("CARD_LABEL_LIST_VALUE_ID") val id: Int, @Column("CARD_LABEL_ID_FK") val cardLabelId: Int,
                           @Column("CARD_LABEL_LIST_VALUE_ORDER") val order: Int, @Column("CARD_LABEL_LIST_VALUE") val value: String) {
@@ -31,30 +33,11 @@ open class LabelListValue(@Column("CARD_LABEL_LIST_VALUE_ID") val id: Int, @Colu
             return true
         if (o !is LabelListValue)
             return false
-        if (!o.canEqual(this as Any))
-            return false
-        if (this.id != o.id)
-            return false
-        if (this.cardLabelId != o.cardLabelId)
-            return false
-        if (this.order != o.order)
-            return false
-        val `this$value` = this.value
-        val `other$value` = o.value
-        if (if (`this$value` == null) `other$value` != null else `this$value` != `other$value`)
-            return false
-        return true
+        return EqualsBuilder().append(id, o.id).append(cardLabelId, o.cardLabelId).append(order, o.order).append(value, o.value).isEquals();
     }
 
     override fun hashCode(): Int {
-        val PRIME = 59
-        var result = 1
-        result = result * PRIME + this.id
-        result = result * PRIME + this.cardLabelId
-        result = result * PRIME + this.order
-        val `$value` = this.value
-        result = result * PRIME + if (`$value` == null) 43 else `$value`.hashCode()
-        return result
+        return HashCodeBuilder().append(id).append(cardLabelId).append(order).append(value).toHashCode();
     }
 
     protected fun canEqual(other: Any): Boolean {

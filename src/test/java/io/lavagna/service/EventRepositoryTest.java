@@ -135,7 +135,7 @@ public class EventRepositoryTest {
 				userAlt.getId(), commentOld.getId(), oneDayAgo);
 
 		CardFull cardBeforeUpdate = cardRepository.findFullBy(card1.getId());
-		assertEquals(userAlt.getId(), cardBeforeUpdate.getLastUpdateUserId());
+		assertEquals((Integer) userAlt.getId(), cardBeforeUpdate.getLastUpdateUserId());
 
 		CardData comment = cardDataRepo.createData(card1.getId(), CardType.COMMENT, "test-comment");
 		eventRepository.insertCardDataEvent(comment.getId(), card1.getId(), EventType.COMMENT_CREATE, user.getId(),
@@ -145,7 +145,7 @@ public class EventRepositoryTest {
 
 		CardFull cardAfterUpdate = cardRepository.findFullBy(card1.getId());
 
-		assertEquals(user.getId(), cardAfterUpdate.getLastUpdateUserId());
+		assertEquals((Integer) user.getId(), cardAfterUpdate.getLastUpdateUserId());
 		assertTrue(cardAfterUpdate.getLastUpdateTime().after(cardBeforeUpdate.getLastUpdateTime()));
 	}
 
@@ -164,7 +164,7 @@ public class EventRepositoryTest {
 
 		CardFull initialCardStatus = cardRepository.findFullBy(card1.getId());
 		// right now, user alt is the last updater
-		assertEquals(userAlt.getId(), initialCardStatus.getLastUpdateUserId());
+		assertEquals((Integer) userAlt.getId(), initialCardStatus.getLastUpdateUserId());
 
 		// simulate CardDataService here, user1 deletes user2 comment
 		Event event = eventRepository.insertCardDataEvent(comment.getId(), comment.getCardId(),
@@ -181,7 +181,7 @@ public class EventRepositoryTest {
 		cardDataService.undoDeleteComment(event);
 
 		CardFull cardAfterUpdate = cardRepository.findFullBy(card1.getId());
-		assertEquals(user.getId(), cardAfterUpdate.getLastUpdateUserId());
+		assertEquals((Integer) user.getId(), cardAfterUpdate.getLastUpdateUserId());
 		assertTrue(cardAfterUpdate.getLastUpdateTime().after(cardBeforeUpdate.getLastUpdateTime()));
 	}
 
