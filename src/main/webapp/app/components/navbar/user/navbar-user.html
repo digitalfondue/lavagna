@@ -2,7 +2,7 @@
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2>{{::$ctrl.navbarUser.username}}</h2>
-        <lvg-search-input data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input>
+        <div class="flex row row-inherit"><lvg-search-input data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input></div>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
     </div>
     <md-tabs md-center-tabs md-no-select-click>

@@ -11,9 +11,9 @@
         </div>
     </div>
     <div class="flex"></div>
-    <div class="lvg-sidebar-content__user-logout">
+    <div data-lvg-is-authenticated class="lvg-sidebar-content__user-logout">
         <md-button class="md-icon-button" ng-click="$ctrl.logout()">
-            <md-tooltip>Logout</md-tooltip>
+            <md-tooltip>{{::('sidebar.action.logout' | translate)}}</md-tooltip>
             <md-icon md-svg-icon="logout"></md-icon>
         </md-button>
     </div>
@@ -21,22 +21,26 @@
 <div class="lvg-sidebar-content__links" >
     <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="home.dashboard">
         <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="dashboard"></md-icon>
-        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.home</span>
+        <span class="lvg-sidebar-content__link-text" data-translate>navbar.common.dashboard</span>
+    </a>
+    <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="calendar">
+        <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="calendar"></md-icon>
+        <span class="lvg-sidebar-content__link-text" data-translate>navbar.common.calendar</span>
     </a>
     <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="account" data-lvg-has-permission="UPDATE_PROFILE">
         <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="person_black"></md-icon>
-        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.profile</span>
+        <span class="lvg-sidebar-content__link-text" data-translate>navbar.common.my.profile</span>
     </a>
     <a class="lvg-sidebar-content__link start-xs middle-xs" href="/help/" target="_sef">
         <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="help"></md-icon>
-        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.help</span>
+        <span class="lvg-sidebar-content__link-text" data-translate>sidebar.link.help</span>
     </a>
     <a class="lvg-sidebar-content__link start-xs middle-xs" data-ui-sref="about.lavagna">
         <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="info"></md-icon>
-        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.about</span>
+        <span class="lvg-sidebar-content__link-text" data-translate>sidebar.link.about</span>
     </a>
     <a class="lvg-sidebar-content__link lvg-sidebar-content__link-special start-xs middle-xs" data-ui-sref="admin.home" data-lvg-has-permission="ADMINISTRATION">
         <md-icon class="lvg-sidebar-content__link-icon" md-svg-icon="settings"></md-icon>
-        <span class="lvg-sidebar-content__link-text" data-translate>partials.fragments.sidebar.settings</span>
+        <span class="lvg-sidebar-content__link-text" data-translate>sidebar.link.admin</span>
     </a>
 </div>
