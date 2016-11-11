@@ -72,7 +72,10 @@ Some parts of Lavagna are made with Kotlin.
 ### IDE Configuration ###
 
 Use UTF-8 encoding and 120 characters as line width.
-You will need a Java _and_ Kotlin aware IDE. (Currently tested with intellij, eclipse has still an issue!)
+You will need a Java _and_ Kotlin aware IDE. (Currently tested with intellij and eclipse).
+
+For eclipse: you will need to install the kotlin plugin and add the "Kotlin nature" to the project:
+Right click on the project -> "Configure Kotlin" -> "Add Kotlin nature"
 
 
 ### Execute ###
