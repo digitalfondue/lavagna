@@ -4,7 +4,6 @@
             <div class="lvg-stats-panel-simple__title-task"
                  ng-repeat="stat in $ctrl.normalizedStats"
                  ng-style="{'width' : stat.percentage + '%', 'background-color': stat.color}">
-                <md-tooltip>{{::('stats.tasks.count.' + stat.name | translate:{ value: stat.value })}}</md-tooltip>
             </div>
         </div>
     </div>
