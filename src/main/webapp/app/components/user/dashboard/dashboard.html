@@ -27,16 +27,16 @@
         <h2 translate class="md-title">user.dashboard.mostActiveProjects</h2>
         <div class="row row-inherit">
             <div class="col-sm-6 col-xs-12">
-                <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
+                <lvg-stats-panel-project data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
                                                 project="ab.project"
                                                 class="lvg-user-dashboard__project">
-                </lvg-stats-panel-project-simple>
+                </lvg-stats-panel-project>
             </div>
             <div class="col-sm-6 col-xs-12">
-                <lvg-stats-panel-project-simple data-ng-repeat="ab in $ctrl.activeProjectsRight | limitTo: 4"
+                <lvg-stats-panel-project data-ng-repeat="ab in $ctrl.activeProjectsRight | limitTo: 4"
                                                 project="ab.project"
                                                 class="lvg-user-dashboard__project">
-                </lvg-stats-panel-project-simple>
+                </lvg-stats-panel-project>
             </div>
         </div>
 

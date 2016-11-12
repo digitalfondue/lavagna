@@ -136,6 +136,38 @@
                 		loadProjectMetadata();
                 	}
                 });
+            },
+            gridByDescription: function(items, skipArchived) {
+                var itemsLeft = [];
+                var itemsRight = [];
+
+                var rightCount = 0;
+                var leftCount = 0;
+
+                for(var i = 0; i < items.length; i++) {
+                    var item = items[i].project || items[i];
+                    if(skipArchived && item.archived) {
+                        continue;
+                    }
+                    var descriptionCount = item.description != null ? item.description.length : 0;
+                    if(descriptionCount > 0) {
+                        var newLineMatch = item.description.match(/[\n\r]/g);
+                        descriptionCount += newLineMatch != newLineMatch ? newLineMatch.length * 50 : 0;
+                    }
+
+                    if(leftCount <= rightCount) {
+                        leftCount += descriptionCount;
+                        itemsLeft.push(items[i]);
+                    } else {
+                        rightCount += descriptionCount;
+                        itemsRight.push(items[i]);
+                    }
+                }
+
+                return {
+                    left: itemsLeft,
+                    right: itemsRight
+                }
             }
 		};
 	});

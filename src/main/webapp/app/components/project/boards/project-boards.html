@@ -7,9 +7,9 @@
                 <md-tooltip>{{($ctrl.showArchivedItems ? 'projects.boards.hide.archived' : 'projects.boards.show.archived') | translate}}</md-tooltip>
             </div>
         </div>
-        <lvg-stats-panel-board-simple data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
+        <lvg-stats-panel-board data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
                                board="board"
-                               project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board-simple>
+                               project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
 	</div>
 
 	<div class="col-md-6 col-xs-12 first-xs"

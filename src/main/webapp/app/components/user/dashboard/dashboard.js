@@ -8,11 +8,11 @@
         bindings: {
             profile: '<'
         },
-        controller: ['$filter', '$translate', 'User', UserDashboardController],
+        controller: ['$filter', '$translate', 'Project', 'User', UserDashboardController],
         templateUrl: 'app/components/user/dashboard/dashboard.html'
     });
 
-    function UserDashboardController($filter, $translate, User) {
+    function UserDashboardController($filter, $translate, Project, User) {
         var ctrl = this;
 
         ctrl.activityChartOptions = {
@@ -105,38 +105,9 @@
             ctrl.profile = profile;
             ctrl.user = profile.user;
             ctrl.activeProjects = profile.activeProjects;
-            loadActiveProjects(profile.activeProjects);
+            var grid = Project.gridByDescription(profile.activeProjects, true);
+            ctrl.activeProjectsLeft = grid.left;
+            ctrl.activeProjectsRight = grid.right;
         };
-
-        function loadActiveProjects(projects) {
-            var activeProjectsLeft = [];
-            var activeProjectsRight = [];
-
-            var rightCount = 0;
-            var leftCount = 0;
-
-            for(var i = 0; i < projects.length; i++) {
-                var project = projects[i].project;
-                if(project.archived) {
-                    continue;
-                }
-                var descriptionCount = project.description != null ? project.description.length : 0;
-                if(descriptionCount > 0) {
-                    var newLineMatch = project.description.match(/[\n\r]/g);
-                    descriptionCount += newLineMatch != newLineMatch ? newLineMatch.length * 50 : 0;
-                }
-
-                if(leftCount <= rightCount) {
-                    leftCount += descriptionCount;
-                    activeProjectsLeft.push(projects[i]);
-                } else {
-                    rightCount += descriptionCount;
-                    activeProjectsRight.push(projects[i]);
-                }
-            }
-
-            ctrl.activeProjectsLeft = activeProjectsLeft;
-            ctrl.activeProjectsRight = activeProjectsRight;
-        }
     }
 })();

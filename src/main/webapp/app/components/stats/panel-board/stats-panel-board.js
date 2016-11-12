@@ -3,15 +3,6 @@
 	'use strict';
 
 	angular.module('lavagna.components').component('lvgStatsPanelBoard', {
-		templateUrl : 'app/components/stats/panel-board/stats-panel-board.html',
-		bindings : {
-			board: '<',
-			projectShortName: '<'
-		},
-		controller : ['Board', StatsPanelBoardController]
-	});
-
-	angular.module('lavagna.components').component('lvgStatsPanelBoardSimple', {
         template : '<lvg-stats-panel-simple item="$ctrl.board" stats-fetcher="$ctrl.statsFetcher()">' +
                        '<a data-ui-sref="board({projectName: $ctrl.projectShortName, shortName: $ctrl.board.shortName})">{{$ctrl.board.shortName}} - {{$ctrl.board.name}}</a>' +
                    '</lvg-stats-panel-simple>',

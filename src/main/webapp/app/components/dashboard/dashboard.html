@@ -7,8 +7,8 @@
                 <md-tooltip>{{($ctrl.showArchivedItems ? 'dashboard.projects.hide.archived' : 'dashboard.projects.show.archived') | translate}}</md-tooltip>
             </div>
         </div>
-        <lvg-stats-panel-project-simple data-ng-repeat="project in $ctrl.projects | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
-                                 project="project"></lvg-stats-panel-project-simple>
+        <lvg-stats-panel-project data-ng-repeat="project in $ctrl.projects | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
+                                 project="project"></lvg-stats-panel-project>
 	</div>
 
     <div class="col-md-6 col-xs-12 first-xs"
