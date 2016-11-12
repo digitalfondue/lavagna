@@ -2,3 +2,7 @@
 md-checkbox ._md-label {
     margin-top: 3px;
 }
+
+md-checkbox.lvg-inline-checkbox {
+    margin-bottom: 0;
+}

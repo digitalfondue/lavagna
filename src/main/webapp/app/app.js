@@ -313,7 +313,7 @@
 			template : '<lvg-admin></lvg-admin>',
 			resolve: titleServiceResolver,
 			onEnter: function(Title) {
-				Title.set('title.admin.home');
+				Title.set('title.admin');
 			}
 		}).state('admin.home', {
 			url: '',

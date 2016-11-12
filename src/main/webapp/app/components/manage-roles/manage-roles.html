@@ -1,8 +1,9 @@
 <div class="lvg-content">
     <div class="row row-inherit lvg-content__row">
-        <div class="col-md-3 col-xs-12 lvg-content__row-item">
-            <md-input-container>
+        <div class="col-xs-12 lvg-content__row-item">
+            <md-input-container class="md-block">
                 <label translate>manage.roles.filter.users</label>
+                <md-icon md-svg-icon="search"></md-icon>
                 <input ng-model="$ctrl.userFilterText" ng-change="$ctrl.filterUsersBy()">
             </md-input-container>
         </div>

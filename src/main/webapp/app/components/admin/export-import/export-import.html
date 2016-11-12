@@ -1,31 +1,32 @@
-<h2 class="md-title" translate>partials.admin.export-import.export</h2>
-<md-content md-whiteframe="1">
-    <form ng-submit="$ctrl.doExport()">
-        <md-button class="md-primary" type="submit"><span translate>partials.admin.export-import.exportButton</span></md-button>
-    </form>
-</md-content>
-
-<h2 class="md-title" translate>partials.admin.export-import.import</h2>
-<md-content class="lvg-admin-content__margin-bottom" md-whiteframe="1">
-    <form ng-submit="$ctrl.importFile.upload()">
-        <div class="lvg-admin-content__padding">
-	        <span ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.file.name"></span>
+<form ng-submit="$ctrl.importFile.upload()" class="lvg-content">
+    <md-card class="lvg-content__row lvg-content__row-item">
+        <md-card-content>
+            <span ng-if="$ctrl.importFile != null" ng-bind="$ctrl.importFile.file.name"></span>
             <span ng-if="$ctrl.importFile == null" translate>common.no-file-selected</span>
-	        <input type="file" name="file" id="file" class="lvg-input-file__input" nv-file-select uploader="$ctrl.uploader"/>
-	        <label class="lvg-input-file__label md-button" for="file">
-	            <span translate>button.fileSelect</span>
-	        </label>
-			
-			<div class="md-block">
-				<md-checkbox name="overrideConfiguration" ng-model="$ctrl.overrideConfiguration" ng-disabled="$ctrl.importing"><label translate>partials.admin.export-import.overrideConf</label></md-checkbox>
-			</div>
-		</div>
-		<div ng-if="$ctrl.importing" class="lvg-admin-content__padding">
-		  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
-		</div>
-		
-		<md-button type="submit" class="md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">
-			<span translate>partials.admin.export-import.importButton</span>
-		</md-button>
-	</form>
-</md-content>
+            <input type="file" name="file" id="file" class="lvg-input-file__input" nv-file-select uploader="$ctrl.uploader"/>
+            <label class="lvg-input-file__label md-button" for="file">
+                <span translate>button.fileSelect</span>
+            </label>
+            <div>
+                <md-checkbox name="overrideConfiguration"
+                             ng-model="$ctrl.overrideConfiguration"
+                             ng-disabled="$ctrl.importing"
+                             class="lvg-inline-checkbox">
+                    <label translate>partials.admin.export-import.overrideConf</label>
+                </md-checkbox>
+            </div>
+
+            <div ng-if="$ctrl.importing">
+                <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+            </div>
+        </md-card-content>
+        <md-card-actions>
+            <md-button type="submit" class="md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">
+                <span translate>partials.admin.export-import.importButton</span>
+            </md-button>
+            <md-button class="md-primary" type="button" ng-submit="$ctrl.doExport()" ng-disabled="$ctrl.importing">
+                <span translate>partials.admin.export-import.exportButton</span>
+            </md-button>
+        </md-card-actions>
+    </md-card>
+</form>
