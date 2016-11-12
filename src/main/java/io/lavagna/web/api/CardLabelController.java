@@ -68,12 +68,6 @@ public class CardLabelController {
 		return res;
 	}
 
-	@ExpectPermission(Permission.READ)
-	@RequestMapping(value = "/api/card/{cardId}/label-values", method = RequestMethod.GET)
-	public Map<Integer, List<CardLabelValue>> findCardLabelValuesByCardId(@PathVariable("cardId") int cardId) {
-		return from(cardLabelRepository.findCardLabelValuesByCardId(cardId));
-	}
-
 	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
 	@RequestMapping(value = "/api/project/{projectShortName}/labels", method = RequestMethod.POST)
 	public CardLabel addLabel(@PathVariable("projectShortName") String projectShortName, @RequestBody Label label) {

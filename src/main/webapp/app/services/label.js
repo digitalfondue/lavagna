@@ -18,10 +18,6 @@
 				return $http.get('api/label/'+labelId+'/use-count').then(extractData);
 			},
 
-			findValuesByCardId : function(cardId) {
-				return $http.get('api/card/' + cardId + '/label-values').then(extractData);
-			},
-
 			/* label format is {name : string, color : int}*/
 			add : function(projectName, label) {
 				return $http.post('api/project/'+ projectName + '/labels', label).then(extractData);
