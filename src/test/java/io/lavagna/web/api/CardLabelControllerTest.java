@@ -98,11 +98,6 @@ public class CardLabelControllerTest {
 	}
 
 	@Test
-	public void findCardLabelValuesByCardIdTest() {
-		cardLabelController.findCardLabelValuesByCardId(cardId);
-	}
-
-	@Test
 	public void findLabelsByBoardShortNameTest() {
 		cardLabelController.findLabelsByProjectId(projectShortName);
 	}
