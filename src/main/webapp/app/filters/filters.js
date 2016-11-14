@@ -364,7 +364,7 @@
             if(column.location === 'BOARD') {
                 return $filter('translate')('card.metadata.status.view', {name: column.name});
             } else {
-                var locationName = $filter('translate')('partials.board.' + column.name);
+                var locationName = $filter('translate')('common.location.definition.' + column.name);
                 return $filter('translate')('card.metadata.status.view', {name: locationName});
             }
 	    }

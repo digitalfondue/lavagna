@@ -2,9 +2,9 @@
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
         <h2>
-            <span class="lvg-navbar-breadcrumb-text" data-ng-if="!$ctrl.project" data-translate>partials.search.title</span>
+            <span class="lvg-navbar-breadcrumb-text" data-ng-if="!$ctrl.project" data-translate>navbar.search.title</span>
             <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project"> <a class="lvg-navbar-link" ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{::$ctrl.project.shortName}}</a></span></span>
-            <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>partials.search.title.project</span>
+            <span class="lvg-navbar-breadcrumb-text" data-ng-if="$ctrl.project" data-translate>navbar.search.title.project</span>
         </h2>
         <div class="flex row row-inherit"><lvg-search-input project="$ctrl.project" data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input></div>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>

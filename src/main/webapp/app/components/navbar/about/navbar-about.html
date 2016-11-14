@@ -1,16 +1,16 @@
 <md-toolbar class="lvg-navbar">
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" data-ng-click="$ctrl.toggleSidebar()"><md-icon md-svg-icon="menu"></md-icon></md-button>
-        <h2 data-translate>partials.about.title</h2>
+        <h2 data-translate>navbar.about.title</h2>
         <div class="flex row row-inherit"><lvg-search-input data-lvg-has-permission="SEARCH" class="flex"></lvg-search-input></div>
         <lvg-navbar-action-panel login="$ctrl.login()"></lvg-navbar-action-panel>
     </div>
     <md-tabs md-center-tabs md-no-select-click>
         <md-tab data-ui-sref="about.lavagna" md-active="$ctrl.$state.is('about.lavagna')">
-            <md-tab-label><span data-translate>partials.about.license</span></md-tab-label>
+            <md-tab-label><span data-translate>navbar.about.license</span></md-tab-label>
         </md-tab>
         <md-tab data-ui-sref="about.third-party" md-active="$ctrl.$state.is('about.third-party')">
-            <md-tab-label><span data-translate>partials.about.third-party</span></md-tab-label>
+            <md-tab-label><span data-translate>navbar.about.third-party</span></md-tab-label>
         </md-tab>
     </md-tabs>
 </md-toolbar>

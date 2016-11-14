@@ -2,12 +2,12 @@
 	<div data-ng-switch-when="NULL" class="flex"></div>
 	<div data-ng-switch-when="STRING" class="flex">
         <md-input-container class="md-block">
-            <input type="text" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" required>
+            <input type="text" placeholder="{{'label.picker.value'|translate}}" data-ng-model="$ctrl.model" required>
         </md-input-container>
     </div>
 	<div data-ng-switch-when="INT" class="flex">
         <md-input-container class="md-block">
-            <input type="number" placeholder="{{'partials.fragments.label-pickers.value'|translate}}" data-ng-model="$ctrl.model" required>
+            <input type="number" placeholder="{{'label.picker.value'|translate}}" data-ng-model="$ctrl.model" required>
         </md-input-container>
     </div>
 	<div data-ng-switch-when="TIMESTAMP" class="flex">
@@ -17,7 +17,7 @@
         <md-input-container class="md-block">
            <md-autocomplete
                required
-               md-floating-label="{{'partials.fragments.label-pickers.card'|translate}}"
+               md-floating-label="{{'label.picker.card'|translate}}"
                md-no-cache="true"
                md-selected-item="$ctrl.model"
                md-search-text="cardSearchText"
@@ -31,7 +31,7 @@
         <md-input-container class="md-block">
            <md-autocomplete
                required
-               md-floating-label="{{'partials.fragments.label-pickers.user'|translate}}"
+               md-floating-label="{{'label.picker.user'|translate}}"
                md-no-cache="true"
                md-selected-item="$ctrl.model"
                md-search-text="userSearchText"

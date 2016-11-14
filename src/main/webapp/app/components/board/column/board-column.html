@@ -11,7 +11,7 @@
             </div>
             <div class="lvg-board-column__header-add-card flex no-grow" data-lvg-has-permission="CREATE_CARD">
                 <md-button class="md-icon-button lvg-board-column__add-card-button lvg-icon__add-card" ng-click="$ctrl.newCard()">
-                    <md-tooltip>{{::('partials.fragments.columns-fragment.addCard' | translate)}}</md-tooltip>
+                    <md-tooltip>{{::('board.column.tooltip.addCard' | translate)}}</md-tooltip>
                 </md-button>
             </div>
             <div class="lvg-board-column__header-menu flex no-grow"
@@ -19,11 +19,11 @@
                 <md-menu>
                     <md-button class="md-icon-button lvg-board-column__menu-button lvg-icon__menu-vertical" ng-click="$mdOpenMenu($event)"></md-button>
                     <md-menu-content>
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('partials.fragments.columns-fragment.selectAll' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('partials.fragments.columns-fragment.selectNone' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.selectAllInColumn()">{{::('board.column.menu.selectAll' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MANAGE_LABEL_VALUE"><md-button data-ng-click="$ctrl.unSelectAllInColumn()">{{::('board.column.menu.selectNone' | translate)}}</md-button></md-menu-item>
                         <md-menu-item data-lvg-has-permission="RENAME_COLUMN">
                             <md-menu class="lvg-board-column__menu-status">
-                                <md-button class="lvg-board-column__menu-status-button" ng-click="$mdOpenMenu($event)">{{::('partials.fragments.columns-fragment.columnStatus' | translate)}}</md-button>
+                                <md-button class="lvg-board-column__menu-status-button" ng-click="$mdOpenMenu($event)">{{::('board.column.menu.columnStatus' | translate)}}</md-button>
                                 <md-menu-content>
                                     <md-menu-item data-ng-repeat="definition in $ctrl.metadata.columnsDefinition | addColDefOrder | orderBy:'order'">
                                         <md-button data-ng-click="$ctrl.setColumnDefinition(definition.id);"><span data-ng-style="::(definition.color | color)" class="fa fa-square"></span> {{::definition.value|capitalize}}</md-button>
@@ -31,12 +31,12 @@
                                 </md-menu-content>
                             </md-menu>
                         </md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'ARCHIVE')">{{::('partials.fragments.columns-fragment.moveAllToArchive' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'BACKLOG')">{{::('partials.fragments.columns-fragment.moveAllToBacklog' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'TRASH')">{{::('partials.fragments.columns-fragment.moveAllToTrash' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('ARCHIVE')">{{::('partials.fragments.columns-fragment.moveColumnToArchive' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('BACKLOG')">{{::('partials.fragments.columns-fragment.moveColumnToBacklog' | translate)}}</md-button></md-menu-item>
-                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('TRASH')">{{::('partials.fragments.columns-fragment.moveColumnToTrash' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'ARCHIVE')">{{::('board.column.menu.moveAllToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'BACKLOG')">{{::('board.column.menu.moveAllToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_CARD"><md-button data-ng-click="$ctrl.moveAllCardsInColumn($ctrl.cardsInColumn, 'TRASH')">{{::('board.column.menu.moveAllToTrash' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('ARCHIVE')">{{::('board.column.menu.moveColumnToArchive' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('BACKLOG')">{{::('board.column.menu.moveColumnToBacklog' | translate)}}</md-button></md-menu-item>
+                        <md-menu-item data-lvg-has-permission="MOVE_COLUMN"><md-button data-ng-click="$ctrl.moveColumn('TRASH')">{{::('board.column.menu.moveColumnToTrash' | translate)}}</md-button></md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </div>

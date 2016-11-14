@@ -20,7 +20,7 @@
 
     function BoardColumnController($filter, $mdDialog, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService, EventBus) {
         var ctrl = this;
-        
+
         //
         ctrl.dragStartCard = dragStartCard;
         ctrl.dragEndCard = dragEndCard;
@@ -38,30 +38,30 @@
 		ctrl.setColumnDefinition = setColumnDefinition;
 		ctrl.moveAllCardsInColumn = moveAllCardsInColumn;
         //
-		
+
 		var stompSub = angular.noop;
 		var selectAllSub = angular.noop;
 		var unselectAllSub = angular.noop;
-		
+
 		ctrl.$onInit = function init() {
 			ctrl.user = ctrl.userRef();
 	        ctrl.searchFilter = ctrl.searchFilterRef();
 	        ctrl.metadata = ctrl.metadataRef();
-	        
+
 	        initializeColumn();
 	        //capture all status variables
 	        ctrl.columnState = {};
 	        selectAllSub = EventBus.on('selectall', selectAllInColumn);
 	        unselectAllSub = EventBus.on('unselectall', unSelectAllInColumn);
 		}
-		
+
 		ctrl.$onDestroy = function onDestroy() {
 			stompSub();
 			selectAllSub();
 			unselectAllSub();
 		}
         //
-		
+
 		function initializeColumn() {
 
             var columnId = ctrl.column.id;
@@ -95,11 +95,11 @@
                 	//
                 });
             };
-            
+
             stompSub = StompClient.subscribe('/event/column/'+columnId+'/card', loadCards);
             loadCards();
         };
-        
+
 
         function dragStartCard(item) {
         	SharedBoardDataService.startDrag();
@@ -172,7 +172,7 @@
             });
             EventBus.emit('updatecheckbox');
         }
-        
+
         function unSelectAllInColumn() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
                 delete ctrl.selectedCards[ctrl.column.id];
@@ -219,7 +219,7 @@
             cardByProject[ctrl.projectShortName] = [cardId];
             BulkOperations.watch(cardByProject, {id: currentUserId});
         }
-        
+
 
         function unWatchCard(cardId, currentUserId) {
             var cardByProject = {};
@@ -231,9 +231,9 @@
             var confirmAction = function() {Board.moveColumnToLocation(ctrl.column.id, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
-            
-            
-            var title = $translate.instant('partials.fragments.confirm-modal-fragment.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
+
+
+            var title = $translate.instant('board.column.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
 			var confirm = $mdDialog.confirm()
 				.title(title)
 				.ariaLabel(title)
@@ -251,8 +251,8 @@
             var confirmAction = function() {Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function(error) {
                 Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
             });};
-            
-            var title = $translate.instant('partials.fragments.confirm-modal-fragment.operation.move-card-from-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
+
+            var title = $translate.instant('board.column.operation.move-card-from-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
 			var confirm = $mdDialog.confirm()
 				.title(title)
 				.ariaLabel(title)

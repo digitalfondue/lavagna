@@ -30,7 +30,7 @@
                     <span ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</span>
                 </div>
                 <div class="col-xs-6 lvg-project-milestones__align-right">
-                    <div ng-hide="milestone.totalCards > 0" translate>partials.project.milestones.noCards</div>
+                    <div ng-hide="milestone.totalCards > 0" translate>project.milestones.noCards</div>
                     <div ng-hide="milestone.totalCards == 0"><span translate>project.milestones.total-cards</span>{{milestone.totalCards}}</div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <md-tooltip>{{'project.milestones.close'|translate}}</md-tooltip>
                     <md-icon md-svg-icon="milestone_open"></md-icon>
                 </md-button>
-                <md-button class="md-icon-button" 
+                <md-button class="md-icon-button"
                     ng-href="api/project/{{$ctrl.project.shortName}}/export-milestone/{{milestone.labelListValue.value}}"
                     target="_blank" rel="nofollow me noopener noreferrer">
                     <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
@@ -54,6 +54,6 @@
             </md-card-icon-actions>
         </md-card-actions>
     </md-card>
-    
+
     <div data-ui-view data-autoscroll="false"></div>
 </div>

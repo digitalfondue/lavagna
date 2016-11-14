@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
 			<div data-ng-if="$ctrl.totalPages > 1">
-				<lvg-pagination 
+				<lvg-pagination
 				    total-pages="$ctrl.totalPages"
 				    current-page="$ctrl.currentPage"
 				    max-size="9"
@@ -13,8 +13,8 @@
 				    <lvg-rebuild-if-change to-watch="$ctrl.metadatas[card.projectShortName].hash+card.hash">
 				        <lvg-card-fragment-v2
 				            tabindex="0"
-                            card-ref="card" 
-                            search-type="{{::($ctrl.project ? 'projectSearch' : 'globalSearch')}}" 
+                            card-ref="card"
+                            search-type="{{::($ctrl.project ? 'projectSearch' : 'globalSearch')}}"
                             user-ref="$ctrl.user"
                             project-metadata-ref="$ctrl.metadatas[card.projectShortName]"
                             selected-ref="$ctrl.selected"
@@ -22,9 +22,9 @@
 				    </lvg-rebuild-if-change>
 				</li>
 			</ul>
-			<div class="md-padding" ng-if="$ctrl.count === 0" translate>partials.fragments.search-result-fragment.nothingFound</div>
+			<div class="md-padding" ng-if="$ctrl.count === 0" translate>search-result.nothingFound</div>
 			<div data-ng-if="$ctrl.totalPages > 1">
-				<lvg-pagination 
+				<lvg-pagination
 				    total-pages="$ctrl.totalPages"
                     current-page="$ctrl.currentPage"
 				    max-size="9"

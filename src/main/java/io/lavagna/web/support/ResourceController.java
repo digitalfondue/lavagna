@@ -198,7 +198,6 @@ public class ResourceController {
             data.put("version", version);
 
             List<String> inlineTemplates = prepareTemplates(context, "/app/");
-            inlineTemplates.addAll(prepareTemplates(context, "/partials/"));
             data.put("inlineTemplates", inlineTemplates);
 
             indexCache.set(Mustache.compiler().escapeHTML(false)

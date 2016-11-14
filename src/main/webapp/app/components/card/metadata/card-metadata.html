@@ -15,7 +15,7 @@
                             <md-option ng-value="location"
                                        ng-repeat="location in $ctrl.locations | orderBy:'name'">
                                 <md-icon md-svg-icon="circle" ng-style="{'fill': ( location.color | parseIntColor )}"></md-icon>
-                                {{'partials.board.' + location.name | translate }}
+                                {{'common.location.definition.' + location.name | translate }}
                             </md-option>
                         </md-optgroup>
                         <md-optgroup label="Column">

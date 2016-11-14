@@ -12,11 +12,11 @@
 	    	card:'<'
 		}
 	});
-	
-	
+
+
 	function CardFragmentV2MenuController(BulkOperations, Card, Board, Notification, Project, $filter) {
 		var ctrl = this;
-		
+
 		ctrl.close = close;
 		ctrl.watchCard = watchCard;
 		ctrl.unWatchCard = unWatchCard;
@@ -26,7 +26,7 @@
 		ctrl.moveToColumn = moveToColumn;
 		ctrl.cloneCard = cloneCard;
 		ctrl.handleKey = handleKey;
-		
+
 		//
 		ctrl.$onInit = function init() {
 			ctrl.moveColumnFlag = false;
@@ -35,39 +35,39 @@
 			loadAllProjectColumns();
 		}
 		//
-		
-		
+
+
 		var cardByProject = {};
 		cardByProject[ctrl.card.projectShortName] = [ctrl.card.id];
 		var currentUserId = {id: ctrl.currentUserId};
-		
-		
+
+
 		function watchCard() {
             BulkOperations.watch(cardByProject, currentUserId);
 		}
-	
+
 		function unWatchCard() {
             BulkOperations.unWatch(cardByProject, currentUserId);
 		}
-		
+
 		function assignToCurrentUser() {
             BulkOperations.assign(cardByProject, currentUserId);
 		}
-		
+
 		function removeAssignForCurrentUser() {
             BulkOperations.removeAssign(cardByProject, currentUserId);
 		}
-		
+
 		function moveCard(location) {
 			Card.moveAllFromColumnToLocation(ctrl.card.columnId, [ctrl.card.id], location);
 		}
-		
+
 		function loadColumns() {
 			Board.columnsByLocation(ctrl.card.boardShortName, 'BOARD').then(function(columns) {
             	ctrl.moveColumns = $filter('filter')(columns, function(col) {return col.id != ctrl.card.columnId});
             });
 		}
-		
+
 		function loadAllProjectColumns() {
 			Project.findAllColumns(ctrl.card.projectShortName).then(function(columns) {
                 ctrl.projectColumns = columns;
@@ -84,7 +84,7 @@
                 ctrl.columnsByProject = cols;
             });
 		}
-		
+
 		function moveToColumn(toColumn) {
 			Card.findByColumn(toColumn.id).then(function(cards) {
 				var ids = [];
@@ -97,16 +97,16 @@
 				Board.moveCardToColumn(ctrl.card.id, ctrl.card.columnId, toColumn.id, {newContainer: ids});
 			}).then(close)
 		}
-		
-		
+
+
 		function cloneCard(clonetoColumn) {
             Card.clone(ctrl.card.id, clonetoColumn.columnId).then(function() {
-                Notification.addAutoAckNotification('success', { key : 'partials.fragments.card-fragment.clone-done'}, false);
+                Notification.addAutoAckNotification('success', { key : 'notification.card.clone.success'}, false);
             }).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
+                Notification.addAutoAckNotification('error', { key : 'notification.card.clone.error'}, false);
             }).then(close);
         }
-		
+
 		function close() {
 			ctrl.mdPanelRef.close();
 		}
@@ -126,5 +126,5 @@
 			}
 		}
 	};
-	
+
 })();
