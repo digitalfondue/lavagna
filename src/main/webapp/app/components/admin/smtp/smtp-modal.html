@@ -1,15 +1,15 @@
 <form ng-submit="sendTestEmail(to)" name="dialogSmtpTest">
 
     <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title" translate>partials.admin.manage-smpt-configuration.sendTestEmail</h2>
+        <h2 class="md-title" translate>admin.smtp.sendTestEmail</h2>
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-smpt-configuration.emailAddressTest</label>
-			<input class="form-control" type="email" ng-model="to" placeholder="your@email.com" required md-autofocus></input>
+            <label translate>admin.smtp.emailAddressTest</label>
+			<input class="form-control" type="email" ng-model="to" placeholder="your@email.com" required md-autofocus>
         </md-input-container>
 	</md-dialog-content>
-	
+
 	<md-dialog-actions>
 	    <md-button ng-click="close()"><span translate>button.cancel</span></md-button>
-		<md-button type="submit" ng-disabled="!dialogSmtpTest.$valid"><span translate>partials.admin.manage-smpt-configuration.send</span></md-button>
+		<md-button type="submit" ng-disabled="!dialogSmtpTest.$valid"><span translate>admin.smtp.send</span></md-button>
 	</md-dialog-actions>
 </form>

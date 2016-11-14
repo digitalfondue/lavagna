@@ -1,41 +1,43 @@
-<md-content class="lvg-content__row-item lvg-admin-content__margin-bottom lvg-admin-content__padding" md-whiteframe="1">
+<md-card class="lvg-content__row lvg-content__row-item">
+    <md-card-content>
+        <md-input-container class="md-block">
+            <label translate>admin.users.filter.users</label>
+            <md-icon md-svg-icon="search"></md-icon>
+            <input type="text"
+                   ng-model="$ctrl.usernameFilter" />
+        </md-input-container>
 
-	<md-input-container class="md-block">
-		<label translate>admin-users.filter.users</label>
-		<md-icon md-svg-icon="search"></md-icon>
-		<input type="text"  
-			ng-model="$ctrl.usernameFilter" />
-	</md-input-container>
-	
-	<table class="lvg-table">
-		<thead>
-               <tr>
-                   <th translate>partials.admin.manage-users.provider</th>
-                   <th translate>partials.admin.manage-users.username</th>
-                   <th translate>partials.admin.manage-users.email</th>
-                   <th translate>partials.admin.manage-users.displayName</th>
-                   <th translate  class="center">partials.admin.manage-users.roles</th>
-                   <th translate  class="center">partials.admin.manage-users.enabled</th>
-               </tr>
-		</thead>
-		<tbody>
-               <tr ng-repeat="u in $ctrl.users | filter: $ctrl.usernameFilter">
-                   <td ng-bind="u.provider"></td>
-                   <td>
-                       <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" ng-bind="u.username"></a>
-                   </td>
-                   <td ng-bind="u.email"></td>
-                   <td ng-bind="u.displayName"></td>
-                   <td  class="center">
-                   	<md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.showUserPermissions(u)"><md-icon md-svg-icon="info"></md-icon></md-button>
-				</td>
-                   <td class="center"><md-checkbox ng-disabled="u.id == $ctrl.currentUser.id"
-                              ng-model="u.enabled"
-                              ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"></td>
-               </tr>
-		</tbody>
-	</table>
-</md-content>
+        <table class="lvg-table">
+            <thead>
+            <tr>
+                <th translate>admin.users.provider</th>
+                <th translate>admin.users.username</th>
+                <th translate>admin.users.email</th>
+                <th translate>admin.users.displayName</th>
+                <th translate  class="center">admin.users.roles</th>
+                <th translate  class="center">admin.users.enabled</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="u in $ctrl.users | filter: $ctrl.usernameFilter">
+                <td ng-bind="u.provider"></td>
+                <td>
+                    <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" ng-bind="u.username"></a>
+                </td>
+                <td ng-bind="u.email"></td>
+                <td ng-bind="u.displayName"></td>
+                <td  class="center">
+                    <md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.showUserPermissions(u)"><md-icon md-svg-icon="info"></md-icon></md-button>
+                </td>
+                <td class="center"><md-checkbox ng-disabled="u.id == $ctrl.currentUser.id"
+                                                ng-model="u.enabled"
+                                                ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"></td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>
+
 <!-- ng-cloak required as speed dial use -->
 <div ng-cloak>
 	<md-fab-speed-dial class="lvg-fab-bottom-right md-scale" md-direction="up" md-open="$ctrl.isOpen">
@@ -47,11 +49,11 @@
 	    <md-fab-actions>
 	        <md-button class="md-fab md-mini md-raised" ng-click="$ctrl.showAddUserDialog($event)">
 	            <md-icon md-svg-icon="person_add_black"></md-icon>
-	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.addUser' | translate}}</md-tooltip>
+	            <md-tooltip md-direction="left">{{'admin.users.addUser' | translate}}</md-tooltip>
 	        </md-button>
 	        <md-button class="md-fab md-mini md-raised" ng-click="$ctrl.showImportDialog($event)">
 	            <md-icon md-svg-icon="group_add_black"></md-icon>
-	            <md-tooltip md-direction="left">{{'partials.admin.manage-users.import' | translate}}</md-tooltip>
+	            <md-tooltip md-direction="left">{{'admin.users.import' | translate}}</md-tooltip>
 	        </md-button>
 	    </md-fab-actions>
 	</md-fab-speed-dial>

@@ -1,6 +1,6 @@
 <md-toolbar>
 	<div class="md-toolbar-tools">
-        <h2><span translate>partials.admin.manage-users.roles</span> {{user.username}}</h2>
+        <h2><span translate>admin.users.roles</span> {{user.username}}</h2>
         <span class="flex"></span>
         <md-button class="md-icon-button" ng-click="close()">
             <md-icon md-svg-icon="close"></md-icon>
@@ -12,25 +12,25 @@
     <md-card ng-if="rolesByProject.globalRoles.length > 0">
         <md-card-title>
             <md-card-title-text>
-                <div class="lvg-headline" translate>partials.admin.manage-users.global</div>
+                <div class="lvg-headline" translate>admin.users.global</div>
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
             <p ng-repeat="role in rolesByProject.globalRoles">{{role}}</p>
         </md-card-content>
     </md-card>
-    
+
     <md-card ng-repeat="(name, roles) in rolesByProject.rolesByProject">
         <md-card-title>
             <md-card-title-text>
-                <div class="lvg-headline"><span translate>partials.admin.manage-users.project</span> {{name}}</div>
+                <div class="lvg-headline"><span translate>admin.users.project</span> {{name}}</div>
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
             <p ng-repeat="role in roles">{{role}}</p>
         </md-card-content>
     </md-card>
-    
+
 </md-dialog-content>
 <md-dialog-actions class="admin-users-permissions-modal__content">
 	<md-button ng-click="close()"><span translate>button.close</span></md-button>

@@ -1,42 +1,42 @@
 <form role="form" ng-submit="addUserDialogCtrl.addUser(addUserDialogCtrl.userToAdd);" name="addUserForm">
     <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title" translate>admin-users.add-user.title</h2>
-        
+        <h2 class="md-title" translate>admin.users.add-user.title</h2>
+
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-users.provider</label>
+            <label translate>admin.users.provider</label>
             <md-select ng-model="addUserDialogCtrl.userToAdd.provider" required md-autofocus>
                 <md-option ng-value="val" ng-repeat="val in addUserDialogCtrl.loginProviders">{{::val}}</md-option>
             </md-select>
         </md-input-container>
-        
+
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-users.username</label>
+            <label translate>admin.users.username</label>
             <input ng-model="addUserDialogCtrl.userToAdd.username" required>
         </md-input-container>
-        
+
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-users.email</label>
+            <label translate>admin.users.email</label>
             <input ng-model="addUserDialogCtrl.userToAdd.email">
         </md-input-container>
-        
+
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-users.displayName</label>
+            <label translate>admin.users.displayName</label>
             <input ng-model="addUserDialogCtrl.userToAdd.displayName">
         </md-input-container>
-        
+
         <md-input-container class="md-block">
-            <label translate>partials.admin.manage-users.roles</label>
+            <label translate>admin.users.roles</label>
             <md-select ng-model="addUserDialogCtrl.userToAdd.roles" required multiple>
                 <md-option ng-value="role" ng-repeat="role in addUserDialogCtrl.roles">{{::role}}</md-option>
             </md-select>
         </md-input-container>
-        
+
         <md-input-container class="md-block" ng-init="addUserDialogCtrl.userToAdd.enabled = true">
-            <md-checkbox ng-model="addUserDialogCtrl.userToAdd.enabled"><span data-translate>partials.admin.manage-users.enabled</span></md-checkbox>
+            <md-checkbox ng-model="addUserDialogCtrl.userToAdd.enabled"><span data-translate>admin.users.enabled</span></md-checkbox>
         </md-input-container>
     </md-dialog-content>
     <md-dialog-actions>
-	   <md-button type="button" ng-click="addUserDialogCtrl.close()"><span translate>partials.admin.manage-users.cancel</span></md-button>
+	   <md-button type="button" ng-click="addUserDialogCtrl.close()"><span translate>admin.users.cancel</span></md-button>
 	   <md-button type="submit" ng-disabled="!addUserForm.$valid"><span translate>button.add</span></md-button>
     </md-dialog-actions>
 </form>

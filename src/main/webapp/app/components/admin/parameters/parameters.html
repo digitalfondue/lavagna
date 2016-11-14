@@ -1,44 +1,42 @@
-<h2 class="md-title" translate>partials.admin.parameters.title</h2>
-<md-content md-whiteframe="1">
-    <form ng-submit="$ctrl.updateAllChangedConfiguration()">
-        <div class="lvg-admin-content__padding">
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.parameters.trelloApiKey</span></label>
-				<input type="text" ng-model="$ctrl.configurable['TRELLO_API_KEY']">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.parameters.maxUploadFileSize</span></label>
-				<input type="text" ng-model="$ctrl.configurable['MAX_UPLOAD_FILE_SIZE']">
-			</md-input-container>
-			<md-input-container class="md-block">
-				<label><span translate>partials.admin.parameters.emailNotificationTimespan</span></label>
-				<input type="text" ng-model="$ctrl.configurable['EMAIL_NOTIFICATION_TIMESPAN']">
-			</md-input-container>
-			<div>
-				<md-checkbox ng-model="$ctrl.configurable['USE_HTTPS']" ng-true-value="'true'" ng-false-value="'false'">
-					<span translate>partials.admin.parameters.useHttps</span>
-				</md-checkbox>
-			</div>
-		</div>
-        <md-button type="submit" class="md-primary"><span translate>button.save</span></md-button>
-		
-	</form>
-</md-content>
+<h2 class="md-title" translate>admin.parameters</h2>
+<form ng-submit="$ctrl.updateAllChangedConfiguration()">
+    <md-card>
+        <md-card-content>
+            <md-input-container class="md-block">
+                <label><span translate>admin.parameters.trelloApiKey</span></label>
+                <input type="text" ng-model="$ctrl.configurable['TRELLO_API_KEY']">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><span translate>admin.parameters.maxUploadFileSize</span></label>
+                <input type="text" ng-model="$ctrl.configurable['MAX_UPLOAD_FILE_SIZE']">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label><span translate>admin.parameters.emailNotificationTimespan</span></label>
+                <input type="text" ng-model="$ctrl.configurable['EMAIL_NOTIFICATION_TIMESPAN']">
+            </md-input-container>
+        </md-card-content>
+        <md-card-actions>
+            <md-button type="submit" class="md-primary"><span translate>button.save</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>
 
-<h2 class="md-title" translate>All parameters</h2>
-<md-content class="lvg-admin-content__margin-bottom lvg-admin-content__padding" md-whiteframe="1">
-	<table class="lvg-table">
-	    <thead>
-	        <tr>
-	            <th data-translate>partials.admin.parameters.key</th>
-	            <th data-translate>partials.admin.parameters.value</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr data-ng-repeat="(k,v) in $ctrl.conf">
-	            <td data-ng-bind="k"></td>
-	            <td class="break-all">{{ k === 'LDAP_MANAGER_PASSWORD' ? (v | mask) : v  }}</td>
-	        </tr>
-	    </tbody>
-	</table>
-</md-content>
+<h2 class="md-title" translate>admin.parameters.all</h2>
+<md-card>
+    <md-card-content>
+        <table class="lvg-table">
+            <thead>
+            <tr>
+                <th data-translate>admin.parameters.all.key</th>
+                <th data-translate>admin.parameters.all.value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="(k,v) in $ctrl.conf">
+                <td data-ng-bind="k"></td>
+                <td class="break-all">{{ k === 'LDAP_MANAGER_PASSWORD' ? (v | mask) : v  }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>
