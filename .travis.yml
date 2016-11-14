@@ -5,16 +5,14 @@ before_script:
   - mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
 matrix:
     include:
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=HSQLDB"
+        - env: PROFILE="-Ddatasource.dialect=HSQLDB"
           addons:
               apt:
                   packages:
                       - mysql-server
                       - mysql-client-core-5.5
                       - mysql-client
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.1"
+        - env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.1"
           addons:
               postgresql: "9.1"
               apt:
@@ -22,8 +20,7 @@ matrix:
                       - mysql-server
                       - mysql-client-core-5.5
                       - mysql-client
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.4"
+        - env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.4"
           addons:
               postgresql: "9.4"
               apt:
@@ -31,24 +28,21 @@ matrix:
                       - mysql-server
                       - mysql-client-core-5.5
                       - mysql-client
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.5"
+        - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.5"
           addons:
               apt:
                   packages:
                       - mysql-server
                       - mysql-client-core-5.5
                       - mysql-client
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.6"
+        - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.6"
           addons:
               apt:
                   packages:
                       - mysql-server-5.6
                       - mysql-client-core-5.6
                       - mysql-client-5.6
-        - jdk: oraclejdk8
-          env: PROFILE="-Ddatasource.dialect=MYSQL -Dmariadb10.1"
+        - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmariadb10.1"
           addons:
               mariadb: 10.1
 script: mvn test jacoco:report $PROFILE
