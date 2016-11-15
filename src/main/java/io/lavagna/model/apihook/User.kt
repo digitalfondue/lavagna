@@ -16,4 +16,4 @@
  */
 package io.lavagna.model.apihook
 
-class User(val id: Int, val provider: String, val username: String, val email: String?, val displayName: String?);
+data class User(val id: Int, val provider: String, val username: String, val email: String?, val displayName: String?);

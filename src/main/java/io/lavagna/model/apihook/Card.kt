@@ -16,4 +16,4 @@
  */
 package io.lavagna.model.apihook
 
-class Card(val boardShortName: String, val sequence: Int, val name: String);
+data class Card(val boardShortName: String, val sequence: Int, val name: String)

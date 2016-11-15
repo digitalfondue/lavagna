@@ -18,6 +18,6 @@ package io.lavagna.model
 
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 
-open class ApiHook(@Column("API_HOOK_NAME") val name: String,
-            @Column("API_HOOK_SCRIPT") val script: String,
-            @Column("API_HOOK_CONFIGURATION") val configuration: String?)
+class ApiHook(@Column("API_HOOK_NAME") val name: String,
+			  @Column("API_HOOK_SCRIPT") val script: String,
+			  @Column("API_HOOK_CONFIGURATION") val configuration: String?)

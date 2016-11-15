@@ -49,6 +49,7 @@ import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.User;
+import io.lavagna.query.ApiHookQuery;
 import io.lavagna.service.EventEmitter.LavagnaEvent;
 
 @Service
@@ -61,10 +62,12 @@ public class ApiHooksService {
 	private final Map<String, Pair<String, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
 	private final ProjectService projectService;
 	private final CardService cardService;
+	private final ApiHookQuery apiHookQuery;
  
-	public ApiHooksService(ProjectService projectService, CardService cardService) {
+	public ApiHooksService(ProjectService projectService, CardService cardService, ApiHookQuery apiHookQuery) {
 		this.projectService = projectService;
 		this.cardService = cardService;
+		this.apiHookQuery = apiHookQuery;
 		engine =  new ScriptEngineManager().getEngineByName("javascript");
 		executor = Executors.newFixedThreadPool(4);
 	}
@@ -83,14 +86,11 @@ public class ApiHooksService {
 			ScriptContext newContext = new SimpleScriptContext();
 			Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
 			engineScope.putAll(scope);
+			engineScope.put("log", LOG);
 			compiled.getRight().eval(newContext);
 		} catch (ScriptException ex) {
 			LOG.warn("Error while executing script " + name, ex);
 		}
-	}
-	
-	private List<ApiHook> getScripts() {
-		return Collections.emptyList();
 	}
 	
 	private static class EventToRun implements Runnable {
@@ -111,7 +111,7 @@ public class ApiHooksService {
 		
 		@Override
 		public void run() {
-			for(ApiHook hook: apiHooksService.getScripts()) {
+			for(ApiHook hook: apiHooksService.apiHookQuery.findAll()) {
 				Map<String, Object> scope = new HashMap<>(env);
 				
 				scope.put("eventName", eventName.name());
