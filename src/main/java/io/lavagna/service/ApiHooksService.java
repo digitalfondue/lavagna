@@ -59,8 +59,12 @@ public class ApiHooksService {
 	private final ScriptEngine engine;
 	private final Executor executor;
 	private final Map<String, Pair<String, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
+	private final ProjectService projectService;
+	private final CardService cardService;
  
-	public ApiHooksService() {
+	public ApiHooksService(ProjectService projectService, CardService cardService) {
+		this.projectService = projectService;
+		this.cardService = cardService;
 		engine =  new ScriptEngineManager().getEngineByName("javascript");
 		executor = Executors.newFixedThreadPool(4);
 	}
@@ -126,125 +130,162 @@ public class ApiHooksService {
 			}
 		}
 	}
+	
+	private Map<String, Object> getBaseDataFor(int cardId) {
+		Map<String, Object> res = new HashMap<>();
+		CardFull cf = cardService.findFullBy(cardId);
+		res.put("card", new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getProjectShortName()));
+		res.put("board", cf.getBoardShortName());
+		return res;
+	}
 
 	public void createdProject(String projectShortName, User user, LavagnaEvent event) {
 		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 
-	public void updatedProject(String projectShortName, User user, LavagnaEvent updateProject) {
-		//FIXME run scripts
+	public void updatedProject(String projectShortName, User user, LavagnaEvent event) {
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 
-	public void createdBoard(String boardShortName, User user, LavagnaEvent createBoard) {
-		//FIXME run scripts
+	public void createdBoard(String boardShortName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void updatedBoard(String boardShortName, User user, LavagnaEvent updateBoard) {
-		//FIXME run scripts
+	public void updatedBoard(String boardShortName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void createdColumn(String boardShortName, String columnName, User user, LavagnaEvent createColumn) {
-		//FIXME run scripts
+	public void createdColumn(String boardShortName, String columnName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void updateColumn(String boardShortName, BoardColumn oldColumn, BoardColumn updatedColumn, User user, LavagnaEvent updateColumn) {
-		//FIXME run scripts
+	public void updateColumn(String boardShortName, BoardColumn oldColumn, BoardColumn updatedColumn, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void createdCard(String boardShortName, Card card, User user, LavagnaEvent createCard) {
-		//FIXME run scripts
+	public void createdCard(String boardShortName, Card card, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard, User user, LavagnaEvent updateCard) {
-		//FIXME run scripts
+	public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
 	}
 
-	public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription, User user, LavagnaEvent updateDescription) {
-		//FIXME run scripts
+	public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void createdComment(int cardId, CardData comment, User user, LavagnaEvent createComment) {
-		//FIXME run scripts
+	public void createdComment(int cardId, CardData comment, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void updatedComment(int cardId, CardData previousComment, String newComment, User user, LavagnaEvent updateComment) {
-		//FIXME run scripts
+	public void updatedComment(int cardId, CardData previousComment, String newComment, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void deletedComment(int cardId, CardData deletedComment, User user, LavagnaEvent deleteComment) {
-		//FIXME run scripts
+	public void deletedComment(int cardId, CardData deletedComment, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void undeletedComment(int cardId, CardData undeletedComment, User user, LavagnaEvent undoDeleteComment) {
-		//FIXME run scripts
+	public void undeletedComment(int cardId, CardData undeletedComment, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void uploadedFile(int cardId, List<String> fileNames, User user, LavagnaEvent createFile) {
-		//FIXME run scripts		
+	public void uploadedFile(int cardId, List<String> fileNames, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void deletedFile(int cardId, String fileName, User user, LavagnaEvent deleteFile) {
-		//FIXME run scripts
+	public void deletedFile(int cardId, String fileName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void undoDeletedFile(int cardId, String fileName, User user, LavagnaEvent undoDeleteFile) {
-		//FIXME run scripts
+	public void undoDeletedFile(int cardId, String fileName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent removeLabelValue) {
-		//FIXME run scripts
+	public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 
-	public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent addLabelValueToCard) {
-		//FIXME run scripts
+	public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 
-	public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue, User user, LavagnaEvent updateLabelValue) {
-		//FIXME run scripts
+	public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 
-	public void createActionList(int cardId, String name, User user, LavagnaEvent createActionList) {
-		//FIXME run scripts	
+	public void createActionList(int cardId, String name, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void deleteActionList(int cardId, String name, User user, LavagnaEvent deleteActionList) {
-		//FIXME run scripts
+	public void deleteActionList(int cardId, String name, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void updatedNameActionList(int cardId, String oldName, String newName, User user, LavagnaEvent updateActionList) {
-		//FIXME run scripts		
+	public void updatedNameActionList(int cardId, String oldName, String newName, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 	
-	public void undeletedActionList(int cardId, String name, User user, LavagnaEvent undoDeleteActionList) {
-		//FIXME run scripts		
+	public void undeletedActionList(int cardId, String name, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void createActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent createActionItem) {
-		//FIXME run scripts
+	public void createActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void deletedActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent deleteActionItem) {
-		//FIXME run scripts
+	public void deletedActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle, User user, LavagnaEvent toggleActionItem) {
-		//FIXME run scripts
+	public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem, User user, LavagnaEvent updateActionItem) {
-		//FIXME run scripts		
+	public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent undoDeleteActionItem) {
-		//FIXME run scripts
+	public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
 	public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
-			String actionItem, User user, LavagnaEvent moveActionItem) {
-		//FIXME run scripts
+			String actionItem, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+		executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
 	}
 
-	public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds, User user, LavagnaEvent updateCardPosition) {
-		//FIXME run scripts		
+	public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds, User user, LavagnaEvent event) {
+		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardIds.iterator().next());
+		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
 }
