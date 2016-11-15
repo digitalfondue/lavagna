@@ -18,7 +18,6 @@ package io.lavagna.web.api;
 
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Label;
 import io.lavagna.model.LabelListValue;
 import io.lavagna.model.LabelListValueWithMetadata;
@@ -32,7 +31,6 @@ import io.lavagna.web.helper.ExpectPermission;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.Validate;
@@ -261,12 +259,4 @@ public class CardLabelController {
             this.second = second;
         }
     }
-
-	private static Map<Integer, List<CardLabelValue>> from(Map<CardLabel, List<CardLabelValue>> from) {
-		Map<Integer, List<CardLabelValue>> res = new TreeMap<>();
-		for (Entry<CardLabel, List<CardLabelValue>> kv : from.entrySet()) {
-			res.put(kv.getKey().getId(), kv.getValue());
-		}
-		return res;
-	}
 }
