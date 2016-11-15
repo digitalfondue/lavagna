@@ -111,7 +111,7 @@ public class ApiHooksService {
 		
 		@Override
 		public void run() {
-			for(ApiHook hook: apiHooksService.apiHookQuery.findAll()) {
+			for(ApiHook hook: apiHooksService.apiHookQuery.findAllEnabled(ApiHook.Type.EVENT_EMITTER_HOOK)) {
 				Map<String, Object> scope = new HashMap<>(env);
 				
 				scope.put("eventName", eventName.name());

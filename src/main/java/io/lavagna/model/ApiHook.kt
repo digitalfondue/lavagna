@@ -20,4 +20,14 @@ import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 
 class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_SCRIPT") val script: String,
-			  @Column("API_HOOK_CONFIGURATION") val configuration: String?)
+			  @Column("API_HOOK_CONFIGURATION") val configuration: String?,
+			  @Column("API_HOOK_ENABLED") val enabled: Boolean,
+			  @Column("API_HOOK_TYPE") val type: Type,
+			  @Column("API_HOOK_PROJECTS") val projects: String?,
+			  @Column("API_HOOK_VERSION") val version: Int) {
+
+	enum class Type {
+        EVENT_EMITTER_HOOK, //react to event emitter action
+		WEB_HOOK; // react to ApiHooksController.handleHook
+	}
+}

@@ -26,15 +26,26 @@ import io.lavagna.model.ApiHook;
 @QueryRepository
 public interface ApiHookQuery {
 	
-	@Query("select API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION from LA_API_HOOK")
-	List<ApiHook> findAll();
+	@Query("select API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION, API_HOOK_ENABLED, API_HOOK_TYPE, API_HOOK_PROJECTS, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_ENABLED = true and API_HOOK_TYPE = :type")
+	List<ApiHook> findAllEnabled(@Bind("type") ApiHook.Type type);
 	
 	@Query("delete from LA_API_HOOK where API_HOOK_NAME = :name")
 	int delete(@Bind("name") String name);
 	
-	@Query("insert into LA_API_HOOK(API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION) values (:name, :script, :configuration)")
-	int insert(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration);
+	@Query("insert into LA_API_HOOK(API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION, API_HOOK_ENABLED, API_HOOK_TYPE, API_HOOK_PROJECTS, API_HOOK_VERSION) "
+			+ " values (:name, :script, :configuration, :enabled, :type, :projects, 0)")
+	int insert(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration,
+			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects);
 	
-	@Query("update LA_API_HOOK set API_HOOK_SCRIPT = :script, API_HOOK_CONFIGURATION = :configuration where API_HOOK_NAME = :name")
-	int update(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration);
+	@Query("update LA_API_HOOK set API_HOOK_SCRIPT = :script, API_HOOK_CONFIGURATION = :configuration, "
+			+ " API_HOOK_ENABLED = :enabled , API_HOOK_TYPE = :type, API_HOOK_PROJECTS = :projects, API_HOOK_VERSION = API_HOOK_VERSION+1 "
+			+ " where API_HOOK_NAME = :name")
+	int update(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration,
+			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects);
+	
+	@Query("update LA_API_HOOK API_HOOK_ENABLED = :enabled, API_HOOK_VERSION = API_HOOK_VERSION+1 where API_HOOK_NAME = :name")
+	int enable(@Bind("name") String name, @Bind("enabled") boolean enabled);
+	
+	@Query("update LA_API_HOOK API_HOOK_NAME = :newName, API_HOOK_VERSION = API_HOOK_VERSION+1  where API_HOOK_NAME = :name")
+	int rename(@Bind("name") String name, @Bind("newName") String newName);
 }
