@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,19 +30,18 @@ import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
 import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import io.lavagna.common.Json;
 import io.lavagna.model.ApiHook;
+import io.lavagna.model.ApiHookNameAndVersion;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardData;
@@ -57,9 +57,9 @@ public class ApiHooksService {
 	
 	private static final Logger LOG = LogManager.getLogger();
 	
-	private final ScriptEngine engine;
+	private final Compilable engine;
 	private final Executor executor;
-	private final Map<String, Pair<String, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
+	private final Map<String, Triple<ApiHook, Map<Object, Object>, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
 	private final ProjectService projectService;
 	private final CardService cardService;
 	private final ApiHookQuery apiHookQuery;
@@ -68,26 +68,17 @@ public class ApiHooksService {
 		this.projectService = projectService;
 		this.cardService = cardService;
 		this.apiHookQuery = apiHookQuery;
-		engine =  new ScriptEngineManager().getEngineByName("javascript");
+		engine =  (Compilable) new ScriptEngineManager().getEngineByName("javascript");
 		executor = Executors.newFixedThreadPool(4);
 	}
 	
-	private void executeScript(String name, String script, Map<String, Object> scope) {
+	private static void executeScript(String name, CompiledScript script, Map<String, Object> scope) {
 		try {
-			String key = DigestUtils.sha1Hex(script);
-			Pair<String, CompiledScript> compiled = compiledScriptCache.get(name);
-			if(compiled == null || (compiled != null && !compiled.getKey().equals(key))) {
-				Compilable compEngine = (Compilable)engine;
-                CompiledScript cs = compEngine.compile(script);
-                compiled = Pair.of(key, cs);
-                compiledScriptCache.put(name, compiled);
-			}
-			
 			ScriptContext newContext = new SimpleScriptContext();
 			Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
 			engineScope.putAll(scope);
 			engineScope.put("log", LOG);
-			compiled.getRight().eval(newContext);
+			script.eval(newContext);
 		} catch (ScriptException ex) {
 			LOG.warn("Error while executing script " + name, ex);
 		}
@@ -111,23 +102,49 @@ public class ApiHooksService {
 		
 		@Override
 		public void run() {
-			for(ApiHook hook: apiHooksService.apiHookQuery.findAllEnabled(ApiHook.Type.EVENT_EMITTER_HOOK)) {
+			
+			List<ApiHookNameAndVersion> nameAndVersions = apiHooksService.apiHookQuery.findAllEnabled(ApiHook.Type.EVENT_EMITTER_HOOK);
+			List<String> names = new ArrayList<>(nameAndVersions.size());
+			for(ApiHookNameAndVersion nv : nameAndVersions) {
+				names.add(nv.getName());
+			}
+			
+			//remove all disabled scripts
+			apiHooksService.compiledScriptCache.keySet().retainAll(names);
+			
+			List<String> toAddOrUpdate = new ArrayList<>(0);
+			for(ApiHookNameAndVersion hook: nameAndVersions) {
+				if(!apiHooksService.compiledScriptCache.containsKey(hook.getName()) || apiHooksService.compiledScriptCache.get(hook.getName()).getLeft().getVersion() < hook.getVersion()) {
+					toAddOrUpdate.add(hook.getName());
+				}
+			}
+			
+			if(!toAddOrUpdate.isEmpty()) {
+				for(ApiHook apiHook : apiHooksService.apiHookQuery.findByNames(toAddOrUpdate)) {
+					try {
+						CompiledScript cs = apiHooksService.engine.compile(apiHook.getScript());
+						@SuppressWarnings("unchecked")
+						Map<Object, Object> configuration = apiHook.getConfiguration() != null ? Json.GSON.fromJson(apiHook.getConfiguration(), Map.class) : Collections.emptyMap();
+						apiHooksService.compiledScriptCache.put(apiHook.getName(), Triple.of(apiHook, configuration, cs));
+					} catch (ScriptException ex) {
+						LOG.warn("Error while compiling script " + apiHook.getName());
+					}
+				}
+			}
+			
+			for(Triple<ApiHook, Map<Object, Object>, CompiledScript> val : apiHooksService.compiledScriptCache.values()) {
+				
 				Map<String, Object> scope = new HashMap<>(env);
 				
 				scope.put("eventName", eventName.name());
 				scope.put("project", projectName);
 				scope.put("user", user);
-				
-				if(hook.getConfiguration() != null) {
-					scope.put("configuration", Json.GSON.fromJson(hook.getConfiguration(), Map.class));
-				} else {
-					scope.put("configuration", Collections.emptyMap());
-				}
-				
 				scope.put("data", env);
-				
-				apiHooksService.executeScript(hook.getName(), hook.getScript(), scope);
+				scope.put("configuration", val.getMiddle());
+
+				executeScript(val.getLeft().getName(), val.getRight(), scope);
 			}
+			
 		}
 	}
 	

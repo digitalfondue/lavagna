@@ -22,12 +22,17 @@ import ch.digitalfondue.npjt.Bind;
 import ch.digitalfondue.npjt.Query;
 import ch.digitalfondue.npjt.QueryRepository;
 import io.lavagna.model.ApiHook;
+import io.lavagna.model.ApiHookNameAndVersion;
 
 @QueryRepository
 public interface ApiHookQuery {
 	
-	@Query("select API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION, API_HOOK_ENABLED, API_HOOK_TYPE, API_HOOK_PROJECTS, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_ENABLED = true and API_HOOK_TYPE = :type")
-	List<ApiHook> findAllEnabled(@Bind("type") ApiHook.Type type);
+	@Query("select API_HOOK_NAME, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_ENABLED = true and API_HOOK_TYPE = :type")
+	List<ApiHookNameAndVersion> findAllEnabled(@Bind("type") ApiHook.Type type);
+	
+	@Query("select API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION, API_HOOK_ENABLED, API_HOOK_TYPE, API_HOOK_PROJECTS, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_NAME in (:names)")
+	List<ApiHook> findByNames(@Bind("names") List<String> names);
+	
 	
 	@Query("delete from LA_API_HOOK where API_HOOK_NAME = :name")
 	int delete(@Bind("name") String name);
