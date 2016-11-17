@@ -16,11 +16,6 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.Permission;
-import io.lavagna.web.api.model.PluginCode;
-import io.lavagna.web.helper.ExpectPermission;
-
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,53 +27,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.lavagna.model.ApiHook;
+import io.lavagna.model.Permission;
+import io.lavagna.service.ApiHooksService;
+import io.lavagna.web.api.model.PluginCode;
+import io.lavagna.web.helper.ExpectPermission;
+
 @RestController
 public class ApiHooksController {
+	
+	private final ApiHooksService apiHooksService;
+	
+	public ApiHooksController(ApiHooksService apiHooksService) {
+		this.apiHooksService = apiHooksService;
+	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/plugin", method = RequestMethod.POST)
 	public void addOrUpdateGlobalPlugin(@RequestBody PluginCode plugin) {
-		// FIXME save or update code
+		apiHooksService.createOrUpdateApiHook(plugin.getName(), plugin.getCode(), plugin.getProperties(), plugin.getProjects());
 	}
 
-	// FIXME define model
 	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/plugin", method = RequestMethod.GET)
-	public List<Object> listPlugins() {
-		return Collections.emptyList();
+	public List<ApiHook> listPlugins() {
+		return apiHooksService.findAllPlugins();
 	}
 
 	@ExpectPermission(Permission.ADMINISTRATION)
 	@RequestMapping(value = "/api/plugin/{name}", method = RequestMethod.DELETE)
 	public void deletePlugin(@PathVariable("name") String name) {
-		// FIXME remove plugin
+		apiHooksService.deleteHook(name);
 	}
 
 	@ExpectPermission(Permission.GLOBAL_HOOK_API_ACCESS)
 	@RequestMapping(value = "/api/plugin/{name}/hook", method = {RequestMethod.GET, RequestMethod.POST})
 	public void handleHook(@PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
 		//FIXME:call hook and pass request, response
-	}
-
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/project/{projectShortName}/plugin", method = RequestMethod.POST)
-	public void addOrUpdateProjectPlugin(@PathVariable("projectShortName") String projectShortName,
-			@RequestBody PluginCode plugin) {
-		// FIXME save or update code
-	}
-
-	// FIXME define model
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/project/{projectShortName}/plugin", method = RequestMethod.GET)
-	public List<Object> listPlugins(@PathVariable("projectShortName") String projectShortName) {
-		return Collections.emptyList();
-	}
-
-	@ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-	@RequestMapping(value = "/api/project/{projectShortName}/plugin/{name}", method = RequestMethod.DELETE)
-	public void deletePlugin(@PathVariable("projectShortName") String projectShortName,
-			@PathVariable("name") String name) {
-		// FIXME remove plugin
 	}
 
 	@ExpectPermission(Permission.PROJECT_HOOK_API_ACCESS)

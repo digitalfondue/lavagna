@@ -38,6 +38,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.lavagna.common.Json;
 import io.lavagna.model.ApiHook;
@@ -146,6 +147,21 @@ public class ApiHooksService {
 			}
 			
 		}
+	}
+	
+	@Transactional(readOnly=true)
+	public List<ApiHook> findAllPlugins() {
+		return apiHookQuery.findAll();
+	}
+	
+	@Transactional
+	public void deleteHook(String name) {
+		apiHookQuery.delete(name);
+	}
+	
+	@Transactional
+	public void createOrUpdateApiHook(String name, String code, Map<String, Object> properties, List<String> projects) {
+		
 	}
 	
 	private Map<String, Object> getBaseDataFor(int cardId) {
@@ -305,4 +321,5 @@ public class ApiHooksService {
 		String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardIds.iterator().next());
 		executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
 	}
+
 }

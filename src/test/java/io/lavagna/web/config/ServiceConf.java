@@ -23,6 +23,7 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
+import io.lavagna.service.ApiHooksService;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.BulkOperationService;
@@ -210,5 +211,10 @@ public class ServiceConf {
 	@Bean
 	public ExcelExportService getMilestoneExportService() {
 	    return mock(ExcelExportService.class);
+	}
+	
+	@Bean
+	public ApiHooksService getApiHookService() {
+		return mock(ApiHooksService.class);
 	}
 }

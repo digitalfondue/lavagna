@@ -16,14 +16,4 @@
  */
 package io.lavagna.web.api.model
 
-class PluginCode {
-
-
-    var name: String? = null
-
-    // javascript code
-    var code: String? = null
-
-    // associated properties (key?)
-    var properties: Map<String, String>? = null
-}
+class PluginCode(var name: String, var code: String?, var properties: Map<String, Any>?, var projects: List<String> ?)
