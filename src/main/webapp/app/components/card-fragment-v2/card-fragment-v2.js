@@ -13,7 +13,7 @@
 			projectMetadataRef: '&',
 			selectedRef:'&'
 		},
-		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', 'EventBus', 'UserCache', 'CardCache', 'ProjectCache', '$mdPanel', CardFragmentV2Controller]
+		controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', 'EventBus', 'UserCache', 'CardCache', 'ProjectCache', 'Tooltip', '$mdPanel', CardFragmentV2Controller]
 	});
 
 	//
@@ -25,7 +25,7 @@
 
 
 
-	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, EventBus, UserCache, CardCache, ProjectCache, $mdPanel) {
+	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, EventBus, UserCache, CardCache, ProjectCache, Tooltip, $mdPanel) {
 		var ctrl = this;
 
 
@@ -67,7 +67,7 @@
         headCtrl.$postLink();
 
 
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache);
+        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
 
@@ -326,7 +326,7 @@
     }
 
 
-	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache) {
+	function lvgCardFragmentV2DataInfoCtrl($filter, $element, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip) {
 		var ctrl = this;
 
 		var card;
@@ -391,19 +391,11 @@
             $element.removeEventListener('mousedown', handleMouseLeave);
 		}
 
-		function closeTooltips(ignore) {
-            angular.forEach($mdPanel._trackedPanels, function(value, id) {
-                if(id !== ignore && id.indexOf('lvg-tooltip') === 0) {
-                    value.close();
-                }
-            });
-        }
-
 		//
 
 		function handleMouseEnter($event) {
 
-            closeTooltips('lvg-tooltip-card-' + $event.target.card.id);
+            Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
 
             var position = $mdPanel.newPanelPosition()
                 .relativeTo($event.target)

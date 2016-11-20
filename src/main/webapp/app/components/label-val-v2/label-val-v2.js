@@ -9,10 +9,11 @@
 			valueRef: '&',
 			projectMetadataRef:'&'
 		},
-		controller: ['$filter', '$element', '$mdPanel', 'EventBus', '$state', '$window', 'CardCache', 'UserCache', LabelValV2Controller]
+		controller: ['$filter', '$element', '$mdPanel', 'EventBus',
+		    '$state', '$window', 'CardCache', 'Tooltip', 'UserCache', LabelValV2Controller]
 	});
 
-	function LabelValV2Controller($filter, $element, $mdPanel, EventBus, $state, $window, CardCache, UserCache) {
+	function LabelValV2Controller($filter, $element, $mdPanel, EventBus, $state, $window, CardCache, Tooltip, UserCache) {
 		var ctrl = this;
 
 		var elementDom = $element[0];
@@ -66,18 +67,9 @@
 		};
 
 		//-------------
-
-		function closeTooltips(ignore) {
-            angular.forEach($mdPanel._trackedPanels, function(value, id) {
-                if(id !== ignore && id.indexOf('lvg-tooltip') === 0) {
-                    value.close();
-                }
-            });
-        }
-
 		function handleMouseEnter($event) {
 
-            closeTooltips('lvg-tooltip-card-' + $event.target.card.id);
+            Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
 
             var position = $mdPanel.newPanelPosition()
                 .relativeTo($event.target)
