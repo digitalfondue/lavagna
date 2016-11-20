@@ -338,16 +338,12 @@
 
 		var mouseOverElements = [];
 
-		var mouseOverPanelRef;
-
 		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
 			card = ctrl.lvgCardFragmentV2.card;
 			projectMetadata = ctrl.lvgCardFragmentV2.projectMetadata;
 			user = ctrl.lvgCardFragmentV2.user;
 	        notClosed = card.columnDefinition !== 'CLOSED';
 
-	        $element.addEventListener('mouseleave', handleMouseLeave);
-	        $element.addEventListener('mousedown', handleMouseLeave);
 	        // labels
 	        handleLabels();
 
@@ -374,9 +370,7 @@
 		}
 
 		ctrl.$onDestroy = function lvgCardFragmentV2DataInfoCtrlOnDestroy() {
-		    if(mouseOverPanelRef) {
-                mouseOverPanelRef.close();
-            }
+		    Tooltip.clean();
 
 			for(var i = 0; i < listeners.length; i++) {
 				listeners[i]();
@@ -386,55 +380,21 @@
                 element.removeEventListener('mouseenter', handleMouseEnter);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
-
-            $element.removeEventListener('mouseleave', handleMouseLeave);
-            $element.removeEventListener('mousedown', handleMouseLeave);
 		}
 
 		//
 
 		function handleMouseEnter($event) {
-
             Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
-
-            var position = $mdPanel.newPanelPosition()
-                .relativeTo($event.target)
-                .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
-                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
-                .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
-                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
-            var conf = {
-                    id: 'lvg-tooltip-card-' + $event.target.card.id,
-                    controller: function(mdPanelRef, metadata) {
-                        this.mdPanelRef = mdPanelRef;
-                        this.metadata = metadata;
-                        mouseOverPanelRef = mdPanelRef;
-                    },
-                    controllerAs: '$ctrl',
-                    template: '<lvg-card-fragment-v2 view="board" hide-select="true" hide-menu="true" read-only="true" card-ref="$ctrl.card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadata" class="lvg-card-fragment-v2__tooltip lvg-card-fragment-v2__static"></lvg-card-fragment-v2>',
-                    panelClass: 'lvg-card-fragment-v2__tooltip-panel',
-                    position: position,
-                    focusOnOpen: false,
-                    propagateContainerEvents: true,
-                    locals: {
-                        card: $event.target.card,
-                        user: user
-                    },
-                    resolve: {
-                        metadata: function() {
-                            return $event.target.card.projectShortName ===  projectMetadata.shortName ?
-                                projectMetadata :
-                                ProjectCache.metadata($event.target.card.projectShortName);
-                        }
-                    }
-            };
-            $mdPanel.open(conf);
+            Tooltip.card($event.target.card, function() {
+                return $event.target.card.projectShortName ===  projectMetadata.shortName ?
+                    projectMetadata :
+                    ProjectCache.metadata($event.target.card.projectShortName);
+            }, user, $event.target);
 		};
 
 		function handleMouseLeave($event) {
-            if(mouseOverPanelRef) {
-                mouseOverPanelRef.close();
-            }
+            Tooltip.close('lvg-tooltip-card-' + $event.target.card.id);
 		};
 
         //

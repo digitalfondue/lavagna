@@ -9,18 +9,17 @@
 			valueRef: '&',
 			projectMetadataRef:'&'
 		},
-		controller: ['$filter', '$element', '$mdPanel', 'EventBus',
+		controller: ['$filter', '$element', 'EventBus',
 		    '$state', '$window', 'CardCache', 'Tooltip', 'UserCache', LabelValV2Controller]
 	});
 
-	function LabelValV2Controller($filter, $element, $mdPanel, EventBus, $state, $window, CardCache, Tooltip, UserCache) {
+	function LabelValV2Controller($filter, $element, EventBus, $state, $window, CardCache, Tooltip, UserCache) {
 		var ctrl = this;
 
 		var elementDom = $element[0];
 
 		var listeners = [];
         var mouseOverElements = [];
-        var mouseOverPanelRef;
 
 		ctrl.$postLink = function postLink() {
 
@@ -36,9 +35,6 @@
 			} else if (type === 'USER') {
 				handleUser(value.valueUser);
 			} else if (type === 'CARD') {
-			    elementDom.addEventListener('mouseleave', handleMouseLeave);
-                elementDom.addEventListener('mousedown', handleMouseLeave);
-
 				handleCard(value.valueCard, metadata);
 			} else if (type === 'LIST' && metadata && metadata.labelListValues && metadata.labelListValues[value.valueList]) {
 				elementDom.textContent = metadata.labelListValues[value.valueList].value;
@@ -48,9 +44,7 @@
 		}
 
 		ctrl.$onDestroy = function onDestroy() {
-		    if(mouseOverPanelRef) {
-                mouseOverPanelRef.close();
-            }
+		    Tooltip.clean();
 
 		    for(var i = 0; i < listeners.length; i++) {
                 listeners[i]();
@@ -61,46 +55,18 @@
                 element.removeEventListener('mouseenter', handleMouseEnter);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
-
-            elementDom.removeEventListener('mouseleave', handleMouseLeave);
-            elementDom.removeEventListener('mousedown', handleMouseLeave);
 		};
 
 		//-------------
 		function handleMouseEnter($event) {
-
             Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
-
-            var position = $mdPanel.newPanelPosition()
-                .relativeTo($event.target)
-                .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
-                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
-                .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
-                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
-            var conf = {
-                    id: 'lvg-tooltip-card-' + $event.target.card.id,
-                    controller: function(mdPanelRef) {
-                        this.mdPanelRef = mdPanelRef;
-                        mouseOverPanelRef = mdPanelRef;
-                    },
-                    controllerAs: '$ctrl',
-                    template: '<lvg-card-fragment-v2 view="board" hide-select="true" hide-menu="true" read-only="true" card-ref="$ctrl.card" user-ref="$ctrl.user" project-metadata-ref="$ctrl.metadata" class="lvg-card-fragment-v2__tooltip lvg-card-fragment-v2__static"></lvg-card-fragment-v2>',
-                    panelClass: 'lvg-card-fragment-v2__tooltip-panel',
-                    position: position,
-                    focusOnOpen: false,
-                    propagateContainerEvents: true,
-                    locals: {
-                        card: $event.target.card,
-                        metadata: $event.target.metadata
-                    }
-            };
-            $mdPanel.open(conf);
+            Tooltip.card($event.target.card, function() {
+                return $event.target.metadata
+            }, null, $event.target);
         };
 
 		function handleMouseLeave($event) {
-            if(mouseOverPanelRef) {
-                mouseOverPanelRef.close();
-            }
+		    Tooltip.close('lvg-tooltip-card-' + $event.target.card.id);
         };
 
 		function handleUser(userId) {
