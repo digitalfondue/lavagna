@@ -19,7 +19,8 @@
 		var elementDom = $element[0];
 
 		var listeners = [];
-        var mouseOverElements = [];
+        var mouseOverCardElements = [];
+        var mouseOverUserElements = [];
 
 		ctrl.$postLink = function postLink() {
 
@@ -50,23 +51,32 @@
                 listeners[i]();
             }
 
-            for(var i = 0; i < mouseOverElements.length; i++) {
-                var element = mouseOverElements[i];
-                element.removeEventListener('mouseenter', handleMouseEnter);
+            for(var i = 0; i < mouseOverUserElements.length; i++) {
+                var element = mouseOverUserElements[i];
+                element.removeEventListener('mouseenter', handleMouseEnterUser);
+                element.removeEventListener('mouseleave', handleMouseLeave);
+            }
+
+            for(var i = 0; i < mouseOverCardElements.length; i++) {
+                var element = mouseOverCardElements[i];
+                element.removeEventListener('mouseenter', handleMouseEnterCard);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
 		};
 
 		//-------------
-		function handleMouseEnter($event) {
-            Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
+		function handleMouseEnterCard($event) {
             Tooltip.card($event.target.card, function() {
                 return $event.target.metadata
             }, null, $event.target);
         };
 
-		function handleMouseLeave($event) {
-		    Tooltip.close('lvg-tooltip-card-' + $event.target.card.id);
+        function handleMouseEnterUser($event) {
+            Tooltip.user($event.target.user, $event.target);
+        };
+
+        function handleMouseLeave($event) {
+            Tooltip.clean();
         };
 
 		function handleUser(userId) {
@@ -78,6 +88,12 @@
 				var element = angular.element(a);
 
 				element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
+				a.user = user;
+
+				a.addEventListener('mouseenter', handleMouseEnterUser);
+                a.addEventListener('mouseleave', handleMouseLeave);
+
+                mouseOverUserElements.push(a);
 
 				element.text($filter('formatUser')(user));
 				if (!user.enabled) {
@@ -101,12 +117,12 @@
 				a.metadata = metadata;
 				element.attr('href', $state.href('board.card', {projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence}));
 
-				a.addEventListener('mouseenter', handleMouseEnter);
+				a.addEventListener('mouseenter', handleMouseEnterCard);
                 a.addEventListener('mouseleave', handleMouseLeave);
 
 				updateCardClass(card, element);
 
-                mouseOverElements.push(a);
+                mouseOverCardElements.push(a);
 
 				var toDismiss = EventBus.on('refreshCardCache-' + cardId, function () {
 					CardCache.card(cardId).then(function (card) {

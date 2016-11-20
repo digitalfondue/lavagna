@@ -10,10 +10,10 @@
         		    + ' data-ng-class="::{\'lvg-user-link__disabled\': !$ctrl.user.enabled}">'
         		    + '{{::($ctrl.user | formatUser)}}'
         		  +'</a>',
-        controller: ['UserCache', UserLinkController]
+        controller: ['Tooltip', 'UserCache', '$element', UserLinkController]
     });
 
-    function UserLinkController(UserCache) {
+    function UserLinkController(Tooltip, UserCache, $element) {
         var ctrl = this;
 
         ctrl.$onInit = loadUser;
@@ -22,6 +22,26 @@
             UserCache.user(ctrl.userId()).then(function (user) {
                 ctrl.user = user;
             });
+        }
+
+        ctrl.$postLink = function postLink() {
+            $element[0].addEventListener('mouseenter', handleMouseEnter);
+            $element[0].addEventListener('mouseleave', handleMouseLeave);
+        };
+
+        ctrl.$onDestroy = function onDestroy() {
+            Tooltip.clean();
+
+            $element[0].removeEventListener('mouseenter', handleMouseEnter);
+            $element[0].removeEventListener('mouseleave', handleMouseLeave);
+        };
+
+        function handleMouseEnter($event) {
+            Tooltip.user(ctrl.user, $event.target);
+        }
+
+        function handleMouseLeave($event) {
+            Tooltip.clean();
         }
     };
 })();

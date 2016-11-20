@@ -336,7 +336,8 @@
 
 		var listeners = [];
 
-		var mouseOverElements = [];
+		var mouseOverCardElements = [];
+		var mouseOverUserElements = [];
 
 		ctrl.$postLink = function lvgCardFragmentV2DataInfoCtrlPostLink() {
 			card = ctrl.lvgCardFragmentV2.card;
@@ -375,17 +376,21 @@
 			for(var i = 0; i < listeners.length; i++) {
 				listeners[i]();
 			}
-			for(var i = 0; i < mouseOverElements.length; i++) {
-                var element = mouseOverElements[i];
-                element.removeEventListener('mouseenter', handleMouseEnter);
+			for(var i = 0; i < mouseOverCardElements.length; i++) {
+                var element = mouseOverCardElements[i];
+                element.removeEventListener('mouseenter', handleMouseEnterCard);
+                element.removeEventListener('mouseleave', handleMouseLeave);
+            }
+            for(var i = 0; i < mouseOverUserElements.length; i++) {
+                var element = mouseOverUserElements[i];
+                element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
 		}
 
 		//
 
-		function handleMouseEnter($event) {
-            Tooltip.clean('lvg-tooltip-card-' + $event.target.card.id);
+		function handleMouseEnterCard($event) {
             Tooltip.card($event.target.card, function() {
                 return $event.target.card.projectShortName ===  projectMetadata.shortName ?
                     projectMetadata :
@@ -393,8 +398,12 @@
             }, user, $event.target);
 		};
 
+		function handleMouseEnterUser($event) {
+            Tooltip.user($event.target.user, $event.target);
+        };
+
 		function handleMouseLeave($event) {
-            Tooltip.close('lvg-tooltip-card-' + $event.target.card.id);
+            Tooltip.clean();
 		};
 
         //
@@ -672,6 +681,13 @@
                 if(labelDiv) {
 				    labelDiv.style.display = 'inline-block';
                 }
+
+                a.user = user;
+
+                a.addEventListener('mouseenter', handleMouseEnterUser);
+                a.addEventListener('mouseleave', handleMouseLeave);
+
+                mouseOverUserElements.push(a);
 			});
 			return a;
 		}
@@ -691,7 +707,7 @@
 				a.className = textColorClass;
 				a.card = card;
 				element.attr('href', $state.href('board.card', {projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence}));
-				a.addEventListener('mouseenter', handleMouseEnter);
+				a.addEventListener('mouseenter', handleMouseEnterCard);
 				a.addEventListener('mouseleave', handleMouseLeave);
 
 
@@ -704,7 +720,7 @@
 				});
 				listeners.push(toDismiss);
 
-				mouseOverElements.push(a);
+				mouseOverCardElements.push(a);
 
                 if(labelDiv) {
 				    labelDiv.style.display = 'inline-block';

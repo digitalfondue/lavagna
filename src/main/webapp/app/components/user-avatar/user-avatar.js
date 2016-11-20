@@ -8,12 +8,12 @@
             colorHex: '@',
             bgColorHex: '@'
         },
-        controller: ['UserCache', '$element', UserAvatarController],
+        controller: ['Tooltip', 'UserCache', '$element', UserAvatarController],
         template: '<div class="lvg-user-avatar"><span ng-if="::$ctrl.user">{{::($ctrl.user | userInitials)}}</span></div>'
 
     });
 
-    function UserAvatarController(UserCache, $element) {
+    function UserAvatarController(Tooltip, UserCache, $element) {
         var ctrl = this;
 
         ctrl.$onInit = function init() {
@@ -38,6 +38,24 @@
                 'text-align': 'center',
                 'line-height': ctrl.size + 'px'
             });
+
+            $element[0].addEventListener('mouseenter', handleMouseEnter);
+            $element[0].addEventListener('mouseleave', handleMouseLeave);
         };
+
+        ctrl.$onDestroy = function onDestroy() {
+            Tooltip.clean();
+
+            $element[0].removeEventListener('mouseenter', handleMouseEnter);
+            $element[0].removeEventListener('mouseleave', handleMouseLeave);
+        };
+
+        function handleMouseEnter($event) {
+            Tooltip.user(ctrl.user, $event.target);
+        }
+
+        function handleMouseLeave($event) {
+            Tooltip.clean();
+        }
     };
 })();

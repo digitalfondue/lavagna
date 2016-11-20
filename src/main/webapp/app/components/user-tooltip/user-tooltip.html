@@ -1,0 +1,17 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <span class="lvg-headline">{{$ctrl.user.displayName != null ? $ctrl.user.displayName : $ctrl.user.username}}</span>
+            <span class="lvg-subhead" ng-if="$ctrl.user.displayName != null">{{$ctrl.user.username}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <table>
+            <tbody>
+            <tr><th class="lvg-user-dashboard__user-info__th" translate>user.dashboard.general.provider</th><td>{{$ctrl.user.provider}}</td></tr>
+            <tr><th class="lvg-user-dashboard__user-info__th" ng-if="$ctrl.user.email != null" translate>common.label.email</th><td>{{$ctrl.user.email}}</td></tr>
+            <tr><th  class="lvg-user-dashboard__user-info__th" translate>user.dashboard.general.memberSince</th><td>{{$ctrl.user.memberSince | date: 'MMM d, y'}}</td></tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,7 @@
+.lvg-user__tooltip {
+    width: 400px;
+    color: rgba(0,0,0,0.87) !important;
+    margin-bottom: 0 !important
+    display: flex;
+    flex: 0 0 400px;
+}
