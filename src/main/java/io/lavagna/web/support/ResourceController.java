@@ -28,16 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,6 +81,10 @@ public class ResourceController {
         return r;
     }
 
+    private static Set<String> nullable(Set<String> s) {
+        return s == null ? Collections.<String>emptySet() : s;
+    }
+
     private static Set<String> allFilesWithExtension(ServletContext context, String initialPath, String extension) {
         Set<String> res = new TreeSet<>();
         extractFilesWithExtensionRec(context, initialPath, extension, res);
@@ -98,7 +93,7 @@ public class ResourceController {
 
     private static void extractFilesWithExtensionRec(ServletContext context, String initialPath, String extension,
         Set<String> res) {
-        for (String s : context.getResourcePaths(initialPath)) {
+        for (String s : nullable(context.getResourcePaths(initialPath))) {
             if (s.endsWith("/")) {
                 extractFilesWithExtensionRec(context, s, extension, res);
             } else if (s.endsWith(extension)) {
@@ -109,7 +104,7 @@ public class ResourceController {
 
     private static void concatenateResourcesWithExtension(ServletContext context, String initialPath, String extension,
         OutputStream os, BeforeAfter ba) throws IOException {
-        for (String s : new TreeSet<>(context.getResourcePaths(initialPath))) {
+        for (String s : new TreeSet<>(nullable(context.getResourcePaths(initialPath)))) {
             if (s.endsWith(extension)) {
                 output(s, context, os, ba);
             } else if (s.endsWith("/")) {
