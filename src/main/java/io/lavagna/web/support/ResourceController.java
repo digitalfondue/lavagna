@@ -223,9 +223,11 @@ public class ResourceController {
                 "/js/angular.min.js", "/js/angular-sanitize.min.js",//
                 //
                 "/js/angular-animate.min.js", "/js/angular-aria.min.js",
-                "/js/angular-messages.min.js", "/js/angular-material.min.js")) {
+                "/js/angular-messages.min.js", "/js/angular-material.min.js",
+                "/js/angular-translate.min.js")) {
                 output(res, context, allJs, ba);
             }
+            addMessages(context, allJs, ba);
             concatenateResourcesWithExtension(context, "/app-login/", ".js", allJs, ba);
             //
 
