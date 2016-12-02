@@ -7,6 +7,7 @@ matrix:
     include:
         - jdk: oraclejdk8
           env: PROFILE="-Ddatasource.dialect=HSQLDB"
+          dist: precise
           addons:
               apt:
                   packages:
@@ -15,6 +16,7 @@ matrix:
                       - mysql-client
         - jdk: oraclejdk8
           env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.1"
+          dist: precise
           addons:
               postgresql: "9.1"
               apt:
@@ -24,6 +26,7 @@ matrix:
                       - mysql-client
         - jdk: oraclejdk8
           env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.4"
+          dist: precise
           addons:
               postgresql: "9.4"
               apt:
@@ -33,6 +36,7 @@ matrix:
                       - mysql-client
         - jdk: oraclejdk8
           env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.5"
+          dist: precise
           addons:
               apt:
                   packages:
