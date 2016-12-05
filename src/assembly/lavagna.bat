@@ -10,7 +10,7 @@ rem  - HSQLDB (for in memory test or for low volumes using his file store)
 rem    You must set:
 rem
 rem    -Ddatasource.dialect=HSQLDB
-rem 
+rem
 rem  - MySQL
 rem    You must set:
 rem
@@ -24,11 +24,11 @@ rem
 rem Database configuration:
 rem -----------------------
 rem You will need to set the following 3 variables:
-rem 
+rem
 rem -Ddatasource.url=
 rem  Check the driver documentation, most likely the connection string will have the following form:
 rem  - HSQDLB: -Ddatasource.url=jdbc:hsqldb:mem:lavagna
-rem  - MYSQL: -Ddatasource.url=jdbc:mysql://localhost:3306/lavagna
+rem  - MYSQL: -Ddatasource.url=jdbc:mysql://localhost:3306/lavagna?useUnicode=true&characterEncoding=utf-8
 rem  - PGSQL: -Ddatasource.url=jdbc:postgresql://localhost:5432/lavagna
 rem
 rem Self explanatory:

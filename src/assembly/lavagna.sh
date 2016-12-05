@@ -11,7 +11,7 @@
 #    You must set:
 #
 #    -Ddatasource.dialect=HSQLDB
-# 
+#
 #  - MySQL
 #    You must set:
 #
@@ -25,11 +25,11 @@
 # Database configuration:
 # -----------------------
 # You will need to set the following 3 variables:
-# 
+#
 # -Ddatasource.url=
 #  Check the driver documentation, most likely the connection string will have the following form:
 #  - HSQDLB: -Ddatasource.url=jdbc:hsqldb:mem:lavagna
-#  - MYSQL: -Ddatasource.url=jdbc:mysql://localhost:3306/lavagna
+#  - MYSQL: -Ddatasource.url=jdbc:mysql://localhost:3306/lavagna?useUnicode=true&characterEncoding=utf-8
 #  - PGSQL: -Ddatasource.url=jdbc:postgresql://localhost:5432/lavagna
 #
 # Self explanatory:

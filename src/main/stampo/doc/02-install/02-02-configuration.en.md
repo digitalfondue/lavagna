@@ -14,7 +14,7 @@ You can deploy in any servlet 3.0 container. You will need to set the following
 property to the JVM (see the scripts bin/lavagna.sh / bin/lavagna.bat):
 
  - datasource.dialect=HSQLDB | MYSQL | PGSQL
- - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna | jdbc:postgresql://localhost:5432/lavagna
+ - datasource.url= for example: jdbc:hsqldb:mem:lavagna | jdbc:mysql://localhost:3306/lavagna?useUnicode=true&characterEncoding=utf-8 | jdbc:postgresql://localhost:5432/lavagna
  - datasource.username=[username]
  - datasource.password=[pwd]
  - spring.profiles.active= dev | prod
