@@ -16,11 +16,7 @@
  */
 package io.lavagna.config;
 
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.MySqlFullTextSupportService;
-import io.lavagna.service.NotificationService;
-import io.lavagna.service.Scheduler;
-import io.lavagna.service.StatisticsService;
+import io.lavagna.service.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -32,12 +28,13 @@ public class SchedulingServiceConfig {
 
 	@Bean
 	public Scheduler getScheduler(TaskScheduler taskScheduler, Environment env,
-			ConfigurationRepository configurationRepository,
-			MySqlFullTextSupportService mySqlFullTextSupportService,
-			NotificationService notificationService,
-			StatisticsService statisticsService) {
+                                  ConfigurationRepository configurationRepository,
+                                  MySqlFullTextSupportService mySqlFullTextSupportService,
+                                  NotificationService notificationService,
+                                  StatisticsService statisticsService,
+                                  MailTicketService mailTicketService) {
 		return new Scheduler(taskScheduler, env, configurationRepository,
 				mySqlFullTextSupportService, notificationService,
-				statisticsService);
+				statisticsService, mailTicketService);
 	}
 }

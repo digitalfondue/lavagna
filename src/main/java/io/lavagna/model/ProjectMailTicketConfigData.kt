@@ -16,12 +16,15 @@
  */
 package io.lavagna.model
 
-class ProjectMailTicketMailConfig(val from: String,
+import io.lavagna.common.Json
+
+class ProjectMailTicketConfigData(val from: String,
                                   val inboundProtocol: String,
                                   val inboundServer: String,
                                   val inboundPort: Int,
                                   val inboundUser: String,
                                   val inboundPassword: String,
+                                  val inboundInboxFolder: String,
                                   val inboundProperties: String?,
                                   val outboundServer: String?,
                                   val outboundPort: Int?,
@@ -29,4 +32,11 @@ class ProjectMailTicketMailConfig(val from: String,
                                   val outboundRequireAuth: Boolean?,
                                   val outboundUser: String?,
                                   val outboundPassword: String?,
-                                  val outboundProperties: String?)
+                                  val outboundProperties: String?) {
+
+    override fun toString(): String {
+        return Json.GSON.toJson(this)
+    }
+}
+
+

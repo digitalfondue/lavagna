@@ -87,6 +87,11 @@
             <version>${org.springframework.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-mail</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
             <groupId>ch.digitalfondue.npjt-extra</groupId>
             <artifactId>npjt-extra</artifactId>
             <version>1.1.1</version>
@@ -200,6 +205,12 @@
             <groupId>com.samskivert</groupId>
             <artifactId>jmustache</artifactId>
             <version>1.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.1</version>
         </dependency>
 
         <dependency>
