@@ -93,6 +93,7 @@ INSERT INTO LA_BOARD_COLUMN(BOARD_COLUMN_NAME, BOARD_COLUMN_ORDER, BOARD_COLUMN_
 
 -- TEST MAIL CONFIG
 -- INSERT INTO LA_PROJECT_MAIL_TICKET_CONFIG VALUES (1, 'TEST', (SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = 'TEST'), true, NOW(), '{"from":"alias-issues@digitalfondue.ch","inboundProtocol":"pop3s","inboundServer":"pop.gmail.com","inboundPort":995,"inboundUser":"info@digitalfondue.ch","inboundPassword":"nothtepasswordyouarelookingfor"}', '{}')
+-- INSERT INTO LA_PROJECT_MAIL_TICKET_CONFIG VALUES (1, 'TEST', (SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = 'TEST'), true, NOW(), '{"from":"alias-issues@digitalfondue.ch","inboundProtocol":"imaps","inboundServer":"imap.gmail.com","inboundPort":993,"inboundUser":"info@digitalfondue.ch","inboundPassword":"nothtepasswordyouarelookingfor"}', '{}')
 -- INSERT INTO LA_PROJECT_MAIL_TICKET VALUES (1, 'TEST', true, (SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = 'TEST'), (SELECT BOARD_ID FROM LA_BOARD WHERE BOARD_NAME = 'test'), 1, 1, '{}')
 
 -- TEST CARDS
