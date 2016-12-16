@@ -60,7 +60,6 @@ public class LavagnaEnvironment {
         logUse("datasource.dialect");
         logUse("datasource.url");
         logUse("datasource.username");
-        logUse("datasource.password");
         logUse("spring.profiles.active");
 
     }
