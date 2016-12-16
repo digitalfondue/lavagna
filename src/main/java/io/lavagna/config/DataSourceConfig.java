@@ -32,14 +32,14 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.core.env.Environment;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 public class DataSourceConfig {
 
 	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("16");
 
 	@Bean
-    public LavagnaEnvironment getEnvironment(Environment environment) {
+    public LavagnaEnvironment getEnvironment(ConfigurableEnvironment environment) {
 	    return new LavagnaEnvironment(environment);
     }
 

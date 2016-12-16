@@ -18,3 +18,9 @@ property to the JVM (see the scripts bin/lavagna.sh / bin/lavagna.bat):
  - datasource.username=[username]
  - datasource.password=[pwd]
  - spring.profiles.active= dev | prod
+
+Or
+
+You can define them in an external file (like the bundled sample-conf.properties) and define the following property:
+
+ - lavagna.config.location=file:/your/file/location.properties

@@ -38,19 +38,9 @@ import org.eclipse.jetty.webapp.WebXmlConfiguration;
 import io.lavagna.common.CookieNames;
 
 public class Launcher {
-    
+
     public static void main(String[] args) throws Exception {
-        
-        
-        //
-        setSystemPropertyIfNull("datasource.dialect", "HSQLDB");
-        setSystemPropertyIfNull("datasource.url", "jdbc:hsqldb:mem:lavagna");
-        setSystemPropertyIfNull("datasource.username", "sa");
-        setSystemPropertyIfNull("datasource.password", "");
-        setSystemPropertyIfNull("spring.profiles.active", "dev");
-        //
-        
-        
+
         OptionParser parser = new OptionParser();
         ArgumentAcceptingOptionSpec<Integer> portOption = parser.accepts("port", "Create an HTTP listener on port n (default 8080)").withRequiredArg().ofType(Integer.class);
         ArgumentAcceptingOptionSpec<String> bindAddressOption = parser.accepts("bindAddress", "Accept connections only on address addr (default: accept on any address)").withRequiredArg().ofType(String.class);
@@ -61,33 +51,33 @@ public class Launcher {
         parser.accepts("headless", "legacy parameter, ignored");
         parser.accepts("forwarded", "legacy parameter, ignored");
         parser.accepts("sslProxied", "legacy parameter, ignored");
-        
+
         OptionSet options = parser.parse(args);
-        
+
         if (options.has(helpOption)) {
             parser.printHelpOn(System.out);
             return;
         }
-        
+
         int port = options.has(portOption) ? options.valueOf(portOption) : 8080;
         String bindAddress = options.has(bindAddressOption) ? options.valueOf(bindAddressOption) : "0.0.0.0";
         String contextPath = options.has(contextPathOption) ? options.valueOf(contextPathOption) : "/";
-        
+
         if (options.has(cookiePrefixOption)) {
         	String cookiePrefixValue = options.valueOf(cookiePrefixOption);
         	System.out.println("Using cookie prefix " + cookiePrefixValue);
         	System.setProperty(CookieNames.PROPERTY_NAME, cookiePrefixValue);
         }
-        
+
         InetSocketAddress address = new InetSocketAddress(bindAddress, port);
         Server server = new Server(address);
 
         WebAppContext webapp = new WebAppContext();
-        
+
         if (options.has(tmpDirOption)) {
             webapp.setTempDirectory(new File(options.valueOf(tmpDirOption)));
         }
-        
+
         webapp.setContextPath(contextPath);
         webapp.setServer(server);
         webapp.setWar(war());
@@ -98,24 +88,17 @@ public class Launcher {
                 new AnnotationConfiguration(),
                 new JettyWebXmlConfiguration()
         });
-        
+
         server.setHandler(webapp);
         System.out.println("Starting jetty server " + Server.getVersion());
         System.out.println("Server is listening at " + address.toString());
         server.start();
         server.join();
     }
-    
+
     private static String war() throws UnsupportedEncodingException {
         String file = Launcher.class.getProtectionDomain().getCodeSource().getLocation().toExternalForm();
         //has form jar:file:/path/to/war/lavagna-jetty-console.war!/WEB-INF/classes!/
         return new File(URLDecoder.decode(file.substring(file.indexOf("file:")+ "file:".length(), file.indexOf("!")), "utf-8")).getAbsolutePath();
-    }
-    
-    private static void setSystemPropertyIfNull(String name, String value) {
-        if(System.getProperty(name) == null) {
-            System.out.println("Property " + name + " is not set, using default value: " + value);
-            System.setProperty(name, value);
-        }
     }
 }

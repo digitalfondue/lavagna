@@ -16,14 +16,66 @@
  */
 package io.lavagna.common;
 
-import org.springframework.core.env.Environment;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.ResourcePropertySource;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 public class LavagnaEnvironment {
 
-    private final Environment environment;
+    private final ConfigurableEnvironment environment;
 
-    public LavagnaEnvironment(Environment environment) {
+    private static final String LAVAGNA_CONFIG_LOCATION = "lavagna.config.location";
+
+    private static final Logger LOG = LogManager.getLogger();
+
+    public LavagnaEnvironment(ConfigurableEnvironment environment) {
         this.environment = environment;
+
+        if (environment.containsProperty(LAVAGNA_CONFIG_LOCATION) && StringUtils.isNotBlank(environment.getProperty(LAVAGNA_CONFIG_LOCATION))) {
+
+            String configLocation = environment.getProperty(LAVAGNA_CONFIG_LOCATION);
+
+            LOG.info("Detected config file {}, loading it", configLocation);
+            try {
+                environment.getPropertySources().addFirst(new ResourcePropertySource(new UrlResource(configLocation)));
+            } catch (IOException ioe) {
+                throw new IllegalStateException("error while loading external configuration file at " + configLocation, ioe);
+            }
+        }
+
+        setSystemPropertyIfNull(environment, "datasource.dialect", "HSQLDB");
+        setSystemPropertyIfNull(environment, "datasource.url", "jdbc:hsqldb:mem:lavagna");
+        setSystemPropertyIfNull(environment, "datasource.username", "sa");
+        setSystemPropertyIfNull(environment, "datasource.password", "");
+        setSystemPropertyIfNull(environment, "spring.profiles.active", "dev");
+
+        logUse("datasource.dialect");
+        logUse("datasource.url");
+        logUse("datasource.username");
+        logUse("datasource.password");
+        logUse("spring.profiles.active");
+
+    }
+
+    private void logUse(String name) {
+        LOG.info("For property {}, the value is: {}", name, environment.getProperty(name));
+    }
+
+
+    private static void setSystemPropertyIfNull(ConfigurableEnvironment env, String name, String value) {
+        if(!env.containsProperty(name) || StringUtils.isBlank(env.getProperty(name))) {
+            LOG.warn("Property {} is not set, using default value: {}", name, value);
+            Map<String, Object> source = Collections.singletonMap(name, (Object) value);
+            env.getPropertySources().addFirst(new MapPropertySource(name, source));
+        }
     }
 
     public String getProperty(String key) {

@@ -57,6 +57,8 @@
 # --cookiePrefix NAME - Set a prefix to the cookie name, so you can have multiple lavagna instances on the same hostname
 #
 # example: java -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
+#
+# example: java -Dlavagna.config.location=file:/opt.. -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
 
 BASEDIR=$(dirname $0)
 

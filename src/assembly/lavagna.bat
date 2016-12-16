@@ -56,7 +56,8 @@ rem --tmpDir /path      - Temporary directory, default is /tmp
 rem --cookiePrefix NAME - Set a prefix to the cookie name, so you can have multiple lavagna instances on the same hostname
 rem
 rem example: java -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
-
+rem
+rem example: java -Dlavagna.config.location=file:/C:\... -jar lavagna-jetty-console.war --port 8081 --bindAddress 127.0.0.1
 
 java ^
 	-Ddatasource.dialect=HSQLDB ^
