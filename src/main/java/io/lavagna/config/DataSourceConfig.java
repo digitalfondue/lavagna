@@ -22,6 +22,8 @@ import io.lavagna.service.DatabaseMigrator;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
@@ -45,6 +47,9 @@ public class DataSourceConfig {
 
 	@Bean(destroyMethod = "close")
 	public DataSource getDataSource(LavagnaEnvironment env) throws URISyntaxException {
+
+	    ensureJDBCDrivers(env.getRequiredProperty("datasource.dialect"));
+
 		HikariDataSource dataSource = new HikariDataSource();
 
 		if (env.containsProperty("datasource.url") && //
@@ -60,6 +65,28 @@ public class DataSourceConfig {
 
 		return dataSource;
 	}
+
+	// tomcat 8 is picky when we include the drivers in the war
+    private static void ensureJDBCDrivers(String dialect) {
+	    try {
+            switch (dialect) {
+                case "HSQLDB":
+                    DriverManager.registerDriver(new org.hsqldb.jdbcDriver());
+                    break;
+                case "MYSQL":
+                    DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                    break;
+                case "PGSQL":
+                    DriverManager.registerDriver(new org.postgresql.Driver());
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown dialect " + dialect);
+            }
+        } catch (SQLException e) {
+	        throw new IllegalStateException(e);
+        }
+    }
+    //
 
 
 	/**
