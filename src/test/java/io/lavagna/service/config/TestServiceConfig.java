@@ -16,6 +16,7 @@
  */
 package io.lavagna.service.config;
 
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.config.DataSourceConfig;
 import io.lavagna.service.DatabaseMigrator;
 
@@ -27,29 +28,28 @@ import java.util.Map.Entry;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.mock.env.MockEnvironment;
 
 public class TestServiceConfig {
 
 	@Bean(destroyMethod = "close")
-	public DataSource getDataSource(Environment env) throws URISyntaxException {
+	public DataSource getDataSource(LavagnaEnvironment env) throws URISyntaxException {
 		return new DataSourceConfig().getDataSource(env);
 	}
 
 	@Bean
-	public DatabaseMigrator migrator(Environment env, DataSource dataSource) {
+	public DatabaseMigrator migrator(LavagnaEnvironment env, DataSource dataSource) {
 		return new DatabaseMigrator(env, dataSource, DataSourceConfig.LATEST_STABLE_VERSION);
 	}
 
 	@Bean
-	public Environment env() {
+	public LavagnaEnvironment env() {
 		MockEnvironment m = new MockEnvironment();
 		String dialect = System.getProperty("datasource.dialect", "HSQLDB");
 		for (Entry<String, String> kv : datasourceConf().get(dialect).entrySet()) {
 			m.setProperty(kv.getKey(), kv.getValue());
 		}
-		return m;
+		return new LavagnaEnvironment(m);
 	}
 
 	private static Map<String, Map<String, String>> datasourceConf() {

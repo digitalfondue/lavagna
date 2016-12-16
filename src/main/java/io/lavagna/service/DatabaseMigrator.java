@@ -16,21 +16,21 @@
  */
 package io.lavagna.service;
 
-import javax.sql.DataSource;
-
+import io.lavagna.common.LavagnaEnvironment;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationVersion;
-import org.springframework.core.env.Environment;
+
+import javax.sql.DataSource;
 
 public class DatabaseMigrator {
 
-	public DatabaseMigrator(Environment env, DataSource dataSource, MigrationVersion target) {
+	public DatabaseMigrator(LavagnaEnvironment env, DataSource dataSource, MigrationVersion target) {
 		if (canMigrate(env)) {
 			doMigration(env, dataSource, target);
 		}
 	}
 
-	private void doMigration(Environment env, DataSource dataSource, MigrationVersion version) {
+	private void doMigration(LavagnaEnvironment env, DataSource dataSource, MigrationVersion version) {
 		String sqlDialect = env.getRequiredProperty("datasource.dialect");
 		Flyway migration = new Flyway();
 		migration.setDataSource(dataSource);
@@ -44,7 +44,7 @@ public class DatabaseMigrator {
 		migration.migrate();
 	}
 
-	private boolean canMigrate(Environment env) {
+	private boolean canMigrate(LavagnaEnvironment env) {
 		return !"true".equals(env.getProperty("datasource.disable.migration"));
 	}
 }

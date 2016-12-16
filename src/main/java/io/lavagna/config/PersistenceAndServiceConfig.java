@@ -21,12 +21,12 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import io.lavagna.common.LavagnaEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -80,7 +80,7 @@ public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerC
 	}
 
 	@Bean
-	public NamedParameterJdbcTemplate simpleJdbcTemplate(Environment env, DataSource dataSource) {
+	public NamedParameterJdbcTemplate simpleJdbcTemplate(LavagnaEnvironment env, DataSource dataSource) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		// mysql does not support check constraints
 		if ("MYSQL".equals(env.getProperty("datasource.dialect"))) {
@@ -97,7 +97,7 @@ public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerC
 	}
 
 	@Bean
-	public QueryFactory queryFactory(Environment env, NamedParameterJdbcTemplate jdbc) {
+	public QueryFactory queryFactory(LavagnaEnvironment env, NamedParameterJdbcTemplate jdbc) {
 		return new QueryFactory(env.getProperty("datasource.dialect"), jdbc);
 	}
 

@@ -18,6 +18,7 @@ package io.lavagna.service;
 
 import io.lavagna.common.DatabaseMigrationDoneEvent;
 import io.lavagna.common.Json;
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.model.Key;
 import io.lavagna.model.MailConfig;
 
@@ -31,7 +32,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -44,13 +44,13 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 	private static final Logger LOG = LogManager.getLogger();
 
 	private final TaskScheduler taskScheduler;
-	private final Environment env;
+	private final LavagnaEnvironment env;
 	private final ConfigurationRepository configurationRepository;
 	private final MySqlFullTextSupportService mySqlFullTextSupportService;
 	private final NotificationService notificationService;
 	private final StatisticsService statisticsService;
 
-	public Scheduler(TaskScheduler taskScheduler, Environment env, ConfigurationRepository configurationRepository,
+	public Scheduler(TaskScheduler taskScheduler, LavagnaEnvironment env, ConfigurationRepository configurationRepository,
 			MySqlFullTextSupportService mySqlFullTextSupportService, NotificationService notificationService,
 			StatisticsService statisticsService) {
 

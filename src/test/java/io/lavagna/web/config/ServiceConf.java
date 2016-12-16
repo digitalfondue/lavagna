@@ -19,6 +19,7 @@ package io.lavagna.web.config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.lavagna.common.Json;
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
@@ -62,6 +63,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 public class ServiceConf {
+
+    @Bean
+    public LavagnaEnvironment getEnvironment() {
+        return mock(LavagnaEnvironment.class);
+    }
 
 	@Bean
 	public UserRepository getUserRepository() {
@@ -212,7 +218,7 @@ public class ServiceConf {
 	public ExcelExportService getMilestoneExportService() {
 	    return mock(ExcelExportService.class);
 	}
-	
+
 	@Bean
 	public ApiHooksService getApiHookService() {
 		return mock(ApiHooksService.class);

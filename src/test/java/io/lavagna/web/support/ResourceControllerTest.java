@@ -31,19 +31,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import io.lavagna.common.LavagnaEnvironment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.env.Environment;
+
 
 //TODO add check
 @RunWith(MockitoJUnitRunner.class)
 public class ResourceControllerTest {
 
 	@Mock
-	private Environment env;
+	private LavagnaEnvironment env;
 	@Mock
 	private HttpServletRequest request;
 	@Mock

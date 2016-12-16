@@ -17,6 +17,7 @@
 package io.lavagna.config;
 
 import io.lavagna.common.DatabaseMigrationDoneEvent;
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.service.DatabaseMigrator;
 
 import java.net.URI;
@@ -29,16 +30,21 @@ import org.flywaydb.core.api.MigrationVersion;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.core.env.Environment;
 
 public class DataSourceConfig {
 
 	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("16");
 
+	@Bean
+    public LavagnaEnvironment getEnvironment(Environment environment) {
+	    return new LavagnaEnvironment(environment);
+    }
+
 	@Bean(destroyMethod = "close")
-	public DataSource getDataSource(Environment env) throws URISyntaxException {
+	public DataSource getDataSource(LavagnaEnvironment env) throws URISyntaxException {
 		HikariDataSource dataSource = new HikariDataSource();
 
 		if (env.containsProperty("datasource.url") && //
@@ -67,7 +73,7 @@ public class DataSourceConfig {
 	 * @param env
 	 * @throws URISyntaxException
 	 */
-	private static void urlWithCredentials(HikariDataSource dataSource, Environment env)
+	private static void urlWithCredentials(HikariDataSource dataSource, LavagnaEnvironment env)
 			throws URISyntaxException {
 		URI dbUri = new URI(env.getRequiredProperty("datasource.url"));
 		dataSource.setUsername(dbUri.getUserInfo().split(":")[0]);
@@ -80,14 +86,14 @@ public class DataSourceConfig {
 		return "postgres".equals(uri.getScheme()) ? "jdbc:postgresql" : uri.getScheme();
 	}
 
-	private static void urlAndCredentials(HikariDataSource dataSource, Environment env) {
+	private static void urlAndCredentials(HikariDataSource dataSource, LavagnaEnvironment env) {
 		dataSource.setJdbcUrl(env.getRequiredProperty("datasource.url"));
 		dataSource.setUsername(env.getRequiredProperty("datasource.username"));
 		dataSource.setPassword(env.getProperty("datasource.password") != null ? env.getProperty("datasource.password") : "");
 	}
 
 	@Bean
-	public DatabaseMigrator migrator(Environment env, DataSource dataSource, ApplicationEventPublisher publisher) {
+	public DatabaseMigrator migrator(LavagnaEnvironment env, DataSource dataSource, ApplicationEventPublisher publisher) {
 
 		boolean isDev = ArrayUtils.contains(env.getActiveProfiles(),"dev");
 

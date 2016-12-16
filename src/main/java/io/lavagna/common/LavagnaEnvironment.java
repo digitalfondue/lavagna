@@ -16,25 +16,29 @@
  */
 package io.lavagna.common;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import org.springframework.core.env.Environment;
 
-import org.springframework.core.io.ClassPathResource;
+public class LavagnaEnvironment {
 
-public class Version {
+    private final Environment environment;
 
+    public LavagnaEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 
-    private static final long START_DATE = System.nanoTime();
+    public String getProperty(String key) {
+        return environment.getProperty(key);
+    }
 
-    public static String version() {
-        Properties buildProp = new Properties();
-        try (InputStream is = new ClassPathResource("io/lavagna/build.properties").getInputStream()) {
-            buildProp.load(is);
-            String build = buildProp.getProperty("build.version");
-            return build.endsWith("SNAPSHOT") ? (build + "-" + START_DATE): build;
-        } catch (IOException e) {
-            return "dev";
-        }
+    public boolean containsProperty(String key) {
+        return environment.containsProperty(key);
+    }
+
+    public String getRequiredProperty(String key) {
+        return environment.getRequiredProperty(key);
+    }
+
+    public String[] getActiveProfiles() {
+        return environment.getActiveProfiles();
     }
 }

@@ -17,6 +17,8 @@
 package io.lavagna.service;
 
 import static java.util.Collections.singletonList;
+
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumn;
@@ -53,7 +55,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SearchServiceTest {
 
 	@Autowired
-	private Environment env;
+	private LavagnaEnvironment env;
 	@Autowired
 	private SearchService searchService;
 	@Autowired

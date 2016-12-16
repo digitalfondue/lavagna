@@ -18,6 +18,7 @@ package io.lavagna.web.support;
 
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import io.lavagna.common.Json;
+import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.common.Version;
 import io.lavagna.model.Permission;
 import io.lavagna.web.helper.ExpectPermission;
@@ -41,7 +42,6 @@ import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -56,7 +56,7 @@ public class ResourceController {
     private static final String PROJ_SHORT_NAME = "{projectShortName:[A-Z0-9_]+}";
     private static final String BOARD_SHORT_NAME = "{shortName:[A-Z0-9_]+}";
     private static final String CARD_SEQ = "{cardId:[0-9]+}";
-    private final Environment env;
+    private final LavagnaEnvironment env;
     // we don't care if the values are set more than one time
     private final AtomicReference<Template> indexTopTemplate = new AtomicReference<>();
     private final AtomicReference<byte[]> indexCache = new AtomicReference<>();
@@ -65,7 +65,7 @@ public class ResourceController {
     private final AtomicReference<byte[]> cssCache = new AtomicReference<>();
     private final String version;
 
-    public ResourceController(Environment env) {
+    public ResourceController(LavagnaEnvironment env) {
         this.env = env;
         this.version = Version.version();
     }
