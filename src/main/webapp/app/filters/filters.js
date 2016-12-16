@@ -75,7 +75,7 @@
 			if (user === undefined) {
 				return null;
 			}
-			if (user.displayName != null) {
+			if (user.displayName != null && user.displayName.trim().length > 0) {
 				return user.displayName;
 			}
 			return user.username;

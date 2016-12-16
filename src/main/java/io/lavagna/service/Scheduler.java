@@ -49,23 +49,32 @@ public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent
 	private final MySqlFullTextSupportService mySqlFullTextSupportService;
 	private final NotificationService notificationService;
 	private final StatisticsService statisticsService;
+	private final MailTicketService mailTicketService;
 
-	public Scheduler(TaskScheduler taskScheduler, LavagnaEnvironment env, ConfigurationRepository configurationRepository,
-			MySqlFullTextSupportService mySqlFullTextSupportService, NotificationService notificationService,
-			StatisticsService statisticsService) {
 
+	public Scheduler(TaskScheduler taskScheduler,
+                     LavagnaEnvironment env,
+                     ConfigurationRepository configurationRepository,
+                     MySqlFullTextSupportService mySqlFullTextSupportService,
+                     NotificationService notificationService,
+                     StatisticsService statisticsService,
+                     MailTicketService mailTicketService) {
 		this.taskScheduler = taskScheduler;
 		this.env = env;
 		this.configurationRepository = configurationRepository;
 		this.mySqlFullTextSupportService = mySqlFullTextSupportService;
 		this.notificationService = notificationService;
 		this.statisticsService = statisticsService;
+		this.mailTicketService = mailTicketService;
 	}
 
 	@Scheduled(cron = "30 59 23,5,11,17 * * *")
 	public void snapshotCardsStatus() {
 		statisticsService.snapshotCardsStatus();
 	}
+
+	@Scheduled(cron = "0 */5 * * * *")
+    public void checkMailTickets() { mailTicketService.checkNew(); }
 
 	private static class EmailNotificationHandler implements Runnable {
 
