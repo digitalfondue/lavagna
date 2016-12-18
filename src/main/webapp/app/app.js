@@ -341,6 +341,9 @@
 		}).state('admin.smtp', {
 			url : 'smtp/',
 			template : '<lvg-admin-smtp></lvg-admin-smtp>'
+		}).state('admin.integrations', {
+		    url: 'integrations/',
+		    template : '<lvg-admin-integrations></lvg-admin-integrations>'
 		})
 
 		//---- MANAGE PROJECT ----
