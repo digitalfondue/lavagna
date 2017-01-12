@@ -3,7 +3,7 @@
 Each board has some special columns where cards that are not relevant anymore to the current project can be moved to declutter the view.
 
 * **ARCHIVE** old and unused cards can be moved here
-* **BACKLOG** cards that won't be relevant for a while can me stored here
+* **BACKLOG** cards that won't be relevant for a while can be stored here
 * **TRASH** cards that aren't useful at all can be "deleted" by moving them here
 
 When a card is moved to one of the special columns, it won't count anymore towards the project and board statistics, but it'll still count towards the milestone status.
