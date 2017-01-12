@@ -25,7 +25,7 @@
             <md-button type="submit" class="md-primary" ng-disabled="$ctrl.importing || $ctrl.importFile == null">
                 <span translate>admin.export-import.importButton</span>
             </md-button>
-            <md-button class="md-primary" type="button" ng-submit="$ctrl.doExport()" ng-disabled="$ctrl.importing">
+            <md-button class="md-primary" type="button" ng-click="$ctrl.doExport()" ng-disabled="$ctrl.importing">
                 <span translate>admin.export-import.exportButton</span>
             </md-button>
         </md-card-actions>
