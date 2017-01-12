@@ -126,7 +126,7 @@ public class ResourceController {
     @ExpectPermission(Permission.ADMINISTRATION)
     @RequestMapping(value = { "admin", "admin/login", "admin/users", "admin/roles",
         "admin/export-import", "admin/endpoint-info", "admin/parameters",
-        "admin/smtp" }, method = RequestMethod.GET)
+        "admin/smtp", "admin/integrations" }, method = RequestMethod.GET)
     public void handleIndexForAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         handleIndex(request, response);
     }

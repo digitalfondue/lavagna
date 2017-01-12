@@ -36,7 +36,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 public class DataSourceConfig {
 
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("16");
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("19");
 
 	@Bean
     public LavagnaEnvironment getEnvironment(ConfigurableEnvironment environment) {
