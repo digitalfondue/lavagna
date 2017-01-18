@@ -4,7 +4,6 @@ class {'postgresql::globals':
 	locale   => 'en_US.utf8'
 }->
 class {'postgresql::server':
-	ensure => 'present',
 	listen_addresses => '*',
 	ipv4acls => ['host all all 0.0.0.0/0 md5'],
 	ip_mask_deny_postgres_user => '0.0.0.0/32',
