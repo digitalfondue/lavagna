@@ -93,6 +93,11 @@ public class MailTicketService {
     }
 
     @Transactional(readOnly = false)
+    public int deleteConfig(final int id, final int projectId) {
+        return mailTicketRepository.deleteConfig(id, projectId);
+    }
+
+    @Transactional(readOnly = false)
     public ProjectMailTicket addTicket(final String name, final int columnId, final int configId, final String metadata) {
         mailTicketRepository.addTicket(name, columnId, configId, metadata);
 
@@ -102,6 +107,11 @@ public class MailTicketService {
     @Transactional(readOnly = false)
     public int updateTicket(final int id, final String name, final boolean enabled, final int columnId, final int configId, final String metadata) {
         return mailTicketRepository.updateTicket(id, name, enabled, columnId, configId, metadata);
+    }
+
+    @Transactional(readOnly = false)
+    public int deleteTicket(final int id) {
+        return mailTicketRepository.deleteTicket(id);
     }
 
     public void checkNew() {

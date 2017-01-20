@@ -55,8 +55,8 @@ public interface MailTicketQuery {
     @Query("UPDATE LA_PROJECT_MAIL_TICKET_CONFIG SET MAIL_CONFIG_NAME = :name, MAIL_CONFIG_ENABLED = :enabled, MAIL_CONFIG_CONFIG = :config, MAIL_CONFIG_PROPERTIES = :properties WHERE MAIL_CONFIG_ID = :id AND MAIL_CONFIG_PROJECT_ID_FK = :projectId")
     int updateConfig(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("config") String config, @Bind("properties") String properties, @Bind("projectId") int projectId);
 
-    @Query("DELETE FROM LA_PROJECT_MAIL_TICKET_CONFIG WHERE MAIL_CONFIG_ID = :id")
-    int deleteConfig(@Bind("id") int id);
+    @Query("DELETE FROM LA_PROJECT_MAIL_TICKET_CONFIG WHERE MAIL_CONFIG_ID = :id AND MAIL_CONFIG_PROJECT_ID_FK = :projectId")
+    int deleteConfig(@Bind("id") int id, @Bind("projectId") int projectId);
 
     @Query("UPDATE LA_PROJECT_MAIL_TICKET_CONFIG SET MAIL_CONFIG_LAST_CHECKED = :date WHERE MAIL_CONFIG_ID = :id")
     int updateConfigLastChecked(@Bind("id") int id, @Bind("date") Date date);

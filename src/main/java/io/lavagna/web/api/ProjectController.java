@@ -185,6 +185,15 @@ public class ProjectController {
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/mailConfig/{id}", method = RequestMethod.DELETE)
+    public int deleteMailConfig(@PathVariable("projectShortName") String projectShortName,
+                                @PathVariable("id") int configId) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+
+        return mailTicketService.deleteConfig(configId, projectId);
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}/ticketConfig", method = RequestMethod.POST)
     public ProjectMailTicket addMailTicketConfig(@PathVariable("projectShortName") String projectShortName,
                                                  @RequestBody ProjectMailTicket ticket) {
@@ -224,6 +233,19 @@ public class ProjectController {
             updatedTicket.getColumnId(),
             updatedTicket.getConfigId(),
             updatedTicket.getMetadata());
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/mailTicket/{id}", method = RequestMethod.DELETE)
+    public int deleteMailTicket(@PathVariable("projectShortName") String projectShortName,
+                                @PathVariable("id") int ticketId) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+        ProjectMailTicket ticket = mailTicketService.findTicket(ticketId);
+        ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
+
+        assert config.getProjectId() == projectId;
+
+        return mailTicketService.deleteTicket(ticketId);
     }
 
     @ExpectPermission(Permission.READ)
