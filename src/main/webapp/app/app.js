@@ -233,7 +233,7 @@
             }
 		}).state('calendar', {
             url :'/calendar/',
-            template: '<lvg-navbar-basic title="title.calendar"></lvg-navbar-basic><lvg-calendar username="rslvr.username" provider="rslvr.provider"></lvg-calendar>',
+            template: '<lvg-navbar-basic title-text="title.calendar"></lvg-navbar-basic><lvg-calendar username="rslvr.username" provider="rslvr.provider"></lvg-calendar>',
             controller: function(user) {
                 this.username = user.username;
                 this.provider = user.provider;
