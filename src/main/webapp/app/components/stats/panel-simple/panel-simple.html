@@ -21,22 +21,22 @@
                 {{$ctrl.statistics.openTaskCount}}
             </span>
 
-                    <span class="lvg-stats-panel__icon">
+            <span class="lvg-stats-panel__icon">
                 <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.closedTaskColor|color"></md-icon>
                 <span data-translate>common.column.definition.CLOSED</span>
                 {{$ctrl.statistics.closedTaskCount}}
             </span>
 
-                    <span class="lvg-stats-panel__icon">
+            <span class="lvg-stats-panel__icon">
                 <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.backlogTaskColor|color"></md-icon>
-                <span data-translate>common.column.definition.DEFERRED</span>
-                {{$ctrl.statistics.deferredTaskCount}}
-            </span>
-
-                    <span class="lvg-stats-panel__icon">
-                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
                 <span data-translate>common.column.definition.BACKLOG</span>
                 {{$ctrl.statistics.backlogTaskCount}}
+            </span>
+
+            <span class="lvg-stats-panel__icon">
+                <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
+                <span data-translate>common.column.definition.DEFERRED</span>
+                {{$ctrl.statistics.deferredTaskCount}}
             </span>
         </div>
     </md-card-content>
