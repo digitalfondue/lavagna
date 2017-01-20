@@ -24,33 +24,7 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.ApiHooksService;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.BulkOperationService;
-import io.lavagna.service.CalendarService;
-import io.lavagna.service.CardDataRepository;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.EventService;
-import io.lavagna.service.ExcelExportService;
-import io.lavagna.service.ExportImportService;
-import io.lavagna.service.ImportService;
-import io.lavagna.service.LabelService;
-import io.lavagna.service.Ldap;
-import io.lavagna.service.LdapConnection;
-import io.lavagna.service.PermissionService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.SetupService;
-import io.lavagna.service.StatisticsService;
-import io.lavagna.service.UserRepository;
-import io.lavagna.service.UserService;
+import io.lavagna.service.*;
 import io.lavagna.web.security.login.OAuthLogin;
 
 import java.util.Collections;
@@ -223,4 +197,13 @@ public class ServiceConf {
 	public ApiHooksService getApiHookService() {
 		return mock(ApiHooksService.class);
 	}
+
+	@Bean MailTicketRepository getMailTicketRepository() {
+        return mock(MailTicketRepository.class);
+    }
+
+	@Bean
+    public MailTicketService getMailTicketService() {
+        return mock(MailTicketService.class);
+    }
 }

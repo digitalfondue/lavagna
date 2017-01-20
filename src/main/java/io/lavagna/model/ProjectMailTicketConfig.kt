@@ -18,6 +18,7 @@
 package io.lavagna.model
 
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
+import com.google.gson.reflect.TypeToken
 import io.lavagna.common.Json
 import java.util.*
 
@@ -30,12 +31,16 @@ class ProjectMailTicketConfig(@Column("MAIL_CONFIG_ID") val id: Int,
                               @Column("MAIL_CONFIG_PROPERTIES") @Transient val propertiesJson: String?) {
 
     val config: ProjectMailTicketConfigData
-    val properties: Properties
+    val properties: Map<String, String>
     val entries: List<ProjectMailTicket>
 
     init {
         config = Json.GSON.fromJson(configJson, ProjectMailTicketConfigData::class.java)
-        properties = Properties()
+        properties = Json.GSON.fromJson(propertiesJson, object : TypeToken<Map<String, String>>() {}.type)
         entries = ArrayList<ProjectMailTicket>()
+    }
+
+    fun propertiesToJson(): String {
+        return Json.GSON.toJson(properties)
     }
 }

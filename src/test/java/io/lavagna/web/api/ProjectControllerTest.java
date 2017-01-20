@@ -29,13 +29,7 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.Project;
 import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ExcelExportService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.CreateRequest;
 import io.lavagna.web.api.model.UpdateRequest;
 
@@ -74,6 +68,8 @@ public class ProjectControllerTest {
 	BoardColumnRepository boardColumnRepository;
 	@Mock
 	private ExcelExportService excelExportService;
+    @Mock
+    private MailTicketService mailTicketService;
 
 	private ProjectController projectController;
 
@@ -84,7 +80,7 @@ public class ProjectControllerTest {
 	@Before
 	public void prepare() {
 		projectController = new ProjectController(projectService, boardRepository, eventEmitter, statisticsService,
-				searchService, boardColumnRepository, excelExportService);
+				searchService, boardColumnRepository, excelExportService, mailTicketService);
 
 		project = new Project(0, "test", projectShortName, "Test Project", false);
 	}

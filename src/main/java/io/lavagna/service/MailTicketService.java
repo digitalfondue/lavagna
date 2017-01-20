@@ -36,6 +36,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 @Service
@@ -65,6 +66,42 @@ public class MailTicketService {
         this.userRepository = userRepository;
         this.eventEmitter = eventEmitter;
         this.boardRepository = boardRepository;
+    }
+
+    public List<ProjectMailTicketConfig> findAllByProject(final int projectId) {
+        return mailTicketRepository.findAllByProject(projectId);
+    }
+
+    public ProjectMailTicketConfig findConfig(final int id) {
+        return mailTicketRepository.findConfig(id);
+    }
+
+    public ProjectMailTicket findTicket(final int id) {
+        return mailTicketRepository.findTicket(id);
+    }
+
+    @Transactional(readOnly = false)
+    public ProjectMailTicketConfig addConfig(final String name, final int projectId, final ProjectMailTicketConfigData config, final String properties) {
+        mailTicketRepository.addConfig(name, projectId, config, properties);
+
+        return mailTicketRepository.findLastCreatedConfig();
+    }
+
+    @Transactional(readOnly = false)
+    public int updateConfig(final int id, final String name, final boolean enabled, final ProjectMailTicketConfigData config, final String properties, final int projectId) {
+        return mailTicketRepository.updateConfig(id, name, enabled, config, properties, projectId);
+    }
+
+    @Transactional(readOnly = false)
+    public ProjectMailTicket addTicket(final String name, final int columnId, final int configId, final String metadata) {
+        mailTicketRepository.addTicket(name, columnId, configId, metadata);
+
+        return  mailTicketRepository.findLastCreatedTicket();
+    }
+
+    @Transactional(readOnly = false)
+    public int updateTicket(final int id, final String name, final boolean enabled, final int columnId, final int configId, final String metadata) {
+        return mailTicketRepository.updateTicket(id, name, enabled, columnId, configId, metadata);
     }
 
     public void checkNew() {
@@ -143,7 +180,7 @@ public class MailTicketService {
         return result;
     }
 
-    private MailReceiver getPop3MailReceiver(ProjectMailTicketConfigData config, Properties properties) {
+    private MailReceiver getPop3MailReceiver(ProjectMailTicketConfigData config, Map<String, String> properties) {
         String sanitizedUsername = sanitizeUsername(config.getInboundUser());
         String inboxFolder = getInboxFolder(config);
 
@@ -168,7 +205,7 @@ public class MailTicketService {
         return receiver;
     }
 
-    private MailReceiver getImapMailReceiver(ProjectMailTicketConfigData config, Properties properties) {
+    private MailReceiver getImapMailReceiver(ProjectMailTicketConfigData config, Map<String, String> properties) {
         String sanitizedUsername = sanitizeUsername(config.getInboundUser());
         String inboxFolder = getInboxFolder(config);
 

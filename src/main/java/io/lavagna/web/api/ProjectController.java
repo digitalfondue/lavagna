@@ -16,23 +16,9 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.BoardInfo;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.ProjectMetadata;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.model.util.ShortNameGenerator;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ExcelExportService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.CreateRequest;
 import io.lavagna.web.api.model.Suggestion;
 import io.lavagna.web.api.model.TaskStatistics;
@@ -68,11 +54,12 @@ public class ProjectController {
     private final SearchService searchService;
     private final BoardColumnRepository boardColumnRepository;
     private final ExcelExportService excelExportService;
+    private final MailTicketService mailTicketService;
 
     @Autowired
     public ProjectController(ProjectService projectService, BoardRepository boardRepository, EventEmitter eventEmitter,
         StatisticsService statisticsService, SearchService searchService, BoardColumnRepository boardColumnRepository,
-        ExcelExportService excelExportService) {
+        ExcelExportService excelExportService, MailTicketService mailTicketService) {
         this.projectService = projectService;
         this.boardRepository = boardRepository;
         this.eventEmitter = eventEmitter;
@@ -80,6 +67,7 @@ public class ProjectController {
         this.searchService = searchService;
         this.boardColumnRepository = boardColumnRepository;
         this.excelExportService = excelExportService;
+        this.mailTicketService = mailTicketService;
     }
 
     @RequestMapping(value = "/api/project", method = RequestMethod.GET)
@@ -162,6 +150,80 @@ public class ProjectController {
             updatedProject.getDescription(), updatedProject.isArchived());
         eventEmitter.emitUpdateProject(shortName, user);
         return project;
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/mailConfigs", method = RequestMethod.GET)
+    public List<ProjectMailTicketConfig> getProjectMailConfigs(@PathVariable("projectShortName") String projectShortName) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+
+        return mailTicketService.findAllByProject(projectId);
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/mailConfig", method = RequestMethod.POST)
+    public ProjectMailTicketConfig addMailConfig(@PathVariable("projectShortName") String projectShortName,
+                                                       @RequestBody ProjectMailTicketConfig config) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+
+        return mailTicketService.addConfig(config.getName(), projectId, config.getConfig(), config.propertiesToJson());
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/mailConfig/{id}", method = RequestMethod.POST)
+    public int updateMailConfig(@PathVariable("projectShortName") String projectShortName,
+                                                       @PathVariable("id") int configId,
+                                                       @RequestBody ProjectMailTicketConfig updatedConfig) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+
+        return mailTicketService.updateConfig(configId,
+            updatedConfig.getName(),
+            updatedConfig.getEnabled(),
+            updatedConfig.getConfig(),
+            updatedConfig.propertiesToJson(),
+            projectId);
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/ticketConfig", method = RequestMethod.POST)
+    public ProjectMailTicket addMailTicketConfig(@PathVariable("projectShortName") String projectShortName,
+                                                 @RequestBody ProjectMailTicket ticket) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+        ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
+
+        assert config.getProjectId() == projectId;
+
+        BoardColumn column = boardColumnRepository.findById(ticket.getColumnId());
+        Board board = boardRepository.findBoardById(column.getBoardId());
+
+        assert board.getProjectId() == projectId;
+
+        return mailTicketService.addTicket(ticket.getName(), ticket.getColumnId(), ticket.getConfigId(), ticket.getMetadata());
+    }
+
+    @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
+    @RequestMapping(value = "/api/project/{projectShortName}/ticketConfig/{id}", method = RequestMethod.POST)
+    public int updateMailTicketConfig(@PathVariable("projectShortName") String projectShortName,
+                                                       @PathVariable("configId") int configId,
+                                                       @PathVariable("id") int id,
+                                                       @RequestBody ProjectMailTicket updatedTicket) {
+        int projectId = projectService.findIdByShortName(projectShortName);
+        ProjectMailTicket ticket = mailTicketService.findTicket(id);
+        ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
+
+        assert config.getProjectId() == projectId;
+
+        BoardColumn column = boardColumnRepository.findById(updatedTicket.getColumnId());
+        Board board = boardRepository.findBoardById(column.getBoardId());
+
+        assert board.getProjectId() == projectId;
+
+        return mailTicketService.updateTicket(id,
+            updatedTicket.getName(),
+            updatedTicket.getEnabled(),
+            updatedTicket.getColumnId(),
+            updatedTicket.getConfigId(),
+            updatedTicket.getMetadata());
     }
 
     @ExpectPermission(Permission.READ)

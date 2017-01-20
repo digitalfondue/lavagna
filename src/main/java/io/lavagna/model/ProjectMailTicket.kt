@@ -21,8 +21,6 @@ import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 class ProjectMailTicket(@Column("MAIL_TICKET_ID") val id: Int,
                         @Column("MAIL_TICKET_NAME") val name: String,
                         @Column("MAIL_TICKET_ENABLED") val enabled: Boolean,
-                        @Column("MAIL_TICKET_PROJECT_ID_FK") val projectId: Int,
-                        @Column("MAIL_TICKET_BOARD_ID_FK") val boardId: Int,
                         @Column("MAIL_TICKET_COLUMN_ID_FK") val columnId: Int,
                         @Column("MAIL_TICKET_CONFIG_ID_FK") @Transient val configId: Int,
                         @Column("MAIL_TICKET_METADATA") @Transient val metadataRaw: String?) {
