@@ -35,6 +35,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -200,12 +201,12 @@ public class ProjectController {
         int projectId = projectService.findIdByShortName(projectShortName);
         ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
 
-        assert config.getProjectId() == projectId;
+        Validate.isTrue(config.getProjectId() == projectId);
 
         BoardColumn column = boardColumnRepository.findById(ticket.getColumnId());
         Board board = boardRepository.findBoardById(column.getBoardId());
 
-        assert board.getProjectId() == projectId;
+        Validate.isTrue(board.getProjectId() == projectId);
 
         return mailTicketService.addTicket(ticket.getName(), ticket.getColumnId(), ticket.getConfigId(), ticket.getMetadata());
     }
@@ -220,12 +221,12 @@ public class ProjectController {
         ProjectMailTicket ticket = mailTicketService.findTicket(id);
         ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
 
-        assert config.getProjectId() == projectId;
+        Validate.isTrue(config.getProjectId() == projectId);
 
         BoardColumn column = boardColumnRepository.findById(updatedTicket.getColumnId());
         Board board = boardRepository.findBoardById(column.getBoardId());
 
-        assert board.getProjectId() == projectId;
+        Validate.isTrue(board.getProjectId() == projectId);
 
         return mailTicketService.updateTicket(id,
             updatedTicket.getName(),
@@ -243,7 +244,7 @@ public class ProjectController {
         ProjectMailTicket ticket = mailTicketService.findTicket(ticketId);
         ProjectMailTicketConfig config = mailTicketService.findConfig(ticket.getConfigId());
 
-        assert config.getProjectId() == projectId;
+        Validate.isTrue(config.getProjectId() == projectId);
 
         return mailTicketService.deleteTicket(ticketId);
     }
