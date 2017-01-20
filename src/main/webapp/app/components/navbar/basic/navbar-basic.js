@@ -3,7 +3,7 @@
 
     components.component('lvgNavbarBasic', {
         bindings: {
-            title: '@'
+            titleText: '@'
         },
         templateUrl: 'app/components/navbar/basic/navbar-basic.html',
         controller: function(User, $mdSidenav, $state, $window) {
