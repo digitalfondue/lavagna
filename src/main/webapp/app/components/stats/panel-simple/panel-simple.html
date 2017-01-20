@@ -30,13 +30,13 @@
                     <span class="lvg-stats-panel__icon">
                 <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.backlogTaskColor|color"></md-icon>
                 <span data-translate>common.column.definition.DEFERRED</span>
-                {{$ctrl.statistics.backlogTaskCount}}
+                {{$ctrl.statistics.deferredTaskCount}}
             </span>
 
                     <span class="lvg-stats-panel__icon">
                 <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statistics.deferredTaskColor|color"></md-icon>
                 <span data-translate>common.column.definition.BACKLOG</span>
-                {{$ctrl.statistics.deferredTaskCount}}
+                {{$ctrl.statistics.backlogTaskCount}}
             </span>
         </div>
     </md-card-content>

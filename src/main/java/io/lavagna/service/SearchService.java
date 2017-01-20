@@ -73,7 +73,7 @@ public class SearchService {
 	private final BoardRepository boardRepository;
 	private final SearchQuery queries;
 
-	
+
 	public SearchService(CardRepository cardRepository, CardService cardService, UserRepository userRepository,
 			ProjectService projectService, BoardRepository boardRepository, NamedParameterJdbcTemplate jdbc,
 			SearchQuery queries) {
@@ -114,7 +114,12 @@ public class SearchService {
 		SearchFilter statusBacklog = filterByColumnDefinition(ColumnDefinition.BACKLOG);
 		SearchResults backlogTasks = find(filtersAsList(locationFilter, statusBacklog, excludeArchivedBoards),
 				projectId, boardId, user, 0);
-		results.put(ColumnDefinition.BACKLOG, backlogTasks.getCount());
+
+		SearchFilter backlogFilterLocation = filter(SearchFilter.FilterType.LOCATION, SearchFilter.ValueType.STRING,
+            BoardColumn.BoardColumnLocation.BACKLOG.toString());
+		SearchResults backlogSideBarTasks = find(filtersAsList(backlogFilterLocation, statusBacklog, excludeArchivedBoards), projectId, boardId, user, 0);
+
+		results.put(ColumnDefinition.BACKLOG, backlogTasks.getCount() + backlogSideBarTasks.getCount());
 
 		SearchFilter statusDeferred = filterByColumnDefinition(ColumnDefinition.DEFERRED);
 		SearchResults deferredTasks = find(filtersAsList(locationFilter, statusDeferred, excludeArchivedBoards),
@@ -123,12 +128,12 @@ public class SearchService {
 
 		return results;
 	}
-	
+
 	public SearchResults find(List<SearchFilter> unmergedSearchFilter, Integer projectId, Integer boardId,
 			UserWithPermission currentUser) {
 		return find(unmergedSearchFilter, projectId, boardId, currentUser, false, 0);
 	}
-	
+
 	public SearchResults find(List<SearchFilter> unmergedSearchFilter, Integer projectId, Integer boardId,
 			UserWithPermission currentUser, int page) {
 		return find(unmergedSearchFilter, projectId, boardId, currentUser, true, page);
@@ -215,7 +220,7 @@ public class SearchService {
 
 			params.addAll(projectsWithPermission);
 		}
-		
+
 		String findCardsQuery = queries.findFirstSelect() + baseQuery.toString() + queries.findSeventhOrderBy();
 
 		if(paginate) {
@@ -224,7 +229,7 @@ public class SearchService {
 			findCardsQuery += queries.findEighthLimit();
 		}
 
-		
+
 
 		List<Integer> sr = jdbc.getJdbcOperations().queryForList(findCardsQuery, params.toArray(), Integer.class);
 
