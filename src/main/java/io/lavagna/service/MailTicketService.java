@@ -98,15 +98,15 @@ public class MailTicketService {
     }
 
     @Transactional(readOnly = false)
-    public ProjectMailTicket addTicket(final String name, final int columnId, final int configId, final String metadata) {
-        mailTicketRepository.addTicket(name, columnId, configId, metadata);
+    public ProjectMailTicket addTicket(final String name, final String alias, final boolean useAlias, final int columnId, final int configId, final String metadata) {
+        mailTicketRepository.addTicket(name, alias, useAlias, columnId, configId, metadata);
 
         return  mailTicketRepository.findLastCreatedTicket();
     }
 
     @Transactional(readOnly = false)
-    public int updateTicket(final int id, final String name, final boolean enabled, final int columnId, final int configId, final String metadata) {
-        return mailTicketRepository.updateTicket(id, name, enabled, columnId, configId, metadata);
+    public int updateTicket(final int id, final String name, final boolean enabled, final String alias, final boolean useAlias, final int columnId, final int configId, final String metadata) {
+        return mailTicketRepository.updateTicket(id, name, enabled, alias, useAlias, columnId, configId, metadata);
     }
 
     @Transactional(readOnly = false)
@@ -131,7 +131,7 @@ public class MailTicketService {
                     String deliveredTo = getDeliveredTo(message);
 
                     for(ProjectMailTicket ticketConfig: entry.getEntries()) {
-                        if(entry.getConfig().getFrom().equals(deliveredTo)) {
+                        if(ticketConfig.getAlias().equals(deliveredTo)) {
                             String from = getFrom(message);
                             try {
                                 createCard(message.getSubject(), getTextFromMessage(message), ticketConfig.getColumnId(), from);

@@ -208,7 +208,12 @@ public class ProjectController {
 
         Validate.isTrue(board.getProjectId() == projectId);
 
-        return mailTicketService.addTicket(ticket.getName(), ticket.getColumnId(), ticket.getConfigId(), ticket.getMetadata());
+        return mailTicketService.addTicket(ticket.getName(),
+            ticket.getAlias(),
+            ticket.getSendByAlias(),
+            ticket.getColumnId(),
+            ticket.getConfigId(),
+            ticket.getMetadata());
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
@@ -231,6 +236,8 @@ public class ProjectController {
         return mailTicketService.updateTicket(id,
             updatedTicket.getName(),
             updatedTicket.getEnabled(),
+            updatedTicket.getAlias(),
+            updatedTicket.getSendByAlias(),
             updatedTicket.getColumnId(),
             updatedTicket.getConfigId(),
             updatedTicket.getMetadata());

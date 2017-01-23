@@ -18,8 +18,7 @@ package io.lavagna.model
 
 import io.lavagna.common.Json
 
-class ProjectMailTicketConfigData(val from: String,
-                                  val inboundProtocol: String,
+class ProjectMailTicketConfigData(val inboundProtocol: String,
                                   val inboundServer: String,
                                   val inboundPort: Int,
                                   val inboundUser: String,
