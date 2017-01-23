@@ -169,7 +169,7 @@
                     right: itemsRight
                 }
             },
-            getConfigs: function(shortName) {
+            getMailConfigs: function(shortName) {
                 return $http.get('/api/project/' + shortName + '/mailConfigs').then(extractData);
             },
             createMailConfig: function(shortName, name, config, properties) {

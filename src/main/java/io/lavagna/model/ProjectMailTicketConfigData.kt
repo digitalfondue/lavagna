@@ -23,15 +23,13 @@ class ProjectMailTicketConfigData(val inboundProtocol: String,
                                   val inboundPort: Int,
                                   val inboundUser: String,
                                   val inboundPassword: String,
-                                  val inboundInboxFolder: String,
-                                  val inboundProperties: String?,
-                                  val outboundServer: String?,
-                                  val outboundPort: Int?,
-                                  val outboundProtocol: String?,
-                                  val outboundRequireAuth: Boolean?,
-                                  val outboundUser: String?,
-                                  val outboundPassword: String?,
-                                  val outboundProperties: String?) {
+                                  val inboundInboxFolder: String?,
+                                  val outboundServer: String,
+                                  val outboundPort: Int,
+                                  val outboundProtocol: String,
+                                  val outboundRequireAuth: Boolean,
+                                  val outboundUser: String,
+                                  val outboundPassword: String) {
 
     override fun toString(): String {
         return Json.GSON.toJson(this)

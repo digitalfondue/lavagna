@@ -139,6 +139,7 @@ public class ResourceController {
         PROJ_SHORT_NAME + "/manage/labels",//
         PROJ_SHORT_NAME + "/manage/import",//
         PROJ_SHORT_NAME + "/manage/milestones",//
+        PROJ_SHORT_NAME + "/manage/mail-ticket",//
         PROJ_SHORT_NAME + "/manage/access",//
         PROJ_SHORT_NAME + "/manage/status" }, method = RequestMethod.GET)
     public void handleIndexForProjectAdmin(HttpServletRequest request, HttpServletResponse response)

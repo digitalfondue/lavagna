@@ -371,7 +371,10 @@
 		}).state('projectManage.milestones', {
 			url : 'milestones/',
 			template: '<lvg-project-manage-milestones project="rslvr.project"></lvg-project-manage-milestones>'
-		}).state('projectManage.access', {
+		}).state('projectManage.mailTicket', {
+            url : 'mail-ticket/',
+            template: '<lvg-project-manage-mail-ticket project="rslvr.project"></lvg-project-manage-mail-ticket>'
+        }).state('projectManage.access', {
 			url : 'access/',
 			template: '<lvg-project-manage-access project="rslvr.project"></lvg-project-manage-access>'
 		}).state('projectManage.boards', {

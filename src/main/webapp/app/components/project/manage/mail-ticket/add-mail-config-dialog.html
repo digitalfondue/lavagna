@@ -1,0 +1,86 @@
+<form name="mailConfigForm"
+      data-ng-submit="addMailConfigDialogCtrl.addConfig(addMailConfigDialogCtrl.configToAdd);addMailConfigDialogCtrl.close();">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>project.manage.mailTicket.config.dialog.add.title</h2>
+        <md-input-container class="md-block">
+            <label data-translate>label.name</label>
+            <input type="text" id="name" placeholder="" required autocomplete="off"
+                   data-ng-model="addMailConfigDialogCtrl.configToAdd.name" md-autofocus>
+        </md-input-container>
+
+        <div class="row row-inherit">
+            <div class="col-md-6 col-xs-12">
+                <h2 class="md-title" translate>project.manage.mailTicket.config.dialog.inbound</h2>
+                <md-input-container class="md-block lvg-fix-height">
+                    <label><span translate>label.protocol</span></label>
+                    <md-select ng-model="addMailConfigDialogCtrl.configToAdd.config.inboundProtocol" required>
+                        <md-option value="imap">imap</md-option>
+                        <md-option value="imaps">imaps</md-option>
+                        <md-option value="pop3">pop3</md-option>
+                        <md-option value="pop3s">pop3s</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.host</label>
+                    <input type="text" id="inboundServer" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.inboundServer">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.port</label>
+                    <input type="text" id="inboundPort" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.inboundPort">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.user</label>
+                    <input type="text" id="inboundUser" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.inboundUser">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.password</label>
+                    <input type="text" id="inboundPassword" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.inboundPassword">
+                </md-input-container>
+            </div>
+
+            <div class="col-md-6 col-xs-12">
+                <h2 class="md-title" translate>project.manage.mailTicket.config.dialog.outbound</h2>
+                <md-input-container class="md-block lvg-fix-height">
+                    <label><span translate>label.protocol</span></label>
+                    <md-select ng-model="addMailConfigDialogCtrl.configToAdd.config.outboundProtocol" required>
+                        <md-option value="smtp">smtp</md-option>
+                        <md-option value="smtps">smtps</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.host</label>
+                    <input type="text" id="outboundServer" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.outboundServer">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.port</label>
+                    <input type="text" id="outboundPort" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.outboundPort">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.user</label>
+                    <input type="text" id="outboundUser" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.outboundUser">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.password</label>
+                    <input type="text" id="outboundPassword" placeholder="" required autocomplete="off"
+                           data-ng-model="addMailConfigDialogCtrl.configToAdd.config.outboundPassword">
+                </md-input-container>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary" type="submit"
+                   data-ng-disabled="!mailConfigForm.$valid">
+            <span data-translate>button.add</span>
+        </md-button>
+        <md-button type="button" data-ng-click="addMailConfigDialogCtrl.close();">
+            <span data-translate>button.cancel</span>
+        </md-button>
+    </md-dialog-actions>
+</form>
