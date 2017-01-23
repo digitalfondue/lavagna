@@ -61,6 +61,11 @@ public class MailTicketRepository {
     }
 
     @Transactional(readOnly = false)
+    public int updateLastChecked(final int id, final Date date) {
+        return queries.updateConfigLastChecked(id, date);
+    }
+
+    @Transactional(readOnly = false)
     public int deleteConfig(final int id, final int projectId) {
         return queries.deleteConfig(id, projectId);
     }

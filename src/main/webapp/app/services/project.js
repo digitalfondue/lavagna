@@ -168,6 +168,50 @@
                     left: itemsLeft,
                     right: itemsRight
                 }
+            },
+            getConfigs: function(shortName) {
+                return $http.get('/api/project/' + shortName + '/mailConfigs').then(extractData);
+            },
+            createMailConfig: function(shortName, name, config, properties) {
+                return $http.post('/api/project/' + shortName + '/mailConfig', {
+                    name: name,
+                    config: config,
+                    properties: properties
+                }).then(extractData);
+            },
+            updateMailConfig: function(shortName, id, name, enabled, config, properties) {
+                return $http.post('/api/project/' + shortName + '/mailConfig/' + id, {
+                    name: name,
+                    enabled: enabled,
+                    config: config,
+                    properties: properties
+                }).then(extractData);
+            },
+            deleteMailConfig: function(shortName, id) {
+                return $http.delete('/api/project/' + shortName + '/mailConfig/' + id).then(extractData);
+            },
+            createMailTicket: function(shortName, name, alias, useAlias, columnId, configId, metadata) {
+                return $http.post('/api/project/' + shortName + '/ticketConfig', {
+                    name: name,
+                    alias: alias,
+                    useAlias: useAlias,
+                    columnId: columnId,
+                    configId: configId,
+                    metadata, metadata
+                }).then(extractData);
+            },
+            updateMailTicket: function(shortName, id, name, enabled, alias, useAlias, columnId, metadata) {
+                return $http.post('/api/project/' + shortName + '/ticketConfig/' + id, {
+                    name: name,
+                    enabled: enabled,
+                    alias: alias,
+                    useAlias: useAlias,
+                    columnId: columnId,
+                    metadata: metadata
+                }).then(extractData);
+            },
+            deleteMailTicket: function(shortName, id) {
+                return $http.delete('/api/project/' + shortName + '/ticketConfig/' + id).then(extractData);
             }
 		};
 	});

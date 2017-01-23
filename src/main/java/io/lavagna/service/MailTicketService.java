@@ -118,15 +118,29 @@ public class MailTicketService {
         List<ProjectMailTicketConfig> entries = mailTicketRepository.findAll();
 
         for(ProjectMailTicketConfig entry: entries) {
+            if(entry.getEntries().size() == 0) {
+                continue;
+            }
+
             MailReceiver receiver = entry.getConfig().getInboundProtocol().startsWith("pop3") ?
                 getPop3MailReceiver(entry.getConfig(), entry.getProperties()) :
                 getImapMailReceiver(entry.getConfig(), entry.getProperties());
 
             try {
+                Date updateLastChecked = entry.getLastChecked();
+
                 Object[] messages = receiver.receive();
                 LOG.info("found {} messages", messages.length);
+
                 for(int i = 0; i < messages.length; i++) {
                     MimeMessage message = (MimeMessage) messages[i];
+                    if(!message.getReceivedDate().after(entry.getLastChecked())) {
+                        continue;
+                    } else {
+                        updateLastChecked = message.getReceivedDate().after(updateLastChecked) ?
+                            message.getReceivedDate() :
+                            updateLastChecked;
+                    }
 
                     String deliveredTo = getDeliveredTo(message);
 
@@ -141,6 +155,8 @@ public class MailTicketService {
                         }
                     }
                 }
+
+                mailTicketRepository.updateLastChecked(entry.getId(), updateLastChecked);
             } catch (MessagingException e) {
                 LOG.error("could not retrieve messages for ticket mail config id: {}", entry.getId());
             }
