@@ -36,6 +36,6 @@ class UserPublicProfile(user: User, val dailyActivity: List<EventsCount>,
 class DisplayNameEmail {
     var email: String? = null
     var displayName: String? = null
-    var isEmailNotification: Boolean = false
-    var isSkipOwnNotifications: Boolean = false
+    var emailNotification: Boolean = false
+    var skipOwnNotifications: Boolean = false
 }

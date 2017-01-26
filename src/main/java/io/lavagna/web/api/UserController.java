@@ -85,7 +85,7 @@ public class UserController {
     @RequestMapping(value = "/api/self", method = RequestMethod.POST)
     public int updateUserProfile(UserWithPermission user, @RequestBody DisplayNameEmail toUpdate) {
         int result = userRepository.updateProfile(user, toUpdate.getEmail(), toUpdate.getDisplayName(),
-            toUpdate.isEmailNotification(), toUpdate.isSkipOwnNotifications());
+            toUpdate.getEmailNotification(), toUpdate.getSkipOwnNotifications());
         eventEmitter.emitUpdateUserProfile(user.getId());
         return result;
     }
