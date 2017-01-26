@@ -26,7 +26,7 @@
         <md-card-content>
             <div class="row">
                 <div class="col-xs-6">
-                    <span ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate}}</span>
+                    <span ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
                     <span ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</span>
                 </div>
                 <div class="col-xs-6 lvg-project-milestones__align-right">
