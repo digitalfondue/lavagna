@@ -11,10 +11,10 @@
         	isCurrentUser: '<'
         },
         templateUrl: 'app/components/account/account.html',
-        controller: ['$window', 'User', 'CopyToClipboard', 'Notification', AccountController],
+        controller: ['$window', 'User', 'CopyToClipboard', 'Notification', 'CONTEXT_PATH', AccountController],
     });
 
-    function AccountController($window, User, CopyToClipboard, Notification) {
+    function AccountController($window, User, CopyToClipboard, Notification, CONTEXT_PATH) {
         var ctrl = this;
 
         User.currentCachedUser().then(function (user) {
@@ -47,16 +47,8 @@
 
         User.current().then(loadUser);
 
-
-        var getOrigin = function getOrigin() {
-            if (!window.location.origin) {
-                window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-            }
-            return window.location.origin;
-        };
-
         var createUrl = function (resp) {
-            ctrl.calendarFeedUrl = getOrigin($window) + "/api/calendar/" + resp.token + "/calendar.ics";
+            ctrl.calendarFeedUrl = CONTEXT_PATH + "api/calendar/" + resp.token + "/calendar.ics";
             ctrl.disabledFeed = resp.disabled;
         };
 
