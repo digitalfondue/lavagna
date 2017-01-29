@@ -133,7 +133,7 @@ For running with jetty-runner:
 
 ```
 mvn clean install
-java -Ddatasource.dialect=HSQLDB -Ddatasource.driver=org.hsqldb.jdbcDriver -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
+java -Ddatasource.dialect=HSQLDB -Ddatasource.url=jdbc:hsqldb:mem:lavagna -Ddatasource.username=sa -Ddatasource.password= -Dspring.profiles.active=dev -jar target/dependency/jetty-runner.jar --port 8080 target/*.war
 ```
 
 When adding new file, remember to add the license header with:
