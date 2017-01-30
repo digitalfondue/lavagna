@@ -5,7 +5,7 @@
         <md-input-container class="md-block">
             <label translate>admin.login.oauth.type</label>
             <md-select ng-model="oauthNewProvider.type" required md-autofocus>
-                <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true}">{{::provider.name}}</md-option>
+                <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true, isConfigurableInstance:false}">{{::provider.name}}</md-option>
             </md-select>
         </md-input-container>
 
@@ -28,6 +28,10 @@
             <label translate>admin.login.oauth.secret</label>
             <input type="text" ng-model="oauthNewProvider.apiSecret" required>
         </md-input-container>
+
+        <div>
+            <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+        </div>
 
         <md-input-container class="md-block">
             <label translate>admin.login.oauth.callback</label>

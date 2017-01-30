@@ -61,6 +61,9 @@
                 <label><span translate>admin.login.ldap.userSearchFilter</span></label>
                 <input type="text" placeholder="uid={0}" data-ng-model="$ctrl.ldap.userSearchFilter">
             </md-input-container>
+            <div>
+                <md-checkbox ng-model="$ctrl.ldap.autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+            </div>
         </md-card-content>
         <md-card-actions>
             <md-button type="submit" class="md-primary"><span translate>button.save</span></md-button>
@@ -96,6 +99,9 @@
                         <label translate>admin.login.oauth.apiKey</label>
                         <input type="text" ng-model="$ctrl.oauth[provider.name].apiSecret">
                     </md-input-container>
+                    <div>
+                        <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                    </div>
                     <md-input-container class="md-block">
                         <label translate>admin.login.oauth.callback</label>
                         <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
@@ -122,6 +128,9 @@
                         <label translate>admin.login.oauth.secret</label>
                         <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
                     </md-input-container>
+                    <div>
+                        <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                    </div>
                     <md-input-container class="md-block">
                         <label translate>admin.login.oauth.callback</label>
                         <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">

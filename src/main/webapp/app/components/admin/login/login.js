@@ -32,7 +32,8 @@
 						managerDn : conf['LDAP_MANAGER_DN'],
 						managerPassword : conf['LDAP_MANAGER_PASSWORD'],
 						userSearchBase : conf['LDAP_USER_SEARCH_BASE'],
-						userSearchFilter: conf['LDAP_USER_SEARCH_FILTER']
+						userSearchFilter: conf['LDAP_USER_SEARCH_FILTER'],
+						autoCreateMissingAccount: conf['LDAP_AUTOCREATE_MISSING_ACCOUNT'] === 'true'
 				};
 
 				var oauth = conf['OAUTH_CONFIGURATION'] && JSON.parse(conf['OAUTH_CONFIGURATION']) || { providers : []};
@@ -90,6 +91,7 @@
 			toUpdate.push({first : 'LDAP_MANAGER_PASSWORD', second : ldap.managerPassword});
 			toUpdate.push({first : 'LDAP_USER_SEARCH_BASE', second : ldap.userSearchBase});
 			toUpdate.push({first : 'LDAP_USER_SEARCH_FILTER', second : ldap.userSearchFilter});
+			toUpdate.push({first : 'LDAP_AUTOCREATE_MISSING_ACCOUNT', second : ldap.autoCreateMissingAccount || false});
 
 			Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function() {
 				Notification.addAutoAckNotification('success', { key : 'notification.admin-configure-login.saveLdapConfig.success'}, false);
@@ -104,7 +106,8 @@
 					hasCustomBaseAndProfileUrl: conf.hasCustomBaseAndProfileUrl,
 					baseProvider: conf.baseProvider,
 					baseUrl: conf.baseUrl,
-					profileUrl: conf.profileUrl});
+					profileUrl: conf.profileUrl,
+					autoCreateMissingAccount: conf.autoCreateMissingAccount});
 			}
 		}
 
@@ -126,7 +129,8 @@
 					hasCustomBaseAndProfileUrl:true,
 					baseProvider: oauthNewProvider.type.name,
 					baseUrl: oauthNewProvider.baseUrl,
-					profileUrl: oauthNewProvider.profileUrl
+					profileUrl: oauthNewProvider.profileUrl,
+					autoCreateMissingAccount: oauthNewProvider.autoCreateMissingAccount
 				});
 			}
 
@@ -147,6 +151,7 @@
 				controller: ['$scope', 'oauth', 'oauthProviders',
 				    function($scope, oauth, oauthProviders) {
 					$scope.oauth = oauth;
+					console.log(oauthProviders);
 					$scope.oauthProviders = oauthProviders;
 
 					$scope.saveOauthConfig = function(toSave) {
