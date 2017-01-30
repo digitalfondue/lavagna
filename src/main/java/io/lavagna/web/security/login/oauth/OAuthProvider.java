@@ -27,12 +27,13 @@ public class OAuthProvider {
     private final String baseProvider;
     private final String baseUrl;
     private final String profileUrl;
+    private final Boolean autoCreateMissingAccount;
 
     public OAuthProvider(String provider, String apiKey, String apiSecret) {
-        this(provider, apiKey, apiSecret, false, null, null, null);
+        this(provider, apiKey, apiSecret, false, null, null, null, null);
     }
 
-    public OAuthProvider(String provider, String apiKey, String apiSecret, boolean hasCustomBaseAndProfileUrl, String baseProvider, String baseUrl, String profileUrl) {
+    public OAuthProvider(String provider, String apiKey, String apiSecret, boolean hasCustomBaseAndProfileUrl, String baseProvider, String baseUrl, String profileUrl, Boolean autoCreateMissingAccount) {
         this.provider = provider;
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
@@ -40,6 +41,7 @@ public class OAuthProvider {
         this.baseProvider = baseProvider;
         this.baseUrl = baseUrl;
         this.profileUrl = profileUrl;
+        this.autoCreateMissingAccount = autoCreateMissingAccount;
     }
 
     public String baseUrlOrDefault(String defaultBaseUrl) {
@@ -84,5 +86,9 @@ public class OAuthProvider {
 
     public String getProfileUrl() {
         return profileUrl;
+    }
+
+    public boolean getAutoCreateMissingAccount() {
+        return autoCreateMissingAccount != null && autoCreateMissingAccount;
     }
 }

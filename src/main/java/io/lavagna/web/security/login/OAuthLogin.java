@@ -100,7 +100,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 		Map<String, Object> m = super.modelForLoginPage(request);
 
 		OAuthConfiguration conf = oauthConfigurationFetcher.fetch();
-		
+
         if (conf == null) {
             return m;
         }
@@ -136,6 +136,15 @@ public class OAuthLogin extends AbstractLoginHandler {
 			}
 			return false;
 		}
+
+		public OAuthProvider getProviderWithName(String provider) {
+            for (OAuthProvider o : providers) {
+                if (provider.equals(o.getProvider())) {
+                    return o;
+                }
+            }
+            return null;
+        }
 
 		public OAuthProvider matchAuthorization(String requestURI) {
 			for (OAuthProvider o : providers) {

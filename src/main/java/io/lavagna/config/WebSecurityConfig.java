@@ -22,15 +22,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.lavagna.common.Json;
 import io.lavagna.common.Version;
 import io.lavagna.model.Key;
+import io.lavagna.model.Role;
+import io.lavagna.model.UserToCreate;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
 import io.lavagna.service.UserRepository;
+import io.lavagna.service.UserService;
+import io.lavagna.web.api.model.Conf;
 import io.lavagna.web.helper.GsonHttpMessageConverter;
 import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.LoginHandler;
@@ -166,11 +171,62 @@ public class WebSecurityConfig {
 
     }
 
+    public static class AccountCreatorIfMissing {
+
+        private final UserRepository userRepository;
+        private final ConfigurationRepository configurationRepository;
+        private final UserService userService;
+
+
+        public AccountCreatorIfMissing(UserRepository userRepository,
+                                       ConfigurationRepository configurationRepository,
+                                       UserService userService) {
+            this.userRepository = userRepository;
+            this.configurationRepository = configurationRepository;
+            this.userService = userService;
+        }
+
+        private void createDefaultUser(String provider, String name) {
+            UserToCreate userToCreate = new UserToCreate(provider, name);
+            userToCreate.setRoles(Collections.singletonList(Role.Companion.getDEFAULT_ROLE().getName()));
+            userService.createUser(userToCreate);
+        }
+
+        private boolean canLdap(String provider, String name) {
+            return "ldap".equals(provider) &&
+                !userRepository.userExists(provider, name) &&
+                "true".equals(configurationRepository.getValueOrNull(Key.LDAP_AUTOCREATE_MISSING_ACCOUNT));
+        }
+
+        private boolean canCreateUserForOauthProvider(String provider) {
+            OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValueOrNull(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
+            return conf != null && conf.hasProvider(provider) && conf.getProviderWithName(provider).getAutoCreateMissingAccount();
+        }
+
+        private boolean canOauth(String provider, String name) {
+            return provider.startsWith("oauth.") && !userRepository.userExists(provider, name) && canCreateUserForOauthProvider(provider);
+        }
+
+        public void createIfConfiguredAndMissing(String provider, String name) {
+            if (canLdap(provider, name) || canOauth(provider, name)) {
+                createDefaultUser(provider, name);
+            }
+        }
+    }
+
     @Bean
-    private Users users(final UserRepository userRepository) {
+    private AccountCreatorIfMissing accountCreatorIfMissing(UserRepository userRepository,
+                                                            ConfigurationRepository configurationRepository,
+                                                            UserService userService) {
+        return new AccountCreatorIfMissing(userRepository, configurationRepository, userService);
+    }
+
+    @Bean
+    private Users users(final UserRepository userRepository, final AccountCreatorIfMissing accountCreatorIfMissing) {
         return new Users() {
             @Override
             public boolean userExistsAndEnabled(String provider, String name) {
+                accountCreatorIfMissing.createIfConfiguredAndMissing(provider, name);
                 return userRepository.userExistsAndEnabled(provider, name);
             }
             @Override
