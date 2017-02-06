@@ -325,7 +325,7 @@
     <properties>
         <org.apache.logging.log4j.version>2.8</org.apache.logging.log4j.version>
         <org.springframework.version>4.3.6.RELEASE</org.springframework.version>
-        <org.eclipse.jetty.version>9.2.20.v20161216</org.eclipse.jetty.version>
+        <org.eclipse.jetty.version>9.2.21.v20170120</org.eclipse.jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
     </properties>

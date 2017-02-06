@@ -54,6 +54,11 @@
 
 		$compileProvider.debugInfoEnabled(false);
 
+		// disable comment and css class directives for perf
+		$compileProvider.commentDirectivesEnabled(false);
+        $compileProvider.cssClassDirectivesEnabled(false);
+        //
+
 		$locationProvider.html5Mode(true);
 
 		//TODO: this is kinda fragile
