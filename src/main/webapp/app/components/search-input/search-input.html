@@ -1,4 +1,4 @@
-<form class="lavagna-search lvg-search-hidden row row-inherit" role="search" data-ng-submit="$ctrl.submit();$event.preventDefault();">
+<form class="lavagna-search lvg-search-hidden row row-inherit" role="search" data-ng-submit="$ctrl.submit();$event.preventDefault();" ng-click="$ctrl.focusOnInput($event)">
     <md-chips class="flex" ng-model="$ctrl.selected" md-autocomplete-snap md-transform-chip="$ctrl.transformChip($chip)">
         <md-autocomplete placeholder="Search"
             md-selected-item="$ctrl.selectedItem"

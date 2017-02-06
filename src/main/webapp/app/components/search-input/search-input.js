@@ -4,7 +4,7 @@
 
     var rootSearchFilter;
     var locationSearch = {};
-    
+
     angular.module('lavagna.components').component('lvgSearchInput', {
             bindings: {
                 project: '<',
@@ -19,10 +19,11 @@
                 ctrl.transformChip = transformChip;
                 ctrl.submit = submit;
                 ctrl.querySearch = autocompleteProvider;
+                ctrl.focusOnInput = focusOnInput;
             	//
-                
+
                 var requestSearchSubscription = angular.noop;
-                
+
                 ctrl.$onInit = function init() {
                 	ctrl.toSearch = {};
                     ctrl.selected = [];
@@ -35,8 +36,8 @@
                             locationSearch = {q: search.q};
                         }
                     }
-                    
-                    
+
+
                     requestSearchSubscription = EventBus.on('requestSearch', function () {
                     	EventBus.emit('refreshSearch', {searchFilter: rootSearchFilter, location: locationSearch});
                     });
@@ -47,12 +48,16 @@
                         }
                     }, true);
                 };
-                
+
                 ctrl.$onDestroy = function() {
                 	requestSearchSubscription();
                 }
-            	
+
             	//
+            	function focusOnInput(event) {
+            	    event.target.querySelector("input").focus();
+            	}
+
             	function toParams(input, prefix) {
                     var q = input.substr(prefix.length).trim();
                     var params = {term: q};
@@ -123,7 +128,7 @@
                         return data;
                     });
                 }
-                
+
                 function autocompleteProvider(input) {
 
                     var inputIsEmpty = input === null || input === undefined || input.trim() === '';
@@ -234,17 +239,17 @@
                     return res;
                 }
 
-                
+
                 //NEW AUTOCOMPLETE
                 function selectedItemChange(item) {
                 }
-                
+
                 function transformChip(chip) {
                 	if(chip.type === 'example') {
                 		ctrl.searchText = chip.value;
                 		return null;
                 	}
-                	
+
                 	if(angular.isString(chip)) {
                 		chip = {value: chip, text:chip};
                 	}
@@ -265,9 +270,9 @@
                 }
             }
     });
-    
-    
-    
+
+
+
     function tryParse(q, Search, $log) {
     	if(q === null || q === undefined || q.trim() === '') {
     		return false;
