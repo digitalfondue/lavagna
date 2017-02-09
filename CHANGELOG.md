@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1-M1 (2017-02-09)
+
+ - Update the pre-release. Multiple fixes and improvements.
 
 ## 1.1-M1 (2016-10-06)
 
