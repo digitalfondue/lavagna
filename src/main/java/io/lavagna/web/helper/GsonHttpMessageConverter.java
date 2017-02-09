@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.helper;
 
+import com.google.gson.*;
 import io.lavagna.common.Constants;
 
 import java.io.IOException;
@@ -24,10 +25,9 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import io.lavagna.common.Json;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -47,6 +47,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 public class GsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
 	private final Gson gson = new GsonBuilder().serializeNulls().setDateFormat(Constants.DATE_FORMAT)
+            .registerTypeHierarchyAdapter(Date.class, new Json.CustomDateSerializer())
 			.generateNonExecutableJson().create();
 
 	public GsonHttpMessageConverter() {

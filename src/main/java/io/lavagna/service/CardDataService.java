@@ -133,7 +133,7 @@ public class CardDataService {
                 name, time);
             return ImmutablePair.of(true, file);
         }
-        return ImmutablePair.of(false, null);
+        return ImmutablePair.<Boolean, CardData>of(false, null);
     }
 
     /**
