@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,7 +10,7 @@
     <groupId>io.lavagna</groupId>
     <artifactId>lavagna</artifactId>
     <packaging>war</packaging>
-    <version>1.1-M2-SNAPSHOT</version>
+    <version>1.1-M2</version>
     <inceptionYear>2014</inceptionYear>
 
     <name>lavagna</name>
@@ -28,7 +27,7 @@
         <connection>scm:git:git@github.com:digitalfondue/lavagna.git</connection>
         <developerConnection>scm:git:git@github.com:digitalfondue/lavagna.git</developerConnection>
         <url>https://github.com/digitalfondue/lavagna.git</url>
-        <tag>HEAD</tag>
+        <tag>lavagna-1.1-M2</tag>
     </scm>
 
     <developers>
@@ -755,7 +754,7 @@
                 <!-- <datasource.url>jdbc:log4jdbc:hsqldb:mem:lavagna</datasource.url> -->
                 <datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
                 <datasource.username>sa</datasource.username>
-                <datasource.password/>
+                <datasource.password />
                 <spring.profiles.active>dev</spring.profiles.active>
             </properties>
         </profile>
@@ -768,7 +767,7 @@
                 <datasource.dialect>HSQLDB</datasource.dialect>
                 <datasource.url>jdbc:hsqldb:mem:lavagna</datasource.url>
                 <datasource.username>sa</datasource.username>
-                <datasource.password/>
+                <datasource.password />
                 <spring.profiles.active>prod</spring.profiles.active>
             </properties>
         </profile>
@@ -783,7 +782,7 @@
                 <!-- <datasource.url>jdbc:log4jdbc:mysql://localhost:3306/lavagna</datasource.url> -->
                 <datasource.url>jdbc:mysql://localhost:3306/lavagna</datasource.url>
                 <datasource.username>root</datasource.username>
-                <datasource.password/>
+                <datasource.password />
                 <spring.profiles.active>dev</spring.profiles.active>
             </properties>
         </profile>
