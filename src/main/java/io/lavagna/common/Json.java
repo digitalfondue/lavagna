@@ -31,7 +31,7 @@ public final class Json {
     public static class CustomDateSerializer implements JsonSerializer<Date> {
         @Override
         public JsonElement serialize(Date date, Type type, JsonSerializationContext jsonSerializationContext) {
-            return new JsonPrimitive(DateFormatUtils.format(date, Constants.DATE_FORMAT, TimeZone.getTimeZone("Z")));
+            return date == null ? JsonNull.INSTANCE : new JsonPrimitive(DateFormatUtils.format(date, Constants.DATE_FORMAT, TimeZone.getTimeZone("Z")));
         }
     }
 
