@@ -197,7 +197,7 @@
                     useAlias: useAlias,
                     columnId: columnId,
                     configId: configId,
-                    metadata, metadata
+                    metadata: metadata
                 }).then(extractData);
             },
             updateMailTicket: function(shortName, id, name, enabled, alias, useAlias, columnId, metadata) {
