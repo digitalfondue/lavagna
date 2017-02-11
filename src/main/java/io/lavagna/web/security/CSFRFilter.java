@@ -33,23 +33,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CSFRFilter extends AbstractBaseFilter {
-    
+
     private static final String CSRF_TOKEN_HEADER = "X-CSRF-TOKEN";
     private static final String CSRF_FORM_PARAMETER = "_csrf";
     private static final Pattern CSRF_METHOD_DONT_CHECK = Pattern.compile("^GET|HEAD|OPTIONS$");
-    
+
     private static final Logger LOG = LogManager.getLogger();
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-        
+
         String token = CSRFToken.getToken(req);
         if (token == null) {
             token = UUID.randomUUID().toString();
-            req.getSession().setAttribute(CSRFToken.CSRF_TOKEN, token);
+            CSRFToken.setToken(req, token);
         }
         resp.setHeader(CSRF_TOKEN_HEADER, token);
-        
+
         if (mustCheckCSRF(req)) {
             ImmutablePair<Boolean, ImmutablePair<Integer, String>> res = checkCSRF(req);
             if (!res.left) {
@@ -58,14 +58,14 @@ public class CSFRFilter extends AbstractBaseFilter {
                 return;
             }
         }
-        
+
         //continue...
         chain.doFilter(req, resp);
     }
 
 
     private static final Pattern WEBSOCKET_FALLBACK = Pattern.compile("^/api/socket/.*$");
-    
+
     /**
      * Return true if the filter must check the request
      *
@@ -83,7 +83,7 @@ public class CSFRFilter extends AbstractBaseFilter {
     }
 
     private static ImmutablePair<Boolean, ImmutablePair<Integer, String>> checkCSRF(HttpServletRequest request) throws IOException {
-        String expectedToken = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
+        String expectedToken = CSRFToken.getToken(request);
         String token = request.getHeader(CSRF_TOKEN_HEADER);
         if (token == null) {
             token = request.getParameter(CSRF_FORM_PARAMETER);
@@ -101,19 +101,19 @@ public class CSFRFilter extends AbstractBaseFilter {
 
         return of(true, null);
     }
-    
-    
+
+
  // ------------------------------------------------------------------------
     // this function has been imported from KeyCzar.
 
     /*
      * Copyright 2008 Google Inc.
-     * 
+     *
      * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
      * with the License. You may obtain a copy of the License at
-     * 
+     *
      * http://www.apache.org/licenses/LICENSE-2.0
-     * 
+     *
      * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
      * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
      * the specific language governing permissions and limitations under the License.
@@ -122,7 +122,7 @@ public class CSFRFilter extends AbstractBaseFilter {
     /**
      * An array comparison that is safe from timing attacks. If two arrays are of equal length, this code will always
      * check all elements, rather than exiting once it encounters a differing byte.
-     * 
+     *
      * @param a1
      *            An array to compare
      * @param a2

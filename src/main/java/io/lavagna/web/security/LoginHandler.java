@@ -35,7 +35,7 @@ public interface LoginHandler {
 	boolean doAction(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	boolean handleLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException;
-	
+
 	List<String> getAllHandlerNames();
 	String getBaseProviderName();
 
@@ -59,7 +59,7 @@ public interface LoginHandler {
 		}
 
 		public Map<String, Object> modelForLoginPage(HttpServletRequest request) {
-			String tokenValue = (String) request.getSession().getAttribute(CSRFToken.CSRF_TOKEN);
+			String tokenValue =  CSRFToken.getToken(request);
 			Map<String, Object> r = new HashMap<>();
 			r.put("csrfToken", tokenValue);
 			r.put("reqUrl", UriComponentsBuilder.fromPath(request.getParameter("reqUrl")).build().encode().toUriString());

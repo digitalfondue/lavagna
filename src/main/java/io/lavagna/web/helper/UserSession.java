@@ -21,6 +21,7 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
+import io.lavagna.web.security.CSRFToken;
 
 import java.util.Objects;
 
@@ -130,7 +131,8 @@ public final class UserSession {
 	public static void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp,
 			UserRepository userRepository, boolean addRememberMeCookie) {
 
-		req.getSession().invalidate();
+	    String currentToken = CSRFToken.getToken(req);
+        req.getSession().invalidate();
 		if (addRememberMeCookie) {
 			addRememberMeCookie(userId, req, resp, userRepository);
 		}
@@ -138,6 +140,7 @@ public final class UserSession {
 		session.setAttribute(AUTH_KEY, true);
 		session.setAttribute(AUTH_USER_ID, userId);
 		session.setAttribute(AUTH_USER_IS_ANONYMOUS, isUserAnonymous);
+        CSRFToken.setToken(session, currentToken);
 	}
 
 	public static void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, UserRepository userRepository) {
