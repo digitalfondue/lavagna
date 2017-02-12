@@ -17,12 +17,14 @@
 
 package io.lavagna.service;
 
+import static io.lavagna.common.Constants.SYSTEM_LABEL_ASSIGNED;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_DUE_DATE;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
 import static io.lavagna.service.SearchFilter.filter;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnInfo;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardFullWithCounts;
 import io.lavagna.model.CardLabel;
@@ -49,6 +51,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +61,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExcelExportService {
 
     private final CardRepository cardRepository;
+    private final CardDataService cardDataService;
     private final CardLabelRepository cardLabelRepository;
     private final ProjectService projectService;
     private final SearchService searchService;
@@ -65,19 +69,27 @@ public class ExcelExportService {
     private final UserRepository userRepository;
 
     @Autowired
-    public ExcelExportService(CardRepository cardRepository, CardLabelRepository cardLabelRepository,
-        ProjectService projectService, SearchService searchService, BoardColumnRepository boardColumnRepository,
+    public ExcelExportService(CardRepository cardRepository,
+        CardDataService cardDataService,
+        CardLabelRepository cardLabelRepository,
+        ProjectService projectService,
+        SearchService searchService,
+        BoardColumnRepository boardColumnRepository,
         UserRepository userRepository) {
+
         this.cardRepository = cardRepository;
+        this.cardDataService = cardDataService;
         this.cardLabelRepository = cardLabelRepository;
         this.projectService = projectService;
         this.searchService = searchService;
         this.boardColumnRepository = boardColumnRepository;
         this.userRepository = userRepository;
+
     }
 
     public LabelListValueWithMetadata getMilestone(int projectId, String milestone) {
-        CardLabel label = cardLabelRepository.findLabelByName(projectId, SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM);
+        CardLabel label = cardLabelRepository
+            .findLabelByName(projectId, SYSTEM_LABEL_MILESTONE, CardLabel.LabelDomain.SYSTEM);
         List<LabelListValueWithMetadata> listValues = cardLabelRepository
             .findListValuesByLabelIdAndValue(label.getId(), milestone);
         return listValues.size() > 0 ? listValues.get(0) : null;
@@ -174,13 +186,15 @@ public class ExcelExportService {
 
         Row header = sheet.createRow(0);
 
-        int colPos = 0;
-        header.createCell(colPos++).setCellValue("ID");
-        header.createCell(colPos++).setCellValue("Name");
-        header.createCell(colPos++).setCellValue("Column");
-        header.createCell(colPos++).setCellValue("Status");
+        int headerColPos = 0;
+        header.createCell(headerColPos++).setCellValue("Board");
+        header.createCell(headerColPos++).setCellValue("ID");
+        header.createCell(headerColPos++).setCellValue("Name");
+        header.createCell(headerColPos++).setCellValue("Column");
+        header.createCell(headerColPos++).setCellValue("Status");
+        header.createCell(headerColPos++).setCellValue("Description");
         for (CardLabel cl : labels) {
-            header.createCell(colPos++).setCellValue(WordUtils.capitalizeFully(cl.getName().replace("_", " ")));
+            header.createCell(headerColPos++).setCellValue(WordUtils.capitalizeFully(cl.getName().replace("_", " ")));
         }
 
         Map<Integer, BoardColumnInfo> colCache = new HashMap<>();
@@ -190,11 +204,13 @@ public class ExcelExportService {
         int rowPos = 1;
         for (CardFullWithCounts card : cards.getFound()) {
 
-            colPos = 0;
+            int colPos = 0;
             Row row = sheet.createRow(rowPos++);
 
+            // Board
+            row.createCell(colPos++).setCellValue(card.getBoardShortName());
             // ID
-            row.createCell(colPos++).setCellValue(String.format("%s-%s", card.getBoardShortName(), card.getSequence()));
+            row.createCell(colPos++).setCellValue(card.getSequence());
             // Name
             row.createCell(colPos++).setCellValue(card.getName());
             // Column
@@ -203,12 +219,17 @@ public class ExcelExportService {
             }
             BoardColumnInfo col = colCache.get(card.getColumnId());
             row.createCell(colPos++).setCellValue(col.getColumnName());
-            // ColumnDefinition
+            // ColumnDefinition - status
             row.createCell(colPos++).setCellValue(card.getColumnDefinition().toString());
+            // Description
+            CardDataHistory desc = cardDataService.findLatestDescriptionByCardId(card.getId());
+            row.createCell(colPos++).setCellValue(desc != null ? desc.getContent() : "");
             // Labels
             fillLabelValues(row, colPos, labels, cardLabelRepository.findCardLabelValuesByCardId(card.getId()),
                 userCache, cardCache, listValueCache);
         }
+
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headerColPos));
 
         return wb;
     }
