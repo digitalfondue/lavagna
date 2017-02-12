@@ -229,7 +229,7 @@ public class ExcelExportService {
                 userCache, cardCache, listValueCache);
         }
 
-        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headerColPos));
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headerColPos - 1));
 
         return wb;
     }
