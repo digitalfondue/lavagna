@@ -1,0 +1,7 @@
+.lvg-mail-ticket-config {
+    border: 1px solid #dddddd;
+}
+
+.lvg-mail-ticket-config__disabled {
+    opacity: 0.5;
+}

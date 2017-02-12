@@ -1,8 +1,55 @@
 <div class="lvg-content" ng-if="$ctrl.configs.length > 0">
-
+    <md-card class="lvg-content__row lvg-content__row-item"
+             ng-repeat="mailConfig in $ctrl.configs">
+        <md-card-title>
+            <md-card-title-text>
+                <div class="row row-inherit">
+                    <div class="lvg-headline">{{mailConfig.name}}</div>
+                    <span class="flex"></span>
+                    <md-button class="lvg-small-icon-button" ng-if="!mailConfig.enabled" ng-click="$ctrl.toggleMailConfig(mailConfig)">
+                        <md-icon md-svg-icon="repeat" aria-label="{{::('project.manage.mailTicket.config.schedule.enable' | translate)}}"></md-icon>
+                        <md-tooltip><span translate>project.manage.mailTicket.config.schedule.enable</span></md-tooltip>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button" ng-if="mailConfig.enabled" ng-click="$ctrl.toggleMailConfig(mailConfig)">
+                        <md-icon md-svg-icon="repeat-off" aria-label="{{::('project.manage.mailTicket.config.schedule.disable' | translate)}}"></md-icon>
+                        <md-tooltip><span translate>project.manage.mailTicket.config.schedule.disable</span></md-tooltip>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.editMailConfig(mailConfig)">
+                        <md-icon md-svg-icon="edit" aria-label="{{::('button.edit' | translate)}}"></md-icon>
+                        <md-tooltip><span translate>button.edit</span></md-tooltip>
+                    </md-button>
+                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.deleteConfig(mailConfig)">
+                        <md-icon md-svg-icon="delete" ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" aria-label="{{::('button.delete' | translate)}}"></md-icon>
+                        <md-tooltip md-visible="showTooltip">{{(mailConfig.entries.length !== 0 ? 'project.manage.mailTicket.config.cant.delete':'button.delete')|translate}}</md-tooltip>
+                    </md-button>
+                </div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content ng-class="{'lvg-mail-ticket__disabled': !mailConfig.enabled}">
+            <p><span translate>label.host</span>: <span>{{mailConfig.config.inboundServer}}</span></p>
+            <p><span translate>label.user</span>: <span>{{mailConfig.config.inboundUser}}</span></p>
+            <div class="row row-inherit">
+                <lvg-project-manage-mail-ticket-config ng-repeat="ticketConfig in mailConfig.entries"
+                                                       mail-config="mailConfig"
+                                                       ticket-config="ticketConfig"
+                                                       on-edit="$ctrl.onEditTicketConfig($mailConfig, $ticketConfig)"
+                                                       on-delete="$ctrl.onDeleteTicketConfig()"
+                                                       class="col-xs-12 col-sm-6 col-md-4 lvg-mail-ticket-config"
+                                                       ng-class="lvg-mail-ticket-config__disabled">
+                </lvg-project-manage-mail-ticket-config>
+            </div>
+        </md-card-content>
+        <md-card-actions class="lvg-mail-ticket__ticket-actions">
+            <div class="row margin-8">
+                <md-button type="button" class="md-primary" ng-click="$ctrl.addTicketConfig(mailConfig)">
+                    <span translate>project.manage.mailTicket.ticket.add</span>
+                </md-button>
+            </div>
+        </md-card-actions>
+    </md-card>
 </div>
 
 <md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showAddMailConfigDialog($event)">
-    <md-tooltip md-direction="top">{{'project.manage.mailTicket.config.dialog.add.title' | translate}}</md-tooltip>
+    <md-tooltip md-direction="top">{{'project.manage.mailTicket.config.add.tooltip' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>

@@ -1,0 +1,62 @@
+<form name="mailTicketConfigForm"
+      data-ng-submit="$mailTicketConfigDialogCtrl.add()">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate>project.manage.mailTicket.ticket.dialog.title</h2>
+        <md-input-container class="md-block">
+            <label data-translate>label.name</label>
+            <input type="text" id="name" placeholder="" required autocomplete="off"
+                   data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.name" md-autofocus>
+        </md-input-container>
+
+        <div class="row row-inherit">
+            <div class="col-md-6 col-xs-12">
+                <md-input-container class="md-block">
+                    <label data-translate>project.manage.mailTicket.ticket.dialog.alias</label>
+                    <input type="text" id="alias" placeholder="" required autocomplete="off"
+                           data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.alias">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>project.manage.mailTicket.ticket.dialog.alias.send</label>
+                    <input type="text" id="sendByAlias" placeholder="" autocomplete="off"
+                           data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.sendByAlias">
+                </md-input-container>
+            </div>
+        </div>
+
+        <h2 class="md-title" translate>Create card in:</h2>
+        <div class="row row-inherit">
+            <div class="col-md-6 col-xs-12">
+                <md-input-container class="md-block lvg-fix-height">
+                    <label data-translate>label.board</label>
+                    <md-select required
+                               ng-model="$mailTicketConfigDialogCtrl.configToAdd.boardShortName"
+                               ng-change="$mailTicketConfigDialogCtrl.onChangeBoard($mailTicketConfigDialogCtrl.configToAdd.boardShortName);">
+                        <md-option ng-repeat="board in $mailTicketConfigDialogCtrl.boards" ng-value="board.shortName">
+                            {{board.shortName}} - {{board.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="col-md-6 col-xs-12" ng-if="$mailTicketConfigDialogCtrl.configToAdd.boardShortName">
+                <md-input-container class="md-block lvg-fix-height">
+                    <label data-translate>label.column</label>
+                    <md-select required
+                               ng-model="$mailTicketConfigDialogCtrl.configToAdd.columnId">
+                        <md-option ng-repeat="column in $mailTicketConfigDialogCtrl.columns" ng-value="column.id">
+                            <md-icon md-svg-icon="circle" ng-style="{'fill': ( column.color | parseIntColor )}"></md-icon> {{column.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button class="md-primary" type="submit"
+                   data-ng-disabled="!mailTicketConfigForm.$valid">
+            <span data-translate>button.add</span>
+        </md-button>
+        <md-button type="button" data-ng-click="$mailTicketConfigDialogCtrl.cancel();">
+            <span data-translate>button.cancel</span>
+        </md-button>
+    </md-dialog-actions>
+</form>

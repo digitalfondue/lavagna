@@ -606,6 +606,8 @@
             .icon('chevron-right',      'svg/ic_chevron_right_black_48px.svg')
             .icon('file-excel',      	'svg/file-excel.svg')
             .icon('logout',      	    'svg/logout.svg')
+            .icon('repeat',             'svg/repeat.svg')
+            .icon('repeat-off',         'svg/repeat-off.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

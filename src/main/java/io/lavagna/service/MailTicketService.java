@@ -118,7 +118,7 @@ public class MailTicketService {
         List<ProjectMailTicketConfig> entries = mailTicketRepository.findAll();
 
         for(ProjectMailTicketConfig entry: entries) {
-            if(entry.getEntries().size() == 0) {
+            if(entry.getEntries().size() == 0 || !entry.getEnabled()) {
                 continue;
             }
 
@@ -145,7 +145,7 @@ public class MailTicketService {
                     String deliveredTo = getDeliveredTo(message);
 
                     for(ProjectMailTicket ticketConfig: entry.getEntries()) {
-                        if(ticketConfig.getAlias().equals(deliveredTo)) {
+                        if(ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
                             String from = getFrom(message);
                             try {
                                 createCard(message.getSubject(), getTextFromMessage(message), ticketConfig.getColumnId(), from);

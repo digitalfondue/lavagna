@@ -1,0 +1,13 @@
+<div class="lvg-mail-ticket-config__name">{{$ctrl.ticketConfig.name}}</div>
+<div class="lvg-mail-ticket-config__alias">{{$ctrl.ticketConfig.alias}}</div>
+<div class="lvg-mail-ticket-config__board"></div>
+<div class="lvg-mail-ticket-config__column"></div>
+<md-divider></md-divider>
+<md-button class="lvg-small-icon-button" ng-click="$ctrl.onEdit({$mailConfig: $ctrlmailConfig, $ticketConfig: $ctrl.ticketConfig})">
+    <md-icon md-svg-icon="edit" aria-label="{{::('button.edit' | translate)}}"></md-icon>
+    <md-tooltip><span translate>button.edit</span></md-tooltip>
+</md-button>
+<md-button class="lvg-small-icon-button" ng-click="$ctrl.onDelete()">
+    <md-icon md-svg-icon="trash" aria-label="{{::('button.delete' | translate)}}"></md-icon>
+    <md-tooltip>{{::('button.delete'|translate)}}</md-tooltip>
+</md-button>
