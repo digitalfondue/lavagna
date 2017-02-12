@@ -1,40 +1,58 @@
 <div class="row lvg-content">
-	<div class="col-md-6 col-xs-12 first-md">
+    <div class="col-md-6 col-xs-12 first-md">
         <div class="lvg-project-boards__tasks row row-inherit start-xs top-xs">
-            <div class="lvg-project-boards__tasks-title flex" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards</div>
+            <div class="lvg-project-boards__tasks-title flex" data-translate
+                 data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards
+            </div>
+            <div>
+                <md-button class="md-icon-button"
+                           ng-href="api/project/{{::$ctrl.project.shortName}}/export/"
+                           target="_blank" rel="nofollow me noopener noreferrer">
+                    <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
+                    <md-icon md-svg-icon="file-excel"></md-icon>
+                </md-button>
+            </div>
             <div class="lvg-project-boards__tasks-switch">
-                <md-switch ng-model="$ctrl.showArchivedItems" ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
-                <md-tooltip>{{($ctrl.showArchivedItems ? 'projects.boards.hide.archived' : 'projects.boards.show.archived') | translate}}</md-tooltip>
+                <md-switch ng-model="$ctrl.showArchivedItems"
+                           ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
+                <md-tooltip>{{($ctrl.showArchivedItems ? 'projects.boards.hide.archived' :
+                    'projects.boards.show.archived') | translate}}
+                </md-tooltip>
             </div>
         </div>
-        <lvg-stats-panel-board data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
-                               board="board"
-                               project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
-	</div>
+        <lvg-stats-panel-board
+            data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
+            board="board"
+            project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
+    </div>
 
-	<div class="col-md-6 col-xs-12 first-xs"
+    <div class="col-md-6 col-xs-12 first-xs"
          data-lvg-is-authenticated
          data-lvg-has-permission="SEARCH">
-	    <div class="lvg-project-boards__tasks" data-translate data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.tasks</div>
-	    <lvg-rebuild-if-change to-watch="$ctrl.metadata.hash">
-            <lvg-card-fragment-v2 tabindex="0" ng-repeat="card in $ctrl.userProjectCards track by card.hash+$ctrl.metadata.hash"
+        <div class="lvg-project-boards__tasks" data-translate data-translate-value-name="{{::$ctrl.project.name}}">
+            project.boards.my.tasks
+        </div>
+        <lvg-rebuild-if-change to-watch="$ctrl.metadata.hash">
+            <lvg-card-fragment-v2 tabindex="0"
+                                  ng-repeat="card in $ctrl.userProjectCards track by card.hash+$ctrl.metadata.hash"
                                   view="list"
                                   card-ref="::card"
                                   user-ref="::$ctrl.user"
                                   project-metadata-ref="::$ctrl.metadata"></lvg-card-fragment-v2>
-	    </lvg-rebuild-if-change>
-	    <span data-ng-if="$ctrl.totalProjectOpenCards == 0" data-translate>project.boards.no.tasks</span>
-	    <div data-ng-if="$ctrl.cardsTotalPages > 1">
-	        <lvg-pagination
-	           total-pages="$ctrl.cardsTotalPages"
-	           current-page="$ctrl.cardsCurrentPage"
-	           max-size="7"
-	           change-page="$ctrl.fetchUserCardsInProjectPage($page)"></lvg-pagination>
-	    </div>
-	</div>
+        </lvg-rebuild-if-change>
+        <span data-ng-if="$ctrl.totalProjectOpenCards == 0" data-translate>project.boards.no.tasks</span>
+        <div data-ng-if="$ctrl.cardsTotalPages > 1">
+            <lvg-pagination
+                total-pages="$ctrl.cardsTotalPages"
+                current-page="$ctrl.cardsCurrentPage"
+                max-size="7"
+                change-page="$ctrl.fetchUserCardsInProjectPage($page)"></lvg-pagination>
+        </div>
+    </div>
 </div>
 
-<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showBoardDialog($event)" aria-label="{{'project.boards.create.board' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click="$ctrl.showBoardDialog($event)"
+           aria-label="{{'project.boards.create.board' | translate}}" data-lvg-has-permission="PROJECT_ADMINISTRATION">
     <md-tooltip md-direction="top">{{'project.boards.create.board' | translate}}</md-tooltip>
     <md-icon md-svg-icon="add"></md-icon>
 </md-button>
