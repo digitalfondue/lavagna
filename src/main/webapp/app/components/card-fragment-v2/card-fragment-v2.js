@@ -200,7 +200,7 @@
 			} else {
 				return (selected[card.projectShortName] && (selected[card.projectShortName][card.id])) === true;
 			}
-		};
+		}
 
 		function updateStyle() {
 
@@ -214,7 +214,7 @@
 		function updateCheckbox() {
 			selectedState = isSelected();
 			updateStyle();
-		};
+		}
 
 		updateCheckbox();
 
@@ -368,7 +368,7 @@
 				appendIfNotNull(divWrapper, liDueDate);
 				appendIfNotNull(divWrapper, liMilestone);
 			}
-		}
+		};
 
 		ctrl.$onDestroy = function lvgCardFragmentV2DataInfoCtrlOnDestroy() {
 		    Tooltip.clean();
@@ -386,7 +386,7 @@
                 element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
-		}
+		};
 
 		//
 
@@ -396,15 +396,15 @@
                     projectMetadata :
                     ProjectCache.metadata($event.target.card.projectShortName);
             }, user, $event.target);
-		};
+		}
 
 		function handleMouseEnterUser($event) {
             Tooltip.user($event.target.user, $event.target);
-        };
+        }
 
 		function handleMouseLeave($event) {
             Tooltip.clean();
-		};
+		}
 
         //
 
@@ -465,13 +465,8 @@
         	var actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
 
         	var div = createElem('div');
-        	div.className = 'lvg-card-fragment-v2__card-data'
+        	div.className = 'lvg-card-fragment-v2__card-data';
 
-    		var counts = card.counts;
-
-    		/*if(checkedCount > 0 && uncheckedCount == 0) {
-    			div.className += ' lvg-card-fragment-v2__card-data__action-full';
-    		}*/
     		if(card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
     			div.className += ' lvg-card-fragment-v2__card-data__action-not-done';
     		}
@@ -488,7 +483,7 @@
 
         	var filesCount = hasFiles ? getCountOrZero('FILE') : '';
         	var div = createElem('div');
-        	div.className = 'lvg-card-fragment-v2__card-data'
+        	div.className = 'lvg-card-fragment-v2__card-data';
 
     		appendIconAndText(div, 'file', filesCount);
 
@@ -513,7 +508,7 @@
 
 
         	var div = createElem('div');
-        	div.className = 'lvg-card-fragment-v2__card-data'
+        	div.className = 'lvg-card-fragment-v2__card-data';
 
     		addDueDateClasses(div, isTomorrow, isNow, isPast);
 
@@ -534,9 +529,7 @@
         		return null;
         	}
 
-        	var milestoneLabel = '';
-
-        	milestoneLabel = milestoneLabels[0];
+            var milestoneLabel = milestoneLabels[0];
 
         	var releaseDateStr = undefined;
         	var metadata = projectMetadata;
@@ -551,7 +544,7 @@
         	}
 
         	var div = createElem('div');
-        	div.className = 'lvg-card-fragment-v2__card-data'
+        	div.className = 'lvg-card-fragment-v2__card-data lvg-card-fragment-v2__card-data__icon_milestone';
 
         	if(releaseDateStr) {
         		var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
@@ -564,7 +557,19 @@
         		addDueDateClasses(div, isTomorrow, isNow, isPast);
         	}
 
-    		appendIconAndText(div, 'milestone', projectMetadata.labelListValues[milestoneLabel.labelValueList].value);
+            var a = createElem('a');
+            a.className = 'lvg-card-fragment-v2__card-link';
+            if(projectMetadata.labelListValues[milestoneLabel.labelValueList].metadata.status === 'CLOSED') {
+                a.className += ' closed';
+            }
+            a.textContent = projectMetadata.labelListValues[milestoneLabel.labelValueList].value;
+            a.href = $state.href('project.milestones.milestone', {
+                projectName: projectMetadata.shortName,
+                id: projectMetadata.labelListValues[milestoneLabel.labelValueList].id
+            });
+
+            div.appendChild(a);
+
     		return div;
         }
 
@@ -657,7 +662,7 @@
         //------------
 
         function appendIconAndText(li, iconName, text) {
-    		li.className += (' lvg-card-fragment-v2__card-data__icon_' + iconName)
+    		li.className += (' lvg-card-fragment-v2__card-data__icon_' + iconName);
     		li.appendChild(createText(' ' + text));
         }
 

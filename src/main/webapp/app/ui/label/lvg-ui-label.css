@@ -1,34 +1,33 @@
 .lvg-label {
-	display: inline-block;
-	margin-bottom: 5px;
-	margin-right: 5px;
-	padding: .5em .8em .5em .6em;
-	font-size: 12px;
-	border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    padding: .5em .8em .5em .6em;
+    font-size: 12px;
+    border-radius: 4px;
 }
 
 .lvg-label.white a {
-	color: white;
-	text-decoration: underline;
+    color: white;
+    text-decoration: underline;
 }
 
 .lvg-label.white a .lavagna-closed-card,
 .lvg-label.white a.lavagna-closed-card,
 .lvg-label.white a .user-disabled,
-.lvg-label.white a.user-disabled
- {
-	color: white;
-	text-decoration: underline line-through;
+.lvg-label.white a.user-disabled {
+    color: white;
+    text-decoration: underline line-through;
 }
 
 .lvg-label.black a {
-	color: black;
-	text-decoration: underline;
+    color: black;
+    text-decoration: underline;
 }
 
 .lvg-label.black a .lavagna-closed-card,
 .lvg-label.black a.lavagna-closed-card,
 .lvg-label.black a .user-disabled,
-.lvg-label.black a.user-disabled  {
-	text-decoration: underline line-through;
+.lvg-label.black a.user-disabled {
+    text-decoration: underline line-through;
 }
