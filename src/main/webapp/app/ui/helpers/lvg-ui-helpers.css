@@ -2,12 +2,41 @@
     opacity: 0.5;
 }
 
-.closed, .disabled {
+.closed,
+a.closed,
+a:link.closed,
+a:hover.closed,
+a:focus.closed,
+a:visited.closed,
+a:active.closed,
+.disabled,
+a.disabled,
+a:link.disabled,
+a:hover.disabled,
+a:focus.disabled,
+a:visited.disabled,
+a:active.disabled {
     text-decoration: underline line-through;
 }
 
-.strike {
+.strike,
+a.strike,
+a:link.strike,
+a:hover.strike,
+a:focus.strike,
+a:visited.strike,
+a:active.strike {
 	text-decoration: line-through;
+}
+
+.lvg-gray,
+a.lvg-gray,
+a:link.lvg-gray,
+a:hover.lvg-gray,
+a:focus.lvg-gray,
+a:visited.lvg-gray,
+a:active.lvg-gray {
+    color: #999;
 }
 
 .bold {

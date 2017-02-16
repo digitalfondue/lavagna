@@ -33,8 +33,8 @@
 
 		ctrl.card = ctrl.cardRef();
 		//
-		ctrl.boardShortName = ctrl.card.boardShortName,
-		ctrl.projectShortName = ctrl.card.projectShortName,
+		ctrl.boardShortName = ctrl.card.boardShortName;
+		ctrl.projectShortName = ctrl.card.projectShortName;
 		//
 		ctrl.user = ctrl.userRef();
 		ctrl.projectMetadata = ctrl.projectMetadataRef();
@@ -167,7 +167,7 @@
 			}
 			domElement.appendChild(baseDiv);
 			domElement.appendChild(createText(parent.card.name))
-		}
+		};
 
 		ctrl.$onDestroy = function onDestroy() {
 			for(var i = 0; i < subscribers.length; i++) {
@@ -558,9 +558,9 @@
         	}
 
             var a = createElem('a');
-            a.className = 'lvg-card-fragment-v2__card-link';
+            a.className = 'lvg-card-fragment-v2__card-link lvg-gray';
             if(projectMetadata.labelListValues[milestoneLabel.labelValueList].metadata.status === 'CLOSED') {
-                a.className += ' closed';
+                a.className += ' strike';
             }
             a.textContent = projectMetadata.labelListValues[milestoneLabel.labelValueList].value;
             a.href = $state.href('project.milestones.milestone', {
@@ -633,7 +633,7 @@
                         nameAndSeparator += ' ' + value.value.valueInt;
                         break;
                     case 'LIST':
-                        nameAndSeparator += ' ' + projectMetadata.labelListValues[value.value.valueList].value
+                        nameAndSeparator += ' ' + projectMetadata.labelListValues[value.value.valueList].value;
                         break;
                     case 'TIMESTAMP':
                         nameAndSeparator += ' ' + $filter('date')(value.value.valueTimestamp, 'dd.MM.yyyy');

@@ -2,12 +2,14 @@ lvg-component-card {
     display: block;
 }
 
-a.lavagna-closed-card {
+.lavagna-closed-card,
+a.lavagna-closed-card,
+a:link.lavagna-closed-card,
+a:hover.lavagna-closed-card,
+a:focus.lavagna-closed-card,
+a:visited.lavagna-closed-card,
+a:active.lavagna-closed-card {
     color: #999;
     text-decoration: line-through;
 }
 
-.lavagna-closed-card {
-	color: #999;
-	text-decoration: line-through;
-}
