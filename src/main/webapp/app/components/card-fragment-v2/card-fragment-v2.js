@@ -267,7 +267,7 @@
 	function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, $state, $location, subscribers, EventBus) {
 		var a = createElem("a");
 		a.className = 'lvg-card-fragment-v2__card-link';
-		a.textContent = boardShortName + ' - ' + sequenceNumber;
+		a.textContent = boardShortName + '-' + sequenceNumber;
 		a.href = updateUrl($state, $location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
 		if(isDynamicLink) {
 			var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
