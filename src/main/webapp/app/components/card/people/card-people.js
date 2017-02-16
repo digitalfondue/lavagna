@@ -41,11 +41,11 @@
 
         ctrl.isWatching = function() {
             return isUserInList(ctrl.watchingUsers, user);
-        }
+        };
 
         ctrl.isAssigned = function() {
             return isUserInList(ctrl.assignedUsers, user);
-        }
+        };
 
         ctrl.watchCard = function() {
             BulkOperations.watch(currentCard(), user);
@@ -77,7 +77,7 @@
                 return;
             }
             BulkOperations.assign(currentCard(), user);
-        }
+        };
 
         ctrl.removeAssignForUser = function(user) {
             BulkOperations.removeAssign(currentCard(), {id: user.value.valueUser});

@@ -60,7 +60,7 @@
         </div>
     </md-card-content>
     <md-card-actions data-lvg-has-permission="UPDATE_CARD" class="lvg-card-people__actions">
-        <form data-ng-submit="$ctrl.assignUser(user)">
+        <form data-ng-submit="$ctrl.assignUser(user); user = null;">
             <div class="row margin-8 start-xs bottom-xs">
                 <div class="flex">
                     <md-autocomplete
