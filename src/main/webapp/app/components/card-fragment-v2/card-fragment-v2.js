@@ -115,7 +115,7 @@
 					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement)
 				}
 
-				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
+				var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, false, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
 
 				//card fragment menu
@@ -145,13 +145,12 @@
 					c.className = 'lvg-card-fragment-v2__checkbox-container';
 					var fakeCheckbox = createElem("div");
 					fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
-					var attrRole = document.createAttribute('role');
 					c.appendChild(fakeCheckbox);
 					domElement.appendChild(c);
 				}
 
 			} else if (parent.listView) {
-				var a = createLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, $state, $location, subscribers, EventBus);
+				var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, false, $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
 				baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
 			} else if (parent.searchView) {
@@ -159,9 +158,8 @@
 				if(User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
 					checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
 				}
-
 				var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
-				var a = createLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, $state, $location, subscribers, EventBus);
+				var a = createMainLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, parent.card.columnDefinition === 'CLOSED', $state, $location, subscribers, EventBus);
 				baseDiv.appendChild(a);
 				baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
 			}
@@ -264,11 +262,14 @@
 	}
 
 
-	function createLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, $state, $location, subscribers, EventBus) {
+	function createMainLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, cardIsClosed, $state, $location, subscribers, EventBus) {
 		var a = createElem("a");
 		a.className = 'lvg-card-fragment-v2__card-link';
 		a.textContent = boardShortName + '-' + sequenceNumber;
 		a.href = updateUrl($state, $location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
+		if(cardIsClosed) {
+		    a.className += ' lavagna-closed-card';
+        }
 		if(isDynamicLink) {
 			var onUpdateQueryOrPageSub = EventBus.on('updatedQueryOrPage', function(ev, searchFilter) {
 				a.href = updateUrl($state, searchFilter.location ? searchFilter.location.q : null, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
