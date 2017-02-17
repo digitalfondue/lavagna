@@ -316,7 +316,13 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.0.6</version>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -327,6 +333,7 @@
         <org.eclipse.jetty.version>9.2.21.v20170120</org.eclipse.jetty.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
+        <kotlin.version>1.0.6</kotlin.version>
     </properties>
     <!-- -->
     <build>
@@ -335,29 +342,27 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.0.6</version>
+                <version>${kotlin.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                                <source>src/main/java</source>
+                                <source>target/generated-sources/license</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
-                            </sourceDirs>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -391,6 +396,20 @@
                     </execution>
                     <execution>
                         <id>java-test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
                         <phase>test-compile</phase>
                         <goals>
                             <goal>testCompile</goal>
