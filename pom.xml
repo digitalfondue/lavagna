@@ -363,6 +363,12 @@
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <source>src/main/java</source>
+                                <source>target/generated-sources/license</source>
+                            </sourceDirs>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
