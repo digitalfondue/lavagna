@@ -5,11 +5,19 @@
 
     components.component('lvgAdminIntegrations', {
     	templateUrl: 'app/components/admin/integrations/integrations.html',
-        controller: [AdminIntegrationsController]
+        controller: ['Integrations', AdminIntegrationsController]
     });
 
 
-    function AdminIntegrationsController() {
+    function AdminIntegrationsController(Integrations) {
+
+        var ctrl = this;
+
+        ctrl.$onInit = function() {
+            Integrations.getAll().then(function(res) {
+                ctrl.integrations = res;
+            });
+        }
     }
 
 })()

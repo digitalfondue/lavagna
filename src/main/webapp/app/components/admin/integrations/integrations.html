@@ -1,1 +1,19 @@
-api integrations here
+<div class="lvg-content">
+
+    <h2 class="md-title" translate>admin.integrations</h2>
+
+    <div ng-repeat="integration in $ctrl.integrations">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>{{integration.name}}</md-card-title-text>
+            </md-card-title>
+        </md-card>
+    </div>
+</div>
+
+
+<md-button class="md-fab md-primary lvg-fab-bottom-right" ng-click=""
+           aria-label="{{'admin.integrations.add' | translate}}">
+    <md-tooltip md-direction="top">{{'admin.integrations.add' | translate}}</md-tooltip>
+    <md-icon md-svg-icon="add"></md-icon>
+</md-button>
