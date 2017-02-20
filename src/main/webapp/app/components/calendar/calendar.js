@@ -17,6 +17,8 @@
     function CalendarController($rootScope, $filter, $sanitize, $state, $mdDateLocale, User, MaterialCalendarData) {
         var ctrl = this;
 
+        MaterialCalendarData.data = {};
+
         ctrl.firstDayOfWeek = $mdDateLocale.firstDayOfWeek;
 
         ctrl.events = [];
@@ -92,7 +94,7 @@
             syncCalendar();
         };
 
-        var unregStateChanges = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        var unregStateChanges = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
             if (fromState.name === 'calendar.card' && toState.name === 'calendar') {
                 refreshEvents();
             }
@@ -100,6 +102,7 @@
 
         ctrl.$onDestroy = function onDestroy() {
             unregStateChanges();
+            MaterialCalendarData.data = {};
         };
 
     }
