@@ -233,11 +233,6 @@ Can be disabled using the following system property: datasource.disable.migratio
 
 ## Check for updated dependencies ##
 
-Notes:
-
-- HSQLDB at the moment will not be updated to version 2.3.2 due to a bug
-  (default null+unique clause has changed)
-
 ```
 mvn versions:display-dependency-updates
 ```
