@@ -10,7 +10,7 @@ Lavagna
 
 
 # Latest stable release is 1.0.7.2 (2016-10-06) #
-# Latest pre-release is 1.1-M2 (2017-02-09) #
+# Latest pre-release is 1.1-M3 (2017-02-20) #
 
 ## About ##
 

@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.1-M1 (2017-02-09)
+## 1.1-M3 (2017-02-20)
+
+ - Update the pre-release. Fixes and updates.
+
+## 1.1-M2 (2017-02-09)
 
  - Update the pre-release. Multiple fixes and improvements.
 

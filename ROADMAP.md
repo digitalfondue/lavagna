@@ -7,13 +7,12 @@ This is a high level roadmap. Lavagna has currently:
 
 ## Expected for 1.1 
 
- - improve the UI/UX
- - support commit log parsing (git, svn (?))
- - webhooks support
+ - improve the UI/UX [done]
+ - webhooks support [wip]
  - support for internal password protected accounts
- - client side refactoring, porting to angular 1.5 [wip]
+ - client side refactoring, porting to angular 1.5 [done]
  - support internal account handling [wip]
- - refactor the authentication manager: cleanup + simplification [mostly done]
+ - refactor the authentication manager: cleanup + simplification [done]
  - support gitlab oauth [done]
  - iCalendar feed support [done]
  - update to spring 4.2.x [done]
