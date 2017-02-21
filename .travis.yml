@@ -56,3 +56,5 @@ sudo: required
 notifications:
   slack:
     secure: VtkFetQ1nM9vkmcZiyMW3MKsbCEsMVl35CL3a5qAFsuqTemOTy3sc+RdLJTKqeconb6nH3e8HJJD6fymf/pSiN90bX+5jTUUzJ9dBp/XcVTa9mamKAR7sLbEibEAz72TRpgh17VcOMpW9HuckTIRciUzsCygZvUxztX5I/x6t3E=
+    on_success: change
+    on_failure: change
