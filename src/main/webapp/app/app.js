@@ -418,10 +418,7 @@
                 this.project = project;
             },
             controllerAs: 'rslvr',
-            resolve : projectResolver,
-            onEnter: function(Title) {
-                Title.set('title.calendar');
-            }
+            resolve : projectResolver
         }).state('project.calendar.card', {
             url : '{shortName:[A-Z0-9_]+}-{seqNr:[0-9]+}/',
             template : '<lvg-card-modal project="rslvr.project" board="rslvr.board" card="rslvr.card" user="rslvr.user"></lvg-card-modal>',
