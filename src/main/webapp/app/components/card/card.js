@@ -48,14 +48,14 @@
             processCardLabels();
 
             projectMetadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl.project);
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
         	unbindCardCache();
         	unbindLabelCache();
         	unbindStomp();
         	projectMetadataSubscription();
-        }
+        };
 
         //------------------
 

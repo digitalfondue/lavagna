@@ -134,15 +134,15 @@
                 }
             }
             return false;
-        };
+        }
 
         function setMilestone(milestone) {
             BulkOperations.setMilestone(currentCard(), milestone);
-        };
+        }
 
         function removeMilestone() {
             BulkOperations.removeMilestone(currentCard());
-        };
+        }
         // ----
 
 

@@ -22,4 +22,8 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-} 
+}
+
+.lvg-board-controls__inner-menu {
+    padding: 0;
+}

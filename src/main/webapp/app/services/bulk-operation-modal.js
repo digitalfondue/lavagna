@@ -113,19 +113,6 @@
 				}, function() {});
 			},
 
-			setMilestone: function(cards, projectName, applyIfPresent) {
-				applyIfPresent = applyIfPresent || angular.noop;
-				$mdDialog.show({
-					template: '<lvg-dialog-select-milestone action="action($milestone)"  project-name="projectName"></lvg-dialog-select-milestone>',
-					controller: function($scope) {
-						$scope.projectName = projectName;
-						$scope.action = function(milestone) {
-							BulkOperations.setMilestone(cards, milestone).then(applyIfPresent);
-						}
-					}
-				});
-			},
-
 			removeMilestone: function(cards, applyIfPresent) {
 				var title = $translate.instant('dialog-remove-milestone.title');
 				var confirm = $mdDialog.confirm().title(title)
