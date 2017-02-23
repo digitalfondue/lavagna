@@ -101,14 +101,12 @@
                     for (var i = 0; i < res.data.length; i++) {
                         var u = res.data[i];
                         var text = prefix + quoteIfHasSpace(u.name);
-                        var type = "create";
 
-                        /*if (u.type !== 'NULL') { FIXME
-                         text += ':';
-                         type = "example";
-                         }*/
+                        data.push({value: text, text: text, type: 'create'});
 
-                        data.push({value: text, text: text, type: type});
+                        if (u.type !== 'NULL') {
+                            data.push({value: text + ':', text: text + ':<value>', type: 'example'});
+                        }
                     }
                     return data;
                 });
@@ -121,7 +119,7 @@
                         data.push({
                             value: input + quoteIfHasSpace(u),
                             text: input + quoteIfHasSpace(u),
-                            type: "create"
+                            type: 'create'
                         });
                     }
                     return data;
@@ -229,11 +227,11 @@
                     res.push({value: "milestone:unassigned ", text: "milestone:unassigned", type: "create"});
                     return searchMilestone(input, "milestone:", res);
                 } else if (input.indexOf("#") === 0) {
-                    //if (input.indexOf(":") < (input.length - 1)) { FIXME
-                    return searchLabel(input, "#", res);
-                    //} else {
-                    //return searchLabelValues(input, res);
-                    //}
+                    if (input.indexOf(":") < (input.length - 1)) {
+                        return searchLabel(input, "#", res);
+                    } else {
+                        return searchLabelValues(input, res);
+                    }
                 }
                 return res;
             }
