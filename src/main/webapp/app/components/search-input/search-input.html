@@ -1,6 +1,7 @@
 <form class="lavagna-search lvg-search-hidden row row-inherit" role="search"
       data-ng-submit="$ctrl.submit();$event.preventDefault();" ng-click="$ctrl.focusOnInput()">
     <md-chips class="flex" ng-model="$ctrl.selected" md-autocomplete-snap
+              md-require-match="true"
               md-transform-chip="$ctrl.transformChip($chip)"
               md-on-remove="$ctrl.submit()" md-on-add="$ctrl.submit()">
         <md-autocomplete placeholder="Search"
@@ -9,6 +10,7 @@
                          md-items="item in $ctrl.querySearch($ctrl.searchText)"
                          md-item-text="item.text"
                          md-no-cache="true"
+                         md-autoselect="true"
                          md-selected-item-change="$ctrl.selectedItemChange(item)">
             <span md-highlight-text="$ctrl.searchText">{{item.text}}</span>
         </md-autocomplete>
