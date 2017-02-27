@@ -13,6 +13,9 @@
         return {
             getAll: function() {
                 return $http.get('/api/plugin').then(extractData);
+            },
+            remove: function(name) {
+                return $http['delete']('/api/plugin/'+name).then(extractData);
             }
         }
     }

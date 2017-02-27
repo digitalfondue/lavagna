@@ -7,6 +7,12 @@
             <md-card-title>
                 <md-card-title-text>{{integration.name}}</md-card-title-text>
             </md-card-title>
+            <md-card-actions class="row row-inherit">
+                <span class="flex"></span>
+                <md-button class="md-icon-button" ng-click="$ctrl.deleteDialog(integration, $event)">
+                    <md-icon md-svg-icon="delete"></md-icon>
+                </md-button>
+            </md-card-actions>
         </md-card>
     </div>
 </div>
