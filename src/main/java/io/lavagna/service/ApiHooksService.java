@@ -165,9 +165,9 @@ public class ApiHooksService {
     }
 
     @Transactional
-    public void createOrUpdateApiHook(String name, String code, Map<String, Object> properties, List<String> projects) {
+    public void createOrUpdateApiHook(String name, String code, Map<String, Object> properties, List<String> projects, Map<String, Object> metadata) {
         if (apiHookQuery.findByNames(Collections.singletonList(name)).isEmpty()) {
-            apiHookQuery.insert(name, code, Json.GSON.toJson(properties), true, ApiHook.Type.EVENT_EMITTER_HOOK, Json.GSON.toJson(projects));
+            apiHookQuery.insert(name, code, Json.GSON.toJson(properties), true, ApiHook.Type.EVENT_EMITTER_HOOK, Json.GSON.toJson(projects), Json.GSON.toJson(metadata));
         } else {
             apiHookQuery.update(name, code, Json.GSON.toJson(properties), true, ApiHook.Type.EVENT_EMITTER_HOOK, Json.GSON.toJson(projects));
         }

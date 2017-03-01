@@ -45,7 +45,7 @@ public class ApiHooksController {
     @ExpectPermission(Permission.ADMINISTRATION)
     @RequestMapping(value = "/api/plugin", method = RequestMethod.POST)
     public void addOrUpdateGlobalPlugin(@RequestBody PluginCode plugin) {
-        apiHooksService.createOrUpdateApiHook(plugin.getName(), plugin.getCode(), plugin.getProperties(), plugin.getProjects());
+        apiHooksService.createOrUpdateApiHook(plugin.getName(), plugin.getCode(), plugin.getProperties(), plugin.getProjects(), plugin.getMetadata());
     }
 
     @ExpectPermission(Permission.ADMINISTRATION)

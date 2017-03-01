@@ -24,7 +24,8 @@ class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_ENABLED") val enabled: Boolean,
 			  @Column("API_HOOK_TYPE") val type: Type,
 			  @Column("API_HOOK_PROJECTS") val projects: String?,
-			  @Column("API_HOOK_VERSION") val version: Int) {
+			  @Column("API_HOOK_VERSION") val version: Int,
+              @Column("API_HOOK_METADATA") val metadata: String?) {
 
 	enum class Type {
         EVENT_EMITTER_HOOK, //react to event emitter action
