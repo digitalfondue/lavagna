@@ -44,8 +44,8 @@ public class ApiHooksController {
 
     @ExpectPermission(Permission.ADMINISTRATION)
     @RequestMapping(value = "/api/plugin", method = RequestMethod.POST)
-    public void addOrUpdateGlobalPlugin(@RequestBody PluginCode plugin) {
-        apiHooksService.createOrUpdateApiHook(plugin.getName(), plugin.getCode(), plugin.getProperties(), plugin.getProjects(), plugin.getMetadata());
+    public void addGlobalPlugin(@RequestBody PluginCode plugin) {
+        apiHooksService.createApiHook(plugin.getName(), plugin.getCode(), plugin.getProperties(), plugin.getProjects(), plugin.getMetadata());
     }
 
     @ExpectPermission(Permission.ADMINISTRATION)
@@ -64,6 +64,12 @@ public class ApiHooksController {
     @RequestMapping(value = "/api/plugin/{name}", method = RequestMethod.DELETE)
     public void deletePlugin(@PathVariable("name") String name) {
         apiHooksService.deleteHook(name);
+    }
+
+    @ExpectPermission(Permission.ADMINISTRATION)
+    @RequestMapping(value = "/api/plugin/{name}", method = RequestMethod.POST)
+    public void update(@PathVariable("name") String name, @RequestBody PluginCode plugin) {
+        apiHooksService.updateApiHook(name, plugin.getCode(), plugin.getProperties(), plugin.getProjects());
     }
 
     @ExpectPermission(Permission.GLOBAL_HOOK_API_ACCESS)

@@ -9,7 +9,7 @@
     });
 
 
-    function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations) {
+            function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations) {
 
         var ctrl = this;
 
@@ -60,6 +60,7 @@
         }
 
         function editDialog(integration, event) {
+            var translationKeys = {name: integration.name};
             $mdDialog.show({
                 targetEvent: event,
                 templateUrl: 'app/components/admin/integrations/edit-integration-dialog.html',
@@ -71,6 +72,18 @@
 
                     ctrl.cancel = function() {
                         $mdDialog.cancel(false);
+                    }
+
+                    ctrl.save = function() {
+                        Integrations.update(integration.name, ctrl.script, ctrl.configuration, integration.projects).then(function() {
+                            ctrl.cancel();
+                            Notification.addAutoAckNotification('success', {key: 'notification.admin-integrations.update.success', parameters: translationKeys}, false);
+                            loadAll();
+                        }, function(error) {
+                            if(error) {
+                                Notification.addAutoAckNotification('error', {key: 'notification.admin-integrations.update.error', parameters: translationKeys}, false);
+                            }
+                        });
                     }
                 },
                 fullscreen: true,

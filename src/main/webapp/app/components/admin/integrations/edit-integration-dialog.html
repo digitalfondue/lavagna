@@ -8,7 +8,7 @@
             </md-button>
         </div>
     </md-toolbar>
-    <form role="form" ng-submit="" name="editIntegrationForm">
+    <form role="form" ng-submit="editIntegrationCtrl.save()" name="editIntegrationForm">
         <md-dialog-content class="md-dialog-content">
             <p ng-bind="editIntegrationCtrl.integration.metadata.description"></p>
 
@@ -35,13 +35,14 @@
                 </md-input-container>
             </div>
         </md-dialog-content>
+
+        <md-dialog-actions>
+            <md-button ng-click="editIntegrationCtrl.cancel()">
+                <span translate>button.cancel</span>
+            </md-button>
+            <md-button type="submit" class="md-primary">
+                <span translate>button.update</span>
+            </md-button>
+        </md-dialog-actions>
     </form>
-    <md-dialog-actions>
-        <md-button ng-click="editIntegrationCtrl.cancel()">
-            <span translate>button.cancel</span>
-        </md-button>
-        <md-button type="submit" class="md-primary">
-            <span translate>button.update</span>
-        </md-button>
-    </md-dialog-actions>
 </md-dialog>

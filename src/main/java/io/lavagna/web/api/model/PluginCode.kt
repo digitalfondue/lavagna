@@ -16,4 +16,4 @@
  */
 package io.lavagna.web.api.model
 
-class PluginCode(var name: String, var code: String?, var properties: Map<String, Any>?, var projects: List<String> ?, var metadata: Map<String, Any>?)
+class PluginCode(var name: String, var code: String?, var properties: Map<String, String>?, var projects: List<String> ?, var metadata: Map<String, Any>?)

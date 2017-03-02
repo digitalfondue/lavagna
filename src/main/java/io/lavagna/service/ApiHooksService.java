@@ -164,12 +164,18 @@ public class ApiHooksService {
     }
 
     @Transactional
-    public void createOrUpdateApiHook(String name, String code, Map<String, Object> properties, List<String> projects, Map<String, Object> metadata) {
-        if (apiHookQuery.findByNames(Collections.singletonList(name)).isEmpty()) {
-            apiHookQuery.insert(name, code, Json.GSON.toJson(properties), true, ApiHook.Type.EVENT_EMITTER_HOOK, Json.GSON.toJson(projects), Json.GSON.toJson(metadata));
-        } else {
-            apiHookQuery.update(name, code, Json.GSON.toJson(properties), true, ApiHook.Type.EVENT_EMITTER_HOOK, Json.GSON.toJson(projects));
-        }
+    public void createApiHook(String name, String code, Map<String, String> properties, List<String> projects, Map<String, Object> metadata) {
+        String propAsJson = properties == null ? null : Json.GSON.toJson(properties, Map.class);
+        String projectsAsJson = projects == null ? null : Json.GSON.toJson(projects, List.class);
+        String metadataAsJson = metadata == null ? null : Json.GSON.toJson(metadata, Map.class);
+        apiHookQuery.insert(name, code, propAsJson, true, ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson, metadataAsJson);
+    }
+
+    @Transactional
+    public void updateApiHook(String name, String code, Map<String, String> properties, List<String> projects) {
+        String propAsJson = properties == null ? null : Json.GSON.toJson(properties, Map.class);
+        String projectsAsJson = projects == null ? null : Json.GSON.toJson(projects, List.class);
+        apiHookQuery.update(name, code, propAsJson, true, ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson);
     }
 
     private Map<String, Object> getBaseDataFor(int cardId) {
