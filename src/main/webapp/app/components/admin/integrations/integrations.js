@@ -67,7 +67,14 @@
                     var ctrl = this;
                     ctrl.integration = integration;
                     ctrl.configuration = angular.copy(integration.configuration);
+                    ctrl.script = integration.script;
+
+                    ctrl.cancel = function() {
+                        $mdDialog.cancel(false);
+                    }
                 },
+                fullscreen: true,
+                autoWrap: false,
                 controllerAs: 'editIntegrationCtrl',
                 bindToController: true
             });

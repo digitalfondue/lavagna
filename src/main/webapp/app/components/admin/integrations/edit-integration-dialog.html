@@ -1,21 +1,47 @@
-<form role="form" ng-submit="" name="addNewIntegrationForm">
-    <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title"><span translate>admin.integrations.edit</span> {{editIntegrationCtrl.integration.name}}</h2>
-        <p ng-bind="editIntegrationCtrl.integration.metadata.description"></p>
+<md-dialog class="lvg-edit-integration-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span translate>admin.integrations.edit</span> {{editIntegrationCtrl.integration.name}}</h2>
+            <span class="flex"></span>
+            <md-button class="md-icon-button" ng-click="editIntegrationCtrl.cancel()">
+                <md-icon md-svg-icon="close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form role="form" ng-submit="" name="editIntegrationForm">
+        <md-dialog-content class="md-dialog-content">
+            <p ng-bind="editIntegrationCtrl.integration.metadata.description"></p>
 
-        <div ng-if="editIntegrationCtrl.integration.metadata.parameters.length > 0">
-            <h3 translate>admin.integrations.configuration-parameters</h3>
+            <div ng-if="editIntegrationCtrl.integration.metadata.parameters.length > 0">
+                <h3 translate>admin.integrations.configuration-parameters</h3>
 
-            <div ng-repeat="param in editIntegrationCtrl.integration.metadata.parameters" ng-switch="param.type">
-                <md-input-container ng-switch-when="textarea" class="md-block">
-                    <label>{{param.label}}</label>
-                    <textarea rows="5" ng-model="editIntegrationCtrl.configuration[param.key]"></textarea>
-                </md-input-container>
-                <md-input-container ng-switch-default class="md-block">
-                    <label>{{param.label}}</label>
-                    <input class="form-control" type="{{param.type}}" ng-model="editIntegrationCtrl.configuration[param.key]">
+                <div ng-repeat="param in editIntegrationCtrl.integration.metadata.parameters" ng-switch="param.type">
+                    <md-input-container ng-switch-when="textarea" class="md-block">
+                        <label>{{param.label}}</label>
+                        <textarea rows="5" ng-model="editIntegrationCtrl.configuration[param.key]"></textarea>
+                    </md-input-container>
+                    <md-input-container ng-switch-default class="md-block">
+                        <label>{{param.label}}</label>
+                        <input class="form-control" type="{{param.type}}" ng-model="editIntegrationCtrl.configuration[param.key]">
+                    </md-input-container>
+                </div>
+            </div>
+
+
+            <div>
+                <h3 translate>admin.integrations.script</h3>
+                <md-input-container class="md-block">
+                    <textarea rows="5" ng-model="editIntegrationCtrl.script"></textarea>
                 </md-input-container>
             </div>
-        </div>
-    </md-dialog-content>
-</form>
+        </md-dialog-content>
+    </form>
+    <md-dialog-actions>
+        <md-button ng-click="editIntegrationCtrl.cancel()">
+            <span translate>button.cancel</span>
+        </md-button>
+        <md-button type="submit" class="md-primary">
+            <span translate>button.update</span>
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
