@@ -5,11 +5,11 @@
 
     components.component('lvgAdminIntegrations', {
     	templateUrl: 'app/components/admin/integrations/integrations.html',
-        controller: ['$mdDialog', '$translate', 'Notification', 'Integrations', AdminIntegrationsController]
+        controller: ['$mdDialog', '$translate', 'Notification', 'Integrations', 'Project', AdminIntegrationsController]
     });
 
 
-            function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations) {
+    function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations, Project) {
 
         var ctrl = this;
 
@@ -23,6 +23,7 @@
 
         function loadAll() {
             Integrations.getAll().then(function(res) {ctrl.integrations = res;});
+            Project.list().then(function(res) {ctrl.projects = res;});
         }
 
         function addNewIntegrationDialog(event) {
@@ -59,6 +60,8 @@
             })
         }
 
+        var mainCtrl = ctrl;
+
         function editDialog(integration, event) {
             var translationKeys = {name: integration.name};
             $mdDialog.show({
@@ -70,12 +73,16 @@
                     ctrl.configuration = angular.copy(integration.configuration);
                     ctrl.script = integration.script;
 
+                    ctrl.enableForAllProjects = integration.projects === null;
+                    ctrl.projects = angular.copy(integration.projects) || [];
+                    ctrl.allProjects = mainCtrl.projects;
+
                     ctrl.cancel = function() {
                         $mdDialog.cancel(false);
                     }
 
                     ctrl.save = function() {
-                        Integrations.update(integration.name, ctrl.script, ctrl.configuration, integration.projects).then(function() {
+                        Integrations.update(integration.name, ctrl.script, ctrl.configuration, ctrl.enableForAllProjects ? null : ctrl.projects).then(function() {
                             ctrl.cancel();
                             Notification.addAutoAckNotification('success', {key: 'notification.admin-integrations.update.success', parameters: translationKeys}, false);
                             loadAll();
@@ -84,6 +91,19 @@
                                 Notification.addAutoAckNotification('error', {key: 'notification.admin-integrations.update.error', parameters: translationKeys}, false);
                             }
                         });
+                    }
+
+                    ctrl.toggle = function(project) {
+                        var idx = ctrl.projects.indexOf(project.shortName);
+                        if (idx > -1) {
+                            ctrl.projects.splice(idx, 1);
+                        } else {
+                            ctrl.projects.push(project.shortName);
+                        }
+                    }
+
+                    ctrl.exists = function(project) {
+                        return ctrl.projects.indexOf(project.shortName) > -1;
                     }
                 },
                 fullscreen: true,

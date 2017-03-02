@@ -26,12 +26,13 @@ class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_CONFIGURATION") @Transient val configurationRaw: String?,
 			  @Column("API_HOOK_ENABLED") val enabled: Boolean,
 			  @Column("API_HOOK_TYPE") val type: Type,
-			  @Column("API_HOOK_PROJECTS") val projects: String?,
+			  @Column("API_HOOK_PROJECTS") @Transient val projectsRaw: String?,
 			  @Column("API_HOOK_VERSION") val version: Int,
               @Column("API_HOOK_METADATA") @Transient val metadataRaw: String?) {
 
     val metadata: Map<String, Object>?;
     val configuration: Map<String, String>?;
+    val projects: List<String>?;
 
     init {
         val typeStringObj = object : TypeToken<Map<String, Object>>() {}.type
@@ -40,6 +41,8 @@ class ApiHook(@Column("API_HOOK_NAME") val name: String,
         val typeStringString = object : TypeToken<Map<String, String>>() {}.type
         this.configuration = if (configurationRaw == null) { Collections.emptyMap() } else { Json.GSON.fromJson(configurationRaw, typeStringString)}
 
+        val typeListString = object : TypeToken<List<String>>() {}.type
+        this.projects = if (projectsRaw == null) { null } else { Json.GSON.fromJson(projectsRaw, typeListString)}
     }
 
 	enum class Type {

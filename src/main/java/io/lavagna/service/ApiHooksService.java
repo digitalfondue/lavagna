@@ -133,6 +133,10 @@ public class ApiHooksService {
             }
 
             for (Triple<ApiHook, Map<String, String>, CompiledScript> val : apiHooksService.compiledScriptCache.values()) {
+                List<String> projectsFilter = val.getLeft().getProjects();
+                if(projectsFilter != null && !projectsFilter.contains(projectName)) {
+                    continue;
+                }
 
                 Map<String, Object> scope = new HashMap<>(env);
 

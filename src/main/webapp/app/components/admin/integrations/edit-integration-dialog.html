@@ -27,6 +27,18 @@
                 </div>
             </div>
 
+            <div>
+                <h3 translate>admin.integrations.enable-for-projects</h3>
+                <md-checkbox ng-model="editIntegrationCtrl.enableForAllProjects">Enable for all projects</md-checkbox>
+                <div ng-if="!editIntegrationCtrl.enableForAllProjects">
+                    <h4>Projects</h4>
+                    <p ng-repeat="project in editIntegrationCtrl.allProjects">
+                        <md-checkbox ng-checked="editIntegrationCtrl.exists(project)" ng-click="editIntegrationCtrl.toggle(project)">
+                            {{ project.shortName }}
+                        </md-checkbox>
+                    </p>
+                </div>
+            </div>
 
             <div>
                 <h3 translate>admin.integrations.script</h3>
@@ -34,6 +46,8 @@
                     <textarea rows="5" ng-model="editIntegrationCtrl.script"></textarea>
                 </md-input-container>
             </div>
+
+
         </md-dialog-content>
 
         <md-dialog-actions>
