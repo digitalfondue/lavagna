@@ -23,7 +23,7 @@ import java.util.*
 
 class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_SCRIPT") val script: String,
-			  @Column("API_HOOK_CONFIGURATION") val configuration: String?,
+			  @Column("API_HOOK_CONFIGURATION") @Transient val configurationRaw: String?,
 			  @Column("API_HOOK_ENABLED") val enabled: Boolean,
 			  @Column("API_HOOK_TYPE") val type: Type,
 			  @Column("API_HOOK_PROJECTS") val projects: String?,
@@ -31,10 +31,15 @@ class ApiHook(@Column("API_HOOK_NAME") val name: String,
               @Column("API_HOOK_METADATA") @Transient val metadataRaw: String?) {
 
     val metadata: Map<String, Object>?;
+    val configuration: Map<String, String>?;
 
     init {
-        val type = object : TypeToken<Map<String, Object>>() {}.type
-        this.metadata = if (this.metadataRaw == null) { Collections.emptyMap() } else { Json.GSON.fromJson(metadataRaw, type)}
+        val typeStringObj = object : TypeToken<Map<String, Object>>() {}.type
+        this.metadata = if (metadataRaw == null) { Collections.emptyMap() } else { Json.GSON.fromJson(metadataRaw, typeStringObj)}
+
+        val typeStringString = object : TypeToken<Map<String, String>>() {}.type
+        this.configuration = if (configurationRaw == null) { Collections.emptyMap() } else { Json.GSON.fromJson(configurationRaw, typeStringString)}
+
     }
 
 	enum class Type {

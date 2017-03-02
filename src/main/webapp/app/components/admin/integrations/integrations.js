@@ -66,6 +66,7 @@
                 controller: function() {
                     var ctrl = this;
                     ctrl.integration = integration;
+                    ctrl.configuration = angular.copy(integration.configuration);
                 },
                 controllerAs: 'editIntegrationCtrl',
                 bindToController: true

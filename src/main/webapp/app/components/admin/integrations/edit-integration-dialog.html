@@ -2,5 +2,20 @@
     <md-dialog-content class="md-dialog-content">
         <h2 class="md-title"><span translate>admin.integrations.edit</span> {{editIntegrationCtrl.integration.name}}</h2>
         <p ng-bind="editIntegrationCtrl.integration.metadata.description"></p>
+
+        <div ng-if="editIntegrationCtrl.integration.metadata.parameters.length > 0">
+            <h3 translate>admin.integrations.configuration-parameters</h3>
+
+            <div ng-repeat="param in editIntegrationCtrl.integration.metadata.parameters" ng-switch="param.type">
+                <md-input-container ng-switch-when="textarea" class="md-block">
+                    <label>{{param.label}}</label>
+                    <textarea rows="5" ng-model="editIntegrationCtrl.configuration[param.key]"></textarea>
+                </md-input-container>
+                <md-input-container ng-switch-default class="md-block">
+                    <label>{{param.label}}</label>
+                    <input class="form-control" type="{{param.type}}" ng-model="editIntegrationCtrl.configuration[param.key]">
+                </md-input-container>
+            </div>
+        </div>
     </md-dialog-content>
 </form>

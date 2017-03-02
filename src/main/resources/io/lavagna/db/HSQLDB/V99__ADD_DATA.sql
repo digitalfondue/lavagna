@@ -59,7 +59,7 @@ INSERT INTO LA_PROJECT(PROJECT_NAME, PROJECT_SHORT_NAME, PROJECT_DESCRIPTION) VA
 
 -- SCRIPT
 INSERT INTO LA_API_HOOK(API_HOOK_NAME, API_HOOK_SCRIPT, API_HOOK_CONFIGURATION, API_HOOK_ENABLED, API_HOOK_TYPE, API_HOOK_VERSION, API_HOOK_METADATA) VALUES
-	('test', 'log.warn("eventName: " + eventName + ", project: " + project + ", data: " + data)', '{}', true, 'EVENT_EMITTER_HOOK', 0, '{"description" : "this is a simple script for testing", "parameters": [{"name" : "string"}, {"properties": "textarea"}]}');
+	('test', 'log.warn("eventName: " + eventName + ", project: " + project + ", data: " + data)', '{"name" : "name value", "properties" : "my properties"}', true, 'EVENT_EMITTER_HOOK', 0, '{"description" : "this is a simple script for testing", "parameters": [{"label" : "Name", "key" : "name", "type" : "input"}, {"label" : "Properties", "key" : "properties", "type" : "textarea"}]}');
 
 -- DEFAULT ANON ROLE
 INSERT INTO LA_PROJECT_ROLE(PROJECT_ROLE_NAME, PROJECT_ID_FK, PROJECT_ROLE_HIDDEN, PROJECT_ROLE_READONLY, PROJECT_ROLE_REMOVABLE) VALUES('ANONYMOUS', (SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = 'TEST'), TRUE, TRUE, FALSE);
