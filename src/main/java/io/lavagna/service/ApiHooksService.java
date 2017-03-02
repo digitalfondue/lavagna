@@ -60,7 +60,7 @@ public class ApiHooksService {
 
     private final Compilable engine;
     private final Executor executor;
-    private final Map<String, Triple<ApiHook, Map<Object, Object>, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
+    private final Map<String, Triple<ApiHook, Map<String, String>, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
     private final ProjectService projectService;
     private final CardService cardService;
     private final ApiHookQuery apiHookQuery;
@@ -124,8 +124,7 @@ public class ApiHooksService {
                 for (ApiHook apiHook : apiHooksService.apiHookQuery.findByNames(toAddOrUpdate)) {
                     try {
                         CompiledScript cs = apiHooksService.engine.compile(apiHook.getScript());
-                        @SuppressWarnings("unchecked")
-                        Map<Object, Object> configuration = apiHook.getConfiguration() != null ? Json.GSON.fromJson(apiHook.getConfiguration(), Map.class) : Collections.emptyMap();
+                        Map<String, String> configuration = apiHook.getConfiguration() != null ? apiHook.getConfiguration() : Collections.<String, String>emptyMap();
                         apiHooksService.compiledScriptCache.put(apiHook.getName(), Triple.of(apiHook, configuration, cs));
                     } catch (ScriptException ex) {
                         LOG.warn("Error while compiling script " + apiHook.getName());
@@ -133,7 +132,7 @@ public class ApiHooksService {
                 }
             }
 
-            for (Triple<ApiHook, Map<Object, Object>, CompiledScript> val : apiHooksService.compiledScriptCache.values()) {
+            for (Triple<ApiHook, Map<String, String>, CompiledScript> val : apiHooksService.compiledScriptCache.values()) {
 
                 Map<String, Object> scope = new HashMap<>(env);
 
