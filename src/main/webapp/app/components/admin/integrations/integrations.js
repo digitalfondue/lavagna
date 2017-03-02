@@ -15,6 +15,7 @@
 
         ctrl.addNewIntegrationDialog = addNewIntegrationDialog;
         ctrl.deleteDialog = deleteDialog;
+        ctrl.editDialog = editDialog;
 
         ctrl.$onInit = function() {
             loadAll();
@@ -24,8 +25,9 @@
             Integrations.getAll().then(function(res) {ctrl.integrations = res;});
         }
 
-        function addNewIntegrationDialog() {
+        function addNewIntegrationDialog(event) {
             $mdDialog.show({
+                targetEvent: event,
                 templateUrl: 'app/components/admin/integrations/add-new-integration-dialog.html',
                 controller: function() {
                 },
@@ -55,6 +57,19 @@
                     Notification.addAutoAckNotification('error', {key: 'notification.admin-integrations.remove.error', parameters: translationKeys}, false);
                 }
             })
+        }
+
+        function editDialog(integration, event) {
+            $mdDialog.show({
+                targetEvent: event,
+                templateUrl: 'app/components/admin/integrations/edit-integration-dialog.html',
+                controller: function() {
+                    var ctrl = this;
+                    ctrl.integration = integration;
+                },
+                controllerAs: 'editIntegrationCtrl',
+                bindToController: true
+            });
         }
     }
 
