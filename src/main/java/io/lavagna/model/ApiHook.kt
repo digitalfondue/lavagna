@@ -17,6 +17,9 @@
 package io.lavagna.model
 
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
+import com.google.gson.reflect.TypeToken
+import io.lavagna.common.Json
+import java.util.*
 
 class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_SCRIPT") val script: String,
@@ -25,7 +28,14 @@ class ApiHook(@Column("API_HOOK_NAME") val name: String,
 			  @Column("API_HOOK_TYPE") val type: Type,
 			  @Column("API_HOOK_PROJECTS") val projects: String?,
 			  @Column("API_HOOK_VERSION") val version: Int,
-              @Column("API_HOOK_METADATA") val metadata: String?) {
+              @Column("API_HOOK_METADATA") @Transient val metadataRaw: String?) {
+
+    val metadata: Map<String, Object>?;
+
+    init {
+        val type = object : TypeToken<Map<String, Object>>() {}.type
+        this.metadata = if (this.metadataRaw == null) { Collections.emptyMap() } else { Json.GSON.fromJson(metadataRaw, type)}
+    }
 
 	enum class Type {
         EVENT_EMITTER_HOOK, //react to event emitter action
