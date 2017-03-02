@@ -24,6 +24,7 @@ include-child-summary: true
 	   </header>
 
 	   <div class="mdl-layout__drawer lvg-drawer">
+          <div class="index"><a href="/">Index</a></div>
 		  {{globalToc|raw}}
 	   </div>
 
