@@ -1,13 +1,37 @@
-<div class="lvg-mail-ticket-config__name">{{$ctrl.ticketConfig.name}}</div>
-<div class="lvg-mail-ticket-config__alias">{{$ctrl.ticketConfig.alias}}</div>
-<div class="lvg-mail-ticket-config__board"></div>
-<div class="lvg-mail-ticket-config__column"></div>
-<md-divider></md-divider>
-<md-button class="lvg-small-icon-button" ng-click="$ctrl.onEdit({$mailConfig: $ctrlmailConfig, $ticketConfig: $ctrl.ticketConfig})">
-    <md-icon md-svg-icon="edit" aria-label="{{::('button.edit' | translate)}}"></md-icon>
-    <md-tooltip><span translate>button.edit</span></md-tooltip>
-</md-button>
-<md-button class="lvg-small-icon-button" ng-click="$ctrl.onDelete()">
-    <md-icon md-svg-icon="trash" aria-label="{{::('button.delete' | translate)}}"></md-icon>
-    <md-tooltip>{{::('button.delete'|translate)}}</md-tooltip>
-</md-button>
+<md-card>
+    <div class="lvg-mail-ticket-config__header"
+         ng-style="($ctrl.column.columnColor | labelBackground)"></div>
+    <md-card-title>
+        <md-card-title-text>
+            <div class="lvg-mail-ticket-config__name">{{$ctrl.ticketConfig.name}}</div>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="lvg-mail-ticket-config__info">{{$ctrl.ticketConfig.alias}}</div>
+        <div class="lvg-mail-ticket-config__info"
+             translate
+             translate-values="{board: $ctrl.column.boardShortName, column: $ctrl.column.columnName}">project.manage.mailTicket.ticket.location</div>
+    </md-card-content>
+    <md-card-actions>
+        <md-button class="lvg-small-icon-button" ng-if="!$ctrl.ticketConfig.enabled" ng-click="$ctrl.onToggle({$mailConfig: $ctrl.mailConfig, $ticketConfig: $ctrl.ticketConfig})">
+            <md-icon md-svg-icon="repeat" aria-label="{{::('project.manage.mailTicket.ticket.schedule.enable' | translate)}}"></md-icon>
+            <md-tooltip><span translate>project.manage.mailTicket.ticket.schedule.enable</span></md-tooltip>
+        </md-button>
+        <md-button class="lvg-small-icon-button" ng-if="$ctrl.ticketConfig.enabled" ng-click="$ctrl.onToggle({$mailConfig: $ctrl.mailConfig, $ticketConfig: $ctrl.ticketConfig})">
+            <md-icon md-svg-icon="repeat-off" aria-label="{{::('project.manage.mailTicket.ticket.schedule.disable' | translate)}}"></md-icon>
+            <md-tooltip><span translate>project.manage.mailTicket.ticket.schedule.disable</span></md-tooltip>
+        </md-button>
+        <md-button class="lvg-small-icon-button" ng-click="$ctrl.onEdit({$mailConfig: $ctrl.mailConfig, $ticketConfig: $ctrl.ticketConfig})">
+            <md-icon md-svg-icon="edit" aria-label="{{::('button.edit' | translate)}}"></md-icon>
+            <md-tooltip><span translate>button.edit</span></md-tooltip>
+        </md-button>
+        <md-button class="lvg-small-icon-button" ng-click="$ctrl.onDelete({$ticketConfig: $ctrl.ticketConfig})">
+            <md-icon md-svg-icon="delete" aria-label="{{::('button.delete' | translate)}}"></md-icon>
+            <md-tooltip>{{::('button.delete'|translate)}}</md-tooltip>
+        </md-button>
+    </md-card-actions>
+</md-card>
+
+
+
+

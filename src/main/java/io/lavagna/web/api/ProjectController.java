@@ -207,7 +207,6 @@ public class ProjectController {
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
     @RequestMapping(value = "/api/project/{projectShortName}/ticketConfig/{id}", method = RequestMethod.POST)
     public int updateMailTicketConfig(@PathVariable("projectShortName") String projectShortName,
-                                                       @PathVariable("configId") int configId,
                                                        @PathVariable("id") int id,
                                                        @RequestBody ProjectMailTicket updatedTicket) {
         int projectId = projectService.findIdByShortName(projectShortName);
@@ -232,7 +231,7 @@ public class ProjectController {
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
-    @RequestMapping(value = "/api/project/{projectShortName}/mailTicket/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/project/{projectShortName}/ticketConfig/{id}", method = RequestMethod.DELETE)
     public int deleteMailTicket(@PathVariable("projectShortName") String projectShortName,
                                 @PathVariable("id") int ticketId) {
         int projectId = projectService.findIdByShortName(projectShortName);

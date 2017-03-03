@@ -18,7 +18,9 @@
                         <md-icon md-svg-icon="edit" aria-label="{{::('button.edit' | translate)}}"></md-icon>
                         <md-tooltip><span translate>button.edit</span></md-tooltip>
                     </md-button>
-                    <md-button class="lvg-small-icon-button" ng-click="$ctrl.deleteConfig(mailConfig)">
+                    <md-button class="lvg-small-icon-button"
+                               ng-disable="mailConfig.entries.length !== 0"
+                               ng-click="$ctrl.deleteMailConfig(mailConfig)">
                         <md-icon md-svg-icon="delete" ng-mouseenter="showTooltip = true;" ng-mouseleave="showTooltip = false;" aria-label="{{::('button.delete' | translate)}}"></md-icon>
                         <md-tooltip md-visible="showTooltip">{{(mailConfig.entries.length !== 0 ? 'project.manage.mailTicket.config.cant.delete':'button.delete')|translate}}</md-tooltip>
                     </md-button>
@@ -32,8 +34,9 @@
                 <lvg-project-manage-mail-ticket-config ng-repeat="ticketConfig in mailConfig.entries"
                                                        mail-config="mailConfig"
                                                        ticket-config="ticketConfig"
+                                                       on-toggle="$ctrl.onToggleTicketConfig($mailConfig, $ticketConfig)"
                                                        on-edit="$ctrl.onEditTicketConfig($mailConfig, $ticketConfig)"
-                                                       on-delete="$ctrl.onDeleteTicketConfig()"
+                                                       on-delete="$ctrl.onDeleteTicketConfig($ticketConfig)"
                                                        class="col-xs-12 col-sm-6 col-md-4 lvg-mail-ticket-config"
                                                        ng-class="lvg-mail-ticket-config__disabled">
                 </lvg-project-manage-mail-ticket-config>
