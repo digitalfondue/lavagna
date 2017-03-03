@@ -16,19 +16,13 @@
  */
 package io.lavagna.query;
 
+import ch.digitalfondue.npjt.*;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.Project;
 import io.lavagna.model.ProjectWithEventCounts;
 
 import java.util.Collection;
 import java.util.List;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.QueriesOverride;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryOverride;
-import ch.digitalfondue.npjt.QueryRepository;
-import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface ProjectQuery {
@@ -49,7 +43,7 @@ public interface ProjectQuery {
 
 	@Query("SELECT * FROM LA_PROJECT WHERE PROJECT_ID = :projectId")
 	Project findById(@Bind("projectId") int projectId);
-	
+
 	@Query("SELECT PROJECT_ID FROM LA_PROJECT WHERE PROJECT_SHORT_NAME = :shortName")
 	int findIdByShortName(@Bind("shortName") String shortName);
 
@@ -92,7 +86,7 @@ public interface ProjectQuery {
 
 	@Query("SELECT CARD_LABEL_PROJECT_ID_FK FROM LA_CARD_LABEL WHERE CARD_LABEL_ID = (SELECT CARD_LABEL_ID_FK FROM LA_CARD_LABEL_VALUE WHERE CARD_LABEL_VALUE_ID = :labelValueId)")
 	List<Integer> findRelatedProjectIdByLabelValueId(@Bind("labelValueId") int labelValueId);
-	
+
 	@Query("SELECT CARD_LABEL_PROJECT_ID_FK FROM LA_CARD_LABEL WHERE CARD_LABEL_ID = (SELECT CARD_LABEL_ID_FK FROM LA_CARD_LABEL_LIST_VALUE WHERE CARD_LABEL_LIST_VALUE_ID = :labelListValueIdPath)")
 	List<Integer> findRelatedProjectIdByLabelListValudIdPath(@Bind("labelListValueIdPath") int labelListValueIdPath);
 

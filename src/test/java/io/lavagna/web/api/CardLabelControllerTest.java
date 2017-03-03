@@ -16,35 +16,20 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Mockito.when;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.Label;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.LabelService;
-import io.lavagna.service.ProjectService;
-
-import java.util.HashMap;
-
+import io.lavagna.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+
+import static org.mockito.Mockito.when;
 
 //TODO complete with verify
 @RunWith(MockitoJUnitRunner.class)

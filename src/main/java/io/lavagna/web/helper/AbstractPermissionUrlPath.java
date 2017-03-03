@@ -17,15 +17,14 @@
 package io.lavagna.web.helper;
 
 import io.lavagna.service.ProjectService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractPermissionUrlPath {
 
@@ -56,7 +55,7 @@ public abstract class AbstractPermissionUrlPath {
 
 	/**
 	 * Most of the cases the url has a single id, should not be a performance issue
-	 * 
+	 *
 	 * @param ids
 	 * @param projectService
 	 * @return
@@ -207,12 +206,12 @@ public abstract class AbstractPermissionUrlPath {
 			return res;
 		}
 	}
-	
+
 	static class LabelListValuedIdPath extends AbstractPermissionUrlPath {
 		LabelListValuedIdPath(String path, String paramName) {
 			super(path, paramName);
 		}
-		
+
 		@Override
 		public Set<String> tryToFetchProjectShortName(Set<String> ids, ProjectService projectService) {
 			Set<String> res = new HashSet<>();

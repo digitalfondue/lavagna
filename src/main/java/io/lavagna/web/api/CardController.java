@@ -16,42 +16,18 @@
  */
 package io.lavagna.web.api;
 
+import io.lavagna.model.*;
+import io.lavagna.model.BoardColumn.BoardColumnLocation;
+import io.lavagna.service.*;
+import io.lavagna.service.SearchFilter.SearchFilterValue;
+import io.lavagna.web.helper.ExpectPermission;
+import org.apache.commons.lang3.Validate;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
 import static io.lavagna.service.SearchFilter.FilterType;
 import static io.lavagna.service.SearchFilter.ValueType;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.Event;
-import io.lavagna.model.Permission;
-import io.lavagna.model.ProjectAndBoard;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchFilter;
-import io.lavagna.service.SearchFilter.SearchFilterValue;
-import io.lavagna.service.SearchService;
-import io.lavagna.web.helper.ExpectPermission;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang3.Validate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CardController {
@@ -151,9 +127,9 @@ public class CardController {
 	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/card/{cardId}", method = RequestMethod.POST)
 	public void updateCard(@PathVariable("cardId") int id, @RequestBody CardData updateCard, User user) {
-		
+
 		Card beforeUpdate = cardRepository.findBy(id);
-		
+
 		cardService.updateCard(id, updateCard.name, user, new Date());
 
 		Card c = cardRepository.findBy(id);

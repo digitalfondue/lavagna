@@ -16,28 +16,21 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.LabelAndValue;
 import io.lavagna.model.User;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import static io.lavagna.common.Constants.*;
 
 @Service
 @Transactional(readOnly = false)

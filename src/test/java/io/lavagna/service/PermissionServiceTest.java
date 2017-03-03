@@ -16,25 +16,10 @@
  */
 package io.lavagna.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.Role;
-import io.lavagna.model.RoleAndPermission;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.PermissionService.RoleAndPermissions;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +29,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })

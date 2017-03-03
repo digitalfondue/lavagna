@@ -17,44 +17,12 @@
 
 package io.lavagna.web.api;
 
-import static io.lavagna.common.Constants.*;
-import static io.lavagna.service.SearchFilter.filter;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.MilestoneCount;
-import io.lavagna.model.Pair;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.ExcelExportService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchFilter;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
+import io.lavagna.model.*;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.MilestoneDetail;
 import io.lavagna.web.api.model.MilestoneInfo;
 import io.lavagna.web.api.model.Milestones;
 import io.lavagna.web.helper.ExpectPermission;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +30,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
+import static io.lavagna.service.SearchFilter.filter;
 
 @RestController
 public class MilestoneController {

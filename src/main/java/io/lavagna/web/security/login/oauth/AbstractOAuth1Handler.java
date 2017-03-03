@@ -16,18 +16,16 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.scribe.model.Token;
-import org.scribe.oauth.OAuthService;
-
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
+import org.scribe.model.Token;
+import org.scribe.oauth.OAuthService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.UUID;
 
 public abstract class AbstractOAuth1Handler extends OAuthResultHandlerAdapter {
 

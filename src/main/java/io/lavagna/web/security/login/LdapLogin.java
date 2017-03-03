@@ -16,22 +16,21 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public class LdapLogin extends AbstractLoginHandler {
 
@@ -39,7 +38,7 @@ public class LdapLogin extends AbstractLoginHandler {
 
 	private final String errorPage;
 	private final LdapAuthenticator ldap;
-	
+
 	public LdapLogin(Users users, SessionHandler sessionHandler, LdapAuthenticator ldap, String errorPage) {
 		super(users, sessionHandler);
 		this.ldap = ldap;
@@ -83,7 +82,7 @@ public class LdapLogin extends AbstractLoginHandler {
 		r.put("loginLdap", "block");
 		return r;
 	}
-	
+
 	public interface LdapAuthenticator {
 	    boolean authenticate(String username, String password);
 	}

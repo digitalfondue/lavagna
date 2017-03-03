@@ -16,20 +16,16 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.StringUtils.trimToNull;
-import io.lavagna.model.Board;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.BoardInfo;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.ProjectAndBoard;
 import io.lavagna.query.BoardQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Repository
 @Transactional(readOnly = true)

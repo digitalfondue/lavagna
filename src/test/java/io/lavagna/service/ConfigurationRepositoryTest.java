@@ -20,11 +20,6 @@ import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.model.ConfigurationKeyValue;
 import io.lavagna.model.Key;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +32,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
@@ -101,7 +100,7 @@ public class ConfigurationRepositoryTest {
 		configurationRepository.insert(Key.PERSONA_AUDIENCE, "test");
 		Assert.assertEquals(2, configurationRepository.findAll().size());
 	}
-	
+
 	@Test
     public void testGetValueOrNull() {
 	    Assert.assertNull(configurationRepository.getValueOrNull(Key.TEST_PLACEHOLDER));

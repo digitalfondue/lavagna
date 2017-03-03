@@ -16,22 +16,9 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +26,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DemoLoginTest {
@@ -79,7 +76,7 @@ public class DemoLoginTest {
 	public void testMissingUserNameAndPassword() throws IOException {
 	    when(req.getContextPath()).thenReturn("");
 	    Assert.assertTrue(dl.doAction(req, resp));
-		
+
 		verify(resp).sendRedirect("/" + errorPage);
 	}
 
@@ -105,11 +102,11 @@ public class DemoLoginTest {
 
 	@Test
 	public void testSuccess() throws IOException {
-		when(users.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(new User() { 
+		when(users.findUserByName(DemoLogin.USER_PROVIDER, "user")).thenReturn(new User() {
 		    public int getId() {
 		        return 42;
 		    }
-		    
+
 		    public boolean isAnonymous() {
 		        return false;
 		    }

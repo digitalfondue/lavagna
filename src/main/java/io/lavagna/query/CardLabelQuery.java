@@ -16,6 +16,7 @@
  */
 package io.lavagna.query;
 
+import ch.digitalfondue.npjt.*;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.LabelAndValue;
@@ -24,13 +25,6 @@ import io.lavagna.model.LabelListValue;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.QueriesOverride;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryOverride;
-import ch.digitalfondue.npjt.QueryRepository;
-import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface CardLabelQuery {
@@ -71,8 +65,8 @@ public interface CardLabelQuery {
 
 	@Query("SELECT * FROM LA_CARD_LABEL_VALUE WHERE CARD_LABEL_VALUE_ID = :labelValueId")
 	CardLabelValue findLabelValueById(@Bind("labelValueId") int labelValueId);
-	
-	 
+
+
 	@Query("SELECT LA_CARD_LABEL_LIST_VALUE.* FROM LA_CARD_LABEL_LIST_VALUE "
 	        + " inner join LA_CARD_LABEL on CARD_LABEL_ID_FK = CARD_LABEL_ID where "
 	        + " CARD_LABEL_PROJECT_ID_FK = :projectId ORDER BY CARD_LABEL_ID_FK, CARD_LABEL_LIST_VALUE_ORDER")

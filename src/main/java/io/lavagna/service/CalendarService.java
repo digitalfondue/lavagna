@@ -16,39 +16,13 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
-import static io.lavagna.service.SearchFilter.filter;
-
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.CalendarInfo;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.Key;
-import io.lavagna.model.LabelAndValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Project;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.service.calendarutils.CalendarEventHandler;
 import io.lavagna.service.calendarutils.CalendarEvents;
 import io.lavagna.service.calendarutils.CalendarVEventHandler;
 import io.lavagna.service.calendarutils.StandardCalendarEventHandler;
-
-import java.net.URISyntaxException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.CalScale;
@@ -61,6 +35,15 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.net.URISyntaxException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.*;
+
+import static io.lavagna.common.Constants.DATE_FORMAT;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
+import static io.lavagna.service.SearchFilter.filter;
 
 @Service
 @Transactional(readOnly = true)

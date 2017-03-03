@@ -19,7 +19,6 @@ package io.lavagna.model
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 import org.apache.commons.lang3.builder.EqualsBuilder
 import org.apache.commons.lang3.builder.HashCodeBuilder
-import java.util.*
 
 open class CardLabel(@Column("CARD_LABEL_ID") val id: Int,
                      @Column("CARD_LABEL_PROJECT_ID_FK") val projectId: Int,

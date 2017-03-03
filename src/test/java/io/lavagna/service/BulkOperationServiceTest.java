@@ -16,29 +16,12 @@
  */
 package io.lavagna.service;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +29,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static io.lavagna.common.Constants.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 //TODO complete cover
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -168,7 +160,7 @@ public class BulkOperationServiceTest {
 		assertFalse(hasLabel(card2.getId(), SYSTEM_LABEL_ASSIGNED));
 		assertFalse(hasLabel(card3.getId(), SYSTEM_LABEL_ASSIGNED));
 	}
-	
+
 	@Test
     public void testWatch() {
         assertFalse(hasLabel(card1.getId(), SYSTEM_LABEL_WATCHED_BY));
@@ -181,7 +173,7 @@ public class BulkOperationServiceTest {
         assertTrue(hasLabel(card3.getId(), SYSTEM_LABEL_WATCHED_BY));
         assertFalse(hasLabel(card2.getId(), SYSTEM_LABEL_WATCHED_BY));
     }
-	
+
 	@Test
     public void testRemoveWatch() {
         bulkOperationService.watch("TEST", Arrays.asList(card1.getId(), card3.getId()), user);
@@ -233,9 +225,9 @@ public class BulkOperationServiceTest {
 		assertTrue(hasLabel(card1.getId(), SYSTEM_LABEL_DUE_DATE));
 		assertTrue(hasLabel(card2.getId(), SYSTEM_LABEL_DUE_DATE));
 		assertTrue(hasLabel(card3.getId(), SYSTEM_LABEL_DUE_DATE));
-		
+
 		bulkOperationService.removeDueDate("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), user);
-		
+
 		assertFalse(hasLabel(card1.getId(), SYSTEM_LABEL_DUE_DATE));
 		assertFalse(hasLabel(card2.getId(), SYSTEM_LABEL_DUE_DATE));
 		assertFalse(hasLabel(card3.getId(), SYSTEM_LABEL_DUE_DATE));
@@ -243,17 +235,17 @@ public class BulkOperationServiceTest {
 
 	@Test
 	public void testSetMilestone() {
-	    
+
 	    CardLabel milestone = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
-	    
+
 	    LabelValue milestone10 = new LabelValue(null, null, null, null, null, cardLabelRepository.addLabelListValue(milestone.getId(), "1.0").getId());
 	    LabelValue milestone11 = new LabelValue(null, null, null, null, null, cardLabelRepository.addLabelListValue(milestone.getId(), "1.1").getId());
-	    
+
 	    bulkOperationService.setMilestone("TEST", Arrays.asList(card1.getId()), milestone10, user);
 	    assertTrue(hasLabel(card1.getId(), SYSTEM_LABEL_MILESTONE));
         assertFalse(hasLabel(card2.getId(), SYSTEM_LABEL_MILESTONE));
         assertFalse(hasLabel(card3.getId(), SYSTEM_LABEL_MILESTONE));
-        
+
         bulkOperationService.setMilestone("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), milestone11, user);
         assertTrue(hasLabel(card1.getId(), SYSTEM_LABEL_MILESTONE));
         assertTrue(hasLabel(card2.getId(), SYSTEM_LABEL_MILESTONE));
@@ -264,40 +256,40 @@ public class BulkOperationServiceTest {
 	public void testRemoveMilestone() {
 	    CardLabel milestone = cardLabelRepository.findLabelByName(project.getId(), SYSTEM_LABEL_MILESTONE, LabelDomain.SYSTEM);
         LabelValue milestone10 = new LabelValue(null, null, null, null, null, cardLabelRepository.addLabelListValue(milestone.getId(), "1.0").getId());
-        
+
         bulkOperationService.setMilestone("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), milestone10, user);
         assertTrue(hasLabel(card1.getId(), SYSTEM_LABEL_MILESTONE));
         assertTrue(hasLabel(card2.getId(), SYSTEM_LABEL_MILESTONE));
         assertTrue(hasLabel(card3.getId(), SYSTEM_LABEL_MILESTONE));
-        
+
         bulkOperationService.removeMilestone("TEST", Arrays.asList(card1.getId(), card2.getId(), card3.getId()), user);
         assertFalse(hasLabel(card1.getId(), SYSTEM_LABEL_MILESTONE));
         assertFalse(hasLabel(card2.getId(), SYSTEM_LABEL_MILESTONE));
         assertFalse(hasLabel(card3.getId(), SYSTEM_LABEL_MILESTONE));
 	}
-	
+
 	@Test
     public void testUserLabel() {
 	    CardLabel userLabel = cardLabelRepository.addLabel(project.getId(), true, LabelType.NULL, LabelDomain.USER, "UserLabel", 0);
-	    
+
 	    assertFalse(hasLabel(card1.getId(), "UserLabel"));
         assertFalse(hasLabel(card2.getId(), "UserLabel"));
         assertFalse(hasLabel(card3.getId(), "UserLabel"));
-	    
+
 	    bulkOperationService.addUserLabel("TEST", userLabel.getId(), new LabelValue(), Arrays.asList(card1.getId()), user);
-	    
+
 	    assertTrue(hasLabel(card1.getId(), "UserLabel"));
         assertFalse(hasLabel(card2.getId(), "UserLabel"));
         assertFalse(hasLabel(card3.getId(), "UserLabel"));
-	    
+
 	    bulkOperationService.addUserLabel("TEST", userLabel.getId(), new LabelValue(), Arrays.asList(card1.getId(), card2.getId(), card3.getId()), user);
-	    
+
 	    assertTrue(hasLabel(card1.getId(), "UserLabel"));
         assertTrue(hasLabel(card2.getId(), "UserLabel"));
         assertTrue(hasLabel(card3.getId(), "UserLabel"));
-        
+
         bulkOperationService.removeUserLabel("TEST", userLabel.getId(), new LabelValue(), Arrays.asList(card1.getId(), card2.getId(), card3.getId()), user);
-        
+
         assertFalse(hasLabel(card1.getId(), "UserLabel"));
         assertFalse(hasLabel(card2.getId(), "UserLabel"));
         assertFalse(hasLabel(card3.getId(), "UserLabel"));

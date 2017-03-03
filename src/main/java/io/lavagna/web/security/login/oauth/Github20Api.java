@@ -16,10 +16,10 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import static io.lavagna.web.security.login.oauth.Utils.encode;
-
 import org.scribe.builder.api.DefaultApi20;
 import org.scribe.model.OAuthConfig;
+
+import static io.lavagna.web.security.login.oauth.Utils.encode;
 
 class Github20Api extends DefaultApi20 {
 

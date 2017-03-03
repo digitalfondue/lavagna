@@ -18,12 +18,11 @@ package io.lavagna.web.config;
 
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.helper.UserSession;
+import org.mockito.Mockito;
+import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.mockito.Mockito;
-import org.springframework.mock.web.MockHttpSession;
 
 public class TestWebConf {
 

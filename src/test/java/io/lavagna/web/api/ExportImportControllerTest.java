@@ -16,23 +16,23 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
 import io.lavagna.model.User;
 import io.lavagna.service.ExportImportService;
 import io.lavagna.service.ImportService;
 import io.lavagna.web.api.model.TrelloImportRequest;
 import io.lavagna.web.api.model.TrelloImportRequest.BoardIdAndShortName;
 import io.lavagna.web.api.model.TrelloRequest;
-
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
+
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExportImportControllerTest {

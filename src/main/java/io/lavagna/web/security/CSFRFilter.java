@@ -16,21 +16,20 @@
  */
 package io.lavagna.web.security;
 
-import static org.apache.commons.lang3.tuple.ImmutablePair.of;
-
-import java.io.IOException;
-import java.util.UUID;
-import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static org.apache.commons.lang3.tuple.ImmutablePair.of;
 
 public class CSFRFilter extends AbstractBaseFilter {
 

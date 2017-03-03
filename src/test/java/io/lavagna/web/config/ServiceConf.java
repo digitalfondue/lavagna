@@ -16,8 +16,6 @@
  */
 package io.lavagna.web.config;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import io.lavagna.common.Json;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.model.Permission;
@@ -26,15 +24,17 @@ import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.*;
 import io.lavagna.web.security.login.OAuthLogin;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServiceConf {
 

@@ -16,23 +16,20 @@
  */
 package io.lavagna.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import io.lavagna.common.DatabaseMigrationDoneEvent;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.service.DatabaseMigrator;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.flywaydb.core.api.MigrationVersion;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import javax.sql.DataSource;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class DataSourceConfig {
 

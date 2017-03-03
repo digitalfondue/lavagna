@@ -19,16 +19,11 @@ package io.lavagna.service;
 import io.lavagna.model.ConfigurationKeyValue;
 import io.lavagna.model.Key;
 import io.lavagna.query.ConfigurationQuery;
-
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)

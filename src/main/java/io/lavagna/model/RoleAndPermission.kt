@@ -16,8 +16,6 @@
  */
 package io.lavagna.model
 
-import java.util.Objects
-
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 
 class RoleAndPermission(@Column("ROLE_NAME") val roleName: String, @Column("ROLE_REMOVABLE") val removable: Boolean,

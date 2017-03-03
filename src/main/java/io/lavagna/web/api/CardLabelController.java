@@ -16,29 +16,18 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.Label;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.ListValueMetadata;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
 import io.lavagna.service.CardLabelRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.web.helper.ExpectPermission;
+import org.apache.commons.lang3.Validate;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.commons.lang3.Validate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CardLabelController {

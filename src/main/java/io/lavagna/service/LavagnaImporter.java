@@ -16,50 +16,22 @@
  */
 package io.lavagna.service;
 
+import com.google.gson.reflect.TypeToken;
+import io.lavagna.model.*;
+import io.lavagna.model.CardLabel.LabelDomain;
+import io.lavagna.model.CardLabel.LabelType;
+import io.lavagna.query.StatisticsQuery;
+import io.lavagna.service.PermissionService.RoleAndPermissionsWithUsers;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.springframework.stereotype.Component;
+
+import java.nio.file.Path;
+import java.util.*;
+import java.util.Map.Entry;
+
 import static io.lavagna.common.Read.readMatchingObjects;
 import static io.lavagna.common.Read.readObject;
 import static java.util.Collections.singletonList;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.BoardInfo;
-import io.lavagna.model.CardDataIdAndOrder;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.ConfigurationKeyValue;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.ImportContext;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Pair;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.Role;
-import io.lavagna.model.RoleAndPermission;
-import io.lavagna.model.StatisticForExport;
-import io.lavagna.model.User;
-import io.lavagna.model.UserIdentifier;
-import io.lavagna.query.StatisticsQuery;
-import io.lavagna.service.PermissionService.RoleAndPermissionsWithUsers;
-
-import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.springframework.stereotype.Component;
 
 @Component
 class LavagnaImporter {

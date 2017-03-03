@@ -16,38 +16,23 @@
  */
 package io.lavagna.web.api;
 
-import static io.lavagna.common.Constants.*;
-import io.lavagna.common.Json;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.Permission;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchFilter;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.UserRepository;
-import io.lavagna.web.helper.ExpectPermission;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gson.reflect.TypeToken;
+import io.lavagna.common.Json;
+import io.lavagna.model.*;
+import io.lavagna.model.CardLabel.LabelDomain;
+import io.lavagna.service.*;
+import io.lavagna.web.helper.ExpectPermission;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.reflect.Type;
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
 
 @ExpectPermission(Permission.SEARCH)
 @RestController
@@ -62,7 +47,7 @@ public class SearchController {
     private static final Type LIST_OF_SEARCH_FILTERS = new TypeToken<List<SearchFilter>>() {
     }.getType();
 
-    
+
     public SearchController(UserRepository userRepository, CardRepository cardRepository,
         CardLabelRepository cardLabelRepository, SearchService searchService, ProjectService projectService) {
         this.userRepository = userRepository;

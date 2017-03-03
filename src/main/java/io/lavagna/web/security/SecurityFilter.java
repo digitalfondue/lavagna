@@ -16,25 +16,24 @@
  */
 package io.lavagna.web.security;
 
-import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 import io.lavagna.web.security.SecurityConfiguration.UrlMatcher;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
-import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 
 /**
  * <pre>
@@ -58,24 +57,24 @@ public class SecurityFilter extends AbstractBaseFilter {
 		    pathsToCheck.put(kv.getKey(), ImmutablePair.of(kv.getValue(), kv.getValue().buildMatcherList()));
 		}
 	}
-	
+
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
 
 		addHeaders(req, resp);
-		
+
 		for(ImmutablePair<SecurityConfiguration, List<UrlMatcher>> path : pathsToCheck.values()) {
 		    if(path.left.matchRequest(req)) {
 		        handleWith(req, resp, chain, path.right);
 		        return;
 		    }
 		}
-		
+
 		chain.doFilter(req, resp);
 	}
 
-	
+
 
 	private void handleWith(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, List<UrlMatcher> matchers) throws IOException, ServletException {
 

@@ -16,15 +16,14 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.model.Event;
-
-import java.util.Date;
-import java.util.List;
-
 import ch.digitalfondue.npjt.Bind;
 import ch.digitalfondue.npjt.Query;
 import ch.digitalfondue.npjt.QueryRepository;
 import ch.digitalfondue.npjt.QueryType;
+import io.lavagna.model.Event;
+
+import java.util.Date;
+import java.util.List;
 
 @QueryRepository
 public interface NotificationQuery {

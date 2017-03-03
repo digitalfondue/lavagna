@@ -16,25 +16,20 @@
  */
 package io.lavagna.web.security;
 
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static org.apache.commons.lang3.StringUtils.removeStart;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.springframework.util.PathMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.*;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.springframework.util.PathMatcher;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public class SecurityConfiguration {
 
@@ -43,14 +38,14 @@ public class SecurityConfiguration {
 	private LoginUrlMatcher loginUrlMatcher;
 	private LogoutUrlMatcher logoutUrlMatcher;
 	private RequestMatcher requestMatcher = new AlwaysTrueRequestMatcher();
-	
+
 	private LoginHandlerFinder loginHandlerFinder = new LoginHandlerFinder() {
         @Override
         public Map<String, LoginHandler> find() {
             return Collections.emptyMap();
         }
 	};
-	
+
 	private SessionHandler sessionHandler;
 
 	List<UrlMatcher> buildMatcherList() {
@@ -66,22 +61,22 @@ public class SecurityConfiguration {
 		r.addAll(urlMatchers);
 		return r;
 	}
-	
+
 	public SecurityConfiguration requestMatcher(RequestMatcher requestMatcher) {
 	    this.requestMatcher = requestMatcher;
 	    return this;
 	}
-	
+
 	public SecurityConfiguration loginHandlerFinder(LoginHandlerFinder loginHandlerFinder) {
 	    this.loginHandlerFinder = loginHandlerFinder;
 	    return this;
 	}
-	
+
 	public SecurityConfiguration sessionHandler(SessionHandler sessionHandler) {
 	    this.sessionHandler = sessionHandler;
 	    return this;
 	}
-	
+
 	public boolean matchRequest(HttpServletRequest request) {
 	    return requestMatcher.match(request);
 	}
@@ -90,7 +85,7 @@ public class SecurityConfiguration {
 		loginUrlDisabled = true;
 		return this;
 	}
-	
+
 	//
 	public LogoutConfigurer login(String loginUrlMatcher, String loginPageUrl, LoginPageGenerator loginPageGenerator) {
 		Validate.isTrue(!loginUrlDisabled, "login has been disabled");
@@ -150,7 +145,7 @@ public class SecurityConfiguration {
 			this.redirect = redirect;
 			return conf;
 		}
-		
+
 		public SecurityConfiguration redirectTo(String redirectTo) {
 		    mode = Mode.REDIRECT;
 		    this.redirectTo = redirectTo;
@@ -182,7 +177,7 @@ public class SecurityConfiguration {
 				return true;
 			} else if(mode == Mode.REDIRECT) {
 			    Redirector.sendRedirect(req, resp, req.getContextPath() + "/" + removeStart(redirectTo, "/"), Collections.<String, List<String>>emptyMap());
-			    return true;  
+			    return true;
 			} else {
 				return false;
 			}
@@ -274,38 +269,38 @@ public class SecurityConfiguration {
 	private enum Mode {
 		DENY_ALL, UNAUTHENTICATED, REQUIRE_AUTHENTICATED, PERMIT_ALL, LOGIN, LOGOUT, REDIRECT
 	}
-	
+
 	public interface RequestMatcher {
 	    boolean match(HttpServletRequest request);
 	}
-	
+
 	public interface LoginHandlerFinder {
 	    Map<String, LoginHandler> find();
 	}
-	
+
 	public interface LoginPageGenerator {
 	    void generate(HttpServletRequest req, HttpServletResponse resp, Map<String, LoginHandler> handlers) throws IOException;
 	}
-	
+
 	public interface SessionHandler {
 	    void invalidate(HttpServletRequest req, HttpServletResponse resp);
 	    boolean isUserAuthenticated(HttpServletRequest req);
         boolean isUserAnonymous(HttpServletRequest req);
-        
+
         void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp);
         void setUser(int userId, boolean isUserAnonymous, HttpServletRequest req, HttpServletResponse resp, boolean addRememberMeCookie);
 	}
-	
+
 	public interface Users {
 	    boolean userExistsAndEnabled(String provider, String name);
 	    User findUserByName(String provider, String name);
 	}
-	
+
 	public interface User {
 	    int getId();
 	    boolean isAnonymous();
 	}
-	
+
 	public static class AlwaysTrueRequestMatcher implements RequestMatcher {
         @Override
         public boolean match(HttpServletRequest request) {

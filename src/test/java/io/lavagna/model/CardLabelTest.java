@@ -18,7 +18,6 @@ package io.lavagna.model;
 
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
-
 import org.junit.Assert;
 import org.junit.Test;
 

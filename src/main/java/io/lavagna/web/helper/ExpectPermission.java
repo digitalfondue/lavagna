@@ -17,20 +17,19 @@
 package io.lavagna.web.helper;
 
 import io.lavagna.model.Permission;
+import org.springframework.web.method.HandlerMethod;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.web.method.HandlerMethod;
-
 /**
  * The annotation can be used at both method and class level. Method level annotation will take precedence over the
  * class one.<br>
- * 
+ *
  * If an user does not have the related permission, a 403 error will be triggered.
- * 
+ *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })

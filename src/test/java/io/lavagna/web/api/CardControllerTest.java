@@ -16,37 +16,24 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.Card;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.Project;
-import io.lavagna.model.ProjectAndBoard;
-import io.lavagna.model.User;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardDataRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.CardController.CardData;
 import io.lavagna.web.api.CardController.ColumnOrders;
-
-import java.util.Arrays;
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.Date;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 //TODO complete with verify
 @RunWith(MockitoJUnitRunner.class)

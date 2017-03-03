@@ -17,33 +17,7 @@
 
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.SYSTEM_LABEL_ASSIGNED;
-import static io.lavagna.common.Constants.SYSTEM_LABEL_DUE_DATE;
-import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
-import static io.lavagna.service.SearchFilter.filter;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnInfo;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Project;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import io.lavagna.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -55,6 +29,14 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static io.lavagna.common.Constants.*;
+import static io.lavagna.service.SearchFilter.filter;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 @Service
 @Transactional(readOnly = true)

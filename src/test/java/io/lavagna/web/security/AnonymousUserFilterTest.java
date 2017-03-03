@@ -16,22 +16,11 @@
  */
 package io.lavagna.web.security;
 
-import static org.mockito.Mockito.when;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-
-import java.io.IOException;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +31,16 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Set;
+
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnonymousUserFilterTest {

@@ -16,16 +16,7 @@
  */
 package io.lavagna.config;
 
-import static java.util.Arrays.asList;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.samskivert.mustache.Mustache;
 import io.lavagna.common.Json;
 import io.lavagna.common.Version;
 import io.lavagna.model.Key;
@@ -35,26 +26,17 @@ import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
-import io.lavagna.web.api.model.Conf;
 import io.lavagna.web.helper.GsonHttpMessageConverter;
 import io.lavagna.web.helper.UserSession;
 import io.lavagna.web.security.LoginHandler;
 import io.lavagna.web.security.SecurityConfiguration;
-import io.lavagna.web.security.SecurityConfiguration.LoginHandlerFinder;
-import io.lavagna.web.security.SecurityConfiguration.LoginPageGenerator;
-import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
-import io.lavagna.web.security.SecurityConfiguration.User;
-import io.lavagna.web.security.SecurityConfiguration.Users;
+import io.lavagna.web.security.SecurityConfiguration.*;
 import io.lavagna.web.security.login.DemoLogin;
 import io.lavagna.web.security.login.LdapLogin;
 import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
 import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.scribe.builder.ServiceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +44,17 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import com.samskivert.mustache.Mustache;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 public class WebSecurityConfig {
 

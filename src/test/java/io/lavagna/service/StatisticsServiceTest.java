@@ -16,31 +16,9 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelAndValueWithCount;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.MilestoneCount;
-import io.lavagna.model.Pair;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,6 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_ASSIGNED;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

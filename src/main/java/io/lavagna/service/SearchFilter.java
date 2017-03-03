@@ -16,13 +16,6 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.time.DateUtils.addDays;
-import static org.apache.commons.lang3.time.DateUtils.addMonths;
-import static org.apache.commons.lang3.time.DateUtils.addWeeks;
-import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
-import static org.apache.commons.lang3.time.DateUtils.truncate;
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.SearchQuery;
@@ -33,6 +26,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static io.lavagna.common.Constants.*;
+import static org.apache.commons.lang3.time.DateUtils.*;
 
 public class SearchFilter {
 

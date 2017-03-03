@@ -16,13 +16,11 @@
  */
 package io.lavagna.web.security.login.oauth;
 
+import com.google.gson.annotations.SerializedName;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
-
 import org.scribe.builder.ServiceBuilder;
-
-import com.google.gson.annotations.SerializedName;
 
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 

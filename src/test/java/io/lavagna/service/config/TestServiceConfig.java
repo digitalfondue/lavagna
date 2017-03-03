@@ -19,16 +19,14 @@ package io.lavagna.service.config;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.config.DataSourceConfig;
 import io.lavagna.service.DatabaseMigrator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mock.env.MockEnvironment;
 
+import javax.sql.DataSource;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.sql.DataSource;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.mock.env.MockEnvironment;
 
 public class TestServiceConfig {
 

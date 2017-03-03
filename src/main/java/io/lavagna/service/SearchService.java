@@ -16,36 +16,12 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.service.SearchFilter.filter;
-import static io.lavagna.service.SearchFilter.filterByColumnDefinition;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.Permission;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.query.SearchQuery;
 import io.lavagna.service.SearchFilter.FilterType;
 import io.lavagna.service.SearchFilter.SearchContext;
 import io.lavagna.service.SearchFilter.SearchFilterValue;
 import io.lavagna.service.SearchFilter.ValueType;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.sql.Clob;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +29,16 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.sql.Clob;
+import java.sql.SQLException;
+import java.util.*;
+
+import static io.lavagna.service.SearchFilter.filter;
+import static io.lavagna.service.SearchFilter.filterByColumnDefinition;
 
 /**
  * Service for searching Cards using criterias defined using {@link SearchFilter}.

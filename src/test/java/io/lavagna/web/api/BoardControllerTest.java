@@ -16,33 +16,27 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.StatisticsService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.Suggestion;
 import io.lavagna.web.api.model.UpdateRequest;
-
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Date;
+import java.util.EnumMap;
+import java.util.Map;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BoardControllerTest {

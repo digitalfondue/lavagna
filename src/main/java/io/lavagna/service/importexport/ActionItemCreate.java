@@ -16,11 +16,7 @@
  */
 package io.lavagna.service.importexport;
 
-import io.lavagna.model.CardData;
-import io.lavagna.model.Event;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.ImportContext;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.UserRepository;

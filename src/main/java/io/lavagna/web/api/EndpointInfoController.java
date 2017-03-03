@@ -20,19 +20,6 @@ import io.lavagna.model.Permission;
 import io.lavagna.web.helper.AbstractPermissionUrlPath;
 import io.lavagna.web.helper.ExpectPermission;
 import io.lavagna.web.helper.PermissionMethodInterceptor;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ExpectPermission(Permission.ADMINISTRATION)
 @RestController

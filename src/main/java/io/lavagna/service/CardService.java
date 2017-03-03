@@ -17,33 +17,13 @@
 package io.lavagna.service;
 
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataCount;
-import io.lavagna.model.CardDataFull;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.CardType;
-import io.lavagna.model.Event;
+import io.lavagna.model.*;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.LabelAndValue;
-import io.lavagna.model.User;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)

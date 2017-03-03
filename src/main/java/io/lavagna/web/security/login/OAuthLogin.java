@@ -19,29 +19,15 @@ package io.lavagna.web.security.login;
 import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-import io.lavagna.web.security.login.oauth.BitbucketHandler;
-import io.lavagna.web.security.login.oauth.GithubHandler;
-import io.lavagna.web.security.login.oauth.GitlabHandler;
-import io.lavagna.web.security.login.oauth.GoogleHandler;
-import io.lavagna.web.security.login.oauth.OAuthProvider;
-import io.lavagna.web.security.login.oauth.OAuthResultHandler;
-import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
+import io.lavagna.web.security.login.oauth.*;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
-import io.lavagna.web.security.login.oauth.TwitterHandler;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import org.scribe.builder.ServiceBuilder;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.scribe.builder.ServiceBuilder;
-import org.springframework.util.StringUtils;
+import java.io.IOException;
+import java.util.*;
 
 public class OAuthLogin extends AbstractLoginHandler {
 

@@ -16,19 +16,16 @@
  */
 package io.lavagna.service.importexport;
 
-import static java.util.Collections.singletonList;
 import io.lavagna.model.Event;
 import io.lavagna.model.EventFull;
 import io.lavagna.model.ImportContext;
 import io.lavagna.model.User;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
 
 import java.nio.file.Path;
 import java.util.Date;
+
+import static java.util.Collections.singletonList;
 
 class CardArchiveBacklogTrash extends AbstractProcessEvent {
 

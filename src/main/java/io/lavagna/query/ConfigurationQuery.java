@@ -16,14 +16,13 @@
  */
 package io.lavagna.query;
 
+import ch.digitalfondue.npjt.Bind;
+import ch.digitalfondue.npjt.Query;
+import ch.digitalfondue.npjt.QueryRepository;
 import io.lavagna.model.ConfigurationKeyValue;
 
 import java.util.List;
 import java.util.Set;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryRepository;
 
 @QueryRepository
 public interface ConfigurationQuery {

@@ -19,17 +19,15 @@ package io.lavagna.web.security;
 import io.lavagna.web.security.SecurityConfiguration.BasicUrlMatcher;
 import io.lavagna.web.security.SecurityConfiguration.LoginPageGenerator;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
 
 //TODO COMPLETE
 @RunWith(MockitoJUnitRunner.class)

@@ -17,10 +17,9 @@
 package io.lavagna.web.helper;
 
 import io.lavagna.model.UserWithPermission;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class NoOpOwnershipChecker implements OwnershipChecker {

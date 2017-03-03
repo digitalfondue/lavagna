@@ -16,26 +16,14 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.CardFull;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.EventsCount;
-import io.lavagna.model.LabelAndValueWithCount;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.MilestoneCount;
-import io.lavagna.model.Pair;
-import io.lavagna.model.StatisticsResult;
+import io.lavagna.model.*;
 import io.lavagna.query.StatisticsQuery;
-
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,7 +31,7 @@ public class StatisticsService {
 
 	private final StatisticsQuery queries;
 
-	
+
 	public StatisticsService(StatisticsQuery queries) {
 		this.queries = queries;
 	}

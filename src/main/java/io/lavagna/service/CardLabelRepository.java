@@ -18,32 +18,12 @@ package io.lavagna.service;
 
 import io.lavagna.common.Constants;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
-import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Label;
-import io.lavagna.model.LabelAndValue;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.ListValueMetadata;
-import io.lavagna.model.UserWithPermission;
 import io.lavagna.query.CardLabelQuery;
 import io.lavagna.query.ListValueMetadataQuery;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.Validate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -51,6 +31,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)

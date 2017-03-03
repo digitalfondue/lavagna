@@ -16,27 +16,26 @@
  */
 package io.lavagna.web.security;
 
-import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 import io.lavagna.model.Key;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
-
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.Map;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Map;
 
-import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.web.context.support.WebApplicationContextUtils.getRequiredWebApplicationContext;
 
 public class AnonymousUserFilter extends AbstractBaseFilter {
-    
+
     private ConfigurationRepository configurationRepository;
     private Users users;
     private SessionHandler sessionHandler;
@@ -51,19 +50,19 @@ public class AnonymousUserFilter extends AbstractBaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        
+
         Map<Key, String> configuration = configurationRepository.findConfigurationFor(EnumSet.of(Key.SETUP_COMPLETE, Key.ENABLE_ANON_USER));
         if("true".equals(configuration.get(Key.SETUP_COMPLETE))) {
             handleAnonymousUser(configuration, request, response);
         }
-        
+
         chain.doFilter(request, response);
     }
-    
+
     private void handleAnonymousUser(Map<Key, String> configuration, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         boolean enabled = "true".equals(configuration.get(Key.ENABLE_ANON_USER));
-        
+
         if (enabled && !sessionHandler.isUserAuthenticated(req)) {
             User user = users.findUserByName("system", "anonymous");
             sessionHandler.setUser(user.getId(), user.isAnonymous(), req, resp, false);

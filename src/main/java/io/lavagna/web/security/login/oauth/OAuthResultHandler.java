@@ -16,31 +16,25 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import static org.apache.commons.lang3.StringUtils.removeStart;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
+import org.scribe.model.*;
+import org.scribe.oauth.OAuthService;
+import org.springframework.web.util.UriUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
-import org.springframework.web.util.UriUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public interface OAuthResultHandler {
 
@@ -49,7 +43,7 @@ public interface OAuthResultHandler {
 	void handleCallback(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 
 	class OAuthResultHandlerAdapter implements OAuthResultHandler {
-	    
+
 	    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
 		private final String provider;

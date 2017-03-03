@@ -16,8 +16,6 @@
  */
 package io.lavagna.service;
 
-import static java.lang.String.format;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabel.LabelType;
@@ -25,11 +23,10 @@ import io.lavagna.model.Event;
 import io.lavagna.model.User;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+
+import static java.lang.String.format;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 /**
  * Contains all the necessary data for formatting an email to the user.

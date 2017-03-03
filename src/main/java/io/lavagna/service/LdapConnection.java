@@ -16,13 +16,12 @@
  */
 package io.lavagna.service;
 
-import java.util.Properties;
+import org.springframework.stereotype.Service;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.InitialDirContext;
-
-import org.springframework.stereotype.Service;
+import java.util.Properties;
 
 @Service
 public class LdapConnection {
