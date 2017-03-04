@@ -16,9 +16,10 @@ When using MySql, for ensuring a good full text search experience, it's advisabl
 ```
 [mysqld]
 ft_min_word_len=3
+ft_stopword_file = ""
 ``` 
 
-The default 4 minimal word length can be problematic for searching 3 letters acronyms.
+The default minimal word length (4) and the stopwords can be problematic for searching acronyms or short words.
 
 Additionally, when creating the database, it must ensured that utf-8 is used everywhere:
 
