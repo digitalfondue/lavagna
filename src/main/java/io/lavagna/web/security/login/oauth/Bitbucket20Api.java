@@ -16,22 +16,16 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import static io.lavagna.web.security.login.oauth.Utils.encode;
-
-import java.nio.charset.StandardCharsets;
-
 import org.scribe.builder.api.DefaultApi20;
 import org.scribe.extractors.AccessTokenExtractor;
-import org.scribe.model.OAuthConfig;
-import org.scribe.model.OAuthConstants;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
+import org.scribe.model.*;
 import org.scribe.oauth.OAuth20ServiceImpl;
 import org.scribe.oauth.OAuthService;
 import org.scribe.services.Base64Encoder;
+
+import java.nio.charset.StandardCharsets;
+
+import static io.lavagna.web.security.login.oauth.Utils.encode;
 
 /**
  * <pre>
@@ -50,17 +44,17 @@ class Bitbucket20Api extends DefaultApi20 {
         return "https://bitbucket.org/site/oauth2/authorize?client_id=" + encode(config.getApiKey()) + "&redirect_uri="
                 + encode(config.getCallback()) + "&response_type=code";
     }
-    
+
     @Override
     public Verb getAccessTokenVerb() {
         return Verb.POST;
     }
-    
+
     @Override
     public AccessTokenExtractor getAccessTokenExtractor() {
         return new JsonTokenExtractor();
     }
-    
+
     @Override
     public OAuthService createService(final OAuthConfig config) {
         return new OAuth20ServiceImpl(this, config) {
@@ -68,14 +62,14 @@ class Bitbucket20Api extends DefaultApi20 {
             public Token getAccessToken(Token requestToken, Verifier verifier) {
                 //basic auth, as described at https://developer.atlassian.com/static/bitbucket/concepts/oauth2.html
                 OAuthRequest request = new OAuthRequest(getAccessTokenVerb(), getAccessTokenEndpoint());
-                
+
                 //basic auth
                 request.addHeader("Authorization", "Basic "+Base64Encoder.getInstance().encode((config.getApiKey()+":"+config.getApiSecret()).getBytes(StandardCharsets.UTF_8)));
-                
+
                 request.addBodyParameter(OAuthConstants.CODE, verifier.getValue());
                 request.addBodyParameter(OAuthConstants.REDIRECT_URI, config.getCallback());
-                
-                request.addBodyParameter("grant_type", "authorization_code"); 
+
+                request.addBodyParameter("grant_type", "authorization_code");
                 Response response = request.send();
                 return getAccessTokenExtractor().extract(response.getBody());
             }

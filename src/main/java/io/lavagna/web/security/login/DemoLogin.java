@@ -16,20 +16,20 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.apache.commons.lang3.StringUtils.removeStart;
-import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.LoginHandler.AbstractLoginHandler;
+import io.lavagna.web.security.Redirector;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 public class DemoLogin extends AbstractLoginHandler {
 

@@ -17,28 +17,18 @@
 package io.lavagna.config;
 
 import io.lavagna.common.CookieNames;
-import io.lavagna.web.security.AnonymousUserFilter;
-import io.lavagna.web.security.CSFRFilter;
-import io.lavagna.web.security.HSTSFilter;
-import io.lavagna.web.security.RememberMeFilter;
-import io.lavagna.web.security.SecurityFilter;
-
-import java.util.Collections;
-
-import javax.servlet.Filter;
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.SessionTrackingMode;
-
+import io.lavagna.web.security.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.tuckey.web.filters.urlrewrite.gzip.GzipFilter;
 
+import javax.servlet.*;
+import javax.servlet.ServletRegistration.Dynamic;
+import java.util.Collections;
+
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-    
+
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class<?>[] { DataSourceConfig.class,//
@@ -60,33 +50,33 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-		
+
 		// initialize cookie
 		if(StringUtils.isNotEmpty(System.getProperty(CookieNames.PROPERTY_NAME))) {
 			CookieNames.updatePrefix(System.getProperty(CookieNames.PROPERTY_NAME));
 		}
 		//
-		
+
 		//definition order = execution order, the first executed filter is HSTSFilter
 		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");
-		
+
 		addFilter(servletContext, "CSFRFilter", CSFRFilter.class, "/*");
-		
+
 		addFilter(servletContext, "RememberMeFilter", RememberMeFilter.class, "/*");
-		
+
 		addFilter(servletContext, "AnonymousUserFilter", AnonymousUserFilter.class, "/*");
-		
+
 		addFilter(servletContext, "SecurityFilter", SecurityFilter.class, "/*");
-		
+
 		addFilter(servletContext, "ETagFilter", ShallowEtagHeaderFilter.class, "*.js", "*.css",//
                 "/", "/project/*", "/admin/*", "/me/",//
                 "*.html", "*.woff", "*.eot", "*.svg", "*.ttf");
-		
+
 		addFilter(servletContext, "GzipFilter", GzipFilter.class, "*.js", "*.css",//
                 "/", "/project/*", "/admin/*", "/me/",//
                 "/api/self", "/api/board/*", "/api/project/*");
-		
-		
+
+
 		servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
 		servletContext.getSessionCookieConfig().setHttpOnly(true);
 		servletContext.getSessionCookieConfig().setName(CookieNames.getSessionCookieName());

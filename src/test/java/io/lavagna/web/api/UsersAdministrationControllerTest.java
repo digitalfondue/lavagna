@@ -16,12 +16,7 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.google.gson.JsonParseException;
 import io.lavagna.common.Json;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
@@ -30,13 +25,6 @@ import io.lavagna.service.EventEmitter;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
 import io.lavagna.web.api.UsersAdministrationController.Update;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import com.google.gson.JsonParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +32,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UsersAdministrationControllerTest {

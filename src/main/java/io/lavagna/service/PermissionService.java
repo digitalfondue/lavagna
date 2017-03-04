@@ -16,33 +16,16 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.Permission;
-import io.lavagna.model.ProjectRoleAndPermission;
-import io.lavagna.model.Role;
-import io.lavagna.model.RoleAndMetadata;
-import io.lavagna.model.RoleAndPermission;
-import io.lavagna.model.RoleAndProject;
-import io.lavagna.model.User;
-import io.lavagna.model.UserIdentifier;
+import io.lavagna.model.*;
 import io.lavagna.query.PermissionQuery;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.Validate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 @Service
 @Transactional(readOnly = true)

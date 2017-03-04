@@ -16,29 +16,19 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnInfo;
-import io.lavagna.model.Permission;
-import io.lavagna.model.User;
 import io.lavagna.service.BoardColumnRepository;
 import io.lavagna.service.BoardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.ProjectService;
 import io.lavagna.web.helper.ExpectPermission;
-
-import java.util.List;
-
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class BoardColumnController {

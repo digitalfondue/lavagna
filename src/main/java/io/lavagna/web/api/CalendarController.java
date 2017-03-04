@@ -23,20 +23,14 @@ import io.lavagna.service.CalendarService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.calendarutils.CalendarEvents;
 import io.lavagna.web.helper.ExpectPermission;
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.Calendar;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-
-import javax.servlet.http.HttpServletResponse;
-
-import net.fortuna.ical4j.data.CalendarOutputter;
-import net.fortuna.ical4j.model.Calendar;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CalendarController {

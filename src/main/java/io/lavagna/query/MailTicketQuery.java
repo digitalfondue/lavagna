@@ -74,7 +74,7 @@ public interface MailTicketQuery {
     @Query("UPDATE LA_PROJECT_MAIL_TICKET SET MAIL_TICKET_NAME = :name, MAIL_TICKET_ENABLED = :enabled, MAIL_TICKET_ALIAS = :alias, MAIL_TICKET_USE_ALIAS = :useAlias, MAIL_TICKET_COLUMN_ID_FK = :columnId, MAIL_TICKET_CONFIG_ID_FK = :configId, MAIL_TICKET_METADATA = :metadata WHERE MAIL_TICKET_ID = :id")
     int updateTicket(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("alias") String alias, @Bind("useAlias") boolean useAlias, @Bind("columnId") int columnId, @Bind("configId") int configId, @Bind("metadata") String metadata);
 
-    @Query("DELETE FROM LA_PROJECT_MAIL_TICKET WHERE WHERE MAIL_TICKET_ID = :id")
+    @Query("DELETE FROM LA_PROJECT_MAIL_TICKET WHERE MAIL_TICKET_ID = :id")
     int deleteTicket(@Bind("id") int id);
 
     @Query("SELECT * FROM LA_PROJECT_MAIL_TICKET WHERE MAIL_TICKET_ID = IDENTITY()")

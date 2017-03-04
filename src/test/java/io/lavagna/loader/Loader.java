@@ -16,29 +16,19 @@
  */
 package io.lavagna.loader;
 
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
 import io.lavagna.service.config.TestServiceConfig;
+import org.apache.commons.lang3.RandomUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,11 +39,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.lang3.RandomUtils;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static io.lavagna.common.Constants.*;
 
 /**
  * <p>

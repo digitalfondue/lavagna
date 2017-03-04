@@ -16,25 +16,12 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
 import io.lavagna.web.security.login.oauth.OAuthProvider;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +31,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.Api;
 import org.scribe.oauth.OAuthService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OauthLoginTest {
@@ -64,7 +63,7 @@ public class OauthLoginTest {
 	private HttpServletRequest req;
 	@Mock
 	private HttpSession session;
-	
+
 	private OAuthConfiguration configuration;
 
 	private String errorPage = "errorPage";
@@ -73,11 +72,11 @@ public class OauthLoginTest {
 
 	@Before
 	public void prepare() {
-	    
+
 	    configuration = new OAuthConfiguration("http://baseUrl", Arrays.asList(
-	            new OAuthProvider("google", "", ""), 
+	            new OAuthProvider("google", "", ""),
 	            new OAuthProvider("bitbucket", "", "")));
-	    
+
 		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationFetcher, serviceBuilder, errorPage);
 		when(configurationFetcher.fetch()).thenReturn(configuration);
 		when(serviceBuilder.provider(any(Api.class))).thenReturn(serviceBuilder);
@@ -138,5 +137,5 @@ public class OauthLoginTest {
 		Assert.assertTrue(r.containsKey("csrfToken"));
 	}
 
-	
+
 }

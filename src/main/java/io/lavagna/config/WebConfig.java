@@ -20,9 +20,6 @@ import io.lavagna.web.helper.GeneralHandlerExceptionResolver;
 import io.lavagna.web.helper.GsonHttpMessageConverter;
 import io.lavagna.web.helper.PermissionMethodInterceptor;
 import io.lavagna.web.helper.UserArgumentResolver;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,6 +32,8 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 @EnableWebMvc
 @ComponentScan(basePackages = "io.lavagna.web")

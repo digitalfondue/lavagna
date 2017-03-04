@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import com.google.gson.reflect.TypeToken;
 import io.lavagna.common.Json;
 import io.lavagna.model.Key;
 import io.lavagna.model.Permission;
@@ -24,24 +25,15 @@ import io.lavagna.web.helper.ExpectPermission;
 import io.lavagna.web.security.LoginHandler;
 import io.lavagna.web.security.login.OAuthLogin;
 import io.lavagna.web.security.login.oauth.OAuthResultHandlerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.google.gson.reflect.TypeToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.Map.Entry;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)

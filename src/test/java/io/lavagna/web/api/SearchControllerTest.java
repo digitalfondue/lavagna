@@ -16,28 +16,23 @@
  */
 package io.lavagna.web.api;
 
-import static io.lavagna.common.Constants.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.model.CardLabel;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchFilter;
-import io.lavagna.service.SearchService;
-import io.lavagna.service.UserRepository;
-
-import java.util.Arrays;
-import java.util.List;
-
+import io.lavagna.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {

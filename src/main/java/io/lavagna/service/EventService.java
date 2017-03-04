@@ -20,11 +20,10 @@ import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.Event;
 import io.lavagna.model.LabelListValue;
-
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @Transactional(readOnly = true)

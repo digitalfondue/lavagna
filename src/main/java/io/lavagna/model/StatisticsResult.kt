@@ -16,11 +16,9 @@
  */
 package io.lavagna.model
 
-import java.util.Calendar
-import java.util.Date
-
 import ch.digitalfondue.npjt.ConstructorAnnotationRowMapper.Column
 import org.apache.commons.lang3.time.DateUtils
+import java.util.*
 
 class StatisticsResult(@Column("TIME") date: Date,
                        @Column("BOARD_COLUMN_DEFINITION_VALUE") val columnDefinition: ColumnDefinition,

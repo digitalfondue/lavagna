@@ -16,11 +16,11 @@
  */
 package io.lavagna.common;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.springframework.core.io.ClassPathResource;
 
 public class Version {
 

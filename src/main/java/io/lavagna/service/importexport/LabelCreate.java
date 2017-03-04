@@ -16,20 +16,10 @@
  */
 package io.lavagna.service.importexport;
 
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.ImportContext;
-import io.lavagna.model.User;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.LabelService;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
 
 import java.nio.file.Path;
 import java.util.Date;

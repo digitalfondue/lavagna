@@ -16,33 +16,11 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardLabel;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabelValue;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Label;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.ListValueMetadata;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +31,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })

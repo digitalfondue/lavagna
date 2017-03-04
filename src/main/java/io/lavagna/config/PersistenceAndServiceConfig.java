@@ -17,10 +17,8 @@
 package io.lavagna.config;
 
 
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
+import ch.digitalfondue.npjt.QueryFactory;
+import ch.digitalfondue.npjt.QueryRepositoryScanner;
 import io.lavagna.common.LavagnaEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.context.MessageSource;
@@ -47,8 +45,8 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import ch.digitalfondue.npjt.QueryFactory;
-import ch.digitalfondue.npjt.QueryRepositoryScanner;
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * Datasource configuration.

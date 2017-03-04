@@ -19,7 +19,6 @@ package io.lavagna.config;
 
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.service.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;

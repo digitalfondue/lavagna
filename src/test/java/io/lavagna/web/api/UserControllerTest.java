@@ -16,10 +16,6 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
@@ -29,12 +25,6 @@ import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserRepository;
 import io.lavagna.web.api.model.DisplayNameEmail;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +32,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.EnumMap;
+import java.util.Map;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {

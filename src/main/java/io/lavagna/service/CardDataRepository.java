@@ -16,36 +16,10 @@
  */
 package io.lavagna.service;
 
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataCount;
-import io.lavagna.model.CardDataFull;
-import io.lavagna.model.CardDataIdAndOrder;
-import io.lavagna.model.CardDataMetadata;
-import io.lavagna.model.CardDataUploadContentInfo;
-import io.lavagna.model.CardIdAndContent;
-import io.lavagna.model.CardType;
+import io.lavagna.model.*;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.FileDataLight;
 import io.lavagna.query.CardDataQuery;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -59,6 +33,17 @@ import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
 @Repository
 @Transactional(readOnly = true)

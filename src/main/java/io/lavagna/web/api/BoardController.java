@@ -16,33 +16,18 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.Permission;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.model.util.ShortNameGenerator;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.StatisticsService;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.SearchService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.Suggestion;
 import io.lavagna.web.api.model.TaskStatistics;
 import io.lavagna.web.api.model.TaskStatisticsAndHistory;
 import io.lavagna.web.api.model.UpdateRequest;
 import io.lavagna.web.helper.ExpectPermission;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BoardController {

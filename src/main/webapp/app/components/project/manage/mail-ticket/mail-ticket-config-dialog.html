@@ -8,20 +8,16 @@
                    data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.name" md-autofocus>
         </md-input-container>
 
-        <div class="row row-inherit">
-            <div class="col-md-6 col-xs-12">
-                <md-input-container class="md-block">
-                    <label data-translate>project.manage.mailTicket.ticket.dialog.alias</label>
-                    <input type="text" id="alias" placeholder="" required autocomplete="off"
-                           data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.alias">
-                </md-input-container>
-                <md-input-container class="md-block">
-                    <label data-translate>project.manage.mailTicket.ticket.dialog.alias.send</label>
-                    <input type="text" id="sendByAlias" placeholder="" autocomplete="off"
-                           data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.sendByAlias">
-                </md-input-container>
-            </div>
-        </div>
+        <md-input-container class="md-block">
+            <label data-translate>project.manage.mailTicket.ticket.dialog.alias</label>
+            <input type="text" id="alias" placeholder="" required autocomplete="off"
+                   data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.alias">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <md-checkbox data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.sendByAlias">
+                <span translate>project.manage.mailTicket.ticket.dialog.alias.send</span>
+            </md-checkbox>
+        </md-input-container>
 
         <h2 class="md-title" translate>Create card in:</h2>
         <div class="row row-inherit">
@@ -53,7 +49,7 @@
     <md-dialog-actions>
         <md-button class="md-primary" type="submit"
                    data-ng-disabled="!mailTicketConfigForm.$valid">
-            <span data-translate>button.add</span>
+            <span data-translate>button.save</span>
         </md-button>
         <md-button type="button" data-ng-click="$mailTicketConfigDialogCtrl.cancel();">
             <span data-translate>button.cancel</span>

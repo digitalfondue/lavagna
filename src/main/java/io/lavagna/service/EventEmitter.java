@@ -16,23 +16,17 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.User;
+import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.tuple.Triple;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Component;
 
 @Component
 public class EventEmitter {
@@ -376,7 +370,7 @@ public class EventEmitter {
 
 		apiHookService.updateLabelValueToCards(updated, labelId, labelValue, user, LavagnaEvent.UPDATE_LABEL_VALUE);
 		apiHookService.addLabelValueToCards(added, labelId, labelValue, user, LavagnaEvent.ADD_LABEL_VALUE_TO_CARD);
-		
+
 	}
 
 	public void emitAddLabel(String projectShortName) {

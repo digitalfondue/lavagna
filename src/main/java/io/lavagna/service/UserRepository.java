@@ -16,7 +16,6 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.StringUtils.trimToNull;
 import io.lavagna.common.Json;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.Permission;
@@ -24,18 +23,6 @@ import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.query.UserQuery;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -47,6 +34,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 /**
  * CRUD operation over {@link User}

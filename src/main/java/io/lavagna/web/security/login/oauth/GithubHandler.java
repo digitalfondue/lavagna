@@ -19,7 +19,6 @@ package io.lavagna.web.security.login.oauth;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
-
 import org.scribe.builder.ServiceBuilder;
 
 public class GithubHandler extends OAuthResultHandlerAdapter {

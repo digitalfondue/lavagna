@@ -16,45 +16,26 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.Event;
-import io.lavagna.model.User;
+import com.julienvey.trello.Trello;
+import com.julienvey.trello.domain.*;
+import com.julienvey.trello.domain.Board;
+import com.julienvey.trello.domain.Card;
+import com.julienvey.trello.domain.Label;
+import com.julienvey.trello.impl.TrelloImpl;
+import io.lavagna.model.*;
 import io.lavagna.web.api.model.TrelloImportRequest;
 import io.lavagna.web.api.model.TrelloImportRequest.BoardIdAndShortName;
 import io.lavagna.web.api.model.TrelloRequest;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.julienvey.trello.Trello;
-import com.julienvey.trello.domain.Action;
-import com.julienvey.trello.domain.Argument;
-import com.julienvey.trello.domain.Board;
-import com.julienvey.trello.domain.Card;
-import com.julienvey.trello.domain.CheckItem;
-import com.julienvey.trello.domain.CheckList;
-import com.julienvey.trello.domain.Label;
-import com.julienvey.trello.domain.Member;
-import com.julienvey.trello.domain.Organization;
-import com.julienvey.trello.domain.TList;
-import com.julienvey.trello.impl.TrelloImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static io.lavagna.common.Constants.*;
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_ASSIGNED;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_DUE_DATE;
 
 @Service
 public class ImportService {

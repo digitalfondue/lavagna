@@ -16,22 +16,16 @@
  */
 package io.lavagna.web.api;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.lavagna.model.ApiHook;
 import io.lavagna.model.Permission;
 import io.lavagna.service.ApiHooksService;
 import io.lavagna.web.api.model.PluginCode;
 import io.lavagna.web.helper.ExpectPermission;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class ApiHooksController {

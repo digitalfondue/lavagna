@@ -17,11 +17,7 @@
 
 package io.lavagna.service.calendarutils;
 
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelAndValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.SearchResults;
+import io.lavagna.model.*;
 
 import java.util.Date;
 import java.util.HashSet;

@@ -16,39 +16,18 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.StringUtils.trimToNull;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.ProjectMetadata;
-import io.lavagna.model.ProjectWithEventCounts;
-import io.lavagna.model.Role;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.query.ProjectQuery;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 /**
  * {@link Project} related service.

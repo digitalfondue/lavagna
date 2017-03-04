@@ -1,7 +1,21 @@
-.lvg-mail-ticket-config {
-    border: 1px solid #dddddd;
-}
-
 .lvg-mail-ticket-config__disabled {
     opacity: 0.5;
+}
+
+.lvg-mail-ticket-config__header {
+    width: 100%;
+    display: block;
+    height: 4px;
+}
+
+.lvg-mail-ticket-config__name {
+    font-weight: bold;
+}
+
+.lvg-mail-ticket-config__info {
+    margin-bottom: 5px;
+}
+
+.lvg-mail-ticket-config__info:last-of-type {
+    margin-bottom: 0;
 }

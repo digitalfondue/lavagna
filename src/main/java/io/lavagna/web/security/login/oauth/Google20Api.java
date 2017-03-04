@@ -16,34 +16,28 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import static io.lavagna.web.security.login.oauth.Utils.encode;
-import static java.lang.String.format;
-
 import org.apache.commons.lang3.Validate;
 import org.scribe.builder.api.DefaultApi20;
 import org.scribe.extractors.AccessTokenExtractor;
-import org.scribe.model.OAuthConfig;
-import org.scribe.model.OAuthConstants;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
+import org.scribe.model.*;
 import org.scribe.oauth.OAuth20ServiceImpl;
 import org.scribe.oauth.OAuthService;
 import org.scribe.utils.Preconditions;
 
+import static io.lavagna.web.security.login.oauth.Utils.encode;
+import static java.lang.String.format;
+
 /**
  * Google OAuth 2.0 implementation.
- * 
+ *
  * Initial form taken from :
- * 
+ *
  * <pre>
  * http://svn.codehaus.org/tynamo/tags/tynamo-federatedaccounts-parent-0.3.0/tynamo-federatedaccounts-scribebasedoauth/src/main/java/org/tynamo/security/federatedaccounts/scribe/google/Google20Api.java
  * </pre>
- * 
+ *
  * Tynamo is under apache2.0 license.
- * 
+ *
  * And then duly modified.
  */
 class Google20Api extends DefaultApi20 {

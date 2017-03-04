@@ -16,14 +16,27 @@
  */
 package io.lavagna.web.support;
 
-import static org.apache.commons.lang3.ArrayUtils.contains;
+import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 import io.lavagna.common.Json;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.common.Version;
 import io.lavagna.model.Permission;
 import io.lavagna.web.helper.ExpectPermission;
 import io.lavagna.web.security.CSRFToken;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,21 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.samskivert.mustache.Mustache;
-import com.samskivert.mustache.Template;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import static org.apache.commons.lang3.ArrayUtils.contains;
 
 @Controller
 public class ResourceController {

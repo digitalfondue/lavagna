@@ -16,42 +16,22 @@
  */
 package io.lavagna.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import javax.script.Bindings;
-import javax.script.Compilable;
-import javax.script.CompiledScript;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import javax.script.SimpleScriptContext;
-
+import io.lavagna.common.Json;
+import io.lavagna.model.*;
+import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.query.ApiHookQuery;
+import io.lavagna.service.EventEmitter.LavagnaEvent;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.lavagna.common.Json;
-import io.lavagna.model.ApiHook;
-import io.lavagna.model.ApiHookNameAndVersion;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.User;
-import io.lavagna.query.ApiHookQuery;
-import io.lavagna.service.EventEmitter.LavagnaEvent;
+import javax.script.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Service
 public class ApiHooksService {

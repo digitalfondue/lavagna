@@ -16,19 +16,19 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Mockito.verify;
 import io.lavagna.service.ExportImportService;
 import io.lavagna.service.Ldap;
 import io.lavagna.service.SetupService;
-
-import java.util.Arrays;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.Map;
+
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SetupControllerTest {

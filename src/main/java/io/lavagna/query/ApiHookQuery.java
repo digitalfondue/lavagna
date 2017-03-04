@@ -16,13 +16,13 @@
  */
 package io.lavagna.query;
 
-import java.util.List;
-
 import ch.digitalfondue.npjt.Bind;
 import ch.digitalfondue.npjt.Query;
 import ch.digitalfondue.npjt.QueryRepository;
 import io.lavagna.model.ApiHook;
 import io.lavagna.model.ApiHookNameAndVersion;
+
+import java.util.List;
 
 @QueryRepository
 public interface ApiHookQuery {

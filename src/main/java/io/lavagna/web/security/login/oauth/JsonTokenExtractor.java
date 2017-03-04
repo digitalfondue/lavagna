@@ -16,17 +16,16 @@
  */
 package io.lavagna.web.security.login.oauth;
 
-import org.scribe.exceptions.OAuthException;
-import org.scribe.extractors.AccessTokenExtractor;
-import org.scribe.model.Token;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
+import org.scribe.exceptions.OAuthException;
+import org.scribe.extractors.AccessTokenExtractor;
+import org.scribe.model.Token;
 
 class JsonTokenExtractor implements AccessTokenExtractor {
-    
+
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
 	@Override

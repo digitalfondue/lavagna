@@ -18,9 +18,6 @@ package io.lavagna.web.helper;
 
 import io.lavagna.model.User;
 import io.lavagna.service.UserService;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -28,6 +25,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {

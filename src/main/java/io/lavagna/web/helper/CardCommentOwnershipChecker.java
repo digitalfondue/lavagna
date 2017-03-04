@@ -16,17 +16,15 @@
  */
 package io.lavagna.web.helper;
 
-import io.lavagna.model.UserWithPermission;
 import io.lavagna.model.Event.EventType;
+import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.EventRepository;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class CardCommentOwnershipChecker implements OwnershipChecker {

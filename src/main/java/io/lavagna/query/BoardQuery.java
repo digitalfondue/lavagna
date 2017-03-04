@@ -16,18 +16,13 @@
  */
 package io.lavagna.query;
 
+import ch.digitalfondue.npjt.*;
 import io.lavagna.model.Board;
 import io.lavagna.model.BoardColumnDefinition;
 import io.lavagna.model.BoardInfo;
 import io.lavagna.model.ProjectAndBoard;
 
 import java.util.List;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.QueriesOverride;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryOverride;
-import ch.digitalfondue.npjt.QueryRepository;
 
 @QueryRepository
 public interface BoardQuery {

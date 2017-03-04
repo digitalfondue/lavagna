@@ -16,31 +16,21 @@
  */
 package io.lavagna.web.api;
 
-import static java.lang.String.format;
-import static java.util.EnumSet.of;
-import io.lavagna.model.ConfigurationKeyValue;
-import io.lavagna.model.Key;
-import io.lavagna.model.MailConfig;
-import io.lavagna.model.Pair;
-import io.lavagna.model.Permission;
+import io.lavagna.model.*;
 import io.lavagna.service.ConfigurationRepository;
 import io.lavagna.service.Ldap;
 import io.lavagna.web.api.model.Conf;
 import io.lavagna.web.helper.ExpectPermission;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import static java.lang.String.format;
+import static java.util.EnumSet.of;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)
@@ -49,7 +39,7 @@ public class ApplicationConfigurationController {
 	private final ConfigurationRepository configurationRepository;
 	private final Ldap ldap;
 
-	
+
 	public ApplicationConfigurationController(ConfigurationRepository configurationRepository, Ldap ldap) {
 		this.configurationRepository = configurationRepository;
 		this.ldap = ldap;

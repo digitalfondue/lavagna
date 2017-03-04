@@ -16,13 +16,7 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.Event;
-import io.lavagna.model.EventsCount;
-import io.lavagna.model.Permission;
-import io.lavagna.model.ProjectWithEventCounts;
-import io.lavagna.model.User;
-import io.lavagna.model.UserMetadata;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.EventRepository;
 import io.lavagna.service.ProjectService;
@@ -30,20 +24,10 @@ import io.lavagna.service.UserRepository;
 import io.lavagna.web.api.model.DisplayNameEmail;
 import io.lavagna.web.api.model.UserPublicProfile;
 import io.lavagna.web.helper.ExpectPermission;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RestController
 public class UserController {

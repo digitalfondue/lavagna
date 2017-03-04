@@ -21,12 +21,6 @@ import io.lavagna.common.Json;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.model.Key;
 import io.lavagna.model.MailConfig;
-
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +29,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Simple scheduler. Note: it's not cluster aware.

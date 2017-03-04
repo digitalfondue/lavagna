@@ -17,24 +17,9 @@
 
 package io.lavagna.service.calendarutils;
 
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardFullWithCounts;
-import io.lavagna.model.ColumnDefinition;
-import io.lavagna.model.LabelAndValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.SearchResults;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.UserRepository;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Dur;
@@ -43,13 +28,16 @@ import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.Cn;
 import net.fortuna.ical4j.model.parameter.Value;
-import net.fortuna.ical4j.model.property.Action;
-import net.fortuna.ical4j.model.property.Created;
-import net.fortuna.ical4j.model.property.Description;
-import net.fortuna.ical4j.model.property.LastModified;
-import net.fortuna.ical4j.model.property.Organizer;
-import net.fortuna.ical4j.model.property.Uid;
-import net.fortuna.ical4j.model.property.Url;
+import net.fortuna.ical4j.model.property.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 public class CalendarVEventHandler implements CalendarEventHandler {
 

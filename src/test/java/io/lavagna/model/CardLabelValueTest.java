@@ -17,11 +17,10 @@
 package io.lavagna.model;
 
 import io.lavagna.model.CardLabel.LabelType;
-
-import java.util.Date;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Date;
 
 public class CardLabelValueTest {
 

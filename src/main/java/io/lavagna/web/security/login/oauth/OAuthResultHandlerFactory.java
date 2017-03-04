@@ -19,35 +19,34 @@ package io.lavagna.web.security.login.oauth;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
-
 import org.scribe.builder.ServiceBuilder;
 
 public interface OAuthResultHandlerFactory {
 
-    OAuthResultHandler build(ServiceBuilder serviceBuilder, 
-            OAuthRequestBuilder reqBuilder, 
-            OAuthProvider oauthProvider, 
-            String callback, 
-            Users users, 
-            SessionHandler sessionHandler, 
+    OAuthResultHandler build(ServiceBuilder serviceBuilder,
+            OAuthRequestBuilder reqBuilder,
+            OAuthProvider oauthProvider,
+            String callback,
+            Users users,
+            SessionHandler sessionHandler,
             String errorPage);
-    
-    /** 
+
+    /**
      * Can be used as a configurable base
      * */
     boolean hasConfigurableBaseUrl();
-    
+
     /**
      * _IS_ a configured instance
      * */
     boolean isConfigurableInstance();
-    
+
     public abstract class Adapter implements OAuthResultHandlerFactory {
         @Override
         public boolean hasConfigurableBaseUrl() {
             return false;
         }
-        
+
         @Override
         public boolean isConfigurableInstance() {
             return false;

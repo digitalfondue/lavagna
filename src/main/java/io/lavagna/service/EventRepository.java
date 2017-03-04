@@ -22,20 +22,13 @@ import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
 import io.lavagna.model.EventsCount;
 import io.lavagna.query.EventQuery;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)

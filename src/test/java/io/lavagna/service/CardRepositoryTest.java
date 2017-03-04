@@ -17,25 +17,10 @@
 package io.lavagna.service;
 
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })
@@ -64,7 +51,7 @@ public class CardRepositoryTest {
 
 	@Autowired
 	private CardRepository cardRepository;
-	
+
 	@Autowired
 	private ProjectService projectService;
 
@@ -92,7 +79,7 @@ public class CardRepositoryTest {
 				.createNewBoard("test-board", "TESTBRD", null, project.getId());
 		board = boardRepository.findBoardByShortName("TESTBRD");
 		Map<ColumnDefinition, BoardColumnDefinition> definitions = projectService.findMappedColumnDefinitionsByProjectId(projectService.findByShortName("TEST").getId());
-		
+
 		boardColumnRepository.addColumnToBoard("col1", definitions.get(ColumnDefinition.OPEN).getId(), BoardColumnLocation.BOARD,
 				board.getId());
 		boardColumnRepository.addColumnToBoard("col2", definitions.get(ColumnDefinition.CLOSED).getId(), BoardColumnLocation.BOARD,
@@ -168,10 +155,10 @@ public class CardRepositoryTest {
 		Card c2 = cardService.createCard("card2", col1.getId(), new Date(), user);
 		List<CardFull> res = cardRepository.findAllByIds(Arrays.asList(c1.getId(), c2.getId()));
 		Assert.assertTrue(res.size() == 2);
-		
+
 		Assert.assertTrue(cardRepository.findAllByIds(Collections.<Integer>emptyList()).isEmpty());
 	}
-	
+
 	@Test
 	public void testExistCardWith() {
 	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
@@ -324,10 +311,10 @@ public class CardRepositoryTest {
 
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), null).get(0).getId());
-		
+
 		Assert.assertTrue(cardRepository.findCardBy(null, null).isEmpty());
-		
-		
+
+
 	}
 
 	@Test
@@ -348,30 +335,30 @@ public class CardRepositoryTest {
 
 		// find by board short name + seq nr
 		Assert.assertEquals(c1.getId(), cardRepository.findCardBy("TESTBRD-" + c1.getSequence(), projects).get(0).getId());
-		
+
 		//
 		Assert.assertTrue(cardRepository.findCardBy(null, Collections.<Integer>emptySet()).isEmpty());
 	}
-	
-	
+
+
 	@Test
 	public void testFetchAllActivityByCardId() {
 	    Card c1 = cardService.createCard("card1", col1.getId(), new Date(), user);
 	    //card creation activity
 	    Assert.assertEquals(1, cardRepository.fetchAllActivityByCardId(c1.getId()).size());
-	    
+
 	    cardService.updateCard(c1.getId(), "new name", user, new Date());
 
 	    //card update activity
 	    Assert.assertEquals(2, cardRepository.fetchAllActivityByCardId(c1.getId()).size());
 	}
-	
+
 	@Test
 	public void testFetchPaginatedByBoardIdAndLocation() {
 	    for(int i = 0; i<11;i++) {
 	        cardService.createCard("card1", col1.getId(), new Date(), user);
 	    }
-	    
+
 	    Assert.assertEquals(11, cardRepository.fetchPaginatedByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD, 0).size());
 	    Assert.assertEquals(1, cardRepository.fetchPaginatedByBoardIdAndLocation(board.getId(), BoardColumnLocation.BOARD, 1).size());
 	}

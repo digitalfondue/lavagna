@@ -16,32 +16,11 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
+import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardFull;
-import io.lavagna.model.CardLabel;
 import io.lavagna.model.CardLabel.LabelDomain;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.Key;
-import io.lavagna.model.MailConfig;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,6 +30,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_ASSIGNED;
+import static io.lavagna.common.Constants.SYSTEM_LABEL_WATCHED_BY;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })

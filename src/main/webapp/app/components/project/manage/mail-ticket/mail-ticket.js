@@ -25,18 +25,6 @@
             }).then(loadConfigs);
         };
 
-        ctrl.addTicketConfig = function(mailConfig) {
-            openMailTicketConfigDialog().then(function(ticketConfig) {
-                return Project.createMailTicket(project.shortName,
-                    ticketConfig.name,
-                    ticketConfig.alias,
-                    ticketConfig.sendByAlias,
-                    ticketConfig.columnId,
-                    mailConfig.id,
-                    '');
-            }).then(loadConfigs);
-        };
-
         ctrl.toggleMailConfig = function(mailConfig) {
             Project.updateMailConfig(project.shortName,
                 mailConfig.id,
@@ -55,6 +43,54 @@
                                 config.config,
                                 config.properties);
             }).then(loadConfigs);
+        };
+
+        ctrl.deleteMailConfig = function(mailConfig) {
+            Project.deleteMailConfig(project.shortName,
+                mailConfig.id).then(loadConfigs);
+        };
+
+        ctrl.addTicketConfig = function(mailConfig) {
+            openMailTicketConfigDialog().then(function(ticketConfig) {
+                return Project.createMailTicket(project.shortName,
+                    ticketConfig.name,
+                    ticketConfig.alias,
+                    ticketConfig.sendByAlias,
+                    ticketConfig.columnId,
+                    mailConfig.id,
+                    '');
+            }).then(loadConfigs);
+        };
+
+        ctrl.onToggleTicketConfig = function($mailConfig, $ticketConfig) {
+            Project.updateMailTicket(project.shortName,
+                $ticketConfig.id,
+                $ticketConfig.name,
+                !$ticketConfig.enabled,
+                $ticketConfig.alias,
+                $ticketConfig.useAlias,
+                $ticketConfig.columnId,
+                $mailConfig.id,
+                $ticketConfig.metadata).then(loadConfigs);
+        };
+
+        ctrl.onEditTicketConfig = function($mailConfig, $ticketConfig) {
+            openMailTicketConfigDialog($ticketConfig).then(function(config) {
+                return Project.updateMailTicket(project.shortName,
+                           $ticketConfig.id,
+                           config.name,
+                           $ticketConfig.enabled,
+                           config.alias,
+                           config.useAlias,
+                           config.columnId,
+                           $mailConfig.id,
+                           config.metadata);
+            }).then(loadConfigs);
+        };
+
+        ctrl.onDeleteTicketConfig = function($ticketConfig) {
+            Project.deleteMailTicket(project.shortName,
+                $ticketConfig.id).then(loadConfigs);
         };
 
         function openMailConfigDialog(mailConfig) {
@@ -84,7 +120,7 @@
                         $mdDialog.hide(ctrl.configToAdd);
                     };
 
-                    ctrl.close = function() {
+                    ctrl.cancel = function() {
                         $mdDialog.cancel();
                     }
 
@@ -94,7 +130,7 @@
            });
         }
 
-        function openMailTicketConfigDialog(mailConfig, ticketConfig) {
+        function openMailTicketConfigDialog(ticketConfig) {
             return $mdDialog.show({
                 templateUrl: 'app/components/project/manage/mail-ticket/mail-ticket-config-dialog.html',
                 controller: function() {
@@ -124,19 +160,31 @@
                             }
                         }).then(function(column) {
                             config.boardShortName = column.boardShortName;
+
+                            if(column.boardShortName !== null) {
+                                return loadBoardColumns(column.boardShortName);
+                            }
+                        }).then(function(columns) {
+                            ctrl.columns = columns;
                         }).finally(function() {
                             ctrl.configToAdd = config;
                         });
                     }
 
-                    ctrl.onChangeBoard = function (shortName) {
-                        Board.columns(shortName).then(function(columns) {
+                    function loadBoardColumns(shortName) {
+                        return Board.columns(shortName).then(function(columns) {
                             var boardColumns = columns.filter(function(value) {
                                 return value.location === 'BOARD'
                             });
 
+                            return boardColumns;
+                        });
+                    }
+
+                    ctrl.onChangeBoard = function (shortName) {
+                        loadBoardColumns(shortName).then(function(columns) {
                             ctrl.configToAdd.columnId = null;
-                            ctrl.columns = boardColumns;
+                            ctrl.columns = columns;
                         });
                     }
 

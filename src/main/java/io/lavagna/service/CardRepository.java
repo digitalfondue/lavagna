@@ -16,25 +16,12 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.StringUtils.trimToNull;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.Card;
 import io.lavagna.model.CardFull;
 import io.lavagna.model.Event;
 import io.lavagna.model.User;
 import io.lavagna.query.CardQuery;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -46,6 +33,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Repository
 @Transactional(readOnly = true)
@@ -72,7 +65,7 @@ public class CardRepository {
 		}
 		return params;
 	}
-	
+
 	public Integer findColumnIdById(int cardId) {
 		return queries.findColumnIdById(cardId);
 	}
@@ -103,7 +96,7 @@ public class CardRepository {
 
 	/**
 	 * 10 element per page. Return 11 elements for signaling if there are more pages
-	 * 
+	 *
 	 * @param boardId
 	 * @param location
 	 * @param page
@@ -297,10 +290,10 @@ public class CardRepository {
 
 	//TODO: not happy about the interface of this one...
 	public List<CardFull> findCardBy(String term, Set<Integer> projectIds) {
-		
+
 		String maybeBoardShortName = null;
 		Integer maybeSequenceNumber = null;
-		
+
 		if (term != null) {
 			String[] splitted = term.split("-", 2);
 			maybeBoardShortName = splitted[0].toUpperCase(Locale.ENGLISH);

@@ -17,20 +17,10 @@
 package io.lavagna.service;
 
 import io.lavagna.common.Json;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardInfo;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataUploadContentInfo;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardType;
-import io.lavagna.model.Event;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Pair;
-import io.lavagna.model.Project;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.query.StatisticsQuery;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,9 +31,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.stereotype.Component;
 
 @Component
 class LavagnaExporter {

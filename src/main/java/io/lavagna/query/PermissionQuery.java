@@ -16,19 +16,13 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.model.ProjectRoleAndPermission;
-import io.lavagna.model.RoleAndMetadata;
-import io.lavagna.model.RoleAndPermission;
-import io.lavagna.model.RoleAndProject;
-import io.lavagna.model.User;
-import io.lavagna.model.UserIdentifier;
-
-import java.util.List;
-
 import ch.digitalfondue.npjt.Bind;
 import ch.digitalfondue.npjt.Query;
 import ch.digitalfondue.npjt.QueryRepository;
 import ch.digitalfondue.npjt.QueryType;
+import io.lavagna.model.*;
+
+import java.util.List;
 
 @QueryRepository
 public interface PermissionQuery {

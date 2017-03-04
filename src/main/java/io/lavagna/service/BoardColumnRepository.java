@@ -16,25 +16,21 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.StringUtils.trimToNull;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.BoardColumnInfo;
 import io.lavagna.model.User;
 import io.lavagna.query.BoardColumnQuery;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 @Repository
 @Transactional(readOnly = true)

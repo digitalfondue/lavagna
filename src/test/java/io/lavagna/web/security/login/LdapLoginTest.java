@@ -16,19 +16,10 @@
  */
 package io.lavagna.web.security.login;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.User;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.LdapLogin.LdapAuthenticator;
-
-import java.io.IOException;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +27,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LdapLoginTest {
@@ -120,11 +119,11 @@ public class LdapLoginTest {
 
 		when(ldap.authenticate("user", "password")).thenReturn(true);
 		when(users.findUserByName(LdapLogin.USER_PROVIDER, "user")).thenReturn(new User() {
-            
+
             public boolean isAnonymous() {
                 return false;
             }
-            
+
             public int getId() {
                 return 42;
             }

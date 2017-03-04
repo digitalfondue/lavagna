@@ -16,24 +16,11 @@
  */
 package io.lavagna.query;
 
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataCount;
-import io.lavagna.model.CardDataFull;
-import io.lavagna.model.CardDataIdAndOrder;
-import io.lavagna.model.CardDataMetadata;
-import io.lavagna.model.CardDataUploadContentInfo;
-import io.lavagna.model.CardIdAndContent;
-import io.lavagna.model.FileDataLight;
+import ch.digitalfondue.npjt.*;
+import io.lavagna.model.*;
 
 import java.util.Collection;
 import java.util.List;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.QueriesOverride;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryOverride;
-import ch.digitalfondue.npjt.QueryRepository;
-import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface CardDataQuery {

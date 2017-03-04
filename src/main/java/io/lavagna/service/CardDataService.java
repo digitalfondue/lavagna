@@ -16,24 +16,18 @@
  */
 package io.lavagna.service;
 
-import static java.util.EnumSet.of;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataFull;
-import io.lavagna.model.CardDataHistory;
-import io.lavagna.model.CardType;
-import io.lavagna.model.Event;
+import io.lavagna.model.*;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.FileDataLight;
-import io.lavagna.model.User;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.EnumSet.of;
 
 @Service
 @Transactional(readOnly = true)

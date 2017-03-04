@@ -21,15 +21,8 @@ import io.lavagna.model.Event.EventType;
 import io.lavagna.model.EventFull;
 import io.lavagna.model.ImportContext;
 import io.lavagna.model.User;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardLabelRepository;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.CardService;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.ImportEvent;
-import io.lavagna.service.LabelService;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -37,15 +30,13 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
 @Component
 public class ImportEventProcessor implements ImportEvent {
 
 	private final UserRepository userRepository;
 	private final Map<EventType, AbstractProcessEvent> eventProcessors;
 
-	
+
 	public ImportEventProcessor(CardRepository cardRepository, UserRepository userRepository,
 			CardDataService cardDataService, CardService cardService, EventRepository eventRepository,
 

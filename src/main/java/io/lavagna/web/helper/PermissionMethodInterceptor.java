@@ -20,19 +20,17 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.UserWithPermission;
 import io.lavagna.service.ProjectService;
 import io.lavagna.service.UserService;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Interceptor for enforcing {@link ExpectPermission} annotation. See
@@ -85,10 +83,10 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 
 		p.add(new AbstractPermissionUrlPath.LabelIdUrlPath("/label/{labelId}", "labelId"));
 		p.add(new AbstractPermissionUrlPath.LabelValueIdUrlPath("/card-label-value/{labelValueId}", "labelValueId"));
-		
+
 		p.add(new AbstractPermissionUrlPath.LabelListValuedIdPath("/label-list-values/{labelListValueId}", "labelListValueId"));
 		p.add(new AbstractPermissionUrlPath.LabelListValuedIdPath("/cards-by-milestone-detail/{milestoneId}", "milestoneId"));
-		
+
 		p.add(new AbstractPermissionUrlPath.ColumnDefinitionIdUrlPath("/redefine/{newDefinitionId}", "newDefinitionId"));
 
 		URL_PATTERNS_TO_CHECK = Collections.unmodifiableSet(p);
@@ -105,7 +103,7 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		Class<? extends OwnershipChecker> ownershipChecker = expectPermission.ownershipChecker();
 
 		UserWithPermission user = UserSession.fetchFromRequest(request, userService);
-		
+
 		if(user == null) {
 		    response.sendError(HttpStatus.FORBIDDEN.value());
 		    return false;
@@ -153,11 +151,11 @@ public class PermissionMethodInterceptor extends HandlerInterceptorAdapter {
 		}
 		return projectIds;
 	}
-	
+
 
 	/***
 	 * Check that all the related project have the expected permission
-	 * 
+	 *
 	 * @param projectIds
 	 * @param userName
 	 * @param expectedPermission

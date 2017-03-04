@@ -18,11 +18,10 @@ package io.lavagna.service;
 
 import io.lavagna.model.ConfigurationKeyValue;
 import io.lavagna.model.UserToCreate;
-
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,7 +30,7 @@ public class SetupService {
 	private final ConfigurationRepository configurationRepository;
 	private final UserService userService;
 
-	
+
 	public SetupService(ConfigurationRepository configurationRepository, UserService userService) {
 		this.configurationRepository = configurationRepository;
 		this.userService = userService;

@@ -16,8 +16,6 @@
  */
 package io.lavagna.web.api;
 
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.model.CardFull;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.Permission;
@@ -26,16 +24,13 @@ import io.lavagna.service.BulkOperationService;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.web.helper.ExpectPermission;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import static io.lavagna.common.Constants.*;
 
 @RestController
 public class BulkOperationLabelController {

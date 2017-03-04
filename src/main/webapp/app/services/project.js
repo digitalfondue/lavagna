@@ -195,7 +195,7 @@
                 }).then(extractData);
             },
             deleteMailConfig: function (shortName, id) {
-                return $http.delete('/api/project/' + shortName + '/mailConfig/' + id).then(extractData);
+                return $http['delete']('/api/project/' + shortName + '/mailConfig/' + id).then(extractData);
             },
             createMailTicket: function (shortName, name, alias, useAlias, columnId, configId, metadata) {
                 return $http.post('/api/project/' + shortName + '/ticketConfig', {
@@ -207,21 +207,20 @@
                     metadata: metadata
                 }).then(extractData);
             },
-            updateMailTicket: function (shortName, id, name, enabled, alias, useAlias, columnId, metadata) {
+            updateMailTicket: function (shortName, id, name, enabled, alias, useAlias, columnId, configId, metadata) {
                 return $http.post('/api/project/' + shortName + '/ticketConfig/' + id, {
                     name: name,
                     enabled: enabled,
                     alias: alias,
                     useAlias: useAlias,
                     columnId: columnId,
+                    configId: configId,
                     metadata: metadata
                 }).then(extractData);
             },
             deleteMailTicket: function (shortName, id) {
-                return $http.delete('/api/project/' + shortName + '/ticketConfig/' + id).then(extractData);
+                return $http['delete']('/api/project/' + shortName + '/ticketConfig/' + id).then(extractData);
             }
         };
     });
-
-
 })();

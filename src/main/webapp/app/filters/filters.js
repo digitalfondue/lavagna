@@ -191,6 +191,10 @@
 	filters.filter('color', function ($filter, $cacheFactory) {
 
 		return decorateCache(function (color) {
+		    if (color === undefined) {
+                color = 0;
+            }
+
 			var lpad = function (value, padding) {
 				var zeroes = "0";
 				for (var i = 0; i < padding; i++) {

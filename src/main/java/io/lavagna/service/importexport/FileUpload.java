@@ -16,25 +16,19 @@
  */
 package io.lavagna.service.importexport;
 
+import com.google.gson.reflect.TypeToken;
 import io.lavagna.common.Read;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataUploadContentInfo;
-import io.lavagna.model.Event;
-import io.lavagna.model.EventFull;
-import io.lavagna.model.ImportContext;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.CardRepository;
 import io.lavagna.service.UserRepository;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Objects;
-
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 class FileUpload extends AbstractProcessEvent {
 

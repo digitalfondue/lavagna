@@ -16,20 +16,16 @@
  */
 package io.lavagna.service;
 
-import static java.util.Objects.requireNonNull;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Role;
-import io.lavagna.model.User;
-import io.lavagna.model.UserToCreate;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.service.PermissionService.ProjectRoleAndPermissionFullHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.Objects.requireNonNull;
 
 /**
  * {@link User} related operations.

@@ -16,11 +16,7 @@
  */
 package io.lavagna.web.api;
 
-import io.lavagna.model.Permission;
-import io.lavagna.model.PermissionCategory;
-import io.lavagna.model.Role;
-import io.lavagna.model.RoleAndMetadata;
-import io.lavagna.model.User;
+import io.lavagna.model.*;
 import io.lavagna.service.EventEmitter;
 import io.lavagna.service.PermissionService;
 import io.lavagna.service.PermissionService.RoleAndPermissions;
@@ -28,20 +24,10 @@ import io.lavagna.web.api.model.CreateRole;
 import io.lavagna.web.api.model.UpdateRole;
 import io.lavagna.web.api.model.Users;
 import io.lavagna.web.helper.ExpectPermission;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang3.Validate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)

@@ -16,39 +16,11 @@
  */
 package io.lavagna.web.api;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardData;
-import io.lavagna.model.CardDataFull;
-import io.lavagna.model.CardType;
-import io.lavagna.model.Event;
+import io.lavagna.model.*;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.FileDataLight;
-import io.lavagna.model.User;
-import io.lavagna.service.CardDataRepository;
-import io.lavagna.service.CardDataService;
-import io.lavagna.service.CardRepository;
-import io.lavagna.service.ConfigurationRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.EventRepository;
+import io.lavagna.service.*;
 import io.lavagna.web.api.CardDataController.Content;
 import io.lavagna.web.api.CardDataController.OrderData;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -60,6 +32,22 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 //TODO complete with verify
 @RunWith(MockitoJUnitRunner.class)
@@ -256,7 +244,7 @@ public class CardDataControllerTest {
 	@Test
 	public void moveActionItem() {
 		when(cardDataRepository.getUndeletedDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
-		
+
 		when(cardDataRepository.getDataLightById(1)).thenReturn(Mockito.mock(CardData.class));
 		when(cardDataRepository.getDataLightById(0)).thenReturn(Mockito.mock(CardData.class));
 		OrderData dataOrder = new OrderData();

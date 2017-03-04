@@ -16,35 +16,13 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.CardFull;
-import io.lavagna.model.Event;
-import io.lavagna.model.Key;
-import io.lavagna.model.MailConfig;
-import io.lavagna.model.User;
-import io.lavagna.query.NotificationQuery;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.samskivert.mustache.Escapers;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.MustacheException;
 import com.samskivert.mustache.Template;
 import com.samskivert.mustache.Template.Fragment;
+import io.lavagna.model.*;
+import io.lavagna.query.NotificationQuery;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +40,15 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Handle the whole email notification process.

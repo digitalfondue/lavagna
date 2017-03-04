@@ -16,20 +16,19 @@
  */
 package io.lavagna.service;
 
-import static org.apache.commons.lang3.ArrayUtils.toArray;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-import static org.apache.commons.lang3.tuple.ImmutablePair.of;
-import static io.lavagna.common.Constants.*;
-
 import io.lavagna.model.CardDataMetadata;
 import io.lavagna.model.CardType;
 import io.lavagna.model.Event;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import static io.lavagna.common.Constants.*;
+import static org.apache.commons.lang3.ArrayUtils.toArray;
+import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import static org.apache.commons.lang3.tuple.ImmutablePair.of;
 
 /**
  * A subset of the Event enum where the event is mapped to a text to be sent to the user.

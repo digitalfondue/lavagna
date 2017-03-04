@@ -16,6 +16,7 @@
  */
 package io.lavagna.web.api;
 
+import com.google.gson.reflect.TypeToken;
 import io.lavagna.common.Json;
 import io.lavagna.model.Permission;
 import io.lavagna.model.User;
@@ -24,6 +25,9 @@ import io.lavagna.service.EventEmitter;
 import io.lavagna.service.UserRepository;
 import io.lavagna.service.UserService;
 import io.lavagna.web.helper.ExpectPermission;
+import org.apache.commons.lang3.Validate;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,16 +35,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang3.Validate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)

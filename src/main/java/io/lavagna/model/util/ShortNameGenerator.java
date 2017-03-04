@@ -16,10 +16,10 @@
  */
 package io.lavagna.model.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
 
 public final class ShortNameGenerator {
 
@@ -34,10 +34,10 @@ public final class ShortNameGenerator {
 	/**
 	 * <p>
 	 * Generate a short name given the full project name.
-	 * 
+	 *
 	 * Total length returned is equal or less than 8.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Heuristic:
 	 * </p>
@@ -50,7 +50,7 @@ public final class ShortNameGenerator {
 	 * </ul>
 	 * </li>
 	 * </ul>
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */

@@ -17,7 +17,6 @@
 package io.lavagna.service;
 
 import io.lavagna.query.MySqlFullTextSupportQuery;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class MySqlFullTextSupportService {
 
 	private final MySqlFullTextSupportQuery queries;
 
-	
+
 	public MySqlFullTextSupportService(MySqlFullTextSupportQuery queries) {
 		this.queries = queries;
 	}

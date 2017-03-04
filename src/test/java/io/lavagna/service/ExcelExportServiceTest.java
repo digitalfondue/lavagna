@@ -16,30 +16,9 @@
  */
 package io.lavagna.service;
 
-import static io.lavagna.common.Constants.*;
 import io.lavagna.config.PersistenceAndServiceConfig;
-import io.lavagna.model.Board;
-import io.lavagna.model.BoardColumn;
-import io.lavagna.model.BoardColumnDefinition;
-import io.lavagna.model.Card;
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
-import io.lavagna.model.LabelListValue;
-import io.lavagna.model.LabelListValueWithMetadata;
-import io.lavagna.model.Permission;
-import io.lavagna.model.Project;
-import io.lavagna.model.Role;
-import io.lavagna.model.User;
-import io.lavagna.model.UserWithPermission;
+import io.lavagna.model.*;
 import io.lavagna.service.config.TestServiceConfig;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.*;
+
+import static io.lavagna.common.Constants.SYSTEM_LABEL_MILESTONE;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestServiceConfig.class, PersistenceAndServiceConfig.class })

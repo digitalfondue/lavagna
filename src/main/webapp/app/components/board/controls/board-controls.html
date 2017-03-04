@@ -33,8 +33,8 @@
 
     <div class="flex no-grow" lvg-has-permission="CREATE_COLUMN">
         <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button"
-                   ng-mouseover="$ctrl.createColumnTooltipVisibility = true"
-                   ng-mouseout="$ctrl.createColumnTooltipVisibility = false || $ctrl.columns.length === 0">
+                   ng-mouseenter="$ctrl.createColumnTooltipVisibility = true"
+                   ng-mouseleave="$ctrl.createColumnTooltipVisibility = false || $ctrl.columns.length === 0">
             <md-tooltip md-autohide md-direction="right" md-visible="$ctrl.createColumnTooltipVisibility">
                 {{::('board-controls.createNewColumn'|translate)}}
             </md-tooltip>

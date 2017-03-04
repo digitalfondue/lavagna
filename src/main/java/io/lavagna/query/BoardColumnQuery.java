@@ -16,18 +16,12 @@
  */
 package io.lavagna.query;
 
+import ch.digitalfondue.npjt.*;
 import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumnInfo;
 
 import java.util.List;
 import java.util.Set;
-
-import ch.digitalfondue.npjt.Bind;
-import ch.digitalfondue.npjt.QueriesOverride;
-import ch.digitalfondue.npjt.Query;
-import ch.digitalfondue.npjt.QueryOverride;
-import ch.digitalfondue.npjt.QueryRepository;
-import ch.digitalfondue.npjt.QueryType;
 
 @QueryRepository
 public interface BoardColumnQuery {
@@ -37,7 +31,7 @@ public interface BoardColumnQuery {
 
 	@Query("SELECT * FROM LA_BOARD_COLUMN_FULL WHERE BOARD_COLUMN_ID IN (:ids)")
 	List<BoardColumn> findByIds(@Bind("ids") Set<Integer> ids);
-	
+
 	@Query("SELECT BOARD_COLUMN_ID FROM LA_BOARD_COLUMN WHERE BOARD_COLUMN_ID IN (:ids) AND BOARD_COLUMN_LOCATION = :location AND BOARD_COLUMN_BOARD_ID_FK = :boardId")
 	List<Integer> findColumnIdsInBoard(@Bind("ids") List<Integer> ids, @Bind("location") String location, @Bind("boardId") int boardId);
 
