@@ -179,20 +179,21 @@
 		ctrl.openLdapConfigModal = function() {
 			$mdDialog.show({
 				templateUrl: 'app/components/admin/login/ldap/ldap-modal.html',
-				controller: ['$scope', 'ldapConfig',
-                    function($scope, ldapConfig) {
+				controllerAs: '$ctrl',
+                bindToController: true,
+				controller: ['ldapConfig',
+                    function(ldapConfig) {
+                        var ctrl = this;
 
-					$scope.ldap = ldapConfig;
+                        ctrl.checkLdapConfiguration = function(ldapCheck) {
+                            Admin.checkLdap(ldapConfig, ldapCheck).then(function(r) {
+                                ctrl.ldapCheckResult = r;
+                            });
+                        };
 
-					$scope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
-						Admin.checkLdap(ldapConf, ldapCheck).then(function(r) {
-							$scope.ldapCheckResult = r;
-						});
-					};
-
-					$scope.close = function() {
-						$mdDialog.hide();
-					}
+					    ctrl.close = function() {
+    						$mdDialog.hide();
+    					}
 				}],
 				resolve: {
 					ldapConfig: function () {
