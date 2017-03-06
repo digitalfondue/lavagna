@@ -14,7 +14,7 @@
 	</div>
 	<div>
 		<div data-ng-show="ldapCheckResult">
-			<span data-ng-show="ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.allOk</span> 
+			<span data-ng-show="ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.allOk</span>
 			<span data-ng-show="!ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.error</span>
 			<ul>
 				<li data-ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
@@ -24,7 +24,7 @@
 </div>
 <div class="modal-footer">
 	<button class="lvg-button lvg-button-submit"
-		data-ng-click="checkLdapConfiguration(ldap, checkLdap)"
+		data-ng-click="checkLdapConfiguration(checkLdap)"
 		type="button" data-translate>partials.admin.configure-login.ldap.check</button>
 	<button data-ng-click="close()" class="lvg-button lvg-button-default" data-translate>button.close</button>
 </div>

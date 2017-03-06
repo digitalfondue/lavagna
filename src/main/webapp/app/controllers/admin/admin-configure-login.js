@@ -183,8 +183,8 @@
 			$modal.open({
 				templateUrl: 'partials/admin/fragments/ldap-check-modal.html',
 				controller: function($scope, $modalInstance, ldapConfig) {
-					$scope.checkLdapConfiguration = function(ldapConf, ldapCheck) {
-						Admin.checkLdap(ldapConf, ldapCheck).then(function(r) {
+					$scope.checkLdapConfiguration = function(ldapCheck) {
+						Admin.checkLdap(ldapConfig, ldapCheck).then(function(r) {
 							$scope.ldapCheckResult = r;
 						});
 					};
