@@ -193,7 +193,7 @@
 						$modalInstance.close('done');
 					}
 				},
-				size: 'sm',
+				size: 'lg',
 				windowClass: 'lavagna-modal',
 				resolve: {
 					ldapConfig: function () {

@@ -34,6 +34,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,8 @@ public class Ldap {
 					"error while opening the connection with message: %s [error], check the logs for a more complete trace",
 					e.getMessage());
 			msgs.add(errMsg);
+            msgs.add("Full stacktrace is:");
+            msgs.add(ExceptionUtils.getStackTrace(e));
 			LOG.error(errMsg, e);
 			return Pair.of(false, msgs);
 		}

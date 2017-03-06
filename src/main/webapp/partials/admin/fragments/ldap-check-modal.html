@@ -17,7 +17,7 @@
 			<span data-ng-show="ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.allOk</span>
 			<span data-ng-show="!ldapCheckResult.first" data-translate>partials.admin.configure-login.ldap.error</span>
 			<ul>
-				<li data-ng-repeat="msg in ldapCheckResult.second">{{msg}}</li>
+                <li data-ng-repeat="msg in ldapCheckResult.second"><pre ng-bind="msg"></pre></li>
 			</ul>
 		</div>
 	</div>
