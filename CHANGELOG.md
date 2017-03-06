@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7.3 (2017-03-06)
+
+ - Fix check ldap functionality and print more diagnostic information in the ui
+
 ## 1.1-M3 (2017-02-20)
 
  - Update the pre-release. Fixes and updates.
