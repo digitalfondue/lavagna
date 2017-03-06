@@ -17,7 +17,7 @@
             <span ng-if="$ctrl.ldapCheckResult.first" translate>admin.login.ldap.allOk</span>
             <span ng-if="!$ctrl.ldapCheckResult.first" translate>admin.login.ldap.error</span>
             <ul>
-                <li ng-repeat="msg in $ctrl.ldapCheckResult.second">{{msg}}</li>
+                <li ng-repeat="msg in $ctrl.ldapCheckResult.second"><pre ng-bind="msg"></pre></li>
             </ul>
         </div>
 

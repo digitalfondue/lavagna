@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.model.Key;
 import io.lavagna.model.Pair;
 import io.lavagna.service.LdapConnection.InitialDirContextCloseable;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -113,6 +114,8 @@ public class Ldap {
 					"error while opening the connection with message: %s [error], check the logs for a more complete trace",
 					e.getMessage());
 			msgs.add(errMsg);
+			msgs.add("Full stacktrace is:");
+			msgs.add(ExceptionUtils.getStackTrace(e));
 			LOG.error(errMsg, e);
 			return Pair.Companion.of(false, msgs);
 		}

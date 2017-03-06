@@ -6,7 +6,7 @@
 	            <md-radio-button value="DEMO">Demo</md-radio-button>
 	            <md-radio-button value="LDAP">Ldap</md-radio-button>
 	            <md-radio-button value="OAUTH">Oauth</md-radio-button>
-	        </md-radio-group> 
+	        </md-radio-group>
 	        <div ng-if="$ctrl.authMethod == 'LDAP'">
 	            <md-input-container class="md-block">
 	                <label for="ldap-serverUrl">Server URL</label>
@@ -21,21 +21,21 @@
 	                <input type="password" id="ldap-managerPassword" placeholder="secret" ng-model="$ctrl.ldap.managerPassword" ng-required="$ctrl.authMethod == 'LDAP'">
 	            </md-input-container>
 	            <md-input-container class="md-block">
-	                <label for="ldap-userSearchBase">User Search Base</label> 
+	                <label for="ldap-userSearchBase">User Search Base</label>
 	                <input id="ldap-userSearchBase" type="text" placeholder="ou=system" ng-model="$ctrl.ldap.userSearchBase" ng-required="$ctrl.authMethod == 'LDAP'">
 	            </md-input-container>
 	            <md-input-container class="md-block">
-	                <label for="ldap-userSearchFilter">User Search Filter</label> 
+	                <label for="ldap-userSearchFilter">User Search Filter</label>
 	                <input id="ldap-userSearchFilter" type="text" placeholder="uid={0}" ng-model="$ctrl.ldap.userSearchFilter" ng-required="$ctrl.authMethod == 'LDAP'">
 	            </md-input-container>
 	            <div>
 	                <h4>Check ldap configuration</h4>
 	                <md-input-container class="md-block">
-	                    <label for="checkLdap-username">Username</label> 
+	                    <label for="checkLdap-username">Username</label>
 	                    <input type="text" id="checkLdap-username" ng-model="$ctrl.checkLdap.username">
 	                </md-input-container>
 	                <md-input-container class="md-block">
-	                    <label for="checkLdap-password">Password</label> 
+	                    <label for="checkLdap-password">Password</label>
 	                    <input type="password" id="checkLdap-password" ng-model="$ctrl.checkLdap.password">
 	                </md-input-container>
 	                <div>
@@ -47,7 +47,7 @@
 	                    <span data-ng-show="$ctrl.ldapCheckResult.first">Everything seems Ok:</span>
 	                    <span data-ng-show="!$ctrl.ldapCheckResult.first">An error occured, trace is:</span>
 	                    <ul>
-	                        <li data-ng-repeat="msg in $ctrl.ldapCheckResult.second">{{msg}}</li>
+                            <li data-ng-repeat="msg in $ctrl.ldapCheckResult.second"><pre ng-bind="msg"></pre></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -55,7 +55,7 @@
 	     <div>
 	         <div data-ng-if="$ctrl.authMethod == 'OAUTH'">
 	             <md-input-container class="md-block">
-	                 <label for="oauth-baseUrl">Base url for callback urls</label> 
+	                 <label for="oauth-baseUrl">Base url for callback urls</label>
 	                 <input id="oauth-baseUrl" type="text" ng-model="$ctrl.oauth.baseUrl" ng-required="$ctrl.authMethod == 'OAUTH'">
 	             </md-input-container>
 	             <h3 class="md-body-2">OAuth provider:</h3>
@@ -65,7 +65,7 @@
 	                     </div>
 	                     <div ng-if="$ctrl.oauth[provider].present">
 	                      <md-input-container class="md-block">
-	                         <label for="oauth-provider-api-key-{{provider}}">Api key</label> 
+	                         <label for="oauth-provider-api-key-{{provider}}">Api key</label>
 	                         <input type="text" id="oauth-provider-api-key-{{provider}}" data-ng-model="$ctrl.oauth[provider].apiKey" data-ng-required="$ctrl.authMethod == 'OAUTH'">
 	                      </md-input-container>
 	                      <md-input-container class="md-block">
@@ -115,4 +115,4 @@
 	     </div>
         </form>
     </div>
-</md-content>    
+</md-content>
