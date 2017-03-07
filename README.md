@@ -6,8 +6,9 @@ Lavagna
 [![Build Status](https://travis-ci.org/digitalfondue/lavagna.svg?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
 [![Coverage Status](https://coveralls.io/repos/digitalfondue/lavagna/badge.svg?branch=master)](https://coveralls.io/r/digitalfondue/lavagna?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/io.lavagna/lavagna.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22lavagna%22)
+[![Github All Releases](https://img.shields.io/github/downloads/digitalfondue/lavagna/total.svg)](https://github.com/digitalfondue/lavagna/releases)
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
-
+[![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
 # Latest stable release is 1.0.7.3 (2017-03-06) #
 # Latest pre-release is 1.1-M3 (2017-02-20) #
