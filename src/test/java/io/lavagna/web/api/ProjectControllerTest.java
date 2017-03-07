@@ -75,12 +75,14 @@ public class ProjectControllerTest {
         "user",
         "password",
         null,
+        "",
         "outboundServer",
         2,
         "smtp",
-        true,
+        "noreply@test.com",
         "user",
-        "password"
+        "password",
+        ""
     );
 
 	@Before
@@ -92,7 +94,7 @@ public class ProjectControllerTest {
         board = new Board(0, "test", "TEST", null, project.getId(), false);
         col = new BoardColumn(0, "col1", 0, board.getId(), BoardColumn.BoardColumnLocation.BOARD, 0, ColumnDefinition.OPEN, 0);
         col = new BoardColumn(1, "col2", 1, board.getId(), BoardColumn.BoardColumnLocation.BOARD, 0, ColumnDefinition.OPEN, 0);
-        mailConfig = new ProjectMailTicketConfig(0,"config", true, project.getId(), new Date(), mailTicketConfigData.toString(), "{}");
+        mailConfig = new ProjectMailTicketConfig(0,"config", true, project.getId(), new Date(), mailTicketConfigData.toString(), "subject", "body");
 	}
 
 	@Test

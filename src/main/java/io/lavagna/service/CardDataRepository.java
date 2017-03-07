@@ -151,18 +151,18 @@ public class CardDataRepository {
 
 	@Transactional(readOnly = false)
 	public CardData createData(int cardId, CardType type, String content) {
-		LOG.debug("createCardData: {card: {}, type: {}, content: {}}", cardId, type, content);
-		queries.create(cardId, type.toString(), requireNonNull(trimToEmpty(content), "content cannot be empty"));
+		LOG.debug("createCardData: {card: {}, type: {}, body: {}}", cardId, type, content);
+		queries.create(cardId, type.toString(), requireNonNull(trimToEmpty(content), "body cannot be empty"));
 		return queries.findLastCreatedLight();
 	}
 
 	@Transactional(readOnly = false)
 	public CardData createDataWithReferenceOrder(int cardId, Integer referenceId, CardType type, String content) {
-		LOG.debug("createDataWithReferenceOrder: {card: {}, reference: {}, type: {}, content: {}}", cardId,
+		LOG.debug("createDataWithReferenceOrder: {card: {}, reference: {}, type: {}, body: {}}", cardId,
 				referenceId, type, content);
 
 		queries.createWithReferenceOrder(cardId, referenceId, type.toString(),
-				requireNonNull(trimToEmpty(content), "content cannot be empty"));
+				requireNonNull(trimToEmpty(content), "body cannot be empty"));
 
 		return queries.findLastCreatedLight();
 	}
@@ -224,7 +224,7 @@ public class CardDataRepository {
 
 	@Transactional(readOnly = false)
 	public int updateContent(int id, Set<CardType> types, String content) {
-		return queries.updateContent(requireNonNull(trimToEmpty(content), "content cannot be empty"), id,
+		return queries.updateContent(requireNonNull(trimToEmpty(content), "body cannot be empty"), id,
 				toStringList(types));
 	}
 

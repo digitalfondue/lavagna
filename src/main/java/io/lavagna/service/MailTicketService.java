@@ -17,8 +17,13 @@
 package io.lavagna.service;
 
 import io.lavagna.model.*;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.text.TextContentRenderer;
 import org.jsoup.Jsoup;
 import org.springframework.integration.mail.ImapMailReceiver;
 import org.springframework.integration.mail.MailReceiver;
@@ -36,8 +41,9 @@ import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MailTicketService {
@@ -53,6 +59,7 @@ public class MailTicketService {
 
     private final static String EMAIL_PROVIDER = "ticket-email";
     private final static String DEFAULT_INBOX = "inbox";
+    private final static Pattern CARD_SHORT_NAME = Pattern.compile(".?(?<shortname>[A-Z0-9]+)\\-(?<sequence>[0-9]+).?");
 
     public MailTicketService(MailTicketRepository mailTicketRepository,
                              CardService cardService,
@@ -81,15 +88,15 @@ public class MailTicketService {
     }
 
     @Transactional(readOnly = false)
-    public ProjectMailTicketConfig addConfig(final String name, final int projectId, final ProjectMailTicketConfigData config, final String properties) {
-        mailTicketRepository.addConfig(name, projectId, config, properties);
+    public ProjectMailTicketConfig addConfig(final String name, final int projectId, final ProjectMailTicketConfigData config, final String subject, final String body) {
+        mailTicketRepository.addConfig(name, projectId, config, subject, body);
 
         return mailTicketRepository.findLastCreatedConfig();
     }
 
     @Transactional(readOnly = false)
-    public int updateConfig(final int id, final String name, final boolean enabled, final ProjectMailTicketConfigData config, final String properties, final int projectId) {
-        return mailTicketRepository.updateConfig(id, name, enabled, config, properties, projectId);
+    public int updateConfig(final int id, final String name, final boolean enabled, final ProjectMailTicketConfigData config, final String subject, final String body, final int projectId) {
+        return mailTicketRepository.updateConfig(id, name, enabled, config, subject, body, projectId);
     }
 
     @Transactional(readOnly = false)
@@ -123,14 +130,14 @@ public class MailTicketService {
             }
 
             MailReceiver receiver = entry.getConfig().getInboundProtocol().startsWith("pop3") ?
-                getPop3MailReceiver(entry.getConfig(), entry.getProperties()) :
-                getImapMailReceiver(entry.getConfig(), entry.getProperties());
+                getPop3MailReceiver(entry.getConfig()) :
+                getImapMailReceiver(entry.getConfig());
 
             try {
                 Date updateLastChecked = entry.getLastChecked();
 
                 Object[] messages = receiver.receive();
-                LOG.info("found {} messages", messages.length);
+                LOG.debug("found {} messages", messages.length);
 
                 for(int i = 0; i < messages.length; i++) {
                     MimeMessage message = (MimeMessage) messages[i];
@@ -147,10 +154,17 @@ public class MailTicketService {
                     for(ProjectMailTicket ticketConfig: entry.getEntries()) {
                         if(ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
                             String from = getFrom(message);
-                            try {
-                                createCard(message.getSubject(), getTextFromMessage(message), ticketConfig.getColumnId(), from);
-                            } catch (IOException|MessagingException e) {
-                                LOG.error("failed to parse message content", e);
+                            Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
+
+                            if(!m.find() ||
+                                (m.find() && !cardService.existCardWith(m.group("shortname"), Integer.parseInt(m.group("sequence"))))) {
+                                try {
+                                    ImmutablePair<Card, User> cardAndUser = createCard(message.getSubject(), getTextFromMessage(message), from, ticketConfig.getColumnId());
+
+                                    notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from);
+                                } catch (IOException|MessagingException e) {
+                                    LOG.error("failed to parse message body", e);
+                                }
                             }
                         }
                     }
@@ -164,7 +178,7 @@ public class MailTicketService {
     }
 
     @Transactional(readOnly = true)
-    private void createCard(String name, String description, int columnId, String username) {
+    private ImmutablePair<Card, User> createCard(String name, String description, String username, int columnId) {
         if(!userRepository.userExists(EMAIL_PROVIDER, username)) {
             userRepository.createUser(EMAIL_PROVIDER, username, username, null, true);
         }
@@ -173,7 +187,7 @@ public class MailTicketService {
         Card card = cardService.createCardFromTop(name, columnId, new Date(), user);
         cardDataService.updateDescription(card.getId(), description, new Date(), user.getId());
 
-        emitCreateCard(card, user);
+        return new ImmutablePair<>(card, user);
     }
 
     private String getTextFromMessage(Message message) throws MessagingException, IOException {
@@ -206,7 +220,7 @@ public class MailTicketService {
         return result;
     }
 
-    private MailReceiver getPop3MailReceiver(ProjectMailTicketConfigData config, Map<String, String> properties) {
+    private MailReceiver getPop3MailReceiver(ProjectMailTicketConfigData config) {
         String sanitizedUsername = sanitizeUsername(config.getInboundUser());
         String inboxFolder = getInboxFolder(config);
 
@@ -224,14 +238,13 @@ public class MailTicketService {
             mailProperties.setProperty("mail.pop3.socketFactory.fallback", "false");
             mailProperties.setProperty("mail.pop3.socketFactory.port", Integer.toString(config.getInboundPort()));
         }
-        mailProperties.setProperty("mail.debug", "true");
-        mailProperties.putAll(properties);
+        mailProperties.putAll(config.generateInboundProperties());
         receiver.setJavaMailProperties(mailProperties);
 
         return receiver;
     }
 
-    private MailReceiver getImapMailReceiver(ProjectMailTicketConfigData config, Map<String, String> properties) {
+    private MailReceiver getImapMailReceiver(ProjectMailTicketConfigData config) {
         String sanitizedUsername = sanitizeUsername(config.getInboundUser());
         String inboxFolder = getInboxFolder(config);
 
@@ -250,8 +263,7 @@ public class MailTicketService {
             mailProperties.setProperty("mail.pop3.socketFactory.fallback", "false");
         }
         mailProperties.setProperty("mail.store.protocol", config.getInboundProtocol());
-        mailProperties.setProperty("mail.debug", "true");
-        mailProperties.putAll(properties);
+        mailProperties.putAll(config.generateInboundProperties());
         receiver.setJavaMailProperties(mailProperties);
 
         receiver.afterPropertiesSet();
@@ -278,9 +290,39 @@ public class MailTicketService {
         return message.getHeader("Delivered-To", "");
     }
 
-    private void emitCreateCard(Card createdCard, User user) {
+    private void notify(Card createdCard, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig, User user, String to) {
         ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(createdCard.getColumnId());
+
         eventEmitter.emitCreateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
             .getShortName(), createdCard.getColumnId(), createdCard, user);
+
+        sendEmail(to, createdCard, projectAndBoard.getBoard(), config, ticketConfig);
+    }
+
+    private void sendEmail(String to, Card createdCard, Board board, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig) {
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(config.getBody());
+        HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
+        TextContentRenderer textRendered = TextContentRenderer.builder().build();
+
+        String htmlText = htmlRenderer.render(document);
+        String plainText = textRendered.render(document);
+        String subject = new StringBuilder(config.getSubject())
+            .append(". ")
+            .append(board.getShortName())
+            .append("-")
+            .append(createdCard.getSequence())
+            .toString();
+
+        ProjectMailTicketConfigData configData = config.getConfig();
+        MailConfig mailConfig = new MailConfig(configData.getOutboundServer(),
+            configData.getOutboundPort(),
+            configData.getOutboundProtocol(),
+            configData.getOutboundUser(),
+            configData.getOutboundPassword(),
+            ticketConfig.getSendByAlias() ? ticketConfig.getAlias() : configData.getOutboundAddress(),
+            configData.getOutboundProperties());
+
+        mailConfig.send(to, subject, plainText, htmlText);
     }
 }

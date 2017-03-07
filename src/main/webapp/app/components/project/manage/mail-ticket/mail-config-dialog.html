@@ -40,6 +40,10 @@
                     <input type="text" id="inboundPassword" placeholder="" required autocomplete="off"
                            data-ng-model="$mailConfigDialogCtrl.configToAdd.config.inboundPassword">
                 </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.properties</label>
+                    <textarea data-ng-model="$mailConfigDialogCtrl.configToAdd.config.inboundProperties"></textarea>
+                </md-input-container>
             </div>
 
             <div class="col-md-6 col-xs-12">
@@ -71,6 +75,39 @@
                     <input type="text" id="outboundPassword" placeholder="" required autocomplete="off"
                            data-ng-model="$mailConfigDialogCtrl.configToAdd.config.outboundPassword">
                 </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.from</label>
+                    <input type="text" id="outboundUserAddress" placeholder="" required autocomplete="off"
+                           data-ng-model="$mailConfigDialogCtrl.configToAdd.config.outboundAddress">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label data-translate>label.properties</label>
+                    <textarea data-ng-model="$mailConfigDialogCtrl.configToAdd.config.outboundProperties"></textarea>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row row-inherit">
+            <div class="col-xs-12">
+                <h2 class="md-title" translate>project.manage.mailTicket.config.dialog.notification</h2>
+                <md-input-container class="md-block">
+                    <label translate>label.subject</label>
+                    <input type="text" id="subject" placeholder="" required autocomplete="off"
+                           data-ng-model="$mailConfigDialogCtrl.configToAdd.subject">
+                </md-input-container>
+                <md-input-container class="md-block" data-ng-hide="preview.show">
+                    <label data-translate>label.body</label>
+                    <textarea data-ng-model="$mailConfigDialogCtrl.configToAdd.body" rows="5" required md-select-on-focus></textarea>
+                </md-input-container>
+                <md-input-container class="md-block md-input-has-placeholder" data-ng-show="preview.show">
+                    <label data-translate>label.body</label>
+                    <div data-ng-bind-html="$mailConfigDialogCtrl.configToAdd.body | markdown"></div>
+                </md-input-container>
+                <md-button type="button" data-ng-click="preview.show = true" data-ng-hide="preview.show">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button type="button" data-ng-click="preview.show = false" data-ng-show="preview.show">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
             </div>
         </div>
     </md-dialog-content>

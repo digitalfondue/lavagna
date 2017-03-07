@@ -43,7 +43,7 @@ enum class Key {
     //
     TRELLO_API_KEY,
     //
-    MAX_UPLOAD_FILE_SIZE, // for uploaded content by the user (import data is not under this limit)
+    MAX_UPLOAD_FILE_SIZE, // for uploaded body by the user (import data is not under this limit)
     //
     TEST_PLACEHOLDER
 }

@@ -60,12 +60,14 @@ public class MailTicketServiceTest {
         "user",
         "password",
         null,
+        "",
         "outboundServer",
         2,
         "smtp",
-        true,
+        "noreply@test.com",
         "user",
-        "password"
+        "password",
+        ""
         );
 
     @Before
@@ -105,7 +107,7 @@ public class MailTicketServiceTest {
     public void TestDisabledMailConfig() {
         ProjectMailTicketConfig config = getAndAssertConfig();
 
-        mailTicketService.updateConfig(config.getId(), config.getName(), !config.getEnabled(), config.getConfig(), config.propertiesToJson(), project.getId());
+        mailTicketService.updateConfig(config.getId(), config.getName(), !config.getEnabled(), config.getConfig(), config.getSubject(), config.getBody(), project.getId());
 
         ProjectMailTicketConfig disabledConfig = mailTicketService.findConfig(config.getId());
 
@@ -117,7 +119,7 @@ public class MailTicketServiceTest {
     public void TestEditMailConfig() {
         ProjectMailTicketConfig config = getAndAssertConfig();
 
-        mailTicketService.updateConfig(config.getId(), config.getName() + "updated", config.getEnabled(), config.getConfig(), config.propertiesToJson(), project.getId());
+        mailTicketService.updateConfig(config.getId(), config.getName() + "updated", config.getEnabled(), config.getConfig(), config.getSubject(), config.getBody(), project.getId());
 
         ProjectMailTicketConfig updatedConfig = mailTicketService.findConfig(config.getId());
 
@@ -217,7 +219,8 @@ public class MailTicketServiceTest {
         mailTicketService.addConfig("config",
             project.getId(),
             data,
-            "{}");
+            "subject",
+            "body");
 
         List<ProjectMailTicketConfig> configs = mailTicketService.findAllByProject(project.getId());
 

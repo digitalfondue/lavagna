@@ -155,7 +155,11 @@ public class ProjectController {
                                                        @RequestBody ProjectMailTicketConfig config) {
         int projectId = projectService.findIdByShortName(projectShortName);
 
-        return mailTicketService.addConfig(config.getName(), projectId, config.getConfig(), config.propertiesToJson());
+        return mailTicketService.addConfig(config.getName(),
+            projectId,
+            config.getConfig(),
+            config.getSubject(),
+            config.getBody());
     }
 
     @ExpectPermission(Permission.PROJECT_ADMINISTRATION)
@@ -169,7 +173,8 @@ public class ProjectController {
             updatedConfig.getName(),
             updatedConfig.getEnabled(),
             updatedConfig.getConfig(),
-            updatedConfig.propertiesToJson(),
+            updatedConfig.getSubject(),
+            updatedConfig.getBody(),
             projectId);
     }
 

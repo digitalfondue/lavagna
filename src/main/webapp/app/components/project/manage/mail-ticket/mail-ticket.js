@@ -21,7 +21,11 @@
 
         ctrl.showAddMailConfigDialog = function() {
             openMailConfigDialog().then(function(config) {
-                return Project.createMailConfig(project.shortName, config.name, config.config, config.properties);
+                return Project.createMailConfig(project.shortName,
+                    config.name,
+                    config.config,
+                    config.subject,
+                    config.body);
             }).then(loadConfigs);
         };
 
@@ -31,7 +35,8 @@
                 mailConfig.name,
                 !mailConfig.enabled,
                 mailConfig.config,
-                mailConfig.properties).then(loadConfigs);
+                mailConfig.subject,
+                mailConfig.body).then(loadConfigs);
         };
 
         ctrl.editMailConfig = function(mailConfig) {
@@ -41,7 +46,8 @@
                                 config.name,
                                 config.enabled,
                                 config.config,
-                                config.properties);
+                                config.subject,
+                                config.body);
             }).then(loadConfigs);
         };
 
@@ -105,14 +111,14 @@
 
                     function initConfig() {
                         ctrl.configToAdd = {
-                            config: {},
-                            properties: {}
+                            config: {}
                         };
 
                         if(ctrl.configToEdit) {
                             ctrl.configToAdd.name = ctrl.configToEdit.name;
                             ctrl.configToAdd.config = ctrl.configToEdit.config;
-                            ctrl.configToAdd.properties = ctrl.configToEdit.properties;
+                            ctrl.configToAdd.subject = ctrl.configToEdit.subject;
+                            ctrl.configToAdd.body = ctrl.configToEdit.body;
                         }
                     }
 

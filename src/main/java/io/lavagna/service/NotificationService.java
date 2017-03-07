@@ -249,7 +249,7 @@ public class NotificationService {
             userRepository.findByIds(userIds), cardRepository.findAllByIds(cardIds),
             cardDataRepository.findDataByIds(cardDataIds), boardColumnRepository.findByIds(columnIds)));
 
-        mailConfig.send(user.getEmail(), StringUtils.substring("Lavagna: " + subjectAndText.getLeft(), 0, 78),
+        mailConfig.send(user.getEmail(),"Lavagna: " + subjectAndText.getLeft(),
             subjectAndText.getMiddle(), subjectAndText.getRight());
     }
 

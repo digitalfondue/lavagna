@@ -52,6 +52,10 @@ public class CardService {
         return r;
     }
 
+    public boolean existCardWith(String boardShortName, int seqNumber) {
+        return cardRepository.existCardWith(boardShortName, seqNumber);
+    }
+
     public CardFullWithCounts findFullBy(int cardId) {
         CardFull card = cardRepository.findFullBy(cardId);
         return fetchCardFull(Collections.singletonList(card)).get(0);

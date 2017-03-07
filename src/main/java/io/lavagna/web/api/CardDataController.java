@@ -345,7 +345,7 @@ public class CardDataController {
                 boolean result = cardDataService.createFile(file.getOriginalFilename(), digest, file.getSize(), cardId,
                     Files.newInputStream(p), contentType, user, new Date()).getLeft();
                 if (result) {
-                    LOG.debug("file uploaded! size: {}, original name: {}, content-type: {}", file.getSize(),
+                    LOG.debug("file uploaded! size: {}, original name: {}, body-type: {}", file.getSize(),
                         file.getOriginalFilename(), file.getContentType());
                     digests.add(digest);
                     fileNames.add(file.getOriginalFilename());

@@ -673,6 +673,6 @@ public class CardDataServiceTest {
     @Test(expected = DataIntegrityViolationException.class)
     public void testCheckEnsureReferenceIdConstraints() {
         CardData list = cardDataService.createActionList(card1.getId(), "name", user.getId(), new Date());
-        cardDataRepo.createDataWithReferenceOrder(card1.getId(), list.getId(), CardType.COMMENT, "content");
+        cardDataRepo.createDataWithReferenceOrder(card1.getId(), list.getId(), CardType.COMMENT, "body");
     }
 }

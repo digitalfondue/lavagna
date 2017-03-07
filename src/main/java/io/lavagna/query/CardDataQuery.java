@@ -66,13 +66,13 @@ public interface CardDataQuery {
 	List<CardData> findAllLightByReferenceIdAndType(@Bind("referenceId") int referenceId, @Bind("type") String type);
 
 	@Query("INSERT INTO LA_CARD_DATA(CARD_DATA_CARD_ID_FK,CARD_DATA_TYPE,CARD_DATA_CONTENT,CARD_DATA_ORDER) "
-			+ " VALUES (:cardId, :type, :content, (SELECT * FROM (SELECT COALESCE(MAX(CARD_DATA_ORDER),0) + 1 FROM LA_CARD_DATA WHERE CARD_DATA_CARD_ID_FK = :cardId AND CARD_DATA_TYPE = :type) AS MAX_CARD_DATA_ORDER))")
-	int create(@Bind("cardId") int cardId, @Bind("type") String type, @Bind("content") String content);
+			+ " VALUES (:cardId, :type, :body, (SELECT * FROM (SELECT COALESCE(MAX(CARD_DATA_ORDER),0) + 1 FROM LA_CARD_DATA WHERE CARD_DATA_CARD_ID_FK = :cardId AND CARD_DATA_TYPE = :type) AS MAX_CARD_DATA_ORDER))")
+	int create(@Bind("cardId") int cardId, @Bind("type") String type, @Bind("body") String content);
 
 	@Query("INSERT INTO LA_CARD_DATA(CARD_DATA_CARD_ID_FK,CARD_DATA_REFERENCE_ID,CARD_DATA_TYPE,CARD_DATA_CONTENT,CARD_DATA_ORDER) "
-			+ " VALUES (:cardId, :referenceId, :type, :content, (SELECT * FROM (SELECT COALESCE(MAX(CARD_DATA_ORDER),0) + 1 FROM LA_CARD_DATA WHERE CARD_DATA_CARD_ID_FK = :cardId AND CARD_DATA_REFERENCE_ID = :referenceId) AS MAX_CARD_DATA_ORDER))")
+			+ " VALUES (:cardId, :referenceId, :type, :body, (SELECT * FROM (SELECT COALESCE(MAX(CARD_DATA_ORDER),0) + 1 FROM LA_CARD_DATA WHERE CARD_DATA_CARD_ID_FK = :cardId AND CARD_DATA_REFERENCE_ID = :referenceId) AS MAX_CARD_DATA_ORDER))")
 	int createWithReferenceOrder(@Bind("cardId") int cardId, @Bind("referenceId") Integer referenceId,
-			@Bind("type") String type, @Bind("content") String content);
+			@Bind("type") String type, @Bind("body") String content);
 
 	@Query("SELECT CARD_DATA_ID, CARD_DATA_CARD_ID_FK, CARD_DATA_REFERENCE_ID, CARD_DATA_TYPE, CARD_DATA_CONTENT, CARD_DATA_ORDER, EVENT_TIME, EVENT_TYPE, EVENT_PREV_CARD_DATA_ID_FK, EVENT_USER_ID_FK "
 			+ " FROM LA_CARD_DATA_FULL WHERE CARD_DATA_CARD_ID_FK = :cardId and CARD_DATA_TYPE = :type AND CARD_DATA_DELETED = FALSE ORDER BY CARD_DATA_REFERENCE_ID ASC, CARD_DATA_ORDER ASC")
@@ -107,8 +107,8 @@ public interface CardDataQuery {
 	@Query("UPDATE LA_CARD_DATA SET CARD_DATA_REFERENCE_ID = :referenceId WHERE CARD_DATA_ID = :id AND CARD_DATA_CARD_ID_FK = :cardId")
 	int updateReferenceId(@Bind("referenceId") Integer referenceId, @Bind("id") int id, @Bind("cardId") int cardId);
 
-	@Query("UPDATE LA_CARD_DATA SET CARD_DATA_CONTENT = :content WHERE CARD_DATA_ID = :id AND CARD_DATA_TYPE IN (:types)")
-	int updateContent(@Bind("content") String content, @Bind("id") int id, @Bind("types") List<String> types);
+	@Query("UPDATE LA_CARD_DATA SET CARD_DATA_CONTENT = :body WHERE CARD_DATA_ID = :id AND CARD_DATA_TYPE IN (:types)")
+	int updateContent(@Bind("body") String content, @Bind("id") int id, @Bind("types") List<String> types);
 
 	@Query("UPDATE LA_CARD_DATA SET CARD_DATA_DELETED = TRUE WHERE CARD_DATA_ID = :id AND CARD_DATA_TYPE IN (:types)")
 	int softDelete(@Bind("id") int id, @Bind("types") List<String> types);

@@ -117,7 +117,7 @@ public class SecurityFilter extends AbstractBaseFilter {
 
 		res.addHeader("X-Frame-Options", "SAMEORIGIN");
 		res.addHeader("X-XSS-Protection", "1; mode=block");
-		res.addHeader("x-content-type-options", "nosniff");
+		res.addHeader("x-body-type-options", "nosniff");
 	}
 
 }

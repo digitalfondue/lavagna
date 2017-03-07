@@ -179,19 +179,21 @@
             getMailConfigs: function (shortName) {
                 return $http.get('/api/project/' + shortName + '/mailConfigs').then(extractData);
             },
-            createMailConfig: function (shortName, name, config, properties) {
+            createMailConfig: function (shortName, name, config, subject, body) {
                 return $http.post('/api/project/' + shortName + '/mailConfig', {
                     name: name,
                     config: config,
-                    properties: properties
+                    subject: subject,
+                    body: body
                 }).then(extractData);
             },
-            updateMailConfig: function (shortName, id, name, enabled, config, properties) {
+            updateMailConfig: function (shortName, id, name, enabled, config, subject, body) {
                 return $http.post('/api/project/' + shortName + '/mailConfig/' + id, {
                     name: name,
                     enabled: enabled,
                     config: config,
-                    properties: properties
+                    subject: subject,
+                    body: body
                 }).then(extractData);
             },
             deleteMailConfig: function (shortName, id) {

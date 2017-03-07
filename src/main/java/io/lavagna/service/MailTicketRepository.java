@@ -47,8 +47,8 @@ public class MailTicketRepository {
     }
 
     @Transactional(readOnly = false)
-    public int addConfig(final String name, final int projectId, final ProjectMailTicketConfigData config, String properties) {
-        return queries.addConfig(name, projectId, config.toString(), properties);
+    public int addConfig(final String name, final int projectId, final ProjectMailTicketConfigData config, final String subject, final String body) {
+        return queries.addConfig(name, projectId, config.toString(), subject, body);
     }
 
     public ProjectMailTicketConfig findLastCreatedConfig() {
@@ -56,8 +56,8 @@ public class MailTicketRepository {
     }
 
     @Transactional(readOnly = false)
-    public int updateConfig(final int id, final String name, final boolean enabled, final ProjectMailTicketConfigData config, String properties, final int projectId) {
-        return queries.updateConfig(id, name, enabled, config.toString(), properties, projectId);
+    public int updateConfig(final int id, final String name, final boolean enabled, final ProjectMailTicketConfigData config, final String subject, final String body, final int projectId) {
+        return queries.updateConfig(id, name, enabled, config.toString(), subject, body, projectId);
     }
 
     @Transactional(readOnly = false)

@@ -48,12 +48,12 @@ public interface MailTicketQuery {
     @Query("SELECT * FROM LA_PROJECT_MAIL_TICKET WHERE MAIL_TICKET_ID = :id")
     ProjectMailTicket findTicketById(@Bind("id") int id);
 
-    @Query("INSERT INTO LA_PROJECT_MAIL_TICKET_CONFIG(MAIL_CONFIG_NAME, MAIL_CONFIG_PROJECT_ID_FK, MAIL_CONFIG_CONFIG, MAIL_CONFIG_PROPERTIES)"
-        + "VALUES (:name, :projectId, :config, :properties)")
-    int addConfig(@Bind("name") String name, @Bind("projectId") int projectId, @Bind("config") String config, @Bind("properties") String properties);
+    @Query("INSERT INTO LA_PROJECT_MAIL_TICKET_CONFIG(MAIL_CONFIG_NAME, MAIL_CONFIG_PROJECT_ID_FK, MAIL_CONFIG_CONFIG, MAIL_CONFIG_SUBJECT, MAIL_CONFIG_BODY)"
+        + "VALUES (:name, :projectId, :config, :subject, :body)")
+    int addConfig(@Bind("name") String name, @Bind("projectId") int projectId, @Bind("config") String config, @Bind("subject") String subject, @Bind("body") String body);
 
-    @Query("UPDATE LA_PROJECT_MAIL_TICKET_CONFIG SET MAIL_CONFIG_NAME = :name, MAIL_CONFIG_ENABLED = :enabled, MAIL_CONFIG_CONFIG = :config, MAIL_CONFIG_PROPERTIES = :properties WHERE MAIL_CONFIG_ID = :id AND MAIL_CONFIG_PROJECT_ID_FK = :projectId")
-    int updateConfig(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("config") String config, @Bind("properties") String properties, @Bind("projectId") int projectId);
+    @Query("UPDATE LA_PROJECT_MAIL_TICKET_CONFIG SET MAIL_CONFIG_NAME = :name, MAIL_CONFIG_ENABLED = :enabled, MAIL_CONFIG_CONFIG = :config, MAIL_CONFIG_SUBJECT = :subject, MAIL_CONFIG_BODY = :body WHERE MAIL_CONFIG_ID = :id AND MAIL_CONFIG_PROJECT_ID_FK = :projectId")
+    int updateConfig(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("config") String config, @Bind("subject") String subject, @Bind("body") String body, @Bind("projectId") int projectId);
 
     @Query("DELETE FROM LA_PROJECT_MAIL_TICKET_CONFIG WHERE MAIL_CONFIG_ID = :id AND MAIL_CONFIG_PROJECT_ID_FK = :projectId")
     int deleteConfig(@Bind("id") int id, @Bind("projectId") int projectId);
