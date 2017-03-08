@@ -15,4 +15,4 @@
 -- along with lavagna.  If not, see <http://www.gnu.org/licenses/>.
 --
 
-ALTER TABLE LA_USER ADD COLUMN USER_PASSWORD VARCHAR(60);
+ALTER TABLE LA_USER ADD COLUMN USER_PASSWORD VARCHAR(82);

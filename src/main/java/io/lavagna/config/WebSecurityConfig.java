@@ -316,8 +316,8 @@ public class WebSecurityConfig {
 
     @Lazy
     @Bean
-    public PasswordLogin passwordLogin(Users users, SessionHandler sessionHandler) {
-        return new PasswordLogin(users, sessionHandler);
+    public PasswordLogin passwordLogin(Users users, SessionHandler sessionHandler, UserRepository userRepository) {
+        return new PasswordLogin(users, sessionHandler, userRepository, "/login?error-password");
     }
 
 }

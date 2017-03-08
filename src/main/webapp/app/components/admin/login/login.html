@@ -33,6 +33,15 @@
     </md-card-content>
 </md-card>
 
+<h2 class="md-title" translate>admin.login.password</h2>
+<md-card>
+    <md-card-content>
+        <div>
+            <md-checkbox class="lvg-no-margin-bottom" ng-model="$ctrl.authMethod.PASSWORD" ng-change="$ctrl.updateActiveProviders()"><span translate>common.enable</span></md-checkbox>
+        </div>
+    </md-card-content>
+</md-card>
+
 
 <h2 class="md-title" translate>admin.login.ldap</h2>
 <md-card>

@@ -180,7 +180,7 @@ public class MailTicketService {
     @Transactional(readOnly = true)
     private ImmutablePair<Card, User> createCard(String name, String description, String username, int columnId) {
         if(!userRepository.userExists(EMAIL_PROVIDER, username)) {
-            userRepository.createUser(EMAIL_PROVIDER, username, username, null, true);
+            userRepository.createUser(EMAIL_PROVIDER, username, null, null, null, true);
         }
         User user = userRepository.findUserByName(EMAIL_PROVIDER, username);
 

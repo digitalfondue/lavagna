@@ -58,7 +58,7 @@ public class UserRepositoryTest {
 
 	@Test
 	public void createUserFullTeste() {
-		int res = userRepository.createUser("test", TEST_USER_NAME, "test@test", "ds", false);
+		int res = userRepository.createUser("test", TEST_USER_NAME, null,"test@test", "ds", false);
 		Assert.assertEquals(1, res);
 
 	}

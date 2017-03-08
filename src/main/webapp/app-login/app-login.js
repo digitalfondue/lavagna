@@ -63,6 +63,41 @@
 	}
 	//-----------------
 
+	module.component('passwordLogin', {
+        template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
+            '<form method="post" action="login/password/" class="lvg-panel__body">',
+              '<md-input-container class="md-block">',
+                   '<label for="demo-username">{{\'login.password.username\' | translate}}</label>',
+                   '<input id="demo-username" type="text" placeholder="User name" name="username" autocomplete="off" required>',
+              '</md-input-container>',
+              '<md-input-container class="md-block">',
+                '<label for="demo-password">{{\'login.password.password\' | translate}}</label>',
+                '<input id="demo-password" type="password" placeholder="Password" name="password" autocomplete="off" required>',
+              '</md-input-container>',
+              '<div ng-if="$ctrl.errorDemo" class="error-message">{{\'login.error\' | translate}}</div>',
+              '<p>',
+                '<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> {{\'login.rememberMe\' | translate}}</md-checkbox>',
+              '</p>',
+                '<p class="single-button">',
+                    '<md-button type="submit" class="md-primary">Log in</md-button>',
+                    '<input type="hidden" name="_csrf" value="{{::$ctrl.configuration.csrfToken}}"> ',
+                    '<input type="hidden" name="reqUrl" value="{{::$ctrl.configuration.reqUrl}}">',
+                    '<input type="hidden" name="rememberMe" value="{{$ctrl.rememberMe}}" />',
+                '</p>',
+            '</form>',
+        '</div>'].join(''),
+        controller: ['configuration', '$window', passwordLoginCtrl]
+    });
+
+
+    function passwordLoginCtrl(configuration, $window) {
+        var ctrl = this;
+        ctrl.configuration = configuration;
+        ctrl.show = configuration.loginPassword === 'block';
+        ctrl.errorDemo = hasErrorInQueryString($window, 'error-password');
+    }
+    //-----------------
+
 	module.component('ldapLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
 		           		'<form method="post" action="login/ldap/" class="lvg-panel__body">',
