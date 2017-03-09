@@ -114,6 +114,7 @@ public class UserRepository {
 
     @Transactional(readOnly = false)
     public int createUser(String provider, String userName, String password, String email, String displayName, boolean enabled) {
+
         return queries.createUser(provider, userName, password, email, displayName, enabled);
     }
 

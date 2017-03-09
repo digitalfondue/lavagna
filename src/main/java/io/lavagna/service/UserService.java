@@ -51,6 +51,10 @@ public class UserService {
 		requireNonNull(userToCreate.getProvider());
 		requireNonNull(userToCreate.getUsername());
 
+        if(trimToNull(userToCreate.getPassword()) != null) {
+            userToCreate.setPassword(hashPassword(userToCreate.getPassword()));
+        }
+
 		userRepository.createUser(userToCreate.getProvider(), userToCreate.getUsername(), userToCreate.getPassword(), userToCreate.getEmail(),
 				userToCreate.getDisplayName(), userToCreate.getEnabled());
 
@@ -78,15 +82,11 @@ public class UserService {
 	@Transactional(readOnly = false)
 	public void createUsers(List<UserToCreate> usersToCreate) {
 		for (UserToCreate utc : requireNonNull(usersToCreate)) {
-		    if(trimToNull(utc.getPassword()) != null) {
-		        utc.setPassword(hashPassword(utc.getPassword()));
-            }
-
 			createUser(utc);
 		}
 	}
 
-	private String hashPassword(String password) {
+	private static String hashPassword(String password) {
 	    return SCryptUtil.scrypt(password, 2 << 14, 8, 1);
     }
 
