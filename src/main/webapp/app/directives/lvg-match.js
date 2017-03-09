@@ -23,6 +23,6 @@
                 $scope.$on('$destroy', unregister);
             }
         }
-    })
+    });
 
 })();

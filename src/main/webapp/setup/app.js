@@ -41,23 +41,23 @@
 			};
 		});
 	}]);
-	
+
 	module.service('Configuration', function () {
 		var conf = {
 				toSave : {first: undefined, second: undefined, user: undefined},
 				secondStep: {
-					ldap: {}, 
-					oauth: {}, 
+					ldap: {},
+					oauth: {},
 					oauthProviders: ['bitbucket', 'gitlab', 'github', 'google', 'twitter'],
 					oauthCustomizable : ['gitlab'],
 					oauthNewProvider : {}
 				}
 		};
-		
+
 		angular.forEach(conf.secondStep.oauthProviders, function (p) {
 			conf.secondStep.oauth[p] = {present: false};
 		});
-		
+
 		return conf;
 	});
 
@@ -67,7 +67,7 @@
 			$state.go('first-step');
 		}
 	}]);
-	
+
 
 	module.filter('mask', ['$filter', function ($filter) {
 		return function (text) {
@@ -77,6 +77,27 @@
 			return text.replace(/./gi, "*");
 		};
 	}]);
+
+	module.directive('lvgMatch', function () {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                modelValueToMatch: '=lvgMatch'
+            },
+            link: function($scope, $element, $attrs, ngModel) {
+                ngModel.$validators.lvgMatch = function(ngModelValue, ngViewValue) {
+                    return ngModelValue === $scope.modelValueToMatch;
+                };
+
+                var unregister = $scope.$watch($scope.modelValueToMatch, function () {
+                    ngModel.$validate();
+                });
+
+                $scope.$on('$destroy', unregister);
+            }
+        }
+    });
 
 
 })();
