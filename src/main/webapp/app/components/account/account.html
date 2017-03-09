@@ -36,6 +36,45 @@
                     </md-card-actions>
                 </md-card>
             </form>
+
+            <form ng-if="$ctrl.provider === 'password'"
+                  role="form"
+                  name="changePasswordForm"
+                  ng-submit="$ctrl.changePassword($ctrl.currentPassword, $ctrl.newPassword); $ctrl.currentPassword = null; $ctrl.newPassword = null; $ctrl.confirmPassword = null;">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="lvg-headline" translate>account.password</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <md-input-container class="md-block">
+                            <label translate>account.password.label.current</label>
+                            <input type="password"
+                                   required
+                                   ng-model="$ctrl.currentPassword">
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label translate>account.password.label.new</label>
+                            <input type="password"
+                                   required
+                                   ng-model="$ctrl.newPassword">
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label translate>account.password.label.confirm</label>
+                            <input type="password"
+                                   required
+                                   ng-model="$ctrl.confirmPassword"
+                                   lvg-match="$ctrl.newPassword">
+                        </md-input-container>
+                    </md-card-content>
+                    <md-card-actions>
+                        <md-button type="submit" ng-disabled="!changePasswordForm.$valid" class="md-primary"><span translate>button.update</span></md-button>
+                    </md-card-actions>
+                </md-card>
+            </form>
         </div>
         <div class="col-md-6 col-xs-12">
             <md-card>

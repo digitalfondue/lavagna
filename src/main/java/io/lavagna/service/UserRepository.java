@@ -227,7 +227,8 @@ public class UserRepository {
         return queries.getHashedPassword(provider, username);
     }
 
-    public int setUserPassword(User user, String password) {
-        return queries.setPassword(user.getId(), password);
+    @Transactional(readOnly = false)
+    public int setUserPassword(int userId, String hashedPassword) {
+        return queries.setPassword(userId, hashedPassword);
     }
 }

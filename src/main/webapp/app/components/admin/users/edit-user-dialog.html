@@ -1,0 +1,22 @@
+<form role="form" ng-submit="editUserDialogCtrl.save();" name="editUserForm">
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title" translate translate-values="{
+            provider: editUserDialogCtrl.userToEdit.provider,
+            username: editUserDialogCtrl.userToEdit.username
+        }">admin.users.dialog.edit.user.title</h2>
+
+        <md-input-container class="md-block">
+            <label translate>admin.users.email</label>
+            <input ng-model="editUserDialogCtrl.userToEdit.email">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label translate>admin.users.displayName</label>
+            <input ng-model="editUserDialogCtrl.userToEdit.displayName">
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button type="button" ng-click="editUserDialogCtrl.cancel()"><span translate>button.cancel</span></md-button>
+        <md-button type="submit" ng-disabled="!editUserForm.$valid"><span translate>button.save</span></md-button>
+    </md-dialog-actions>
+</form>

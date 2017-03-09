@@ -25,7 +25,11 @@ table.lvg-table md-checkbox {
 }
 
 table.lvg-table .center {
-	text-align:center;
+	text-align: center;
+}
+
+table.lvg-table .right {
+    text-align: right;
 }
 
 td.vcenter {

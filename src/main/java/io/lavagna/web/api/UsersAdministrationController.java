@@ -54,6 +54,22 @@ public class UsersAdministrationController {
 		this.eventEmitter = eventEmitter;
 	}
 
+    @RequestMapping(value = "/api/user/{userId}", method = RequestMethod.POST)
+    public void update(@PathVariable("userId") int userId, User user, @RequestBody Edit edit) {
+        Validate.isTrue(user.getId() != userId, "cannot update the user");
+        User userToEdit = userRepository.findById(userId);
+
+        userRepository.updateProfile(userToEdit, edit.getEmail(), edit.getDisplayName(), user.getEmailNotification(), user.getSkipOwnNotifications());
+        eventEmitter.emitUpdateUserProfile(userId);
+    }
+
+    @RequestMapping(value = "/api/user/{userId}/password", method = RequestMethod.POST)
+    public void resetPassword(@PathVariable("userId") int userId, User user, @RequestBody PasswordReset passwordReset) {
+        Validate.isTrue(user.getId() != userId, "cannot update the user");
+
+        userService.changePassword(userId, passwordReset.getPassword());
+    }
+
 	@RequestMapping(value = "/api/user/{userId}/enable", method = RequestMethod.POST)
 	public void toggle(@PathVariable("userId") int userId, User user, @RequestBody Update status) {
 		Validate.isTrue(user.getId() != userId, "cannot update the status");
@@ -84,6 +100,39 @@ public class UsersAdministrationController {
 
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
+        }
+    }
+
+    public static class PasswordReset {
+	    private String password;
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
+    public static class Edit {
+	    private String displayName;
+        private String email;
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public void setDisplayName(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 }

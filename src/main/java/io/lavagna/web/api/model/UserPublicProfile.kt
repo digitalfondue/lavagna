@@ -32,10 +32,3 @@ class UserPublicProfile(user: User, val dailyActivity: List<EventsCount>,
             user.userMetadataRaw)
     }
 }
-
-class DisplayNameEmail {
-    var email: String? = null
-    var displayName: String? = null
-    var emailNotification: Boolean = false
-    var skipOwnNotifications: Boolean = false
-}

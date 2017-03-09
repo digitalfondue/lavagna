@@ -605,6 +605,7 @@
             .icon('logout',      	    'svg/logout.svg')
             .icon('repeat',             'svg/repeat.svg')
             .icon('repeat-off',         'svg/repeat-off.svg')
+            .icon('security-key',       'svg/ic_vpn_key_black_48px.svg')
 	});
 
 	module.config(function($mdDateLocaleProvider, LOCALE_FIRST_DAY_OF_WEEK) {

@@ -86,7 +86,12 @@ public class UserService {
 		}
 	}
 
-	private static String hashPassword(String password) {
+	@Transactional(readOnly = false)
+    public int changePassword(int userId, String password) {
+	    return userRepository.setUserPassword(userId, hashPassword(password));
+    }
+
+    private static String hashPassword(String password) {
 	    return SCryptUtil.scrypt(password, 2 << 14, 8, 1);
     }
 
