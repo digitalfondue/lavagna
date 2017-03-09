@@ -60,7 +60,7 @@
 
         ctrl.updateFeed = function() {
             User.updateCalendarFeedStatus(ctrl.disabledFeed).then(createUrl);
-        }
+        };
 
         ctrl.update = function(profile) {
             User.updateProfile(profile)
@@ -70,7 +70,7 @@
                 }, function () {
                     Notification.addAutoAckNotification('error', {key: 'notification.user.update.error'}, false);
                 });
-        }
+        };
 
         ctrl.copyCalendarUrl = function() {
             CopyToClipboard.copy(ctrl.calendarFeedUrl).then(function() {
@@ -78,6 +78,14 @@
             }, function() {
                 Notification.addAutoAckNotification('warning', {key: 'account.calendar.copy.failure'}, false);
             })
+        };
+
+        ctrl.changePassword = function (currentPassword, newPassword) {
+            User.changePassword(currentPassword, newPassword).then(function () {
+                Notification.addAutoAckNotification('success', {key: 'notification.account.password.success'}, false);
+            }, function () {
+                Notification.addAutoAckNotification('error', {key: 'notification.account.password.error'}, false);
+            });
         }
-    };
+    }
 })();

@@ -16,6 +16,7 @@
  */
 package io.lavagna.service;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import io.lavagna.model.*;
 import io.lavagna.service.PermissionService.ProjectRoleAndPermissionFullHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 /**
  * {@link User} related operations.
@@ -49,7 +51,11 @@ public class UserService {
 		requireNonNull(userToCreate.getProvider());
 		requireNonNull(userToCreate.getUsername());
 
-		userRepository.createUser(userToCreate.getProvider(), userToCreate.getUsername(), userToCreate.getEmail(),
+        if(trimToNull(userToCreate.getPassword()) != null) {
+            userToCreate.setPassword(hashPassword(userToCreate.getPassword()));
+        }
+
+		userRepository.createUser(userToCreate.getProvider(), userToCreate.getUsername(), userToCreate.getPassword(), userToCreate.getEmail(),
 				userToCreate.getDisplayName(), userToCreate.getEnabled());
 
 		if (userToCreate.getRoles() == null) {
@@ -79,5 +85,14 @@ public class UserService {
 			createUser(utc);
 		}
 	}
+
+	@Transactional(readOnly = false)
+    public int changePassword(int userId, String password) {
+	    return userRepository.setUserPassword(userId, hashPassword(password));
+    }
+
+    private static String hashPassword(String password) {
+	    return SCryptUtil.scrypt(password, 2 << 14, 8, 1);
+    }
 
 }

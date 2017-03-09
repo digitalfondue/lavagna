@@ -16,14 +16,13 @@
  */
 package io.lavagna.web.api;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import io.lavagna.model.*;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.DisplayNameEmail;
 import io.lavagna.web.api.model.UserPublicProfile;
 import io.lavagna.web.helper.ExpectPermission;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,14 +32,16 @@ import java.util.*;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final EventEmitter eventEmitter;
     private final EventRepository eventRepository;
     private final ProjectService projectService;
 
 
-    public UserController(UserRepository userRepository, EventEmitter eventEmitter, EventRepository eventRepository,
+    public UserController(UserRepository userRepository, UserService userService, EventEmitter eventEmitter, EventRepository eventRepository,
         ProjectService projectService) {
         this.userRepository = userRepository;
+        this.userService = userService;
         this.eventEmitter = eventEmitter;
         this.eventRepository = eventRepository;
         this.projectService = projectService;
@@ -63,6 +64,16 @@ public class UserController {
         int result = userRepository.updateMetadata(user.getId(), metadata);
         eventEmitter.emitUpdateUserProfile(user.getId());
         return result;
+    }
+
+    @ExpectPermission(Permission.UPDATE_PROFILE)
+    @RequestMapping(value = "/api/self/password", method = RequestMethod.POST)
+    public int changePassword(UserWithPermission user, @RequestBody PasswordChange passwordChange) {
+        String currentHashedPassword = userRepository.getHashedPassword(user.getProvider(), user.getUsername());
+
+        Validate.isTrue(SCryptUtil.check(passwordChange.getCurrentPassword(), currentHashedPassword));
+
+        return userService.changePassword(user.getId(), passwordChange.getNewPassword());
     }
 
     @ExpectPermission(Permission.UPDATE_PROFILE)
@@ -152,6 +163,27 @@ public class UserController {
     @RequestMapping(value = "/api/project/{projectShortName}/user/list", method = RequestMethod.GET)
     public List<User> findAllUsersForProject() {
         return findAllUsers();
+    }
+
+    public static class PasswordChange {
+        private String newPassword;
+        private String currentPassword;
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
+
+        public String getCurrentPassword() {
+            return currentPassword;
+        }
+
+        public void setCurrentPassword(String currentPassword) {
+            this.currentPassword = currentPassword;
+        }
     }
 
 }

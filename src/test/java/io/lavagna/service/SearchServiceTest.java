@@ -81,8 +81,8 @@ public class SearchServiceTest {
 
 	@Before
 	public void prepare() {
-		userRepository.createUser("test", "test", null, null, true);
-		userRepository.createUser("test", "test-no-access", null, null, true);
+		userRepository.createUser("test", "test", null,null, null, true);
+		userRepository.createUser("test", "test-no-access", null,null, null, true);
 		user = userRepository.findUserByName("test", "test");
 		userWithNoAccess = userRepository.findUserByName("test", "test-no-access");
 		Role r = new Role("TEST");

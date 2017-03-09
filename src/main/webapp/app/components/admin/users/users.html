@@ -1,11 +1,20 @@
 <md-card class="lvg-content__row lvg-content__row-item">
     <md-card-content>
-        <md-input-container class="md-block">
-            <label translate>admin.users.filter.users</label>
-            <md-icon md-svg-icon="search"></md-icon>
-            <input type="text"
-                   ng-model="$ctrl.usernameFilter" />
-        </md-input-container>
+        <div class="row row-inherit">
+            <md-input-container class="flex">
+                <label translate>admin.users.filter.users</label>
+                <md-icon md-svg-icon="search"></md-icon>
+                <input type="text"
+                       ng-model="$ctrl.usernameFilter" />
+            </md-input-container>
+            <md-input-container>
+                <md-select ng-model="$ctrl.userStatusFilter">
+                    <md-option ng-value="true"><span translate>admin.users.status.active</span></md-option>
+                    <md-option ng-value="false"><span translate>admin.users.status.inactive</span></md-option>
+                    <md-option ng-value="undefined"><span translate>admin.users.status.all</span></md-option>
+                </md-select>
+            </md-input-container>
+        </div>
 
         <table class="lvg-table">
             <thead>
@@ -14,24 +23,36 @@
                 <th translate>admin.users.username</th>
                 <th translate>admin.users.email</th>
                 <th translate>admin.users.displayName</th>
-                <th translate  class="center">admin.users.roles</th>
-                <th translate  class="center">admin.users.enabled</th>
+                <th translate  class="center">admin.users.active</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="u in $ctrl.users | filter: $ctrl.usernameFilter">
+            <tr ng-repeat="u in $ctrl.users | filter:{enabled: $ctrl.userStatusFilter} | filter: $ctrl.usernameFilter">
                 <td ng-bind="u.provider"></td>
                 <td>
                     <a class="lvg-user-link-placeholder" ui-sref="user.dashboard({provider: u.provider, username: u.username})" ng-bind="u.username"></a>
                 </td>
                 <td ng-bind="u.email"></td>
                 <td ng-bind="u.displayName"></td>
-                <td  class="center">
-                    <md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.showUserPermissions(u)"><md-icon md-svg-icon="info"></md-icon></md-button>
-                </td>
                 <td class="center"><md-checkbox ng-disabled="u.id == $ctrl.currentUser.id"
                                                 ng-model="u.enabled"
-                                                ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"></td>
+                                                ng-change="$ctrl.updateUserStatus(u.id, u.enabled)"></md-checkbox>
+                </td>
+                <td  class="right">
+                    <md-button class="md-icon-button" ng-if="u.provider === 'password'" ng-click="$ctrl.resetPassword(u)">
+                        <md-tooltip>{{::('admin.users.actions.tooltip.password' | translate)}}</md-tooltip>
+                        <md-icon md-svg-icon="security-key"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.editUserInfo(u)">
+                        <md-tooltip>{{::('admin.users.actions.tooltip.edit' | translate)}}</md-tooltip>
+                        <md-icon md-svg-icon="edit"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-if="u.provider !== 'system'" ng-click="$ctrl.showUserPermissions(u)">
+                        <md-tooltip>{{::('admin.users.actions.tooltip.roles' | translate)}}</md-tooltip>
+                        <md-icon md-svg-icon="info"></md-icon>
+                    </md-button>
+                </td>
             </tr>
             </tbody>
         </table>

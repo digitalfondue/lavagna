@@ -30,9 +30,9 @@ import java.util.List;
 @QueryRepository
 public interface UserQuery {
 
-	@Query("INSERT INTO LA_USER(USER_PROVIDER, USER_NAME, USER_EMAIL, USER_DISPLAY_NAME, USER_ENABLED) VALUES (:provider, :userName, :email, :displayName, :enabled)")
-	int createUser(@Bind("provider") String provider, @Bind("userName") String username, @Bind("email") String email,
-			@Bind("displayName") String displayName, @Bind("enabled") boolean enabled);
+	@Query("INSERT INTO LA_USER(USER_PROVIDER, USER_NAME, USER_PASSWORD, USER_EMAIL, USER_DISPLAY_NAME, USER_ENABLED) VALUES (:provider, :userName, :password, :email, :displayName, :enabled)")
+	int createUser(@Bind("provider") String provider, @Bind("userName") String username, @Bind("password") String password,
+                   @Bind("email") String email, @Bind("displayName") String displayName, @Bind("enabled") boolean enabled);
 
 	@Query(type = QueryType.TEMPLATE, value = "INSERT INTO LA_USER(USER_PROVIDER, USER_NAME, USER_EMAIL, USER_DISPLAY_NAME, USER_ENABLED, USER_EMAIL_NOTIFICATION, USER_MEMBER_SINCE, USER_SKIP_OWN_NOTIFICATIONS, USER_METADATA) VALUES "
 			+ " (:provider, :userName, :email, :displayName, :enabled, :emailNotification, :memberSince, :skipOwnNotifications, :metadata)")
@@ -124,5 +124,11 @@ public interface UserQuery {
 
     @Query("SELECT USER_CALENDAR_DISABLE_FEED FROM LA_USER_CALENDAR WHERE USER_CALENDAR_ID_FK = :userId")
     boolean isCalendarFeedDisabled(@Bind("userId") int userId);
+
+    @Query("SELECT USER_PASSWORD FROM LA_USER WHERE USER_NAME = :userName AND USER_PROVIDER = :provider")
+    String getHashedPassword(@Bind("provider") String provider, @Bind("userName") String userName);
+
+    @Query("UPDATE LA_USER SET USER_PASSWORD = :password WHERE USER_ID = :userId")
+    int setPassword(@Bind("userId") int userId, @Bind("password") String password);
 
 }

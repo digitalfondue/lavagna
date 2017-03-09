@@ -61,7 +61,7 @@ public class CardServiceTest {
 
     @Before
     public void prepare() {
-        userRepository.createUser("test", "test", null, null, true);
+        userRepository.createUser("test", "test", null,null, null, true);
         user = userRepository.findUserByName("test", "test");
         project = projectService.create("UNITTEST", "UNITTEST", null);
         board = boardRepository.createNewBoard("test", "TEST", null, project.getId());

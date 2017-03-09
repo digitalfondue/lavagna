@@ -93,10 +93,10 @@ public class NotificationServiceTest {
 
 		configurationRepository.insert(Key.BASE_APPLICATION_URL, "https://base.application.lavagna.io/");
 
-		userRepository.createUser("test", "test-user", "test@test.test", "display name", true);
+		userRepository.createUser("test", "test-user", null,"test@test.test", "display name", true);
 		user = userRepository.findUserByName("test", "test-user");
 
-        userRepository.createUser("test", "other-user", "other@test.test", "display name", true);
+        userRepository.createUser("test", "other-user", null,"other@test.test", "display name", true);
         otherUser = userRepository.findUserByName("test", "other-user");
 
 		Project project = projectService.create("test", "TEST", "desc");

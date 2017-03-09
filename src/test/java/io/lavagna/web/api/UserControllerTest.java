@@ -20,10 +20,7 @@ import io.lavagna.model.Permission;
 import io.lavagna.model.User;
 import io.lavagna.model.UserMetadata;
 import io.lavagna.model.UserWithPermission;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.EventRepository;
-import io.lavagna.service.ProjectService;
-import io.lavagna.service.UserRepository;
+import io.lavagna.service.*;
 import io.lavagna.web.api.model.DisplayNameEmail;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +42,9 @@ import static org.mockito.Mockito.*;
 public class UserControllerTest {
 
     @Mock
+    private UserService userService;
+
+    @Mock
     private UserRepository userRepository;
 
     @Mock
@@ -63,7 +63,7 @@ public class UserControllerTest {
 
     @Before
     public void prepare() {
-        userController = new UserController(userRepository, eventEmitter, eventRepository,
+        userController = new UserController(userRepository, userService, eventEmitter, eventRepository,
             projectService);
     }
 

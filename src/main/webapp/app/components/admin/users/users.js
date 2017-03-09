@@ -16,8 +16,11 @@
         ctrl.showAddUserDialog = showAddUserDialog;
         ctrl.showImportDialog = showImportDialog;
         ctrl.showUserPermissions = showUserPermissions;
+        ctrl.editUserInfo = editUser;
+        ctrl.resetPassword = resetPassword;
+        ctrl.userStatusFilter = true;
         //
-        
+
         ctrl.$onInit = function init() {
         	ctrl.view = {};
             ctrl.isOpen = false
@@ -87,6 +90,10 @@
                     }
 
         			ctrl.addUser = function(userToAdd) {
+        			    if(userToAdd.provider !== 'password') {
+        			        userToAdd.password = null;
+                        }
+
         	            UsersAdministration.addUser(userToAdd).then(function() {
         	                configureDefaultUserToAdd();
         	                loadUsers();
@@ -106,6 +113,84 @@
         		},
         	});
         };
+
+        function editUser(user) {
+            showEditUserDialog(user).then(function (userToEdit) {
+                return UsersAdministration.editUser(userToEdit).then(function() {
+                    Notification.addAutoAckNotification('success', {
+                        key: 'notification.admin-manage-users.edit.success'
+                    }, false);
+
+                    return loadUsers();
+                }, function () {
+                    Notification.addAutoAckNotification('error', {
+                        key: 'notification.admin-manage-users.edit.error'
+                    }, false);
+                });
+            });
+        }
+
+        function resetPassword(user) {
+            showResetPasswordDialog(user).then(function (password) {
+                return UsersAdministration.resetPassword(user.id, password).then(function() {
+                    Notification.addAutoAckNotification('success', {
+                        key: 'notification.admin-manage-users.password.success'
+                    }, false);
+                }, function () {
+                    Notification.addAutoAckNotification('error', {
+                        key: 'notification.admin-manage-users.password.error'
+                    }, false);
+                });
+            });
+        }
+
+        function showEditUserDialog(user) {
+            return $mdDialog.show({
+                templateUrl: 'app/components/admin/users/edit-user-dialog.html',
+                bindToController: true,
+                locals: {
+                    userToEdit: angular.copy(user)
+                },
+                controller: function() {
+                    var ctrl = this;
+
+                    ctrl.cancel = function () {
+                        $mdDialog.cancel();
+                    };
+
+                    ctrl.save = function () {
+                        $mdDialog.hide(ctrl.userToEdit);
+                    };
+                },
+                controllerAs: 'editUserDialogCtrl'
+            });
+        }
+
+        function showResetPasswordDialog(user) {
+            return $mdDialog.show({
+                templateUrl: 'app/components/admin/users/reset-password-dialog.html',
+                bindToController: true,
+                locals: {
+                    userToEdit: user
+                },
+                controller: function() {
+                    var ctrl = this;
+
+                    ctrl.cancel = function () {
+                        $mdDialog.cancel();
+                    };
+
+                    ctrl.reset = function (password, confirmPassword) {
+                        if(password !== confirmPassword) {
+                            return false;
+                        }
+
+                        $mdDialog.hide(password);
+                    };
+                },
+                controllerAs: 'resetPasswordDialogCtrl'
+            });
+        }
 
         function showImportDialog($event) {
         	$mdDialog.show({
@@ -154,7 +239,7 @@
                 controller: function ($scope) {
 
                 	$scope.user = user;
-                	
+
                     Permission.findUserRoles(user.id).then(function(rolesByProject) {
                         $scope.rolesByProject = rolesByProject;
                     });

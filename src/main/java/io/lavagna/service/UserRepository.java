@@ -113,8 +113,9 @@ public class UserRepository {
     }
 
     @Transactional(readOnly = false)
-    public int createUser(String provider, String userName, String email, String displayName, boolean enabled) {
-        return queries.createUser(provider, userName, email, displayName, enabled);
+    public int createUser(String provider, String userName, String password, String email, String displayName, boolean enabled) {
+
+        return queries.createUser(provider, userName, password, email, displayName, enabled);
     }
 
     @Transactional(readOnly = false)
@@ -220,5 +221,14 @@ public class UserRepository {
 
     public boolean isCalendarFeedDisabled(User user) {
         return queries.isCalendarFeedDisabled(user.getId());
+    }
+
+    public String getHashedPassword(String provider, String username) {
+        return queries.getHashedPassword(provider, username);
+    }
+
+    @Transactional(readOnly = false)
+    public int setUserPassword(int userId, String hashedPassword) {
+        return queries.setPassword(userId, hashedPassword);
     }
 }

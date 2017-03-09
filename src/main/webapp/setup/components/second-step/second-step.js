@@ -1,30 +1,30 @@
 (function() {
-	
+
 	var module = angular.module('lavagna-setup');
-	
-	
+
+
 	module.component('setupSecondStep', {
 		controller: ['$window', 'Configuration', '$http', '$state', SetupLoginCtrl],
 		templateUrl: 'components/second-step/second-step.html'
 	});
-	
-	
+
+
 	function SetupLoginCtrl ($window, Configuration, $http, $state) {
-		
+
 		var ctrl = this;
-		
+
 		ctrl.ldap = Configuration.secondStep.ldap;
 		ctrl.oauth = Configuration.secondStep.oauth;
 		ctrl.oauth.baseUrl = Configuration.toSave.first[0].second;
-		
+
 		ctrl.oauthProviders = Configuration.secondStep.oauthProviders;
 		ctrl.oauthCustomizable = Configuration.secondStep.oauthCustomizable;
 		ctrl.oauthNewProvider = Configuration.secondStep.oauthNewProvider;
-		
+
 		if (Configuration.selectedAuthMethod) {
 			ctrl.authMethod = Configuration.selectedAuthMethod;
 		} else if (!ctrl.authMethod) {
-			ctrl.authMethod = 'DEMO';
+			ctrl.authMethod = 'PASSWORD';
 		}
 
 		ctrl.checkLdapConfiguration = function (ldap, usernameAndPwd) {
@@ -43,7 +43,7 @@
 			}
 			return selectedCount;
 		}
-		
+
 		ctrl.back = function() {
 			$state.go('first-step');
 		}
@@ -91,6 +91,8 @@
 				Configuration.selectedNewOauthConf = newOauthConf;
 			} else if (ctrl.authMethod == 'DEMO') {
 				loginType = ['demo'];
+			} else if (ctrl.authMethod == 'PASSWORD') {
+			    loginType = ['password'];
 			}
 
 			Configuration.toSave.second = config;
@@ -101,7 +103,7 @@
 			$state.go('third-step');
 		};
 	}
-	
+
 	function addProviderIfPresent(list, conf, provider) {
 		if (conf && conf.present) {
 			list.push({provider: provider, apiKey: conf.apiKey, apiSecret: conf.apiSecret});
@@ -116,5 +118,5 @@
 		}
 		return window.location.origin;
 	}
-	
+
 })();

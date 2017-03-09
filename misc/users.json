@@ -1,8 +1,15 @@
 [
- {
- provider : "demo",
- username : "muh-user",
- enabled : true,
- roles : ['ADMIN']
- }
+    {
+        provider : "demo",
+        username : "muh-user",
+        enabled : true,
+        roles : ['ADMIN']
+    },
+    {
+        provider : "password",
+        username : "kek-user",
+        password : "kekpassword",
+        enabled : true,
+        roles : ['ADMIN']
+    }
 ]

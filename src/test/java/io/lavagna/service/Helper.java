@@ -19,6 +19,6 @@ package io.lavagna.service;
 public class Helper {
 
 	static int createUser(UserRepository ur, String provider, String userName) {
-		return ur.createUser(provider, userName, null, null, true);
+		return ur.createUser(provider, userName, null,null, null, true);
 	}
 }

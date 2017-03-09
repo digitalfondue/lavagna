@@ -70,6 +70,9 @@
             updateMetadata: function (metadata) {
                 return $http.post('api/self/metadata', metadata);
             },
+            changePassword: function (currentPassword, newPassword) {
+                return $http.post('api/self/password', {currentPassword: currentPassword, newPassword: newPassword});
+            },
 
             clearAllTokens: function () {
                 return $http.post('api/self/clear-all-tokens').then(extractData);

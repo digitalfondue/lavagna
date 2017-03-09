@@ -14,6 +14,19 @@
             <input ng-model="addUserDialogCtrl.userToAdd.username" required>
         </md-input-container>
 
+        <md-input-container class="md-block" ng-if="addUserDialogCtrl.userToAdd.provider === 'password'">
+            <label translate>label.password</label>
+            <input type="password" ng-model="addUserDialogCtrl.userToAdd.password" required>
+        </md-input-container>
+
+        <md-input-container class="md-block" ng-if="addUserDialogCtrl.userToAdd.provider === 'password'">
+            <label translate>label.password.confirm</label>
+            <input type="password"
+                   required
+                   ng-model="addUserDialogCtrl.confirmPassword"
+                   lvg-match="addUserDialogCtrl.userToAdd.password">
+        </md-input-container>
+
         <md-input-container class="md-block">
             <label translate>admin.users.email</label>
             <input ng-model="addUserDialogCtrl.userToAdd.email">
@@ -32,11 +45,11 @@
         </md-input-container>
 
         <md-input-container class="md-block" ng-init="addUserDialogCtrl.userToAdd.enabled = true">
-            <md-checkbox ng-model="addUserDialogCtrl.userToAdd.enabled"><span data-translate>admin.users.enabled</span></md-checkbox>
+            <md-checkbox ng-model="addUserDialogCtrl.userToAdd.enabled"><span data-translate>admin.users.active</span></md-checkbox>
         </md-input-container>
     </md-dialog-content>
     <md-dialog-actions>
-	   <md-button type="button" ng-click="addUserDialogCtrl.close()"><span translate>admin.users.cancel</span></md-button>
+	   <md-button type="button" ng-click="addUserDialogCtrl.close()"><span translate>button.cancel</span></md-button>
 	   <md-button type="submit" ng-disabled="!addUserForm.$valid"><span translate>button.add</span></md-button>
     </md-dialog-actions>
 </form>

@@ -102,7 +102,7 @@ public class Loader {
 
 		System.out.println("creating users");
 		for (int i = 0; i < 30; i++) {
-			ur.createUser("loader", "user" + i, null, null, true);
+			ur.createUser("loader", "user" + i, null,null, null, true);
 			users.add(ur.findUserByName("loader", "user" + i));
 		}
 		System.out.println("end creation");
