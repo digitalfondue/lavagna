@@ -154,6 +154,7 @@ public class MailTicketService {
                     for(ProjectMailTicket ticketConfig: entry.getEntries()) {
                         if(ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
                             String from = getFrom(message);
+                            String name = getName(message);
                             Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
 
                             if(!m.find() ||
@@ -161,7 +162,7 @@ public class MailTicketService {
                                 try {
                                     ImmutablePair<Card, User> cardAndUser = createCard(message.getSubject(), getTextFromMessage(message), from, ticketConfig.getColumnId());
 
-                                    notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from);
+                                    notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from, name);
                                 } catch (IOException|MessagingException e) {
                                     LOG.error("failed to parse message body", e);
                                 }
@@ -286,33 +287,37 @@ public class MailTicketService {
         return froms == null ? null : ((InternetAddress) froms[0]).getAddress();
     }
 
+    private String getName(MimeMessage message) throws MessagingException {
+        Address[] froms = message.getFrom();
+        return froms == null ? null : ((InternetAddress) froms[0]).getPersonal();
+    }
+
     private String getDeliveredTo(MimeMessage message) throws MessagingException {
         return message.getHeader("Delivered-To", "");
     }
 
-    private void notify(Card createdCard, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig, User user, String to) {
+    private void notify(Card createdCard, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig, User user, String to, String name) {
         ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(createdCard.getColumnId());
 
         eventEmitter.emitCreateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
             .getShortName(), createdCard.getColumnId(), createdCard, user);
 
-        sendEmail(to, createdCard, projectAndBoard.getBoard(), config, ticketConfig);
+        sendEmail(to, name, createdCard, projectAndBoard.getBoard(), config, ticketConfig);
     }
 
-    private void sendEmail(String to, Card createdCard, Board board, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig) {
+    private void sendEmail(String to, String name, Card createdCard, Board board, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig) {
+        String cardId = board.getShortName() + "-" + createdCard.getSequence();
+        String subject = config.getSubject().replaceAll("\\{\\{card}}", cardId);
+        String body = config.getBody().replaceAll("\\{\\{card}}", cardId).replaceAll("\\{\\{namer}}", name != null ? name : to);
+
         Parser parser = Parser.builder().build();
-        Node document = parser.parse(config.getBody());
+        Node document = parser.parse(body);
         HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
         TextContentRenderer textRendered = TextContentRenderer.builder().build();
 
         String htmlText = htmlRenderer.render(document);
         String plainText = textRendered.render(document);
-        String subject = new StringBuilder(config.getSubject())
-            .append(". ")
-            .append(board.getShortName())
-            .append("-")
-            .append(createdCard.getSequence())
-            .toString();
+
 
         ProjectMailTicketConfigData configData = config.getConfig();
         MailConfig mailConfig = new MailConfig(configData.getOutboundServer(),
