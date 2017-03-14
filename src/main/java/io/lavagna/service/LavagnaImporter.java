@@ -17,6 +17,7 @@
 package io.lavagna.service;
 
 import com.google.gson.reflect.TypeToken;
+import io.lavagna.common.Read;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabel.LabelDomain;
 import io.lavagna.model.CardLabel.LabelType;
@@ -238,6 +239,18 @@ class LavagnaImporter {
 		usersToImport.addAll(users);
 		usersToImport.removeAll(userRepository.findAll());
 		userRepository.createUsers(usersToImport);
+
+        if(Read.hasMatchingObject("users-password-hash.json", tempFile)) {
+            Map<String, String> usersWithPassword = Read.readObject("users-password-hash.json", tempFile, new TypeToken<Map<String, String>>() {
+            });
+
+            for(User u : usersToImport) {
+                if("password".equals(u.getProvider()) && usersWithPassword.containsKey(u.getUsername())) {
+                    userRepository.setUserPassword(userRepository.findUserByName("password", u.getUsername()).getId(), usersWithPassword.get(u.getUsername()));
+                }
+            }
+        }
+
 	}
 
 	private boolean importProject(Project project, Path tempFile) {

@@ -17,10 +17,7 @@
 package io.lavagna.service;
 
 import io.lavagna.common.Json;
-import io.lavagna.model.CalendarInfo;
-import io.lavagna.model.Permission;
-import io.lavagna.model.User;
-import io.lavagna.model.UserMetadata;
+import io.lavagna.model.*;
 import io.lavagna.model.util.CalendarTokenNotFoundException;
 import io.lavagna.query.UserQuery;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -230,5 +227,13 @@ public class UserRepository {
     @Transactional(readOnly = false)
     public int setUserPassword(int userId, String hashedPassword) {
         return queries.setPassword(userId, hashedPassword);
+    }
+
+    public Map<String, String> findUsersWithPasswords() {
+        Map<String, String> userWithPassword = new HashMap<>();
+        for(UserWithPassword uwp : queries.findUsersWithPasswords()) {
+            userWithPassword.put(uwp.getUsername(), uwp.getPassword());
+        }
+        return userWithPassword;
     }
 }

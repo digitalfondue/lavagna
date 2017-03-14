@@ -73,6 +73,8 @@ class LavagnaExporter {
 			writeEntry("users.json", userRepository.findAll(), zf, osw);
 			writeEntry("permissions.json", permissionService.findAllRolesAndRelatedPermissionWithUsers(), zf, osw);
 
+			writeEntry("users-password-hash.json", userRepository.findUsersWithPasswords(), zf, osw);
+
 			exportFiles(zf, osw);
 
 			for (Project p : projectService.findAll()) {
@@ -182,7 +184,8 @@ class LavagnaExporter {
 
 		List<Pair<CardLabel, List<LabelListValueWithMetadata>>> labels = new ArrayList<>();
 		for (CardLabel cl : cardLabelRepository.findLabelsByProject(p.getId())) {
-			labels.add(Pair.Companion.of(cl, cardLabelRepository.findListValuesByLabelId(cl.getId())));
+		    Pair<CardLabel, List<LabelListValueWithMetadata>> toAdd = Pair.Companion.of(cl, cardLabelRepository.findListValuesByLabelId(cl.getId()));
+			labels.add(toAdd);
 		}
 		writeEntry(projectNameDir + "/labels.json", labels, zf, osw);
 		writeEntry(projectNameDir + "/column-definitions.json",

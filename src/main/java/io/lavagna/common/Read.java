@@ -51,6 +51,21 @@ public class Read {
         return readMatchingObjects(name, tempFile, t).get(0);
     }
 
+    public static boolean hasMatchingObject(String regex, Path tempFile) {
+        try (InputStream is = Files.newInputStream(tempFile); ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry ze = zis.getNextEntry();
+            while (ze != null) {
+                if (ze.getName().matches("^" + regex + "$")) {
+                    return true;
+                }
+                ze = zis.getNextEntry();
+            }
+        } catch (IOException ioe) {
+            return false;
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> List<T> readMatchingObjects(String regex, Path tempFile, TypeToken<T> t) {
         try {

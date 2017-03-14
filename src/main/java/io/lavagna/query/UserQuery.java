@@ -22,6 +22,7 @@ import ch.digitalfondue.npjt.QueryRepository;
 import ch.digitalfondue.npjt.QueryType;
 import io.lavagna.model.CalendarInfo;
 import io.lavagna.model.User;
+import io.lavagna.model.UserWithPassword;
 
 import java.util.Collection;
 import java.util.Date;
@@ -131,4 +132,6 @@ public interface UserQuery {
     @Query("UPDATE LA_USER SET USER_PASSWORD = :password WHERE USER_ID = :userId")
     int setPassword(@Bind("userId") int userId, @Bind("password") String password);
 
+    @Query("select USER_NAME, USER_PASSWORD from LA_USER where USER_PROVIDER = 'password'")
+    List<UserWithPassword> findUsersWithPasswords();
 }
