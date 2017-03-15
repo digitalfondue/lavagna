@@ -50,9 +50,9 @@ public interface ApiHookQuery {
 	int update(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration,
 			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects);
 
-	@Query("update LA_API_HOOK API_HOOK_ENABLED = :enabled, API_HOOK_VERSION = API_HOOK_VERSION+1 where API_HOOK_NAME = :name")
+	@Query("update LA_API_HOOK set API_HOOK_ENABLED = :enabled, API_HOOK_VERSION = API_HOOK_VERSION+1 where API_HOOK_NAME = :name")
 	int enable(@Bind("name") String name, @Bind("enabled") boolean enabled);
 
-	@Query("update LA_API_HOOK API_HOOK_NAME = :newName, API_HOOK_VERSION = API_HOOK_VERSION+1  where API_HOOK_NAME = :name")
+	@Query("update LA_API_HOOK set API_HOOK_NAME = :newName, API_HOOK_VERSION = API_HOOK_VERSION+1  where API_HOOK_NAME = :name")
 	int rename(@Bind("name") String name, @Bind("newName") String newName);
 }

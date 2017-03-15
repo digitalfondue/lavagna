@@ -8,14 +8,24 @@
                 <md-card-title-text><span class="lvg-headline" ng-bind="integration.name"></span></md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <span ng-bind="integration.metadata.description"></span>
+                <div><span ng-bind="integration.metadata.description"></span></div>
             </md-card-content>
             <md-card-actions class="row row-inherit">
                 <span class="flex"></span>
+                <md-button class="md-icon-button" ng-if="integration.enabled" ng-click="$ctrl.enable(integration, !integration.enabled)" >
+                    <md-tooltip>{{::('admin.integrations.disable' | translate)}}</md-tooltip>
+                    <md-icon md-svg-icon="sync_disabled"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-if="!integration.enabled" ng-click="$ctrl.enable(integration, !integration.enabled)">
+                    <md-tooltip>{{::('admin.integrations.enable' | translate)}}</md-tooltip>
+                    <md-icon md-svg-icon="sync"></md-icon>
+                </md-button>
                 <md-button class="md-icon-button" ng-click="$ctrl.editDialog(integration, $event)">
+                    <md-tooltip>{{::('button.edit' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="edit"></md-icon>
                 </md-button>
                 <md-button class="md-icon-button" ng-click="$ctrl.deleteDialog(integration, $event)">
+                    <md-tooltip>{{::('button.delete' | translate)}}</md-tooltip>
                     <md-icon md-svg-icon="delete"></md-icon>
                 </md-button>
             </md-card-actions>

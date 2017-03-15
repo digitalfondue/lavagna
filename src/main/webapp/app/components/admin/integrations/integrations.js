@@ -16,6 +16,7 @@
         ctrl.addNewIntegrationDialog = addNewIntegrationDialog;
         ctrl.deleteDialog = deleteDialog;
         ctrl.editDialog = editDialog;
+        ctrl.enable = enable;
 
         ctrl.$onInit = function() {
             loadAll();
@@ -57,6 +58,12 @@
                 if(error) {
                     Notification.addAutoAckNotification('error', {key: 'notification.admin-integrations.remove.error', parameters: translationKeys}, false);
                 }
+            })
+        }
+
+        function enable(integration, status) {
+            Integrations.enable(integration.name, status).then(function() {
+                loadAll();
             })
         }
 

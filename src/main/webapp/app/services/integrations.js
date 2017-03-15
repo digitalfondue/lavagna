@@ -19,6 +19,9 @@
             },
             update: function(name, code, properties, projects) {
                 return $http.post('/api/plugin/'+name, {name: name, code: code, properties: properties, projects: projects}).then(extractData);
+            },
+            enable: function(name, status) {
+                return $http.post('/api/plugin/'+name+'/enable/'+status).then(extractData);
             }
         }
     }
