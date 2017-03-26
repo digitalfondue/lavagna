@@ -1,5 +1,0 @@
-## People
-
-### Assigned users
-
-### Watchers

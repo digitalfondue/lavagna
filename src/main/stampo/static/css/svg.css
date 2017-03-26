@@ -1,0 +1,18 @@
+.icon {
+    outline: 0;
+    border: none;
+    display: inline-block;
+    background-size: 18px 18px;
+    height: 18px;
+    min-width: 0;
+    line-height: 18px;
+    width: 18px;
+}
+
+.icon-add-column {
+    background-image: url(../svg/add_column.svg);
+}
+
+.icon-more-vert {
+    background-image: url(../svg/more_vert.svg);
+}

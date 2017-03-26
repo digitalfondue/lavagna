@@ -1,7 +1,0 @@
-## General
-
-### Name
-
-### Description
-
-### Labels
