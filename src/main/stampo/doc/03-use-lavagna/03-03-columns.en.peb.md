@@ -20,11 +20,31 @@ The aggregate number of cards by status present in the board is then reflected i
 
 ### Create a new column
 
-To create a new column, click on the <span class="icon icon-add-column"></span> icon in the board left bar.
+To create a new column, click on the <span class="icon icon-add-column"></span> icon in the board left side bar.
 
 A new dialog will appear: enter the column name, select a status, and click add.
 
 <img class="pure-img" src="{{relativeRootPath}}/images/en/add-column.png" alt="Add column">
+
+### Special columns
+
+Each board has three special column:
+
+* **BACKLOG**: A more general backlog column to free up space in the board. Cards in this column are still taken into the board count.
+* **ARCHIVE**: If cards have been closed for a while, then it is advised to move them to the archive. Cards moved here are not included in the board count anymore.
+* **TRASH**: Cards that have been created by mistake can be put here to separate them from the archive. Cards moved here are not included in the board count anymore.
+
+#### Access the backlog
+
+To access the backlog, click on the <span class="icon icon-board-backlog"></span> icon in the board left side bar.
+
+#### Access the archive
+
+To access the archive, click on the <span class="icon icon-board-archive"></span> icon in the board left side bar.
+
+#### Access the trash
+
+To access the trash, click on the <span class="icon icon-board-trash"></span> icon in the board left side bar.
 
 ### Change the name of a column
 

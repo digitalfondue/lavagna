@@ -16,3 +16,27 @@
 .icon-more-vert {
     background-image: url(../svg/more_vert.svg);
 }
+
+.icon-board-backlog {
+    background-image: url(../svg/board-backlog.svg);
+}
+
+.icon-board-archive {
+    background-image: url(../svg/board-archive.svg);
+}
+
+.icon-board-trash {
+    background-image: url(../svg/board-trash.svg);
+}
+
+.icon-add-card {
+    background-image: url(../svg/add_card.svg);
+}
+
+.icon-drag {
+    background-image: url(../svg/drag.svg);
+}
+
+.icon-edit {
+    background-image: url(../svg/edit.svg);
+}
