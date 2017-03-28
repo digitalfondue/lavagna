@@ -12,6 +12,7 @@
 
 	module.config(['$mdThemingProvider', '$compileProvider', '$translateProvider', function ($mdThemingProvider, $compileProvider, $translateProvider) {
 		$compileProvider.debugInfoEnabled(false);
+		$compileProvider.preAssignBindingsEnabled(true);
 		$mdThemingProvider.disableTheming();
 
 

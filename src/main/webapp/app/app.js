@@ -50,13 +50,18 @@
 	/**
 	 * Configure angular-ui-router here...
 	 */
-	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider, $compileProvider) {
+	module.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $translateProvider, $mdThemingProvider, $mdIconProvider, $mdInkRippleProvider, $compileProvider, $qProvider) {
 
 		$compileProvider.debugInfoEnabled(false);
+		$compileProvider.preAssignBindingsEnabled(true);
 
 		// disable comment and css class directives for perf
 		$compileProvider.commentDirectivesEnabled(false);
         $compileProvider.cssClassDirectivesEnabled(false);
+        //
+
+        // https://github.com/angular-ui/ui-router/issues/2889
+        $qProvider.errorOnUnhandledRejections(false);
         //
 
 		$locationProvider.html5Mode(true);
