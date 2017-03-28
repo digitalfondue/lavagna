@@ -12,11 +12,11 @@
 			user: '<'
 		},
         templateUrl: 'app/components/card-modal/card-modal.html',
-		controller: ['$document', '$state', CardModalController],
+		controller: ['$document', '$state', '$window', CardModalController],
 		controllerAs: 'modalCtrl'
 	});
 
-	function CardModalController($document, $state) {
+	function CardModalController($document, $state, $window) {
 
 		var ctrl = this;
 		var body = $document[0].body;
@@ -28,6 +28,16 @@
         }
 
         function escapeHandler($event) {
+            // handle the case when the calendar is open too
+            if($event.target &&
+                $event.target.parentElement &&
+                $event.target.parentElement.querySelectorAll("[class^=md-calendar]").length > 0 &&
+                !$window.document.body.contains($event.target)) {
+                return;
+            }
+            //
+
+
             if ($event.keyCode == 27) {
                 close();
             }
@@ -41,7 +51,7 @@
 
         function cleanup() {
             container.removeEventListener('click', closeHandler);
-            window.document.removeEventListener('keyup', escapeHandler);
+            window.document.removeEventListener('keydown', escapeHandler);
             body.removeChild(backDrop);
         }
 
@@ -54,7 +64,7 @@
             angular.element(window.document.querySelector('.lvg-card-modal__dialog')).addClass('md-transition-in');
 
             container.addEventListener('click', closeHandler);
-            window.document.addEventListener('keyup', escapeHandler);
+            window.document.addEventListener('keydown', escapeHandler);
 		};
 
 		ctrl.$onDestroy = function() {
