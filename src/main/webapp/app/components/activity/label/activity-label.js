@@ -24,7 +24,6 @@
     });
 
     function ActivityLabelController() {
-        var ctrl = this;
     }
 
 })();

@@ -37,6 +37,5 @@
     });
 
     function ActivityController() {
-        var ctrl = this;
     }
 })();

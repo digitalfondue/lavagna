@@ -11,8 +11,10 @@
     function AdminController(Admin) {
         var ctrl = this;
 
-        Admin.checkHttpsConfiguration().then(function (res) {
-            ctrl.httpsConfigurationCheck = res;
-        });
+        ctrl.$onInit = function() {
+            Admin.checkHttpsConfiguration().then(function (res) {
+                ctrl.httpsConfigurationCheck = res;
+            });
+        }
     };
 })();

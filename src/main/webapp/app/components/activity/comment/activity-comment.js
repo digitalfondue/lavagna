@@ -10,7 +10,6 @@
     });
 
     function ActivityCommentController() {
-        var ctrl = this;
     }
 
 })();

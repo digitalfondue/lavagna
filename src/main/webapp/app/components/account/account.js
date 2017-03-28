@@ -17,52 +17,59 @@
     function AccountController($window, User, CopyToClipboard, Notification, CONTEXT_PATH) {
         var ctrl = this;
 
-        User.currentCachedUser().then(function (user) {
-        	ctrl.user = user;
-            ctrl.userNameProfile = user.username;
-            ctrl.userProvider = user.provider;
-            ctrl.userUsername = user.username;
-        });
+        ctrl.clearAllTokens = clearAllTokens;
+        ctrl.clearCalendarToken = clearCalendarToken;
+        ctrl.updateFeed = updateFeed;
+        ctrl.update = update;
+        ctrl.copyCalendarUrl = copyCalendarUrl;
+        ctrl.changePassword = changePassword;
 
+        ctrl.$onInit = function() {
 
-        ctrl.profile = {};
+            ctrl.profile = {};
+            ctrl.isCurrentUser = true;
 
-        ctrl.isCurrentUser = true;
+            User.currentCachedUser().then(function (user) {
+                ctrl.user = user;
+                ctrl.userNameProfile = user.username;
+                ctrl.userProvider = user.provider;
+                ctrl.userUsername = user.username;
+            });
 
-        var loadUser = function (u) {
+            User.current().then(loadUser);
+            User.getCalendarToken().then(createUrl);
+        }
+
+        function loadUser(u) {
             ctrl.user = u;
             ctrl.profile.email = u.email;
             ctrl.profile.displayName = u.displayName;
             ctrl.profile.emailNotification = u.emailNotification;
             ctrl.profile.skipOwnNotifications = u.skipOwnNotifications
-        };
+        }
 
-        ctrl.clearAllTokens = function () {
+        function clearAllTokens() {
             User.clearAllTokens().then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.user.tokenCleared.success'}, false);
             }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.user.tokenCleared.error'}, false);
             });
-        };
+        }
 
-        User.current().then(loadUser);
-
-        var createUrl = function (resp) {
+        function createUrl(resp) {
             ctrl.calendarFeedUrl = CONTEXT_PATH + "api/calendar/" + resp.token + "/calendar.ics";
             ctrl.disabledFeed = resp.disabled;
-        };
+        }
 
-        User.getCalendarToken().then(createUrl);
-
-        ctrl.clearCalendarToken = function () {
+        function clearCalendarToken() {
             User.deleteCalendarToken().then(createUrl);
-        };
+        }
 
-        ctrl.updateFeed = function() {
+        function updateFeed() {
             User.updateCalendarFeedStatus(ctrl.disabledFeed).then(createUrl);
-        };
+        }
 
-        ctrl.update = function(profile) {
+        function update(profile) {
             User.updateProfile(profile)
                 .then(User.invalidateCachedUser)
                 .then(User.current).then(loadUser).then(function () {
@@ -70,17 +77,17 @@
                 }, function () {
                     Notification.addAutoAckNotification('error', {key: 'notification.user.update.error'}, false);
                 });
-        };
+        }
 
-        ctrl.copyCalendarUrl = function() {
+        function copyCalendarUrl() {
             CopyToClipboard.copy(ctrl.calendarFeedUrl).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'account.calendar.copy.success'}, false);
             }, function() {
                 Notification.addAutoAckNotification('warning', {key: 'account.calendar.copy.failure'}, false);
             })
-        };
+        }
 
-        ctrl.changePassword = function (currentPassword, newPassword) {
+        function changePassword(currentPassword, newPassword) {
             User.changePassword(currentPassword, newPassword).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.account.password.success'}, false);
             }, function () {
