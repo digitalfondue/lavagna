@@ -10,11 +10,11 @@
 
     function AdminSmtpController($mdDialog, Admin, Notification) {
         var ctrl = this;
-        
+
         ctrl.toggleSmtp = toggleSmtp;
         ctrl.saveSmtpConfig = saveSmtpConfig;
         ctrl.openSmtpConfigModal = openSmtpConfigModal;
-        
+
         ctrl.$onInit = function init() {
         	loadConfiguration();
         }
@@ -71,10 +71,10 @@
 					$scope.sendTestEmail = function (to) {
 						Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.sending'}, false);
 						Admin.testSmtpConfig(to)
-							.success(function () {
+							.then(function () {
 								Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.success'}, false);
 								$mdDialog.hide();
-							}).error(function () {
+							}).catch(function () {
 								Notification.addAutoAckNotification('error', {key: 'notification.smtp-configuration.error'}, false);
 							});
 					};
