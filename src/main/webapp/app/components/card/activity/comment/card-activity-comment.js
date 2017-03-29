@@ -52,7 +52,7 @@
                    +             '<form data-ng-submit="$ctrl.updateComment($ctrl.commentEdit); $ctrl.editComment = false; $ctrl.commentPreviewMode = false;">'
                    +                 '<div data-ng-hide="$ctrl.commentPreviewMode">'
                    +                     '<textarea class="lvg-card-activity__actions-textarea"'
-                   +                               'ng-model="$ctrl.commentEdit" rows="5" lvg-focus-on="$ctrl.editComment"></textarea>'
+                   +                               'ng-model="$ctrl.commentEdit" rows="5" lvg-focus-on="$ctrl.editComment" lvg-on-esc="$ctrl.editComment = false; $ctrl.commentPreviewMode = false;"></textarea>'
                    +                 '</div>'
                    +                 '<div data-ng-show="$ctrl.commentPreviewMode"'
                    +                      'data-ng-bind-html="$ctrl.commentEdit | markdown"></div>'

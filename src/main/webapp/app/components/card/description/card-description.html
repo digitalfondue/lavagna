@@ -11,7 +11,7 @@
             <form class="row row-inherit" data-ng-role="form" data-ng-submit="$ctrl.updateCardName(cardNameToEdit); editCardName=false">
                 <div class="flex">
                     <md-input-container md-no-float class="lvg-input-container__inline">
-                        <input required ng-model="cardNameToEdit" lvg-focus-on="editCardName">
+                        <input required ng-model="cardNameToEdit" lvg-focus-on="editCardName" lvg-on-esc="editCardName=false">
                     </md-input-container>
                 </div>
                 <div class="flex no-grow">
@@ -55,7 +55,7 @@
                 data-ng-submit="editDescription = false; editDescriptionPreviewMode = false; $ctrl.updateDescription(descriptionToEdit);">
                 <div data-ng-hide="editDescriptionPreviewMode">
                             <textarea class="lvg-card-description__textarea"
-                                      ng-model="descriptionToEdit" rows="10" lvg-focus-on="editDescription"></textarea>
+                                      ng-model="descriptionToEdit" rows="10" lvg-focus-on="editDescription" lvg-on-esc="editDescriptionPreviewMode = false; editDescription = false"></textarea>
                 </div>
                 <div data-ng-show="editDescriptionPreviewMode"
                      data-ng-bind-html="descriptionToEditPreview | markdown"></div>
