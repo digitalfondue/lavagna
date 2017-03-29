@@ -11,6 +11,17 @@
 		return renderer.link(href, title || text || href, text || title || href);
 	};
 
+	var origLinkFn = renderer.link;
+
+	renderer.link = function(href, title, text) {
+	    var link = origLinkFn.apply(renderer, [href, title, text]);
+	    if(link.indexOf("<a") === 0) {
+            return link.replace(/^<a/, '<a target="_blank" rel="noopener noreferrer"')
+	    } else {
+	        return link;
+	    }
+	}
+
 	marked.setOptions({
 		breaks: true,
 		sanitize: true,
