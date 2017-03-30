@@ -50,35 +50,41 @@
                              project="$ctrl.project"
                              label-values="$ctrl.labelValues"></lvg-card-labels-add>
         <md-divider class="lvg-card-description__divider"></md-divider>
-        <div data-ng-show="editDescription">
+        <div data-ng-if="$ctrl.editDescription">
             <form
-                data-ng-submit="editDescription = false; editDescriptionPreviewMode = false; $ctrl.updateDescription(descriptionToEdit);">
-                <div data-ng-hide="editDescriptionPreviewMode">
-                            <textarea class="lvg-card-description__textarea"
-                                      ng-model="descriptionToEdit" rows="10" lvg-focus-on="editDescription" lvg-on-esc="editDescriptionPreviewMode = false; editDescription = false"></textarea>
+                data-ng-submit="$ctrl.editDescription = false; $ctrl.editDescriptionPreviewMode = false; $ctrl.updateDescription($ctrl.descriptionToEdit);">
+                <div ng-hide="$ctrl.editDescriptionPreviewMode">
+                    <md-input-container class="md-block">
+                        <label translate>label.description</label>
+                        <textarea class="lvg-card-description__textarea"
+                                  ng-model="$ctrl.descriptionToEdit"
+                                  rows="3"
+                                  lvg-focus-on="$ctrl.editDescription"
+                                  lvg-on-esc="$ctrl.editDescriptionPreviewMode = false; $ctrl.editDescription = false"></textarea>
+                    </md-input-container>
                 </div>
-                <div data-ng-show="editDescriptionPreviewMode"
-                     data-ng-bind-html="descriptionToEditPreview | markdown"></div>
+                <div data-ng-show="$ctrl.editDescriptionPreviewMode"
+                     data-ng-bind-html="$ctrl.descriptionToEditPreview | markdown"></div>
                 <div>
                     <md-button class="md-primary" type="submit">
                         <span data-translate>button.update</span>
                     </md-button>
-                    <md-button data-ng-hide="editDescriptionPreviewMode"
-                               data-ng-click="descriptionToEditPreview = descriptionToEdit; editDescriptionPreviewMode = true" type="button">
+                    <md-button data-ng-hide="$ctrl.editDescriptionPreviewMode"
+                               data-ng-click="$ctrl.descriptionToEditPreview = $ctrl.descriptionToEdit; $ctrl.editDescriptionPreviewMode = true" type="button">
                         <span data-translate>button.preview</span>
                     </md-button>
-                    <md-button data-ng-show="editDescriptionPreviewMode"
-                               data-ng-click="editDescriptionPreviewMode = false" type="button">
+                    <md-button data-ng-show="$ctrl.editDescriptionPreviewMode"
+                               data-ng-click="$ctrl.editDescriptionPreviewMode = false" type="button">
                         <span data-translate>button.closePreview</span>
                     </md-button>
-                    <md-button data-ng-click="editDescriptionPreviewMode = false; editDescription = false" type="button">
+                    <md-button data-ng-click="$ctrl.editDescriptionPreviewMode = false; $ctrl.editDescription = false" type="button">
                         <span data-translate>button.cancel</span>
                     </md-button>
                 </div>
             </form>
         </div>
 
-        <div data-ng-hide="editDescription">
+        <div data-ng-if="!$ctrl.editDescription">
             <div class="lvg-card-description__content"
                  data-ng-bind-html="$ctrl.description.content | markdown">
             </div>
@@ -111,7 +117,7 @@
                     <span data-translate>card.description.not.available</span>
                 </div>
                 <div class="lvg-card-description__edit-button">
-                    <md-button ng-click="descriptionToEdit = $ctrl.description.content; editDescription = true;"
+                    <md-button ng-click="$ctrl.descriptionToEdit = $ctrl.description.content; $ctrl.editDescription = true;"
                                class="lvg-small-icon-button" data-lvg-has-permission="UPDATE_CARD">
                         <md-tooltip><span translate>card.description.edit.tooltip</span></md-tooltip>
                         <md-icon md-svg-icon="edit"></md-icon>

@@ -35,8 +35,11 @@
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
         <form data-ng-submit="$ctrl.addComment(comment);commentPreviewMode=false;">
             <div data-ng-hide="commentPreviewMode">
-                <textarea class="lvg-card-activity__actions-textarea"
-                          ng-model="comment.content" rows="5" md-select-on-focus></textarea>
+                <md-input-container class="md-block">
+                    <label translate>card.activity.new.comment</label>
+                    <textarea class="lvg-card-activity__actions-textarea"
+                              ng-model="comment.content" rows="1" md-select-on-focus></textarea>
+                </md-input-container>
             </div>
             <div data-ng-show="commentPreviewMode"
                  data-ng-bind-html="commentPreview.content | markdown"></div>
