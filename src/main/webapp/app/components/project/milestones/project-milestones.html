@@ -8,51 +8,53 @@
         </div>
         <md-card-title>
             <md-card-title-text>
-                <div class="row">
-	                <span class="col-xs-3" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}">
-	                   <a ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ui-sref="project.milestones.milestone({projectName: $ctrl.project.shortName, id: milestone.labelListValue.id})" ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}" ng-bind="milestone.labelListValue.value"></a>
-	                   <span ng-if="(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')" ng-bind="milestone.labelListValue.value"></span>
-                    </span>
-	                <span class="col-xs-9 lvg-project-milestones__align-right">
-		                <span ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.id]" class="lvg-project-milestones__status">
-		                    <md-icon md-svg-icon="task" ng-style="$ctrl.statusColors[item.status]|color"></md-icon>
-		                    <span>{{item.status | capitalize}}:</span>
-		                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
-		                </span>
-	                </span>
+                <div class="row row-inherit">
+                    <a ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')"
+                       ui-sref="project.milestones.milestone({projectName: $ctrl.project.shortName, id: milestone.labelListValue.id})"
+                       ng-class="{'strike': milestone.labelListValue.metadata.status === 'CLOSED'}"
+                       ng-bind="milestone.labelListValue.value"
+                       class="lvg-headline"></a>
+                    <span ng-if="(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')"
+                          ng-bind="milestone.labelListValue.value"
+                          class="lvg-headline"></span>
+                    <div class="flex"></div>
+                    <div class="no-grow"
+                         ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')">
+                        <md-button class="lvg-small-icon-button" ng-if="milestone.labelListValue.metadata.status === 'CLOSED'" ng-click="$ctrl.openMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                            <md-tooltip>{{'project.milestones.open'|translate}}</md-tooltip>
+                            <md-icon md-svg-icon="milestone_closed"></md-icon>
+                        </md-button>
+                        <md-button class="lvg-small-icon-button" ng-if="milestone.labelListValue.metadata.status !== 'CLOSED'" ng-click="$ctrl.closeMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                            <md-tooltip>{{'project.milestones.close'|translate}}</md-tooltip>
+                            <md-icon md-svg-icon="milestone_open"></md-icon>
+                        </md-button>
+                        <md-button class="lvg-small-icon-button"
+                                   ng-href="api/project/{{$ctrl.project.shortName}}/export-milestone/{{milestone.labelListValue.value}}"
+                                   target="_blank" rel="nofollow me noopener noreferrer">
+                            <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
+                            <md-icon md-svg-icon="file-excel"></md-icon>
+                        </md-button>
+                    </div>
                 </div>
             </md-card-title-text>
         </md-card-title>
         <md-card-content>
-            <div class="row">
-                <div class="col-xs-6">
-                    <span ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
-                    <span ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</span>
-                </div>
-                <div class="col-xs-6 lvg-project-milestones__align-right">
-                    <div ng-hide="milestone.totalCards > 0" translate>project.milestones.noCards</div>
-                    <div ng-hide="milestone.totalCards == 0"><span translate>project.milestones.total-cards</span>{{milestone.totalCards}}</div>
-                </div>
-            </div>
+            <p>
+                <span ng-if="milestone.labelListValue.metadata.releaseDate"><span translate>project.milestones.release-date</span> {{milestone.labelListValue.metadata.releaseDate | date: 'MMM d, y'}}</span>
+                <span ng-if="!milestone.labelListValue.metadata.releaseDate" translate>project.milestones.no-release-date</span>
+            </p>
+            <p>
+                <span ng-hide="milestone.totalCards > 0" translate>project.milestones.noCards</span>
+                <span ng-hide="milestone.totalCards == 0"><span translate>project.milestones.total-cards</span> {{milestone.totalCards}}</span>
+            </p>
+            <p>
+                <span ng-repeat="item in $ctrl.cardsCountByStatus[milestone.labelListValue.id]" class="lvg-project-milestones__status">
+                    <md-icon md-svg-icon="task" class="lvg-svg-icon-small" ng-style="$ctrl.statusColors[item.status]|color"></md-icon>
+                    <span>{{item.status | capitalize}}:</span>
+                    {{item.count}} ({{(item.count * 100 / milestone.totalCards) | number:0}}%)
+                </span>
+            </p>
         </md-card-content>
-        <md-card-actions ng-if="!(milestone.labelListValue.id === -1 && milestone.labelListValue.order === 2147483647 && milestone.labelListValue.value === 'Unassigned')">
-            <md-card-icon-actions>
-                <md-button class="md-icon-button" ng-if="milestone.labelListValue.metadata.status === 'CLOSED'" ng-click="$ctrl.openMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                    <md-tooltip>{{'project.milestones.open'|translate}}</md-tooltip>
-                    <md-icon md-svg-icon="milestone_closed"></md-icon>
-                </md-button>
-                <md-button class="md-icon-button" ng-if="milestone.labelListValue.metadata.status !== 'CLOSED'" ng-click="$ctrl.closeMilestone(milestone.labelListValue)" data-lvg-has-permission="PROJECT_ADMINISTRATION">
-                    <md-tooltip>{{'project.milestones.close'|translate}}</md-tooltip>
-                    <md-icon md-svg-icon="milestone_open"></md-icon>
-                </md-button>
-                <md-button class="md-icon-button"
-                    ng-href="api/project/{{$ctrl.project.shortName}}/export-milestone/{{milestone.labelListValue.value}}"
-                    target="_blank" rel="nofollow me noopener noreferrer">
-                    <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
-                    <md-icon md-svg-icon="file-excel"></md-icon>
-                </md-button>
-            </md-card-icon-actions>
-        </md-card-actions>
     </md-card>
 
     <div data-ui-view data-autoscroll="false"></div>
