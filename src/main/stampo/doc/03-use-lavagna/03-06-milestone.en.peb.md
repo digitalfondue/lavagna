@@ -1,19 +1,32 @@
 ## Milestones
 
+### Use milestones
+
+Milestones are unique per project. Access milestones from the "Milestones" tab.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/milestone-panel.png" alt="Milestone">
+
+#### Close a milestone
+
+To close a milestone, click on the <span class="icon icon-milestone-open"></span> icon.
+
 ### Manage milestones
 
-In the **Milestones** tab, it's possible to create new milestones, close completed ones, delete, and change the order displayed in the project milestones page.
+To manage labels, go to the [Project Settings](/03-use-lavagna/03-01-project.html#project-settings), and then the "Milestones" tab.
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_project-admin_milestones.png" alt="Manage milestones">
+<img class="pure-img" src="{{relativeRootPath}}/images/en/milestones-manage.png" alt="Milestones">
 
-To create a new milestone, type the name in the **New Milestone** form, and then press **Add**.
+Milestones can be reordered using the appropriate icons.
 
-To edit a milestone name, click <i class="fa fa-pencil"></i>, enter the new name, and save with <i class="fa fa-check"></i>. To cancel the operation, click <i class="fa fa-times"></i>.
+#### Create a new milestone
 
-A date can be assigned to the milestone using <i class="fa fa-calendar"></i> so it'll show up in the calendar feed (ICS).
+To create a new milestone, click the plus button, enter the name, and click create.
 
-The order of the milestones can be changed using <i class="fa fa-angle-up"></i>, <i class="fa fa-angle-down"></i>, <i class="fa fa-angle-double-up"></i> and <i class="fa fa-angle-double-down"></i>.
+#### Edit a milestone
 
-A milestone can be closed clicking <i class="fa fa-square-o"></i>, and reopen using <i class="fa fa-check-square"></i>.
+* <span class="icon icon-edit"></span>: edit milestone name
+* <span class="icon icon-calendar"></span>: set due date
+* <span class="icon icon-milestone-open"></span>: close a milestone
+* <span class="icon icon-delete"></span>: delete a milestone
 
-When a milestone has no more card assigned, the <i class="fa fa-trash-o"></i> button will be enabled, and it will be possible to delete a milestone.
+**NOTE**: a milestone that is still in use, meaning that it still has cards assigned, can't be deleted.

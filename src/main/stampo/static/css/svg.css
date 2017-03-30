@@ -40,3 +40,15 @@
 .icon-edit {
     background-image: url(../svg/edit.svg);
 }
+
+.icon-delete {
+    background-image: url(../svg/delete.svg);
+}
+
+.icon-milestone-open {
+    background-image: url(../svg/milestone-open.svg);
+}
+
+.icon-calendar {
+    background-image: url(../svg/calendar.svg);
+}
