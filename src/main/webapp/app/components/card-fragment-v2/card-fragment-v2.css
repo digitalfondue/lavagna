@@ -73,7 +73,7 @@ lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
 
 .lvg-card-fragment-v2__menu:focus {
 	background-color: rgba(158, 158, 158, 0.2);
-	opacity: 1;
+	opacity: .5;
 }
 
 /*
@@ -244,7 +244,7 @@ lvg-card-fragment-v2:focus .lvg-card-fragment-v2__menu,
 lvg-card-fragment-v2:hover .lvg-card-fragment-v2__menu,
 .lvg-card-fragment-v2__static .lvg-card-fragment-v2__menu {
     display: block;
-    opacity: 1;
+    opacity: .5;
 }
 
 lvg-card-fragment-v2.sortable-drag {
