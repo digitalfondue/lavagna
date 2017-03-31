@@ -1,42 +1,41 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
 
     var extractData = function (data) {
-        return data.data
+        return data.data;
     };
 
     var extractActionLists = function (data) {
         var rawData = data.data;
         var actionLists = {lists: [], items: {}};
+
         for (var i = 0; i < rawData.length; i++) {
-            //if it's a list, push it to the array
-            if (rawData[i].type === 'ACTION_LIST')
-                actionLists.lists.push(rawData[i]);
+            // if it's a list, push it to the array
+            if (rawData[i].type === 'ACTION_LIST') { actionLists.lists.push(rawData[i]); }
             // if it's an item, check if the array already exists, and then push into it
             if (rawData[i].type === 'ACTION_CHECKED' || rawData[i].type === 'ACTION_UNCHECKED') {
-                if (actionLists.items[rawData[i].referenceId] === undefined)
-                    actionLists.items[rawData[i].referenceId] = [];
+                if (actionLists.items[rawData[i].referenceId] === undefined) { actionLists.items[rawData[i].referenceId] = []; }
                 actionLists.items[rawData[i].referenceId].push(rawData[i]);
             }
         }
+
         return actionLists;
     };
 
-    var isInCardLabels = function(cardLabels, labelName, currentUserId) {
-        if (cardLabels === undefined || cardLabels.length === 0)
-            return false; //empty, no labels at all
-        for(var i = 0; i < cardLabels.length; i++) {
-            if(cardLabels[i].labelName === labelName && cardLabels[i].labelDomain === 'SYSTEM' && cardLabels[i].value.valueUser === currentUserId) {
+    var isInCardLabels = function (cardLabels, labelName, currentUserId) {
+        if (cardLabels === undefined || cardLabels.length === 0) { return false; } // empty, no labels at all
+        for (var i = 0; i < cardLabels.length; i++) {
+            if (cardLabels[i].labelName === labelName && cardLabels[i].labelDomain === 'SYSTEM' && cardLabels[i].value.valueUser === currentUserId) {
                 return true;
             }
         }
+
         return false;
     };
 
-    //FIXME: useless parameters, check one by one
+    // FIXME: useless parameters, check one by one
     services.factory('Card', function ($http, $window, FileUploader) {
         return {
             findCardByBoardShortNameAndSeqNr: function (shortName, seqNr) {
@@ -46,8 +45,7 @@
                 return $http.get('api/card/' + id).then(extractData);
             },
             findCardsByMilestone: function (projectName) {
-
-                function insertStatusIfExists (milestone, source, target, status) {
+                function insertStatusIfExists(milestone, source, target, status) {
                     if (source[status] != undefined) {
                         target[target.length] = {status: status, count: source[status]};
                         milestone.totalCards += source[status];
@@ -57,19 +55,23 @@
                 function orderByStatus(milestone) {
                     milestone.totalCards = 0;
                     var sorted = [];
-                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "BACKLOG");
-                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "OPEN");
-                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "DEFERRED");
-                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, "CLOSED");
+
+                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, 'BACKLOG');
+                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, 'OPEN');
+                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, 'DEFERRED');
+                    insertStatusIfExists(milestone, milestone.cardsCountByStatus, sorted, 'CLOSED');
+
                     return sorted;
                 }
 
-                return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData).then(function(response) {
+                return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData).then(function (response) {
                     response.cardsCountByStatus = {};
                     for (var index in response.milestones) {
                         var milestone = response.milestones[index];
+
                         response.cardsCountByStatus[milestone.labelListValue.id] = orderByStatus(milestone);
                     }
+
                     return response;
                 });
             },
@@ -164,7 +166,7 @@
             getMaxFileSize: function () {
                 return $http.get('api/configuration/max-upload-file-size').then(extractData);
             },
-            getFileUploader: function(cardId) {
+            getFileUploader: function (cardId) {
                 return new FileUploader({
                     url: 'api/card/' + cardId + '/file',
                     alias: 'files',
@@ -187,13 +189,13 @@
                 return $http.get('api/card-data/activity/' + id).then(extractData);
             },
 
-            isWatchedByUser: function(labels, userId) {
+            isWatchedByUser: function (labels, userId) {
                 return isInCardLabels(labels, 'WATCHED_BY', userId);
             },
 
-            isAssignedToUser: function(labels, userId) {
+            isAssignedToUser: function (labels, userId) {
                 return isInCardLabels(labels, 'ASSIGNED', userId);
             }
-        }
+        };
     });
-})();
+}());

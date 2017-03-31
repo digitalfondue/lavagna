@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgActivityActionList', {
@@ -12,11 +12,10 @@
     function ActivityActionListController(CardCache) {
         var ctrl = this;
 
-        ctrl.$onInit = function() {
-            CardCache.cardData(ctrl.event.dataId).then(function(data) {
+        ctrl.$onInit = function () {
+            CardCache.cardData(ctrl.event.dataId).then(function (data) {
                 ctrl.actionList = data;
             });
-        }
-
+        };
     }
-})();
+}());

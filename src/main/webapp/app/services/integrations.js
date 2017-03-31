@@ -1,8 +1,7 @@
 (function () {
-
-
     'use strict';
     var services = angular.module('lavagna.services');
+
     services.factory('Integrations', ['$http', Integrations]);
 
     function extractData(data) {
@@ -11,21 +10,18 @@
 
     function Integrations($http) {
         return {
-            getAll: function() {
+            getAll: function () {
                 return $http.get('/api/plugin').then(extractData);
             },
-            remove: function(name) {
-                return $http['delete']('/api/plugin/'+name).then(extractData);
+            remove: function (name) {
+                return $http['delete']('/api/plugin/' + name).then(extractData);
             },
-            update: function(name, code, properties, projects) {
-                return $http.post('/api/plugin/'+name, {name: name, code: code, properties: properties, projects: projects}).then(extractData);
+            update: function (name, code, properties, projects) {
+                return $http.post('/api/plugin/' + name, {name: name, code: code, properties: properties, projects: projects}).then(extractData);
             },
-            enable: function(name, status) {
-                return $http.post('/api/plugin/'+name+'/enable/'+status).then(extractData);
+            enable: function (name, status) {
+                return $http.post('/api/plugin/' + name + '/enable/' + status).then(extractData);
             }
-        }
+        };
     }
-
-
-
-})()
+}());

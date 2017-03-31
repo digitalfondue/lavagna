@@ -1,5 +1,5 @@
 /* eslint indent: 0 */
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgUserLink', {
@@ -10,7 +10,7 @@
                       + ' ui-sref="user.dashboard(::({provider: $ctrl.user.provider, username: $ctrl.user.username}))" '
                     + ' data-ng-class="::{\'lvg-user-link__disabled\': !$ctrl.user.enabled}">'
                     + '{{::($ctrl.user | formatUser)}}'
-                  +'</a>',
+                  + '</a>',
         controller: ['Tooltip', 'UserCache', '$element', UserLinkController]
     });
 
@@ -44,5 +44,5 @@
         function handleMouseLeave($event) {
             Tooltip.clean();
         }
-    };
-})();
+    }
+}());

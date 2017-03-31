@@ -1,4 +1,4 @@
-(function() {
+(function () {
     var components = angular.module('lavagna.components');
 
     components.component('lvgNavbarUser', {
@@ -8,7 +8,7 @@
             provider: '<',
             isCurrentUser: '<'
         },
-        controller: function(User, $mdSidenav, $state, $window) {
+        controller: function (User, $mdSidenav, $state, $window) {
             var ctrl = this;
 
             ctrl.$state = $state;
@@ -17,13 +17,13 @@
                 ctrl.navbarUser = u;
             });
 
-            ctrl.toggleSidebar = function() {
+            ctrl.toggleSidebar = function () {
                 $mdSidenav('left').toggle();
-            }
+            };
 
             ctrl.login = function () {
                 $window.location.href = User.loginUrl();
-            }
+            };
         }
     });
-})();
+}());

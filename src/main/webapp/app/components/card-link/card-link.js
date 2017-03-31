@@ -1,5 +1,5 @@
 /* eslint indent: 0 */
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgCardLink', {
@@ -11,7 +11,7 @@
                       + ' ui-sref="board.card({projectName: $ctrl.card.projectShortName, shortName: $ctrl.card.boardShortName, seqNr: $ctrl.card.sequence})" '
                     + ' data-ng-class="::{\'lavagna-closed-card\': !$card.columnDefinition === \'CLOSED\'}"> '
                     + ' {{::($ctrl.card.boardShortName)}}-{{::($ctrl.card.sequence)}}'
-                  +'</a> {{::($ctrl.card.name)}}'
+                  + '</a> {{::($ctrl.card.name)}}'
     });
 
     function CardLinkController(CardCache) {
@@ -21,6 +21,6 @@
             CardCache.card(ctrl.cardId).then(function (card) {
                 ctrl.card = card;
             });
-        }
-    };
-})();
+        };
+    }
+}());

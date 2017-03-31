@@ -1,5 +1,4 @@
 (function () {
-
     var components = angular.module('lavagna.components');
 
     components.component('lvgProjectMilestones', {
@@ -13,6 +12,7 @@
     function ProjectMilestonesController($rootScope, Card, User, StompClient, Label) {
         var ctrl = this;
         //
+
         ctrl.showArray = showArray;
         ctrl.select = select;
         ctrl.unselect = unselect;
@@ -34,7 +34,6 @@
         });
 
         ctrl.$onInit = function init() {
-
             ctrl.milestoneOpenStatus = {};
             loadMilestonesInProject();
 
@@ -52,6 +51,7 @@
             if (!array) {
                 return false;
             }
+
             return Object.keys(array).length > 0;
         }
 
@@ -81,6 +81,5 @@
         function closeMilestone(val) {
             Label.updateLabelListValueMetadata(val.id, 'status', 'CLOSED');
         }
-
     }
-})();
+}());

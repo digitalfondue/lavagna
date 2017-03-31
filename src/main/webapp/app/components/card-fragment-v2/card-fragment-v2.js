@@ -18,6 +18,7 @@
 
     //
     var BASE_URL = document.querySelector('base').href;
+
     if (BASE_URL[BASE_URL.length - 1] !== '/') {
         BASE_URL += '/';
     }
@@ -59,10 +60,12 @@
         //
 
         var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
+
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
 
         var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip);
+
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
 
@@ -78,7 +81,7 @@
         ctrl.$onDestroy = function () {
             headCtrl.$onDestroy();
             dataInfoCtrl.$onDestroy();
-        }
+        };
     }
 
     function createElem(name) {
@@ -89,7 +92,7 @@
         return window.document.createTextNode(value);
     }
 
-    //--------------------
+    // --------------------
     function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {
         var ctrl = this;
 
@@ -99,24 +102,27 @@
             var parent = ctrl.lvgCardFragmentV2;
 
             var baseDiv = createElem('div');
+
             baseDiv.className = 'lvg-card-fragment-v2__card-head';
 
             if (parent.boardView && !parent.readOnly) {
-
                 if (parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-                    checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement)
+                    checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
 
                 var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, false, $state, $location, subscribers, EventBus);
+
                 baseDiv.appendChild(a);
 
-                //card fragment menu
+                // card fragment menu
                 if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
                     var button = createElem('button');
+
                     button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
                     baseDiv.appendChild(button);
 
                     var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
+
                     button.addEventListener('click', menuEventListener);
                     subscribers.push(function () {
                         button.removeEventListener('click', menuEventListener);
@@ -128,35 +134,38 @@
 
                 if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
                     var button = createElem('button');
+
                     button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
                     baseDiv.appendChild(button);
                 }
 
                 if (parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
-                    var c = createElem("div");
+                    var c = createElem('div');
+
                     c.className = 'lvg-card-fragment-v2__checkbox-container';
-                    var fakeCheckbox = createElem("div");
+                    var fakeCheckbox = createElem('div');
+
                     fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
                     c.appendChild(fakeCheckbox);
                     domElement.appendChild(c);
                 }
-
             } else if (parent.listView) {
                 var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, false, $state, $location, subscribers, EventBus);
+
                 baseDiv.appendChild(a);
                 baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
             } else if (parent.searchView) {
-
                 if (User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
                 var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
                 var a = createMainLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, parent.card.columnDefinition === 'CLOSED', $state, $location, subscribers, EventBus);
+
                 baseDiv.appendChild(a);
                 baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
             }
             domElement.appendChild(baseDiv);
-            domElement.appendChild(createText(parent.card.name))
+            domElement.appendChild(createText(parent.card.name));
         };
 
         ctrl.$onDestroy = function onDestroy() {
@@ -168,15 +177,18 @@
 
 
     function checkbox(isBoardView, selected, card, subscribers, EventBus, $scope, domElement) {
+        var c = createElem('div');
 
-        var c = createElem("div");
         c.className = 'lvg-card-fragment-v2__checkbox-container';
-        var fakeCheckbox = createElem("div");
+        var fakeCheckbox = createElem('div');
+
         fakeCheckbox.className = 'lvg-card-fragment-v2__checkbox';
         var attrRole = document.createAttribute('role');
+
         attrRole.value = 'button';
         fakeCheckbox.attributes.setNamedItem(attrRole);
         var tabIndex = document.createAttribute('tabindex');
+
         tabIndex.value = '0';
         fakeCheckbox.attributes.setNamedItem(tabIndex);
         c.appendChild(fakeCheckbox);
@@ -193,11 +205,10 @@
         }
 
         function updateStyle() {
-
             if (selectedState) {
-                domElement.classList.add('lvg-card-fragment-v2__selected')
+                domElement.classList.add('lvg-card-fragment-v2__selected');
             } else {
-                domElement.classList.remove('lvg-card-fragment-v2__selected')
+                domElement.classList.remove('lvg-card-fragment-v2__selected');
             }
         }
 
@@ -249,13 +260,16 @@
 
     function createLastUpdateTime(lastUpdateTime, $filter) {
         var e = angular.element(createElem('div')).addClass('lvg-card-fragment-v2__card-head-date')[0];
+
         e.textContent = $filter('dateIncremental')(lastUpdateTime);
+
         return e;
     }
 
 
     function createMainLink(targetState, projectName, boardShortName, sequenceNumber, isDynamicLink, cardIsClosed, $state, $location, subscribers, EventBus) {
-        var a = createElem("a");
+        var a = createElem('a');
+
         a.className = 'lvg-card-fragment-v2__card-link';
         a.textContent = boardShortName + '-' + sequenceNumber;
         a.href = updateUrl($state, $location.search().q, $location.search().page, targetState, projectName, boardShortName, sequenceNumber);
@@ -269,17 +283,19 @@
 
             subscribers.push(onUpdateQueryOrPageSub);
         }
+
         return a;
     }
 
 
     function updateUrl($state, q, page, targetState, projectName, boardShortName, sequenceNumber) {
-
         if (targetState === 'board.card') {
             var cardUrl = BASE_URL + projectName + '/' + boardShortName + '-' + sequenceNumber;
+
             if (q !== undefined) {
                 cardUrl += '?q=' + encodeURIComponent(q);
             }
+
             return cardUrl;
         }
 
@@ -355,6 +371,7 @@
 
             if (liComment || liActionList || liFiles || liDueDate || liMilestone) {
                 var divWrapper = createElem('div');
+
                 $element.appendChild(divWrapper);
                 appendIfNotNull(divWrapper, liComment);
                 appendIfNotNull(divWrapper, liActionList);
@@ -372,11 +389,13 @@
             }
             for (var i = 0; i < mouseOverCardElements.length; i++) {
                 var element = mouseOverCardElements[i];
+
                 element.removeEventListener('mouseenter', handleMouseEnterCard);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
             for (var i = 0; i < mouseOverUserElements.length; i++) {
                 var element = mouseOverUserElements[i];
+
                 element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
@@ -413,23 +432,29 @@
 
         function filterSystemLabelByName(labelName) {
             var res = [];
+
             for (var i = 0; i < card.labels.length; i++) {
                 var label = card.labels[i];
+
                 if (label.labelDomain === 'SYSTEM' && label.labelName === labelName) {
                     res.push(label);
                 }
             }
+
             return res;
         }
 
         function filterUserLabels() {
             var res = [];
+
             for (var i = 0; i < card.labels.length; i++) {
                 var label = card.labels[i];
+
                 if (label.labelDomain === 'USER') {
                     res.push(label);
                 }
             }
+
             return res;
         }
 
@@ -440,14 +465,15 @@
             }
 
             var div = createElem('div');
-            div.className = 'lvg-card-fragment-v2__card-data'
+
+            div.className = 'lvg-card-fragment-v2__card-data';
 
             appendIconAndText(div, 'comment', card.counts['COMMENT'].count);
+
             return div;
         }
 
         function handleActionList() {
-
             var hasActionListWithItems = hasCountGreaterThanZero('ACTION_CHECKED') || hasCountGreaterThanZero('ACTION_UNCHECKED');
 
             if (!hasActionListWithItems) {
@@ -459,6 +485,7 @@
             var actionItemsSummary = (checkedCount) + '/' + (checkedCount + uncheckedCount);
 
             var div = createElem('div');
+
             div.className = 'lvg-card-fragment-v2__card-data';
 
             if (card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
@@ -466,17 +493,20 @@
             }
 
             appendIconAndText(div, 'list', actionItemsSummary);
+
             return div;
         }
 
         function handleFiles() {
             var hasFiles = hasCountGreaterThanZero('FILE');
+
             if (!hasFiles) {
                 return null;
             }
 
             var filesCount = hasFiles ? getCountOrZero('FILE') : '';
             var div = createElem('div');
+
             div.className = 'lvg-card-fragment-v2__card-data';
 
             appendIconAndText(div, 'file', filesCount);
@@ -487,11 +517,12 @@
         function handleDueDate() {
             var dueDateLabels = filterSystemLabelByName('DUE_DATE');
             var hasDueDateLabel = dueDateLabels.length == 1;
+
             if (!hasDueDateLabel) {
                 return null;
             }
             var dueDateLabel = dueDateLabels[0];
-            //inline daysDiff filter
+            // inline daysDiff filter
             var dueDate = moment(dueDateLabel.labelValueTimestamp);
             var daysDiff = moment().startOf('day').diff(dueDate, 'days');
 
@@ -502,16 +533,17 @@
 
 
             var div = createElem('div');
+
             div.className = 'lvg-card-fragment-v2__card-data';
 
             addDueDateClasses(div, isTomorrow, isNow, isPast);
 
             appendIconAndText(div, 'clock', $filter('date')(dueDate.toDate(), 'dd.MM.yyyy'));
+
             return div;
         }
 
         function handleMilestone() {
-
             var milestoneLabels = filterSystemLabelByName('MILESTONE');
             var hasMilestoneLabel = milestoneLabels.length === 1;
 
@@ -525,10 +557,11 @@
 
             var milestoneLabel = milestoneLabels[0];
 
-            var releaseDateStr = undefined;
+            var releaseDateStr;
             var metadata = projectMetadata;
 
             var hasMilestoneMetadata = milestoneLabel && milestoneLabel.labelValueList && metadata.labelListValues[milestoneLabel.labelValueList];
+
             if (!hasMilestoneMetadata) {
                 return null;
             }
@@ -538,10 +571,11 @@
             }
 
             var div = createElem('div');
+
             div.className = 'lvg-card-fragment-v2__card-data lvg-card-fragment-v2__card-data__icon_milestone';
 
             if (releaseDateStr) {
-                var releaseDate = moment(releaseDateStr, "DD.MM.YYYY");//FIXME format server side
+                var releaseDate = moment(releaseDateStr, 'DD.MM.YYYY');// FIXME format server side
                 var daysDiff = $filter('daysDiff')(releaseDate);
 
                 var isTomorrow = (notClosed && daysDiff == -1);
@@ -552,6 +586,7 @@
             }
 
             var a = createElem('a');
+
             a.className = 'lvg-card-fragment-v2__card-link lvg-gray';
             if (projectMetadata.labelListValues[milestoneLabel.labelValueList].metadata.status === 'CLOSED') {
                 a.className += ' strike';
@@ -567,43 +602,47 @@
             return div;
         }
 
-        //------------
+        // ------------
         function handleAssigned() {
             var assignedLabels = filterSystemLabelByName('ASSIGNED');
+
             if (assignedLabels.length === 0) {
                 return;
             }
 
             var divWrapper = angular.element(createElem('div')).addClass('card-info')[0];
             var ul = angular.element(createElem('ul')).addClass('assigned-users')[0];
+
             divWrapper.appendChild(ul);
             for (var i = 0; i < assignedLabels.length; i++) {
                 var userId = assignedLabels[i].value.valueUser;
                 var a = handleUser(userId);
                 var li = angular.element(createElem('li')).addClass('assigned-user')[0];
+
                 li.appendChild(a);
                 ul.appendChild(li);
             }
             $element.appendChild(divWrapper);
         }
 
-        //------------
+        // ------------
         var labelBackgroundClass = $filter('labelBackgroundClass');
         var labelBackground = $filter('labelBackground');
 
         function handleLabels() {
-
             if (!projectMetadata || !projectMetadata.labels) {
                 return null;
             }
 
             var userCreatedLabels = filterUserLabels();
+
             if (userCreatedLabels.length === 0) {
                 return;
             }
 
 
             var divWrapper = createElem('div');
+
             divWrapper.className = 'lvg-card-fragment-v2__label-container';
 
             for (var i = 0; i < userCreatedLabels.length; i++) {
@@ -619,6 +658,7 @@
                 var name = projectMetadata.labels[value.labelId].name;
                 var nameAndSeparator = name + (addSeparator ? ': ' : '' );
                 var userOrCardLink = null;
+
                 switch (value.labelValueType) {
                     case 'NULL':
                         break;
@@ -655,14 +695,14 @@
             $element.appendChild(divWrapper);
         }
 
-        //------------
+        // ------------
 
         function appendIconAndText(li, iconName, text) {
             li.className += (' lvg-card-fragment-v2__card-data__icon_' + iconName);
             li.appendChild(createText(' ' + text));
         }
 
-        //-----------
+        // -----------
 
         function handleUser(userId, textColorClass, labelDiv) {
             if (labelDiv) {
@@ -670,9 +710,11 @@
             }
 
             var a = createElem('a');
+
             a.className = textColorClass;
             UserCache.user(userId).then(function (user) {
                 var element = angular.element(a);
+
                 element.attr('href', $state.href('user.dashboard', {provider: user.provider, username: user.username}));
                 element.text($filter('formatUser')(user));
                 if (!user.enabled) {
@@ -690,6 +732,7 @@
 
                 mouseOverUserElements.push(a);
             });
+
             return a;
         }
 
@@ -723,6 +766,7 @@
                         updateCardClass(card, element);
                     });
                 });
+
                 listeners.push(toDismiss);
 
                 mouseOverCardElements.push(a);
@@ -739,8 +783,8 @@
 
     function prepareOpenCardMenu(cardFragmentElement, $scope, $compile, $mdPanel, $element, card, isSelfWatching, isAssignedToCard, user, metadata) {
         return function (event) {
-
             var scopeForCardFragment = $scope.$new();
+
             scopeForCardFragment['card'] = card;
             scopeForCardFragment['user'] = user;
             scopeForCardFragment['metadata'] = metadata;
@@ -754,7 +798,7 @@
                 .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
                 .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
                 .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
-                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
+                .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE);
 
             var panelCtrl = null;
 
@@ -785,10 +829,11 @@
                     currentUserId: user.id
                 }
             };
+
             $mdPanel.open(conf).then(function () {
                 panelCtrl.visibility = true;
             });
-        }
+        };
     }
 
 
@@ -805,6 +850,4 @@
             readOnlyCard.classList.add('lvg-card-fragment-v2__selected');
         }
     }
-
-
-})();
+}());

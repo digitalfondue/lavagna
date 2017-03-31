@@ -1,31 +1,30 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
 
-    //simple wrapper
+    // simple wrapper
     services.factory('Tooltip', ['$mdPanel', '$q', Tooltip]);
 
 
     function Tooltip($mdPanel, $q) {
-
         function cleanUpRogueTooltips() {
-            angular.forEach($mdPanel._trackedPanels, function(value, id) {
+            angular.forEach($mdPanel._trackedPanels, function (value, id) {
                 delete $mdPanel._trackedPanels[id];
             });
 
             var tooltips = document.querySelectorAll('.lvg-tooltip__panel');
-            angular.forEach(tooltips, function(tooltip) {
+
+            angular.forEach(tooltips, function (tooltip) {
                 tooltip.parentNode.parentNode.removeChild(tooltip.parentNode);
             });
         }
 
         return {
-            clean: function() {
-                return $q(function(resolve, reject) {
-                    angular.forEach($mdPanel._trackedPanels, function(value, id) {
-                        if(id.indexOf('lvg-tooltip') === 0) {
+            clean: function () {
+                return $q(function (resolve, reject) {
+                    angular.forEach($mdPanel._trackedPanels, function (value, id) {
+                        if (id.indexOf('lvg-tooltip') === 0) {
                             value.close();
                         }
                     });
@@ -33,16 +32,16 @@
                     resolve();
                 });
             },
-            card: function(card, metadata, user, element) {
+            card: function (card, metadata, user, element) {
                 var position = $mdPanel.newPanelPosition()
                     .relativeTo(element)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
                     .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
-                    .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
+                    .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE);
                 var conf = {
                     id: 'lvg-tooltip-card-' + card.id,
-                    controller: function(mdPanelRef, metadata) {
+                    controller: function (mdPanelRef, metadata) {
                         this.mdPanelRef = mdPanelRef;
                         this.metadata = metadata;
                     },
@@ -62,20 +61,20 @@
                     }
                 };
 
-                this.clean().then(function() {
+                this.clean().then(function () {
                     $mdPanel.open(conf);
                 });
             },
-            user: function(user, element) {
+            user: function (user, element) {
                 var position = $mdPanel.newPanelPosition()
                     .relativeTo(element)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
                     .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.ABOVE)
-                    .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE)
+                    .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.ABOVE);
                 var conf = {
                     id: 'lvg-tooltip-user-' + user.id,
-                    controller: function(mdPanelRef) {
+                    controller: function (mdPanelRef) {
                         this.mdPanelRef = mdPanelRef;
                     },
                     controllerAs: '$ctrl',
@@ -90,11 +89,10 @@
                     }
                 };
 
-                this.clean().then(function() {
+                this.clean().then(function () {
                     $mdPanel.open(conf);
                 });
             }
-        }
+        };
     }
-
-})();
+}());

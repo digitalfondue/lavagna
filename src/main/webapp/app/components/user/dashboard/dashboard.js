@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -23,10 +22,10 @@
             scaleBeginAtZero: true,
             responsive: true,
             maintainAspectRatio: false,
-            animation : false,
-            scaleOverride : true,
-            scaleSteps : 3,
-            scaleStartValue : 0
+            animation: false,
+            scaleOverride: true,
+            scaleSteps: 3,
+            scaleStartValue: 0
         };
         var color = '#B0BEC5';
 
@@ -35,7 +34,7 @@
             ctrl.userProvider = ctrl.profile.user.provider;
             ctrl.userName = ctrl.profile.user.username;
 
-            //init
+            // init
             loadUser(ctrl.profile);
 
             User.getUserActivity(ctrl.profile.user.provider, ctrl.profile.user.username).then(function (activities) {
@@ -43,26 +42,30 @@
             });
 
             ctrl.activityChartData = getActivityChartData(ctrl.profile.dailyActivity);
-        }
+        };
 
         function getActivityChartData(events) {
             var eventsByMonth = groupByMonth(events);
 
             var chartData = { labels: [], datasets: []};
+
             chartData.datasets.push({
                 strokeColor: color, fillColor: color, pointColor: color, spanGaps: true,
                 data: []
             });
 
             var locale = $translate.use();
-            for(var i = 11; i >= 0; i--) {
+
+            for (var i = 11; i >= 0; i--) {
                 var date = new Date();
+
                 date.setMonth(date.getMonth() - i);
-                chartData.labels.push(date.toLocaleString(locale, { month: "short" }));
+                chartData.labels.push(date.toLocaleString(locale, { month: 'short' }));
                 chartData.datasets[0].data.push(eventsByMonth[date.getMonth()]);
             }
 
             var maxValue = Math.max.apply(Math, chartData.datasets[0].data);
+
             ctrl.activityChartOptions.scaleStepWidth = maxValue > 3 ? Math.ceil(Math.max(maxValue) / 3) : 1;
 
             return chartData;
@@ -71,25 +74,26 @@
         function groupByMonth(events) {
             var eventsByMonth = [];
 
-            for(var i = 0; i < 12; i++) {
+            for (var i = 0; i < 12; i++) {
                 eventsByMonth[i] = 0;
             }
 
-            angular.forEach(events, function(event) {
+            angular.forEach(events, function (event) {
                 var date = new Date(event.date);
-                eventsByMonth[date.getMonth()] += event.count
+
+                eventsByMonth[date.getMonth()] += event.count;
             });
 
             return eventsByMonth;
         }
 
         function groupByDate(events) {
-
             var groupedByDate = {};
             var keyOrder = [];
 
             for (var i in events) {
                 var dateRepresentation = $filter('date')(events[i].time, 'dd.MM.yyyy');
+
                 if (keyOrder.indexOf(dateRepresentation) == -1) {
                     keyOrder.push(dateRepresentation);
                     groupedByDate[dateRepresentation] = [];
@@ -99,15 +103,16 @@
             }
 
             return {groupedByDate: groupedByDate, keyOrder: keyOrder};
-        };
+        }
 
         function loadUser(profile) {
             ctrl.profile = profile;
             ctrl.user = profile.user;
             ctrl.activeProjects = profile.activeProjects;
             var grid = Project.gridByDescription(profile.activeProjects, true);
+
             ctrl.activeProjectsLeft = grid.left;
             ctrl.activeProjectsRight = grid.right;
-        };
+        }
     }
-})();
+}());

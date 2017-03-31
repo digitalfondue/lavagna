@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -7,7 +6,7 @@
     components.component('lvgLabelValV2', {
         bindings: {
             valueRef: '&',
-            projectMetadataRef:'&'
+            projectMetadataRef: '&'
         },
         controller: ['$filter', '$element', 'EventBus',
             '$state', '$window', 'CardCache', 'Tooltip', 'UserCache', LabelValV2Controller]
@@ -23,7 +22,6 @@
         var mouseOverUserElements = [];
 
         ctrl.$postLink = function postLink() {
-
             var ctrl_value = ctrl.valueRef();
             var metadata = ctrl.projectMetadataRef();
             var type = ctrl_value.labelValueType || ctrl_value.type || ctrl_value.labelType;
@@ -42,46 +40,48 @@
             } else if (type === 'TIMESTAMP') {
                 elementDom.textContent = $filter('date')(value.valueTimestamp, 'dd.MM.yyyy');
             }
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
             Tooltip.clean();
 
-            for(var i = 0; i < listeners.length; i++) {
+            for (var i = 0; i < listeners.length; i++) {
                 listeners[i]();
             }
 
-            for(var i = 0; i < mouseOverUserElements.length; i++) {
+            for (var i = 0; i < mouseOverUserElements.length; i++) {
                 var element = mouseOverUserElements[i];
+
                 element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
 
-            for(var i = 0; i < mouseOverCardElements.length; i++) {
+            for (var i = 0; i < mouseOverCardElements.length; i++) {
                 var element = mouseOverCardElements[i];
+
                 element.removeEventListener('mouseenter', handleMouseEnterCard);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
         };
 
-        //-------------
+        // -------------
         function handleMouseEnterCard($event) {
-            Tooltip.card($event.target.card, function() {
-                return $event.target.metadata
+            Tooltip.card($event.target.card, function () {
+                return $event.target.metadata;
             }, null, $event.target);
-        };
+        }
 
         function handleMouseEnterUser($event) {
             Tooltip.user($event.target.user, $event.target);
-        };
+        }
 
         function handleMouseLeave($event) {
             Tooltip.clean();
-        };
+        }
 
         function handleUser(userId) {
-
             var a = $window.document.createElement('a');
+
             $element.append(a);
 
             UserCache.user(userId).then(function (user) {
@@ -99,14 +99,13 @@
                 if (!user.enabled) {
                     element.addClass('user-disabled');
                 }
-
             });
         }
-        //-------------
+        // -------------
 
         function handleCard(cardId, metadata) {
-
             var a = $window.document.createElement('a');
+
             $element.append(a);
 
             CardCache.card(cardId).then(function (card) {
@@ -142,5 +141,4 @@
             element.addClass('lavagna-closed-card');
         }
     }
-
-})();
+}());

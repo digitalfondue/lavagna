@@ -1,13 +1,13 @@
-(function() {
-
+(function () {
     'use strict';
 
 
     var module = angular.module('lavagnaLogin', ['ngSanitize', 'ngMessages', 'ngMaterial', 'pascalprecht.translate']);
-    module.value('configuration', JSON.parse(document.getElementById('app-configuration').textContent))
+
+    module.value('configuration', JSON.parse(document.getElementById('app-configuration').textContent));
 
     function hasErrorInQueryString($window, error) {
-        return $window.location.search.indexOf("?"+error)  !== -1 || $window.location.search.indexOf("&"+error)  !== -1;
+        return $window.location.search.indexOf('?' + error) !== -1 || $window.location.search.indexOf('&' + error) !== -1;
     }
 
     module.config(['$mdThemingProvider', '$compileProvider', '$translateProvider', function ($mdThemingProvider, $compileProvider, $translateProvider) {
@@ -16,19 +16,18 @@
         $mdThemingProvider.disableTheming();
 
 
-        var locale = navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+        var locale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
 
-        angular.forEach(io_lavagna.i18n, function(map, lang) {
-            $translateProvider.translations(lang, map)
+        angular.forEach(io_lavagna.i18n, function (map, lang) {
+            $translateProvider.translations(lang, map);
         });
         $translateProvider.preferredLanguage(locale);
         $translateProvider.fallbackLanguage('en');
         $translateProvider.usePostCompiling(true);
         $translateProvider.useSanitizeValueStrategy('escape');
-
     }]);
 
-    //-----------------
+    // -----------------
     module.component('demoLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
             '<form method="post" action="login/demo/" class="lvg-panel__body">',
@@ -58,11 +57,12 @@
 
     function demoLoginCtrl(configuration, $window) {
         var ctrl = this;
+
         ctrl.configuration = configuration;
         ctrl.show = configuration.loginDemo === 'block';
         ctrl.errorDemo = hasErrorInQueryString($window, 'error-demo');
     }
-    //-----------------
+    // -----------------
 
     module.component('passwordLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
@@ -93,11 +93,12 @@
 
     function passwordLoginCtrl(configuration, $window) {
         var ctrl = this;
+
         ctrl.configuration = configuration;
         ctrl.show = configuration.loginPassword === 'block';
         ctrl.errorDemo = hasErrorInQueryString($window, 'error-password');
     }
-    //-----------------
+    // -----------------
 
     module.component('ldapLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',
@@ -127,6 +128,7 @@
 
     function ldapLoginCtrl(configuration, $window) {
         var ctrl = this;
+
         ctrl.configuration = configuration;
         ctrl.show = configuration.loginLdap === 'block';
         ctrl.errorLdap = hasErrorInQueryString($window, 'error-ldap');
@@ -154,13 +156,12 @@
 
     function oauthLoginCtrl(configuration, $window) {
         var ctrl = this;
+
         ctrl.configuration = configuration;
         ctrl.show = configuration.loginOauth === 'block';
         ctrl.url = function url(provider) {
-            return 'login/oauth/'+provider;
-        }
+            return 'login/oauth/' + provider;
+        };
         ctrl.errorOauth = hasErrorInQueryString($window, 'error-oauth');
-
     }
-
-})();
+}());

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -20,9 +20,9 @@
 
         ctrl.$onInit = function onInit() {
             var grid = Project.gridByDescription(ctrl.profile.activeProjects, true);
+
             ctrl.activeProjectsLeft = grid.left;
             ctrl.activeProjectsRight = grid.right;
         };
     }
-
-})();
+}());

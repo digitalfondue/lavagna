@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -26,7 +25,6 @@
         var metadataSubscription = angular.noop;
 
         ctrl.$onInit = function init() {
-
             ctrl.boardPage = 1;
             ctrl.boardsPerPage = 10;
             ctrl.maxVisibleBoardPages = 3;
@@ -40,28 +38,28 @@
             onDestroyStomp = StompClient.subscribe('/event/project/' + ctrl.project.shortName + '/board', loadBoardsInProject);
 
             ctrl.showArchivedItems = ctrl.user.userMetadata && ctrl.user.userMetadata.showArchivedBoards || false;
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
             metadataSubscription();
             onDestroyStomp();
-        }
+        };
 
         //
 
         function loadBoardsInProject() {
-            User.hasPermission('READ', ctrl.project.shortName).then(function() {
+            User.hasPermission('READ', ctrl.project.shortName).then(function () {
                 return Project.findBoardsInProject(ctrl.project.shortName);
-            }).then(function(b) {
+            }).then(function (b) {
                 ctrl.boards = b;
             });
         }
 
         function loadUserCardsInProject(page) {
-            User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
-                User.cardsByProject(ctrl.project.shortName, page).then(function(cards) {
+            User.isAuthenticated().then(function () { return User.hasPermission('SEARCH'); }).then(function () {
+                User.cardsByProject(ctrl.project.shortName, page).then(function (cards) {
                     ctrl.totalProjectOpenCards = cards.count;
-                    ctrl.cardsCurrentPage = cards.currentPage+1;
+                    ctrl.cardsCurrentPage = cards.currentPage + 1;
                     ctrl.cardsTotalPages = cards.totalPages;
                     ctrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
                 });
@@ -77,28 +75,28 @@
                 templateUrl: 'app/components/project/boards/add-board-dialog.html',
                 fullscreen: true,
                 controllerAs: 'boardDialogCtrl',
-                locals: {projectName : ctrl.project.shortName},
-                bindToController:true,
-                controller: function() {
+                locals: {projectName: ctrl.project.shortName},
+                bindToController: true,
+                controller: function () {
                     var ctrl = this;
 
                     ctrl.board = {};
 
                     ctrl.errors = {};
 
-                    ctrl.suggestBoardShortName = function(board) {
-                        if(board == null ||board.name == null || board.name == "") {
+                    ctrl.suggestBoardShortName = function (board) {
+                        if (board == null || board.name == null || board.name == '') {
                             return;
                         }
-                        Board.suggestShortName(board.name).then(function(res) {
+                        Board.suggestShortName(board.name).then(function (res) {
                             board.shortName = res.suggestion;
                             ctrl.checkBoardShortName(res.suggestion);
                         });
                     };
 
-                    ctrl.checkBoardShortName = function(val) {
-                        if(val !== undefined && val !== null) {
-                            Board.checkShortName(val).then(function(res) {
+                    ctrl.checkBoardShortName = function (val) {
+                        if (val !== undefined && val !== null) {
+                            Board.checkShortName(val).then(function (res) {
                                 ctrl.errors.shortName = res === false ? true : undefined;
                             });
                         } else {
@@ -106,35 +104,35 @@
                         }
                     };
 
-                    ctrl.createBoard = function(board) {
+                    ctrl.createBoard = function (board) {
                         board.shortName = board.shortName.toUpperCase();
-                        Project.createBoard(ctrl.projectName, board).then(function() {
+                        Project.createBoard(ctrl.projectName, board).then(function () {
                             board.name = null;
                             board.description = null;
                             board.shortName = null;
                             ctrl.checkedShortName = undefined;
                             Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
-                        }, function(error) {
+                        }, function (error) {
                             Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
                         });
                     };
 
-                    ctrl.close = function() {
+                    ctrl.close = function () {
                         $mdDialog.hide();
-                    }
+                    };
                 }
             });
         }
 
         function updateShowArchivedItems(value) {
             var metadata = ctrl.user.userMetadata || {};
+
             metadata.showArchivedBoards = value;
-            User.updateMetadata(metadata).then(User.current, User.current).then(function(user) {
+            User.updateMetadata(metadata).then(User.current, User.current).then(function (user) {
                 ctrl.user = user;
                 ctrl.showArchivedItems = user.userMetadata.showArchivedBoards;
             });
         }
     }
-
-})();
+}());
 

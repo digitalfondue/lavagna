@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgUserTooltip', {
@@ -16,5 +16,4 @@
             ctrl.user = ctrl.userRef();
         };
     }
-
-})();
+}());

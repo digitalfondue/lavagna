@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     angular
@@ -24,14 +23,13 @@
         }
 
         function createColumn(columnToCreate) {
-            Board.createColumn(ctrl.boardName, columnToCreate).then(function() {
+            Board.createColumn(ctrl.boardName, columnToCreate).then(function () {
                 columnToCreate.name = null;
                 columnToCreate.definition = null;
                 $mdDialog.hide();
-            }).catch(function(error) {
-                Notification.addAutoAckNotification('error', { key : 'notification.board.create-column.error'}, false);
+            }).catch(function (error) {
+                Notification.addAutoAckNotification('error', { key: 'notification.board.create-column.error'}, false);
             });
-        };
+        }
     }
-
-})();
+}());

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgUserAvatar', {
@@ -28,6 +28,7 @@
 
         ctrl.$postLink = function postLink() {
             var innerSize = ctrl.size / 2; // we assume we always use even numbers
+
             $element.children().css({
                 'width': ctrl.size + 'px',
                 'height': ctrl.size + 'px',
@@ -57,5 +58,5 @@
         function handleMouseLeave($event) {
             Tooltip.clean();
         }
-    };
-})();
+    }
+}());

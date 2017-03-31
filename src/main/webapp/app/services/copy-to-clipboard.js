@@ -1,21 +1,19 @@
-(function() {
+(function () {
     'use strict';
 
-    angular.module('lavagna.services').factory('CopyToClipboard', function($window, $q) {
-
+    angular.module('lavagna.services').factory('CopyToClipboard', function ($window, $q) {
         var document = $window.document;
 
-        var CopyToClipboard = function(text, onSuccess, onFailure) {
-
+        var CopyToClipboard = function (text, onSuccess, onFailure) {
             var element;
             var handlerListener;
             var deferred = $q.defer();
 
-            var handler = function() {
+            var handler = function () {
                 return removeElement();
             };
 
-            var removeElement = function() {
+            var removeElement = function () {
                 document.body.removeEventListener('click', handler);
                 handlerListener = null;
 
@@ -23,12 +21,12 @@
                 element = null;
             };
 
-            var selectText = function() {
+            var selectText = function () {
                 element.focus();
                 element.setSelectionRange(0, element.value.length);
             };
 
-            var createElement = function() {
+            var createElement = function () {
                 handlerListener = document.body.addEventListener('click', handler) || true;
 
                 element = document.createElement('textarea');
@@ -46,8 +44,8 @@
                 document.body.appendChild(element);
             };
 
-            var copyText = function() {
-                var result = undefined;
+            var copyText = function () {
+                var result;
 
                 try {
                     result = document.execCommand('copy');
@@ -56,9 +54,9 @@
                 }
 
                 result ? deferred.resolve() : deferred.reject();
-            }
+            };
 
-            var cleanUp = function() {
+            var cleanUp = function () {
                 window.getSelection().removeAllRanges();
 
                 removeElement();
@@ -73,10 +71,9 @@
         };
 
         return {
-            copy: function(text) {
+            copy: function (text) {
                 return new CopyToClipboard(text);
             }
-        }
+        };
     });
-
-})();
+}());

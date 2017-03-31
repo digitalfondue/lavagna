@@ -1,15 +1,13 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
 
     var extractData = function (data) {
-        return data.data
+        return data.data;
     };
 
     services.factory('User', function ($http, $q, $stateParams, $window, $timeout) {
-
         var cached = null;
 
         var checkPermission = function (currentUser, permissionToCheck, projectName) {
@@ -28,12 +26,16 @@
             loginUrl: function () {
                 var baseHref = $window.document.querySelector('base').attributes.href.value;
                 var reqUrlWithoutContextPath = $window.location.pathname.substr(baseHref.length - 1);
+
+
                 return 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
             },
 
             current: function () {
                 var u = $http.get('api/self').then(extractData);
+
                 cached = u;
+
                 return u;
             },
 
@@ -41,6 +43,7 @@
                 if (cached == null) {
                     cached = this.current();
                 }
+
                 return cached;
             },
 
@@ -88,15 +91,17 @@
 
             findUsers: function (searchTerm) {
                 var opts = {params: {term: searchTerm}};
+
                 if ($stateParams.projectName) {
                     opts.params.projectName = $stateParams.projectName;
                 }
+
                 return $http.get('api/search/user', opts).then(extractData);
             },
 
             formatName: function (user) {
-                if (user.displayName)
-                    return user.displayName + ' (' + user.provider + ':' + user.username + ')';
+                if (user.displayName) { return user.displayName + ' (' + user.provider + ':' + user.username + ')'; }
+
                 return user.provider + ':' + user.username;
             },
 
@@ -109,11 +114,10 @@
             },
 
             user: function (userId) {
-
-                //try to accumulate enough requests to do a bulk one, this avoid a storm of little requests
+                // try to accumulate enough requests to do a bulk one, this avoid a storm of little requests
 
                 if (pendingUserRequests) {
-                    //remove pending requests
+                    // remove pending requests
                     $timeout.cancel(pendingUserRequests);
                     pendingUserRequests = null;
                 }
@@ -126,12 +130,13 @@
                 var deferred = usersToRequestMap[userId];
 
                 pendingUserRequests = $timeout(function () {
-
                     pendingUserRequests = null;
                     var reqMap = angular.copy(usersToRequestMap);
+
                     usersToRequestMap = {};
 
                     var ids = [];
+
                     angular.forEach(reqMap, function (v, uid) {
                         ids.push(uid);
                     });
@@ -141,7 +146,6 @@
                             reqMap[uid].resolve(res.data[uid]);
                         });
                     });
-
                 }, 50);
 
                 return deferred.promise;
@@ -162,11 +166,13 @@
             isAuthenticated: function () {
                 return this.currentCachedUser().then(function (currentUser) {
                     var deferred = $q.defer();
+
                     if (currentUser.provider !== 'system' && currentUser.username !== 'anonymous') {
                         deferred.resolve();
                     } else {
                         deferred.reject();
                     }
+
                     return deferred.promise;
                 });
             },
@@ -174,11 +180,13 @@
             isNotAuthenticated: function () {
                 return this.currentCachedUser().then(function (currentUser) {
                     var deferred = $q.defer();
+
                     if (currentUser.provider === 'system' && currentUser.username === 'anonymous') {
                         deferred.resolve();
                     } else {
                         deferred.reject();
                     }
+
                     return deferred.promise;
                 });
             },
@@ -198,6 +206,7 @@
                     }
 
                     deferred.resolve(permissions);
+
                     return deferred.promise;
                 });
             },
@@ -209,11 +218,13 @@
                     for (var i = 0; i < permissionsToCheck.length; i++) {
                         if (checkPermission(currentUser, permissionsToCheck[i].trim(), projectName)) {
                             deferred.resolve(true);
+
                             return deferred.promise;
                         }
                     }
 
                     deferred.reject();
+
                     return deferred.promise;
                 });
             },
@@ -223,6 +234,7 @@
                     var deferred = $q.defer();
 
                     var hasAllPermission = true;
+
                     for (var i = 0; i < permissionsToCheck.length; i++) {
                         hasAllPermission = hasAllPermission && checkPermission(currentUser, permissionsToCheck[i].trim(), projectName);
                     }
@@ -232,6 +244,7 @@
                     } else {
                         deferred.reject();
                     }
+
                     return deferred.promise;
                 });
             },
@@ -245,4 +258,4 @@
             }
         };
     });
-})();
+}());

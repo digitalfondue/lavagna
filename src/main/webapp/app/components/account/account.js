@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -24,8 +23,7 @@
         ctrl.copyCalendarUrl = copyCalendarUrl;
         ctrl.changePassword = changePassword;
 
-        ctrl.$onInit = function() {
-
+        ctrl.$onInit = function () {
             ctrl.profile = {};
             ctrl.isCurrentUser = true;
 
@@ -38,14 +36,14 @@
 
             User.current().then(loadUser);
             User.getCalendarToken().then(createUrl);
-        }
+        };
 
         function loadUser(u) {
             ctrl.user = u;
             ctrl.profile.email = u.email;
             ctrl.profile.displayName = u.displayName;
             ctrl.profile.emailNotification = u.emailNotification;
-            ctrl.profile.skipOwnNotifications = u.skipOwnNotifications
+            ctrl.profile.skipOwnNotifications = u.skipOwnNotifications;
         }
 
         function clearAllTokens() {
@@ -57,7 +55,7 @@
         }
 
         function createUrl(resp) {
-            ctrl.calendarFeedUrl = CONTEXT_PATH + "api/calendar/" + resp.token + "/calendar.ics";
+            ctrl.calendarFeedUrl = CONTEXT_PATH + 'api/calendar/' + resp.token + '/calendar.ics';
             ctrl.disabledFeed = resp.disabled;
         }
 
@@ -80,11 +78,11 @@
         }
 
         function copyCalendarUrl() {
-            CopyToClipboard.copy(ctrl.calendarFeedUrl).then(function() {
+            CopyToClipboard.copy(ctrl.calendarFeedUrl).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'account.calendar.copy.success'}, false);
-            }, function() {
+            }, function () {
                 Notification.addAutoAckNotification('warning', {key: 'account.calendar.copy.failure'}, false);
-            })
+            });
         }
 
         function changePassword(currentPassword, newPassword) {
@@ -95,4 +93,4 @@
             });
         }
     }
-})();
+}());

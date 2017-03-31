@@ -9,11 +9,19 @@
     "globals": {
         "angular": false,
         "inject": false,
-        "module": false
+        "module": false,
+        "moment": false,
+        "marked": false,
+        "Trello": false
     },
     "plugins": [
         "angular"
     ],
+    /*"rules": {
+        "no-mixed-spaces-and-tabs": 2,      // disallow mixed spaces and tabs for indentation
+        "no-tabs": 2,                       // disallow tabs in file
+        "indent": [1, 4, {"SwitchCase": 1}] // this option sets a specific tab width for your code (off by default)
+    }*/
     "rules": {
         ////////// Possible Errors //////////
 
@@ -130,7 +138,7 @@
         "no-restricted-globals": 0,       // disallow specified global variables
         "no-shadow": 0,                   // disallow declaration of variables already declared in the outer scope
         "no-shadow-restricted-names": 0,  // disallow shadowing of names such as arguments
-        "no-undef": 2,                    // disallow use of undeclared variables unless mentioned in a /*global */ block
+        "no-undef": 2,                    // disallow use of undeclared variables unless mentioned in a global  block
         "no-undef-init": 1,               // disallow use of undefined when initializing variables
         "no-undefined": 0,                // disallow use of undefined variable (off by default)
         "no-unused-vars": 2,              // disallow declaration of variables that are not used in the code
@@ -222,7 +230,7 @@
         "space-in-parens": 0,               // require or disallow spaces inside parentheses (off by default)
         "space-infix-ops": 1,               // require spaces around operators
         "space-unary-ops": 0,               // require or disallow spaces before/after unary operators (words on by default, nonwords off by default)
-        "spaced-comment": 1,                // require or disallow a space immediately following the // or /* in a comment (off by default)
+        "spaced-comment": 1,                // require or disallow a space immediately following the // or  in a comment (off by default)
         "unicode-bom": 0,                   // require or disallow Unicode byte order mark (BOM)
         "wrap-regex": 1                     // require regex literals to be wrapped in parentheses (off by default)
     }

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgCardLabelsAdd', {
@@ -14,22 +14,25 @@
 
     function CardLabelsAddController(BulkOperations, Label) {
         var ctrl = this;
+
         ctrl.userLabels = ctrl.project.metadata.userLabels;
 
-        var currentCard = function() {
+        var currentCard = function () {
             var cardByProject = {};
+
             cardByProject[ctrl.project.shortName] = [ctrl.card.id];
+
             return cardByProject;
         };
 
-        ctrl.addNewLabel = function(labelToAdd) {
+        ctrl.addNewLabel = function (labelToAdd) {
             var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
-            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate)
+
+            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate);
         };
 
-        ctrl.cancel = function() {
+        ctrl.cancel = function () {
             ctrl.onCancelAdd();
         };
-
     }
-})();
+}());

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -6,7 +6,7 @@
     components.component('lvgAdminSmtp', {
         templateUrl: 'app/components/admin/smtp/smtp.html',
         controller: ['$mdDialog', 'Admin', 'Notification', AdminSmtpController]
-    })
+    });
 
     function AdminSmtpController($mdDialog, Admin, Notification) {
         var ctrl = this;
@@ -17,7 +17,7 @@
 
         ctrl.$onInit = function init() {
             loadConfiguration();
-        }
+        };
 
         function loadConfiguration() {
             Admin.findByKey('SMTP_ENABLED').then(function (enabled) {
@@ -61,7 +61,6 @@
             $mdDialog.show({
                 templateUrl: 'app/components/admin/smtp/smtp-modal.html',
                 controller: function ($scope, configuration, User, Notification) {
-
                     User.currentCachedUser().then(function (user) {
                         if (user.emailNotification) {
                             $scope.to = user.email;
@@ -81,7 +80,7 @@
 
                     $scope.close = function () {
                         $mdDialog.hide();
-                    }
+                    };
                 },
                 resolve: {
                     configuration: function () {
@@ -90,7 +89,5 @@
                 }
             });
         }
-
-    };
-
-})();
+    }
+}());

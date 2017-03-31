@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     var module = angular.module('lavagna-setup');
 
 
@@ -9,8 +8,7 @@
     });
 
 
-    function SetupLoginCtrl ($window, Configuration, $http, $state) {
-
+    function SetupLoginCtrl($window, Configuration, $http, $state) {
         var ctrl = this;
 
         ctrl.ldap = Configuration.secondStep.ldap;
@@ -31,22 +29,23 @@
             $http.post('api/check-ldap/', angular.extend({}, ldap, usernameAndPwd)).then(function (r) {
                 ctrl.ldapCheckResult = r.data;
             });
-        }
+        };
 
         ctrl.countSelectedOauth = function () {
-
             var selectedCount = 0;
+
             for (var k in ctrl.oauth) {
                 if (ctrl.oauth[k].present) {
                     selectedCount++;
                 }
             }
-            return selectedCount;
-        }
 
-        ctrl.back = function() {
+            return selectedCount;
+        };
+
+        ctrl.back = function () {
             $state.go('first-step');
-        }
+        };
 
         ctrl.submitConfiguration = function () {
             var config = [];
@@ -56,7 +55,7 @@
 
             config.push({first: 'AUTHENTICATION_METHOD', second: JSON.stringify([ctrl.authMethod])});
 
-            //ugly D:
+            // ugly D:
             if (ctrl.authMethod == 'LDAP') {
                 loginType = ['ldap'];
                 config.push({first: 'LDAP_SERVER_URL', second: ctrl.ldap.serverUrl});
@@ -73,8 +72,9 @@
                 addProviderIfPresent(newOauthConf.providers, ctrl.oauth['google'], 'google') && loginType.push('oauth.google');
                 addProviderIfPresent(newOauthConf.providers, ctrl.oauth['twitter'], 'twitter') && loginType.push('oauth.twitter');
 
-                if(ctrl.oauthNewProvider.type) {
-                    var providerName = ctrl.oauthNewProvider.type+'-'+ctrl.oauthNewProvider.name;
+                if (ctrl.oauthNewProvider.type) {
+                    var providerName = ctrl.oauthNewProvider.type + '-' + ctrl.oauthNewProvider.name;
+
                     newOauthConf.providers.push({
                         provider: providerName,
                         apiKey: ctrl.oauthNewProvider.apiKey,
@@ -84,7 +84,7 @@
                         baseUrl: ctrl.oauthNewProvider.baseUrl
                     });
 
-                    loginType.push('oauth.'+providerName);
+                    loginType.push('oauth.' + providerName);
                 }
 
                 config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
@@ -107,16 +107,18 @@
     function addProviderIfPresent(list, conf, provider) {
         if (conf && conf.present) {
             list.push({provider: provider, apiKey: conf.apiKey, apiSecret: conf.apiSecret});
+
             return true;
         }
+
         return false;
     }
 
     function getOrigin(window) {
         if (!window.location.origin) {
-            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
         }
+
         return window.location.origin;
     }
-
-})();
+}());

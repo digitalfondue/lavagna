@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -19,13 +18,14 @@
         function loadColumnsDefinition() {
             Project.columnsDefinition(shortName).then(function (definitions) {
                 ctrl.columnsDefinition = definitions;
-                ctrl.columnDefinition = {}; //data-ng-model
+                ctrl.columnDefinition = {}; // data-ng-model
                 for (var d = 0; d < definitions.length; d++) {
                     var definition = definitions[d];
+
                     ctrl.columnDefinition[definition.id] = { color: $filter('parseIntColor')(definition.color) };
                 }
             });
-        };
+        }
 
         var unbind = EventBus.on('refreshProjectCache-' + shortName, function () {
             ProjectCache.project(shortName).then(function (p) {
@@ -33,28 +33,28 @@
             });
         });
 
-        ctrl.$onInit = function() {
+        ctrl.$onInit = function () {
             loadColumnsDefinition();
-        }
+        };
 
-        ctrl.$onDestroy = function() {
+        ctrl.$onDestroy = function () {
             unbind();
         };
 
         ctrl.update = function (project) {
-            Project.update(project).then(function() {
+            Project.update(project).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-home.update.success'}, false);
-            }, function(error) {
+            }, function (error) {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-home.update.error'}, false);
             });
         };
 
         ctrl.updateColumnDefinition = function (definition, color) {
-            Project.updateColumnDefinition(shortName, definition, $filter('parseHexColor')(color)).then(function() {
+            Project.updateColumnDefinition(shortName, definition, $filter('parseHexColor')(color)).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-columns-status.update.success'}, false);
-            } , function(error) {
+            }, function (error) {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-columns-status.update.error'}, false);
             }).then(loadColumnsDefinition);
         };
     }
-})();
+}());

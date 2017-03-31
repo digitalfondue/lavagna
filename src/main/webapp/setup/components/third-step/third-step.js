@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     var module = angular.module('lavagna-setup');
 
     module.component('setupThirdStep', {
@@ -9,13 +8,12 @@
 
 
     function SetupUserCtrl($window, Configuration, $http, $state) {
-
         var ctrl = this;
 
         ctrl.authMethod = Configuration.selectedAuthMethod;
         ctrl.loginType = Configuration.loginType;
 
-        if(ctrl.loginType.length === 1) {
+        if (ctrl.loginType.length === 1) {
             ctrl.accountProvider = ctrl.loginType[0];
         }
 
@@ -35,9 +33,8 @@
             $state.go('fourth-step');
         };
 
-        ctrl.back = function() {
+        ctrl.back = function () {
             $state.go('second-step');
-        }
+        };
     }
-
-})();
+}());

@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgCardActionLists', {
@@ -22,31 +22,33 @@
         ctrl.$onInit = function init() {
             loadActionLists();
 
-            //the /card-data has various card data related event that are pushed from the server that we must react
-            onDestroyStomp = StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
+            // the /card-data has various card data related event that are pushed from the server that we must react
+            onDestroyStomp = StompClient.subscribe('/event/card/' + card.id + '/card-data', function (e) {
                 var type = JSON.parse(e.body).type;
-                if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
+
+                if (type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
                     loadActionLists();
                 }
             });
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
             onDestroyStomp();
-        }
+        };
 
         function loadActionLists() {
-            Card.actionLists(card.id).then(function(actionLists) {
+            Card.actionLists(card.id).then(function (actionLists) {
                 ctrl.actionLists = [];
 
-                for(var i = 0; i < actionLists.lists.length; i++) {
+                for (var i = 0; i < actionLists.lists.length; i++) {
                     var actionList = actionLists.lists[i];
+
                     actionList.items = actionLists.items[actionList.id] || [];
                     actionList.items.referenceId = actionList.id;
                     ctrl.actionLists.push(actionList);
                 }
             });
-        };
+        }
 
 
         function dropActionLists(index, oldIndex) {
@@ -55,26 +57,24 @@
             ctrl.actionLists.splice(oldIndex, 1);
             ctrl.actionLists.splice(index, 0, item);
 
-            ctrl.actionLists.forEach(function(v, i) {
+            ctrl.actionLists.forEach(function (v, i) {
                 v.order = i;
             });
 
-            var ids = ctrl.actionLists.map(function(v) {
+            var ids = ctrl.actionLists.map(function (v) {
                 return v.id;
             });
 
-            Card.updateActionListOrder(card.id, ids).catch(function(err) {
+            Card.updateActionListOrder(card.id, ids).catch(function (err) {
                 ctrl.actionLists.splice(index, 1);
                 ctrl.actionLists.splice(oldIndex, 0, item);
             });
         }
 
         function addActionList(actionList) {
-            Card.addActionList(card.id, actionList.name).then(function() {
+            Card.addActionList(card.id, actionList.name).then(function () {
                 actionList.name = null;
             });
         }
-
     }
-
-})();
+}());

@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var directives = angular.module('lavagna.directives');
@@ -11,10 +10,11 @@
             link: function ($scope, $element, $attr, ctrl, $transclude) {
                 var expression = $parse($attr.toWatch);
                 var currentHash;
-                $scope.$watch(function() {return expression($scope)}, function(newValue) {
-                    if(currentHash !== newValue) {
+
+                $scope.$watch(function () { return expression($scope); }, function (newValue) {
+                    if (currentHash !== newValue) {
                         currentHash = newValue;
-                        $transclude($scope, function(transEl) {
+                        $transclude($scope, function (transEl) {
                             $element.empty();
                             $element.append(transEl);
                         });
@@ -23,4 +23,4 @@
             }
         };
     }]);
-})();
+}());

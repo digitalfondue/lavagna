@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -15,6 +14,7 @@
     function ProjectManageBoardsController(Project, Board, Notification) {
         var ctrl = this;
         //
+
         ctrl.update = update;
         ctrl.archive = archive;
         ctrl.unarchive = unarchive;
@@ -41,6 +41,7 @@
 
         function archive(ab) {
             var boardToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: true};
+
             Board.update(boardToUpdate).then(reloadBoards).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.archive.success'}, false);
             }, function (error) {
@@ -50,6 +51,7 @@
 
         function unarchive(ab) {
             var boardToUpdate = {shortName: ab.shortName, name: ab.name, description: ab.description, archived: false};
+
             Board.update(boardToUpdate).then(reloadBoards).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.unarchive.success'}, false);
             }, function (error) {
@@ -57,4 +59,4 @@
             });
         }
     }
-})();
+}());

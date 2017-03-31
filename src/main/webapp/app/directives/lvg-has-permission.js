@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var directives = angular.module('lavagna.directives');
@@ -67,4 +66,4 @@
             }
         };
     });
-})();
+}());

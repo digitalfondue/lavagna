@@ -37,17 +37,18 @@
             };
 
             ctrl.hasClosedMilestones = function () {
-                if(ctrl.project.metadata) {
+                if (ctrl.project.metadata) {
                     for (var i = 0; i < ctrl.project.metadata.milestones.length; i++) {
                         if (ctrl.project.metadata.milestones[i].status === 'CLOSED') {
                             return true;
                         }
                     }
                 }
+
                 return false;
             };
 
-            ctrl.setMilestone = function(milestone) {
+            ctrl.setMilestone = function (milestone) {
                 BulkOperations.setMilestone(ctrl.formatBulkRequest(), milestone);
             };
 
@@ -81,4 +82,4 @@
             };
         }
     });
-})();
+}());

@@ -1,5 +1,4 @@
 (function () {
-
     var components = angular.module('lavagna.components');
 
     components.component('lvgProjectMilestone', {
@@ -24,13 +23,13 @@
         ctrl.loadColumn = loadColumn;
 
         ctrl.reloadMilestone = function () {
-
             ctrl.statusColors = ctrl.projectMilestones.statusColors;
 
             var idToCheck = parseInt(ctrl.id);
 
             for (var i = 0; i < ctrl.projectMilestones.cardsByMilestone.length; i++) {
                 var milestone = ctrl.projectMilestones.cardsByMilestone[i];
+
                 if ((!isNaN(idToCheck) && milestone.labelListValue.id === idToCheck)) {
                     ctrl.milestone = milestone;
                     break;
@@ -58,6 +57,5 @@
             ctrl.projectMilestones.unselect();
             unregEvents();
         };
-
     }
-})();
+}());

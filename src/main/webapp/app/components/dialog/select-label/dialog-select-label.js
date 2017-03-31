@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     angular
@@ -8,7 +7,7 @@
             templateUrl: 'app/components/dialog/select-label/dialog-select-label.html',
             bindings: {
                 dialogTitle: '<',
-                buttonLabel:'<',
+                buttonLabel: '<',
                 action: '&', // $label, $value
                 withLabelValuePicker: '<',
                 projectName: '<'
@@ -26,7 +25,7 @@
         ctrl.$onInit = function init() {
             ctrl.selectedLabel = {};
 
-            Project.getMetadata(ctrl.projectName).then(function(res) {
+            Project.getMetadata(ctrl.projectName).then(function (res) {
                 ctrl.userLabels = $filter('orderBy')(res.userLabels, 'name');
             });
         };
@@ -40,5 +39,4 @@
             $mdDialog.hide();
         }
     }
-
-})();
+}());
