@@ -208,7 +208,7 @@
 
                     for (var i = 0; i < permissionsToCheck.length; i++) {
                         if (checkPermission(currentUser, permissionsToCheck[i].trim(), projectName)) {
-                            deferred.resolve();
+                            deferred.resolve(true);
                             return deferred.promise;
                         }
                     }
@@ -228,7 +228,7 @@
                     }
 
                     if (hasAllPermission) {
-                        deferred.resolve();
+                        deferred.resolve(true);
                     } else {
                         deferred.reject();
                     }
