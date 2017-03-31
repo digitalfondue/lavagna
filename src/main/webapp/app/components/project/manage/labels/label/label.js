@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -17,7 +17,7 @@
 
         var projectName = ctrl.project.shortName;
 
-        var emitRefreshEvent = function() {
+        var emitRefreshEvent = function () {
             EventBus.emit('refreshLabelCache-' + projectName);
         };
 
@@ -28,12 +28,13 @@
                   .targetEvent(ev)
                   .ok($translate.instant('button.yes'))
                   .cancel($translate.instant('button.no'));
-            $mdDialog.show(confirm).then(function() {
+
+            $mdDialog.show(confirm).then(function () {
                 return Label.remove(ctrl.label.id);
-            }).then(function() {
+            }).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.success'}, false);
-            }, function(error) {
-                if(error) {
+            }, function (error) {
+                if (error) {
                     Notification.addAutoAckNotification('error', {key: 'notification.project-manage-labels.remove.error'}, false);
                 }
             }).then(emitRefreshEvent);
@@ -48,29 +49,31 @@
             }
         };
 
-        var isLabelInUse = function() {
-            Label.useCount(ctrl.label.id).then(function(useCount) {
+        var isLabelInUse = function () {
+            Label.useCount(ctrl.label.id).then(function (useCount) {
                 ctrl.useCount = useCount;
             });
-        }
+        };
 
-        var loadLabelData = function() {
+        var loadLabelData = function () {
             loadListValues();
             isLabelInUse();
-        }
+        };
 
         loadLabelData();
 
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabelData);
-        ctrl.$onDestroy = function() {
+
+        ctrl.$onDestroy = function () {
             unbind();
-        }
+        };
 
         var updateLabel = function (values) {
             var labelColor = $filter('parseHexColor')(values.color);
-            Label.update(ctrl.label.id, {name: values.name, color: labelColor, type: ctrl.label.type}).then(function() {
+
+            Label.update(ctrl.label.id, {name: values.name, color: labelColor, type: ctrl.label.type}).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.success'}, false);
-            }, function(error) {
+            }, function (error) {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.error'}, false);
             }).then(emitRefreshEvent);
         };
@@ -98,21 +101,21 @@
                         Label.removeLabelListValue(labelListValueId);
                     };
 
-                    ctrl.updateCount = function(id) {
-                        Label.countLabelListValueUse(id).then(function(cnt) {
+                    ctrl.updateCount = function (id) {
+                        Label.countLabelListValueUse(id).then(function (cnt) {
                             ctrl.labelListValueUseCount[id] = cnt;
                         });
                     };
 
-                    ctrl.save = function(values) {
+                    ctrl.save = function (values) {
                         $mdDialog.hide(values);
-                    }
+                    };
 
-                    ctrl.closeDialog = function() {
+                    ctrl.closeDialog = function () {
                         $mdDialog.cancel();
                     };
 
-                    //handle refresh event
+                    // handle refresh event
                     var loadListValues = function () {
                         if (ctrl.label.type === 'LIST') {
                             LabelCache.findLabelListValues(ctrl.label.id).then(function (listValues) {
@@ -122,25 +125,25 @@
                     };
 
                     var unbind = EventBus.on('refreshLabelCache-' + projectName, loadListValues);
+
                     $scope.$on('$destroy', unbind);
                 },
                 controllerAs: 'ctrl',
                 resolve: {
-                    label: function() {
+                    label: function () {
                         return ctrl.label;
                     },
-                    labelListValues: function() {
+                    labelListValues: function () {
                         return ctrl.labelListValues;
                     },
-                    projectName: function() {
+                    projectName: function () {
                         return projectName;
                     }
                 },
                 fullscreen: true
-            }).then(function(values) {
+            }).then(function (values) {
                 return updateLabel(values);
             });
         };
-
-    };
-})();
+    }
+}());

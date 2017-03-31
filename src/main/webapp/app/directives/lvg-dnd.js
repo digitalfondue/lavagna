@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var directives = angular.module('lavagna.directives');
@@ -13,8 +12,7 @@
     directives.directive('lvgDnd', function ($parse, $log) {
         return {
             restrict: 'A',
-            link: function($scope, $element, attrs) {
-
+            link: function ($scope, $element, attrs) {
                 var opts = angular.extend({}, $parse(attrs.lvgDndOpts)($scope));
 
                 var parsedListExpression = $parse(attrs.lvgDnd);
@@ -23,18 +21,19 @@
                 var parsedDndEnd = $parse(attrs.lvgDndDragend);
 
                 opts.onStart = function onStart(event) {
-
-                    if(opts.draggingClass) {
+                    if (opts.draggingClass) {
                         $element.addClass(opts.draggingClass);
                     }
 
                     var modelList = getModelList();
-                    var ngRepeatList = getNgRepeatList(event.item)
-                    if(ngRepeatList) {
+                    var ngRepeatList = getNgRepeatList(event.item);
+
+                    if (ngRepeatList) {
                         var $item = ngRepeatList[event.oldIndex];
                         var $index = modelList.indexOf($item);
-                        $scope.$evalAsync(function() {
-                            parsedDndDragstart($scope, {'$item': $item, '$index' : $index});
+
+                        $scope.$evalAsync(function () {
+                            parsedDndDragstart($scope, {'$item': $item, '$index': $index});
                         });
                     } else {
                         $log.debug('no ng-repeat or incorrect expression in element', event.item);
@@ -50,19 +49,18 @@
                 };
 
                 opts.onEnd = function onEnd(event) {
-
-                    if(opts.draggingClass) {
+                    if (opts.draggingClass) {
                         $element.removeClass(opts.draggingClass);
                     }
 
-                    $scope.$evalAsync(function() {
+                    $scope.$evalAsync(function () {
                         parsedDndEnd($scope);
                     });
-                }
+                };
 
                 function onDrop(index, oldIndex) {
-                    $scope.$evalAsync(function() {
-                        parsedDndDrop($scope, {'$index' : index, '$oldIndex': oldIndex});
+                    $scope.$evalAsync(function () {
+                        parsedDndDrop($scope, {'$index': index, '$oldIndex': oldIndex});
                     });
                 }
 
@@ -71,27 +69,32 @@
                 }
 
                 function extractNgRepeatAttribute(item) {
-                    for(var i = 0; i < item.attributes.length;i++) {
-                        if(attrs.$normalize(item.attributes[i].name) === 'ngRepeat') {
+                    for (var i = 0; i < item.attributes.length;i++) {
+                        if (attrs.$normalize(item.attributes[i].name) === 'ngRepeat') {
                             return item.attributes[i].value;
                         }
                     }
+
                     return false;
                 }
 
-                //the list used by ng-repeat (could be filtered)
+                // the list used by ng-repeat (could be filtered)
                 function getNgRepeatList(item) {
                     var ngRepeatExpression = extractNgRepeatAttribute(item);
-                    if(!ngRepeatExpression) {
+
+                    if (!ngRepeatExpression) {
                         return false;
                     }
 
                     var match = ngRepeatExpression.match(ngRepeatRegex);
-                    if(!match) {
+
+                    if (!match) {
                         return false;
                     }
 
                     var listAndFilterExpression = match[2];
+
+
                     return $parse(listAndFilterExpression)($scope);
                 }
 
@@ -99,8 +102,8 @@
 
                 $scope.$on('$destroy', function onDestroySortable() {
                     sortableInstance.destroy();
-                })
+                });
             }
         };
     });
-})();
+}());

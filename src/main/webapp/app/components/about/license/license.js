@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgAboutLicense', {
@@ -11,10 +11,9 @@
         var ctrl = this;
 
         ctrl.$onInit = function init() {
-            $http.get('about/LICENSE-GPLv3.txt').then(function(res) {
-                ctrl.license=res.data;
+            $http.get('about/LICENSE-GPLv3.txt').then(function (res) {
+                ctrl.license = res.data;
             });
-        }
+        };
     }
-
-})();
+}());

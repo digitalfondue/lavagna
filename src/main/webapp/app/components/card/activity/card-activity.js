@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgCardActivity', {
@@ -23,8 +23,8 @@
 
         var ITEMS_INCREMENT = 10;
 
-        function activityFilter (activity, index, activities) {
-            if(!angular.isDefined(ctrl.activityFilterValue)) {
+        function activityFilter(activity, index, activities) {
+            if (!angular.isDefined(ctrl.activityFilterValue)) {
                 return true;
             }
 
@@ -40,7 +40,7 @@
         };
 
         ctrl.loadMore = function () {
-            if(!ctrl.hasMore()) {
+            if (!ctrl.hasMore()) {
                 return;
             }
 
@@ -63,19 +63,20 @@
             loadData({comments: loadComments(), activities: loadActivity()});
 
 
-            //the /card-data has various card data related event that are pushed from the server that we must react
-            stompSubscription = StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
+            // the /card-data has various card data related event that are pushed from the server that we must react
+            stompSubscription = StompClient.subscribe('/event/card/' + card.id + '/card-data', function (e) {
                 var type = JSON.parse(e.body).type;
 
                 var promisesObject = {activities: loadActivity()};
-                if(type.match(/COMMENT/g) !== null) {
+
+                if (type.match(/COMMENT/g) !== null) {
                     promisesObject.comments = loadComments();
                 }
                 loadData(promisesObject);
             });
 
             // reload activities when the card is moved/renamed
-            unbindCardCache = EventBus.on('refreshCardCache-' + card.id, function() {
+            unbindCardCache = EventBus.on('refreshCardCache-' + card.id, function () {
                 loadData({activities: loadActivity()});
             });
         };
@@ -94,37 +95,37 @@
         }
 
         function loadData(promisesObject) {
-            $q.all(promisesObject).then(function(result) {
-                if(result.comments) {
+            $q.all(promisesObject).then(function (result) {
+                if (result.comments) {
                     NUMBER_OF_COMMENTS = result.comments.length;
                     ctrl.hasComments = NUMBER_OF_COMMENTS > 0;
                     ctrl.comments = {};
-                    angular.forEach(result.comments, function(comment) {
+                    angular.forEach(result.comments, function (comment) {
                         ctrl.comments[comment.id] = comment;
                     });
                 }
-                if(result.activities) {
+                if (result.activities) {
                     NUMBER_OF_ACTIVITIES = result.activities.length;
                     ctrl.activities = [];
-                    angular.forEach(result.activities, function(activity) {
+                    angular.forEach(result.activities, function (activity) {
                         activity.cardEvent = activity.event === 'COMMENT_CREATE' && ctrl.comments[activity.dataId] !== undefined ?
                             'COMMENT' :
                             activity.event;
                         ctrl.activities.push(activity);
                     });
                 }
-            })
+            });
         }
 
         function addComment(comment) {
-            Card.addComment(card.id, comment).then(function() {
+            Card.addComment(card.id, comment).then(function () {
                 comment.content = null;
 
                 // update the number of rendered comments when going above threshold
-                if(ctrl.renderedItems <= NUMBER_OF_COMMENTS) {
+                if (ctrl.renderedItems <= NUMBER_OF_COMMENTS) {
                     ctrl.loadMore();
                 }
             });
         }
     }
-})();
+}());

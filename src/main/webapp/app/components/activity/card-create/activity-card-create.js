@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgActivityCardCreate', {
@@ -12,11 +12,10 @@
     function ActivityCardCreateController(BoardCache) {
         var ctrl = this;
 
-        ctrl.$onInit = function() {
-            BoardCache.column(ctrl.event.columnId).then(function(column) {
+        ctrl.$onInit = function () {
+            BoardCache.column(ctrl.event.columnId).then(function (column) {
                 ctrl.columnName = column.columnName;
             });
-        }
-
+        };
     }
-})();
+}());

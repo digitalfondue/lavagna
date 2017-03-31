@@ -1,11 +1,11 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
 
     components.component('lvgSidebarContent', {
         templateUrl: 'app/components/sidebar-content/sidebar-content.html',
-        controller: function($window, $http, User, EventBus, StompClient) {
+        controller: function ($window, $http, User, EventBus, StompClient) {
             var ctrl = this;
 
             var v;
@@ -14,7 +14,7 @@
             }};
 
             var updateUser = function () {
-                return User.currentCachedUser().then(function(user) {
+                return User.currentCachedUser().then(function (user) {
                     ctrl.user = user;
 
                     return user;
@@ -43,7 +43,6 @@
                     });
                 });
             };
-
         }
     });
-})();
+}());

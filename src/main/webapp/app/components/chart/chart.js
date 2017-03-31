@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -7,25 +6,25 @@
     components.component('lvgChart', {
         template: '<canvas></canvas>',
         bindings: {
-            data: "<",
-            options: "<",
-            type: "@",
-            width: "@",
-            height: "@"
+            data: '<',
+            options: '<',
+            type: '@',
+            width: '@',
+            height: '@'
         },
         controller: ['$element', ChartController]
     });
 
 
     function ChartController($element) {
-
         var ctrl = this;
 
-        var chartInstance = undefined;
+        var chartInstance;
 
         ctrl.$onChanges = function onChanges(changes) {
-            if(changes.data || changes.options) {
+            if (changes.data || changes.options) {
                 var value = ctrl.data;
+
                 if (value === undefined) {
                     return;
                 }
@@ -38,25 +37,25 @@
 
                 canvas.width = ctrl.width || baseWidth;
                 canvas.height = ctrl.height || baseHeight;
-                context.canvas.style.maxHeight = canvas.height + "px";
+                context.canvas.style.maxHeight = canvas.height + 'px';
 
-                if(chartInstance !== undefined) {
+                if (chartInstance !== undefined) {
                     chartInstance.destroy();
                     chartInstance = undefined;
                 }
 
                 var chart = new Chart(context);
-                var chartType = ctrl.type || "Line";
+                var chartType = ctrl.type || 'Line';
+
                 chartInstance = chart[chartType](ctrl.data, ctrl.options);
             }
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
-            if(chartInstance) {
+            if (chartInstance) {
                 chartInstance.destroy();
                 chartInstance = undefined;
             }
-        }
+        };
     }
-
-})();
+}());

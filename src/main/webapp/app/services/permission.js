@@ -1,20 +1,20 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
 
     var extractData = function (data) {
-        return data.data
+        return data.data;
     };
 
     services.factory('Permission', function ($http) {
-
-        //TODO: cleanup, it's ugly :D
+        // TODO: cleanup, it's ugly :D
         function permissionService(projectName) {
             var project = function () {
-                return projectName !== undefined ? ('project/' + projectName + '/') : ''
+                return projectName !== undefined ? ('project/' + projectName + '/') : '';
             };
+
+
             return {
                 findAllRolesAndRelatedPermissions: function () {
                     return $http.get('api/' + project() + 'role').then(extractData);
@@ -51,10 +51,11 @@
                 findUserRoles: function (userId) {
                     return $http.get('api/user-roles/' + userId + '/').then(extractData);
                 }
-            }
+            };
         }
 
         var s = permissionService();
+
         s.forProject = permissionService;
 
         s.toggleSearchPermissionForAnonymousUsers = function (value) {
@@ -63,4 +64,4 @@
 
         return s;
     });
-})();
+}());

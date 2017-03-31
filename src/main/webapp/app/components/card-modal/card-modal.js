@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -17,21 +16,20 @@
     });
 
     function CardModalController($document, $state, $window) {
-
         var ctrl = this;
         var body = $document[0].body;
         var backDrop;
         var container;
 
-        function close () {
+        function close() {
             $state.go('^');
         }
 
         function escapeHandler($event) {
             // handle the case when the calendar is open too
-            if($event.target &&
+            if ($event.target &&
                 $event.target.parentElement &&
-                $event.target.parentElement.querySelectorAll("[class^=md-calendar]").length > 0 &&
+                $event.target.parentElement.querySelectorAll('[class^=md-calendar]').length > 0 &&
                 !$window.document.body.contains($event.target)) {
                 return;
             }
@@ -44,7 +42,7 @@
         }
 
         function closeHandler($event) {
-            if($event.target == container) {
+            if ($event.target == container) {
                 close();
             }
         }
@@ -67,11 +65,10 @@
             window.document.addEventListener('keydown', escapeHandler);
         };
 
-        ctrl.$onDestroy = function() {
+        ctrl.$onDestroy = function () {
             cleanup();
         };
 
         ctrl.close = close;
     }
-
-})();
+}());

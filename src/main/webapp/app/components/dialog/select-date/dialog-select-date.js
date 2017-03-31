@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     angular
@@ -24,9 +23,8 @@
         }
 
         function ok(date) {
-            ctrl.action({'$date':date});
+            ctrl.action({'$date': date});
             $mdDialog.hide();
         }
     }
-
-})();
+}());

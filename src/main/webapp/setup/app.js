@@ -24,11 +24,14 @@
 
         $httpProvider.interceptors.push(function () {
             var csrfToken = null;
+
+
             return {
                 'request': function (config) {
                     if (csrfToken) {
                         config.headers['x-csrf-token'] = csrfToken;
                     }
+
                     return config;
                 },
                 'response': function (response) {
@@ -36,6 +39,7 @@
                         csrfToken = response.headers()['x-csrf-token'];
                         window.csrfToken = csrfToken;
                     }
+
                     return response;
                 }
             };
@@ -44,13 +48,13 @@
 
     module.service('Configuration', function () {
         var conf = {
-            toSave : {first: undefined, second: undefined, user: undefined},
+            toSave: {first: undefined, second: undefined, user: undefined},
             secondStep: {
                 ldap: {},
                 oauth: {},
                 oauthProviders: ['bitbucket', 'gitlab', 'github', 'google', 'twitter'],
-                oauthCustomizable : ['gitlab'],
-                oauthNewProvider : {}
+                oauthCustomizable: ['gitlab'],
+                oauthNewProvider: {}
             }
         };
 
@@ -62,7 +66,7 @@
     });
 
     module.run(['Configuration', '$state', function (Configuration, $state) {
-        //redirect to first page if the user is bypassing it (as we are using the rootscope for propagating the values)
+        // redirect to first page if the user is bypassing it (as we are using the rootscope for propagating the values)
         if (!Configuration.fromFirstStep) {
             $state.go('first-step');
         }
@@ -74,7 +78,8 @@
             if (text === undefined) {
                 return null;
             }
-            return text.replace(/./gi, "*");
+
+            return text.replace(/./gi, '*');
         };
     }]);
 
@@ -85,8 +90,8 @@
             scope: {
                 modelValueToMatch: '=lvgMatch'
             },
-            link: function($scope, $element, $attrs, ngModel) {
-                ngModel.$validators.lvgMatch = function(ngModelValue, ngViewValue) {
+            link: function ($scope, $element, $attrs, ngModel) {
+                ngModel.$validators.lvgMatch = function (ngModelValue, ngViewValue) {
                     return ngModelValue === $scope.modelValueToMatch;
                 };
 
@@ -96,8 +101,6 @@
 
                 $scope.$on('$destroy', unregister);
             }
-        }
+        };
     });
-
-
-})();
+}());

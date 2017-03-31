@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     angular.module('lavagna.components').component('lvgSearchControls', {
@@ -14,9 +13,10 @@
             project: '<',
             count: '<'
         },
-        controller: function(BulkOperationModal) {
+        controller: function (BulkOperationModal) {
             var ctrl = this;
+
             ctrl.bulkOperationModal = BulkOperationModal;
         }
     });
-})();
+}());

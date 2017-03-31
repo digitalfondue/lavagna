@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
 
@@ -15,27 +14,29 @@
             var ctrl = this;
 
 
-            ctrl.searchCard = function(text) {
+            ctrl.searchCard = function (text) {
                 var params = {term: text.trim()};
+
                 params.projectName = ctrl.projectName;
 
                 return Search.autoCompleteCard(params).then(function (cards) {
-                    angular.forEach(cards, function(card) {
-                        card.label = card.boardShortName + "-" + card.sequence + " " + card.name;
+                    angular.forEach(cards, function (card) {
+                        card.label = card.boardShortName + '-' + card.sequence + ' ' + card.name;
                     });
+
                     return cards;
                 });
             };
 
-            ctrl.searchUser = function(text) {
+            ctrl.searchUser = function (text) {
                 return User.findUsers(text.trim()).then(function (res) {
-                    angular.forEach(res, function(user) {
+                    angular.forEach(res, function (user) {
                         user.label = User.formatName(user);
                     });
+
                     return res;
                 });
             };
-
 
 
             $scope.$watch('$ctrl.label', function () {
@@ -47,11 +48,8 @@
                     });
                 }
             });
-
         }
     });
-
-})();
-
+}());
 
 

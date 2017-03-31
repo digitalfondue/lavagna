@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
@@ -32,7 +31,7 @@
                 }).then(extractData);
             },
 
-            //TODO column: move to another service
+            // TODO column: move to another service
 
             column: function (id) {
                 return $http.get('api/column/' + id).then(extractData);
@@ -60,13 +59,13 @@
                     orderedColumnId).then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             renameColumn: function (shortName, columnId, newName) {
                 return $http.post(
                     'api/column/' + columnId + '/rename/' + newName).then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             redefineColumn: function (shortName, columnId, definition) {
                 return $http.post(
                     'api/column/' + columnId + '/redefine/' + definition).then(extractData);
@@ -76,12 +75,12 @@
                 return $http.get('api/board/' + shortName + '/cards-in/' + location + '/' + page).then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             createCard: function (shortName, columnId, createCard) {
                 return $http.post('api/column/' + columnId + '/card', createCard).then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             createCardFromTop: function (shortName, columnId, createCard) {
                 return $http.post('api/column/' + columnId + '/card-top', createCard).then(extractData);
             },
@@ -96,21 +95,20 @@
                     .then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             updateCardOrder: function (shortName, columnId, cardIds) {
                 return $http.post('api/column/' + columnId + '/order', cardIds).then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             taskStatistics: function (shortName) {
                 return $http.get('api/board/' + shortName + '/task-statistics').then(extractData);
             },
 
-            //FIXME remove shortName parameter
+            // FIXME remove shortName parameter
             statistics: function (shortName, days) {
                 return $http.get('api/board/' + shortName + '/statistics/' + days).then(extractData);
             }
         };
     });
-
-})();
+}());

@@ -1,6 +1,5 @@
 (function () {
-
-    //FIXME REFACTOR
+    // FIXME REFACTOR
     'use strict';
 
 
@@ -9,18 +8,17 @@
     function labelValueMatcher(criteria, environment) {
         if (criteria.value === undefined || criteria.value === null) {
             return function () {
-                return true
+                return true;
             };
         }
 
         if (criteria.value.type === 'STRING') {
-
             var valueInt = parseInt(criteria.value.value, 10);
             var valueIsNaN = isNaN(valueInt);
 
             var dateMatcherFn = function () {
                 return true;
-            }
+            };
 
             try {
                 dateMatcherFn = dateMatcher(criteria);
@@ -45,10 +43,10 @@
                 } else if (label.labelType === 'LIST') {
                     return environment.labelListValues[criteria.value.value] && environment.labelListValues[criteria.value.value][label.labelId] === label.labelValueList;
                 }
+
                 return true;
             };
         } else if (criteria.value.type === 'DATE_IDENTIFIER') {
-
             var dateMatcherFn = dateMatcher(criteria);
 
             return function (label) {
@@ -60,13 +58,15 @@
             };
         } else if (criteria.value.type === 'CURRENT_USER' && criteria.value.value === 'me') {
             var currentUserId = environment.currentUserId;
+
+
             return function (label) {
                 if (label.labelType === 'USER') {
                     return label.value.valueUser === currentUserId;
                 } else {
                     return true;
                 }
-            }
+            };
         }
     }
 
@@ -80,12 +80,15 @@
 
     function dateInRange(d, r1, r2) {
         d.setHours(0, 0, 0, 0);
+
         return d >= r1 && d <= r2;
     }
 
     function dateInDays(d1, d2, days) {
         var timeDiff = Math.abs(d1.getTime() - d2.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
         return diffDays <= days;
     }
 
@@ -94,40 +97,53 @@
             return {
                 late: function () {
                     var now = new Date();
+
                     now.setHours(0, 0, 0, 0);
+
                     return function (date) {
                         date.setHours(0, 0, 0, 0);
+
                         return now > date;
-                    }
+                    };
                 },
                 today: function () {
                     var today = new Date();
+
+
                     return function (date) {
                         return sameDay(today, date);
                     };
                 },
                 yesterday: function () {
                     var yesterday = new Date();
+
                     yesterday.setDate(yesterday.getDate() - 1);
+
                     return function (date) {
                         return sameDay(yesterday, date);
                     };
                 },
                 tomorrow: function () {
                     var tomorrow = new Date();
+
                     tomorrow.setDate(tomorrow.getDate() + 1);
+
                     return function (date) {
                         return sameDay(tomorrow, date);
                     };
                 },
                 'this week': function () {
                     var today = new Date();
+
+
                     return function (date) {
                         return moment(today).isSame(date, 'week');
                     };
                 },
                 'this month': function () {
                     var today = new Date();
+
+
                     return function (date) {
                         return sameMonth(today, date);
                     };
@@ -135,12 +151,16 @@
                 'next week': function () {
                     return function (date) {
                         var nextWeek = moment().add(1, 'week');
+
+
                         return nextWeek.isSame(date, 'week');
                     };
                 },
                 'next month': function () {
                     var today = new Date();
                     var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
+
                     return function (date) {
                         return sameMonth(nextMonth, date);
                     };
@@ -148,12 +168,16 @@
                 'previous week': function () {
                     return function (date) {
                         var prevWeek = moment().add(-1, 'week');
+
+
                         return prevWeek.isSame(date, 'week');
                     };
                 },
                 'previous month': function () {
                     var today = new Date();
                     var previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+
                     return function (date) {
                         return sameMonth(previousMonth, date);
                     };
@@ -171,25 +195,31 @@
             }[criteria.value.value]();
         } else {
             var dateString = criteria.value.value;
-            var splitted = dateString.split("..")
-            //FIXME: use user date parsing pref -> this is unambigous, but we must support MDY format too
+            var splitted = dateString.split('..');
+            // FIXME: use user date parsing pref -> this is unambigous, but we must support MDY format too
             var acceptedFormat = ['D.M.YYYY', 'D-M-YYYY', 'D/M/YYYY', 'YYYY-M-D', 'YYYY.M.D', 'YYYY/M/D'];
 
-            //string parser. Must support the following syntax: date -> for single date, date1..date2 -> for interval
+            // string parser. Must support the following syntax: date -> for single date, date1..date2 -> for interval
             if (splitted.length === 2) {
                 var parsed1 = moment(splitted[0].trim(), acceptedFormat, true);
                 var parsed2 = moment(splitted[1].trim(), acceptedFormat, true);
+
                 if (parsed1.isValid() && parsed2.isValid()) {
                     var r1 = parsed1.toDate();
                     var r2 = parsed2.toDate();
+
+
                     return function (date) {
                         return dateInRange(date, r1, r2);
-                    }
+                    };
                 }
             } else {
                 var parsedDate = moment(dateString.trim(), acceptedFormat, true);
+
                 if (parsedDate.isValid()) {
                     var d = parsedDate.toDate();
+
+
                     return function (date) {
                         return sameDay(d, date);
                     };
@@ -200,36 +230,37 @@
     }
 
     function buildMatcher(criteria, environment) {
-
         if (criteria.type === 'USER_LABEL') {
             return function (card, labels) {
-                var nameMatcher = criteria.name
+                var nameMatcher = criteria.name;
                 var value = criteria.value;
                 var labelValFn = labelValueMatcher(criteria, environment);
 
                 for (var i = 0; i < labels.length; i++) {
                     var label = labels[i];
+
                     if (label.labelName.indexOf(nameMatcher, 0) === 0 && labelValFn(label) && label.labelDomain === 'USER') {
                         return true;
                     }
                 }
+
                 return false;
             };
         } else if (criteria.type === 'DUE_DATE') {
-
             var matchingDateFunction = dateMatcher(criteria);
 
             return function (card, labels) {
                 for (var i = 0; i < labels.length; i++) {
                     var label = labels[i];
+
                     if (label.labelName === 'DUE_DATE' && label.labelDomain === 'SYSTEM') {
                         return matchingDateFunction(moment(label.value.valueTimestamp).toDate());
                     }
                 }
+
                 return false;
             };
         } else if (criteria.type === 'CREATED') {
-
             var matchingDateFunction = dateMatcher(criteria);
 
             return function (card) {
@@ -240,26 +271,28 @@
                 return function (card, labels) {
                     for (var i = 0; i < labels.length; i++) {
                         var label = labels[i];
+
                         if (label.labelName === 'MILESTONE' && label.labelDomain === 'SYSTEM') {
                             return false;
                         }
                     }
+
                     return true;
-                }
+                };
             } else {
                 return function (card, labels) {
                     for (var i = 0; i < labels.length; i++) {
                         var label = labels[i];
+
                         if (label.labelName === 'MILESTONE' && label.labelDomain === 'SYSTEM') {
                             return environment.labelListValues[criteria.value.value] && environment.labelListValues[criteria.value.value][label.labelId] === label.labelValueList;
                         }
                     }
+
                     return false;
                 };
             }
-
         } else if ((criteria.type === 'ASSIGNED' || criteria.type === 'WATCHED_BY')) {
-
             var labelName = criteria.type;
 
             //
@@ -267,12 +300,14 @@
                 return function (card, labels) {
                     for (var i = 0; i < labels.length; i++) {
                         var label = labels[i];
+
                         if (label.labelName === labelName && label.labelDomain === 'SYSTEM') {
                             return false;
                         }
                     }
+
                     return true;
-                }
+                };
             } else {
                 var currentUserId = environment.currentUserId;
 
@@ -288,12 +323,15 @@
 
                 return function (card, labels) {
                     var ret = false;
+
                     for (var i = 0; i < labels.length; i++) {
                         var label = labels[i];
+
                         if (label.labelName === labelName && label.labelDomain === 'SYSTEM') {
                             ret = ret || matchingFunction(label);
                         }
                     }
+
                     return ret;
                 };
             }
@@ -319,9 +357,10 @@
             var matchUserFn = function (card) {
                 return environment.users[criteria.value.value] === card.lastUpdateUserId;
             };
+
+
             return criteria.value.type === 'CURRENT_USER' ? matchCurrentUserFn : matchUserFn;
         } else if (criteria.type === 'UPDATED') {
-
             var matchingDateFunction = dateMatcher(criteria);
 
             return function (card) {
@@ -335,13 +374,15 @@
             return function (card, label, columns) {
                 var columnIdToMatch = card.columnId;
                 var statusToMatch = criteria.value.value.toUpperCase();
+
                 for (var i = 0; i < columns.length; i++) {
                     if (columns[i].id === columnIdToMatch && columns[i].status === statusToMatch) {
                         return true;
                     }
                 }
+
                 return false;
-            }
+            };
         }
 
         //
@@ -356,29 +397,32 @@
 
     function validCardFormat(value) {
         var r = value.split('-');
+
+
         return r.length > 1 && isFinite(parseInt(r[r.length - 1], 10));
     }
 
-    //return promise
+    // return promise
     function buildSearchFilter(criteria, columns, currentUserId, $http, $q) {
-
         if (criteria === undefined) {
             var deferred = $q.defer();
+
             deferred.resolve(function () {
                 return true;
-            })
+            });
+
             return deferred.promise;
         } else {
             var env = {currentUserId: currentUserId, usersToSearch: {}, cardsToSearch: {}, labelListValue: {}};
             var matchers = [];
+
             for (var i = 0; i < criteria.length; i++) {
                 var crit = criteria[i];
 
                 //
                 if ((crit.value && crit.value.type === 'STRING') && (['ASSIGNED', 'CREATED_BY', 'WATCHED_BY', 'UPDATED_BY'].indexOf(crit.type) >= 0 ) && validUserFormat(crit.value.value)) {
                     env.usersToSearch[crit.value.value] = true;
-                }
-                else if (crit.value && crit.value.type === 'STRING' && crit.type === 'USER_LABEL') {
+                } else if (crit.value && crit.value.type === 'STRING' && crit.type === 'USER_LABEL') {
                     if (validUserFormat(crit.value.value)) {
                         env.usersToSearch[crit.value.value] = true;
                     }
@@ -405,7 +449,9 @@
                     });
                 } else {
                     var deferred = $q.defer();
+
                     deferred.resolve({});
+
                     return deferred.promise;
                 }
             };
@@ -415,16 +461,17 @@
             var labelListValues = searchMapping(labelListValueToSearch, 'api/search/label-list-value-mapping');
 
             return $q.all([cards, users, labelListValues]).then(function (res) {
-
                 env.cards = res[0];
                 env.users = res[1];
                 env.labelListValues = res[2];
 
                 return function (card) {
                     var matched = true;
+
                     for (var i = 0; i < matchers.length && matched; i++) {
                         matched = matched && matchers[i](card, card.labels, columns);
                     }
+
                     return matched;
                 };
             });
@@ -432,22 +479,24 @@
     }
 
     var extractData = function (data) {
-        return data.data
+        return data.data;
     };
 
     angular.module('lavagna.services').factory('Search', function ($http, $q, $log) {
         return {
             buildSearchFilter: function (criteria, columns, currentUserId) {
-                return buildSearchFilter(criteria, columns, currentUserId, $http, $q)
+                return buildSearchFilter(criteria, columns, currentUserId, $http, $q);
             },
             parse: function (v) {
                 var filtered = [];
                 var res = parser.parse(v);
+
                 for (var i = 0; i < res.length; i++) {
                     if (res[i].type !== 'WHITE_SPACE') {
                         filtered.push(res[i]);
                     }
                 }
+
                 return filtered;
             },
             autoCompleteCard: function (params) {
@@ -455,6 +504,4 @@
             }
         };
     });
-
-
-})();
+}());

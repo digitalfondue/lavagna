@@ -40,9 +40,9 @@
                 .then(function (res) {
                     ctrl.permissions = res;
                     ctrl.visibilityCount = 0;
-                    //kinda ugly, but it's the only way to ensure we are sure that all the buttons are rendered
-                    //we keep track of the amount of buttons, when the button are visibile, they will call a function
-                    //that decrease the count
+                    // kinda ugly, but it's the only way to ensure we are sure that all the buttons are rendered
+                    // we keep track of the amount of buttons, when the button are visibile, they will call a function
+                    // that decrease the count
                     if (res.MOVE_CARD) {
                         ctrl.visibilityCount += 4;
                     }
@@ -53,23 +53,25 @@
                         ctrl.visibilityCount += 2;
                     }
                 });
-        }
+        };
         //
 
         ctrl.$onChanges = function (changes) {
             if (changes.visibility.currentValue) {
                 focusOnFirstButton();
             }
-        }
+        };
 
 
         var cardByProject = {};
+
         cardByProject[ctrl.card.projectShortName] = [ctrl.card.id];
         var currentUserId = {id: ctrl.currentUserId};
 
         function focusOnFirstButton() {
             if (ctrl.visibilityCount == 0 && ctrl.visibility) {
                 var firstButton = $element.find('button')[0];
+
                 if (firstButton) {
                     firstButton.focus();
                 }
@@ -78,7 +80,6 @@
 
         function buttonVisibility() {
             ctrl.visibilityCount -= 1;
-
         }
 
         function watchCard() {
@@ -104,7 +105,7 @@
         function loadColumns() {
             Board.columnsByLocation(ctrl.card.boardShortName, 'BOARD').then(function (columns) {
                 ctrl.moveColumns = $filter('filter')(columns, function (col) {
-                    return col.id != ctrl.card.columnId
+                    return col.id != ctrl.card.columnId;
                 });
             });
         }
@@ -114,9 +115,11 @@
                 ctrl.projectColumns = columns;
                 var cols = [[]];
                 var orderedColumns = $filter('orderBy')(columns, ['board', 'columnName']);
+
                 for (var i = 0; i < orderedColumns.length; i++) {
                     var col = orderedColumns[i];
                     var latestSegment = cols.length - 1;
+
                     if (cols[latestSegment] && cols[latestSegment][0] && cols[latestSegment][0].board !== col.board) {
                         cols.push([]);
                     }
@@ -129,14 +132,16 @@
         function moveToColumn(toColumn) {
             Card.findByColumn(toColumn.id).then(function (cards) {
                 var ids = [];
+
                 for (var i = 0; i < cards.length; i++) {
                     ids.push(cards[i].id);
                 }
                 ids.push(ctrl.card.id);
+
                 return ids;
             }).then(function (ids) {
                 Board.moveCardToColumn(ctrl.card.id, ctrl.card.columnId, toColumn.id, {newContainer: ids});
-            }).then(close)
+            }).then(close);
         }
 
 
@@ -152,11 +157,12 @@
             ctrl.mdPanelRef.close();
         }
 
-        //navigate up/down in the menu
+        // navigate up/down in the menu
         function handleKey(event) {
             if (event.keyCode === 40 || event.keyCode === 38) {
                 var currentNode = document.activeElement.parentNode;
                 var attrName = event.keyCode === 40 ? 'nextElementSibling' : 'previousElementSibling';
+
                 while (currentNode[attrName] != null) {
                     currentNode = currentNode[attrName];
                     if (!currentNode.classList.contains('lavagna-hide')) {
@@ -166,6 +172,5 @@
                 currentNode.children[0].focus();
             }
         }
-    };
-
-})();
+    }
+}());

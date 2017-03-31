@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var directives = angular.module('lavagna.directives');
@@ -11,8 +10,8 @@
             scope: {
                 modelValueToMatch: '=lvgMatch'
             },
-            link: function($scope, $element, $attrs, ngModel) {
-                ngModel.$validators.lvgMatch = function(ngModelValue, ngViewValue) {
+            link: function ($scope, $element, $attrs, ngModel) {
+                ngModel.$validators.lvgMatch = function (ngModelValue, ngViewValue) {
                     return ngModelValue === $scope.modelValueToMatch;
                 };
 
@@ -22,7 +21,6 @@
 
                 $scope.$on('$destroy', unregister);
             }
-        }
+        };
     });
-
-})();
+}());

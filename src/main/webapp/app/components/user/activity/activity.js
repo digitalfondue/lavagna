@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -21,7 +21,7 @@
             ctrl.page = 0;
 
             loadUser(ctrl.profile);
-        }
+        };
 
 
         ctrl.loadFor = loadFor;
@@ -33,18 +33,17 @@
                     return loadUser(profile);
                 })
                 .then(function () {
-                    ctrl.page = page
+                    ctrl.page = page;
                 });
-        };
+        }
 
 
-        function loadUser (profile) {
+        function loadUser(profile) {
             ctrl.profile = profile;
             ctrl.user = profile.user;
             ctrl.hasMore = profile.latestActivityByPage.length > 20;
             ctrl.activeProjects = profile.activeProjects;
             ctrl.latestActivity20 = profile.latestActivityByPage.slice(0, 20);
-        };
+        }
     }
-
-})();
+}());

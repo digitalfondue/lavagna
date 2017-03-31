@@ -1,19 +1,17 @@
-(function() {
-
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgStatsPanelProject', {
-        template : '<lvg-stats-panel-simple item="$ctrl.project" stats-fetcher="$ctrl.statsFetcher()">' +
+        template: '<lvg-stats-panel-simple item="$ctrl.project" stats-fetcher="$ctrl.statsFetcher()">' +
                        '<a data-ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{$ctrl.project.shortName}} - {{$ctrl.project.name}}</a>' +
                    '</lvg-stats-panel-simple>',
-        bindings : {
+        bindings: {
             project: '<'
         },
-        controller : ['Project', StatsPanelProjectController]
+        controller: ['Project', StatsPanelProjectController]
     });
 
     function StatsPanelProjectController(Project) {
-
         var ctrl = this;
 
         ctrl.statsFetcher = statsFetcher;
@@ -22,5 +20,4 @@
             return Project.taskStatistics(ctrl.project.shortName);
         }
     }
-
-})();
+}());

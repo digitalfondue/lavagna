@@ -1,5 +1,4 @@
-(function() {
-
+(function () {
     'use strict';
 
     angular
@@ -31,12 +30,12 @@
 
         function searchUser(text) {
             return User.findUsers(text.trim()).then(function (res) {
-                angular.forEach(res, function(user) {
+                angular.forEach(res, function (user) {
                     user.label = User.formatName(user);
                 });
+
                 return res;
             });
         }
     }
-
-})();
+}());

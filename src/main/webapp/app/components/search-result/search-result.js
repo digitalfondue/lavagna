@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     angular.module('lavagna.components').component('lvgSearchResult', {
@@ -14,32 +13,33 @@
             selected: '=',
             user: '<',
             totalPages: '<',
-            countPerPage:'<',
-            currentPage:'<'
+            countPerPage: '<',
+            currentPage: '<'
         },
-        controller: function(Project) {
+        controller: function (Project) {
             var ctrl = this;
 
             var projects = {};
+
             ctrl.metadatas = {};
 
-            ctrl.$onChanges = function(changesObj) {
-                if(ctrl.found && ctrl.found.length) {
-                    for(var i = 0; i < ctrl.found.length;i++) {
+            ctrl.$onChanges = function (changesObj) {
+                if (ctrl.found && ctrl.found.length) {
+                    for (var i = 0; i < ctrl.found.length;i++) {
                         var card = ctrl.found[i];
-                        if(projects[card.projectShortName] === undefined) {
+
+                        if (projects[card.projectShortName] === undefined) {
                             projects[card.projectShortName] = Project.loadMetadataAndSubscribe(card.projectShortName, ctrl.metadatas, true);
                         }
                     }
                 }
-            }
+            };
 
             ctrl.$onDestroy = function onDestroy() {
-                angular.forEach(projects, function(subscription) {
+                angular.forEach(projects, function (subscription) {
                     subscription();
                 });
-            }
+            };
         }
     });
-
-})();
+}());

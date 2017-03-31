@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgActivityComment', {
@@ -11,5 +11,4 @@
 
     function ActivityCommentController() {
     }
-
-})();
+}());

@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -24,10 +23,7 @@
         ctrl.events = [];
 
         var syncCalendar = function () {
-
-
             for (var date in ctrl.events.dailyEvents) {
-
                 var dayText = '';
 
                 var dailyEvents = ctrl.events.dailyEvents[date];
@@ -41,6 +37,7 @@
                     });
                     var milestoneName = $sanitize(m.name);
                     var mClassTxt = '';
+
                     if (m.label.metadata && m.label.metadata.status === 'CLOSED') {
                         mClassTxt = 'class="lavagna-closed-milestone"';
                     }
@@ -49,6 +46,7 @@
                 }
 
                 var cards = $filter('orderBy')(dailyEvents.cards, ['-columnDefinition', 'boardShortName', 'sequence']);
+
                 for (var i = 0; i < cards.length; i++) {
                     var card = cards[i];
 
@@ -58,6 +56,7 @@
                     var cardTitle = $sanitize(card.boardShortName + '-' + card.sequence + ' ' + card.name);
                     var cardName = $sanitize(card.name);
                     var classTxt = '';
+
                     if (card.columnDefinition === 'CLOSED') {
                         classTxt = 'class="lavagna-closed-card"';
                     }
@@ -67,13 +66,13 @@
 
                 MaterialCalendarData.setDayContent(moment(date).toDate(), dayText);
             }
-
         };
 
         var getApiToCall = function () {
             if (ctrl.project) {
                 return User.getProjectCalendar(ctrl.project.shortName);
             }
+
             return User.getCalendar();
         };
 
@@ -104,6 +103,5 @@
             unregStateChanges();
             MaterialCalendarData.data = {};
         };
-
     }
-})();
+}());

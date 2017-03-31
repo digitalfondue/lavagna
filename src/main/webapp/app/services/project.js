@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var services = angular.module('lavagna.services');
@@ -11,6 +10,7 @@
     var extractMetadata = function (data) {
         var metadata = data.data;
         // provide better format for some data
+
         metadata.milestones = [];
         metadata.userLabels = [];
         angular.forEach(metadata.labels, function (label, labelId) {
@@ -39,7 +39,7 @@
     services.factory('Project', function ($http, $filter, StompClient) {
         return {
 
-            //ordered by archived, name
+            // ordered by archived, name
             list: function () {
                 return $http.get('api/project').then(extractData).then(function (res) {
                     return $filter('orderBy')(res, function (elem) {
@@ -122,7 +122,6 @@
             },
 
             loadMetadataAndSubscribe: function (shortName, targetObject, assignToMap) {
-
                 var Project = this;
 
                 function loadProjectMetadata() {
@@ -153,12 +152,15 @@
 
                 for (var i = 0; i < items.length; i++) {
                     var item = items[i].project || items[i];
+
                     if (skipArchived && item.archived) {
                         continue;
                     }
                     var descriptionCount = item.description != null ? item.description.length : 0;
+
                     if (descriptionCount > 0) {
                         var newLineMatch = item.description.match(/[\n\r]/g);
+
                         descriptionCount += newLineMatch != newLineMatch ? newLineMatch.length * 50 : 0;
                     }
 
@@ -174,7 +176,7 @@
                 return {
                     left: itemsLeft,
                     right: itemsRight
-                }
+                };
             },
             getMailConfigs: function (shortName) {
                 return $http.get('/api/project/' + shortName + '/mailConfigs').then(extractData);
@@ -225,4 +227,4 @@
             }
         };
     });
-})();
+}());

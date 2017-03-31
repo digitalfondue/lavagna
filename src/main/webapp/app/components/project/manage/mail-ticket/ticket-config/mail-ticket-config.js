@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgProjectManageMailTicketConfig', {
@@ -17,9 +17,9 @@
         var ctrl = this;
 
         ctrl.$onInit = function onInit() {
-            BoardCache.column(ctrl.ticketConfig.columnId).then(function(column) {
+            BoardCache.column(ctrl.ticketConfig.columnId).then(function (column) {
                 ctrl.column = column;
             });
         };
     }
-})();
+}());

@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -27,16 +26,16 @@
             scaleBeginAtZero: true,
             responsive: true,
             maintainAspectRatio: false,
-            animation : false,
-            scaleOverride : true,
-            scaleSteps : 4,
-            scaleStartValue : 0
+            animation: false,
+            scaleOverride: true,
+            scaleSteps: 4,
+            scaleStartValue: 0
         };
 
         ctrl.cardsByLabelChartOptions = {
             responsive: true,
             maintainAspectRatio: false,
-            animation : false
+            animation: false
         };
 
         var generateDashboard = function (stats) {
@@ -47,10 +46,12 @@
 
             function getSortedIndexes(array) {
                 var sortedIndexes = [];
+
                 for (var index in array) {
                     sortedIndexes.push(parseInt(index));
                 }
                 sortedIndexes.sort();
+
                 return sortedIndexes;
             }
 
@@ -62,10 +63,10 @@
                 cardsHistory.datasets.push({label: label, strokeColor: color, fillColor: color, pointColor: color, data: []});
             }
 
-            createCardsHistorySeries("Backlog", $filter('color')(stats.backlogTaskColor).color);
-            createCardsHistorySeries("Open", $filter('color')(stats.openTaskColor).color);
-            createCardsHistorySeries("Deferred", $filter('color')(stats.deferredTaskColor).color);
-            createCardsHistorySeries("Closed", $filter('color')(stats.closedTaskColor).color);
+            createCardsHistorySeries('Backlog', $filter('color')(stats.backlogTaskColor).color);
+            createCardsHistorySeries('Open', $filter('color')(stats.openTaskColor).color);
+            createCardsHistorySeries('Deferred', $filter('color')(stats.deferredTaskColor).color);
+            createCardsHistorySeries('Closed', $filter('color')(stats.closedTaskColor).color);
 
 
             var sortedHistoryIndexes = getSortedIndexes(stats.statusHistory);
@@ -73,23 +74,29 @@
             // cards history
             for (var i = 0; i < sortedHistoryIndexes.length; i++) {
                 var index = sortedHistoryIndexes[i];
+
                 cardsHistory.labels.push(new Date(index).toLocaleDateString());
 
-                var closed = getStatusFromHistory(stats, index, "CLOSED");
+                var closed = getStatusFromHistory(stats, index, 'CLOSED');
+
                 cardsHistory.datasets[3].data.push(closed);
 
-                var deferred = closed + getStatusFromHistory(stats, index, "DEFERRED");
+                var deferred = closed + getStatusFromHistory(stats, index, 'DEFERRED');
+
                 cardsHistory.datasets[2].data.push(deferred);
 
-                var open = deferred + getStatusFromHistory(stats, index, "OPEN");
+                var open = deferred + getStatusFromHistory(stats, index, 'OPEN');
+
                 cardsHistory.datasets[1].data.push(open);
 
-                var backlog = open + getStatusFromHistory(stats, index, "BACKLOG");
+                var backlog = open + getStatusFromHistory(stats, index, 'BACKLOG');
+
                 cardsHistory.datasets[0].data.push(backlog);
             }
 
-            //scale for the chart
+            // scale for the chart
             var maxValue = Math.max.apply(Math, cardsHistory.datasets[0].data);
+
             ctrl.cardsHistoryChartOptions.scaleStepWidth = maxValue > 4 ? Math.ceil(Math.max(maxValue) / 4) : 1;
 
             ctrl.stats = stats;
@@ -103,6 +110,7 @@
             ctrl.cardsByLabelMax = 1;
             for (var i = 0; i < stats.cardsByLabel.length; i++) {
                 var label = stats.cardsByLabel[i];
+
                 ctrl.cardsByLabelMax = Math.max(ctrl.cardsByLabelMax, label.count);
             }
             ctrl.showCardsByLabel = stats.cardsByLabel.length > 0;
@@ -113,6 +121,7 @@
 
             for (var index in stats.createdAndClosedCards) {
                 var pair = stats.createdAndClosedCards[index];
+
                 ctrl.openedThisPeriod += pair['first'];
                 ctrl.closedThisPeriod += pair['second'];
             }
@@ -126,6 +135,7 @@
         });
         $translate('project.statistics.last14Days').then(function (translatedValue) {
             var range = {name: translatedValue, value: moment().day(-14).toDate()};
+
             ctrl.availableDateRanges.push(range);
             ctrl.dateRange = range;
         });
@@ -153,15 +163,14 @@
         };
 
         Project.findBoardsInProject(ctrl.project.shortName).then(function (boards) {
-            boards.unshift({name: "All", archived: false});
+            boards.unshift({name: 'All', archived: false});
             ctrl.boards = boards;
             ctrl.boardToFilter = boards[0];
             ctrl.filterByBoard(ctrl.boardToFilter);
         });
 
-        Project.getMetadata(ctrl.project.shortName).then(function(metadata) {
+        Project.getMetadata(ctrl.project.shortName).then(function (metadata) {
             ctrl.metadata = metadata;
-        })
+        });
     }
-
-})();
+}());

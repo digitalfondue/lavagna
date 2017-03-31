@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -16,14 +16,14 @@
 
         ctrl.overrideConfiguration = false;
 
-        uploader.onAfterAddingFile = function(fileItem) {
+        uploader.onAfterAddingFile = function (fileItem) {
             ctrl.importFile = fileItem;
         };
 
-        uploader.onBeforeUploadItem = function(fileItem) {
+        uploader.onBeforeUploadItem = function (fileItem) {
             fileItem.formData.push({overrideConfiguration: ctrl.overrideConfiguration});
             ctrl.importing = true;
-        }
+        };
 
         function importLavagnaCleanUp() {
             ctrl.importFile = null;
@@ -32,13 +32,13 @@
             ctrl.overrideConfiguration = false;
         }
 
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+        uploader.onSuccessItem = function (fileItem, response, status, headers) {
             Notification.addAutoAckNotification('success', {
                 key: 'notification.admin-export-import.import.success'
             }, false);
             importLavagnaCleanUp();
         };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
+        uploader.onErrorItem = function (fileItem, response, status, headers) {
             Notification.addAutoAckNotification('error', {
                 key: 'notification.admin-export-import.import.error'
             }, false);
@@ -46,12 +46,14 @@
         };
 
         ctrl.doExport = function () {
-            var exportIframe = $window.document.querySelector("#export-iframe");
-            if(exportIframe) {
+            var exportIframe = $window.document.querySelector('#export-iframe');
+
+            if (exportIframe) {
                 exportIframe.remove();
             }
 
-            var iframe = $window.document.createElement("iframe");
+            var iframe = $window.document.createElement('iframe');
+
             angular.element(iframe).attr('id', 'export-iframe').attr('style', 'display: none !important');
             $window.document.body.appendChild(iframe);
 
@@ -66,13 +68,15 @@
             iframeDoc.head.appendChild(angular.element(elem('base')).attr('href', baseHref)[0]);
 
             var form = angular.element(elem('form')).attr('action', 'api/export').attr('method', 'POST')[0];
+
             form.appendChild(angular.element(elem('input')).attr('type', 'hidden').attr('name', '_csrf').attr('value', $window.csrfToken)[0]);
 
             iframeDoc.body.appendChild(form);
 
             var script = elem('script');
+
             script.textContent = 'document.forms[0].submit();';
             iframeDoc.body.appendChild(script);
-        }
-    };
-})();
+        };
+    }
+}());

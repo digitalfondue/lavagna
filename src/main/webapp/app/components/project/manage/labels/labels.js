@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -30,26 +30,28 @@
                 }
             });
         };
+
         loadLabels();
 
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabels);
 
-        ctrl.$onDestroy = function() {
+        ctrl.$onDestroy = function () {
             unbind();
         };
 
-        ctrl.showAddLabelDialog = function($event) {
+        ctrl.showAddLabelDialog = function ($event) {
             $mdDialog.show({
                 templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
-                controller: function(labelOptions) {
+                controller: function (labelOptions) {
                     var ctrl = this;
+
                     ctrl.labelOptions = labelOptions;
 
-                    ctrl.add = function(labelToAdd) {
+                    ctrl.add = function (labelToAdd) {
                         $mdDialog.hide(labelToAdd);
                     };
 
-                    ctrl.close = function() {
+                    ctrl.close = function () {
                         $mdDialog.cancel();
                     };
                 },
@@ -57,22 +59,22 @@
                 resolve: {
                     labelOptions: getLabelOptions
                 }
-            }).then(function(labelToAdd) {
+            }).then(function (labelToAdd) {
                 return addNewLabel(labelToAdd);
             });
-        }
+        };
 
         function getLabelOptions() {
             return [
-                { name: $filter('translate')('project.manage.labels.types.NULL'), type: "NULL" },
-                { name: $filter('translate')('project.manage.labels.types.STRING'), type: "STRING" },
-                { name: $filter('translate')('project.manage.labels.types.TIMESTAMP'), type: "TIMESTAMP" },
-                { name: $filter('translate')('project.manage.labels.types.INT'), type: "INT" },
-                { name: $filter('translate')('project.manage.labels.types.CARD'), type: "CARD" },
-                { name: $filter('translate')('project.manage.labels.types.USER'), type: "USER" },
-                { name: $filter('translate')('project.manage.labels.types.LIST'), type: "LIST" }
+                { name: $filter('translate')('project.manage.labels.types.NULL'), type: 'NULL' },
+                { name: $filter('translate')('project.manage.labels.types.STRING'), type: 'STRING' },
+                { name: $filter('translate')('project.manage.labels.types.TIMESTAMP'), type: 'TIMESTAMP' },
+                { name: $filter('translate')('project.manage.labels.types.INT'), type: 'INT' },
+                { name: $filter('translate')('project.manage.labels.types.CARD'), type: 'CARD' },
+                { name: $filter('translate')('project.manage.labels.types.USER'), type: 'USER' },
+                { name: $filter('translate')('project.manage.labels.types.LIST'), type: 'LIST' }
             ];
-        };
+        }
 
 
         function addNewLabel(labelToAdd) {
@@ -81,27 +83,28 @@
             var labelColor = $filter('parseHexColor')(labelToAdd.color);
 
             if (ctrl.labelNameToId[labelToAdd.name] !== undefined) {
-                if (labelToAdd.color !== null && labelToAdd.color !== ""
+                if (labelToAdd.color !== null && labelToAdd.color !== ''
                     && labelToAdd.color !== undefined && labelToAdd.type !== undefined
                     && ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]].color != labelColor) {
                     Label.update(ctrl.labelNameToId[labelToAdd.name], {name: labelToAdd.name, color: labelColor, type: labelToAdd.type}).then(function () {
                         return ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]];
-                    }).then(function() {
+                    }).then(function () {
                         Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.success'}, false);
-                    }, function(error) {
+                    }, function (error) {
                         Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.error'}, false);
                     });
                 } else {
                     var defer = $q.defer();
+
                     defer.resolve(ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]]);
                 }
             } else {
-                Label.add(projectName, {name: labelToAdd.name, color: labelColor, type: labelToAdd.type, unique: labelToAdd.unique}).then(function() {
+                Label.add(projectName, {name: labelToAdd.name, color: labelColor, type: labelToAdd.type, unique: labelToAdd.unique}).then(function () {
                     Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.success'}, false);
-                }, function(error) {
+                }, function (error) {
                     Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.error'}, false);
                 });
             }
-        };
-    };
-})();
+        }
+    }
+}());

@@ -1,5 +1,4 @@
 (function () {
-
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -18,7 +17,6 @@
 
 
     function BoardSidebarController(Board, Card, StompClient, SharedBoardDataService) {
-
         var ctrl = this;
 
         //
@@ -34,30 +32,30 @@
         var stopDragListener = angular.noop;
         var stompSubscription = angular.noop;
 
-        ctrl.$onInit = function() {
+        ctrl.$onInit = function () {
             ctrl.sidebarLoaded = false;
 
             switchLocation();
 
-            startDragListener = SharedBoardDataService.listenToDragStart(function() {
+            startDragListener = SharedBoardDataService.listenToDragStart(function () {
                 ctrl.dragFromBoard = true;
             });
-            stopDragListener = SharedBoardDataService.listenToDragEnd(function() {
+            stopDragListener = SharedBoardDataService.listenToDragEnd(function () {
                 ctrl.dragFromBoard = false;
             });
         };
 
-        ctrl.$onChanges = function(changes) {
-            if(changes.sideBarLocation && !changes.sideBarLocation.isFirstChange()) {
+        ctrl.$onChanges = function (changes) {
+            if (changes.sideBarLocation && !changes.sideBarLocation.isFirstChange()) {
                 switchLocation();
             }
         };
 
-        ctrl.$onDestroy = function() {
+        ctrl.$onDestroy = function () {
             startDragListener();
             stopDragListener();
             stompSubscription();
-        }
+        };
 
         function sideBarLoad(direction) {
             ctrl.sidebar = ctrl.sidebar || {currentPage: 0};
@@ -89,8 +87,9 @@
 
         function removeCard(card) {
             var cards = ctrl.sidebar.cards;
-            for(var i = 0; i < cards.length; i++) {
-                if(cards[i].id === card.id) {
+
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].id === card.id) {
                     cards.splice(i, 1);
                     break;
                 }
@@ -99,6 +98,7 @@
 
         function dropCard() {
             var card = SharedBoardDataService.dndCardOrigin;
+
             Card.moveAllFromColumnToLocation(card.columnId, [card.id], ctrl.sideBarLocation);
         }
 
@@ -108,14 +108,13 @@
                 stompSubscription = angular.noop;
             }
 
-            if(ctrl.sideBarLocation && ctrl.sideBarLocation != 'NONE') {
+            if (ctrl.sideBarLocation && ctrl.sideBarLocation != 'NONE') {
                 sideBarLoad(0);
 
                 stompSubscription = StompClient.subscribe('/event/board/' + ctrl.board.shortName + '/location/' + ctrl.sideBarLocation + '/card', function () {
                     sideBarLoad(0);
                 });
             }
-        };
+        }
     }
-
-})();
+}());

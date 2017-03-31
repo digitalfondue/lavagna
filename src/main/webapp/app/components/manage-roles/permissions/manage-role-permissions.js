@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -26,14 +26,15 @@
         ctrl.hasCategory = hasCategory;
         //
 
-        ctrl.$onInit = function() {
+        ctrl.$onInit = function () {
             ctrl.assignStatus = {};
-        }
+        };
 
         function save() {
             var permissionsToEnable = [];
-            angular.forEach(ctrl.assignStatus, function(value, key) {
-                if(value.checked) {
+
+            angular.forEach(ctrl.assignStatus, function (value, key) {
+                if (value.checked) {
                     permissionsToEnable.push(key);
                 }
             });
@@ -43,41 +44,47 @@
         function hasChanges() {
             var result = false;
 
-            //perhaps slower than foreach probably, but avoid traversing the entire object
-            for(var key in ctrl.assignStatus) {
+            // perhaps slower than foreach probably, but avoid traversing the entire object
+            for (var key in ctrl.assignStatus) {
                 var value = ctrl.assignStatus[key];
                 var change = (value.checked != ctrl.hasPermission(key, ctrl.roleDesc.roleAndPermissions));
-                if(change) { return true; }
+
+                if (change) { return true; }
             }
+
             return false;
         }
 
         function hasChanged(permission, assignedPermissions, currentStatus) {
             var status = ctrl.hasPermission(permission, assignedPermissions);
+
+
             return status != currentStatus;
         }
 
         /* TODO could remove the linear probe... */
         function hasPermission(permission, assignedPermissions) {
-            if(permission == undefined || assignedPermissions == undefined) {
+            if (permission == undefined || assignedPermissions == undefined) {
                 return;
             }
 
-            for(var i = 0; i<assignedPermissions.length;i++) {
-                if(assignedPermissions[i].permission === permission) {
+            for (var i = 0; i < assignedPermissions.length;i++) {
+                if (assignedPermissions[i].permission === permission) {
                     return true;
                 }
             }
+
             return false;
         }
 
         function hasCategory(categoryName) {
-            for(var p in ctrl.permissionsByCategory) {
-                if(p == categoryName) {
+            for (var p in ctrl.permissionsByCategory) {
+                if (p == categoryName) {
                     return true;
                 }
             }
+
             return false;
         }
-    };
-})();
+    }
+}());

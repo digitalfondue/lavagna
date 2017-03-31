@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     var components = angular.module('lavagna.components');
@@ -16,7 +16,6 @@
             Admin.endpointInfo().then(function (res) {
                 ctrl.endpointInfo = res;
             });
-        }
+        };
     }
-
-})();
+}());

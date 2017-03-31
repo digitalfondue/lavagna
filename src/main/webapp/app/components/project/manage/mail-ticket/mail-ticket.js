@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular.module('lavagna.components').component('lvgProjectManageMailTicket', {
@@ -19,8 +19,8 @@
             loadConfigs();
         };
 
-        ctrl.showAddMailConfigDialog = function() {
-            openMailConfigDialog().then(function(config) {
+        ctrl.showAddMailConfigDialog = function () {
+            openMailConfigDialog().then(function (config) {
                 return Project.createMailConfig(project.shortName,
                     config.name,
                     config.config,
@@ -29,7 +29,7 @@
             }).then(loadConfigs);
         };
 
-        ctrl.toggleMailConfig = function(mailConfig) {
+        ctrl.toggleMailConfig = function (mailConfig) {
             Project.updateMailConfig(project.shortName,
                 mailConfig.id,
                 mailConfig.name,
@@ -39,8 +39,8 @@
                 mailConfig.body).then(loadConfigs);
         };
 
-        ctrl.editMailConfig = function(mailConfig) {
-            openMailConfigDialog(mailConfig).then(function(config) {
+        ctrl.editMailConfig = function (mailConfig) {
+            openMailConfigDialog(mailConfig).then(function (config) {
                 return Project.updateMailConfig(project.shortName,
                                 mailConfig.id,
                                 config.name,
@@ -51,13 +51,13 @@
             }).then(loadConfigs);
         };
 
-        ctrl.deleteMailConfig = function(mailConfig) {
+        ctrl.deleteMailConfig = function (mailConfig) {
             Project.deleteMailConfig(project.shortName,
                 mailConfig.id).then(loadConfigs);
         };
 
-        ctrl.addTicketConfig = function(mailConfig) {
-            openMailTicketConfigDialog().then(function(ticketConfig) {
+        ctrl.addTicketConfig = function (mailConfig) {
+            openMailTicketConfigDialog().then(function (ticketConfig) {
                 return Project.createMailTicket(project.shortName,
                     ticketConfig.name,
                     ticketConfig.alias,
@@ -68,7 +68,7 @@
             }).then(loadConfigs);
         };
 
-        ctrl.onToggleTicketConfig = function($mailConfig, $ticketConfig) {
+        ctrl.onToggleTicketConfig = function ($mailConfig, $ticketConfig) {
             Project.updateMailTicket(project.shortName,
                 $ticketConfig.id,
                 $ticketConfig.name,
@@ -80,8 +80,8 @@
                 $ticketConfig.metadata).then(loadConfigs);
         };
 
-        ctrl.onEditTicketConfig = function($mailConfig, $ticketConfig) {
-            openMailTicketConfigDialog($ticketConfig).then(function(config) {
+        ctrl.onEditTicketConfig = function ($mailConfig, $ticketConfig) {
+            openMailTicketConfigDialog($ticketConfig).then(function (config) {
                 return Project.updateMailTicket(project.shortName,
                            $ticketConfig.id,
                            config.name,
@@ -94,7 +94,7 @@
             }).then(loadConfigs);
         };
 
-        ctrl.onDeleteTicketConfig = function($ticketConfig) {
+        ctrl.onDeleteTicketConfig = function ($ticketConfig) {
             Project.deleteMailTicket(project.shortName,
                 $ticketConfig.id).then(loadConfigs);
         };
@@ -106,7 +106,7 @@
                 locals: {
                     configToEdit: mailConfig
                 },
-                controller: function() {
+                controller: function () {
                     var ctrl = this;
 
                     function initConfig() {
@@ -114,7 +114,7 @@
                             config: {}
                         };
 
-                        if(ctrl.configToEdit) {
+                        if (ctrl.configToEdit) {
                             ctrl.configToAdd.name = ctrl.configToEdit.name;
                             ctrl.configToAdd.config = ctrl.configToEdit.config;
                             ctrl.configToAdd.subject = ctrl.configToEdit.subject;
@@ -122,13 +122,13 @@
                         }
                     }
 
-                    ctrl.addConfig = function() {
+                    ctrl.addConfig = function () {
                         $mdDialog.hide(ctrl.configToAdd);
                     };
 
-                    ctrl.cancel = function() {
+                    ctrl.cancel = function () {
                         $mdDialog.cancel();
-                    }
+                    };
 
                     initConfig();
                 },
@@ -139,7 +139,7 @@
         function openMailTicketConfigDialog(ticketConfig) {
             return $mdDialog.show({
                 templateUrl: 'app/components/project/manage/mail-ticket/mail-ticket-config-dialog.html',
-                controller: function() {
+                controller: function () {
                     var ctrl = this;
 
                     function init() {
@@ -151,10 +151,10 @@
                             boardShortName: null
                         };
 
-                        Project.findBoardsInProject(project.shortName).then(function(boards) {
+                        Project.findBoardsInProject(project.shortName).then(function (boards) {
                             ctrl.boards = boards;
 
-                            if(ticketConfig) {
+                            if (ticketConfig) {
                                 config.name = ticketConfig.name;
                                 config.alias = ticketConfig.alias;
                                 config.sendByAlias = ticketConfig.sendByAlias;
@@ -162,25 +162,25 @@
 
                                 return BoardCache.column(ticketConfig.columnId);
                             } else {
-                                return {boardShortName: null}
+                                return {boardShortName: null};
                             }
-                        }).then(function(column) {
+                        }).then(function (column) {
                             config.boardShortName = column.boardShortName;
 
-                            if(column.boardShortName !== null) {
+                            if (column.boardShortName !== null) {
                                 return loadBoardColumns(column.boardShortName);
                             }
-                        }).then(function(columns) {
+                        }).then(function (columns) {
                             ctrl.columns = columns;
-                        }).finally(function() {
+                        }).finally(function () {
                             ctrl.configToAdd = config;
                         });
                     }
 
                     function loadBoardColumns(shortName) {
-                        return Board.columns(shortName).then(function(columns) {
-                            var boardColumns = columns.filter(function(value) {
-                                return value.location === 'BOARD'
+                        return Board.columns(shortName).then(function (columns) {
+                            var boardColumns = columns.filter(function (value) {
+                                return value.location === 'BOARD';
                             });
 
                             return boardColumns;
@@ -188,19 +188,19 @@
                     }
 
                     ctrl.onChangeBoard = function (shortName) {
-                        loadBoardColumns(shortName).then(function(columns) {
+                        loadBoardColumns(shortName).then(function (columns) {
                             ctrl.configToAdd.columnId = null;
                             ctrl.columns = columns;
                         });
-                    }
+                    };
 
-                    ctrl.add = function() {
+                    ctrl.add = function () {
                         $mdDialog.hide(ctrl.configToAdd);
                     };
 
-                    ctrl.cancel = function() {
+                    ctrl.cancel = function () {
                         $mdDialog.cancel();
-                    }
+                    };
 
                     init();
                 },
@@ -209,9 +209,9 @@
         }
 
         function loadConfigs() {
-            Project.getMailConfigs(project.shortName).then(function(configs) {
+            Project.getMailConfigs(project.shortName).then(function (configs) {
                 ctrl.configs = configs;
             });
         }
     }
-})();
+}());
