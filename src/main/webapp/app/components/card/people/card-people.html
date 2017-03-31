@@ -33,16 +33,19 @@
                     <md-icon md-svg-icon="close"></md-icon>
                 </md-button>
             </div>
-            <div ng-if="!$ctrl.assignedUsers"><i class="lvg-card-people__no-user" data-translate>card.people.assignedToNone</i></div>
+            <div ng-if="$ctrl.assignedUsers.length === 0"><i class="lvg-card-people__no-user" data-translate>card.people.assignedToNone</i></div>
         </div>
         <div class="lvg-card-people__watching" ng-if="$ctrl.watchingUsers">
             <md-divider></md-divider>
-            <div class="lvg-card-people__watching-count">
+            <div class="lvg-card-people__watching-count"
+                 ng-class="{'italic': $ctrl.watchingUsers.length === 0}">
                 <ng-pluralize class="lvg-card-people__watching-count" count="$ctrl.watchingUsers.length"
-                              when="{'1': ('card.people.watchedByOne'|translate),
+                              when="{
+                     '0': ('card.people.watchedByNone'|translate),
+                     '1': ('card.people.watchedByOne'|translate),
                      'other': ('card.people.watchedByMany' | translate:{count: '{{$ctrl.watchingUsers.length}}'})}">
                 </ng-pluralize>
-                <md-button ng-hide="watchExpanded" class="lvg-small-icon-button" ng-click="watchExpanded = true;">
+                <md-button ng-hide="watchExpanded || $ctrl.watchingUsers.length === 0" class="lvg-small-icon-button" ng-click="watchExpanded = true;">
                     <md-tooltip><span translate>card.people.showWatchedUsers</span></md-tooltip>
                     <md-icon md-svg-icon="expand_more"></md-icon>
                 </md-button>

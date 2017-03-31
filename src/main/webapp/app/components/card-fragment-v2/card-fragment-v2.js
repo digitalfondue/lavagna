@@ -23,11 +23,8 @@
 	}
 	//
 
-
-
 	function CardFragmentV2Controller($element, $scope, $compile, $state, $location, $filter, User, Card, EventBus, UserCache, CardCache, ProjectCache, Tooltip, $mdPanel) {
 		var ctrl = this;
-
 
 		var container = $element[0];
 
@@ -46,7 +43,7 @@
         ctrl.boardView = ctrl.view != undefined && ctrl.view == 'board';
         ctrl.searchView = ctrl.view != undefined && ctrl.view == 'search';
 
-        ctrl.shortCardName = ctrl.card.boardShortName + ' - ' + ctrl.card.sequence;
+        ctrl.shortCardName = ctrl.card.boardShortName + '-' + ctrl.card.sequence;
 
         if(ctrl.hideSelect === undefined) {
         	ctrl.hideSelect = false;
@@ -61,11 +58,9 @@
         ctrl.isAssignedToCard = ctrl.user && Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
         //
 
-
         var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
-
 
         var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip);
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
@@ -86,7 +81,6 @@
         }
 	}
 
-
 	function createElem(name) {
 		return window.document.createElement(name);
 	}
@@ -94,8 +88,6 @@
 	function createText(value) {
 		return window.document.createTextNode(value);
 	}
-
-
 
 	//--------------------
 	function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {

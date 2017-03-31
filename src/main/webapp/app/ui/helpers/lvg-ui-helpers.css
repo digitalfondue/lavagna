@@ -63,6 +63,10 @@ a:active.lvg-gray {
 	text-transform: uppercase;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .lvg-cursor-text {
 	cursor: text;
 }
