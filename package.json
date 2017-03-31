@@ -17,8 +17,8 @@
         }
     ],
     "scripts": {
-        "lint": "./node_modules/.bin/eslint src/main/webapp/app/**/*.js src/main/webapp/app-login/*.js src/main/webapp/setup/**/*.js",
-        "lint-fix": "./node_modules/.bin/eslint src/main/webapp/app/**/*.js src/main/webapp/app-login/*.js src/main/webapp/setup/**/*.js --fix"
+        "lint": "./node_modules/.bin/eslint src/main/webapp/app/** src/main/webapp/app-login/*.js src/main/webapp/setup/**",
+        "lint-fix": "./node_modules/.bin/eslint src/main/webapp/app/** src/main/webapp/app-login/*.js src/main/webapp/setup/** --fix"
     },
     "repository": {
         "type": "git",
