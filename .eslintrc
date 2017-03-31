@@ -17,11 +17,6 @@
     "plugins": [
         "angular"
     ],
-    /*"rules": {
-        "no-mixed-spaces-and-tabs": 2,      // disallow mixed spaces and tabs for indentation
-        "no-tabs": 2,                       // disallow tabs in file
-        "indent": [1, 4, {"SwitchCase": 1}] // this option sets a specific tab width for your code (off by default)
-    }*/
     "rules": {
         ////////// Possible Errors //////////
 

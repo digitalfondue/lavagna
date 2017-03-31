@@ -78,6 +78,15 @@ You will need a Java _and_ Kotlin aware IDE. (Currently tested with intellij and
 For eclipse: you will need to install the kotlin plugin and add the "Kotlin nature" to the project:
 Right click on the project -> "Configure Kotlin" -> "Add Kotlin nature"
 
+### Javascript
+
+Install npm and run the following script to assure your code follows our guidelines
+
+```
+npm run-script lint
+```
+
+Fix any error or warning before opening a pull request
 
 ### Execute ###
 
