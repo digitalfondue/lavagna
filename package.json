@@ -1,0 +1,44 @@
+{
+    "name": "lavagna",
+    "version": "1.1.0",
+    "description": "issue tracker/project management tool",
+    "contributors": [
+        {
+            "name": "Eros Taborelli",
+            "email": "erost@erost.net"
+        },
+        {
+            "name": "Sylvain Jermini",
+            "email": "sylvain.jermini@syjer.com"
+        },
+        {
+            "name": "Simone Grignola",
+            "email": "sito@grignola.ch"
+        }
+    ],
+    "scripts": {
+        "lint": "./node_modules/.bin/eslint src/main/webapp/app/**/*.js src/main/webapp/app-login/*.js src/main/webapp/setup/**/*.js",
+        "lint-fix": "./node_modules/.bin/eslint src/main/webapp/app/**/*.js src/main/webapp/app-login/*.js src/main/webapp/setup/**/*.js --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/digitalfondue/lavagna"
+    },
+    "bugs": {
+        "url": "https://github.com/digitalfondue/lavagna/issues"
+    },
+    "keywords": [
+        "kanban",
+        "project-management",
+        "issue-tracker",
+        "project-planning",
+        "issue-board",
+        "bugtracker"
+    ],
+    "devDependencies": {
+        "eslint": "3.19.0",
+        "eslint-plugin-angular": "2.2.1"
+    },
+    "preferGlobal": true,
+    "license": "MIT"
+}
