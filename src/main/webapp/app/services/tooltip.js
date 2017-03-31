@@ -1,16 +1,16 @@
 (function () {
 
-	'use strict';
+    'use strict';
 
-	var services = angular.module('lavagna.services');
+    var services = angular.module('lavagna.services');
 
-	//simple wrapper
-	services.factory('Tooltip', ['$mdPanel', '$q', Tooltip]);
+    //simple wrapper
+    services.factory('Tooltip', ['$mdPanel', '$q', Tooltip]);
 
 
-	function Tooltip($mdPanel, $q) {
+    function Tooltip($mdPanel, $q) {
 
-	    function cleanUpRogueTooltips() {
+        function cleanUpRogueTooltips() {
             angular.forEach($mdPanel._trackedPanels, function(value, id) {
                 delete $mdPanel._trackedPanels[id];
             });
@@ -19,12 +19,12 @@
             angular.forEach(tooltips, function(tooltip) {
                 tooltip.parentNode.parentNode.removeChild(tooltip.parentNode);
             });
-	    }
+        }
 
-		return {
-			clean: function() {
-			    return $q(function(resolve, reject) {
-			        angular.forEach($mdPanel._trackedPanels, function(value, id) {
+        return {
+            clean: function() {
+                return $q(function(resolve, reject) {
+                    angular.forEach($mdPanel._trackedPanels, function(value, id) {
                         if(id.indexOf('lvg-tooltip') === 0) {
                             value.close();
                         }
@@ -32,9 +32,9 @@
                     cleanUpRogueTooltips();
                     resolve();
                 });
-			},
-			card: function(card, metadata, user, element) {
-			    var position = $mdPanel.newPanelPosition()
+            },
+            card: function(card, metadata, user, element) {
+                var position = $mdPanel.newPanelPosition()
                     .relativeTo(element)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
                     .addPanelPosition($mdPanel.xPosition.OFFSET_START, $mdPanel.yPosition.BELOW)
@@ -65,8 +65,8 @@
                 this.clean().then(function() {
                     $mdPanel.open(conf);
                 });
-			},
-			user: function(user, element) {
+            },
+            user: function(user, element) {
                 var position = $mdPanel.newPanelPosition()
                     .relativeTo(element)
                     .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
@@ -93,8 +93,8 @@
                 this.clean().then(function() {
                     $mdPanel.open(conf);
                 });
-			}
-		}
-	}
+            }
+        }
+    }
 
 })();

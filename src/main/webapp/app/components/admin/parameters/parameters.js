@@ -4,19 +4,19 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgAdminParameters', {
-            templateUrl: 'app/components/admin/parameters/parameters.html',
-            controller: ['Admin', 'Notification', '$q', AdminParametersController],
+        templateUrl: 'app/components/admin/parameters/parameters.html',
+        controller: ['Admin', 'Notification', '$q', AdminParametersController],
     });
 
     function AdminParametersController(Admin, Notification, $q) {
         var ctrl = this;
-        
+
         var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'USE_HTTPS', 'EMAIL_NOTIFICATION_TIMESPAN'];
-        
+
         ctrl.updateAllChangedConfiguration = updateAllChangedConfiguration;
-        
+
         ctrl.$onInit = function init() {
-        	loadAll();
+            loadAll();
         }
 
         function loadAll() {
@@ -32,34 +32,34 @@
             });
         };
 
-        
-        
+
+
         function updateAllChangedConfiguration() {
-        	Admin.findAllConfiguration().then(function (res) {
-        		//fetch all changed keys
-        		var changedKey = [];
-        		angular.forEach(configurableKeys, function(k) {
-        			if(ctrl.configurable[k] !== res[k]) {
-        				changedKey.push(k);
-        			}
-        		});
-        		
-        		var updated = [];
-        		
-        		//update or delete
-        		angular.forEach(changedKey, function(k) {
-        			var promise;
-        			if(ctrl.configurable[k] === '' || ctrl.configurable[k] === null || ctrl.configurable[k] === undefined) {
-        				promise = deleteConfiguration(k);
-        			} else {
-        				promise = updateConfiguration(k, ctrl.configurable[k]);
-        			}
-        			updated.push(promise);
-        		});
-        		
-        		//trigger refresh
-        		$q.all(updated).then(loadAll)
-        	});
+            Admin.findAllConfiguration().then(function (res) {
+                //fetch all changed keys
+                var changedKey = [];
+                angular.forEach(configurableKeys, function(k) {
+                    if(ctrl.configurable[k] !== res[k]) {
+                        changedKey.push(k);
+                    }
+                });
+
+                var updated = [];
+
+                //update or delete
+                angular.forEach(changedKey, function(k) {
+                    var promise;
+                    if(ctrl.configurable[k] === '' || ctrl.configurable[k] === null || ctrl.configurable[k] === undefined) {
+                        promise = deleteConfiguration(k);
+                    } else {
+                        promise = updateConfiguration(k, ctrl.configurable[k]);
+                    }
+                    updated.push(promise);
+                });
+
+                //trigger refresh
+                $q.all(updated).then(loadAll)
+            });
         }
 
         function updateConfiguration(k,v) {

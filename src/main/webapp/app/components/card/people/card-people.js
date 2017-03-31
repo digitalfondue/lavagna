@@ -60,7 +60,7 @@
         };
 
         ctrl.surrender = function() {
-             BulkOperations.removeAssign(currentCard(), {id: user.id});
+            BulkOperations.removeAssign(currentCard(), {id: user.id});
         };
 
         ctrl.searchUser = function(text) {

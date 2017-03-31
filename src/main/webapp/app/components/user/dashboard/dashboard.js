@@ -31,7 +31,7 @@
         var color = '#B0BEC5';
 
         ctrl.$onInit = function init() {
-        	ctrl.view = {};
+            ctrl.view = {};
             ctrl.userProvider = ctrl.profile.user.provider;
             ctrl.userName = ctrl.profile.user.username;
 

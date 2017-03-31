@@ -37,7 +37,7 @@
 
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabel);
         ctrl.$onDestroy = function() {
-        	unbind();
+            unbind();
         };
 
         ctrl.update = function(val) {
@@ -63,7 +63,7 @@
                   .ok($translate.instant('button.yes'))
                   .cancel($translate.instant('button.no'));
             $mdDialog.show(confirm).then(function() {
-              return Label.removeLabelListValue(milestone.id);
+                return Label.removeLabelListValue(milestone.id);
             }).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.remove.success', parameters: {name: milestone.value}}, false);
             }, function(error) {
@@ -98,18 +98,18 @@
         };
 
         ctrl.showAddMilestoneDialog = function showAddMilestoneDialog() {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
-        		controller: function() {
-        			var ctrl = this;
-        			ctrl.view = {};
-        			ctrl.addLabelListValue = addLabelListValue;
-        			ctrl.close = function() {
-                    	$mdDialog.hide();
+            $mdDialog.show({
+                templateUrl: 'app/components/project/manage/milestones/add-milestone-dialog.html',
+                controller: function() {
+                    var ctrl = this;
+                    ctrl.view = {};
+                    ctrl.addLabelListValue = addLabelListValue;
+                    ctrl.close = function() {
+                        $mdDialog.hide();
                     };
-        		},
-        		controllerAs: 'addMilestoneDialogCtrl'
-        	});
+                },
+                controllerAs: 'addMilestoneDialogCtrl'
+            });
         };
 
         function addLabelListValue(val) {

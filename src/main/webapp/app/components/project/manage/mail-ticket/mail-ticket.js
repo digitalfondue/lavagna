@@ -133,7 +133,7 @@
                     initConfig();
                 },
                 controllerAs: '$mailConfigDialogCtrl'
-           });
+            });
         }
 
         function openMailTicketConfigDialog(ticketConfig) {

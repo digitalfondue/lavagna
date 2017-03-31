@@ -6,8 +6,8 @@
     services.factory('Integrations', ['$http', Integrations]);
 
     function extractData(data) {
-		return data.data;
-	}
+        return data.data;
+    }
 
     function Integrations($http) {
         return {

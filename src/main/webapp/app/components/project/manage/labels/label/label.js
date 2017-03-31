@@ -18,7 +18,7 @@
         var projectName = ctrl.project.shortName;
 
         var emitRefreshEvent = function() {
-        	EventBus.emit('refreshLabelCache-' + projectName);
+            EventBus.emit('refreshLabelCache-' + projectName);
         };
 
         ctrl.deleteLabel = function (ev) {
@@ -29,7 +29,7 @@
                   .ok($translate.instant('button.yes'))
                   .cancel($translate.instant('button.no'));
             $mdDialog.show(confirm).then(function() {
-              return Label.remove(ctrl.label.id);
+                return Label.remove(ctrl.label.id);
             }).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.remove.success'}, false);
             }, function(error) {
@@ -63,7 +63,7 @@
 
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabelData);
         ctrl.$onDestroy = function() {
-        	unbind();
+            unbind();
         }
 
         var updateLabel = function (values) {
@@ -76,9 +76,9 @@
         };
 
         ctrl.editLabel = function () {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/project/manage/labels/label/edit-label.html',
-        		controller: function (EventBus, $scope, LabelCache, Label, label, labelListValues, projectName) {
+            $mdDialog.show({
+                templateUrl: 'app/components/project/manage/labels/label/edit-label.html',
+                controller: function (EventBus, $scope, LabelCache, Label, label, labelListValues, projectName) {
                     var ctrl = this;
 
                     ctrl.label = label;
@@ -109,7 +109,7 @@
                     }
 
                     ctrl.closeDialog = function() {
-                    	$mdDialog.cancel();
+                        $mdDialog.cancel();
                     };
 
                     //handle refresh event
@@ -137,9 +137,9 @@
                     }
                 },
                 fullscreen: true
-        	}).then(function(values) {
+            }).then(function(values) {
                 return updateLabel(values);
-        	});
+            });
         };
 
     };

@@ -17,7 +17,7 @@
         var onDestroyStomp = angular.noop;
 
         ctrl.$onInit = function init() {
-        	ctrl.files = [];
+            ctrl.files = [];
 
             ctrl.uploader = Card.getFileUploader(card.id);
 
@@ -42,7 +42,7 @@
         };
 
         ctrl.$onDestroy = function onDestroy() {
-        	onDestroyStomp();
+            onDestroyStomp();
         };
 
 

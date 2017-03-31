@@ -14,7 +14,7 @@
     function ManageRolesController(Permission, Notification, ProjectCache, StompClient, User, $mdDialog, $filter, $translate) {
 
         var ctrl = this;
-        
+
         //
         ctrl.filterUsersBy = filterUsersBy;
         ctrl.searchUser = searchUser;
@@ -24,29 +24,29 @@
         ctrl.open = open;
         ctrl.showAddRoleDialog = showAddRoleDialog;
         //
-        
+
         var stompDestroy = angular.noop;
-        
+
         ctrl.$onInit = function init() {
-        	
-        	ctrl.isGlobalRoles = ctrl.project === undefined;
-        	
-        	User.currentCachedUser().then(function(user) {
-            	ctrl.currentUser = user;
+
+            ctrl.isGlobalRoles = ctrl.project === undefined;
+
+            User.currentCachedUser().then(function(user) {
+                ctrl.currentUser = user;
             });
-        	
-        	//handle manage role at project level:
+
+            //handle manage role at project level:
             var projectName = undefined;
             if(ctrl.project !== undefined) {
                 projectName = ctrl.project.shortName;
                 ctrl.Permission = Permission.forProject(projectName);
             } else {
-            	ctrl.Permission = Permission;
+                ctrl.Permission = Permission;
             }
             //
-            
+
             var route = '/event/permission' + (projectName === undefined ? '' : ('/project/'+ projectName));
-            
+
             stompDestroy = StompClient.subscribe(route , function(event) {
                 var b = JSON.parse(event.body);
                 if(b.type === 'REMOVE_ROLE_TO_USERS' || b.type === 'ASSIGN_ROLE_TO_USERS') {
@@ -58,18 +58,18 @@
 
             ctrl.usersByRole = {};
             ctrl.usersWithRole = {};
-            
+
             reloadRoles();
 
             ctrl.Permission.allAvailablePermissionsByCategory().then(function(res) {
                 ctrl.permissionsByCategory = res;
             });
         };
-        
+
         ctrl.$onDestroy = function() {
-        	stompDestroy();
+            stompDestroy();
         }
-        
+
         //
 
         function getUsersByRole(roleName, users, limit) {
@@ -83,13 +83,13 @@
         }
 
         function searchUser(text) {
-			return User.findUsersGlobally(text.trim()).then(function (res) {
-				angular.forEach(res, function(user) {
-					user.label = User.formatName(user);
-				});
-				return res;
-			});
-		}
+            return User.findUsersGlobally(text.trim()).then(function (res) {
+                angular.forEach(res, function(user) {
+                    user.label = User.formatName(user);
+                });
+                return res;
+            });
+        }
 
         function reloadRoles() {
             ctrl.Permission.findAllRolesAndRelatedPermissions().then(function(res) {
@@ -113,7 +113,7 @@
             }
         }
 
-        
+
         function loadUsersWithRole(roleName) {
             ctrl.Permission.findUsersWithRole(roleName).then(function(users) {
                 ctrl.usersByRole[roleName] = users;
@@ -129,7 +129,7 @@
                   .ok($translate.instant('button.yes'))
                   .cancel($translate.instant('button.no'));
             $mdDialog.show(confirm).then(function() {
-              return ctrl.Permission.deleteRole(roleName);
+                return ctrl.Permission.deleteRole(roleName);
             }).then(function() {
                 Notification.addAutoAckNotification('success', {key: 'notification.manage-role.deleteRole.success', parameters: {roleName : roleName}}, false);
             }, function(error) {
@@ -168,12 +168,12 @@
             });
         }
 
-        
+
 
         //permission modal
         function open(roleName, roleDescriptor) {
             var dialog = $mdDialog.show({
-            	autoWrap: false,
+                autoWrap: false,
                 templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions-dialog.html',
                 controller: function(role, roleDescriptor, permissionsByCategory, project) {
                     this.roleName = role;
@@ -182,11 +182,11 @@
                     this.project = project;
 
                     this.submit = function($permissionsToEnable) {
-                    	$mdDialog.hide($permissionsToEnable);
+                        $mdDialog.hide($permissionsToEnable);
                     };
 
                     this.cancel = function() {
-                    	$mdDialog.cancel(false);
+                        $mdDialog.cancel(false);
                     };
                 },
                 controllerAs: 'modalResolver',
@@ -221,18 +221,18 @@
 
         //
         function showAddRoleDialog($event) {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/manage-roles/add-role-dialog.html',
-        		controller: function() {
-        			var ctrl = this;
-        			ctrl.createRole = createRole;
+            $mdDialog.show({
+                templateUrl: 'app/components/manage-roles/add-role-dialog.html',
+                controller: function() {
+                    var ctrl = this;
+                    ctrl.createRole = createRole;
 
-        			ctrl.close = function() {
-                    	$mdDialog.hide();
+                    ctrl.close = function() {
+                        $mdDialog.hide();
                     };
-        		},
-        		controllerAs: 'addRoleDialogCtrl'
-        	});
+                },
+                controllerAs: 'addRoleDialogCtrl'
+            });
         }
 
         function createRole(roleName) {

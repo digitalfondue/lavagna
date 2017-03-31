@@ -4,7 +4,7 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgAdminUsers', {
-    	templateUrl: 'app/components/admin/users/users.html',
+        templateUrl: 'app/components/admin/users/users.html',
         controller: ['$mdDialog', 'User', 'UsersAdministration', 'Admin', 'Permission', 'Notification', AdminUserController]
     });
 
@@ -22,7 +22,7 @@
         //
 
         ctrl.$onInit = function init() {
-        	ctrl.view = {};
+            ctrl.view = {};
             ctrl.isOpen = false
             loadCurrentUser();
             Admin.findAllLoginHandlers().then(function(loginProviders) {
@@ -80,38 +80,38 @@
         };
 
         function showAddUserDialog($event) {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/admin/users/add-user-dialog.html',
-        		controller: function() {
-        			var ctrl = this;
+            $mdDialog.show({
+                templateUrl: 'app/components/admin/users/add-user-dialog.html',
+                controller: function() {
+                    var ctrl = this;
 
-        			ctrl.close = function () {
-                    	$mdDialog.hide();
+                    ctrl.close = function () {
+                        $mdDialog.hide();
                     }
 
-        			ctrl.addUser = function(userToAdd) {
-        			    if(userToAdd.provider !== 'password') {
-        			        userToAdd.password = null;
+                    ctrl.addUser = function(userToAdd) {
+                        if(userToAdd.provider !== 'password') {
+                            userToAdd.password = null;
                         }
 
-        	            UsersAdministration.addUser(userToAdd).then(function() {
-        	                configureDefaultUserToAdd();
-        	                loadUsers();
-        	                $mdDialog.hide();
-        	            }, function(error) {
-        	                Notification.addAutoAckNotification('error', {
-        	                    key: 'notification.admin-manage-users.add.error'
-        	                }, false);
-        	            });
-        	        };
-        		},
-        		controllerAs: 'addUserDialogCtrl',
-        		bindToController: true,
-        		locals: {
-        			roles: ctrl.roles,
-        			loginProviders : ctrl.loginProviders
-        		},
-        	});
+                        UsersAdministration.addUser(userToAdd).then(function() {
+                            configureDefaultUserToAdd();
+                            loadUsers();
+                            $mdDialog.hide();
+                        }, function(error) {
+                            Notification.addAutoAckNotification('error', {
+                                key: 'notification.admin-manage-users.add.error'
+                            }, false);
+                        });
+                    };
+                },
+                controllerAs: 'addUserDialogCtrl',
+                bindToController: true,
+                locals: {
+                    roles: ctrl.roles,
+                    loginProviders : ctrl.loginProviders
+                },
+            });
         };
 
         function editUser(user) {
@@ -193,26 +193,26 @@
         }
 
         function showImportDialog($event) {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/admin/users/import-dialog.html',
-        		controller: function() {
-        			var ctrl = this;
+            $mdDialog.show({
+                templateUrl: 'app/components/admin/users/import-dialog.html',
+                controller: function() {
+                    var ctrl = this;
 
-        			var uploader = ctrl.uploader = Admin.getImportUsersUploader();
+                    var uploader = ctrl.uploader = Admin.getImportUsersUploader();
 
-        			ctrl.file = null;
+                    ctrl.file = null;
 
-        			uploader.onAfterAddingFile = function(fileItem) {
-        			    ctrl.file = fileItem;
-        			};
+                    uploader.onAfterAddingFile = function(fileItem) {
+                        ctrl.file = fileItem;
+                    };
 
-        			var reload = function() {
-        			    ctrl.file = null;
-        			    uploader.clearQueue();
-        			    loadUsers();
-        			}
+                    var reload = function() {
+                        ctrl.file = null;
+                        uploader.clearQueue();
+                        loadUsers();
+                    }
 
-        			uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         Notification.addAutoAckNotification('success', {
                             key: 'notification.admin-manage-users.bulkImport.success'
                         }, false);
@@ -225,12 +225,12 @@
                         reload();
                     };
 
-        			ctrl.close = function () {
-                    	$mdDialog.hide();
+                    ctrl.close = function () {
+                        $mdDialog.hide();
                     }
-        		},
-        		controllerAs: 'importDialogCtrl',
-        	});
+                },
+                controllerAs: 'importDialogCtrl',
+            });
         };
 
         function showUserPermissions(user) {
@@ -238,14 +238,14 @@
                 templateUrl: 'app/components/admin/users/user-permissions-modal.html',
                 controller: function ($scope) {
 
-                	$scope.user = user;
+                    $scope.user = user;
 
                     Permission.findUserRoles(user.id).then(function(rolesByProject) {
                         $scope.rolesByProject = rolesByProject;
                     });
 
                     $scope.close = function () {
-                    	$mdDialog.hide();
+                        $mdDialog.hide();
                     }
                 }
             });

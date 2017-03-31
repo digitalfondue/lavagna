@@ -35,31 +35,31 @@
         var unbind = EventBus.on('refreshLabelCache-' + projectName, loadLabels);
 
         ctrl.$onDestroy = function() {
-        	unbind();
+            unbind();
         };
 
         ctrl.showAddLabelDialog = function($event) {
-        	$mdDialog.show({
-        		templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
-        		controller: function(labelOptions) {
-        			var ctrl = this;
-        			ctrl.labelOptions = labelOptions;
+            $mdDialog.show({
+                templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
+                controller: function(labelOptions) {
+                    var ctrl = this;
+                    ctrl.labelOptions = labelOptions;
 
-        			ctrl.add = function(labelToAdd) {
-        			    $mdDialog.hide(labelToAdd);
-        			};
-
-        			ctrl.close = function() {
-                    	$mdDialog.cancel();
+                    ctrl.add = function(labelToAdd) {
+                        $mdDialog.hide(labelToAdd);
                     };
-        		},
-        		controllerAs: 'ctrl',
-        		resolve: {
-        		    labelOptions: getLabelOptions
-        		}
-        	}).then(function(labelToAdd) {
+
+                    ctrl.close = function() {
+                        $mdDialog.cancel();
+                    };
+                },
+                controllerAs: 'ctrl',
+                resolve: {
+                    labelOptions: getLabelOptions
+                }
+            }).then(function(labelToAdd) {
                 return addNewLabel(labelToAdd);
-        	});
+            });
         }
 
         function getLabelOptions() {

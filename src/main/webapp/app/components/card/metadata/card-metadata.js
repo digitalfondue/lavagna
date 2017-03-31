@@ -32,14 +32,14 @@
         var stompSubscription = angular.noop;
 
         ctrl.$onInit = function init() {
-        	stompSubscription = StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
+            stompSubscription = StompClient.subscribe('/event/board/'+ctrl.board.shortName+'/location/BOARD/column', findAndAssignColumns);
             findAndAssignColumns();
             ctrl.userPermissions = {};
             loadUserPermissions();
         };
 
         ctrl.$onDestroy = function onDestroy() {
-        	stompSubscription();
+            stompSubscription();
         };
 
 

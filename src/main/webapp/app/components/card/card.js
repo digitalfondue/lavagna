@@ -26,7 +26,7 @@
 
         ctrl.$onInit = function() {
 
-        	ctrl.labels = ctrl.project.metadata.labels;
+            ctrl.labels = ctrl.project.metadata.labels;
             ctrl.assignedUsers = [];
             ctrl.watchingUsers = [];
             ctrl.milestones = [];
@@ -51,16 +51,16 @@
         };
 
         ctrl.$onDestroy = function onDestroy() {
-        	unbindCardCache();
-        	unbindLabelCache();
-        	unbindStomp();
-        	projectMetadataSubscription();
+            unbindCardCache();
+            unbindLabelCache();
+            unbindStomp();
+            projectMetadataSubscription();
         };
 
         //------------------
 
         function refreshTitle() {
-        	Title.set('title.card', { shortname: ctrl.board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
+            Title.set('title.card', { shortname: ctrl.board.shortName, sequence: ctrl.card.sequence, name: ctrl.card.name });
         }
 
         function reloadCard(forceReload) {

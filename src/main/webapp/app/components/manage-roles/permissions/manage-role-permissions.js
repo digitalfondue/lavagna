@@ -10,7 +10,7 @@
             permissionsByCategory: '<permissions',
             project: '<',
             submit: '&', // $permissionsToEnable
-            cancel: '&' // 
+            cancel: '&' //
         },
         controller: [ManageRolePermissionsController],
         templateUrl: 'app/components/manage-roles/permissions/manage-role-permissions.html'
@@ -18,16 +18,16 @@
 
     function ManageRolePermissionsController() {
         var ctrl = this;
-        
+
         //
         ctrl.save = save;
         ctrl.hasChanged = hasChanged;
         ctrl.hasPermission = hasPermission;
         ctrl.hasCategory = hasCategory;
         //
-        
+
         ctrl.$onInit = function() {
-        	ctrl.assignStatus = {};
+            ctrl.assignStatus = {};
         }
 
         function save() {

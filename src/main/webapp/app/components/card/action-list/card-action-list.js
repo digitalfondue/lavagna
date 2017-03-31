@@ -40,25 +40,25 @@
 
 
         ctrl.dragStartActionList = function(item) {
-        	dndActionListItem = item;
-        	dndActionListCtrl = ctrl;
+            dndActionListItem = item;
+            dndActionListCtrl = ctrl;
         }
 
         ctrl.dropActionList = function(index, oldIndex) {
 
-        	var item = dndActionListCtrl.actionList.items[oldIndex];
+            var item = dndActionListCtrl.actionList.items[oldIndex];
 
-        	dndActionListCtrl.actionList.items.splice(oldIndex, 1);
-        	ctrl.actionList.items.splice(index, 0, item);
+            dndActionListCtrl.actionList.items.splice(oldIndex, 1);
+            ctrl.actionList.items.splice(index, 0, item);
 
-        	if(ctrl === dndActionListCtrl) {
-            	ctrl.actionList.items.forEach(function(v, i) {
-            		v.order = i;
-            	});
-            	Card.updateActionItemOrder(ctrl.actionList.id, ctrl.actionList.items.map(function(v) {return v.id}));
-        	} else {
-        		Card.moveActionItem(item.id, ctrl.actionList.id, {newContainer: ctrl.actionList.items.map(function(v) {return v.id})});
-        	}
+            if(ctrl === dndActionListCtrl) {
+                ctrl.actionList.items.forEach(function(v, i) {
+                    v.order = i;
+                });
+                Card.updateActionItemOrder(ctrl.actionList.id, ctrl.actionList.items.map(function(v) {return v.id}));
+            } else {
+                Card.moveActionItem(item.id, ctrl.actionList.id, {newContainer: ctrl.actionList.items.map(function(v) {return v.id})});
+            }
         }
 
         ctrl.saveName = function(name) {

@@ -6,7 +6,7 @@
     components.component('lvgSidebarContent', {
         templateUrl: 'app/components/sidebar-content/sidebar-content.html',
         controller: function($window, $http, User, EventBus, StompClient) {
-        	var ctrl = this;
+            var ctrl = this;
 
             var v;
             var currentlyFetching = {then: function (f) {
@@ -37,7 +37,7 @@
                     User.current().then(function (u) {
                         StompClient.disconnect(function () {
                             $http.post('logout' + '/' + u.provider + '/').then(function (res) {
-                            	$window.location.reload();
+                                $window.location.reload();
                             });
                         });
                     });

@@ -5,7 +5,7 @@
     var components = angular.module('lavagna.components');
 
     components.component('lvgBoardSidebar', {
-    	bindings: {
+        bindings: {
             board: '<',
             project: '<',
             sideBarLocation: '<',
@@ -20,7 +20,7 @@
     function BoardSidebarController(Board, Card, StompClient, SharedBoardDataService) {
 
         var ctrl = this;
-        
+
         //
         ctrl.dropCard = dropCard;
         ctrl.nextPage = nextPage;
@@ -28,22 +28,22 @@
         ctrl.dragStartCard = dragStartCard;
         ctrl.removeCard = removeCard;
         //
-        
-        
+
+
         var startDragListener = angular.noop;
         var stopDragListener = angular.noop;
         var stompSubscription = angular.noop;
-        
+
         ctrl.$onInit = function() {
-        	ctrl.sidebarLoaded = false;
-        	
+            ctrl.sidebarLoaded = false;
+
             switchLocation();
-            
+
             startDragListener = SharedBoardDataService.listenToDragStart(function() {
-            	ctrl.dragFromBoard = true;
+                ctrl.dragFromBoard = true;
             });
             stopDragListener = SharedBoardDataService.listenToDragEnd(function() {
-            	ctrl.dragFromBoard = false;
+                ctrl.dragFromBoard = false;
             });
         };
 
@@ -54,9 +54,9 @@
         };
 
         ctrl.$onDestroy = function() {
-        	startDragListener();
-        	stopDragListener();
-        	stompSubscription();
+            startDragListener();
+            stopDragListener();
+            stompSubscription();
         }
 
         function sideBarLoad(direction) {
@@ -83,29 +83,29 @@
         }
 
         function dragStartCard(item) {
-        	SharedBoardDataService.dndColumnOrigin = ctrl;
-        	SharedBoardDataService.dndCardOrigin = item;
+            SharedBoardDataService.dndColumnOrigin = ctrl;
+            SharedBoardDataService.dndCardOrigin = item;
         }
 
         function removeCard(card) {
-        	var cards = ctrl.sidebar.cards;
-        	for(var i = 0; i < cards.length; i++) {
-        		if(cards[i].id === card.id) {
-        			cards.splice(i, 1);
-        			break;
-        		}
-        	}
+            var cards = ctrl.sidebar.cards;
+            for(var i = 0; i < cards.length; i++) {
+                if(cards[i].id === card.id) {
+                    cards.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         function dropCard() {
-        	var card = SharedBoardDataService.dndCardOrigin;
-        	Card.moveAllFromColumnToLocation(card.columnId, [card.id], ctrl.sideBarLocation);
+            var card = SharedBoardDataService.dndCardOrigin;
+            Card.moveAllFromColumnToLocation(card.columnId, [card.id], ctrl.sideBarLocation);
         }
 
         function switchLocation() {
             if (stompSubscription !== angular.noop) {
-            	stompSubscription();
-            	stompSubscription = angular.noop;
+                stompSubscription();
+                stompSubscription = angular.noop;
             }
 
             if(ctrl.sideBarLocation && ctrl.sideBarLocation != 'NONE') {

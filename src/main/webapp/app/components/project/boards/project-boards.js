@@ -1,10 +1,10 @@
 (function () {
 
-	'use strict';
+    'use strict';
 
-	var components = angular.module('lavagna.components');
+    var components = angular.module('lavagna.components');
 
-	components.component('lvgProjectBoards', {
+    components.component('lvgProjectBoards', {
         bindings: {
             project: '<',
             user: '<'
@@ -27,7 +27,7 @@
 
         ctrl.$onInit = function init() {
 
-        	ctrl.boardPage = 1;
+            ctrl.boardPage = 1;
             ctrl.boardsPerPage = 10;
             ctrl.maxVisibleBoardPages = 3;
             ctrl.cardProjectPage = 1;
@@ -43,8 +43,8 @@
         }
 
         ctrl.$onDestroy = function onDestroy() {
-        	metadataSubscription();
-        	onDestroyStomp();
+            metadataSubscription();
+            onDestroyStomp();
         }
 
         //
@@ -60,10 +60,10 @@
         function loadUserCardsInProject(page) {
             User.isAuthenticated().then(function() {return User.hasPermission('SEARCH')}).then(function() {
                 User.cardsByProject(ctrl.project.shortName, page).then(function(cards) {
-                	ctrl.totalProjectOpenCards = cards.count;
-                	ctrl.cardsCurrentPage = cards.currentPage+1;
-                	ctrl.cardsTotalPages = cards.totalPages;
-                	ctrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
+                    ctrl.totalProjectOpenCards = cards.count;
+                    ctrl.cardsCurrentPage = cards.currentPage+1;
+                    ctrl.cardsTotalPages = cards.totalPages;
+                    ctrl.userProjectCards = cards.found.slice(0, cards.countPerPage);
                 });
             });
         }
@@ -73,57 +73,57 @@
         }
 
         function showBoardDialog($event) {
-		    $mdDialog.show({
-		    	templateUrl: 'app/components/project/boards/add-board-dialog.html',
-		    	fullscreen: true,
-		    	controllerAs: 'boardDialogCtrl',
-		    	locals: {projectName : ctrl.project.shortName},
-		    	bindToController:true,
-		    	controller: function() {
-		    		var ctrl = this;
+            $mdDialog.show({
+                templateUrl: 'app/components/project/boards/add-board-dialog.html',
+                fullscreen: true,
+                controllerAs: 'boardDialogCtrl',
+                locals: {projectName : ctrl.project.shortName},
+                bindToController:true,
+                controller: function() {
+                    var ctrl = this;
 
-		    		ctrl.board = {};
+                    ctrl.board = {};
 
-		            ctrl.errors = {};
+                    ctrl.errors = {};
 
-		    		ctrl.suggestBoardShortName = function(board) {
-		                if(board == null ||board.name == null || board.name == "") {
-		                    return;
-		                }
-		                Board.suggestShortName(board.name).then(function(res) {
-		                    board.shortName = res.suggestion;
-		                    ctrl.checkBoardShortName(res.suggestion);
-		                });
-		            };
+                    ctrl.suggestBoardShortName = function(board) {
+                        if(board == null ||board.name == null || board.name == "") {
+                            return;
+                        }
+                        Board.suggestShortName(board.name).then(function(res) {
+                            board.shortName = res.suggestion;
+                            ctrl.checkBoardShortName(res.suggestion);
+                        });
+                    };
 
-		            ctrl.checkBoardShortName = function(val) {
-		                if(val !== undefined && val !== null) {
-		                	Board.checkShortName(val).then(function(res) {
-		                	    ctrl.errors.shortName = res === false ? true : undefined;
-		                    });
-		                } else {
-		                	ctrl.errors.shortName = undefined;
-		                }
-		            };
+                    ctrl.checkBoardShortName = function(val) {
+                        if(val !== undefined && val !== null) {
+                            Board.checkShortName(val).then(function(res) {
+                                ctrl.errors.shortName = res === false ? true : undefined;
+                            });
+                        } else {
+                            ctrl.errors.shortName = undefined;
+                        }
+                    };
 
-		            ctrl.createBoard = function(board) {
-		                board.shortName = board.shortName.toUpperCase();
-		                Project.createBoard(ctrl.projectName, board).then(function() {
-		                    board.name = null;
-		                    board.description = null;
-		                    board.shortName = null;
-		                    ctrl.checkedShortName = undefined;
-		                    Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
-		                }, function(error) {
-		                    Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
-		                });
-		            };
+                    ctrl.createBoard = function(board) {
+                        board.shortName = board.shortName.toUpperCase();
+                        Project.createBoard(ctrl.projectName, board).then(function() {
+                            board.name = null;
+                            board.description = null;
+                            board.shortName = null;
+                            ctrl.checkedShortName = undefined;
+                            Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
+                        }, function(error) {
+                            Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
+                        });
+                    };
 
-		            ctrl.close = function() {
-                    	$mdDialog.hide();
+                    ctrl.close = function() {
+                        $mdDialog.hide();
                     }
-		    	}
-		    });
+                }
+            });
         }
 
         function updateShowArchivedItems(value) {

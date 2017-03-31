@@ -1,3 +1,4 @@
+/* eslint indent: 0 */
 (function() {
     'use strict';
 
@@ -36,6 +37,5 @@
                    +   '</div>'
     });
 
-    function ActivityController() {
-    }
+    function ActivityController() {}
 })();
