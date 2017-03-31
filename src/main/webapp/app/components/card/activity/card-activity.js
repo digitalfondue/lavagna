@@ -17,13 +17,14 @@
         var NUMBER_OF_COMMENTS;
         var NUMBER_OF_ACTIVITIES;
 
+        ctrl.sortDescending = true;
         ctrl.activityFilterValue = 'COMMENT';
         ctrl.renderedItems = 10;
 
         var ITEMS_INCREMENT = 10;
 
         function activityFilter (activity, index, activities) {
-            if(ctrl.activityFilterValue === null) {
+            if(!angular.isDefined(ctrl.activityFilterValue)) {
                 return true;
             }
 
@@ -32,10 +33,14 @@
 
         ctrl.resetVisibleCount = function () {
             ctrl.renderedItems = 10;
-        }
+        };
+
+        ctrl.hasMore = function () {
+            return ctrl.renderedItems <= (ctrl.activityFilterValue === 'COMMENT' ? NUMBER_OF_COMMENTS : NUMBER_OF_ACTIVITIES);
+        };
 
         ctrl.loadMore = function () {
-            if(ctrl.renderedItems >= (ctrl.activityFilter == 'COMMENT' ? NUMBER_OF_COMMENTS : NUMBER_OF_ACTIVITIES)) {
+            if(!ctrl.hasMore()) {
                 return;
             }
 
@@ -73,16 +78,12 @@
             unbindCardCache = EventBus.on('refreshCardCache-' + card.id, function() {
                 loadData({activities: loadActivity()});
             });
-        }
+        };
 
         ctrl.$onDestroy = function onDestroy() {
         	stompSubscription();
         	unbindCardCache();
-        }
-
-        ctrl.$postLink = function postLink() {
-
-        }
+        };
 
         function loadComments() {
             return Card.comments(card.id);
@@ -125,5 +126,5 @@
                 }
             });
         }
-    };
+    }
 })();

@@ -4,15 +4,29 @@
             <div class="row row-inherit">
                 <div class="lvg-headline"><span data-translate>card.activity</span></div>
                 <span class="flex"></span>
-                <md-radio-group class="lvg-card-activity__filter" ng-model="$ctrl.activityFilterValue" ng-change="$ctrl.resetVisibleCount()">
-                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="'COMMENT'" ng-checked="true">{{'card.activity.comments' | translate}}</md-radio-button>
-                    <md-radio-button class="lvg-card-activity__filter-radio md-primary" ng-value="null">{{'card.activity.all' | translate}}</md-radio-button>
-                </md-radio-group>
+                <md-input-container class="lvg-card-activity__filter">
+                    <md-select ng-model="$ctrl.activityFilterValue" ng-change="$ctrl.resetVisibleCount()">
+                        <md-option ng-value="'COMMENT'"><span translate>card.activity.comments</span></md-option>
+                        <md-option ng-value="undefined"><span translate>card.activity.all</span></md-option>
+                    </md-select>
+                </md-input-container>
+                <md-button class="lvg-small-icon-button"
+                           ng-click="$ctrl.sortDescending = true"
+                           ng-hide="$ctrl.sortDescending">
+                    <md-tooltip>{{::('card.activity.sort'|translate)}}</md-tooltip>
+                    <md-icon md-svg-icon="sort-ascending"></md-icon>
+                </md-button>
+                <md-button class="lvg-small-icon-button"
+                           ng-click="$ctrl.sortDescending = false"
+                           ng-show="$ctrl.sortDescending">
+                    <md-tooltip>{{::('card.activity.sort'|translate)}}</md-tooltip>
+                    <md-icon md-svg-icon="sort-descending"></md-icon>
+                </md-button>
             </div>
         </md-card-title-text>
     </md-card-title>
-    <md-card-content lvg-infinite-scroll listen=".lvg-card-modal__background" call="$ctrl.loadMore()">
-        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'+id' | limitTo:$ctrl.renderedItems track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
+    <md-card-content>
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'time':$ctrl.sortDescending | limitTo:$ctrl.renderedItems track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
             <div ng-switch="::activity.cardEvent" >
                 <div ng-switch-when="COMMENT">
                     <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
@@ -28,8 +42,12 @@
                 </div>
             </div>
         </div>
-        <div ng-if="$ctrl.activityFilterValue == 'COMMENT' && !$ctrl.hasComments" class="lvg-card-activity">
+        <div ng-if="$ctrl.activityFilterValue === 'COMMENT' && !$ctrl.hasComments" class="lvg-card-activity">
             <i class="lvg-card-activity__no-comments" translate="card.activity.no.comments"></i>
+        </div>
+        <div ng-if="$ctrl.hasMore()"
+             class="flex lvg-card-activity__load-more">
+            <md-button ng-click="$ctrl.loadMore()" translate>button.load.more</md-button>
         </div>
     </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
