@@ -1,10 +1,10 @@
 (function () {
 
-	'use strict';
+    'use strict';
 
-	var components = angular.module('lavagna.components');
+    var components = angular.module('lavagna.components');
 
-	components.component('lvgProjectStatistics', {
+    components.component('lvgProjectStatistics', {
         controller: ProjectStatisticsController,
         bindings: {
             project: '<'
@@ -12,8 +12,8 @@
         templateUrl: 'app/components/project/statistics/project-statistics.html'
     });
 
-	function ProjectStatisticsController($translate, $filter, Project, Board) {
-	    var ctrl = this;
+    function ProjectStatisticsController($translate, $filter, Project, Board) {
+        var ctrl = this;
 
         ctrl.showCreatedAndClosedCards = false;
         ctrl.showCardsHistory = false;
@@ -160,8 +160,8 @@
         });
 
         Project.getMetadata(ctrl.project.shortName).then(function(metadata) {
-        	ctrl.metadata = metadata;
+            ctrl.metadata = metadata;
         })
-	}
+    }
 
 })();

@@ -1,3 +1,4 @@
+/* eslint indent: 0 */
 (function() {
     'use strict';
 
@@ -87,6 +88,7 @@
         ctrl.updateComment = function(commentToEdit) {
             Card.updateComment(ctrl.comment.id, {content: commentToEdit});
         };
+
         ctrl.delete = function() {
             Card.deleteComment(ctrl.comment.id).then(function(event) {
                 Notification.addNotification('success', { key : 'notification.card.COMMENT_DELETE.success'}, true, true, function(notification) {

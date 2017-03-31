@@ -17,7 +17,7 @@
         var ctrl = this;
 
         ctrl.$onInit = function init() {
-        	ctrl.size = ctrl.size || 28;
+            ctrl.size = ctrl.size || 28;
             ctrl.colorHex = ctrl.colorHex || '#333';
             ctrl.bgColorHex = ctrl.bgColorHex || '#e5e5e5';
 

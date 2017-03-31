@@ -38,7 +38,7 @@
         }
 
         ctrl.$onDestroy = function() {
-        	unbind();
+            unbind();
         };
 
         ctrl.update = function (project) {

@@ -4,21 +4,21 @@
     components.component('lvgNavbarAbout', {
         templateUrl: 'app/components/navbar/about/navbar-about.html',
         controller: function(User, $mdSidenav, $state, $window) {
-             var ctrl = this;
-             
-             ctrl.$state = $state;
+            var ctrl = this;
 
-             User.currentCachedUser().then(function (u) {
-                 ctrl.navbarUser = u;
-             });
+            ctrl.$state = $state;
 
-             ctrl.toggleSidebar = function() {
-            	 $mdSidenav('left').toggle();
-             }
+            User.currentCachedUser().then(function (u) {
+                ctrl.navbarUser = u;
+            });
 
-             ctrl.login = function () {
-                 $window.location.href = User.loginUrl();
-             }
+            ctrl.toggleSidebar = function() {
+                $mdSidenav('left').toggle();
+            }
+
+            ctrl.login = function () {
+                $window.location.href = User.loginUrl();
+            }
         }
     });
 })();

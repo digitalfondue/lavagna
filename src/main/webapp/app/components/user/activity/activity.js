@@ -16,17 +16,17 @@
 
 
         ctrl.$onInit = function init() {
-        	ctrl.userProvider = ctrl.profile.user.provider;
+            ctrl.userProvider = ctrl.profile.user.provider;
             ctrl.userName = ctrl.profile.user.username;
             ctrl.page = 0;
-            
+
             loadUser(ctrl.profile);
         }
-        
+
 
         ctrl.loadFor = loadFor;
 
-        
+
         function loadFor(page) {
             User.getUserProfile(ctrl.userProvider, ctrl.userName, page)
                 .then(function (profile) {
@@ -36,8 +36,8 @@
                     ctrl.page = page
                 });
         };
-        
-        
+
+
         function loadUser (profile) {
             ctrl.profile = profile;
             ctrl.user = profile.user;

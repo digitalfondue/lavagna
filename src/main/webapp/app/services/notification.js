@@ -1,46 +1,46 @@
 (function () {
 
-	'use strict';
+    'use strict';
 
-	var services = angular.module('lavagna.services');
+    var services = angular.module('lavagna.services');
 
-	services.factory('Notification', function ($rootScope, $timeout) {
+    services.factory('Notification', function ($rootScope, $timeout) {
 
-		var notifications = [];
+        var notifications = [];
 
-		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-			notifications.length = 0; //empty
-		});
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            notifications.length = 0; //empty
+        });
 
-		return {
-			addNotification: function (_type, _data, _dismissable, _undo, _undoFn) {
-				notifications.push({event: _data, type: _type, dismissable: _dismissable, undo: _undo, undoFn : _undoFn, acknowledge : function() {
-						var index = notifications.indexOf(this);
-						notifications.splice(index, 1);
-					}
-				});
-			},
-			addAutoAckNotification: function (_type, _data, _undo) {
+        return {
+            addNotification: function (_type, _data, _dismissable, _undo, _undoFn) {
+                notifications.push({event: _data, type: _type, dismissable: _dismissable, undo: _undo, undoFn : _undoFn, acknowledge : function() {
+                    var index = notifications.indexOf(this);
+                    notifications.splice(index, 1);
+                }
+                });
+            },
+            addAutoAckNotification: function (_type, _data, _undo) {
 
-				var notification = {event: _data, type: _type, undo: _undo, acknowledge : function() {
-						var index = notifications.indexOf(this);
-						notifications.splice(index, 1);
-					}
-				};
+                var notification = {event: _data, type: _type, undo: _undo, acknowledge : function() {
+                    var index = notifications.indexOf(this);
+                    notifications.splice(index, 1);
+                }
+                };
 
-				notifications.push(notification);
-				$timeout(function () {
-					var index = notifications.indexOf(notification);
-					notifications.splice(index, 1);
-				}, 5000);
-			},
-			acknowledgeNotification: function (notification) {
-				var index = notifications.indexOf(notification);
-				notifications.splice(index, 1);
-			},
-			getNotifications : function () {
-				return notifications;
-			}
-		}
-	});
+                notifications.push(notification);
+                $timeout(function () {
+                    var index = notifications.indexOf(notification);
+                    notifications.splice(index, 1);
+                }, 5000);
+            },
+            acknowledgeNotification: function (notification) {
+                var index = notifications.indexOf(notification);
+                notifications.splice(index, 1);
+            },
+            getNotifications : function () {
+                return notifications;
+            }
+        }
+    });
 })();

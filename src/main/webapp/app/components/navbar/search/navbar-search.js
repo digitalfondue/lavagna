@@ -7,19 +7,19 @@
             project: '<'
         },
         controller: function(User, $mdSidenav, $state, $window) {
-             var ctrl = this;
+            var ctrl = this;
 
-             User.currentCachedUser().then(function (u) {
-                 ctrl.navbarUser = u;
-             });
+            User.currentCachedUser().then(function (u) {
+                ctrl.navbarUser = u;
+            });
 
-             ctrl.toggleSidebar = function() {
-            	 $mdSidenav('left').toggle();
-             }
+            ctrl.toggleSidebar = function() {
+                $mdSidenav('left').toggle();
+            }
 
-             ctrl.login = function () {
-            	 $window.location.href = User.loginUrl();
-             }
+            ctrl.login = function () {
+                $window.location.href = User.loginUrl();
+            }
         }
     });
 })();

@@ -57,7 +57,7 @@
         var unbindCardCache = angular.noop;
 
         ctrl.$onInit = function init() {
-        	ctrl.comments = {};
+            ctrl.comments = {};
             ctrl.activities = [];
 
             loadData({comments: loadComments(), activities: loadActivity()});
@@ -81,8 +81,8 @@
         };
 
         ctrl.$onDestroy = function onDestroy() {
-        	stompSubscription();
-        	unbindCardCache();
+            stompSubscription();
+            unbindCardCache();
         };
 
         function loadComments() {

@@ -26,73 +26,73 @@
         ctrl.dragEndCard = dragEndCard;
         ctrl.removeCard = removeCard;
         ctrl.dropCard = dropCard ;
-		ctrl.selectAllInColumn = selectAllInColumn;
-	    ctrl.unSelectAllInColumn = unSelectAllInColumn;
-	    ctrl.newCard = newCard;
-		ctrl.assignToCurrentUser =assignToCurrentUser;
-		ctrl.removeAssignForCurrentUser =removeAssignForCurrentUser;
-		ctrl.watchCard =watchCard;
-    	ctrl.unWatchCard =unWatchCard;
-		ctrl.moveColumn =moveColumn;
-		ctrl.saveNewColumnName = saveNewColumnName;
-		ctrl.setColumnDefinition = setColumnDefinition;
-		ctrl.moveAllCardsInColumn = moveAllCardsInColumn;
+        ctrl.selectAllInColumn = selectAllInColumn;
+        ctrl.unSelectAllInColumn = unSelectAllInColumn;
+        ctrl.newCard = newCard;
+        ctrl.assignToCurrentUser =assignToCurrentUser;
+        ctrl.removeAssignForCurrentUser =removeAssignForCurrentUser;
+        ctrl.watchCard =watchCard;
+        ctrl.unWatchCard =unWatchCard;
+        ctrl.moveColumn =moveColumn;
+        ctrl.saveNewColumnName = saveNewColumnName;
+        ctrl.setColumnDefinition = setColumnDefinition;
+        ctrl.moveAllCardsInColumn = moveAllCardsInColumn;
         //
 
-		var stompSub = angular.noop;
-		var selectAllSub = angular.noop;
-		var unselectAllSub = angular.noop;
+        var stompSub = angular.noop;
+        var selectAllSub = angular.noop;
+        var unselectAllSub = angular.noop;
 
-		ctrl.$onInit = function init() {
-			ctrl.user = ctrl.userRef();
-	        ctrl.searchFilter = ctrl.searchFilterRef();
-	        ctrl.metadata = ctrl.metadataRef();
+        ctrl.$onInit = function init() {
+            ctrl.user = ctrl.userRef();
+            ctrl.searchFilter = ctrl.searchFilterRef();
+            ctrl.metadata = ctrl.metadataRef();
 
-	        initializeColumn();
-	        //capture all status variables
-	        ctrl.columnState = {};
-	        selectAllSub = EventBus.on('selectall', selectAllInColumn);
-	        unselectAllSub = EventBus.on('unselectall', unSelectAllInColumn);
-		}
+            initializeColumn();
+            //capture all status variables
+            ctrl.columnState = {};
+            selectAllSub = EventBus.on('selectall', selectAllInColumn);
+            unselectAllSub = EventBus.on('unselectall', unSelectAllInColumn);
+        }
 
-		ctrl.$onDestroy = function onDestroy() {
-			stompSub();
-			selectAllSub();
-			unselectAllSub();
-		}
+        ctrl.$onDestroy = function onDestroy() {
+            stompSub();
+            selectAllSub();
+            unselectAllSub();
+        }
         //
 
-		function initializeColumn() {
+        function initializeColumn() {
 
             var columnId = ctrl.column.id;
 
             function loadCards() {
                 Card.findByColumn(columnId).then(function(res) {
-                	res.columnId = columnId;
-                	ctrl.cardsInColumn = res;
-                	ctrl.loaded = true;
+                    res.columnId = columnId;
+                    ctrl.cardsInColumn = res;
+                    ctrl.loaded = true;
 
-                	// sync selection, in case of a moved selected card
-                	// not optimal, but it should be good enough
-                	if(ctrl.selectedCards[ctrl.column.id]) {
-                		for(var key in ctrl.selectedCards[ctrl.column.id]) {
-                			if(ctrl.selectedCards[ctrl.column.id][key] && !idExist(parseInt(key))) {
-                				delete ctrl.selectedCards[ctrl.column.id][key];
-                			}
-                		}
-                	}
+                    // sync selection, in case of a moved selected card
+                    // not optimal, but it should be good enough
+                    if(ctrl.selectedCards[ctrl.column.id]) {
+                        for(var key in ctrl.selectedCards[ctrl.column.id]) {
+                            if(ctrl.selectedCards[ctrl.column.id][key] && !idExist(parseInt(key))) {
+                                delete ctrl.selectedCards[ctrl.column.id][key];
+                            }
+                        }
+                    }
 
 
-                	function idExist(id) {
-                		for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
-                			if(ctrl.cardsInColumn[i].id === id) {
-                				return true;
-                			}
-                		}
-                		return false;
-                	}
+                    function idExist(id) {
+                        for(var i = 0; i < ctrl.cardsInColumn.length;i++) {
+                            if(ctrl.cardsInColumn[i].id === id) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
 
-                	//
+                    //
                 });
             };
 
@@ -102,61 +102,61 @@
 
 
         function dragStartCard(item) {
-        	SharedBoardDataService.startDrag();
-        	SharedBoardDataService.dndColumnOrigin = ctrl;
-        	SharedBoardDataService.dndCardOrigin = item;
+            SharedBoardDataService.startDrag();
+            SharedBoardDataService.dndColumnOrigin = ctrl;
+            SharedBoardDataService.dndCardOrigin = item;
         }
 
         function dragEndCard(item) {
-        	SharedBoardDataService.endDrag();
+            SharedBoardDataService.endDrag();
         }
 
         function removeCard(card) {
-        	for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
-        		if(ctrl.cardsInColumn[i].id === card.id) {
-        			ctrl.cardsInColumn.splice(i, 1);
-        			break;
-        		}
-        	}
+            for(var i = 0; i < ctrl.cardsInColumn.length; i++) {
+                if(ctrl.cardsInColumn[i].id === card.id) {
+                    ctrl.cardsInColumn.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         function dropCard(index) {
-        	var card = SharedBoardDataService.dndCardOrigin;
-        	SharedBoardDataService.dndCardOrigin = null;
-        	if(!card) {
-        		return;
-        	}
-        	//ignore drop as it's the same position
-        	if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
-        		return;
-        	}
+            var card = SharedBoardDataService.dndCardOrigin;
+            SharedBoardDataService.dndCardOrigin = null;
+            if(!card) {
+                return;
+            }
+            //ignore drop as it's the same position
+            if(card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
+                return;
+            }
 
-        	// remove card from origin column
-        	if(SharedBoardDataService.dndColumnOrigin) {
-        		SharedBoardDataService.dndColumnOrigin.removeCard(card);
-        		SharedBoardDataService.dndColumnOrigin = null;
-        	}
+            // remove card from origin column
+            if(SharedBoardDataService.dndColumnOrigin) {
+                SharedBoardDataService.dndColumnOrigin.removeCard(card);
+                SharedBoardDataService.dndColumnOrigin = null;
+            }
 
-        	// insert card at correct index
-        	ctrl.cardsInColumn.splice(index, 0, card);
-        	//
+            // insert card at correct index
+            ctrl.cardsInColumn.splice(index, 0, card);
+            //
 
-        	var oldColumnId = card.columnId;
-        	var newColumnId = ctrl.column.id;
-        	var cardId = card.id;
-        	var ids = [];
+            var oldColumnId = card.columnId;
+            var newColumnId = ctrl.column.id;
+            var cardId = card.id;
+            var ids = [];
 
-        	angular.forEach(ctrl.cardsInColumn, function(card) {
-        		ids.push(card.id);
-        	});
+            angular.forEach(ctrl.cardsInColumn, function(card) {
+                ids.push(card.id);
+            });
 
-        	if(oldColumnId === newColumnId) {
-        		//internal reorder
+            if(oldColumnId === newColumnId) {
+                //internal reorder
                 Board.updateCardOrder(ctrl.boardShortName, oldColumnId, ids).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
             } else {
-            	//move card from one column to another
+                //move card from one column to another
                 Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function(error) {
                     Notification.addAutoAckNotification('error', { key : 'notification.generic.error'}, false);
                 });
@@ -165,9 +165,9 @@
 
         function selectAllInColumn() {
             angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function(c) {
-            	if(!ctrl.selectedCards[ctrl.column.id]) {
-            		ctrl.selectedCards[ctrl.column.id] = {};
-            	}
+                if(!ctrl.selectedCards[ctrl.column.id]) {
+                    ctrl.selectedCards[ctrl.column.id] = {};
+                }
                 ctrl.selectedCards[ctrl.column.id][c.id] = true;
             });
             EventBus.emit('updatecheckbox');
@@ -234,15 +234,15 @@
 
 
             var title = $translate.instant('board.column.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
-			var confirm = $mdDialog.confirm()
-				.title(title)
-				.ariaLabel(title)
-				.ok($translate.instant('button.yes'))
-				.cancel($translate.instant('button.no'));
+            var confirm = $mdDialog.confirm()
+                .title(title)
+                .ariaLabel(title)
+                .ok($translate.instant('button.yes'))
+                .cancel($translate.instant('button.no'));
 
-			$mdDialog.show(confirm).then(function() {
-				confirmAction();
-			}, function() {});
+            $mdDialog.show(confirm).then(function() {
+                confirmAction();
+            }, function() {});
         }
 
         function moveAllCardsInColumn(cards, location) {
@@ -253,15 +253,15 @@
             });};
 
             var title = $translate.instant('board.column.operation.move-card-from-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
-			var confirm = $mdDialog.confirm()
-				.title(title)
-				.ariaLabel(title)
-				.ok($translate.instant('button.yes'))
-				.cancel($translate.instant('button.no'));
+            var confirm = $mdDialog.confirm()
+                .title(title)
+                .ariaLabel(title)
+                .ok($translate.instant('button.yes'))
+                .cancel($translate.instant('button.no'));
 
-			$mdDialog.show(confirm).then(function() {
-				confirmAction();
-			}, function() {});
+            $mdDialog.show(confirm).then(function() {
+                confirmAction();
+            }, function() {});
         }
 
         function saveNewColumnName(newName) {

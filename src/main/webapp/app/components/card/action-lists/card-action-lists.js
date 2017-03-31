@@ -20,10 +20,10 @@
         var onDestroyStomp = angular.noop;
 
         ctrl.$onInit = function init() {
-        	loadActionLists();
+            loadActionLists();
 
             //the /card-data has various card data related event that are pushed from the server that we must react
-        	onDestroyStomp = StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
+            onDestroyStomp = StompClient.subscribe('/event/card/' + card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
                 if(type.match(/ACTION_ITEM$/g) !== null || type.match(/ACTION_LIST$/g)) {
                     loadActionLists();
@@ -32,7 +32,7 @@
         }
 
         ctrl.$onDestroy = function onDestroy() {
-        	onDestroyStomp();
+            onDestroyStomp();
         }
 
         function loadActionLists() {
@@ -50,22 +50,22 @@
 
 
         function dropActionLists(index, oldIndex) {
-        	var item = ctrl.actionLists[oldIndex];
+            var item = ctrl.actionLists[oldIndex];
 
-        	ctrl.actionLists.splice(oldIndex, 1);
-        	ctrl.actionLists.splice(index, 0, item);
+            ctrl.actionLists.splice(oldIndex, 1);
+            ctrl.actionLists.splice(index, 0, item);
 
-        	ctrl.actionLists.forEach(function(v, i) {
-        		v.order = i;
-        	});
+            ctrl.actionLists.forEach(function(v, i) {
+                v.order = i;
+            });
 
-        	var ids = ctrl.actionLists.map(function(v) {
-        		return v.id;
-        	});
+            var ids = ctrl.actionLists.map(function(v) {
+                return v.id;
+            });
 
-        	Card.updateActionListOrder(card.id, ids).catch(function(err) {
-        		ctrl.actionLists.splice(index, 1);
-            	ctrl.actionLists.splice(oldIndex, 0, item);
+            Card.updateActionListOrder(card.id, ids).catch(function(err) {
+                ctrl.actionLists.splice(index, 1);
+                ctrl.actionLists.splice(oldIndex, 0, item);
             });
         }
 

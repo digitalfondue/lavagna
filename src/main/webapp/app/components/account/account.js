@@ -6,9 +6,9 @@
 
     components.component('lvgAccount', {
         bindings: {
-        	username: '<',
-        	provider: '<',
-        	isCurrentUser: '<'
+            username: '<',
+            provider: '<',
+            isCurrentUser: '<'
         },
         templateUrl: 'app/components/account/account.html',
         controller: ['$window', 'User', 'CopyToClipboard', 'Notification', 'CONTEXT_PATH', AccountController],

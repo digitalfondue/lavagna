@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('lavagna.components').component('lvgAboutLicenses', {
-    	templateUrl: 'app/components/about/licenses/licenses.html',
+        templateUrl: 'app/components/about/licenses/licenses.html',
         controller: ['$http', LicensesController]
     });
 
@@ -12,7 +12,7 @@
         var ctrl = this;
 
         ctrl.$onInit = function init() {
-        	$http.get('about/THIRD-PARTY.txt').then(function(res) {
+            $http.get('about/THIRD-PARTY.txt').then(function(res) {
                 ctrl.thirdParty=res.data;
             });
         }

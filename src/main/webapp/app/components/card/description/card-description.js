@@ -24,10 +24,10 @@
         var onDestroyStomp = angular.noop;
 
         ctrl.$onInit = function init() {
-        	loadDescription();
+            loadDescription();
 
             //the /card-data has various card data related event that are pushed from the server that we must react
-        	onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
+            onDestroyStomp = StompClient.subscribe('/event/card/' + ctrl.card.id + '/card-data', function(e) {
                 var type = JSON.parse(e.body).type;
                 if(type === 'UPDATE_DESCRIPTION') {
                     loadDescription();
@@ -36,7 +36,7 @@
         };
 
         ctrl.$onDestroy = function onDestroy() {
-        	onDestroyStomp();
+            onDestroyStomp();
         };
 
         // -----

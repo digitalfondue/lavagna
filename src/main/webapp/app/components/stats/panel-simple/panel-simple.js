@@ -1,26 +1,26 @@
 (function() {
 
-	'use strict';
+    'use strict';
 
-	angular.module('lavagna.components').component('lvgStatsPanelSimple', {
-		templateUrl : 'app/components/stats/panel-simple/panel-simple.html',
-		transclude: true,
-		bindings : {
+    angular.module('lavagna.components').component('lvgStatsPanelSimple', {
+        templateUrl : 'app/components/stats/panel-simple/panel-simple.html',
+        transclude: true,
+        bindings : {
             item: '<',
             statsFetcher: '&'
         },
         controller : ['$filter', StatsPanelSimpleController]
-	});
+    });
 
 
-	function StatsPanelSimpleController($filter) {
+    function StatsPanelSimpleController($filter) {
 
-		var ctrl = this;
+        var ctrl = this;
 
-		var colorFilter = $filter('color');
+        var colorFilter = $filter('color');
 
-		ctrl.$onInit = function onInit() {
-		    ctrl.statsFetcher().then(function(stats) {
+        ctrl.$onInit = function onInit() {
+            ctrl.statsFetcher().then(function(stats) {
                 if (stats === undefined) {
                     return;
                 }
@@ -30,11 +30,11 @@
                     ctrl.normalizedStats = createNormalizedData(stats);
                     ctrl.normalizedStatsBGColor = getBackGroundColor(stats);
                 }
-		    });
-		};
+            });
+        };
 
-		function getBackGroundColor(stats) {
-		    if(stats.deferredTaskCount) {
+        function getBackGroundColor(stats) {
+            if(stats.deferredTaskCount) {
                 return colorFilter(stats.deferredTaskCount).color;
             } else if(stats.backlogTaskCount) {
                 return colorFilter(stats.backlogTaskCount).color;
@@ -43,7 +43,7 @@
             } else {
                 return colorFilter(stats.openTaskColor).color;
             }
-		}
+        }
 
         function createNormalizedData(stats) {
             var normalizedStats = [];
@@ -100,6 +100,6 @@
                 parseInt(stats.deferredTaskCount);
             return totalTasks > 0;
         }
-	}
+    }
 
 })();
