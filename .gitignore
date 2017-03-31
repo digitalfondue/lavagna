@@ -2,13 +2,14 @@
 .project
 .settings
 target
+node_modules
 
 # Intellij
 .idea/
 *.iml
 *.iws
 workspace.xml
-coverage-error.log
+*.log
 lib
 
 # Vagrant
