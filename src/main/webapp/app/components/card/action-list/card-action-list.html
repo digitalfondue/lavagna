@@ -64,10 +64,10 @@
                         </md-button>
                     </div>
                 </div>
-                <form class="row row-inherit start-xs middle-xs" ng-if="item.edit" data-ng-submit="$ctrl.saveAction(item.id, item.content); item.edit = false">
+                <form class="row row-inherit start-xs middle-xs" ng-if="item.edit" data-ng-submit="$ctrl.saveAction(item.id, content); item.edit = false">
                     <div class="flex">
                         <md-input-container md-no-float class="lvg-input-container__inline">
-                            <input ng-model="item.content" required>
+                            <input ng-init="content = item.content" ng-model="content" required lvg-on-esc="item.edit = false;">
                         </md-input-container>
                     </div>
                     <div class="flex no-grow">
