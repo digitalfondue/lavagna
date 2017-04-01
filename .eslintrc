@@ -12,7 +12,8 @@
         "module": false,
         "moment": false,
         "marked": false,
-        "Trello": false
+        "Trello": false,
+        "io_lavagna": false
     },
     "plugins": [
         "angular"

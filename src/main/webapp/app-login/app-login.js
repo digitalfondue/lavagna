@@ -51,11 +51,11 @@
             '</p>',
             '</form>',
             '</div>'].join(''),
-        controller: ['configuration', '$window', demoLoginCtrl]
+        controller: ['configuration', '$window', DemoLoginCtrl]
     });
 
 
-    function demoLoginCtrl(configuration, $window) {
+    function DemoLoginCtrl(configuration, $window) {
         var ctrl = this;
 
         ctrl.configuration = configuration;
@@ -87,11 +87,11 @@
             '</p>',
             '</form>',
             '</div>'].join(''),
-        controller: ['configuration', '$window', passwordLoginCtrl]
+        controller: ['configuration', '$window', PasswordLoginCtrl]
     });
 
 
-    function passwordLoginCtrl(configuration, $window) {
+    function PasswordLoginCtrl(configuration, $window) {
         var ctrl = this;
 
         ctrl.configuration = configuration;
@@ -123,10 +123,10 @@
             '</p>',
             '</form>',
             '</div>'].join(''),
-        controller: ['configuration', '$window', ldapLoginCtrl]
+        controller: ['configuration', '$window', LdapLoginCtrl]
     });
 
-    function ldapLoginCtrl(configuration, $window) {
+    function LdapLoginCtrl(configuration, $window) {
         var ctrl = this;
 
         ctrl.configuration = configuration;
@@ -151,10 +151,10 @@
             '<p  class="single-button">',
             '<md-checkbox ng-model="$ctrl.rememberMe" ng-false-value="null"> {{\'login.rememberMe\' | translate}}</md-checkbox>',
             '</p></div></div>'].join(''),
-        controller: ['configuration', '$window', oauthLoginCtrl]
+        controller: ['configuration', '$window', OauthLoginCtrl]
     });
 
-    function oauthLoginCtrl(configuration, $window) {
+    function OauthLoginCtrl(configuration, $window) {
         var ctrl = this;
 
         ctrl.configuration = configuration;
