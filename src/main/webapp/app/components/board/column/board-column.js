@@ -80,7 +80,6 @@
                         }
                     }
 
-
                     function idExist(id) {
                         for (var i = 0; i < ctrl.cardsInColumn.length;i++) {
                             if (ctrl.cardsInColumn[i].id === id) {
@@ -98,7 +97,6 @@
             stompSub = StompClient.subscribe('/event/column/' + columnId + '/card', loadCards);
             loadCards();
         }
-
 
         function dragStartCard(item) {
             SharedBoardDataService.startDrag();
@@ -180,7 +178,6 @@
             EventBus.emit('updatecheckbox');
         }
 
-
         function newCard() {
             $mdDialog.show({
                 template: '<lvg-dialog-new-card board-short-name="vm.boardShortName" columns="vm.columns" column="vm.column"></lvg-dialog-new-card>',
@@ -222,7 +219,6 @@
             BulkOperations.watch(cardByProject, {id: currentUserId});
         }
 
-
         function unWatchCard(cardId, currentUserId) {
             var cardByProject = {};
 
@@ -236,7 +232,6 @@
                     Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
                 });
             };
-
 
             var title = $translate.instant('board.column.operation.move-column-to-location', {columnName: ctrl.column.name, location: $filter('capitalize')(location)});
             var confirm = $mdDialog.confirm()

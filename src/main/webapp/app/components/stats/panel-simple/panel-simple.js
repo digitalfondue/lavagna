@@ -11,7 +11,6 @@
         controller: ['$filter', StatsPanelSimpleController]
     });
 
-
     function StatsPanelSimpleController($filter) {
         var ctrl = this;
 
@@ -98,7 +97,6 @@
                 parseInt(stats.closedTaskCount) +
                 parseInt(stats.backlogTaskCount) +
                 parseInt(stats.deferredTaskCount);
-
 
             return totalTasks > 0;
         }

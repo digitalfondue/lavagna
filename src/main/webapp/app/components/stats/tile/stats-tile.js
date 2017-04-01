@@ -12,7 +12,6 @@
         controller: [StatsTileController]
     });
 
-
     function StatsTileController() {
         var ctrl = this;
 

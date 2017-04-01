@@ -6,7 +6,6 @@
         controller: ['$http', LicensesController]
     });
 
-
     function LicensesController($http) {
         var ctrl = this;
 

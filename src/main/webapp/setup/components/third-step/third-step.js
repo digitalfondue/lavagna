@@ -6,7 +6,6 @@
         templateUrl: 'components/third-step/third-step.html'
     });
 
-
     function SetupUserCtrl($window, Configuration, $http, $state) {
         var ctrl = this;
 

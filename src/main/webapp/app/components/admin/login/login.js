@@ -45,7 +45,6 @@
 
                 ctrl.oauth.baseUrl = oauth.baseUrl || CONTEXT_PATH;
 
-
                 for (var i = 0; i < oauth.providers.length;i++) {
                     ctrl.oauth[oauth.providers[i].provider] = oauth.providers[i];
                     ctrl.oauth[oauth.providers[i].provider].present = true;
@@ -119,7 +118,6 @@
                 addProviderIfPresent(newOauthConf.providers, ctrl.oauth[provider.name], provider.name);
             });
 
-
             if (oauthNewProvider) {
                 newOauthConf.providers.push({
                     provider: oauthNewProvider.type.name + '-' + oauthNewProvider.name,
@@ -141,7 +139,6 @@
                 Notification.addAutoAckNotification('error', { key: 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
             }).then(loadConfiguration);
         };
-
 
         // TODO: in the future, move to a separate component
         ctrl.openOauthAddNewModal = function () {

@@ -52,7 +52,6 @@
                 BulkOperations.setMilestone(ctrl.formatBulkRequest(), milestone);
             };
 
-
             ctrl.toggleSidebar = function (location) {
                 if (location === ctrl.sideBarLocation) {
                     ctrl.toggledSidebar = !ctrl.toggledSidebar;

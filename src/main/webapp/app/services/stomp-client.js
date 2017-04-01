@@ -39,7 +39,6 @@
                     });
                 }
 
-
                 $log.log('callback with id ' + identifier + ' registered for', path);
                 callbacks[path][identifier] = {callback: callback};
                 callbacks[path].count++;

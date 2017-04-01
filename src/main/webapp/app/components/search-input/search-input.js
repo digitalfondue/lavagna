@@ -251,7 +251,6 @@
                 return res;
             }
 
-
             // NEW AUTOCOMPLETE
             function selectedItemChange(item) {
             }
@@ -285,7 +284,6 @@
             }
         }
     });
-
 
     function tryParse(q, Search, $log) {
         if (q === null || q === undefined || q.trim() === '') {

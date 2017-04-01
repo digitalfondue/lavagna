@@ -16,7 +16,6 @@
 
         ctrl.removeLabelValue = removeLabelValue;
 
-
         ctrl.$onInit = function init() {
             ctrl.labelValuesCntUpdate = 0;
         };

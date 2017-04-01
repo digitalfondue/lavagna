@@ -32,7 +32,6 @@
             });
         }
 
-
         function updateAllChangedConfiguration() {
             Admin.findAllConfiguration().then(function (res) {
                 // fetch all changed keys

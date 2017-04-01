@@ -54,7 +54,6 @@
         };
     });
 
-
     directives.directive('lvgHasAtLeastOnePermission', function (User, $stateParams) {
         return {
             restrict: 'A',

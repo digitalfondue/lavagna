@@ -3,7 +3,6 @@
 
     var directives = angular.module('lavagna.directives');
 
-
     directives.directive('lvgOnEsc', ['$parse', function ($parse, $timeout) {
         return {
             restrict: 'A',

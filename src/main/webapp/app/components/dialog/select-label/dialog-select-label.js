@@ -15,7 +15,6 @@
             controller: ['$mdDialog', 'Project', '$filter', DialogSelectLabelController]
         });
 
-
     function DialogSelectLabelController($mdDialog, Project, $filter) {
         var ctrl = this;
 

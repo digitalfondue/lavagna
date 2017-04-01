@@ -28,7 +28,6 @@
         ctrl.removeMilestone = removeMilestone;
         //
 
-
         var stompSubscription = angular.noop;
 
         ctrl.$onInit = function init() {
@@ -41,7 +40,6 @@
         ctrl.$onDestroy = function onDestroy() {
             stompSubscription();
         };
-
 
         // return the current card in a bulk operation friendly data structure
         function currentCard() {
@@ -78,7 +76,6 @@
                 ctrl.column = column;
             });
         }
-
 
         //
         function moveCard(column) {
@@ -146,7 +143,6 @@
             BulkOperations.removeMilestone(currentCard());
         }
         // ----
-
 
         function loadUserPermissions() {
             User.hasPermissions(COMPONENT_PERMISSIONS, ctrl.project.shortName).then(function (permissions) {

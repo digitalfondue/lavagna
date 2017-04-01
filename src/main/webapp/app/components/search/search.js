@@ -12,7 +12,6 @@
         templateUrl: 'app/components/search/search.html'
     });
 
-
     function SearchController($location, $http, $log, $filter, Search, User, LabelCache, Card, EventBus) {
         var ctrl = this;
 
@@ -82,7 +81,6 @@
             }
         }
 
-
         function moveToPage(page) {
             var loc = $location.search();
 
@@ -90,7 +88,6 @@
             $location.search(loc);
             triggerSearch();
         }
-
 
         function selectedCardsCount() {
             var cnt = 0;

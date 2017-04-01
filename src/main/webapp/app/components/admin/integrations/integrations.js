@@ -8,7 +8,6 @@
         controller: ['$mdDialog', '$translate', 'Notification', 'Integrations', 'Project', AdminIntegrationsController]
     });
 
-
     function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations, Project) {
         var ctrl = this;
 
@@ -36,7 +35,6 @@
                 bindToController: true
             });
         }
-
 
         function deleteDialog(integration, event) {
             var translationKeys = {name: integration.name};

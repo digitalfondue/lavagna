@@ -14,7 +14,6 @@
         }
     });
 
-
     function CardFragmentV2MenuController(BulkOperations, Card, Board, Notification, Project, $filter, User, $stateParams, $element) {
         var ctrl = this;
 
@@ -61,7 +60,6 @@
                 focusOnFirstButton();
             }
         };
-
 
         var cardByProject = {};
 
@@ -143,7 +141,6 @@
                 Board.moveCardToColumn(ctrl.card.id, ctrl.card.columnId, toColumn.id, {newContainer: ids});
             }).then(close);
         }
-
 
         function cloneCard(clonetoColumn) {
             Card.clone(ctrl.card.id, clonetoColumn.columnId).then(function () {

@@ -1,12 +1,10 @@
 (function () {
     var module = angular.module('lavagna-setup');
 
-
     module.component('setupSecondStep', {
         controller: ['$window', 'Configuration', '$http', '$state', SetupLoginCtrl],
         templateUrl: 'components/second-step/second-step.html'
     });
-
 
     function SetupLoginCtrl($window, Configuration, $http, $state) {
         var ctrl = this;
@@ -51,7 +49,6 @@
             var config = [];
 
             var loginType = [];
-
 
             config.push({first: 'AUTHENTICATION_METHOD', second: JSON.stringify([ctrl.authMethod])});
 

@@ -68,7 +68,6 @@
             createCardsHistorySeries('Deferred', $filter('color')(stats.deferredTaskColor).color);
             createCardsHistorySeries('Closed', $filter('color')(stats.closedTaskColor).color);
 
-
             var sortedHistoryIndexes = getSortedIndexes(stats.statusHistory);
 
             // cards history

@@ -19,7 +19,6 @@
             ctrl.baseUrl = ctrl.baseUrlPlaceholder;
         }
 
-
         $http.get('').then(function () {
             ctrl.submitImport = function () {
                 var fd = new FormData();

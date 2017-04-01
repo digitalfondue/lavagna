@@ -10,7 +10,6 @@
     }
     );
 
-
     function StatsChartController() {
         var ctrl = this;
 
@@ -50,7 +49,6 @@
             }
             ctrl.data = data;
         };
-
 
         function getSortedIndexes(array) {
             var sortedIndexes = [];
