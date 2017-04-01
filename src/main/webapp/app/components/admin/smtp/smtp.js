@@ -69,7 +69,7 @@
 
                     $scope.sendTestEmail = function (to) {
                         Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.sending'}, false);
-                        Admin.testSmtpConfig(to)
+                        Admin.testSmtpConfig(configuration, to)
                             .then(function () {
                                 Notification.addAutoAckNotification('success', {key: 'notification.smtp-configuration.success'}, false);
                                 $mdDialog.hide();

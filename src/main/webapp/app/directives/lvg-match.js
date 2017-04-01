@@ -11,15 +11,13 @@
                 modelValueToMatch: '=lvgMatch'
             },
             link: function ($scope, $element, $attrs, ngModel) {
-                ngModel.$validators.lvgMatch = function (ngModelValue, ngViewValue) {
+                ngModel.$validators.lvgMatch = function (ngModelValue) {
                     return ngModelValue === $scope.modelValueToMatch;
                 };
 
-                var unregister = $scope.$watch($scope.modelValueToMatch, function () {
+                $scope.$watch($scope.modelValueToMatch, function () {
                     ngModel.$validate();
                 });
-
-                $scope.$on('$destroy', unregister);
             }
         };
     });

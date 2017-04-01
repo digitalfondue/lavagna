@@ -182,7 +182,7 @@
             findLabelListValue: function (labelId, listValueId) {
                 return this.findLabelListValues(labelId).then(function (values) {
                     for (var i in values) {
-                        if (values[i].id == listValueId) {
+                        if (values[i].id === listValueId) {
                             return values[i];
                         }
                     }

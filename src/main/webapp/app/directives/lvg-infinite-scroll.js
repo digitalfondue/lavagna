@@ -8,7 +8,7 @@
                 listen: '@',
                 call: '&'
             },
-            link: function (scope, $element, $attrs) {
+            link: function (scope, $element) {
                 var element = scope.listen ? $document[0].querySelector(scope.listen) : $element[0];
                 var boundElement = $element[0];
                 var loading = false;
@@ -25,7 +25,7 @@
                 }
 
                 function shouldLoadMore() {
-                    return boundElement == element ? shouldLoadMoreOnElement() : shouldLoadMoreOnBoundElement();
+                    return angular.equals(boundElement, element) ? shouldLoadMoreOnElement() : shouldLoadMoreOnBoundElement();
                 }
 
                 function scrollHandler() {

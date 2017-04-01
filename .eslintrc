@@ -9,13 +9,14 @@
     "globals": {
         "angular": false,
         "inject": false,
+        "io_lavagna": false,
+        "marked": false,
         "module": false,
         "moment": false,
-        "marked": false,
-        "Trello": false,
-        "io_lavagna": false,
         "Stomp": false,
-        "SockJS": false
+        "SockJS": false,
+        "Sortable": false,
+        "Trello": false
     },
     "plugins": [
         "angular"
