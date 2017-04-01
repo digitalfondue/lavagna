@@ -109,22 +109,22 @@
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
 
-                var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, false, $state, $location, subscribers, EventBus);
+                var mainLink = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, true, false, $state, $location, subscribers, EventBus);
 
-                baseDiv.appendChild(a);
+                baseDiv.appendChild(mainLink);
 
                 // card fragment menu
                 if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
-                    var button = createElem('button');
+                    var buttonForMenu = createElem('button');
 
-                    button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
-                    baseDiv.appendChild(button);
+                    buttonForMenu.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
+                    baseDiv.appendChild(buttonForMenu);
 
-                    var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, button, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
+                    var menuEventListener = prepareOpenCardMenu(domElement, $scope, $compile, $mdPanel, buttonForMenu, parent.card, parent.isSelfWatching, parent.isAssignedToCard, parent.user, parent.projectMetadata);
 
-                    button.addEventListener('click', menuEventListener);
+                    buttonForMenu.addEventListener('click', menuEventListener);
                     subscribers.push(function () {
-                        button.removeEventListener('click', menuEventListener);
+                        buttonForMenu.removeEventListener('click', menuEventListener);
                     });
                 }
             } else if (parent.boardView && parent.readOnly) {
@@ -132,10 +132,10 @@
                 angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 
                 if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
-                    var button = createElem('button');
+                    var buttonForMenuReadOnly = createElem('button');
 
-                    button.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
-                    baseDiv.appendChild(button);
+                    buttonForMenuReadOnly.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
+                    baseDiv.appendChild(buttonForMenuReadOnly);
                 }
 
                 if (parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
@@ -149,18 +149,18 @@
                     domElement.appendChild(c);
                 }
             } else if (parent.listView) {
-                var a = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, false, $state, $location, subscribers, EventBus);
+                var mainLinkListView = createMainLink('board.card', parent.projectShortName, parent.boardShortName, parent.card.sequence, false, false, $state, $location, subscribers, EventBus);
 
-                baseDiv.appendChild(a);
+                baseDiv.appendChild(mainLinkListView);
                 baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
             } else if (parent.searchView) {
                 if (User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
                 var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
-                var a = createMainLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, parent.card.columnDefinition === 'CLOSED', $state, $location, subscribers, EventBus);
+                var mainLinkSearchView = createMainLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, parent.card.columnDefinition === 'CLOSED', $state, $location, subscribers, EventBus);
 
-                baseDiv.appendChild(a);
+                baseDiv.appendChild(mainLinkSearchView);
                 baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
             }
             domElement.appendChild(baseDiv);
@@ -378,17 +378,20 @@
         ctrl.$onDestroy = function lvgCardFragmentV2DataInfoCtrlOnDestroy() {
             Tooltip.clean();
 
-            for (var i = 0; i < listeners.length; i++) {
+            var i;
+            var element;
+
+            for (i = 0; i < listeners.length; i++) {
                 listeners[i]();
             }
-            for (var i = 0; i < mouseOverCardElements.length; i++) {
-                var element = mouseOverCardElements[i];
+            for (i = 0; i < mouseOverCardElements.length; i++) {
+                element = mouseOverCardElements[i];
 
                 element.removeEventListener('mouseenter', handleMouseEnterCard);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
-            for (var i = 0; i < mouseOverUserElements.length; i++) {
-                var element = mouseOverUserElements[i];
+            for (i = 0; i < mouseOverUserElements.length; i++) {
+                element = mouseOverUserElements[i];
 
                 element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
@@ -409,7 +412,7 @@
             Tooltip.user($event.target.user, $event.target);
         }
 
-        function handleMouseLeave($event) {
+        function handleMouseLeave() {
             Tooltip.clean();
         }
 

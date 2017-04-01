@@ -45,19 +45,22 @@
         ctrl.$onDestroy = function onDestroy() {
             Tooltip.clean();
 
-            for (var i = 0; i < listeners.length; i++) {
+            var i;
+            var element;
+
+            for (i = 0; i < listeners.length; i++) {
                 listeners[i]();
             }
 
-            for (var i = 0; i < mouseOverUserElements.length; i++) {
-                var element = mouseOverUserElements[i];
+            for (i = 0; i < mouseOverUserElements.length; i++) {
+                element = mouseOverUserElements[i];
 
                 element.removeEventListener('mouseenter', handleMouseEnterUser);
                 element.removeEventListener('mouseleave', handleMouseLeave);
             }
 
-            for (var i = 0; i < mouseOverCardElements.length; i++) {
-                var element = mouseOverCardElements[i];
+            for (i = 0; i < mouseOverCardElements.length; i++) {
+                element = mouseOverCardElements[i];
 
                 element.removeEventListener('mouseenter', handleMouseEnterCard);
                 element.removeEventListener('mouseleave', handleMouseLeave);
@@ -75,7 +78,7 @@
             Tooltip.user($event.target.user, $event.target);
         }
 
-        function handleMouseLeave($event) {
+        function handleMouseLeave() {
             Tooltip.clean();
         }
 
