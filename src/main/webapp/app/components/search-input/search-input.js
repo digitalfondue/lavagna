@@ -252,8 +252,7 @@
             }
 
             // NEW AUTOCOMPLETE
-            function selectedItemChange(item) {
-            }
+            function selectedItemChange() {}
 
             function transformChip(chip) {
                 if (chip.type === 'example') {

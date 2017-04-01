@@ -55,7 +55,7 @@
             Tooltip.user(ctrl.user, $event.target);
         }
 
-        function handleMouseLeave($event) {
+        function handleMouseLeave() {
             Tooltip.clean();
         }
     }

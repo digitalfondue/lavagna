@@ -8,11 +8,11 @@
             project: '<',
             user: '<'
         },
-        controller: ['$location', '$http', '$log', '$filter', 'Search', 'User', 'LabelCache', 'Card', 'EventBus', SearchController],
+        controller: ['$location', '$http', '$log', 'Search', 'User', 'LabelCache', 'EventBus', SearchController],
         templateUrl: 'app/components/search/search.html'
     });
 
-    function SearchController($location, $http, $log, $filter, Search, User, LabelCache, Card, EventBus) {
+    function SearchController($location, $http, $log, Search, User, LabelCache, EventBus) {
         var ctrl = this;
 
         //
@@ -36,8 +36,9 @@
 
                 LabelCache.findByProjectShortName(ctrl.project.shortName).then(function (res) {
                     ctrl.labels = res;
+
                     for (var k in res) {
-                        if (res[k].domain === 'SYSTEM' && res[k].name === 'MILESTONE') {
+                        if (res.hasOwnProperty(k) && res[k].domain === 'SYSTEM' && res[k].name === 'MILESTONE') {
                             ctrl.milestoneLabel = res[k];
                             break;
                         }
@@ -92,13 +93,13 @@
         function selectedCardsCount() {
             var cnt = 0;
 
-            for (var project in ctrl.selected) {
-                for (var cardId in ctrl.selected[project]) {
-                    if (ctrl.selected[project][cardId]) {
+            angular.forEach(ctrl.selected, function (cardIds) {
+                angular.forEach(cardIds, function (selected) {
+                    if (selected) {
                         cnt++;
                     }
-                }
-            }
+                });
+            });
 
             return cnt;
         }
@@ -114,8 +115,8 @@
             }
 
             /* the user can only select the cards where he has the MANAGE_LABEL_VALUE, which is a project level property (or global)*/
-            for (var proj in projects) {
-                User.hasPermission('MANAGE_LABEL_VALUE', proj).then((function (idsToSetAsTrue, shortProjectName) {
+            angular.forEach(projects, function (cardIds, projectShortName) {
+                User.hasPermission('MANAGE_LABEL_VALUE', projectShortName).then((function (idsToSetAsTrue, shortProjectName) {
                     return function () {
                         for (var i = 0;i < idsToSetAsTrue.length;i++) {
                             if (!ctrl.selected[shortProjectName]) {
@@ -126,14 +127,16 @@
 
                         EventBus.emit('updatecheckbox');
                     };
-                })(projects[proj], proj));
-            }
+                })(cardIds, projectShortName));
+            });
         }
 
         function deselectAllInPage() {
-            for (var project in ctrl.selected) {
-                for (var i = 0;i < ctrl.found.length;i++) {
-                    delete ctrl.selected[project][ctrl.found[i].id];
+            for (var projectShortName in ctrl.selected) {
+                if (ctrl.selected.hasOwnProperty(projectShortName)) {
+                    for (var i = 0;i < ctrl.found.length;i++) {
+                        delete ctrl.selected[projectShortName][ctrl.found[i].id];
+                    }
                 }
             }
             EventBus.emit('updatecheckbox');
@@ -142,16 +145,16 @@
         function collectIdsByProject() {
             var res = {};
 
-            for (var projectShortName in ctrl.selected) {
-                for (var cardId in ctrl.selected[projectShortName]) {
-                    if (ctrl.selected[projectShortName][cardId]) {
+            angular.forEach(ctrl.selected, function (cardIds, projectShortName) {
+                angular.forEach(cardIds, function (selected, cardId) {
+                    if (selected) {
                         if (!res[projectShortName]) {
                             res[projectShortName] = [];
                         }
                         res[projectShortName].push(parseInt(cardId, 10));
                     }
-                }
-            }
+                });
+            });
 
             return res;
         }

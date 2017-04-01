@@ -36,9 +36,7 @@
                 currentlyFetching.then(function () {
                     User.current().then(function (u) {
                         StompClient.disconnect(function () {
-                            $http.post('logout/' + u.provider + '/').then(function () {
-                                $window.location.reload();
-                            });
+                            $http.post('logout/' + u.provider + '/').then($window.location.reload);
                         });
                     });
                 });
