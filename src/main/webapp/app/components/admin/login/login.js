@@ -69,7 +69,7 @@
 
             toUpdate.push({first: 'AUTHENTICATION_METHOD', second: JSON.stringify(activeAuthMethod)});
 
-            Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).catch(function (error) {
+            Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.admin-configure-login.updateActiveProviders.error'}, false);
             }).then(loadConfiguration);
         };
@@ -93,7 +93,7 @@
 
             Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function () {
                 Notification.addAutoAckNotification('success', { key: 'notification.admin-configure-login.saveLdapConfig.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.admin-configure-login.saveLdapConfig.error'}, false);
             }).then(loadConfiguration);
         };
@@ -135,7 +135,7 @@
 
             return Admin.updateConfiguration({toUpdateOrCreate: toUpdate}).then(function () {
                 Notification.addAutoAckNotification('success', { key: 'notification.admin-configure-login.saveOAuthConfig.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.admin-configure-login.saveOAuthConfig.error'}, false);
             }).then(loadConfiguration);
         };

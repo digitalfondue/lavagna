@@ -73,14 +73,14 @@
         }
 
         function updateUserStatus(userId, enabled) {
-            UsersAdministration.toggle(userId, enabled).then(loadUsers, function (error) {
+            UsersAdministration.toggle(userId, enabled).then(loadUsers, function () {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.admin-manage-users.toggle.error'
                 }, false);
             });
         }
 
-        function showAddUserDialog($event) {
+        function showAddUserDialog() {
             $mdDialog.show({
                 templateUrl: 'app/components/admin/users/add-user-dialog.html',
                 controller: function () {
@@ -99,7 +99,7 @@
                             configureDefaultUserToAdd();
                             loadUsers();
                             $mdDialog.hide();
-                        }, function (error) {
+                        }, function () {
                             Notification.addAutoAckNotification('error', {
                                 key: 'notification.admin-manage-users.add.error'
                             }, false);
@@ -193,7 +193,7 @@
             });
         }
 
-        function showImportDialog($event) {
+        function showImportDialog() {
             $mdDialog.show({
                 templateUrl: 'app/components/admin/users/import-dialog.html',
                 controller: function () {
@@ -213,13 +213,13 @@
                         loadUsers();
                     };
 
-                    uploader.onSuccessItem = function (fileItem, response, status, headers) {
+                    uploader.onSuccessItem = function () {
                         Notification.addAutoAckNotification('success', {
                             key: 'notification.admin-manage-users.bulkImport.success'
                         }, false);
                         reload();
                     };
-                    uploader.onErrorItem = function (fileItem, response, status, headers) {
+                    uploader.onErrorItem = function () {
                         Notification.addAutoAckNotification('error', {
                             key: 'notification.admin-manage-users.bulkImport.error'
                         }, false);

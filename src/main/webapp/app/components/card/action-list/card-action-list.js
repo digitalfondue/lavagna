@@ -13,7 +13,6 @@
     });
 
     var dndActionListCtrl;
-    var dndActionListItem;
 
     function CardActionListController(Card, Notification) {
         var ctrl = this;
@@ -29,7 +28,7 @@
                 Notification.addNotification('success', { key: 'notification.card.ACTION_ITEM_DELETE.success'}, true, true, function (notification) {
                     Card.undoDeleteActionItem(event.id).then(notification.acknowledge);
                 });
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.card.ACTION_ITEM_DELETE.error'}, false);
             });
         };
@@ -38,8 +37,7 @@
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
 
-        ctrl.dragStartActionList = function (item) {
-            dndActionListItem = item;
+        ctrl.dragStartActionList = function () {
             dndActionListCtrl = ctrl;
         };
 
@@ -72,7 +70,7 @@
                 Notification.addNotification('success', { key: 'notification.card.ACTION_LIST_DELETE.success'}, true, true, function (notification) {
                     Card.undoDeleteActionList(event.id).then(notification.acknowledge);
                 });
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.card.ACTION_LIST_DELETE.success'}, false);
             });
         };
