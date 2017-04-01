@@ -38,7 +38,7 @@
             },
 
             currentCachedUser: function () {
-                if (cached == null) {
+                if (cached === null) {
                     cached = this.current();
                 }
 

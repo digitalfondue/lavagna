@@ -15,8 +15,8 @@
         metadata.userLabels = [];
         angular.forEach(metadata.labels, function (label, labelId) {
             if (label.name === 'MILESTONE') {
-                angular.forEach(metadata.labelListValues, function (labelValue, labelValueId) {
-                    if (labelValue.cardLabelId == label.id) {
+                angular.forEach(metadata.labelListValues, function (labelValue) {
+                    if (labelValue.cardLabelId === label.id) {
                         metadata.milestones.push({
                             id: labelValue.id,
                             labelId: labelId,
@@ -156,12 +156,12 @@
                     if (skipArchived && item.archived) {
                         continue;
                     }
-                    var descriptionCount = item.description != null ? item.description.length : 0;
+                    var descriptionCount = item.description !== null ? item.description.length : 0;
 
                     if (descriptionCount > 0) {
                         var newLineMatch = item.description.match(/[\n\r]/g);
 
-                        descriptionCount += newLineMatch != newLineMatch ? newLineMatch.length * 50 : 0;
+                        descriptionCount += newLineMatch !== null ? newLineMatch.length * 50 : 0;
                     }
 
                     if (leftCount <= rightCount) {

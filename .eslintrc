@@ -13,7 +13,9 @@
         "moment": false,
         "marked": false,
         "Trello": false,
-        "io_lavagna": false
+        "io_lavagna": false,
+        "Stomp": false,
+        "SockJS": false
     },
     "plugins": [
         "angular"

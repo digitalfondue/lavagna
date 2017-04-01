@@ -4,9 +4,8 @@
     angular.module('lavagna.services').factory('CopyToClipboard', function ($window, $q) {
         var document = $window.document;
 
-        var CopyToClipboard = function (text, onSuccess, onFailure) {
+        var CopyToClipboard = function (text) {
             var element;
-            var handlerListener;
             var deferred = $q.defer();
 
             var handler = function () {
@@ -15,7 +14,6 @@
 
             var removeElement = function () {
                 document.body.removeEventListener('click', handler);
-                handlerListener = null;
 
                 document.body.removeChild(element);
                 element = null;
@@ -27,7 +25,7 @@
             };
 
             var createElement = function () {
-                handlerListener = document.body.addEventListener('click', handler) || true;
+                document.body.addEventListener('click', handler);
 
                 element = document.createElement('textarea');
                 element.style.fontSize = '12pt';
@@ -53,7 +51,11 @@
                     result = false;
                 }
 
-                result ? deferred.resolve() : deferred.reject();
+                if (result) {
+                    deferred.resolve();
+                } else {
+                    deferred.reject();
+                }
             };
 
             var cleanUp = function () {

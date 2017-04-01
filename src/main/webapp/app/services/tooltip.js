@@ -21,7 +21,7 @@
 
         return {
             clean: function () {
-                return $q(function (resolve, reject) {
+                return $q(function (resolve) {
                     angular.forEach($mdPanel._trackedPanels, function (value, id) {
                         if (id.indexOf('lvg-tooltip') === 0) {
                             value.close();
