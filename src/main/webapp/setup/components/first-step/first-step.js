@@ -47,6 +47,9 @@
         };
     }
 
+    function goToRootApp() {
+        window.location.href = getOrigin(window) + window.location.pathname.replace(/setup\/$/, '');
+    }
 
     function getOrigin(window) {
         if (!window.location.origin) {
