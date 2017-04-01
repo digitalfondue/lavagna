@@ -24,7 +24,7 @@
             var onDestroyPromise = this.then(function (v) {
                 var identifier = '__id__' + (cnt++);
 
-                if (!callbacks[path] || callbacks[path].count == 0) {
+                if (!callbacks[path] || callbacks[path].count === 0) {
                     callbacks[path] = {count: 0};
 
                     $log.log('stomp client subscribe at', path);
@@ -53,7 +53,7 @@
                     delete callbacks[path][identifier];
                     callbacks[path].count--;
                     $log.log('count for path ' + path, callbacks[path].count);
-                    if (callbacks[path].count == 0) {
+                    if (callbacks[path].count === 0) {
                         $log.log('stomp client unsubscribe from', path);
                         callbacks[path].subscription.unsubscribe();
                     }

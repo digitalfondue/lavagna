@@ -6,7 +6,7 @@
     services.factory('Notification', function ($rootScope, $timeout) {
         var notifications = [];
 
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeSuccess', function () {
             notifications.length = 0; // empty
         });
 
