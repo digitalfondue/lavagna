@@ -23,7 +23,7 @@
         ctrl.events = [];
 
         var syncCalendar = function () {
-            for (var date in ctrl.events.dailyEvents) {
+            angular.forEach(ctrl.events.dailyEvents, function (date) {
                 var dayText = '';
 
                 var dailyEvents = ctrl.events.dailyEvents[date];
@@ -47,8 +47,8 @@
 
                 var cards = $filter('orderBy')(dailyEvents.cards, ['-columnDefinition', 'boardShortName', 'sequence']);
 
-                for (var i = 0; i < cards.length; i++) {
-                    var card = cards[i];
+                for (var j = 0; j < cards.length; j++) {
+                    var card = cards[j];
 
                     var cardHref = $state.href(ctrl.project ? 'project.calendar.card' : 'calendar.card', {
                         projectName: card.projectShortName, shortName: card.boardShortName, seqNr: card.sequence
@@ -65,7 +65,7 @@
                 }
 
                 MaterialCalendarData.setDayContent(moment(date).toDate(), dayText);
-            }
+            });
         };
 
         var getApiToCall = function () {
