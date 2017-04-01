@@ -12,9 +12,9 @@
 
             $mdDialog.show(confirm).then(function () {
                 angular.forEach(toMove, function (cardIds, columnId) {
-                    Card.moveAllFromColumnToLocation(columnId, toMove[columnId], location);
+                    Card.moveAllFromColumnToLocation(columnId, cardIds, location);
                 });
-            }, function () {});
+            });
         }
 
         return {

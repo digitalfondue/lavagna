@@ -23,7 +23,7 @@
 
             ctrl.metadatas = {};
 
-            ctrl.$onChanges = function (changesObj) {
+            ctrl.$onChanges = function () {
                 if (ctrl.found && ctrl.found.length) {
                     for (var i = 0; i < ctrl.found.length;i++) {
                         var card = ctrl.found[i];

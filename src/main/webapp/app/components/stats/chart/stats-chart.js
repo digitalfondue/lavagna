@@ -54,7 +54,9 @@
             var sortedIndexes = [];
 
             for (var index in array) {
-                sortedIndexes.push(parseInt(index));
+                if (array.hasOwnProperty(index)) {
+                    sortedIndexes.push(parseInt(index));
+                }
             }
             sortedIndexes.sort();
 

@@ -91,16 +91,16 @@
             var groupedByDate = {};
             var keyOrder = [];
 
-            for (var i in events) {
-                var dateRepresentation = $filter('date')(events[i].time, 'dd.MM.yyyy');
+            angular.forEach(events, function (event) {
+                var dateRepresentation = $filter('date')(event.time, 'dd.MM.yyyy');
 
-                if (keyOrder.indexOf(dateRepresentation) == -1) {
+                if (keyOrder.indexOf(dateRepresentation) === -1) {
                     keyOrder.push(dateRepresentation);
                     groupedByDate[dateRepresentation] = [];
                 }
 
-                groupedByDate[dateRepresentation].push(events[i]);
-            }
+                groupedByDate[dateRepresentation].push(event);
+            });
 
             return {groupedByDate: groupedByDate, keyOrder: keyOrder};
         }
