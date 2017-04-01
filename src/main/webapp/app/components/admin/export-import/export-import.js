@@ -32,13 +32,13 @@
             ctrl.overrideConfiguration = false;
         }
 
-        uploader.onSuccessItem = function (fileItem, response, status, headers) {
+        uploader.onSuccessItem = function () {
             Notification.addAutoAckNotification('success', {
                 key: 'notification.admin-export-import.import.success'
             }, false);
             importLavagnaCleanUp();
         };
-        uploader.onErrorItem = function (fileItem, response, status, headers) {
+        uploader.onErrorItem = function () {
             Notification.addAutoAckNotification('error', {
                 key: 'notification.admin-export-import.import.error'
             }, false);

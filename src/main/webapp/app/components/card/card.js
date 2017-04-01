@@ -70,14 +70,6 @@
             });
         }
 
-        function currentCard() {
-            var cardByProject = {};
-
-            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
-
-            return cardByProject;
-        }
-
         // ----
         function loadLabel() {
             LabelCache.findByProjectShortName(ctrl.project.shortName).then(function (labels) {

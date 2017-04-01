@@ -6,10 +6,10 @@
             card: '&',
         },
         templateUrl: 'app/components/card/files/card-files.html',
-        controller: ['StompClient', 'Card', 'Notification', CardFilesController],
+        controller: ['StompClient', 'Card', CardFilesController],
     });
 
-    function CardFilesController(StompClient, Card, Notification) {
+    function CardFilesController(StompClient, Card) {
         var ctrl = this;
 
         var card = ctrl.card();
