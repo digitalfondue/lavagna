@@ -34,7 +34,7 @@
                 {
                     toUpdateOrCreate: [{first: 'SMTP_ENABLED', second: value}]
                 }
-            ).catch(function (error) {
+            ).catch(function () {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.admin-manage-smtp-configuration.updateConfiguration.error'
                 }, false);
@@ -50,7 +50,7 @@
                 Notification.addAutoAckNotification('success', {
                     key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.success'
                 }, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.admin-manage-smtp-configuration.saveSmtpConfig.error'
                 }, false);

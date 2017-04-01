@@ -145,7 +145,7 @@
         function cloneCard(clonetoColumn) {
             Card.clone(ctrl.card.id, clonetoColumn.columnId).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.card.clone.success'}, false);
-            }).catch(function (error) {
+            }).catch(function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.card.clone.error'}, false);
             }).then(close);
         }

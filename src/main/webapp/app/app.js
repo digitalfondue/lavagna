@@ -525,7 +525,7 @@
 
         $urlRouterProvider.otherwise('/');
 
-        if (true) {
+        if (true) { /* eslint no-constant-condition: 0 */
             $mdThemingProvider.disableTheming();
         } else {
             /* CHECK in case we need to regenerate the theme! https://github.com/angular/material/blob/master/docs/app/performance/internet-explorer.md#theming */
@@ -618,7 +618,7 @@
 
         $mdDateLocaleProvider.firstDayOfWeek = parseInt(LOCALE_FIRST_DAY_OF_WEEK);
         $mdDateLocaleProvider.parseDate = function (dateString) {
-            if (date == null) {
+            if (dateString == null) {
                 return null;
             }
             var m = moment(dateString, dateFormat, true);
@@ -635,14 +635,14 @@
         //
     });
 
-    module.run(function ($rootScope, $state, $mdSidenav, $log, $mdMedia) {
+    module.run(function ($rootScope, $state, $mdSidenav, $log) {
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             event.preventDefault();
             $log.debug(error);
             // FIXME
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeSuccess', function () {
             $mdSidenav('left').close();
         });
     });
@@ -658,8 +658,8 @@
         //
         return {
             'request': function (config) {
-                if (csrfToken != null) {
-                    config.headers['x-csrf-token'] = csrfToken;
+                if ($window.csrfToken != null) {
+                    config.headers['x-csrf-token'] = $window.csrfToken;
                 }
 
                 return config;

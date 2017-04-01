@@ -104,7 +104,7 @@
             SharedBoardDataService.dndCardOrigin = item;
         }
 
-        function dragEndCard(item) {
+        function dragEndCard() {
             SharedBoardDataService.endDrag();
         }
 
@@ -150,12 +150,12 @@
 
             if (oldColumnId === newColumnId) {
                 // internal reorder
-                Board.updateCardOrder(ctrl.boardShortName, oldColumnId, ids).catch(function (error) {
+                Board.updateCardOrder(ctrl.boardShortName, oldColumnId, ids).catch(function () {
                     Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
                 });
             } else {
                 // move card from one column to another
-                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function (error) {
+                Board.moveCardToColumn(cardId, oldColumnId, newColumnId, {newContainer: ids}).catch(function () {
                     Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
                 });
             }
@@ -172,7 +172,7 @@
         }
 
         function unSelectAllInColumn() {
-            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function (c) {
+            angular.forEach($filter('filter')(ctrl.cardsInColumn, ctrl.searchFilter.cardFilter), function () {
                 delete ctrl.selectedCards[ctrl.column.id];
             });
             EventBus.emit('updatecheckbox');
@@ -228,7 +228,7 @@
 
         function moveColumn(location) {
             var confirmAction = function () {
-                Board.moveColumnToLocation(ctrl.column.id, location).catch(function (error) {
+                Board.moveColumnToLocation(ctrl.column.id, location).catch(function () {
                     Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
                 });
             };
@@ -248,7 +248,7 @@
         function moveAllCardsInColumn(cards, location) {
             var cardIds = cards.map(function (c) { return c.id; });
             var confirmAction = function () {
-                Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function (error) {
+                Card.moveAllFromColumnToLocation(ctrl.column.id, cardIds, location).catch(function () {
                     Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
                 });
             };
@@ -266,13 +266,13 @@
         }
 
         function saveNewColumnName(newName) {
-            Board.renameColumn(ctrl.boardShortName, ctrl.column.id, newName).catch(function (error) {
+            Board.renameColumn(ctrl.boardShortName, ctrl.column.id, newName).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.board.rename-column.error'}, false);
             });
         }
 
         function setColumnDefinition(definition) {
-            Board.redefineColumn(ctrl.boardShortName, ctrl.column.id, definition).catch(function (error) {
+            Board.redefineColumn(ctrl.boardShortName, ctrl.column.id, definition).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.board.redefine-column.error'}, false);
             });
         }

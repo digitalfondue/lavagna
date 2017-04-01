@@ -64,7 +64,7 @@
                 return v.id;
             });
 
-            Card.updateActionListOrder(card.id, ids).catch(function (err) {
+            Card.updateActionListOrder(card.id, ids).catch(function () {
                 ctrl.actionLists.splice(index, 1);
                 ctrl.actionLists.splice(oldIndex, 0, item);
             });
