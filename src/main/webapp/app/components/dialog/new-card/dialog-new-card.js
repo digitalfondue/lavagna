@@ -32,7 +32,7 @@
                 ctrl.name = null;
                 ctrl.dialogNewCardForm.$setPristine();
                 ctrl.dialogNewCardForm.$setUntouched();// clear up error messages
-            }).catch(function (error) {
+            }).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.board.create-card.error'}, false);
             });
         }

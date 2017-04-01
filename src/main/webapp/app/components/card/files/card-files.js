@@ -22,11 +22,11 @@
             ctrl.uploader = Card.getFileUploader(card.id);
 
             // callback status
-            ctrl.uploader.onSuccessItem = function (fileItem, response, status, headers) {
+            ctrl.uploader.onSuccessItem = function (fileItem) {
                 ctrl.uploader.removeFromQueue(fileItem);
             };
 
-            ctrl.uploader.onCancelItem = function (fileItem, response, status, headers) {
+            ctrl.uploader.onCancelItem = function (fileItem) {
                 ctrl.uploader.removeFromQueue(fileItem);
             };
 

@@ -17,7 +17,7 @@
                 Notification.addNotification('success', {key: 'notification.card.FILE_DELETE.success'}, true, true, function (notification) {
                     Card.undoDeleteFile(event.id).then(notification.acknowledge);
                 });
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.card.FILE_DELETE.error'}, false);
             });
         };

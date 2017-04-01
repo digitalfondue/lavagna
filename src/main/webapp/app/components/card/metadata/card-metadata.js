@@ -92,7 +92,7 @@
                         key: 'notification.card.moveToColumn.success',
                         parameters: { columnName: column.name }
                     }, false);
-                }, function (error) {
+                }, function () {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {
                         key: 'notification.card.moveToColumn.error',
@@ -105,7 +105,7 @@
                         key: 'notification.card.moveToLocation.success',
                         parameters: { location: column.location }
                     }, false);
-                }, function (error) {
+                }, function () {
                     findAndAssignColumns();
                     Notification.addAutoAckNotification('error', {
                         key: 'notification.card.moveToLocation.error',

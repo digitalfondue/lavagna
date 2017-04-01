@@ -94,7 +94,7 @@
                 Notification.addNotification('success', { key: 'notification.card.COMMENT_DELETE.success'}, true, true, function (notification) {
                     Card.undoDeleteComment(event.id).then(notification.acknowledge);
                 });
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.card.ACTION_ITEM_DELETE.error'}, false);
             });
         };
