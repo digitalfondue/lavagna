@@ -147,7 +147,6 @@
                 controller: ['$scope', 'oauth', 'oauthProviders',
                     function ($scope, oauth, oauthProviders) {
                         $scope.oauth = oauth;
-                        console.log(oauthProviders);
                         $scope.oauthProviders = oauthProviders;
 
                         $scope.saveOauthConfig = function (toSave) {
@@ -241,7 +240,7 @@
             Admin.updateConfiguration(
                 {toUpdateOrCreate:
                         [{first: 'ENABLE_ANON_USER', second: value.toString()}]}
-                ).catch(function (error) {
+                ).catch(function () {
                     Notification.addAutoAckNotification('error', { key: 'notification.admin-configure-login.updateAnonConfiguration.error'}, false);
                 }).then(load);
         };
