@@ -50,7 +50,6 @@
             });
         }
 
-
         function dropActionLists(index, oldIndex) {
             var item = ctrl.actionLists[oldIndex];
 

@@ -8,7 +8,6 @@
         controller: ['Admin', AdminEndpointsController]
     });
 
-
     function AdminEndpointsController(Admin) {
         var ctrl = this;
 

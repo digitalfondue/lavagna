@@ -12,7 +12,6 @@
         controller: ['Board', StatsPanelBoardController]
     });
 
-
     function StatsPanelBoardController(Board) {
         var ctrl = this;
 

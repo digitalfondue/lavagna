@@ -187,7 +187,8 @@
         "no-lonely-if": 2,                  // disallow if as the only statement in an else block (off by default)
         "no-mixed-operators": 0,            // disallow mixed binary operators
         "no-mixed-spaces-and-tabs": 2,      // disallow mixed spaces and tabs for indentation
-        "no-multiple-empty-lines": 1,       // disallow multiple empty lines (off by default)
+        "no-multiple-empty-lines": [1,
+            {"max": 1}],                    // disallow multiple empty lines (off by default)
         "no-negated-condition": 0,          // disallow negated conditions
         "no-nested-ternary": 0,             // disallow nested ternary expressions (off by default)
         "no-new-object": 2,                 // disallow use of the Object constructor

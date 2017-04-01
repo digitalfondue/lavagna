@@ -30,7 +30,6 @@
         ctrl.selectedVisibleCount = selectedVisibleCount;
         //
 
-
         var metadataSubscription = angular.noop;
         var refreshSearchSub = angular.noop;
         var stompSub = angular.noop;
@@ -59,7 +58,6 @@
 
             ctrl.toggledSidebar = false;
 
-
             refreshSearchSub = EventBus.on('refreshSearch', function (ev, searchFilter) {
                 try {
                     Search.buildSearchFilter(searchFilter.searchFilter, ctrl.columns, ctrl.user.id).then(function (filterFun) {
@@ -81,7 +79,6 @@
             stompSub();
             refreshSearchSub();
         };
-
 
         function moveCard(card, location) {
             Card.moveAllFromColumnToLocation(card.columnId, [card.id], location);

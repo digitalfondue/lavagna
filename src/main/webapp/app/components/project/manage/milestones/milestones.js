@@ -50,7 +50,6 @@
             });
         };
 
-
         ctrl.updateCount = function (id) {
             Label.countLabelListValueUse(id).then(function (cnt) {
                 ctrl.milestoneUseCount[id] = cnt;

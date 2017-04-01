@@ -64,7 +64,6 @@
                 return iframeDoc.createElement(name);
             }
 
-
             iframeDoc.head.appendChild(angular.element(elem('base')).attr('href', baseHref)[0]);
 
             var form = angular.element(elem('form')).attr('action', 'api/export').attr('method', 'POST')[0];

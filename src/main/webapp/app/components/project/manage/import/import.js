@@ -58,7 +58,6 @@
         };
         //
 
-
         function checkShortName(board) {
             if (board.shortName == null || board.shortName == '') {
                 board.checkedShortName = false;
@@ -121,7 +120,6 @@
             });
         }
 
-
         function loadTrello() {
             if (!window.Trello) {
                 requireScript('/js/jquery-3.1.0.slim.min.js', function () {
@@ -135,7 +133,6 @@
                 ctrl.trelloLoaded = true;
             }
         }
-
 
         function connectToTrello() {
             //
@@ -184,7 +181,6 @@
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
-
     function generateUUID() {
         var d = new Date().getTime();
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -194,7 +190,6 @@
 
             return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
-
 
         return uuid;
     }

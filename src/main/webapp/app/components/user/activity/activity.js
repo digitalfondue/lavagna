@@ -14,7 +14,6 @@
     function UserActivityController(User) {
         var ctrl = this;
 
-
         ctrl.$onInit = function init() {
             ctrl.userProvider = ctrl.profile.user.provider;
             ctrl.userName = ctrl.profile.user.username;
@@ -23,9 +22,7 @@
             loadUser(ctrl.profile);
         };
 
-
         ctrl.loadFor = loadFor;
-
 
         function loadFor(page) {
             User.getUserProfile(ctrl.userProvider, ctrl.userName, page)
@@ -36,7 +33,6 @@
                     ctrl.page = page;
                 });
         }
-
 
         function loadUser(profile) {
             ctrl.profile = profile;

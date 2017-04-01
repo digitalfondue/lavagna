@@ -14,7 +14,6 @@
                 return projectName !== undefined ? ('project/' + projectName + '/') : '';
             };
 
-
             return {
                 findAllRolesAndRelatedPermissions: function () {
                     return $http.get('api/' + project() + 'role').then(extractData);

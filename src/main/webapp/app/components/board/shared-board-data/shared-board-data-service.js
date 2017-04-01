@@ -1,7 +1,6 @@
 (function () {
     'use strict';
 
-
     var components = angular.module('lavagna.components');
 
     // used for transient drag and drop data

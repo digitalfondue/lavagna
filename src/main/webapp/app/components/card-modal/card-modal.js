@@ -35,7 +35,6 @@
             }
             //
 
-
             if ($event.keyCode == 27) {
                 close();
             }

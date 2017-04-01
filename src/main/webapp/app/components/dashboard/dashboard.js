@@ -49,7 +49,6 @@
             });
         };
 
-
         function loadProjects() {
             Project.list().then(function (projects) {
                 ctrl.projects = projects;

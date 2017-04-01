@@ -2,7 +2,6 @@
     // FIXME REFACTOR
     'use strict';
 
-
     var parser = SEARCH_PARSER;
 
     function labelValueMatcher(criteria, environment) {
@@ -59,7 +58,6 @@
         } else if (criteria.value.type === 'CURRENT_USER' && criteria.value.value === 'me') {
             var currentUserId = environment.currentUserId;
 
-
             return function (label) {
                 if (label.labelType === 'USER') {
                     return label.value.valueUser === currentUserId;
@@ -88,7 +86,6 @@
         var timeDiff = Math.abs(d1.getTime() - d2.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-
         return diffDays <= days;
     }
 
@@ -108,7 +105,6 @@
                 },
                 today: function () {
                     var today = new Date();
-
 
                     return function (date) {
                         return sameDay(today, date);
@@ -135,14 +131,12 @@
                 'this week': function () {
                     var today = new Date();
 
-
                     return function (date) {
                         return moment(today).isSame(date, 'week');
                     };
                 },
                 'this month': function () {
                     var today = new Date();
-
 
                     return function (date) {
                         return sameMonth(today, date);
@@ -152,14 +146,12 @@
                     return function (date) {
                         var nextWeek = moment().add(1, 'week');
 
-
                         return nextWeek.isSame(date, 'week');
                     };
                 },
                 'next month': function () {
                     var today = new Date();
                     var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-
 
                     return function (date) {
                         return sameMonth(nextMonth, date);
@@ -169,14 +161,12 @@
                     return function (date) {
                         var prevWeek = moment().add(-1, 'week');
 
-
                         return prevWeek.isSame(date, 'week');
                     };
                 },
                 'previous month': function () {
                     var today = new Date();
                     var previousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-
 
                     return function (date) {
                         return sameMonth(previousMonth, date);
@@ -208,7 +198,6 @@
                     var r1 = parsed1.toDate();
                     var r2 = parsed2.toDate();
 
-
                     return function (date) {
                         return dateInRange(date, r1, r2);
                     };
@@ -218,7 +207,6 @@
 
                 if (parsedDate.isValid()) {
                     var d = parsedDate.toDate();
-
 
                     return function (date) {
                         return sameDay(d, date);
@@ -358,7 +346,6 @@
                 return environment.users[criteria.value.value] === card.lastUpdateUserId;
             };
 
-
             return criteria.value.type === 'CURRENT_USER' ? matchCurrentUserFn : matchUserFn;
         } else if (criteria.type === 'UPDATED') {
             var matchingDateFunction = dateMatcher(criteria);
@@ -397,7 +384,6 @@
 
     function validCardFormat(value) {
         var r = value.split('-');
-
 
         return r.length > 1 && isFinite(parseInt(r[r.length - 1], 10));
     }

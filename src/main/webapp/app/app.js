@@ -12,7 +12,6 @@
         window.history.pushState('', document.title, window.location.pathname);
     }
 
-
     window.csrfToken = window.document.documentElement.getAttribute('lavagna-csrf');
 
     // set momentjs to use the current locale
@@ -526,7 +525,6 @@
 
         $urlRouterProvider.otherwise('/');
 
-
         if (true) {
             $mdThemingProvider.disableTheming();
         } else {
@@ -548,7 +546,6 @@
         }
 
         $mdInkRippleProvider.disableInkRipple();
-
 
         // FIXME use a svg icon set
         $mdIconProvider
@@ -626,7 +623,6 @@
             }
             var m = moment(dateString, dateFormat, true);
 
-
             return m.isValid() ? m.toDate() : new Date(NaN);
         };
         $mdDateLocaleProvider.formatDate = function (date) {
@@ -645,7 +641,6 @@
             $log.debug(error);
             // FIXME
         });
-
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             $mdSidenav('left').close();

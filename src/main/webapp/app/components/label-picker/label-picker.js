@@ -1,7 +1,6 @@
 (function () {
     'use strict';
 
-
     angular.module('lavagna.components').component('lvgLabelPicker', {
         templateUrl: 'app/components/label-picker/label-picker.html',
         bindings: {
@@ -12,7 +11,6 @@
         },
         controller: function (LabelCache, User, Search, $scope) {
             var ctrl = this;
-
 
             ctrl.searchCard = function (text) {
                 var params = {term: text.trim()};
@@ -38,7 +36,6 @@
                 });
             };
 
-
             $scope.$watch('$ctrl.label', function () {
                 ctrl.model = null;
                 ctrl.listValues = null;
@@ -51,5 +48,4 @@
         }
     });
 }());
-
 

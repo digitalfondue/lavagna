@@ -16,7 +16,6 @@
             currentUser.permissionsForProject[projectName][permissionToCheck] !== undefined));
         };
 
-
         var pendingUserRequests = null;
         var usersToRequestMap = {};
 
@@ -26,7 +25,6 @@
             loginUrl: function () {
                 var baseHref = $window.document.querySelector('base').attributes.href.value;
                 var reqUrlWithoutContextPath = $window.location.pathname.substr(baseHref.length - 1);
-
 
                 return 'login?reqUrl=' + encodeURIComponent(reqUrlWithoutContextPath);
             },

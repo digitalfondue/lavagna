@@ -6,7 +6,6 @@
     // simple wrapper
     services.factory('Tooltip', ['$mdPanel', '$q', Tooltip]);
 
-
     function Tooltip($mdPanel, $q) {
         function cleanUpRogueTooltips() {
             angular.forEach($mdPanel._trackedPanels, function (value, id) {

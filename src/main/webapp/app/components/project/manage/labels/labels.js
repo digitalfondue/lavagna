@@ -76,7 +76,6 @@
             ];
         }
 
-
         function addNewLabel(labelToAdd) {
             labelToAdd = labelToAdd || {value: undefined, color: undefined, type: undefined};
 

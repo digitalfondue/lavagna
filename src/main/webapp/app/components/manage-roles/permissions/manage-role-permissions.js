@@ -58,7 +58,6 @@
         function hasChanged(permission, assignedPermissions, currentStatus) {
             var status = ctrl.hasPermission(permission, assignedPermissions);
 
-
             return status != currentStatus;
         }
 

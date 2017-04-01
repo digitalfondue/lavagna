@@ -46,7 +46,6 @@
             onDestroyStomp();
         };
 
-
         // -----
 
         function loadFiles() {

@@ -29,7 +29,6 @@
                         ctrl.pages.push({value: 1, text: 1});
                     }
 
-
                     var middleElementsCount = ctrl.maxSize - (3 - (isFirstPage ? 1 : 0) - (isLastPage ? 1 : 0));
                     var elems = [ctrl.currentPage];
                     var cnt = 0;
@@ -66,7 +65,6 @@
                     if (elems[elems.length - 1] < ctrl.totalPages - 1) {
                         ctrl.pages.push({text: '...'});
                     }
-
 
                     if (!isLastPage) {
                         ctrl.pages.push({value: ctrl.totalPages, text: ctrl.totalPages});

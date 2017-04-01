@@ -114,7 +114,6 @@
             }
         }
 
-
         function loadUsersWithRole(roleName) {
             ctrl.Permission.findUsersWithRole(roleName).then(function (users) {
                 ctrl.usersByRole[roleName] = users;
@@ -170,7 +169,6 @@
                 }, false);
             });
         }
-
 
         // permission modal
         function open(roleName, roleDescriptor) {

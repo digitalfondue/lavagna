@@ -94,7 +94,6 @@
 
                     var listAndFilterExpression = match[2];
 
-
                     return $parse(listAndFilterExpression)($scope);
                 }
 

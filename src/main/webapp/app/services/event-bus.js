@@ -6,7 +6,6 @@
     // simple wrapper
     services.factory('EventBus', ['$rootScope', EventBus]);
 
-
     function EventBus($rootScope) {
         return {
             on: function (eventName, callback) {

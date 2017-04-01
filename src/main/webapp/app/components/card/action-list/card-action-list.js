@@ -38,7 +38,6 @@
             Card.toggleActionItem(action.id, (action.type === 'ACTION_CHECKED'));
         };
 
-
         ctrl.dragStartActionList = function (item) {
             dndActionListItem = item;
             dndActionListCtrl = ctrl;

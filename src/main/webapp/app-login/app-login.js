@@ -1,7 +1,6 @@
 (function () {
     'use strict';
 
-
     var module = angular.module('lavagnaLogin', ['ngSanitize', 'ngMessages', 'ngMaterial', 'pascalprecht.translate']);
 
     module.value('configuration', JSON.parse(document.getElementById('app-configuration').textContent));
@@ -14,7 +13,6 @@
         $compileProvider.debugInfoEnabled(false);
         $compileProvider.preAssignBindingsEnabled(true);
         $mdThemingProvider.disableTheming();
-
 
         var locale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
 
@@ -54,7 +52,6 @@
         controller: ['configuration', '$window', DemoLoginCtrl]
     });
 
-
     function DemoLoginCtrl(configuration, $window) {
         var ctrl = this;
 
@@ -89,7 +86,6 @@
             '</div>'].join(''),
         controller: ['configuration', '$window', PasswordLoginCtrl]
     });
-
 
     function PasswordLoginCtrl(configuration, $window) {
         var ctrl = this;
@@ -133,7 +129,6 @@
         ctrl.show = configuration.loginLdap === 'block';
         ctrl.errorLdap = hasErrorInQueryString($window, 'error-ldap');
     }
-
 
     module.component('oauthLogin', {
         template: ['<div ng-if="$ctrl.show" class="lvg-panel">',

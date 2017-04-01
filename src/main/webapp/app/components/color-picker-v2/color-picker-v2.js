@@ -39,7 +39,6 @@
         }
     }
 
-
     var panelTemplate = '<div class="lvg-color-picker-v2__panel" md-whiteframe="2">'
                         + '<div role="button" class="lvg-color-picker-v2__button lvg-color-picker-v2__button_in-panel" ng-repeat="color in $ctrl.colors" ng-style="{\'background-color\' : color.value}" ng-click="$ctrl.selectColor(color)"><md-tooltip>{{::color.name}}</md-tooltip></div>'
                         + '</div>';
@@ -67,7 +66,6 @@
                        {name: 'Grey', value: '#9E9E9E'},
                        {name: 'Blue Grey', value: '#607D8B'},
                        {name: 'Black', value: '#000000'}, ];
-
 
         ctrl.selectColor = selectColor;
 

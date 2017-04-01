@@ -54,7 +54,6 @@
                 return '';
             }
 
-
             return marked(text, {renderer: renderer});
         }, 1000, 'markdown', $cacheFactory);
     });
@@ -68,7 +67,6 @@
             return moment().startOf('day').diff(input, 'days');
         };
     });
-
 
     filters.filter('capitalize', function () {
         return function capitalizeFilter(input, scope) {
@@ -143,7 +141,6 @@
             b = (color & 0xff);
         var yiq = (r * 299 + g * 587 + b * 114) / 1000;
 
-
         return (yiq >= 160) ? 'black' : 'white';
     }
 
@@ -163,7 +160,6 @@
                 return (zeroes + value).slice(padding * -1);
             };
 
-
             return {'background-color': '#' + lpad(color.toString(16), 6)};
         }, 100, 'labelBackground', $cacheFactory);
     });
@@ -174,7 +170,6 @@
             g = (num & 0xFF00) >>> 8,
             r = (num & 0xFF0000) >>> 16,
             a = alpha;
-
 
         return 'rgba(' + [r, g, b, a].join(',') + ')';
     }
@@ -243,7 +238,6 @@
             var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'],
                 number = Math.floor(Math.log(bytes) / Math.log(1024));
 
-
             return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
         };
     });
@@ -307,7 +301,6 @@
             }
             var r = parseInt(hexColor.trim().replace('#', ''), 16);
 
-
             return isNaN(r) ? 0 : r;
         };
     });
@@ -341,7 +334,6 @@
 
                 return r;
             }
-
 
             for (var d = 0; d < definitions.length; d++) {
                 var definition = definitions[d];
@@ -414,7 +406,6 @@
             } else {
                 var locationName = $filter('translate')('common.location.definition.' + column.name);
 
-
                 return $filter('translate')('card.metadata.status.view', {name: locationName});
             }
         };
@@ -481,7 +472,6 @@ THE SOFTWARE.
         function toInt(str) {
             return parseInt(str, 10);
         }
-
 
         return function (input, limit, begin) {
             if (Math.abs(Number(limit)) === Infinity) {

@@ -15,7 +15,6 @@
         controller: ['$element', ChartController]
     });
 
-
     function ChartController($element) {
         var ctrl = this;
 

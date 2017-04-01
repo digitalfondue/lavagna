@@ -15,7 +15,6 @@
         controller: ['Board', 'Card', 'StompClient', 'SharedBoardDataService', BoardSidebarController],
     });
 
-
     function BoardSidebarController(Board, Card, StompClient, SharedBoardDataService) {
         var ctrl = this;
 
@@ -26,7 +25,6 @@
         ctrl.dragStartCard = dragStartCard;
         ctrl.removeCard = removeCard;
         //
-
 
         var startDragListener = angular.noop;
         var stopDragListener = angular.noop;

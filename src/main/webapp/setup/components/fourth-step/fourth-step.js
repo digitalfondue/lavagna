@@ -6,7 +6,6 @@
         templateUrl: 'components/fourth-step/fourth-step.html'
     });
 
-
     function SetupActivationCtrl($window, $http, $state, Configuration) {
         var ctrl = this;
 
