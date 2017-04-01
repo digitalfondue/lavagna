@@ -28,7 +28,7 @@
     directives.directive('lvgUpdateColumnSize', function ($window) {
         return {
             restrict: 'A',
-            link: function lvgUpdateColumnSizeLink($scope, element, attrs) {
+            link: function lvgUpdateColumnSizeLink($scope, element) {
                 var domElement = element[0];
 
                 var resizeHandler = function () {

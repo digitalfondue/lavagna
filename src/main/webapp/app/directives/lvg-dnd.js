@@ -48,7 +48,7 @@
                     onDrop(event.newIndex, event.oldIndex);
                 };
 
-                opts.onEnd = function onEnd(event) {
+                opts.onEnd = function onEnd() {
                     if (opts.draggingClass) {
                         $element.removeClass(opts.draggingClass);
                     }

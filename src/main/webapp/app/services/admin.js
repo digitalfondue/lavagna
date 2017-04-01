@@ -63,7 +63,7 @@
             findAllBaseLoginWithActivationStatus: function () {
                 return $http.get('api/login/all-base-with-activation-status').then(extractData);
             },
-            testSmtpConfig: function (to) {
+            testSmtpConfig: function (configuration, to) {
                 return $http.post('api/check-smtp/', configuration, {params: {to: to}});
             }
         };

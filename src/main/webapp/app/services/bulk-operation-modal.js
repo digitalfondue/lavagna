@@ -11,9 +11,9 @@
                 .cancel($translate.instant('button.no'));
 
             $mdDialog.show(confirm).then(function () {
-                for (var columnId in toMove) {
+                angular.forEach(toMove, function (cardIds, columnId) {
                     Card.moveAllFromColumnToLocation(columnId, toMove[columnId], location);
-                }
+                });
             }, function () {});
         }
 
@@ -130,9 +130,7 @@
                         $scope.button = 'button.add';
                         $scope.projectName = projectName;
                         $scope.action = function (labelToAdd, labelValueToAdd) {
-                            var labelValueToAdd = Label.extractValue(labelToAdd, labelValueToAdd);
-
-                            BulkOperations.addLabel(cards, labelToAdd, labelValueToAdd).then(applyIfPresent);
+                            BulkOperations.addLabel(cards, labelToAdd, Label.extractValue(labelToAdd, labelValueToAdd)).then(applyIfPresent);
                         };
                     }
                 });

@@ -46,7 +46,7 @@
             },
             findCardsByMilestone: function (projectName) {
                 function insertStatusIfExists(milestone, source, target, status) {
-                    if (source[status] != undefined) {
+                    if (source[status] !== undefined) {
                         target[target.length] = {status: status, count: source[status]};
                         milestone.totalCards += source[status];
                     }
@@ -66,11 +66,10 @@
 
                 return $http.get('api/project/' + projectName + '/cards-by-milestone').then(extractData).then(function (response) {
                     response.cardsCountByStatus = {};
-                    for (var index in response.milestones) {
-                        var milestone = response.milestones[index];
 
+                    angular.forEach(response.milestones, function (milestone) {
                         response.cardsCountByStatus[milestone.labelListValue.id] = orderByStatus(milestone);
-                    }
+                    });
 
                     return response;
                 });
