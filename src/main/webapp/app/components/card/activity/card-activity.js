@@ -23,7 +23,7 @@
 
         var ITEMS_INCREMENT = 10;
 
-        function activityFilter(activity, index, activities) {
+        function activityFilter(activity) {
             if (!angular.isDefined(ctrl.activityFilterValue)) {
                 return true;
             }

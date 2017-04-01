@@ -90,7 +90,7 @@
             return hash;
         }
 
-        function showProjectDialog($event) {
+        function showProjectDialog() {
             $mdDialog.show({
                 templateUrl: 'app/components/dashboard/add-project-dialog.html',
                 fullscreen: true,
@@ -105,7 +105,7 @@
                         Project.create(project).then(function () {
                             Notification.addAutoAckNotification('success', {key: 'notification.project.creation.success'}, false);
                             ctrl.close();
-                        }, function (error) {
+                        }, function () {
                             Notification.addAutoAckNotification('error', {key: 'notification.project.creation.error'}, false);
                         });
                     };

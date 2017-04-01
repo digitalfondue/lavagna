@@ -27,7 +27,7 @@
                 columnToCreate.name = null;
                 columnToCreate.definition = null;
                 $mdDialog.hide();
-            }).catch(function (error) {
+            }).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.board.create-column.error'}, false);
             });
         }
