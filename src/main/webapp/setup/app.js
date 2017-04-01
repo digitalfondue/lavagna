@@ -1,7 +1,6 @@
 (function () {
     'use strict';
 
-
     var module = angular.module('lavagna-setup', ['ui.router', 'ngSanitize', 'ngMessages', 'ngMaterial']);
 
     module.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -21,10 +20,8 @@
 
         $urlRouterProvider.otherwise('/');
 
-
         $httpProvider.interceptors.push(function () {
             var csrfToken = null;
-
 
             return {
                 'request': function (config) {
@@ -72,8 +69,7 @@
         }
     }]);
 
-
-    module.filter('mask', ['$filter', function ($filter) {
+    module.filter('mask', function () {
         return function (text) {
             if (text === undefined) {
                 return null;
@@ -81,7 +77,7 @@
 
             return text.replace(/./gi, '*');
         };
-    }]);
+    });
 
     module.directive('lvgMatch', function () {
         return {
@@ -91,15 +87,13 @@
                 modelValueToMatch: '=lvgMatch'
             },
             link: function ($scope, $element, $attrs, ngModel) {
-                ngModel.$validators.lvgMatch = function (ngModelValue, ngViewValue) {
+                ngModel.$validators.lvgMatch = function (ngModelValue) {
                     return ngModelValue === $scope.modelValueToMatch;
                 };
 
-                var unregister = $scope.$watch($scope.modelValueToMatch, function () {
+                $scope.$watch($scope.modelValueToMatch, function () {
                     ngModel.$validate();
                 });
-
-                $scope.$on('$destroy', unregister);
             }
         };
     });

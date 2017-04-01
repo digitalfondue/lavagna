@@ -56,21 +56,35 @@
             config.push({first: 'AUTHENTICATION_METHOD', second: JSON.stringify([ctrl.authMethod])});
 
             // ugly D:
-            if (ctrl.authMethod == 'LDAP') {
+            if (ctrl.authMethod === 'LDAP') {
                 loginType = ['ldap'];
                 config.push({first: 'LDAP_SERVER_URL', second: ctrl.ldap.serverUrl});
                 config.push({first: 'LDAP_MANAGER_DN', second: ctrl.ldap.managerDn});
                 config.push({first: 'LDAP_MANAGER_PASSWORD', second: ctrl.ldap.managerPassword});
                 config.push({first: 'LDAP_USER_SEARCH_BASE', second: ctrl.ldap.userSearchBase});
                 config.push({first: 'LDAP_USER_SEARCH_FILTER', second: ctrl.ldap.userSearchFilter});
-            } else if (ctrl.authMethod == 'OAUTH') {
+            } else if (ctrl.authMethod === 'OAUTH') {
                 var newOauthConf = {baseUrl: ctrl.oauth.baseUrl, providers: []};
 
-                addProviderIfPresent(newOauthConf.providers, ctrl.oauth['bitbucket'], 'bitbucket') && loginType.push('oauth.bitbucket');
-                addProviderIfPresent(newOauthConf.providers, ctrl.oauth['gitlab'], 'gitlab') && loginType.push('oauth.gitlab');
-                addProviderIfPresent(newOauthConf.providers, ctrl.oauth['github'], 'github') && loginType.push('oauth.github');
-                addProviderIfPresent(newOauthConf.providers, ctrl.oauth['google'], 'google') && loginType.push('oauth.google');
-                addProviderIfPresent(newOauthConf.providers, ctrl.oauth['twitter'], 'twitter') && loginType.push('oauth.twitter');
+                if (addProviderIfPresent(newOauthConf.providers, ctrl.oauth['bitbucket'], 'bitbucket')) {
+                    loginType.push('oauth.bitbucket');
+                }
+
+                if (addProviderIfPresent(newOauthConf.providers, ctrl.oauth['gitlab'], 'gitlab')) {
+                    loginType.push('oauth.gitlab');
+                }
+
+                if (addProviderIfPresent(newOauthConf.providers, ctrl.oauth['github'], 'github')) {
+                    loginType.push('oauth.github');
+                }
+
+                if (addProviderIfPresent(newOauthConf.providers, ctrl.oauth['google'], 'google')) {
+                    loginType.push('oauth.google');
+                }
+
+                if (addProviderIfPresent(newOauthConf.providers, ctrl.oauth['twitter'], 'twitter')) {
+                    loginType.push('oauth.twitter');
+                }
 
                 if (ctrl.oauthNewProvider.type) {
                     var providerName = ctrl.oauthNewProvider.type + '-' + ctrl.oauthNewProvider.name;
@@ -89,9 +103,9 @@
 
                 config.push({first: 'OAUTH_CONFIGURATION', second: JSON.stringify(newOauthConf)});
                 Configuration.selectedNewOauthConf = newOauthConf;
-            } else if (ctrl.authMethod == 'DEMO') {
+            } else if (ctrl.authMethod === 'DEMO') {
                 loginType = ['demo'];
-            } else if (ctrl.authMethod == 'PASSWORD') {
+            } else if (ctrl.authMethod === 'PASSWORD') {
                 loginType = ['password'];
             }
 
@@ -112,13 +126,5 @@
         }
 
         return false;
-    }
-
-    function getOrigin(window) {
-        if (!window.location.origin) {
-            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-        }
-
-        return window.location.origin;
     }
 }());
