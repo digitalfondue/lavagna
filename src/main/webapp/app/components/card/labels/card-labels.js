@@ -35,15 +35,13 @@
         }
 
         function removeLabelValue(label, labelValue) {
-            BulkOperations.removeLabel(currentCard(), {id: labelValue.labelId}, labelValue.value).then(function (data) {
+            BulkOperations.removeLabel(currentCard(), {id: labelValue.labelId}, labelValue.value).then(function () {
                 Notification.addAutoAckNotification('success', {
                     key: 'notification.card.LABEL_DELETE.success',
                     parameters: {
                         labelName: label.name }
                 }, false);
-            }, function (error) {
-                ctrl.actionListState[listId].deleteList = false;
-
+            }, function () {
                 Notification.addAutoAckNotification('error', {
                     key: 'notification.card.LABEL_DELETE.error',
                     parameters: {
