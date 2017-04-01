@@ -41,20 +41,6 @@
             ctrl.submit({$permissionsToEnable: permissionsToEnable});
         }
 
-        function hasChanges() {
-            var result = false;
-
-            // perhaps slower than foreach probably, but avoid traversing the entire object
-            for (var key in ctrl.assignStatus) {
-                var value = ctrl.assignStatus[key];
-                var change = (value.checked != ctrl.hasPermission(key, ctrl.roleDesc.roleAndPermissions));
-
-                if (change) { return true; }
-            }
-
-            return false;
-        }
-
         function hasChanged(permission, assignedPermissions, currentStatus) {
             var status = ctrl.hasPermission(permission, assignedPermissions);
 

@@ -108,7 +108,7 @@
                 colPos.push(col.id);
             });
 
-            Board.reorderColumn(ctrl.board.shortName, ctrl.columnsLocation, colPos).catch(function (error) {
+            Board.reorderColumn(ctrl.board.shortName, ctrl.columnsLocation, colPos).catch(function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.generic.error'}, false);
             });
         }
