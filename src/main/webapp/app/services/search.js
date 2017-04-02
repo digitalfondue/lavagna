@@ -2,9 +2,12 @@
     // FIXME REFACTOR
     'use strict';
 
-    var parser = SEARCH_PARSER;
+    var parser = window.SEARCH_PARSER;
 
     function labelValueMatcher(criteria, environment) {
+        var dateMatcherFn;
+        var currentUserId;
+
         if (criteria.value === undefined || criteria.value === null) {
             return function () {
                 return true;
@@ -15,16 +18,17 @@
             var valueInt = parseInt(criteria.value.value, 10);
             var valueIsNaN = isNaN(valueInt);
 
-            var dateMatcherFn = function () {
+            dateMatcherFn = function () {
                 return true;
             };
 
             try {
                 dateMatcherFn = dateMatcher(criteria);
             } catch (e) {
+                // ignore
             }
 
-            var currentUserId = criteria.value.value.trim() === 'me' ? environment.currentUserId : undefined;
+            currentUserId = criteria.value.value.trim() === 'me' ? environment.currentUserId : undefined;
 
             return function (label) {
                 if (label.labelType === 'STRING') {
@@ -46,7 +50,7 @@
                 return true;
             };
         } else if (criteria.value.type === 'DATE_IDENTIFIER') {
-            var dateMatcherFn = dateMatcher(criteria);
+            dateMatcherFn = dateMatcher(criteria);
 
             return function (label) {
                 if (label.labelType === 'TIMESTAMP') {
@@ -56,11 +60,9 @@
                 }
             };
         } else if (criteria.value.type === 'CURRENT_USER' && criteria.value.value === 'me') {
-            var currentUserId = environment.currentUserId;
-
             return function (label) {
                 if (label.labelType === 'USER') {
-                    return label.value.valueUser === currentUserId;
+                    return label.value.valueUser === environment.currentUserId;
                 } else {
                     return true;
                 }
@@ -218,10 +220,14 @@
     }
 
     function buildMatcher(criteria, environment) {
+        var currentUserId;
+        var matchCurrentUserFn;
+        var matchUserFn;
+
         if (criteria.type === 'USER_LABEL') {
             return function (card, labels) {
                 var nameMatcher = criteria.name;
-                var value = criteria.value;
+
                 var labelValFn = labelValueMatcher(criteria, environment);
 
                 for (var i = 0; i < labels.length; i++) {
@@ -235,24 +241,24 @@
                 return false;
             };
         } else if (criteria.type === 'DUE_DATE') {
-            var matchingDateFunction = dateMatcher(criteria);
+            var dueDateMatchingFunction = dateMatcher(criteria);
 
             return function (card, labels) {
                 for (var i = 0; i < labels.length; i++) {
                     var label = labels[i];
 
                     if (label.labelName === 'DUE_DATE' && label.labelDomain === 'SYSTEM') {
-                        return matchingDateFunction(moment(label.value.valueTimestamp).toDate());
+                        return dueDateMatchingFunction(moment(label.value.valueTimestamp).toDate());
                     }
                 }
 
                 return false;
             };
         } else if (criteria.type === 'CREATED') {
-            var matchingDateFunction = dateMatcher(criteria);
+            var createdMatchingFunction = dateMatcher(criteria);
 
             return function (card) {
-                return matchingDateFunction(moment(card.creationDate).toDate());
+                return createdMatchingFunction(moment(card.creationDate).toDate());
             };
         } else if (criteria.type === 'MILESTONE') {
             if (criteria.value.type === 'UNASSIGNED') {
@@ -297,13 +303,13 @@
                     return true;
                 };
             } else {
-                var currentUserId = environment.currentUserId;
+                currentUserId = environment.currentUserId;
 
-                var matchCurrentUserFn = function (label) {
+                matchCurrentUserFn = function (label) {
                     return label.value.valueUser === currentUserId;
                 };
 
-                var matchUserFn = function (label) {
+                matchUserFn = function (label) {
                     return environment.users[criteria.value.value] === label.value.valueUser;
                 };
 
@@ -324,25 +330,25 @@
                 };
             }
         } else if (criteria.type === 'CREATED_BY') {
-            var currentUserId = environment.currentUserId;
+            currentUserId = environment.currentUserId;
 
-            var matchCurrentUserFn = function (card) {
+            matchCurrentUserFn = function (card) {
                 return card.creationUser === currentUserId;
             };
 
-            var matchUserFn = function (card) {
+            matchUserFn = function (card) {
                 return environment.users[criteria.value.value] === card.creationUser;
             };
 
             return criteria.value.type === 'CURRENT_USER' ? matchCurrentUserFn : matchUserFn;
         } else if (criteria.type === 'UPDATED_BY') {
-            var currentUserId = environment.currentUserId;
+            currentUserId = environment.currentUserId;
 
-            var matchCurrentUserFn = function (card) {
+            matchCurrentUserFn = function (card) {
                 return card.lastUpdateUserId === currentUserId;
             };
 
-            var matchUserFn = function (card) {
+            matchUserFn = function (card) {
                 return environment.users[criteria.value.value] === card.lastUpdateUserId;
             };
 
@@ -468,7 +474,7 @@
         return data.data;
     };
 
-    angular.module('lavagna.services').factory('Search', function ($http, $q, $log) {
+    angular.module('lavagna.services').factory('Search', ['$http', '$q', function ($http, $q) {
         return {
             buildSearchFilter: function (criteria, columns, currentUserId) {
                 return buildSearchFilter(criteria, columns, currentUserId, $http, $q);
@@ -489,5 +495,5 @@
                 return $http.get('api/search/autocomplete-card', {params: params}).then(extractData);
             }
         };
-    });
+    }]);
 }());
