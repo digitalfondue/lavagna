@@ -14,7 +14,7 @@
         controller: function () {
             var ctrl = this;
 
-            ctrl.$onChanges = function (change) {
+            ctrl.$onChanges = function () {
                 ctrl.pages = [];
 
                 if (ctrl.totalPages <= ctrl.maxSize) {
@@ -36,17 +36,18 @@
                     // TODO: could be simplified by directly calculating the first and last elements...
                     while (elems.length <= middleElementsCount) {
                         var firstElems = cnt % 2 === 1;
+                        var val;
 
                         cnt++;
 
                         if (firstElems) {
-                            var val = elems[0];
+                            val = elems[0];
 
                             if (val > 2) {
                                 elems.unshift(val - 1);
                             }
                         } else {
-                            var val = elems[elems.length - 1];
+                            val = elems[elems.length - 1];
 
                             if (val + 1 < ctrl.totalPages) {
                                 elems.push(val + 1);

@@ -67,7 +67,7 @@
         var currentUserId = {id: ctrl.currentUserId};
 
         function focusOnFirstButton() {
-            if (ctrl.visibilityCount == 0 && ctrl.visibility) {
+            if (ctrl.visibilityCount === 0 && ctrl.visibility) {
                 var firstButton = $element.find('button')[0];
 
                 if (firstButton) {
@@ -103,7 +103,7 @@
         function loadColumns() {
             Board.columnsByLocation(ctrl.card.boardShortName, 'BOARD').then(function (columns) {
                 ctrl.moveColumns = $filter('filter')(columns, function (col) {
-                    return col.id != ctrl.card.columnId;
+                    return col.id !== ctrl.card.columnId;
                 });
             });
         }
@@ -160,7 +160,7 @@
                 var currentNode = document.activeElement.parentNode;
                 var attrName = event.keyCode === 40 ? 'nextElementSibling' : 'previousElementSibling';
 
-                while (currentNode[attrName] != null) {
+                while (currentNode[attrName] !== null) {
                     currentNode = currentNode[attrName];
                     if (!currentNode.classList.contains('lavagna-hide')) {
                         break;

@@ -125,7 +125,7 @@
                 return;
             }
             // ignore drop as it's the same position
-            if (card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id == card.id) {
+            if (card.columnId === ctrl.column.id && ctrl.cardsInColumn[index] && ctrl.cardsInColumn[index].id === card.id) {
                 return;
             }
 

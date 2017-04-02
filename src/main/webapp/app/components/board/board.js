@@ -94,7 +94,7 @@
             var column = ctrl.columns[oldIndex];
             // same position, ignore drop
 
-            if (currentColIdx == index) {
+            if (currentColIdx === index) {
                 return false;
             }
 

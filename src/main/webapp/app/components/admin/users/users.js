@@ -49,7 +49,7 @@
                 var roleNames = [];
 
                 for (var roleName in res) {
-                    if (!res[roleName].hidden) {
+                    if (res.hasOwnProperty(roleName) && !res[roleName].hidden) {
                         roleNames.push(roleName);
                     }
                 }
@@ -61,7 +61,7 @@
 
         function configureDefaultUserToAdd() {
             ctrl.view.userToAdd = {
-                provider: ctrl.currentUser != undefined ? ctrl.currentUser.provider : null,
+                provider: angular.isDefined(ctrl.currentUser) ? ctrl.currentUser.provider : null,
                 username: null,
                 email: null,
                 displayName: null,
@@ -111,7 +111,7 @@
                 locals: {
                     roles: ctrl.roles,
                     loginProviders: ctrl.loginProviders
-                },
+                }
             });
         }
 
@@ -230,7 +230,7 @@
                         $mdDialog.hide();
                     };
                 },
-                controllerAs: 'importDialogCtrl',
+                controllerAs: 'importDialogCtrl'
             });
         }
 

@@ -39,10 +39,10 @@
         //
         ctrl.selected = ctrl.selectedRef();
 
-        ctrl.readOnly = ctrl.readOnly != undefined;
-        ctrl.listView = ctrl.view != undefined && ctrl.view == 'list';
-        ctrl.boardView = ctrl.view != undefined && ctrl.view == 'board';
-        ctrl.searchView = ctrl.view != undefined && ctrl.view == 'search';
+        ctrl.readOnly = angular.isDefined(ctrl.readOnly);
+        ctrl.listView = ctrl.view === 'list';
+        ctrl.boardView = ctrl.view === 'board';
+        ctrl.searchView = ctrl.view === 'search';
 
         ctrl.shortCardName = ctrl.card.boardShortName + '-' + ctrl.card.sequence;
 
@@ -59,12 +59,12 @@
         ctrl.isAssignedToCard = ctrl.user && Card.isAssignedToUser(ctrl.card.labels, ctrl.user.id);
         //
 
-        var headCtrl = new lvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
+        var headCtrl = new LvgCardFragmentV2HeadCtrl(container, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus);
 
         headCtrl.lvgCardFragmentV2 = ctrl;
         headCtrl.$postLink();
 
-        var dataInfoCtrl = new lvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip);
+        var dataInfoCtrl = new LvgCardFragmentV2DataInfoCtrl($filter, container, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip);
 
         dataInfoCtrl.lvgCardFragmentV2 = ctrl;
         dataInfoCtrl.$postLink();
@@ -92,7 +92,7 @@
     }
 
     // --------------------
-    function lvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {
+    function LvgCardFragmentV2HeadCtrl(domElement, $scope, $compile, $state, $location, $filter, $mdPanel, User, EventBus) {
         var ctrl = this;
 
         var subscribers = [];
@@ -157,7 +157,7 @@
                 if (User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
-                var route = parent.searchType == 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
+                var route = parent.searchType === 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';
                 var mainLinkSearchView = createMainLink(route, parent.projectShortName, parent.boardShortName, parent.card.sequence, true, parent.card.columnDefinition === 'CLOSED', $state, $location, subscribers, EventBus);
 
                 baseDiv.appendChild(mainLinkSearchView);
@@ -311,7 +311,7 @@
     }
 
     function updateCardClass(card, element) {
-        if (card.columnDefinition != 'CLOSED') {
+        if (card.columnDefinition !== 'CLOSED') {
             element.removeClass('lavagna-closed-card');
         } else {
             element.addClass('lavagna-closed-card');
@@ -330,7 +330,7 @@
         }
     }
 
-    function lvgCardFragmentV2DataInfoCtrl($filter, $element, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip) {
+    function LvgCardFragmentV2DataInfoCtrl($filter, $element, $mdPanel, $state, EventBus, UserCache, CardCache, ProjectCache, Tooltip) {
         var ctrl = this;
 
         var card;
@@ -483,7 +483,7 @@
 
             div.className = 'lvg-card-fragment-v2__card-data';
 
-            if (card.columnDefinition == 'CLOSED' && uncheckedCount > 0) {
+            if (card.columnDefinition === 'CLOSED' && uncheckedCount > 0) {
                 div.className += ' lvg-card-fragment-v2__card-data__action-not-done';
             }
 
@@ -511,7 +511,7 @@
 
         function handleDueDate() {
             var dueDateLabels = filterSystemLabelByName('DUE_DATE');
-            var hasDueDateLabel = dueDateLabels.length == 1;
+            var hasDueDateLabel = dueDateLabels.length === 1;
 
             if (!hasDueDateLabel) {
                 return null;
@@ -521,8 +521,8 @@
             var dueDate = moment(dueDateLabel.labelValueTimestamp);
             var daysDiff = moment().startOf('day').diff(dueDate, 'days');
 
-            var isTomorrow = notClosed && daysDiff == -1;
-            var isNow = notClosed && daysDiff == 0;
+            var isTomorrow = notClosed && daysDiff === -1;
+            var isNow = notClosed && daysDiff === 0;
             var isPast = notClosed && daysDiff > 0;
 
             var div = createElem('div');
@@ -571,8 +571,8 @@
                 var releaseDate = moment(releaseDateStr, 'DD.MM.YYYY');// FIXME format server side
                 var daysDiff = $filter('daysDiff')(releaseDate);
 
-                var isTomorrow = (notClosed && daysDiff == -1);
-                var isNow = (notClosed && daysDiff == 0);
+                var isTomorrow = (notClosed && daysDiff === -1);
+                var isNow = (notClosed && daysDiff === 0);
                 var isPast = (notClosed && daysDiff > 0);
 
                 addDueDateClasses(div, isTomorrow, isNow, isPast);

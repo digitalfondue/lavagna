@@ -8,10 +8,10 @@
             oauthProviders: '='
         },
         templateUrl: 'app/components/admin/login/login.html',
-        controller: ['$window', '$mdDialog', '$q', 'Admin', 'Permission', 'Notification', 'User', 'CONTEXT_PATH', AdminLoginController],
+        controller: ['$mdDialog', '$q', 'Admin', 'Permission', 'Notification', 'User', 'CONTEXT_PATH', AdminLoginController],
     });
 
-    function AdminLoginController($window, $mdDialog, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
+    function AdminLoginController($mdDialog, $q, Admin, Permission, Notification, User, CONTEXT_PATH) {
         var ctrl = this;
 
         ctrl.oauthNewProvider = {};
@@ -62,7 +62,7 @@
             var activeAuthMethod = [];
 
             for (var k in ctrl.authMethod) {
-                if (ctrl.authMethod[k]) {
+                if (ctrl.authMethod.hasOwnProperty(k) && ctrl.authMethod[k]) {
                     activeAuthMethod.push(k);
                 }
             }
@@ -172,24 +172,25 @@
 
         // TODO: in the future, move to a separate component
         ctrl.openLdapConfigModal = function () {
+            function LdapModalCtrl(ldapConfig) {
+                var ctrl = this;
+
+                ctrl.checkLdapConfiguration = function (ldapCheck) {
+                    Admin.checkLdap(ldapConfig, ldapCheck).then(function (r) {
+                        ctrl.ldapCheckResult = r;
+                    });
+                };
+
+                ctrl.close = function () {
+                    $mdDialog.hide();
+                };
+            }
+
             $mdDialog.show({
                 templateUrl: 'app/components/admin/login/ldap/ldap-modal.html',
                 controllerAs: '$ctrl',
                 bindToController: true,
-                controller: ['ldapConfig',
-                    function (ldapConfig) {
-                        var ctrl = this;
-
-                        ctrl.checkLdapConfiguration = function (ldapCheck) {
-                            Admin.checkLdap(ldapConfig, ldapCheck).then(function (r) {
-                                ctrl.ldapCheckResult = r;
-                            });
-                        };
-
-                        ctrl.close = function () {
-                            $mdDialog.hide();
-                        };
-                    }],
+                controller: ['ldapConfig', LdapModalCtrl],
                 resolve: {
                     ldapConfig: function () {
                         return ctrl.ldap;
@@ -233,7 +234,7 @@
         load();
 
         ctrl.anonChange = function (value) {
-            if (value == undefined) {
+            if (!angular.isDefined(value)) {
                 return;
             }
 
@@ -246,7 +247,7 @@
         };
 
         ctrl.globalRoleChange = function (value) {
-            if (value == undefined) {
+            if (!angular.isDefined(value)) {
                 return;
             }
             User.byProviderAndUsername('system', 'anonymous').then(function (res) {
@@ -259,7 +260,7 @@
         };
 
         ctrl.searchRoleChange = function (value) {
-            if (value == undefined) {
+            if (!angular.isDefined(value)) {
                 return;
             }
 

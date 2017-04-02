@@ -72,13 +72,13 @@
 
         //
 
-        function getUsersByRole(roleName, users, limit) {
+        function filterUsersByText(users) {
             return $filter('filterUsersBy')(users, ctrl.userFilterText).slice(0, 40);
         }
 
         function filterUsersBy() {
             angular.forEach(ctrl.usersByRole, function (users, name) {
-                ctrl.usersWithRole[name] = getUsersByRole(name, users, 40);
+                ctrl.usersWithRole[name] = filterUsersByText(users);
             });
         }
 
@@ -95,15 +95,16 @@
         function reloadRoles() {
             ctrl.Permission.findAllRolesAndRelatedPermissions().then(function (res) {
                 for (var roleName in res) {
-                    getUsersByRole;
-                    if (res[roleName].hidden) {
+                    if (res.hasOwnProperty(roleName) && res[roleName].hidden) {
                         delete res[roleName];
                     }
                 }
 
                 ctrl.roles = res;
-                for (var roleName in res) {
-                    loadUsersWithRole(roleName);
+                for (var remainingRoleName in res) {
+                    if (res.hasOwnProperty(remainingRoleName)) {
+                        loadUsersWithRole(remainingRoleName);
+                    }
                 }
             });
         }
@@ -117,7 +118,7 @@
         function loadUsersWithRole(roleName) {
             ctrl.Permission.findUsersWithRole(roleName).then(function (users) {
                 ctrl.usersByRole[roleName] = users;
-                ctrl.usersWithRole[roleName] = getUsersByRole(roleName, users, 40);
+                ctrl.usersWithRole[roleName] = filterUsersByText(users);
             });
         }
 
@@ -142,7 +143,7 @@
 
         function isRoleAssignedToUser(userId, roleName) {
             for (var i = 0; i < ctrl.usersWithRole[roleName].length; i++ ) {
-                if (ctrl.usersWithRole[roleName][i].id == userId) {
+                if (ctrl.usersWithRole[roleName][i].id === userId) {
                     return true;
                 }
             }
@@ -220,7 +221,7 @@
         }
 
         //
-        function showAddRoleDialog($event) {
+        function showAddRoleDialog() {
             $mdDialog.show({
                 templateUrl: 'app/components/manage-roles/add-role-dialog.html',
                 controller: function () {
