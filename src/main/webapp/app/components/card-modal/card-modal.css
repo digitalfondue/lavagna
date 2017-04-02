@@ -22,3 +22,7 @@
     right: 0;
     top: 0;
 }
+
+.lvg-card-modal.md-dialog-container {
+    position: fixed;
+}
