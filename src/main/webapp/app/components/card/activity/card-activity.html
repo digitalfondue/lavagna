@@ -10,21 +10,35 @@
                         <md-option ng-value="undefined"><span translate>card.activity.all</span></md-option>
                     </md-select>
                 </md-input-container>
-                <md-button class="lvg-small-icon-button"
-                           ng-click="$ctrl.sortDescending = true"
-                           ng-hide="$ctrl.sortDescending">
-                    <md-tooltip>{{::('card.activity.sort'|translate)}}</md-tooltip>
-                    <md-icon md-svg-icon="sort-ascending"></md-icon>
-                </md-button>
-                <md-button class="lvg-small-icon-button"
-                           ng-click="$ctrl.sortDescending = false"
-                           ng-show="$ctrl.sortDescending">
-                    <md-tooltip>{{::('card.activity.sort'|translate)}}</md-tooltip>
-                    <md-icon md-svg-icon="sort-descending"></md-icon>
-                </md-button>
             </div>
         </md-card-title-text>
     </md-card-title>
+    <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
+        <form data-ng-submit="$ctrl.addComment(comment);commentPreviewMode=false;">
+            <div data-ng-hide="commentPreviewMode">
+                <md-input-container class="md-block">
+                    <label translate>card.activity.new.comment</label>
+                    <textarea class="lvg-card-activity__actions-textarea"
+                              ng-model="comment.content" rows="1" md-select-on-focus></textarea>
+                </md-input-container>
+            </div>
+            <div data-ng-show="commentPreviewMode"
+                 data-ng-bind-html="commentPreview.content | markdown"></div>
+            <div class="lvg-card-activity__actions-button-row">
+                <md-button class="md-primary" type="submit">
+                    <span data-translate>button.add</span>
+                </md-button>
+                <md-button data-ng-hide="!comment.content || comment.content.length === 0 || commentPreviewMode"
+                           data-ng-click="commentPreview = comment; commentPreviewMode = true" type="button">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button data-ng-show="commentPreviewMode"
+                           data-ng-click="commentPreviewMode = false" type="button">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
+            </div>
+        </form>
+    </md-card-actions>
     <md-card-content>
         <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'time':$ctrl.sortDescending | limitTo:$ctrl.renderedItems track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
             <div ng-switch="::activity.cardEvent" >
@@ -50,30 +64,4 @@
             <md-button ng-click="$ctrl.loadMore()" translate>button.load.more</md-button>
         </div>
     </md-card-content>
-    <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
-        <form data-ng-submit="$ctrl.addComment(comment);commentPreviewMode=false;">
-            <div data-ng-hide="commentPreviewMode">
-                <md-input-container class="md-block">
-                    <label translate>card.activity.new.comment</label>
-                    <textarea class="lvg-card-activity__actions-textarea"
-                              ng-model="comment.content" rows="1" md-select-on-focus></textarea>
-                </md-input-container>
-            </div>
-            <div data-ng-show="commentPreviewMode"
-                 data-ng-bind-html="commentPreview.content | markdown"></div>
-            <div class="lvg-card-activity__actions-button-row">
-                <md-button class="md-primary" type="submit">
-                    <span data-translate>button.add</span>
-                </md-button>
-                <md-button data-ng-hide="commentPreviewMode"
-                           data-ng-click="commentPreview = comment; commentPreviewMode = true" type="button">
-                    <span data-translate>button.preview</span>
-                </md-button>
-                <md-button data-ng-show="commentPreviewMode"
-                           data-ng-click="commentPreviewMode = false" type="button">
-                    <span data-translate>button.closePreview</span>
-                </md-button>
-            </div>
-        </form>
-    </md-card-actions>
 </md-card>
