@@ -1,14 +1,21 @@
 lvg-board-sidebar {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: #f8f8f8;
     min-width: 290px;
-    height: 100%;
+    width: 290px;
+    min-height: 0;
+    height: auto;
     margin: 4px 4px 4px 0;
-    border: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border: 1px solid #aaa;
     border-top: 2px solid #aaa;
+}
+
+.lvg-board-sidebar__container {
+    display: flex;
+    flex-direction: column;
 }
 
 .lvg-board-sidebar__header {

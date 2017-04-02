@@ -1,5 +1,6 @@
 lvg-board-column {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     vertical-align: top;
     background-color: #e5e5e5;
     position: relative;
@@ -12,6 +13,11 @@ lvg-board-column {
 }
 
 .lvg-board-column__container {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+    height: auto;
     border-right: 1px solid #aaa;
     border-bottom: 1px solid #aaa;
     border-left: 1px solid #aaa;
@@ -57,6 +63,8 @@ lvg-board-column {
 
 .lvg-board-column__content {
     min-height: 150px;
+    height: auto;
+    max-height: calc(100vh - 130px);
     display: block;
     overflow-y: auto;
     overflow-x: hidden;
