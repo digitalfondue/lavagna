@@ -36,11 +36,11 @@
         function update(newVal) {
             User.byProviderAndUsername('system', 'anonymous').then(function (res) {
                 if (newVal) {
-                    Permission.forProject(ctrl.project.shortName).addUserToRole(res.id, 'ANONYMOUS').then(load).catch(function (error) {
+                    Permission.forProject(ctrl.project.shortName).addUserToRole(res.id, 'ANONYMOUS').then(load).catch(function () {
                         Notification.addAutoAckNotification('error', {key: 'notification.project-manage-anon.enable.error'}, false);
                     });
                 } else {
-                    Permission.forProject(ctrl.project.shortName).removeUserToRole(res.id, 'ANONYMOUS').then(load).catch(function (error) {
+                    Permission.forProject(ctrl.project.shortName).removeUserToRole(res.id, 'ANONYMOUS').then(load).catch(function () {
                         Notification.addAutoAckNotification('error', {key: 'notification.project-manage-anon.disable.error'}, false);
                     });
                 }

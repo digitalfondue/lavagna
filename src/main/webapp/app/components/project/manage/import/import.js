@@ -40,7 +40,7 @@
             });
 
             Admin.findByKey('TRELLO_API_KEY').then(function (key) {
-                if (key.second == null) {
+                if (!angular.isDefined(key.second) || key.second === null) {
                     ctrl.hasApiKey = false;
 
                     return;
@@ -59,7 +59,7 @@
         //
 
         function checkShortName(board) {
-            if (board.shortName == null || board.shortName == '') {
+            if (!angular.isDefined(board.shortName) || board.shortName === null || board.shortName === '') {
                 board.checkedShortName = false;
 
                 return;
@@ -70,7 +70,7 @@
         }
 
         function suggestShortName(board) {
-            if (board == null || board.name == null || board.name == '') {
+            if (board === null || !angular.isDefined(board.name) || board.name === null || board.name === '') {
                 return;
             }
             Board.suggestShortName(board.name).then(function (res) {
@@ -174,7 +174,7 @@
         script.onload = callback;
         // Internet explorer
         script.onreadystatechange = function () {
-            if (this.readyState == 'complete') {
+            if (this.readyState === 'complete') {
                 callback();
             }
         };
@@ -188,7 +188,7 @@
 
             d = Math.floor(d / 16);
 
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
 
         return uuid;

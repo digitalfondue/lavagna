@@ -73,7 +73,7 @@
 
             Label.update(ctrl.label.id, {name: values.name, color: labelColor, type: ctrl.label.type}).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.update.error'}, false);
             }).then(emitRefreshEvent);
         };
