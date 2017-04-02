@@ -20,10 +20,7 @@ package io.lavagna.service.calendarutils;
 import io.lavagna.model.*;
 import io.lavagna.service.CardDataService;
 import io.lavagna.service.UserRepository;
-import net.fortuna.ical4j.model.Date;
-import net.fortuna.ical4j.model.DateTime;
-import net.fortuna.ical4j.model.Dur;
-import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.*;
 import net.fortuna.ical4j.model.component.VAlarm;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.parameter.Cn;
@@ -135,8 +132,13 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         // Organizer
         UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
 
-        final VEvent event = new VEvent(new Date(lav.getLabelValueTimestamp()), name);
-        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
+        TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+        TimeZone timezone = registry.getTimeZone("Z");
+
+        DateTime dueDate = new DateTime(lav.getLabelValueTimestamp());
+        dueDate.setUtc(true);
+        final VEvent event = new VEvent(dueDate, name);
+        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
 
         event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
         event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
