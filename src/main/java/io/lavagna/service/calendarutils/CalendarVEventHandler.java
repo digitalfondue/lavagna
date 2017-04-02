@@ -100,8 +100,10 @@ public class CalendarVEventHandler implements CalendarEventHandler {
 
         final UUID id = new UUID(getLong(m.getCardLabelId(), m.getId()), getLong(m.getOrder(), 0));
 
-        final VEvent event = new VEvent(new Date(date.getTime()), name);
-        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE);
+        DateTime dueDate = new DateTime(date.getTime());
+        dueDate.setUtc(true);
+        final VEvent event = new VEvent(dueDate, name);
+        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
 
         event.getProperties().add(new Description(descBuilder.toString()));
 
@@ -131,7 +133,7 @@ public class CalendarVEventHandler implements CalendarEventHandler {
 
         // Organizer
         UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-        
+
         DateTime dueDate = new DateTime(lav.getLabelValueTimestamp());
         dueDate.setUtc(true);
         final VEvent event = new VEvent(dueDate, name);
