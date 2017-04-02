@@ -26,9 +26,13 @@
         breaks: true,
         sanitize: true,
         highlight: function (code) {
-            return hljs.highlightAuto(code).value;
+            return window.hljs.highlightAuto(code).value;
         }
     });
+
+    function isEmpty(text) {
+        return text === undefined || text === null || text === '';
+    }
 
     function decorateCache(funToDecorate, cachedCount, name, $cacheFactory) {
         var cache = $cacheFactory(name, {number: cachedCount});
@@ -40,7 +44,7 @@
                 return res;
             }
 
-            res = funToDecorate.apply(this, arguments);
+            res = funToDecorate.apply(this, arguments); /* eslint no-invalid-this: 0 */
 
             cache.put(key, res);
 
@@ -50,7 +54,7 @@
 
     filters.filter('markdown', function ($cacheFactory) {
         return decorateCache(function (text) {
-            if (text === undefined || text === null || text === '') {
+            if (isEmpty(text)) {
                 return '';
             }
 
@@ -60,7 +64,7 @@
 
     filters.filter('daysDiff', function () {
         return function daysDiffFilter(input) {
-            if (input == null) {
+            if (isEmpty(input)) {
                 return null;
             }
 
@@ -69,8 +73,8 @@
     });
 
     filters.filter('capitalize', function () {
-        return function capitalizeFilter(input, scope) {
-            if (input == null) {
+        return function capitalizeFilter(input) {
+            if (isEmpty(input)) {
                 return null;
             }
             input = input.toLowerCase();
@@ -86,7 +90,7 @@
             if (user === undefined) {
                 return null;
             }
-            if (user.displayName != null && user.displayName.trim().length > 0) {
+            if (!isEmpty(user.displayName) && user.displayName.trim().length > 0) {
                 return user.displayName;
             }
 
@@ -99,7 +103,7 @@
             if (user === undefined) {
                 return null;
             }
-            if (user.displayName != null) {
+            if (!isEmpty(user.displayName)) {
                 return user.displayName.charAt(0).toUpperCase();
             }
 
@@ -117,13 +121,13 @@
             var year = date.getFullYear();
             var dateYear = v.substring(0, 4);
 
-            if (year == dateYear) {
+            if (year === dateYear) {
                 var day = date.getDate();
                 var month = date.getMonth() + 1;
                 var dateDay = $filter('date')(v, 'd');
                 var dateMonth = $filter('date')(v, 'M');
 
-                if (day == dateDay && month == dateMonth) {
+                if (day === dateDay && month === dateMonth) {
                     return $filter('date')(v, 'h:mm a');
                 } else {
                     return $filter('date')(v, 'MMM d h:mm a');
@@ -174,7 +178,7 @@
         return 'rgba(' + [r, g, b, a].join(',') + ')';
     }
 
-    filters.filter('labelChartBar', function ($filter) {
+    filters.filter('labelChartBar', [function () {
         return function (label, max) {
             var style = {'background-color': toRGBAColor(label.labelColor, 0.6) };
 
@@ -183,13 +187,13 @@
 
             return style;
         };
-    });
+    }]);
 
-    filters.filter('labelBackgroundClass', function ($filter) {
+    filters.filter('labelBackgroundClass', [function () {
         return function (color) {
             return textColorFromBg(color);
         };
-    });
+    }]);
 
     filters.filter('columnColor', function ($filter, $cacheFactory) {
         return decorateCache(function (color) {
@@ -247,7 +251,7 @@
             var filteredLabels = {};
 
             for (var k in userLabels) {
-                if (labelValues == undefined || !userLabels[k].unique || !(userLabels[k].id in labelValues)) {
+                if (labelValues === undefined || !userLabels[k].unique || !(userLabels[k].id in labelValues)) {
                     filteredLabels[k] = userLabels[k];
                 }
             }
@@ -294,7 +298,7 @@
         };
     });
 
-    filters.filter('parseHexColor', function ($filter) {
+    filters.filter('parseHexColor', [function () {
         return function (hexColor) {
             if (hexColor === undefined || hexColor === null) {
                 return 0;
@@ -303,9 +307,9 @@
 
             return isNaN(r) ? 0 : r;
         };
-    });
+    }]);
 
-    filters.filter('parseIntColor', function ($filter) {
+    filters.filter('parseIntColor', [function () {
         return function (intColor) {
             if (isNaN(parseInt(intColor))) {
                 return '#000000';
@@ -313,9 +317,9 @@
 
             return '#000000'.substr(0, 7 - intColor.toString(16).length) + intColor.toString(16);
         };
-    });
+    }]);
 
-    filters.filter('addColDefOrder', function ($filter) {
+    filters.filter('addColDefOrder', [function () {
         var columnDefinitionOrder = { 'open': 0, 'closed': 1, 'backlog': 2, 'deferred': 3 };
 
         return function (definitions) {
@@ -344,16 +348,16 @@
 
             return r;
         };
-    });
+    }]);
 
-    filters.filter('permissionsByCategory', function ($filter) {
+    filters.filter('permissionsByCategory', [function () {
         var validCategories = ['APPLICATION', 'PROJECT', 'BOARD', 'COLUMN', 'CARD'];
 
         return function (permissions, category) {
             var r = [];
 
             if (permissions === undefined || permissions === null || permissions === undefined || permissions === null ||
-                validCategories.indexOf(category) == -1) {
+                validCategories.indexOf(category) === -1) {
                 return r;
             }
             for (var name in permissions) {
@@ -364,7 +368,7 @@
 
             return r;
         };
-    });
+    }]);
 
     filters.filter('orderObjectBy', function () {
         return function (items, field, reverse) {
@@ -385,7 +389,7 @@
         };
     });
 
-    filters.filter('mask', function ($filter) {
+    filters.filter('mask', [function () {
         return function (text) {
             if (text === undefined) {
                 return null;
@@ -393,7 +397,7 @@
 
             return text.replace(/./gi, '*');
         };
-    });
+    }]);
 
     filters.filter('translateColumnName', function ($filter) {
         return function (column) {
@@ -428,10 +432,10 @@
                 if (!add && user.provider.indexOf(text) >= 0) {
                     add = true;
                 }
-                if (!add && user.displayName != null && user.displayName.indexOf(text) >= 0) {
+                if (!add && !isEmpty(user.displayName) && user.displayName.indexOf(text) >= 0) {
                     add = true;
                 }
-                if (!add && user.email != null && user.email.indexOf(text) >= 0) {
+                if (!add && !isEmpty(user.email) && user.email.indexOf(text) >= 0) {
                     add = true;
                 }
                 if (add) {
