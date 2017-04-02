@@ -22,12 +22,13 @@
                 ctrl.userLabels = {};
                 ctrl.labelsListValues = {};
                 ctrl.labelNameToId = {};
-                for (var k in labels) {
-                    ctrl.labelNameToId[labels[k].name] = k;
-                    if (labels[k].domain === 'USER') {
-                        ctrl.userLabels[k] = labels[k];
+
+                angular.forEach(labels, function (label, labelId) {
+                    ctrl.labelNameToId[label.name] = labelId;
+                    if (label.domain === 'USER') {
+                        ctrl.userLabels[labelId] = label;
                     }
-                }
+                });
             });
         };
 
@@ -39,7 +40,7 @@
             unbind();
         };
 
-        ctrl.showAddLabelDialog = function ($event) {
+        ctrl.showAddLabelDialog = function () {
             $mdDialog.show({
                 templateUrl: 'app/components/project/manage/labels/add-label-dialog.html',
                 controller: function (labelOptions) {
@@ -84,12 +85,12 @@
             if (ctrl.labelNameToId[labelToAdd.name] !== undefined) {
                 if (labelToAdd.color !== null && labelToAdd.color !== ''
                     && labelToAdd.color !== undefined && labelToAdd.type !== undefined
-                    && ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]].color != labelColor) {
+                    && ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]].color !== labelColor) {
                     Label.update(ctrl.labelNameToId[labelToAdd.name], {name: labelToAdd.name, color: labelColor, type: labelToAdd.type}).then(function () {
                         return ctrl.userLabels[ctrl.labelNameToId[labelToAdd.name]];
                     }).then(function () {
                         Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.success'}, false);
-                    }, function (error) {
+                    }, function () {
                         Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.error'}, false);
                     });
                 } else {
@@ -100,7 +101,7 @@
             } else {
                 Label.add(projectName, {name: labelToAdd.name, color: labelColor, type: labelToAdd.type, unique: labelToAdd.unique}).then(function () {
                     Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.success'}, false);
-                }, function (error) {
+                }, function () {
                     Notification.addAutoAckNotification('success', {key: 'notification.project-manage-labels.add.error'}, false);
                 });
             }

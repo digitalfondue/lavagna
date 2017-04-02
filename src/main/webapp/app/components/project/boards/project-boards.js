@@ -70,7 +70,7 @@
             loadUserCardsInProject(page - 1);
         }
 
-        function showBoardDialog($event) {
+        function showBoardDialog() {
             $mdDialog.show({
                 templateUrl: 'app/components/project/boards/add-board-dialog.html',
                 fullscreen: true,
@@ -85,7 +85,7 @@
                     ctrl.errors = {};
 
                     ctrl.suggestBoardShortName = function (board) {
-                        if (board == null || board.name == null || board.name == '') {
+                        if (board === null || !angular.isDefined(board.name) || board.name === null || board.name === '') {
                             return;
                         }
                         Board.suggestShortName(board.name).then(function (res) {
@@ -112,7 +112,7 @@
                             board.shortName = null;
                             ctrl.checkedShortName = undefined;
                             Notification.addAutoAckNotification('success', {key: 'notification.board.creation.success'}, false);
-                        }, function (error) {
+                        }, function () {
                             Notification.addAutoAckNotification('error', {key: 'notification.board.creation.error'}, false);
                         });
                     };

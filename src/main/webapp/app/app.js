@@ -618,7 +618,7 @@
 
         $mdDateLocaleProvider.firstDayOfWeek = parseInt(LOCALE_FIRST_DAY_OF_WEEK);
         $mdDateLocaleProvider.parseDate = function (dateString) {
-            if (dateString == null) {
+            if (!angular.isDefined(dateString) || dateString === null || dateString === '') {
                 return null;
             }
             var m = moment(dateString, dateFormat, true);
@@ -626,7 +626,7 @@
             return m.isValid() ? m.toDate() : new Date(NaN);
         };
         $mdDateLocaleProvider.formatDate = function (date) {
-            if (date == null) {
+            if (!angular.isDefined(date) || date === null) {
                 return null;
             }
 
@@ -658,7 +658,7 @@
         //
         return {
             'request': function (config) {
-                if ($window.csrfToken != null) {
+                if (angular.isDefined($window.csrfToken) && $window.csrfToken !== null) {
                     config.headers['x-csrf-token'] = $window.csrfToken;
                 }
 

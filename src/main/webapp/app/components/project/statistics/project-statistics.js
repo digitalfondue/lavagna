@@ -48,7 +48,9 @@
                 var sortedIndexes = [];
 
                 for (var index in array) {
-                    sortedIndexes.push(parseInt(index));
+                    if (array.hasOwnProperty(index)) {
+                        sortedIndexes.push(parseInt(index));
+                    }
                 }
                 sortedIndexes.sort();
 
@@ -72,23 +74,23 @@
 
             // cards history
             for (var i = 0; i < sortedHistoryIndexes.length; i++) {
-                var index = sortedHistoryIndexes[i];
+                var sortedHistoryIndex = sortedHistoryIndexes[i];
 
-                cardsHistory.labels.push(new Date(index).toLocaleDateString());
+                cardsHistory.labels.push(new Date(sortedHistoryIndex).toLocaleDateString());
 
-                var closed = getStatusFromHistory(stats, index, 'CLOSED');
+                var closed = getStatusFromHistory(stats, sortedHistoryIndex, 'CLOSED');
 
                 cardsHistory.datasets[3].data.push(closed);
 
-                var deferred = closed + getStatusFromHistory(stats, index, 'DEFERRED');
+                var deferred = closed + getStatusFromHistory(stats, sortedHistoryIndex, 'DEFERRED');
 
                 cardsHistory.datasets[2].data.push(deferred);
 
-                var open = deferred + getStatusFromHistory(stats, index, 'OPEN');
+                var open = deferred + getStatusFromHistory(stats, sortedHistoryIndex, 'OPEN');
 
                 cardsHistory.datasets[1].data.push(open);
 
-                var backlog = open + getStatusFromHistory(stats, index, 'BACKLOG');
+                var backlog = open + getStatusFromHistory(stats, sortedHistoryIndex, 'BACKLOG');
 
                 cardsHistory.datasets[0].data.push(backlog);
             }
@@ -107,8 +109,8 @@
 
             // cards by label
             ctrl.cardsByLabelMax = 1;
-            for (var i = 0; i < stats.cardsByLabel.length; i++) {
-                var label = stats.cardsByLabel[i];
+            for (var j = 0; j < stats.cardsByLabel.length; j++) {
+                var label = stats.cardsByLabel[j];
 
                 ctrl.cardsByLabelMax = Math.max(ctrl.cardsByLabelMax, label.count);
             }
@@ -119,10 +121,12 @@
             ctrl.closedThisPeriod = 0;
 
             for (var index in stats.createdAndClosedCards) {
-                var pair = stats.createdAndClosedCards[index];
+                if (stats.createdAndClosedCards.hasOwnProperty(index)) {
+                    var pair = stats.createdAndClosedCards[index];
 
-                ctrl.openedThisPeriod += pair['first'];
-                ctrl.closedThisPeriod += pair['second'];
+                    ctrl.openedThisPeriod += pair['first'];
+                    ctrl.closedThisPeriod += pair['second'];
+                }
             }
             ctrl.showCreatedAndClosedCards = Object.keys(stats.createdAndClosedCards).length > 1;
         };
@@ -149,7 +153,7 @@
         });
 
         ctrl.filterByBoard = function (board) {
-            if (ctrl.boards[0] == board) {
+            if (angular.equals(ctrl.boards[0], board)) {
                 Project.statistics(ctrl.project.shortName, ctrl.dateRange.value).then(generateDashboard);
             } else {
                 Board.statistics(board.shortName, ctrl.dateRange.value).then(generateDashboard);

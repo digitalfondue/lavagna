@@ -34,7 +34,7 @@
         function update(boardToUpdate) {
             Board.update(boardToUpdate).then(reloadBoards).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.update.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.update.error'}, false);
             });
         }
@@ -44,7 +44,7 @@
 
             Board.update(boardToUpdate).then(reloadBoards).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.archive.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.archive.error'}, false);
             });
         }
@@ -54,7 +54,7 @@
 
             Board.update(boardToUpdate).then(reloadBoards).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-boards.unarchive.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-boards.unarchive.error'}, false);
             });
         }

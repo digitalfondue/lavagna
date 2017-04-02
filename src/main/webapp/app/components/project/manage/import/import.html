@@ -34,7 +34,7 @@
                     <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.view.connectingToTrello || $ctrl.view.trelloImportIsRunning"></md-progress-linear>
                 </div>
             </md-card-content>
-            <md-card-actions class="row margin-8">
+            <md-card-actions class="row margin-8" ng-if="$ctrl.hasApiKey">
                 <md-button class="md-primary"
                            ng-click="$ctrl.loadTrello()"
                            ng-if="!$ctrl.trelloLoaded">

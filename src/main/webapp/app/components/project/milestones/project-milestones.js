@@ -23,7 +23,7 @@
         var unbindLabelValue = angular.noop;
         var unbindLabel = angular.noop;
 
-        var unregStateChanges = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        var unregStateChanges = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
             if (fromState.name === 'project.milestones.milestone.card' && toState.name === 'project.milestones.milestone') {
                 loadMilestonesInProject();
             }

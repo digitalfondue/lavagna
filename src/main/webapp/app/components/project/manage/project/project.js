@@ -44,7 +44,7 @@
         ctrl.update = function (project) {
             Project.update(project).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-home.update.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-home.update.error'}, false);
             });
         };
@@ -52,7 +52,7 @@
         ctrl.updateColumnDefinition = function (definition, color) {
             Project.updateColumnDefinition(shortName, definition, $filter('parseHexColor')(color)).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-columns-status.update.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-columns-status.update.error'}, false);
             }).then(loadColumnsDefinition);
         };

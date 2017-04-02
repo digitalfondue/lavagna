@@ -45,7 +45,7 @@
         ctrl.update = function (val) {
             Label.updateLabelListValue(val).then(function () {
                 Notification.addAutoAckNotification('success', {key: 'notification.project-manage-milestones.update.success'}, false);
-            }, function (error) {
+            }, function () {
                 Notification.addAutoAckNotification('error', {key: 'notification.project-manage-milestones.update.error'}, false);
             });
         };
