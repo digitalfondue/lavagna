@@ -50,12 +50,14 @@
             container.removeEventListener('click', closeHandler);
             window.document.removeEventListener('keydown', escapeHandler);
             body.removeChild(backDrop);
+            body.style.overflow = '';
         }
 
         ctrl.$postLink = function postLink() {
             backDrop = window.document.createElement('div');
             backDrop.className = 'lvg-card-modal__backdrop';
             body.appendChild(backDrop);
+            body.style.overflow = 'hidden';
 
             container = window.document.querySelector('.lvg-card-modal');
             angular.element(window.document.querySelector('.lvg-card-modal__dialog')).addClass('md-transition-in');
