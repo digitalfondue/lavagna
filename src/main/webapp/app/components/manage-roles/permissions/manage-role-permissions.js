@@ -44,12 +44,12 @@
         function hasChanged(permission, assignedPermissions, currentStatus) {
             var status = ctrl.hasPermission(permission, assignedPermissions);
 
-            return status != currentStatus;
+            return status !== currentStatus;
         }
 
         /* TODO could remove the linear probe... */
         function hasPermission(permission, assignedPermissions) {
-            if (permission == undefined || assignedPermissions == undefined) {
+            if (!angular.isDefined(permission) || !angular.isDefined(assignedPermissions)) {
                 return;
             }
 
@@ -64,7 +64,7 @@
 
         function hasCategory(categoryName) {
             for (var p in ctrl.permissionsByCategory) {
-                if (p == categoryName) {
+                if (ctrl.permissionsByCategory.hasOwnProperty(p) && p === categoryName) {
                     return true;
                 }
             }

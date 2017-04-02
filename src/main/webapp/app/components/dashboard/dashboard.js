@@ -121,7 +121,7 @@
                     };
 
                     ctrl.suggestProjectShortName = function (project) {
-                        if (project == null || project.name == null || project.name == '') {
+                        if (project === null || !angular.isDefined(project.name) || project.name === null || project.name === '') {
                             return;
                         }
                         Project.suggestShortName(project.name).then(function (res) {

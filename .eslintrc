@@ -8,6 +8,7 @@
     },
     "globals": {
         "angular": false,
+        "Chart": false,
         "inject": false,
         "io_lavagna": false,
         "marked": false,

@@ -106,7 +106,7 @@
                 stompSubscription = angular.noop;
             }
 
-            if (ctrl.sideBarLocation && ctrl.sideBarLocation != 'NONE') {
+            if (ctrl.sideBarLocation && ctrl.sideBarLocation !== 'NONE') {
                 sideBarLoad(0);
 
                 stompSubscription = StompClient.subscribe('/event/board/' + ctrl.board.shortName + '/location/' + ctrl.sideBarLocation + '/card', function () {

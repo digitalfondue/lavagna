@@ -35,13 +35,13 @@
             }
             //
 
-            if ($event.keyCode == 27) {
+            if ($event.keyCode === 27) {
                 close();
             }
         }
 
         function closeHandler($event) {
-            if ($event.target == container) {
+            if ($event.target === container) {
                 close();
             }
         }
