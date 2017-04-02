@@ -131,10 +131,7 @@ public class CalendarVEventHandler implements CalendarEventHandler {
 
         // Organizer
         UserDescription ud = getUserDescription(card.getCreationUser(), usersCache);
-
-        TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-        TimeZone timezone = registry.getTimeZone("Z");
-
+        
         DateTime dueDate = new DateTime(lav.getLabelValueTimestamp());
         dueDate.setUtc(true);
         final VEvent event = new VEvent(dueDate, name);
