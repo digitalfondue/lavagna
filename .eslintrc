@@ -1,7 +1,7 @@
 {
     "parserOptions": {
         "ecmaVersion": 5,
-        "sourceType": "browser"
+        "sourceType": "script"
     },
     "env": {
         "browser": true
@@ -20,7 +20,8 @@
         "Trello": false
     },
     "plugins": [
-        "angular"
+        "angular",
+        "html"
     ],
     "rules": {
         ////////// Possible Errors //////////

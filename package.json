@@ -37,7 +37,8 @@
     ],
     "devDependencies": {
         "eslint": "3.19.0",
-        "eslint-plugin-angular": "2.2.1"
+        "eslint-plugin-angular": "2.2.1",
+        "eslint-plugin-html": "2.0.1"
     },
     "preferGlobal": true,
     "license": "MIT"
