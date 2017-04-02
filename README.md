@@ -82,6 +82,10 @@ Right click on the project -> "Configure Kotlin" -> "Add Kotlin nature"
 
 Install npm and run the following script to assure your code follows our guidelines
 
+First ensure that all the dependencies are ok with `npm install`.
+
+Then, for checking:
+
 ```
 npm run-script lint
 ```
