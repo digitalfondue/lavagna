@@ -308,7 +308,7 @@ public class MailTicketService {
     private void sendEmail(String to, String name, Card createdCard, Board board, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig) {
         String cardId = board.getShortName() + "-" + createdCard.getSequence();
         String subject = config.getSubject().replaceAll("\\{\\{card}}", cardId);
-        String body = config.getBody().replaceAll("\\{\\{card}}", cardId).replaceAll("\\{\\{namer}}", name != null ? name : to);
+        String body = config.getBody().replaceAll("\\{\\{card}}", cardId).replaceAll("\\{\\{name}}", name != null ? name : to);
 
         Parser parser = Parser.builder().build();
         Node document = parser.parse(body);
