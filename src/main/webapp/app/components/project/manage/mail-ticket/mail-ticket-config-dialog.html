@@ -20,7 +20,7 @@
                 </md-checkbox>
             </md-input-container>
 
-            <h2 class="md-title" translate>Create card in:</h2>
+            <h2 class="md-title" translate>project.manage.mailTicket.ticket.dialog.createCardIn</h2>
             <div class="row row-inherit">
                 <div class="col-md-6 col-xs-12">
                     <md-input-container class="md-block lvg-fix-height">
@@ -45,6 +45,38 @@
                         </md-select>
                     </md-input-container>
                 </div>
+            </div>
+
+            <h2 class="md-title" translate>project.manage.mailTicket.ticket.dialog.notification</h2>
+            <div class="row row-inherit">
+                <div class="col-xs-12">
+                    <md-input-container class="md-block">
+                        <md-checkbox data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.overrideNotification">
+                            <span translate>project.manage.mailTicket.ticket.dialog.notification.override</span>
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="col-xs-12" data-ng-show="$mailTicketConfigDialogCtrl.configToAdd.overrideNotification">
+                <md-input-container class="md-block">
+                    <label translate>label.subject</label>
+                    <input type="text" id="subject" placeholder="" ng-required="$mailTicketConfigDialogCtrl.configToAdd.overrideNotification" autocomplete="off"
+                           data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.subject">
+                </md-input-container>
+                <md-input-container class="md-block" data-ng-hide="preview.show">
+                    <label data-translate>label.body</label>
+                    <textarea data-ng-model="$mailTicketConfigDialogCtrl.configToAdd.body" rows="5" ng-required="$mailTicketConfigDialogCtrl.configToAdd.overrideNotification" md-select-on-focus></textarea>
+                </md-input-container>
+                <md-input-container class="md-block md-input-has-placeholder" data-ng-show="preview.show">
+                    <label data-translate>label.body</label>
+                    <div data-ng-bind-html="$mailTicketConfigDialogCtrl.configToAdd.body | markdown"></div>
+                </md-input-container>
+                <md-button type="button" data-ng-click="preview.show = true" data-ng-hide="preview.show">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button type="button" data-ng-click="preview.show = false" data-ng-show="preview.show">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
             </div>
         </md-dialog-content>
         <md-dialog-actions>

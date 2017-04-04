@@ -35,7 +35,7 @@ public interface MailTicketQuery {
     @Query("SELECT * FROM LA_PROJECT_MAIL_TICKET")
     List<ProjectMailTicket> findAllTickets();
 
-    @Query("SELECT MAIL_TICKET_ID, MAIL_TICKET_NAME, MAIL_TICKET_ENABLED, MAIL_TICKET_ALIAS, MAIL_TICKET_USE_ALIAS, MAIL_TICKET_COLUMN_ID_FK, MAIL_TICKET_CONFIG_ID_FK, MAIL_TICKET_METADATA FROM LA_PROJECT_MAIL_TICKET"
+    @Query("SELECT MAIL_TICKET_ID, MAIL_TICKET_NAME, MAIL_TICKET_ENABLED, MAIL_TICKET_ALIAS, MAIL_TICKET_USE_ALIAS, MAIL_TICKET_NOTIFICATION_OVERRIDE, MAIL_TICKET_SUBJECT, MAIL_TICKET_BODY, MAIL_TICKET_COLUMN_ID_FK, MAIL_TICKET_CONFIG_ID_FK, MAIL_TICKET_METADATA FROM LA_PROJECT_MAIL_TICKET"
         + " INNER JOIN LA_PROJECT_MAIL_TICKET_CONFIG ON MAIL_TICKET_CONFIG_ID_FK = MAIL_CONFIG_ID WHERE MAIL_CONFIG_PROJECT_ID_FK = :projectId")
     List<ProjectMailTicket> findAllByProject(@Bind("projectId") int projectId);
 
@@ -67,12 +67,12 @@ public interface MailTicketQuery {
         @QueryOverride(db = DB.PGSQL, value = "SELECT * FROM LA_PROJECT_MAIL_TICKET_CONFIG WHERE MAIL_CONFIG_ID = (SELECT CURRVAL(pg_get_serial_sequence('la_project_mail_ticket_config','mail_config_id')))") })
     ProjectMailTicketConfig findLastCreatedConfig();
 
-    @Query("INSERT INTO LA_PROJECT_MAIL_TICKET(MAIL_TICKET_NAME, MAIL_TICKET_ALIAS, MAIL_TICKET_USE_ALIAS, MAIL_TICKET_COLUMN_ID_FK, MAIL_TICKET_CONFIG_ID_FK, MAIL_TICKET_METADATA)"
-        + "VALUES (:name, :alias, :useAlias, :columnId, :configId, :metadata)")
-    int addTicket(@Bind("name") String name, @Bind("alias") String alias, @Bind("useAlias") boolean useAlias, @Bind("columnId") int columnId, @Bind("configId") int configId, @Bind("metadata") String metadata);
+    @Query("INSERT INTO LA_PROJECT_MAIL_TICKET(MAIL_TICKET_NAME, MAIL_TICKET_ALIAS, MAIL_TICKET_USE_ALIAS, MAIL_TICKET_NOTIFICATION_OVERRIDE, MAIL_TICKET_SUBJECT, MAIL_TICKET_BODY, MAIL_TICKET_COLUMN_ID_FK, MAIL_TICKET_CONFIG_ID_FK, MAIL_TICKET_METADATA)"
+        + "VALUES (:name, :alias, :useAlias, :notificationOverride, :subject, :body, :columnId, :configId, :metadata)")
+    int addTicket(@Bind("name") String name, @Bind("alias") String alias, @Bind("useAlias") boolean useAlias, @Bind("notificationOverride") boolean notificationOverride, @Bind("subject") String subject, @Bind("body") String body, @Bind("columnId") int columnId, @Bind("configId") int configId, @Bind("metadata") String metadata);
 
-    @Query("UPDATE LA_PROJECT_MAIL_TICKET SET MAIL_TICKET_NAME = :name, MAIL_TICKET_ENABLED = :enabled, MAIL_TICKET_ALIAS = :alias, MAIL_TICKET_USE_ALIAS = :useAlias, MAIL_TICKET_COLUMN_ID_FK = :columnId, MAIL_TICKET_CONFIG_ID_FK = :configId, MAIL_TICKET_METADATA = :metadata WHERE MAIL_TICKET_ID = :id")
-    int updateTicket(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("alias") String alias, @Bind("useAlias") boolean useAlias, @Bind("columnId") int columnId, @Bind("configId") int configId, @Bind("metadata") String metadata);
+    @Query("UPDATE LA_PROJECT_MAIL_TICKET SET MAIL_TICKET_NAME = :name, MAIL_TICKET_ENABLED = :enabled, MAIL_TICKET_ALIAS = :alias, MAIL_TICKET_USE_ALIAS = :useAlias, MAIL_TICKET_NOTIFICATION_OVERRIDE = :notificationOverride, MAIL_TICKET_SUBJECT = :subject, MAIL_TICKET_BODY = :body, MAIL_TICKET_COLUMN_ID_FK = :columnId, MAIL_TICKET_CONFIG_ID_FK = :configId, MAIL_TICKET_METADATA = :metadata WHERE MAIL_TICKET_ID = :id")
+    int updateTicket(@Bind("id") int id, @Bind("name") String name, @Bind("enabled") boolean enabled, @Bind("alias") String alias, @Bind("useAlias") boolean useAlias, @Bind("notificationOverride") boolean notificationOverride, @Bind("subject") String subject, @Bind("body") String body, @Bind("columnId") int columnId, @Bind("configId") int configId, @Bind("metadata") String metadata);
 
     @Query("DELETE FROM LA_PROJECT_MAIL_TICKET WHERE MAIL_TICKET_ID = :id")
     int deleteTicket(@Bind("id") int id);

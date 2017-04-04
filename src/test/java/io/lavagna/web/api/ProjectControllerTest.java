@@ -220,6 +220,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col.getId(),
             mailConfig.getId(),
             "{}");
@@ -231,6 +234,9 @@ public class ProjectControllerTest {
         when(mailTicketService.addTicket(ticket.getName(),
             ticket.getAlias(),
             ticket.getSendByAlias(),
+            ticket.getNotificationOverride(),
+            ticket.getSubject(),
+            ticket.getBody(),
             ticket.getColumnId(),
             ticket.getConfigId(),
             ticket.getMetadata())).thenReturn(ticket);
@@ -247,6 +253,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col.getId(),
             mailConfig.getId(),
             "{}");
@@ -268,6 +277,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col1.getId(),
             mailConfig.getId(),
             "{}");
@@ -281,6 +293,9 @@ public class ProjectControllerTest {
         when(mailTicketService.addTicket(ticket.getName(),
             ticket.getAlias(),
             ticket.getSendByAlias(),
+            ticket.getNotificationOverride(),
+            ticket.getSubject(),
+            ticket.getBody(),
             ticket.getColumnId(),
             ticket.getConfigId(),
             ticket.getMetadata())).thenReturn(ticket);
@@ -295,6 +310,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col.getId(),
             mailConfig.getId(),
             "{}");
@@ -310,6 +328,9 @@ public class ProjectControllerTest {
             ticket.getEnabled(),
             ticket.getAlias(),
             ticket.getSendByAlias(),
+            ticket.getNotificationOverride(),
+            ticket.getSubject(),
+            ticket.getBody(),
             ticket.getColumnId(),
             ticket.getConfigId(),
             ticket.getMetadata())).thenReturn(1);
@@ -326,6 +347,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col.getId(),
             mailConfig.getId(),
             "{}");
@@ -348,6 +372,9 @@ public class ProjectControllerTest {
             true,
             "alias@example.com",
             false,
+            false,
+            null,
+            null,
             col1.getId(),
             mailConfig.getId(),
             "{}");
@@ -363,6 +390,9 @@ public class ProjectControllerTest {
             ticket.getEnabled(),
             ticket.getAlias(),
             ticket.getSendByAlias(),
+            ticket.getNotificationOverride(),
+            ticket.getSubject(),
+            ticket.getBody(),
             ticket.getColumnId(),
             ticket.getConfigId(),
             ticket.getMetadata())).thenReturn(1);

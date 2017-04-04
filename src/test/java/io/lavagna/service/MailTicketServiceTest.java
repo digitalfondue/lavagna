@@ -147,6 +147,9 @@ public class MailTicketServiceTest {
             !ticketConfig.getEnabled(),
             ticketConfig.getAlias(),
             ticketConfig.getSendByAlias(),
+            ticketConfig.getNotificationOverride(),
+            ticketConfig.getSubject(),
+            ticketConfig.getBody(),
             ticketConfig.getColumnId(),
             ticketConfig.getConfigId(),
             ticketConfig.getMetadata());
@@ -169,6 +172,9 @@ public class MailTicketServiceTest {
             ticketConfig.getEnabled(),
             "updated-" + ticketConfig.getAlias(),
             ticketConfig.getSendByAlias(),
+            !ticketConfig.getNotificationOverride(),
+            "updated-" + ticketConfig.getSubject(),
+            "updated-" + ticketConfig.getBody(),
             col2.getId(),
             ticketConfig.getConfigId(),
             ticketConfig.getMetadata());
@@ -177,6 +183,9 @@ public class MailTicketServiceTest {
 
         Assert.assertEquals(ticketConfig.getName() + "updated", updatedTicketConfig.getName());
         Assert.assertEquals("updated-" + ticketConfig.getAlias(), updatedTicketConfig.getAlias());
+        Assert.assertEquals("updated-" + ticketConfig.getSubject(), updatedTicketConfig.getSubject());
+        Assert.assertEquals("updated-" + ticketConfig.getBody(), updatedTicketConfig.getBody());
+        Assert.assertTrue(updatedTicketConfig.getNotificationOverride() == !ticketConfig.getNotificationOverride());
         Assert.assertTrue(updatedTicketConfig.getEnabled());
         Assert.assertFalse(ticketConfig.getSendByAlias());
         Assert.assertEquals(col2.getId(), updatedTicketConfig.getColumnId());
@@ -233,6 +242,9 @@ public class MailTicketServiceTest {
         mailTicketService.addTicket("ticket",
             "alias@example.com",
             false,
+            false,
+            "subject",
+            "body",
             col.getId(), getAndAssertConfig().getId(), "{}");
 
         List<ProjectMailTicketConfig> configs = mailTicketService.findAllByProject(project.getId());

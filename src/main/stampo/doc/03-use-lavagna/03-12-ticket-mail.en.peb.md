@@ -51,6 +51,10 @@ Once a mail configuration is added, click "Add Ticket Config". A dialog will app
 * **Create card in**: Configure where the card is created.
   - **Board**: Select a board
   - **Column**: Select a column in the selected board
+* **Notification E-Mail**: The content of the notification E-Mail sent to the user.
+  - **Override Mail Config Template**: Override the subject and body configured in the Mail Config
+  - **Subject**: The subject of the notification E-Mail. Use the {{card}} identifier to reference the created card.
+  - **Body**: The content of the notification E-Mail. Supports markdown. Use {{name}} to reference the display name or address of the user creating the ticket, and {{card}} to reference the created card.
   
 Then click "Save".
 
@@ -71,3 +75,17 @@ To disable, click <span class="icon icon-disable-ticket"></span>.
 To delete a configuration, click <span class="icon icon-delete"></span>.
 
 **NOTE**: mail configuration with one or more ticket configuration can't be deleted.
+
+### Support localized E-Mail notifications
+
+By taking advantage of the possibility to override notification templates for a specific alias, it's possible
+to create a more customized experience for users in different language regions.
+
+An organization can have a generic Mail Config (e.g. support@organization.com) with a english notification template.
+
+A default ticket configuration using support@organization.com as alias, with "Override Mail Config Template" left unchecked will cover international users.
+
+Then, a set of aliases (e.g. support-es@organization.com, support-fr@organization.com) can share the same mail account (support@organization.com),
+but by using different aliases can send localized mail notification, while still creating cards in the same column as any other ticket config.
+
+While this solution requires the duplication of some configuration, in our opinion it improves the experience of the end users.

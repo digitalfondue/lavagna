@@ -201,22 +201,28 @@
             deleteMailConfig: function (shortName, id) {
                 return $http['delete']('/api/project/' + shortName + '/mailConfig/' + id).then(extractData);
             },
-            createMailTicket: function (shortName, name, alias, useAlias, columnId, configId, metadata) {
+            createMailTicket: function (shortName, name, alias, sendByAlias, overrideNotification, subject, body, columnId, configId, metadata) {
                 return $http.post('/api/project/' + shortName + '/ticketConfig', {
                     name: name,
                     alias: alias,
-                    useAlias: useAlias,
+                    sendByAlias: sendByAlias,
+                    overrideNotification: overrideNotification,
+                    subject: subject,
+                    body: body,
                     columnId: columnId,
                     configId: configId,
                     metadata: metadata
                 }).then(extractData);
             },
-            updateMailTicket: function (shortName, id, name, enabled, alias, useAlias, columnId, configId, metadata) {
+            updateMailTicket: function (shortName, id, name, enabled, alias, sendByAlias, overrideNotification, subject, body, columnId, configId, metadata) {
                 return $http.post('/api/project/' + shortName + '/ticketConfig/' + id, {
                     name: name,
                     enabled: enabled,
                     alias: alias,
-                    useAlias: useAlias,
+                    sendByAlias: sendByAlias,
+                    overrideNotification: overrideNotification,
+                    subject: subject,
+                    body: body,
                     columnId: columnId,
                     configId: configId,
                     metadata: metadata

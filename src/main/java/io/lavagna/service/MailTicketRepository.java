@@ -71,8 +71,8 @@ public class MailTicketRepository {
     }
 
     @Transactional(readOnly = false)
-    public int addTicket(final String name, final String alias, final boolean useAlias, final int columnId, final int configId, String metadata) {
-        return queries.addTicket(name, alias, useAlias, columnId, configId, metadata);
+    public int addTicket(final String name, final String alias, final boolean useAlias, final boolean overrideNotification, final String subject, final String body, final int columnId, final int configId, String metadata) {
+        return queries.addTicket(name, alias, useAlias, overrideNotification, subject, body, columnId, configId, metadata);
     }
 
     public ProjectMailTicket findLastCreatedTicket() {
@@ -80,8 +80,8 @@ public class MailTicketRepository {
     }
 
     @Transactional(readOnly = false)
-    public int updateTicket(final int id, final String name, final boolean enabled, final String alias, final boolean useAlias, final int columnId, final int configId, String metadata) {
-        return queries.updateTicket(id, name, enabled, alias, useAlias, columnId, configId, metadata);
+    public int updateTicket(final int id, final String name, final boolean enabled, final String alias, final boolean useAlias, final boolean overrideNotification, final String subject, final String body, final int columnId, final int configId, String metadata) {
+        return queries.updateTicket(id, name, enabled, alias, useAlias, overrideNotification, subject, body, columnId, configId, metadata);
     }
 
     @Transactional(readOnly = false)
