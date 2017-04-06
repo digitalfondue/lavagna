@@ -11,7 +11,7 @@ Lavagna
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
 # Latest stable release is 1.0.7.3 (2017-03-06) #
-# Latest pre-release is 1.1-M3 (2017-02-20) #
+# Latest pre-release is 1.1-M5 (2017-04-05) #
 
 ## About ##
 

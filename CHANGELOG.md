@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1-M5 (2017-04-05)
+
+ - Fixes, improvements in the "email to card" feature.
+
+## 1.1-M4 (2017-04-03)
+
+ - Fixes, UI/UX improvements and "email to card" feature.
+
 ## 1.0.7.3 (2017-03-06)
 
  - Fix check ldap functionality and print more diagnostic information in the ui

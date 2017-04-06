@@ -32,9 +32,10 @@ public class SchedulingServiceConfig {
                                   MySqlFullTextSupportService mySqlFullTextSupportService,
                                   NotificationService notificationService,
                                   StatisticsService statisticsService,
-                                  MailTicketService mailTicketService) {
+                                  MailTicketService mailTicketService,
+                                  ExportImportService exportImportService) {
 		return new Scheduler(taskScheduler, env, configurationRepository,
 				mySqlFullTextSupportService, notificationService,
-				statisticsService, mailTicketService);
+				statisticsService, mailTicketService, exportImportService);
 	}
 }

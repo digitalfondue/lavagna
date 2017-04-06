@@ -23,10 +23,8 @@
         ctrl.events = [];
 
         var syncCalendar = function () {
-            angular.forEach(ctrl.events.dailyEvents, function (date) {
+            angular.forEach(ctrl.events.dailyEvents, function (dailyEvents, date) {
                 var dayText = '';
-
-                var dailyEvents = ctrl.events.dailyEvents[date];
 
                 for (var i = 0; i < dailyEvents.milestones.length; i++) {
                     var m = dailyEvents.milestones[i];

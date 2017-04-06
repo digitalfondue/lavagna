@@ -40,90 +40,112 @@ import java.util.Set;
  */
 public class Scheduler implements ApplicationListener<DatabaseMigrationDoneEvent> {
 
-	private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LogManager.getLogger();
 
-	private final TaskScheduler taskScheduler;
-	private final LavagnaEnvironment env;
-	private final ConfigurationRepository configurationRepository;
-	private final MySqlFullTextSupportService mySqlFullTextSupportService;
-	private final NotificationService notificationService;
-	private final StatisticsService statisticsService;
-	private final MailTicketService mailTicketService;
+    private final TaskScheduler taskScheduler;
+    private final LavagnaEnvironment env;
+    private final ConfigurationRepository configurationRepository;
+    private final MySqlFullTextSupportService mySqlFullTextSupportService;
+    private final NotificationService notificationService;
+    private final StatisticsService statisticsService;
+    private final MailTicketService mailTicketService;
+    private final ExportImportService exportImportService;
 
 
-	public Scheduler(TaskScheduler taskScheduler,
+    public Scheduler(TaskScheduler taskScheduler,
                      LavagnaEnvironment env,
                      ConfigurationRepository configurationRepository,
                      MySqlFullTextSupportService mySqlFullTextSupportService,
                      NotificationService notificationService,
                      StatisticsService statisticsService,
-                     MailTicketService mailTicketService) {
-		this.taskScheduler = taskScheduler;
-		this.env = env;
-		this.configurationRepository = configurationRepository;
-		this.mySqlFullTextSupportService = mySqlFullTextSupportService;
-		this.notificationService = notificationService;
-		this.statisticsService = statisticsService;
-		this.mailTicketService = mailTicketService;
-	}
+                     MailTicketService mailTicketService,
+                     ExportImportService exportImportService) {
+        this.taskScheduler = taskScheduler;
+        this.env = env;
+        this.configurationRepository = configurationRepository;
+        this.mySqlFullTextSupportService = mySqlFullTextSupportService;
+        this.notificationService = notificationService;
+        this.statisticsService = statisticsService;
+        this.mailTicketService = mailTicketService;
+        this.exportImportService = exportImportService;
+    }
 
-	@Scheduled(cron = "30 59 23,5,11,17 * * *")
-	public void snapshotCardsStatus() {
-		statisticsService.snapshotCardsStatus();
-	}
+    @Scheduled(cron = "30 59 23,5,11,17 * * *")
+    public void snapshotCardsStatus() {
+        if (exportImportService.isImporting()) {
+            return;
+        }
+        statisticsService.snapshotCardsStatus();
+    }
 
-	@Scheduled(cron = "0 */5 * * * *")
-    public void checkMailTickets() { mailTicketService.checkNew(); }
+    @Scheduled(cron = "0 */5 * * * *")
+    public void checkMailTickets() {
+        if (exportImportService.isImporting()) {
+            return;
+        }
 
-	private static class EmailNotificationHandler implements Runnable {
+        mailTicketService.checkNew();
+    }
 
-		private final ConfigurationRepository configurationRepository;
-		private final NotificationService notificationService;
+    private static class EmailNotificationHandler implements Runnable {
 
-		private EmailNotificationHandler(ConfigurationRepository configurationRepository,
-				NotificationService notificationService) {
-			this.configurationRepository = configurationRepository;
-			this.notificationService = notificationService;
-		}
+        private final ConfigurationRepository configurationRepository;
+        private final NotificationService notificationService;
+        private final ExportImportService exportImportService;
 
-		@Override
-		public void run() {
-			Date upTo = new Date();
-			Set<Integer> usersToNotify = notificationService.check(upTo);
+        private EmailNotificationHandler(ConfigurationRepository configurationRepository,
+                                         NotificationService notificationService,
+                                         ExportImportService exportImportService) {
+            this.configurationRepository = configurationRepository;
+            this.notificationService = notificationService;
+            this.exportImportService = exportImportService;
+        }
 
-			Map<Key, String> conf = configurationRepository.findConfigurationFor(EnumSet.of(Key.SMTP_ENABLED,
-					Key.SMTP_CONFIG));
+        @Override
+        public void run() {
+            if (exportImportService.isImporting()) {
+                return;
+            }
 
-			boolean enabled = Boolean.parseBoolean(ObjectUtils.firstNonNull(conf.get(Key.SMTP_ENABLED), "false"));
-			MailConfig mailConfig = Json.GSON.fromJson(conf.get(Key.SMTP_CONFIG), MailConfig.class);
-			for (int userId : usersToNotify) {
-				try {
-					notificationService.notifyUser(userId, upTo, enabled, mailConfig);
-				} catch (MailException me) {
-					LOG.error("Error while sending email to userId " + userId, me);
-				}
-			}
-		}
-	}
+            Date upTo = new Date();
+            Set<Integer> usersToNotify = notificationService.check(upTo);
 
-	@Override
-	public void onApplicationEvent(DatabaseMigrationDoneEvent event) {
-		if ("MYSQL".equals(env.getProperty("datasource.dialect"))) {
-			taskScheduler.scheduleAtFixedRate(new Runnable() {
+            Map<Key, String> conf = configurationRepository.findConfigurationFor(EnumSet.of(Key.SMTP_ENABLED,
+                Key.SMTP_CONFIG));
 
-				@Override
-				public void run() {
-					mySqlFullTextSupportService.syncNewCards();
-					mySqlFullTextSupportService.syncUpdatedCards();
-					mySqlFullTextSupportService.syncNewCardData();
-					mySqlFullTextSupportService.syncUpdatedCardData();
-				}
-			}, 2 * 1000);
-		}
+            boolean enabled = Boolean.parseBoolean(ObjectUtils.firstNonNull(conf.get(Key.SMTP_ENABLED), "false"));
+            MailConfig mailConfig = Json.GSON.fromJson(conf.get(Key.SMTP_CONFIG), MailConfig.class);
+            for (int userId : usersToNotify) {
+                try {
+                    notificationService.notifyUser(userId, upTo, enabled, mailConfig);
+                } catch (MailException me) {
+                    LOG.error("Error while sending email to userId " + userId, me);
+                }
+            }
+        }
+    }
 
-		Integer timespan = NumberUtils.toInt(configurationRepository.getValueOrNull(Key.EMAIL_NOTIFICATION_TIMESPAN), 30);
+    @Override
+    public void onApplicationEvent(DatabaseMigrationDoneEvent event) {
+        if ("MYSQL".equals(env.getProperty("datasource.dialect"))) {
+            taskScheduler.scheduleAtFixedRate(new Runnable() {
 
-		taskScheduler.scheduleAtFixedRate(new EmailNotificationHandler(configurationRepository, notificationService),
-				timespan * 1000);
-	}
+                @Override
+                public void run() {
+                    if (exportImportService.isImporting()) {
+                        return;
+                    }
+                    mySqlFullTextSupportService.syncNewCards();
+                    mySqlFullTextSupportService.syncUpdatedCards();
+                    mySqlFullTextSupportService.syncNewCardData();
+                    mySqlFullTextSupportService.syncUpdatedCardData();
+                }
+            }, 2 * 1000);
+        }
+
+        Integer timespan = NumberUtils.toInt(configurationRepository.getValueOrNull(Key.EMAIL_NOTIFICATION_TIMESPAN), 30);
+
+        taskScheduler.scheduleAtFixedRate(new EmailNotificationHandler(configurationRepository, notificationService, exportImportService),
+            timespan * 1000);
+    }
 }

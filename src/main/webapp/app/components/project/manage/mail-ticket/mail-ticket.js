@@ -62,6 +62,9 @@
                     ticketConfig.name,
                     ticketConfig.alias,
                     ticketConfig.sendByAlias,
+                    ticketConfig.overrideNotification,
+                    ticketConfig.subject,
+                    ticketConfig.body,
                     ticketConfig.columnId,
                     mailConfig.id,
                     '');
@@ -74,7 +77,10 @@
                 $ticketConfig.name,
                 !$ticketConfig.enabled,
                 $ticketConfig.alias,
-                $ticketConfig.useAlias,
+                $ticketConfig.sendByAlias,
+                $ticketConfig.overrideNotification,
+                $ticketConfig.subject,
+                $ticketConfig.body,
                 $ticketConfig.columnId,
                 $mailConfig.id,
                 $ticketConfig.metadata).then(loadConfigs);
@@ -87,7 +93,10 @@
                            config.name,
                            $ticketConfig.enabled,
                            config.alias,
-                           config.useAlias,
+                           config.sendByAlias,
+                           config.overrideNotification,
+                           config.subject,
+                           config.body,
                            config.columnId,
                            $mailConfig.id,
                            config.metadata);
@@ -158,11 +167,14 @@
                                 config.name = ticketConfig.name;
                                 config.alias = ticketConfig.alias;
                                 config.sendByAlias = ticketConfig.sendByAlias;
+                                config.overrideNotification = ticketConfig.overrideNotification;
+                                config.subject = ticketConfig.subject;
+                                config.body = ticketConfig.body;
                                 config.columnId = ticketConfig.columnId;
 
                                 return BoardCache.column(ticketConfig.columnId);
                             } else {
-                                return {boardShortName: null};
+                                return {overrideNotification: false, boardShortName: null};
                             }
                         }).then(function (column) {
                             config.boardShortName = column.boardShortName;

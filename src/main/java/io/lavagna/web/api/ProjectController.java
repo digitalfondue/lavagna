@@ -204,6 +204,9 @@ public class ProjectController {
         return mailTicketService.addTicket(ticket.getName(),
             ticket.getAlias(),
             ticket.getSendByAlias(),
+            ticket.getNotificationOverride(),
+            ticket.getSubject(),
+            ticket.getBody(),
             ticket.getColumnId(),
             ticket.getConfigId(),
             ticket.getMetadata());
@@ -230,6 +233,9 @@ public class ProjectController {
             updatedTicket.getEnabled(),
             updatedTicket.getAlias(),
             updatedTicket.getSendByAlias(),
+            updatedTicket.getNotificationOverride(),
+            updatedTicket.getSubject(),
+            updatedTicket.getBody(),
             updatedTicket.getColumnId(),
             updatedTicket.getConfigId(),
             updatedTicket.getMetadata());

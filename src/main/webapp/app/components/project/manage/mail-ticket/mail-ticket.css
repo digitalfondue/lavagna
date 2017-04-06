@@ -5,5 +5,10 @@
 }
 
 .lvg-mail-ticket__disabled {
-    opacity: 0.5
+    opacity: 0.5;
+}
+
+.lvg-mail-ticket__dialog {
+    width: 80%;
+    max-width: 80%;
 }

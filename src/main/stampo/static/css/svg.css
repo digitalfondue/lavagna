@@ -52,3 +52,11 @@
 .icon-calendar {
     background-image: url(../svg/calendar.svg);
 }
+
+.icon-enable-ticket {
+    background-image: url(../svg/repeat.svg);
+}
+
+.icon-disable-ticket {
+    background-image: url(../svg/repeat-off.svg);
+}

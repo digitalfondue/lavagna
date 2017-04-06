@@ -105,15 +105,15 @@ public class MailTicketService {
     }
 
     @Transactional(readOnly = false)
-    public ProjectMailTicket addTicket(final String name, final String alias, final boolean useAlias, final int columnId, final int configId, final String metadata) {
-        mailTicketRepository.addTicket(name, alias, useAlias, columnId, configId, metadata);
+    public ProjectMailTicket addTicket(final String name, final String alias, final boolean useAlias, final boolean overrideNotification, final String subject, final String body, final int columnId, final int configId, final String metadata) {
+        mailTicketRepository.addTicket(name, alias, useAlias, overrideNotification, subject, body, columnId, configId, metadata);
 
-        return  mailTicketRepository.findLastCreatedTicket();
+        return mailTicketRepository.findLastCreatedTicket();
     }
 
     @Transactional(readOnly = false)
-    public int updateTicket(final int id, final String name, final boolean enabled, final String alias, final boolean useAlias, final int columnId, final int configId, final String metadata) {
-        return mailTicketRepository.updateTicket(id, name, enabled, alias, useAlias, columnId, configId, metadata);
+    public int updateTicket(final int id, final String name, final boolean enabled, final String alias, final boolean useAlias, final boolean overrideNotification, final String subject, final String body, final int columnId, final int configId, final String metadata) {
+        return mailTicketRepository.updateTicket(id, name, enabled, alias, useAlias, overrideNotification, subject, body, columnId, configId, metadata);
     }
 
     @Transactional(readOnly = false)
@@ -124,8 +124,8 @@ public class MailTicketService {
     public void checkNew() {
         List<ProjectMailTicketConfig> entries = mailTicketRepository.findAll();
 
-        for(ProjectMailTicketConfig entry: entries) {
-            if(entry.getEntries().size() == 0 || !entry.getEnabled()) {
+        for (ProjectMailTicketConfig entry : entries) {
+            if (entry.getEntries().size() == 0 || !entry.getEnabled()) {
                 continue;
             }
 
@@ -139,9 +139,9 @@ public class MailTicketService {
                 Object[] messages = receiver.receive();
                 LOG.debug("found {} messages", messages.length);
 
-                for(int i = 0; i < messages.length; i++) {
+                for (int i = 0; i < messages.length; i++) {
                     MimeMessage message = (MimeMessage) messages[i];
-                    if(!message.getReceivedDate().after(entry.getLastChecked())) {
+                    if (!message.getReceivedDate().after(entry.getLastChecked())) {
                         continue;
                     } else {
                         updateLastChecked = message.getReceivedDate().after(updateLastChecked) ?
@@ -151,19 +151,19 @@ public class MailTicketService {
 
                     String deliveredTo = getDeliveredTo(message);
 
-                    for(ProjectMailTicket ticketConfig: entry.getEntries()) {
-                        if(ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
+                    for (ProjectMailTicket ticketConfig : entry.getEntries()) {
+                        if (ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
                             String from = getFrom(message);
                             String name = getName(message);
                             Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
 
-                            if(!m.find() ||
+                            if (!m.find() ||
                                 (m.find() && !cardService.existCardWith(m.group("shortname"), Integer.parseInt(m.group("sequence"))))) {
                                 try {
                                     ImmutablePair<Card, User> cardAndUser = createCard(message.getSubject(), getTextFromMessage(message), from, ticketConfig.getColumnId());
 
                                     notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from, name);
-                                } catch (IOException|MessagingException e) {
+                                } catch (IOException | MessagingException e) {
                                     LOG.error("failed to parse message body", e);
                                 }
                             }
@@ -180,7 +180,7 @@ public class MailTicketService {
 
     @Transactional(readOnly = true)
     private ImmutablePair<Card, User> createCard(String name, String description, String username, int columnId) {
-        if(!userRepository.userExists(EMAIL_PROVIDER, username)) {
+        if (!userRepository.userExists(EMAIL_PROVIDER, username)) {
             userRepository.createUser(EMAIL_PROVIDER, username, null, null, null, true);
         }
         User user = userRepository.findUserByName(EMAIL_PROVIDER, username);
@@ -214,8 +214,8 @@ public class MailTicketService {
             } else if (bodyPart.isMimeType("text/html")) {
                 String html = (String) bodyPart.getContent();
                 result = result + "\n" + Jsoup.parse(html).text();
-            } else if (bodyPart.getContent() instanceof MimeMultipart){
-                result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+            } else if (bodyPart.getContent() instanceof MimeMultipart) {
+                result = result + getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent());
             }
         }
         return result;
@@ -234,8 +234,8 @@ public class MailTicketService {
 
         Properties mailProperties = new Properties();
         mailProperties.setProperty("mail.pop3.port", Integer.toString(config.getInboundPort()));
-        if(config.getInboundProtocol().equals("pop3s")) {
-            mailProperties.setProperty("mail.pop3.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        if (config.getInboundProtocol().equals("pop3s")) {
+            mailProperties.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
             mailProperties.setProperty("mail.pop3.socketFactory.fallback", "false");
             mailProperties.setProperty("mail.pop3.socketFactory.port", Integer.toString(config.getInboundPort()));
         }
@@ -259,8 +259,8 @@ public class MailTicketService {
         receiver.setShouldDeleteMessages(false);
 
         Properties mailProperties = new Properties();
-        if(config.getInboundProtocol().equals("imaps")) {
-            mailProperties.setProperty("mail.pop3.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        if (config.getInboundProtocol().equals("imaps")) {
+            mailProperties.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
             mailProperties.setProperty("mail.pop3.socketFactory.fallback", "false");
         }
         mailProperties.setProperty("mail.store.protocol", config.getInboundProtocol());
@@ -279,7 +279,7 @@ public class MailTicketService {
     }
 
     private String sanitizeUsername(String username) {
-        return username != null ? username.replace("@","%40") : null;
+        return username != null ? username.replace("@", "%40") : null;
     }
 
     private String getFrom(MimeMessage message) throws MessagingException {
@@ -307,8 +307,11 @@ public class MailTicketService {
 
     private void sendEmail(String to, String name, Card createdCard, Board board, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig) {
         String cardId = board.getShortName() + "-" + createdCard.getSequence();
-        String subject = config.getSubject().replaceAll("\\{\\{card}}", cardId);
-        String body = config.getBody().replaceAll("\\{\\{card}}", cardId).replaceAll("\\{\\{namer}}", name != null ? name : to);
+        String subjectTemplate = "" + (ticketConfig.getNotificationOverride() ? ticketConfig.getSubject() : config.getSubject());
+        String bodyTemplate = "" + (ticketConfig.getNotificationOverride() ? ticketConfig.getBody() : config.getBody());
+
+        String subject = subjectTemplate.replaceAll("\\{\\{card}}", cardId);
+        String body = bodyTemplate.replaceAll("\\{\\{card}}", cardId).replaceAll("\\{\\{name}}", name != null ? name : to);
 
         Parser parser = Parser.builder().build();
         Node document = parser.parse(body);
