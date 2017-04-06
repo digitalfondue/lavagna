@@ -61,7 +61,7 @@
         </div>
         <div ng-if="$ctrl.hasMore()"
              class="flex lvg-card-activity__load-more">
-            <md-button ng-click="$ctrl.loadMore()" translate>button.load.more</md-button>
+            <md-button ng-click="$ctrl.loadMore()">{{::('button.load.more' | translate)}}</md-button>
         </div>
     </md-card-content>
 </md-card>
