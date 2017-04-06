@@ -7,3 +7,8 @@
 .lvg-search-result-list li {
 	list-style-type: none;
 }
+
+.lvg-search__results--no-controls {
+    margin-top: 20px;
+    display: block;
+}

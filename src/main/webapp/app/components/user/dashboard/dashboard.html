@@ -28,14 +28,16 @@
         <div class="row row-inherit">
             <div class="col-sm-6 col-xs-12">
                 <lvg-stats-panel-project data-ng-repeat="ab in $ctrl.activeProjectsLeft | limitTo: 4"
-                                                project="ab.project"
-                                                class="lvg-user-dashboard__project">
+                                         project="ab.project"
+                                         hide-menu="true"
+                                         class="lvg-user-dashboard__project">
                 </lvg-stats-panel-project>
             </div>
             <div class="col-sm-6 col-xs-12">
                 <lvg-stats-panel-project data-ng-repeat="ab in $ctrl.activeProjectsRight | limitTo: 4"
-                                                project="ab.project"
-                                                class="lvg-user-dashboard__project">
+                                         project="ab.project"
+                                         hide-menu="true"
+                                         class="lvg-user-dashboard__project">
                 </lvg-stats-panel-project>
             </div>
         </div>

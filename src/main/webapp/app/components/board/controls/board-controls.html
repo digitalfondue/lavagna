@@ -42,9 +42,9 @@
         </md-button>
     </div>
 
-    <div class="flex no-grow lvg-board-controls__container-divider" lvg-has-permission="MANAGE_LABEL_VALUE"></div>
+    <div class="flex no-grow lvg-board-controls__container-divider" lvg-has-at-least-one-permission="UPDATE_CARD,MANAGE_LABEL_VALUE,MOVE_CARD"></div>
 
-    <div class="flex no-grow" lvg-has-permission="MANAGE_LABEL_VALUE">
+    <div class="flex no-grow" lvg-has-at-least-one-permission="UPDATE_CARD,MANAGE_LABEL_VALUE,MOVE_CARD">
         <md-menu>
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.selection.select'|translate)}}
@@ -64,8 +64,10 @@
         </md-menu>
     </div>
 
-    <div class="no-grow lvg-board-controls__action-icons" ng-show="$ctrl.selectedVisibleCount() > 0">
-        <md-menu>
+    <div class="no-grow lvg-board-controls__action-icons"
+         ng-if="$ctrl.selectedVisibleCount() > 0"
+         lvg-has-at-least-one-permission="UPDATE_CARD,MANAGE_LABEL_VALUE,MOVE_CARD">
+        <md-menu lvg-has-permission="MOVE_CARD">
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="folder-move"></md-icon>
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.move' | translate)}}</md-tooltip>
@@ -89,7 +91,7 @@
             </md-menu-content>
         </md-menu>
 
-        <md-menu>
+        <md-menu lvg-has-permission="UPDATE_CARD">
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="person"></md-icon>
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.handleAssign' | translate)}}
@@ -111,7 +113,7 @@
             </md-menu-content>
         </md-menu>
 
-        <md-menu>
+        <md-menu lvg-has-permission="UPDATE_CARD">
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="calendar"></md-icon>
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.handleDueDate' | translate)}}
@@ -129,7 +131,7 @@
             </md-menu-content>
         </md-menu>
 
-        <md-menu>
+        <md-menu lvg-has-permission="UPDATE_CARD">
             <md-button class="md-icon-button" ng-click="$ctrl.milestoneFilter = ''; $mdOpenMenu($event);">
                 <md-icon md-svg-icon="milestone"></md-icon>
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.handleMilestone' | translate)}}
@@ -181,7 +183,7 @@
             </md-menu-content>
         </md-menu>
 
-        <md-menu>
+        <md-menu lvg-has-permission="MANAGE_LABEL_VALUE">
             <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
                 <md-icon md-svg-icon="label"></md-icon>
                 <md-tooltip md-autohide md-direction="right">{{::('common.bulkop.handleLabels' | translate)}}

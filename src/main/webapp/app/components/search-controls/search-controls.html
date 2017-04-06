@@ -1,57 +1,68 @@
-<md-menu-bar ng-show="$ctrl.count > 0">
-	<md-menu>
-		<button ng-click="$mdOpenMenu($event);"><span translate>common.bulkop.selection.select</span></button>
-		<md-menu-content width="2">
-            <md-menu-item><md-button ng-click="$ctrl.selectAllInPage()"><span translate>search-result.selectAllInPage</span></md-button></md-menu-item>
-            <md-menu-item><md-button ng-click="$ctrl.deselectAllInPage()"><span translate>search-result.deselectAllInPage</span></md-button></md-menu-item>
-        </md-menu-content>
-	</md-menu>
+<div class="container">
+    <div class="row row-inherit">
+        <div class="col-md-offset-2 col-md-8 col-xs-12">
+            <md-menu-bar class="lvg-search-controls__menu-bar" ng-show="$ctrl.count > 0">
+                <md-menu>
+                    <md-button ng-click="$mdOpenMenu($event);">
+                        <md-icon md-svg-icon="select_all" md-menu-origin></md-icon>
+                        <span translate>common.bulkop.selection.select</span>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item><md-button ng-click="$ctrl.selectAllInPage()"><span translate>search-result.selectAllInPage</span></md-button></md-menu-item>
+                        <md-menu-item><md-button ng-click="$ctrl.deselectAllInPage()"><span translate>search-result.deselectAllInPage</span></md-button></md-menu-item>
+                    </md-menu-content>
+                </md-menu>
 
-	<span ng-show="$ctrl.selectedCardsCount() > 0">
-		<md-menu>
-    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
-    			<md-icon md-svg-icon="person"></md-icon>
-    			<md-tooltip md-direction="bottom">{{::('common.bulkop.handleAssign' | translate)}}</md-tooltip>
-			</button>
-    		<md-menu-content width="2">
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.assignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.assignTo</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeAssign</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.reAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.reassign</span></md-button></md-menu-item>
-    		</md-menu-content>
-    	</md-menu>
+                <span ng-show="$ctrl.selectedCardsCount() > 0">
+                    <md-menu lvg-has-permission="UPDATE_CARD">
+                        <md-button class="md-icon-button lvg-icon-button__hover" ng-click="$mdOpenMenu($event);">
+                            <md-icon md-svg-icon="person"></md-icon>
+                            <md-tooltip md-direction="bottom">{{::('common.bulkop.handleAssign' | translate)}}</md-tooltip>
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.assignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.assignTo</span></md-button></md-menu-item>
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeAssign</span></md-button></md-menu-item>
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.reAssignTo($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.reassign</span></md-button></md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
 
-    	<md-menu>
-    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
-    			<md-icon md-svg-icon="calendar"></md-icon>
-    			<md-tooltip md-direction="bottom">{{::('common.bulkop.handleDueDate' | translate)}}</md-tooltip>
-			</button>
-    		<md-menu-content width="2">
-	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.setDueDate</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeDueDate</span></md-button></md-menu-item>
-			</md-menu-content>
-		</md-menu>
+                    <md-menu lvg-has-permission="UPDATE_CARD">
+                        <md-button class="md-icon-button lvg-icon-button__hover" ng-click="$mdOpenMenu($event);">
+                            <md-icon md-svg-icon="calendar"></md-icon>
+                            <md-tooltip md-direction="bottom">{{::('common.bulkop.handleDueDate' | translate)}}</md-tooltip>
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.setDueDate</span></md-button></md-menu-item>
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeDueDate($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeDueDate</span></md-button></md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
-		<md-menu ng-if="$ctrl.inProject">
-    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
-    			<md-icon md-svg-icon="milestone"></md-icon>
-    			<md-tooltip md-direction="bottom">{{::('common.bulkop.handleMilestone' | translate)}}</md-tooltip>
-			</button>
-    		<md-menu-content width="4">
-	    		<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setMilestone($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.setMilestone</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeMilestone</span></md-button></md-menu-item>
-			</md-menu-content>
-		</md-menu>
+                    <md-menu ng-if="$ctrl.inProject"
+                             lvg-has-permission="UPDATE_CARD">
+                        <md-button class="md-icon-button lvg-icon-button__hover" ng-click="$mdOpenMenu($event);">
+                            <md-icon md-svg-icon="milestone"></md-icon>
+                            <md-tooltip md-direction="bottom">{{::('common.bulkop.handleMilestone' | translate)}}</md-tooltip>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.setMilestone($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.setMilestone</span></md-button></md-menu-item>
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeMilestone($ctrl.collectIdsByProject(), $ctrl.triggerSearch)"><span translate>common.bulkop.removeMilestone</span></md-button></md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
-		<md-menu ng-if="$ctrl.inProject">
-    		<button class="md-icon-button" ng-click="$mdOpenMenu($event);">
-    			<md-icon md-svg-icon="label"></md-icon>
-    			<md-tooltip md-direction="bottom">{{::('common.bulkop.handleLabels' | translate)}}</md-tooltip>
-			</button>
-    		<md-menu-content width="2">
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.addLabel</span></md-button></md-menu-item>
-    			<md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.removeLabel</span></md-button></md-menu-item>
-			</md-menu-content>
-		</md-menu>
-	</span>
-</md-menu-bar>
+                    <md-menu ng-if="$ctrl.inProject"
+                             lvg-has-permission="MANAGE_LABEL_VALUE">
+                        <md-button class="md-icon-button lvg-icon-button__hover" ng-click="$mdOpenMenu($event);">
+                            <md-icon md-svg-icon="label"></md-icon>
+                            <md-tooltip md-direction="bottom">{{::('common.bulkop.handleLabels' | translate)}}</md-tooltip>
+                        </md-button>
+                        <md-menu-content width="2">
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.addLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.addLabel</span></md-button></md-menu-item>
+                            <md-menu-item><md-button ng-click="$ctrl.bulkOperationModal.removeLabel($ctrl.collectIdsByProject(), $ctrl.project.shortName, $ctrl.triggerSearch)"><span translate>common.bulkop.removeLabel</span></md-button></md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </span>
+            </md-menu-bar>
+        </div>
+    </div>
+</div>

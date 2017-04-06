@@ -1,0 +1,35 @@
+<lvg-stats-panel-simple item="$ctrl.project" stats-fetcher="$ctrl.statsFetcher()">
+    <div class="row row-inherit lvg-stats-panel__title">
+        <a class="flex no-grow"
+           data-ui-sref="project.boards({projectName: $ctrl.project.shortName})">
+            {{$ctrl.project.shortName}} - {{$ctrl.project.name}}
+        </a>
+        <div class="flex"></div>
+        <div class="flex no-grow" ng-if="!$ctrl.hideMenu">
+            <md-menu>
+                <md-button class="lvg-small-icon-button" ng-click="$mdOpenMenu($event)">
+                    <md-icon md-svg-icon="menu_ellipsis"></md-icon>
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button class="lvg-button--no-link" ng-href="api/project/{{::$ctrl.project.shortName}}/export/"
+                                   target="_blank"
+                                   rel="nofollow me noopener noreferrer">{{::('project.milestones.export-to-excel' | translate)}}</md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="!$ctrl.project.archived"
+                                  data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                        <md-button ng-click="$ctrl.archive()">{{::('common.archive' | translate)}}</md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="$ctrl.project.archived"
+                                  data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                        <md-button ng-click="$ctrl.unarchive()">{{::('common.unarchive' | translate)}}</md-button>
+                    </md-menu-item>
+                    <md-menu-item data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                        <md-button class="lvg-button--no-link"
+                                   data-ui-sref="projectManage.project({projectName: $ctrl.project.shortName})">{{::('common.project-settings' | translate)}}</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </div>
+</lvg-stats-panel-simple>
