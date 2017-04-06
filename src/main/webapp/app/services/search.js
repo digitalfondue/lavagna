@@ -219,6 +219,11 @@
         throw 'invalid date format';
     }
 
+    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+    }
+
     function buildMatcher(criteria, environment) {
         var currentUserId;
         var matchCurrentUserFn;
@@ -360,9 +365,18 @@
                 return matchingDateFunction(moment(card.lastUpdateTime).toDate());
             };
         } else if (criteria.type === 'FREETEXT') {
-            return function (card) {
-                return card.name.toLowerCase().indexOf(criteria.value.value.toLowerCase()) >= 0;
+            var matchRegex = new RegExp(escapeRegExp(criteria.value.value), 'i');
+            var matchFreeText = function (card) {
+                return card.name.match(matchRegex) !== null;
             };
+
+            if (criteria.value.value.match(/[0-9]*/)) {
+                return function (card) {
+                    return card.sequence.toString().indexOf(criteria.value.value) === 0 || matchFreeText(card);
+                };
+            } else {
+                return matchFreeText;
+            }
         } else if (criteria.type === 'STATUS') {
             return function (card, label, columns) {
                 var columnIdToMatch = card.columnId;
