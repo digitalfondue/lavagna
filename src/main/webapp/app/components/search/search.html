@@ -1,30 +1,36 @@
-<lvg-navbar-search project="$ctrl.project"></lvg-navbar-search>
+<lvg-navbar-search class="lvg-navbar--sticky" project="$ctrl.project"></lvg-navbar-search>
 
-<div class="lvg-content">
-    <lvg-search-controls ng-if="$ctrl.isSearchControlEnabled"
-                         select-all-in-page="$ctrl.selectAllInPage"
-                         deselect-all-in-page="$ctrl.deselectAllInPage"
-                         selected-cards-count="$ctrl.selectedCardsCount"
-                         in-project="$ctrl.inProject"
-                         collect-ids-by-project="$ctrl.collectIdsByProject"
-                         trigger-search="$ctrl.triggerSearch"
-                         project="$ctrl.project"
-                         count="$ctrl.count"></lvg-search-controls>
+<div class="lvg-search__controls--sticky">
+    <div class="lvg-content">
+        <lvg-search-controls ng-if="$ctrl.isSearchControlEnabled"
+                             select-all-in-page="$ctrl.selectAllInPage"
+                             deselect-all-in-page="$ctrl.deselectAllInPage"
+                             selected-cards-count="$ctrl.selectedCardsCount"
+                             in-project="$ctrl.inProject"
+                             collect-ids-by-project="$ctrl.collectIdsByProject"
+                             trigger-search="$ctrl.triggerSearch"
+                             project="$ctrl.project"
+                             count="$ctrl.count"></lvg-search-controls>
+    </div>
+</div>
 
-    <lvg-search-result
-        ng-class="{'lvg-search__results--no-controls': !$ctrl.isSearchControlEnabled}"
-	    count="$ctrl.count"
-	    query="$ctrl.query"
-	    page="$ctrl.page"
-	    count-per-page="$ctrl.countPerPage"
-	    total-pages="$ctrl.totalPages"
-	    current-page="$ctrl.currentPage"
-	    move-to-page="$ctrl.moveToPage"
-	    found="$ctrl.found"
-	    project="$ctrl.project"
-	    selected="$ctrl.selected"
-	    user="$ctrl.user"
-        required-permissions="$ctrl.requiredPermissions"></lvg-search-result>
+<div class="lvg-search__result--scrollable">
+    <div class="lvg-content">
+        <lvg-search-result
+            ng-class="{'lvg-search__results--no-controls': !$ctrl.isSearchControlEnabled}"
+            count="$ctrl.count"
+            query="$ctrl.query"
+            page="$ctrl.page"
+            count-per-page="$ctrl.countPerPage"
+            total-pages="$ctrl.totalPages"
+            current-page="$ctrl.currentPage"
+            move-to-page="$ctrl.moveToPage"
+            found="$ctrl.found"
+            project="$ctrl.project"
+            selected="$ctrl.selected"
+            user="$ctrl.user"
+            required-permissions="$ctrl.requiredPermissions"></lvg-search-result>
+    </div>
 </div>
 
 <div data-ui-view data-autoscroll="false"></div>

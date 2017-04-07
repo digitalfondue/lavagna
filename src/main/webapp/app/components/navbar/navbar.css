@@ -9,3 +9,8 @@
 .lvg-navbar-link:focus {
     color: white;
 }
+
+.lvg-navbar--sticky {
+    display: flex;
+    flex: 0 0 auto;
+}
