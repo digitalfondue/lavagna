@@ -84,6 +84,10 @@ public class CardService {
         return res;
     }
 
+    List<CardFull> findFullBy(Collection<Integer> ids) {
+        return cardRepository.findFullBy(ids);
+    }
+
 
 
     List<CardFullWithCounts> fetchCardFull(List<CardFull> cards) {

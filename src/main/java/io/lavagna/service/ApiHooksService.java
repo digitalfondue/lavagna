@@ -308,15 +308,19 @@ public class ApiHooksService {
         }
 
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
-        List<io.lavagna.model.apihook.Card> cards = new ArrayList<>(affectedCards.size());
-        for(CardFull cf : affectedCards) {
-            cards.add(new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getName()));
-        }
         Map<String, Object> payload = new HashMap<>();
-        payload.put("affectedCards", cards);
+        payload.put("affectedCards", toList(affectedCards));
         payload.put("label", labelService.findLabelById(labelId));
         payload.put("labelValue", labelValue);
         executor.execute(new EventToRun(this, event, projectShortName, user, payload));
+    }
+
+    private static List<io.lavagna.model.apihook.Card> toList(List<CardFull> cards) {
+        List<io.lavagna.model.apihook.Card> res = new ArrayList<>(cards.size());
+        for(CardFull cf : cards) {
+            res.add(new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getName()));
+        }
+        return res;
     }
 
     private void handleActionList(int cardId, String name, User user, LavagnaEvent event) {
@@ -379,14 +383,19 @@ public class ApiHooksService {
     public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
                                 String actionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        //FIXME
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = payloadFor(cardId, "actionItem", actionItem);
+        payload.put("from", fromActionItemListName);
+        payload.put("to", toActionItemListName);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardIds.iterator().next());
-        //FIXME
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("affectedCards", toList(cardService.findFullBy(cardIds)));
+        payload.put("from", from);
+        payload.put("to", to);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
 }

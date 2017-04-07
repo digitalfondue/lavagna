@@ -114,6 +114,10 @@ public class CardRepository {
 		return queries.findFullBy(cardId);
 	}
 
+	public List<CardFull> findFullBy(Collection<Integer> ids) {
+	    return queries.findAllByIds(ids);
+    }
+
 	public CardFull findFullBy(String boardShortName, int seqNumber) {
 		return queries.findFullBy(boardShortName, seqNumber);
 	}
