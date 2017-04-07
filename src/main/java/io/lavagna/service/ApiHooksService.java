@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.common.Json;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.model.apihook.From;
 import io.lavagna.query.ApiHookQuery;
 import io.lavagna.service.EventEmitter.LavagnaEvent;
 import org.apache.commons.lang3.tuple.Triple;
@@ -93,7 +94,7 @@ public class ApiHooksService {
             this.eventName = eventName;
             this.projectName = projectName;
             this.env = env;
-            this.user = new io.lavagna.model.apihook.User(user.getId(), user.getProvider(), user.getUsername(), user.getEmail(), user.getDisplayName());
+            this.user = From.from(user);
         }
 
         @Override
@@ -180,7 +181,7 @@ public class ApiHooksService {
     private Map<String, Object> getBaseDataFor(int cardId) {
         Map<String, Object> res = new HashMap<>();
         CardFull cf = cardService.findFullBy(cardId);
-        res.put("card", new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getProjectShortName()));
+        res.put("card", From.from(cf));
         res.put("board", cf.getBoardShortName());
         return res;
     }
@@ -229,17 +230,14 @@ public class ApiHooksService {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
         Map<String, Object> payload = new HashMap<>();
         payload.put("board", boardShortName);
-        payload.put("previous", oldColumn);
-        payload.put("updated", updatedColumn);
+        payload.put("previous", From.from(oldColumn));
+        payload.put("updated", From.from(updatedColumn));
         executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void createdCard(String boardShortName, Card card, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("board", boardShortName);
-        payload.put("card", card);
-        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
+        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(card.getId())));
     }
 
     public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard, User user, LavagnaEvent event) {
@@ -318,7 +316,7 @@ public class ApiHooksService {
     private static List<io.lavagna.model.apihook.Card> toList(List<CardFull> cards) {
         List<io.lavagna.model.apihook.Card> res = new ArrayList<>(cards.size());
         for(CardFull cf : cards) {
-            res.add(new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getName()));
+            res.add(From.from(cf));
         }
         return res;
     }
@@ -393,8 +391,8 @@ public class ApiHooksService {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardIds.iterator().next());
         Map<String, Object> payload = new HashMap<>();
         payload.put("affectedCards", toList(cardService.findFullBy(cardIds)));
-        payload.put("from", from);
-        payload.put("to", to);
+        payload.put("from", From.from(from));
+        payload.put("to", From.from(to));
         executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
