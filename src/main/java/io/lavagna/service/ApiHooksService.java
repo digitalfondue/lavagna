@@ -59,6 +59,7 @@ public class ApiHooksService {
             Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
             engineScope.putAll(scope);
             engineScope.put("log", LOG);
+            engineScope.put("GSON", Json.GSON);
             script.eval(newContext);
         } catch (ScriptException ex) {
             LOG.warn("Error while executing script " + name, ex);
@@ -67,6 +68,14 @@ public class ApiHooksService {
 
     public ApiHook findByName(String name) {
         return apiHookQuery.findByNames(Collections.singletonList(name)).get(0);
+    }
+
+    private static EnumMap<LavagnaEvent, Map<String, Object>> SIMULATED_EVENTS = new EnumMap<LavagnaEvent, Map<String, Object>>(LavagnaEvent.class);
+    static {
+        SIMULATED_EVENTS.put(LavagnaEvent.CREATE_PROJECT, Collections.<String, Object>emptyMap());
+        SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_PROJECT, Collections.<String, Object>emptyMap());
+        SIMULATED_EVENTS.put(LavagnaEvent.CREATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
+        SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
     }
 
     private static class EventToRun implements Runnable {
@@ -174,6 +183,14 @@ public class ApiHooksService {
         return res;
     }
 
+    private Map<String, Object> updateFor(int cardId, Object previous, Object updated) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("previous", previous);
+        payload.put("updated", updated);
+        payload.putAll(getBaseDataFor(cardId));
+        return payload;
+    }
+
     public void createdProject(String projectShortName, User user, LavagnaEvent event) {
         executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
     }
@@ -194,133 +211,178 @@ public class ApiHooksService {
 
     public void createdColumn(String boardShortName, String columnName, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("board", boardShortName);
+        payload.put("columnName", columnName);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void updateColumn(String boardShortName, BoardColumn oldColumn, BoardColumn updatedColumn, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("board", boardShortName);
+        payload.put("previous", oldColumn);
+        payload.put("updated", updatedColumn);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void createdCard(String boardShortName, Card card, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("board", boardShortName);
+        payload.put("card", card);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void updatedCard(String boardShortName, Card beforeUpdate, Card newCard, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByBoardShortname(boardShortName);
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>singletonMap("board", boardShortName)));
+        executor.execute(new EventToRun(this, event, projectShortName, user, updateFor(beforeUpdate.getId(), beforeUpdate, newCard)));
     }
 
     public void updateCardDescription(int cardId, CardDataHistory previousDescription, CardDataHistory newDescription, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        executor.execute(new EventToRun(this, event, projectShortName, user, updateFor(cardId, previousDescription, newDescription)));
     }
 
     public void createdComment(int cardId, CardData comment, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("comment", comment);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void updatedComment(int cardId, CardData previousComment, String newComment, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        executor.execute(new EventToRun(this, event, projectShortName, user, updateFor(cardId, previousComment, newComment)));
     }
 
     public void deletedComment(int cardId, CardData deletedComment, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("comment", deletedComment);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void undeletedComment(int cardId, CardData undeletedComment, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("comment", undeletedComment);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void uploadedFile(int cardId, List<String> fileNames, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("files", fileNames);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void deletedFile(int cardId, String fileName, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("file", fileName);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void undoDeletedFile(int cardId, String fileName, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("file", fileName);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
     }
 
     public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
     }
 
     public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
     }
 
     public void createActionList(int cardId, String name, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("actionList", name);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void deleteActionList(int cardId, String name, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("actionList", name);
+        payload.putAll(getBaseDataFor(cardId));
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     public void updatedNameActionList(int cardId, String oldName, String newName, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
-        executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
+        //FIXME
+        executor.execute(new EventToRun(this, event, projectShortName, user, updateFor(cardId, oldName, newName)));
     }
 
     public void undeletedActionList(int cardId, String name, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void createActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void deletedActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void toggledActionItem(int cardId, String actionItemListName, String actionItem, boolean toggle, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void updatedActionItem(int cardId, String actionItemListName, String oldActionItem, String newActionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void undoDeleteActionItem(int cardId, String actionItemListName, String actionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void movedActionItem(int cardId, String fromActionItemListName, String toActionItemListName,
                                 String actionItem, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardId);
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, getBaseDataFor(cardId)));
     }
 
     public void moveCards(BoardColumn from, BoardColumn to, Collection<Integer> cardIds, User user, LavagnaEvent event) {
         String projectShortName = projectService.findRelatedProjectShortNameByCardId(cardIds.iterator().next());
+        //FIXME
         executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
     }
 
