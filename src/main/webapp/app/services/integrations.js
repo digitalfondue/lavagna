@@ -21,6 +21,9 @@
             },
             enable: function (name, status) {
                 return $http.post('/api/plugin/' + name + '/enable/' + status).then(extractData);
+            },
+            create: function (integration) {
+                return $http.post('/api/plugin', integration).then(extractData);
             }
         };
     }

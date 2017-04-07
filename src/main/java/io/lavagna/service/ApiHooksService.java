@@ -65,6 +65,10 @@ public class ApiHooksService {
         }
     }
 
+    public ApiHook findByName(String name) {
+        return apiHookQuery.findByNames(Collections.singletonList(name)).get(0);
+    }
+
     private static class EventToRun implements Runnable {
 
         private final ApiHooksService apiHooksService;
@@ -159,7 +163,7 @@ public class ApiHooksService {
     public void updateApiHook(String name, String code, Map<String, String> properties, List<String> projects) {
         String propAsJson = properties == null ? null : Json.GSON.toJson(properties, Map.class);
         String projectsAsJson = projects == null ? null : Json.GSON.toJson(projects, List.class);
-        apiHookQuery.update(name, code, propAsJson, true, ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson);
+        apiHookQuery.update(name, code, propAsJson, apiHookQuery.findStatusByName(name), ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson);
     }
 
     private Map<String, Object> getBaseDataFor(int cardId) {
