@@ -17,7 +17,7 @@
         var NUMBER_OF_COMMENTS;
         var NUMBER_OF_ACTIVITIES;
 
-        ctrl.sortDescending = true;
+        ctrl.sortDescending = false;
         ctrl.activityFilterValue = 'COMMENT';
         ctrl.renderedItems = 10;
 
@@ -102,6 +102,7 @@
                     angular.forEach(result.comments, function (comment) {
                         ctrl.comments[comment.id] = comment;
                     });
+                    ctrl.numberOfComments = NUMBER_OF_COMMENTS;
                 }
                 if (result.activities) {
                     NUMBER_OF_ACTIVITIES = result.activities.length;
@@ -112,6 +113,7 @@
                             activity.event;
                         ctrl.activities.push(activity);
                     });
+                    ctrl.numberOfActivities = NUMBER_OF_ACTIVITIES;
                 }
             });
         }
@@ -120,10 +122,7 @@
             Card.addComment(card.id, comment).then(function () {
                 comment.content = null;
 
-                // update the number of rendered comments when going above threshold
-                if (ctrl.renderedItems <= NUMBER_OF_COMMENTS) {
-                    ctrl.loadMore();
-                }
+                ctrl.renderedItems++;
             });
         }
     }

@@ -13,6 +13,44 @@
             </div>
         </md-card-title-text>
     </md-card-title>
+    <md-card-content>
+        <div ng-if="$ctrl.activityFilterValue === 'COMMENT' && !$ctrl.hasComments" class="lvg-card-activity">
+            <i class="lvg-card-activity__no-comments" translate="card.activity.no.comments"></i>
+        </div>
+        <div ng-if="$ctrl.hasMore()"
+             class="row row-inherit lvg-card-activity__load-more">
+            <div class="flex no-grow">
+                <span ng-if="$ctrl.activityFilterValue === 'COMMENT'">
+                    <span translate="card.activity.display.comments"
+                          translate-values="{current: $ctrl.renderedItems, hidden: ($ctrl.numberOfComments - $ctrl.renderedItems)}"></span>
+                </span>
+                <span ng-if="$ctrl.activityFilterValue === undefined">
+                    <span translate="card.activity.display.activities"
+                          translate-values="{current: $ctrl.renderedItems, hidden: ($ctrl.numberOfActivities - $ctrl.renderedItems)}"></span>
+                </span>
+            </div>
+            <div class="flex"></div>
+            <div class="flex no-grow">
+                <md-button ng-click="$ctrl.loadMore()">{{::('button.load.more' | translate)}}</md-button>
+            </div>
+        </div>
+        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'time':$ctrl.sortDescending | limitTo:($ctrl.renderedItems * -1) track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
+            <div ng-switch="::activity.cardEvent" >
+                <div ng-switch-when="COMMENT">
+                    <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
+                </div>
+                <div ng-switch-default>
+                    <lvg-activity event="activity" event-type="{{::activity.cardEvent}}">
+                        <div class="flex no grow">
+                            <lvg-user-link class="lvg-card-activity__user" user-id="activity.userId"></lvg-user-link>
+                            <span class="lvg-card-activity__time">{{ activity.time | dateIncremental }}</span>
+                        </div>
+                        <div class="flex"></div>
+                    </lvg-activity>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
     <md-card-actions class="lvg-card-activity__actions" data-lvg-has-permission="CREATE_CARD_COMMENT">
         <form data-ng-submit="$ctrl.addComment(comment);commentPreviewMode=false;">
             <div data-ng-hide="commentPreviewMode">
@@ -39,29 +77,4 @@
             </div>
         </form>
     </md-card-actions>
-    <md-card-content>
-        <div ng-repeat="activity in $ctrl.activities | filter:$ctrl.activityFilter | orderBy:'time':$ctrl.sortDescending | limitTo:$ctrl.renderedItems track by activity.id + '-' + activity.cardEvent" class="lvg-card-activity">
-            <div ng-switch="::activity.cardEvent" >
-                <div ng-switch-when="COMMENT">
-                    <lvg-card-activity-comment comment="$ctrl.comments[activity.dataId]"></lvg-card-activity-comment>
-                </div>
-                <div ng-switch-default>
-                    <lvg-activity event="activity" event-type="{{::activity.cardEvent}}">
-                        <div class="flex no grow">
-                            <lvg-user-link class="lvg-card-activity__user" user-id="activity.userId"></lvg-user-link>
-                            <span class="lvg-card-activity__time">{{ activity.time | dateIncremental }}</span>
-                        </div>
-                        <div class="flex"></div>
-                    </lvg-activity>
-                </div>
-            </div>
-        </div>
-        <div ng-if="$ctrl.activityFilterValue === 'COMMENT' && !$ctrl.hasComments" class="lvg-card-activity">
-            <i class="lvg-card-activity__no-comments" translate="card.activity.no.comments"></i>
-        </div>
-        <div ng-if="$ctrl.hasMore()"
-             class="flex lvg-card-activity__load-more">
-            <md-button ng-click="$ctrl.loadMore()">{{::('button.load.more' | translate)}}</md-button>
-        </div>
-    </md-card-content>
 </md-card>
