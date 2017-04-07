@@ -44,11 +44,13 @@ public class ApiHooksService {
     private final ProjectService projectService;
     private final CardService cardService;
     private final ApiHookQuery apiHookQuery;
+    private final LabelService labelService;
 
-    public ApiHooksService(ProjectService projectService, CardService cardService, ApiHookQuery apiHookQuery) {
+    public ApiHooksService(ProjectService projectService, CardService cardService, ApiHookQuery apiHookQuery, LabelService labelService) {
         this.projectService = projectService;
         this.cardService = cardService;
         this.apiHookQuery = apiHookQuery;
+        this.labelService = labelService;
         engine = (Compilable) new ScriptEngineManager().getEngineByName("javascript");
         executor = Executors.newFixedThreadPool(4);
     }
@@ -289,21 +291,32 @@ public class ApiHooksService {
     }
 
     public void removedLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
-        String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
-        //FIXME
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
+        handleLabelValue(affectedCards, labelId, labelValue, user, event);
     }
 
     public void addLabelValueToCards(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
-        String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
-        //FIXME
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
+        handleLabelValue(affectedCards, labelId, labelValue, user, event);
     }
 
     public void updateLabelValueToCards(List<CardFull> updated, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
+        handleLabelValue(updated, labelId, labelValue, user, event);
+    }
+
+    private void handleLabelValue(List<CardFull> affectedCards, int labelId, LabelValue labelValue, User user, LavagnaEvent event) {
+        if (affectedCards.isEmpty()) {
+            return;
+        }
+
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
-        //FIXME
-        executor.execute(new EventToRun(this, event, projectShortName, user, Collections.<String, Object>emptyMap()));
+        List<io.lavagna.model.apihook.Card> cards = new ArrayList<>(affectedCards.size());
+        for(CardFull cf : affectedCards) {
+            cards.add(new io.lavagna.model.apihook.Card(cf.getBoardShortName(), cf.getSequence(), cf.getName()));
+        }
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("affectedCards", cards);
+        payload.put("label", labelService.findLabelById(labelId));
+        payload.put("labelValue", labelValue);
+        executor.execute(new EventToRun(this, event, projectShortName, user, payload));
     }
 
     private void handleActionList(int cardId, String name, User user, LavagnaEvent event) {
