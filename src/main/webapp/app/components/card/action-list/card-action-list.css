@@ -42,8 +42,8 @@
 }
 
 .lvg-card-action-list__item {
-    margin-bottom: 5px;
-    height: 34px;
+    padding-bottom: 5px;
+    min-height: 34px;
 }
 
 .lvg-card-action-list__item:last-child {
@@ -52,6 +52,7 @@
 
 .lvg-card-action-list__item-handle {
     margin-right: 10px !important;
+    margin-top: 6px;
     cursor: -webkit-grab;
     cursor: -moz-grab;
     cursor: grab;
@@ -62,6 +63,10 @@
     margin-bottom: 5px;
     margin-top: 5px;
     flex: 0 0 30px;
+}
+
+.lvg-card-action-list__item-text {
+    margin-top: 6px;
 }
 
 .lvg-card-action-list__item-controls {
