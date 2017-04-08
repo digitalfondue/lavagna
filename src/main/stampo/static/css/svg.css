@@ -60,3 +60,23 @@
 .icon-disable-ticket {
     background-image: url(../svg/repeat-off.svg);
 }
+
+.icon-bulk-select {
+    background-image: url(../svg/bulk-select.svg);
+}
+
+.icon-bulk-move {
+    background-image: url(../svg/bulk-move.svg);
+}
+
+.icon-bulk-assign {
+    background-image: url(../svg/bulk-assign.svg);
+}
+
+.icon-bulk-milestone {
+    background-image: url(../svg/bulk-milestone.svg);
+}
+
+.icon-bulk-label {
+    background-image: url(../svg/bulk-label.svg);
+}
