@@ -48,7 +48,7 @@
                 </md-button>
                 <md-button class="md-primary" type="submit"
                            ng-if="$ctrl.availableOrganizations.length > 0"
-                           ng-disabled="$ctrl.view.trelloImportIsRunning || $ctrl.boardsToImport < 1">
+                           ng-disabled="$ctrl.view.trelloImportIsRunning || $ctrl.boardsToImport < 1 || !$ctrl.isValidShortNames()">
                     <span translate>button.import</span>
                 </md-button>
                 <md-button type="button" ng-click="$ctrl.cancel()" ng-if="$ctrl.availableOrganizations.length > 0 && !$ctrl.view.trelloImportIsRunning">

@@ -22,6 +22,7 @@
         ctrl.cancel = cancel;
         ctrl.importFromTrello = importFromTrello;
         ctrl.loadTrello = loadTrello;
+        ctrl.isValidShortNames = isValidShortNames;
         //
 
         var stompSub = angular.noop;
@@ -77,6 +78,20 @@
                 board.shortName = res.suggestion;
                 ctrl.checkShortName(board);
             });
+        }
+
+        function isValidShortNames() {
+            var isValid = true;
+
+            angular.forEach(ctrl.availableOrganizations, function (o) {
+                angular.forEach(o.boards, function (b) {
+                    if (b.import) {
+                        isValid = isValid && b.checkedShortName;
+                    }
+                });
+            });
+
+            return isValid;
         }
 
         function manageImports(board) {
@@ -135,7 +150,6 @@
         }
 
         function connectToTrello() {
-            //
             Trello.authorize({
                 type: 'popup',
                 name: 'Lavagna',

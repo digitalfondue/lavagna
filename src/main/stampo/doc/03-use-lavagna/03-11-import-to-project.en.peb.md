@@ -1,36 +1,29 @@
 ## Import data from external sources
 
-### Import data from Trello
+To access the data import feature, go to the [Project Settings](/03-use-lavagna/03-01-project.html#project-settings), and then the "Import" tab.
 
-If a Trello API key has ben configured then you can import any board directly into Lavagna.
-To configure the Trello API key look at the <a href="{{relativeRootPath}}/03-configuration-and-administration/03-01-config-parameters.html">Configuration Parameters</a> documentation.
-Please note that currently it will import only some part of your boards (columns, cards, comments, checklists, members, due date) and the creator will be the user used for the import.
+### Trello
 
-First to enable the connection to trello you will need to click the "Load Trello connector": on success the "Connect to Trello" button will appear:
+#### Requirements
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_import.png" alt="Trello import">
+Configure a Trello API Key in the [Configuration Parameters](/04-administration/04-01-config-parameters.html).
 
-On connect you'll be asked to authorize Lavagna.
+#### Import data
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_authorize.png" alt="Trello authorize">
+First, click "Load Trello Connector".
 
-After the authorization you can choose which board you want to import.
-By enabling "Import also archived cards" you'll import also the board's archive, be advised that this may severely impact the amount of data processed.
+If the load is successful, the button will change to "Connect to Trello".
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_import_options.png" alt="Trello import options">
+You will be required to allow Lavagna read-only access to your Trello account.
 
-Once you configured what you want to copy the cards are imported in Lavagna.
+Once done, you will get a list of boards you can select to import.
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_progress.png" alt="Trello import progress bar">
+When a board is selected, a short name will be automatically generated.
 
-At the end of the process you can return on the Project's home and see the newly created boards.
+As a final option, you can select whether or not to import archived cards.
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_done_project.png" alt="Trello imported project">
+<img class="pure-img" src="{{relativeRootPath}}/images/en/import-from-trello.png" alt="Trello import">
 
-And by clicking on the board you can see the cards.
+When at least one board is selected, with a valid short name, the import process can start.
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_done_board.png" alt="Trello imported board">
-
-As reference, this is the original board copied from Trello.
-
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_trello_original_board.png" alt="Trello imported board">
+**Note**: Lavagna does not keep track of which boards have been imported.  That means you'll be able to import a board a second time, as long as a different short name is provided.
