@@ -18,12 +18,21 @@
 package io.lavagna.model.apihook;
 
 import io.lavagna.model.BoardColumn;
+import io.lavagna.model.CardDataHistory;
 import io.lavagna.model.CardFull;
+import io.lavagna.model.CardType;
+import org.apache.commons.lang3.StringUtils;
 
 public class From {
 
-    public static Card from(CardFull cf) {
-        return new Card(cf.getBoardShortName(), cf.getSequence(), cf.getProjectShortName());
+    public static Card from(CardFull cf, String baseUrl) {
+        String url = new StringBuilder(StringUtils.appendIfMissing(baseUrl, "/"))
+            .append(cf.getProjectShortName())
+            .append('/')
+            .append(cf.getBoardShortName())
+            .append('-')
+            .append(cf.getSequence()).toString();
+        return new Card(cf.getBoardShortName(), cf.getSequence(), cf.getName(), cf.getProjectShortName(), url);
     }
 
 
@@ -33,5 +42,13 @@ public class From {
 
     public static Column from(BoardColumn column) {
         return new Column(column.getName(), column.getLocation().toString(), column.getStatus().toString(), column.getColor());
+    }
+
+    public static CardData from(io.lavagna.model.CardData data) {
+        return new CardData(data.getType().toString(), data.getContent());
+    }
+
+    public static CardData from(CardType type, CardDataHistory data) {
+        return new CardData(type.toString(), data.getContent());
     }
 }

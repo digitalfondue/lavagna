@@ -66,6 +66,7 @@ public class WebSecurityConfig {
                 .loginHandlerFinder(loginHandlerFinder(configurationRepository, context))
                 .sessionHandler(sessionHandler)
                 .request("/favicon.ico").permitAll()
+                .request("/favicon/**").permitAll()
                 .request("/css/**").permitAll()
                 .request("/fonts/**").permitAll()
                 .request("/resource-login/**").permitAll()
@@ -87,6 +88,7 @@ public class WebSecurityConfig {
                 .request("/fonts/**").permitAll()
                 .request("/help/**").permitAll()
                 .request("/about/**").permitAll()
+                .request("/favicon/**").permitAll()
                 .request("/**").redirectTo("/setup/")
                 .disableLogin();
     }

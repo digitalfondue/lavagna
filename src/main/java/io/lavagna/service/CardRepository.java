@@ -130,7 +130,7 @@ public class CardRepository {
 		return Integer.valueOf(1).equals(queries.countCardIdByBoardNameAndSeq(boardShortName, seqNumber));
 	}
 
-	public Card updateCard(int cardId, String name, User user) {
+	public Card updateCard(int cardId, String name) {
 		queries.updateCard(trimToNull(name), cardId);
 		return findBy(cardId);
 	}

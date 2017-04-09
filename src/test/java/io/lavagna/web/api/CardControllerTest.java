@@ -154,7 +154,7 @@ public class CardControllerTest {
 		when(cardRepository.findBy(cardId)).thenReturn(card);
 
 		CardData card = new CardData();
-		cardController.updateCard(cardId, card, user);
+		cardController.updateCardName(cardId, card, user);
 	}
 
 	@Test

@@ -132,11 +132,11 @@ public class EventEmitter {
 		apiHookService.createdCard(boardShortName, card, user, LavagnaEvent.CREATE_CARD);
 	}
 
-	public void emitUpdateCard(String projectShortName, String boardShortName, int columnId, Card beforeUpdate, Card newCard, User user) {
+	public void emitUpdateCardName(String projectShortName, String boardShortName, int columnId, Card beforeUpdate, Card newCard, User user) {
 		messagingTemplate.convertAndSend(column(columnId), event(LavagnaEvent.UPDATE_CARD));
 		messagingTemplate.convertAndSend(board(projectShortName, boardShortName),
 				event(LavagnaEvent.UPDATE_CARD, beforeUpdate.getId()));
-		apiHookService.updatedCard(boardShortName, beforeUpdate, newCard, user, LavagnaEvent.UPDATE_CARD);
+		apiHookService.updatedCardName(boardShortName, beforeUpdate, newCard, user, LavagnaEvent.UPDATE_CARD);
 	}
 
 	public void emitUpdateCardPosition(int columnId) {
