@@ -16,4 +16,4 @@
  */
 package io.lavagna.model.apihook
 
-data class User(val provider: String, val username: String, val email: String?, val displayName: String?);
+data class Label(val type: String, val domain: String, val name: String, val value: Any?)

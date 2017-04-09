@@ -20,6 +20,7 @@ import io.lavagna.common.Json;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.apihook.From;
+import io.lavagna.model.apihook.Label;
 import io.lavagna.query.ApiHookQuery;
 import io.lavagna.service.EventEmitter.LavagnaEvent;
 import org.apache.commons.lang3.tuple.Triple;
@@ -46,12 +47,18 @@ public class ApiHooksService {
     private final CardService cardService;
     private final ApiHookQuery apiHookQuery;
     private final LabelService labelService;
+    private final UserService userService;
 
-    public ApiHooksService(ProjectService projectService, CardService cardService, ApiHookQuery apiHookQuery, LabelService labelService) {
+    public ApiHooksService(ProjectService projectService,
+                           CardService cardService,
+                           ApiHookQuery apiHookQuery,
+                           LabelService labelService,
+                           UserService userService) {
         this.projectService = projectService;
         this.cardService = cardService;
         this.apiHookQuery = apiHookQuery;
         this.labelService = labelService;
+        this.userService = userService;
         engine = (Compilable) new ScriptEngineManager().getEngineByName("javascript");
         executor = Executors.newFixedThreadPool(4);
     }
@@ -307,10 +314,35 @@ public class ApiHooksService {
 
         String projectShortName = projectService.findRelatedProjectShortNameByLabelId(labelId);
         Map<String, Object> payload = new HashMap<>();
+        Label label = from(labelService.findLabelById(labelId), labelValue);
         payload.put("affectedCards", toList(affectedCards));
-        payload.put("label", labelService.findLabelById(labelId));
-        payload.put("labelValue", labelValue);
+        payload.put("label", label);
         executor.execute(new EventToRun(this, event, projectShortName, user, payload));
+    }
+
+    private Label from(CardLabel cardLabel, LabelValue labelValue) {
+        Object value = null;
+        switch (cardLabel.getType()) {
+            case CARD:
+                value = From.from(cardService.findFullBy(labelValue.getValueCard()));
+                break;
+            case INT:
+                value = labelValue.getValueInt();
+                break;
+            case LIST:
+                //FIXME
+                break;
+            case STRING:
+                value = labelValue.getValueString();
+                break;
+            case TIMESTAMP:
+                //FIXME
+                break;
+            case USER:
+                value = From.from(userService.findUserWithPermission(labelValue.getValueUser()));
+                break;
+        }
+        return new Label(cardLabel.getType().toString(), cardLabel.getDomain().toString(), cardLabel.getName(),  value);
     }
 
     private static List<io.lavagna.model.apihook.Card> toList(List<CardFull> cards) {

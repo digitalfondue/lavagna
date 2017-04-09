@@ -28,7 +28,7 @@ public class From {
 
 
     public static User from(io.lavagna.model.User user) {
-        return new User(user.getId(), user.getProvider(), user.getUsername(), user.getEmail(), user.getDisplayName());
+        return new User(user.getProvider(), user.getUsername(), user.getEmail(), user.getDisplayName());
     }
 
     public static Column from(BoardColumn column) {
