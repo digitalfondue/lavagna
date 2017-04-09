@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.script.*;
 import java.util.*;
@@ -72,6 +73,7 @@ public class ApiHooksService {
             engineScope.putAll(scope);
             engineScope.put("log", LOG);
             engineScope.put("GSON", Json.GSON);
+            engineScope.put("restTemplate", new RestTemplate());
             script.eval(newContext);
         } catch (ScriptException ex) {
             LOG.warn("Error while executing script " + name, ex);
