@@ -22,6 +22,7 @@ import io.lavagna.model.CardLabelValue.LabelValue;
 import io.lavagna.model.apihook.From;
 import io.lavagna.model.apihook.Label;
 import io.lavagna.query.ApiHookQuery;
+import io.lavagna.query.ListValueMetadataQuery;
 import io.lavagna.service.EventEmitter.LavagnaEvent;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +54,8 @@ public class ApiHooksService {
                            CardService cardService,
                            ApiHookQuery apiHookQuery,
                            LabelService labelService,
-                           UserService userService) {
+                           UserService userService,
+                           ListValueMetadataQuery listValueMetadataQuery) {
         this.projectService = projectService;
         this.cardService = cardService;
         this.apiHookQuery = apiHookQuery;
@@ -330,13 +332,13 @@ public class ApiHooksService {
                 value = labelValue.getValueInt();
                 break;
             case LIST:
-                //FIXME
+                value = labelService.findLabelListValueById(labelValue.getValueList()).getValue();
                 break;
             case STRING:
                 value = labelValue.getValueString();
                 break;
             case TIMESTAMP:
-                //FIXME
+                value = Json.formatDate(labelValue.getValueTimestamp());
                 break;
             case USER:
                 value = From.from(userService.findUserWithPermission(labelValue.getValueUser()));

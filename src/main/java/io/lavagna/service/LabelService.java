@@ -76,4 +76,8 @@ public class LabelService {
 	public CardLabel findLabelById(int labelId) {
 	    return labelRepository.findLabelById(labelId);
     }
+
+    public LabelListValue findLabelListValueById(int id) {
+	    return labelRepository.findSimpleListValueById(id);
+    }
 }
