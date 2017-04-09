@@ -290,15 +290,6 @@ public class ProjectControllerTest {
         when(mailTicketService.findConfig(ticket.getConfigId())).thenReturn(mailConfig);
         when(boardColumnRepository.findById(ticket.getColumnId())).thenReturn(col1);
         when(boardRepository.findBoardById(col1.getBoardId())).thenReturn(board1);
-        when(mailTicketService.addTicket(ticket.getName(),
-            ticket.getAlias(),
-            ticket.getSendByAlias(),
-            ticket.getNotificationOverride(),
-            ticket.getSubject(),
-            ticket.getBody(),
-            ticket.getColumnId(),
-            ticket.getConfigId(),
-            ticket.getMetadata())).thenReturn(ticket);
 
         projectController.addMailTicketConfig(projectShortName, ticket);
     }
@@ -384,18 +375,6 @@ public class ProjectControllerTest {
         when(mailTicketService.findConfig(ticket.getConfigId())).thenReturn(mailConfig);
         when(boardColumnRepository.findById(ticket.getColumnId())).thenReturn(col1);
         when(boardRepository.findBoardById(col1.getBoardId())).thenReturn(board1);
-        when(mailTicketService.updateTicket(
-            ticket.getId(),
-            ticket.getName(),
-            ticket.getEnabled(),
-            ticket.getAlias(),
-            ticket.getSendByAlias(),
-            ticket.getNotificationOverride(),
-            ticket.getSubject(),
-            ticket.getBody(),
-            ticket.getColumnId(),
-            ticket.getConfigId(),
-            ticket.getMetadata())).thenReturn(1);
 
         projectController.updateMailTicketConfig(projectShortName, ticket.getId(), ticket);
     }
