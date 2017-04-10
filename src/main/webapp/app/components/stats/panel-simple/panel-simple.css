@@ -34,3 +34,7 @@ lvg-stats-panel-simple {
 .lvg-stats-panel__icon {
 	display:inline-block;
 }
+
+.lvg-stats-panel__title {
+    line-height: 30px;
+}

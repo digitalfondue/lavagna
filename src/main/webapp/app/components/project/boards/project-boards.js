@@ -19,6 +19,7 @@
         ctrl.fetchUserCardsInProjectPage = fetchUserCardsInProjectPage;
         ctrl.showBoardDialog = showBoardDialog;
         ctrl.updateShowArchivedItems = updateShowArchivedItems;
+        ctrl.reloadBoards = loadBoardsInProject;
         //
 
         var onDestroyStomp = angular.noop;

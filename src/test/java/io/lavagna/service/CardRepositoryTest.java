@@ -261,7 +261,7 @@ public class CardRepositoryTest {
 	public void testUpdateCard() {
 		Card c = cardService.createCard("card1", col1.getId(), new Date(), user);
 
-		cardRepository.updateCard(c.getId(), "new-name", user);
+		cardRepository.updateCard(c.getId(), "new-name");
 
 		Card updated = cardRepository.findBy(c.getId());
 
@@ -347,7 +347,7 @@ public class CardRepositoryTest {
 	    //card creation activity
 	    Assert.assertEquals(1, cardRepository.fetchAllActivityByCardId(c1.getId()).size());
 
-	    cardService.updateCard(c1.getId(), "new name", user, new Date());
+	    cardService.updateCardName(c1.getId(), "new name", user, new Date());
 
 	    //card update activity
 	    Assert.assertEquals(2, cardRepository.fetchAllActivityByCardId(c1.getId()).size());

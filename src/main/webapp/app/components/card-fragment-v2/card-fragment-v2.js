@@ -11,7 +11,8 @@
             cardRef: '&',
             userRef: '&',
             projectMetadataRef: '&',
-            selectedRef: '&'
+            selectedRef: '&',
+            requiredPermissionsRef: '&'
         },
         controller: ['$element', '$scope', '$compile', '$state', '$location', '$filter', 'User', 'Card', 'EventBus', 'UserCache', 'CardCache', 'ProjectCache', 'Tooltip', '$mdPanel', CardFragmentV2Controller]
     });
@@ -53,6 +54,8 @@
         if (ctrl.hideMenu === undefined) {
             ctrl.hideMenu = false;
         }
+
+        ctrl.requiredPermissions = ctrl.requiredPermissionsRef();
 
         //
         ctrl.isSelfWatching = ctrl.user && Card.isWatchedByUser(ctrl.card.labels, ctrl.user.id);
@@ -96,6 +99,22 @@
         var ctrl = this;
 
         var subscribers = [];
+        var BOARD_VIEW_CHECKBOX_PERMISSIONS = ['UPDATE_CARD', 'MOVE_CARD', 'MANAGE_LABEL_VALUE'];
+        var BOARD_VIEW_MENU_PERMISSIONS = ['UPDATE_CARD', 'MOVE_CARD'];
+
+        function hasAtLeastOnePermission(user, permissions, project) {
+            if (!angular.isArray(permissions)) {
+                return false;
+            }
+
+            for (var i = 0; i < permissions.length; i++) {
+                if (User.checkPermissionInstant(user, permissions[i], project)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         ctrl.$postLink = function lvgCardFragmentV2HeadCtrlPostLink() {
             var parent = ctrl.lvgCardFragmentV2;
@@ -105,7 +124,7 @@
             baseDiv.className = 'lvg-card-fragment-v2__card-head';
 
             if (parent.boardView && !parent.readOnly) {
-                if (parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+                if (parent.hideSelect !== 'true' && hasAtLeastOnePermission(parent.user, BOARD_VIEW_CHECKBOX_PERMISSIONS, parent.card.projectShortName)) {
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
 
@@ -114,7 +133,7 @@
                 baseDiv.appendChild(mainLink);
 
                 // card fragment menu
-                if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
+                if (parent.hideMenu !== 'true' && hasAtLeastOnePermission(parent.user, BOARD_VIEW_MENU_PERMISSIONS, parent.card.projectShortName)) {
                     var buttonForMenu = createElem('button');
 
                     buttonForMenu.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
@@ -131,14 +150,14 @@
                 baseDiv.appendChild(createText(parent.shortCardName));
                 angular.element(baseDiv).addClass('lvg-card-fragment-v2__card-link');
 
-                if (parent.hideMenu !== 'true' && (User.checkPermissionInstant(parent.user, 'MOVE_CARD', parent.card.projectShortName) || User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName))) {
+                if (parent.hideMenu !== 'true' && hasAtLeastOnePermission(parent.user, BOARD_VIEW_MENU_PERMISSIONS, parent.card.projectShortName)) {
                     var buttonForMenuReadOnly = createElem('button');
 
                     buttonForMenuReadOnly.className = 'lvg-card-fragment-v2__menu lvg-icon__menu-vertical';
                     baseDiv.appendChild(buttonForMenuReadOnly);
                 }
 
-                if (parent.hideSelect !== 'true' && User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+                if (parent.hideSelect !== 'true' && hasAtLeastOnePermission(parent.user, BOARD_VIEW_CHECKBOX_PERMISSIONS, parent.card.projectShortName)) {
                     var c = createElem('div');
 
                     c.className = 'lvg-card-fragment-v2__checkbox-container';
@@ -154,7 +173,7 @@
                 baseDiv.appendChild(mainLinkListView);
                 baseDiv.appendChild(createLastUpdateTime(parent.card.lastUpdateTime, $filter));
             } else if (parent.searchView) {
-                if (User.checkPermissionInstant(parent.user, 'MANAGE_LABEL_VALUE', parent.card.projectShortName)) {
+                if (hasAtLeastOnePermission(parent.user, parent.requiredPermissions, parent.card.projectShortName)) {
                     checkbox(parent.boardView, parent.selected, parent.card, subscribers, EventBus, $scope, domElement);
                 }
                 var route = parent.searchType === 'globalSearch' ? 'globalSearch.card' : 'projectSearch.card';

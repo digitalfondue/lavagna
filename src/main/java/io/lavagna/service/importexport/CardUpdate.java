@@ -40,7 +40,7 @@ class CardUpdate extends AbstractProcessEvent {
 
 	@Override
 	void process(EventFull e, Event event, Date time, User user, ImportContext context, Path tempFile) {
-		cardService.updateCard(cardId(e), event.getValueString(), user, time);
+		cardService.updateCardName(cardId(e), event.getValueString(), user, time);
 	}
 
 }

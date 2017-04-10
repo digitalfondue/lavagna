@@ -114,6 +114,10 @@ public class CardRepository {
 		return queries.findFullBy(cardId);
 	}
 
+	public List<CardFull> findFullBy(Collection<Integer> ids) {
+	    return queries.findAllByIds(ids);
+    }
+
 	public CardFull findFullBy(String boardShortName, int seqNumber) {
 		return queries.findFullBy(boardShortName, seqNumber);
 	}
@@ -126,7 +130,7 @@ public class CardRepository {
 		return Integer.valueOf(1).equals(queries.countCardIdByBoardNameAndSeq(boardShortName, seqNumber));
 	}
 
-	public Card updateCard(int cardId, String name, User user) {
+	public Card updateCard(int cardId, String name) {
 		queries.updateCard(trimToNull(name), cardId);
 		return findBy(cardId);
 	}

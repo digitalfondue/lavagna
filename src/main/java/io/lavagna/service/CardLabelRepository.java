@@ -246,6 +246,10 @@ public class CardLabelRepository {
         return addMetadata(Collections.singletonList(res)).get(0);
     }
 
+    public LabelListValue findSimpleListValueById(int labelListValueId) {
+        return queries.findListValueById(labelListValueId);
+    }
+
     @Transactional(readOnly = false)
     public void moveLabelListValueToOrder(int valueId, int order) {
         LabelListValue value = findListValueById(valueId);

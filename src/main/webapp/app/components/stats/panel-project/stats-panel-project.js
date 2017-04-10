@@ -2,22 +2,40 @@
     'use strict';
 
     angular.module('lavagna.components').component('lvgStatsPanelProject', {
-        template: '<lvg-stats-panel-simple item="$ctrl.project" stats-fetcher="$ctrl.statsFetcher()">' +
-                       '<a data-ui-sref="project.boards({projectName: $ctrl.project.shortName})">{{$ctrl.project.shortName}} - {{$ctrl.project.name}}</a>' +
-                   '</lvg-stats-panel-simple>',
         bindings: {
-            project: '<'
+            project: '<',
+            hideMenu: '<?'
         },
-        controller: ['Project', StatsPanelProjectController]
+        controller: ['Project', StatsPanelProjectController],
+        templateUrl: 'app/components/stats/panel-project/stats-panel-project.html'
     });
 
     function StatsPanelProjectController(Project) {
         var ctrl = this;
 
         ctrl.statsFetcher = statsFetcher;
+        ctrl.archive = archive;
+        ctrl.unarchive = unarchive;
 
         function statsFetcher() {
             return Project.taskStatistics(ctrl.project.shortName);
+        }
+
+        function archive() {
+            update(ctrl.project.shortName, ctrl.project.name, ctrl.project.description, true);
+        }
+
+        function unarchive() {
+            update(ctrl.project.shortName, ctrl.project.name, ctrl.project.description, false);
+        }
+
+        function update(shortName, name, description, isArchived) {
+            Project.update({
+                shortName: shortName,
+                name: name,
+                description: description,
+                archived: isArchived
+            });
         }
     }
 }());

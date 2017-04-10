@@ -1,6 +1,6 @@
 <div class="container">
-	<div class="row">
-		<div class="col-md-offset-2 col-md-8">
+	<div class="row row-inherit">
+		<div class="col-md-offset-2 col-md-8 col-xs-12">
 			<div data-ng-if="$ctrl.totalPages > 1">
 				<lvg-pagination
 				    total-pages="$ctrl.totalPages"
@@ -18,6 +18,7 @@
                             user-ref="$ctrl.user"
                             project-metadata-ref="$ctrl.metadatas[card.projectShortName]"
                             selected-ref="$ctrl.selected"
+                            required-permissions-ref="$ctrl.requiredPermissions"
                             view="search"></lvg-card-fragment-v2>
 				    </lvg-rebuild-if-change>
 				</li>

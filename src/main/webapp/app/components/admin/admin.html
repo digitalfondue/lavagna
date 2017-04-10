@@ -2,12 +2,13 @@
     <lvg-navbar-admin></lvg-navbar-admin>
 </md-toolbar>
 
-
-<div class="alert alert-danger" ng-if="$ctrl.httpsConfigurationCheck.length > 0">
-    <h3 translate>admin.httpsRelatedProblems</h3>
-
-    <p ng-repeat="desc in $ctrl.httpsConfigurationCheck">{{::desc}}</p>
+<div class="lvg-content lvg-content__row-item" ng-if="$ctrl.httpsConfigurationCheck.length > 0">
+    <div class="row row-inherit lvg-admin__https-alerts">
+        <h3 translate>admin.httpsRelatedProblems</h3>
+        <div ng-repeat="desc in $ctrl.httpsConfigurationCheck"
+             class="lvg-admin__https-alert">{{::desc}}</div>
+    </div>
 </div>
 
-<div ui-view data-autoscroll="false" class="lvg-content lavagna-container-top-margin"></div>
+<div ui-view data-autoscroll="false" class="lvg-content"></div>
 

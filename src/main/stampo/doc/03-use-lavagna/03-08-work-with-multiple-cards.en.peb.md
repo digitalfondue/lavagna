@@ -1,27 +1,19 @@
-## Bulk operations
+## Operations on multiple cards
 
-Is it possible to select multiple cards, and perform the same operations on the entire selection.
+On a board, is possible to select multiple cards and perform one or more operations in bulk.
 
-To open the bulk operations menu, click on <i class="fa fa-square-o"></i> in the navigation bar: after that, each card will have a selection box, and a **Select** button will appear.
+### Select cards
 
-The **Select** button can be used to select either all or none of the cards present in the board.
+To select a card, over on the card fragment and click on the check mark in the top left corner:
 
-Once at least one card is selected, a **Do** option, containing the various operations, will appear.
+<img class="pure-img" src="{{relativeRootPath}}/images/en/card-fragment-select.png" alt="Select card">
 
-<img class="pure-img" src="{{relativeRootPath}}/images/en/c04_board_bulk-operations.png" alt="Bulk operations">
+Or use the select handle <span class="icon icon-bulk-select"></span> in the left sidebar to select or deselect all cards.
 
-* **Assign to**: assign the selected card(s) to the selected user. Use the input field to search for a user by name
-* **Remove assign**: remove the selected card(s) from the selected user tasks list
-* **Reassign to**: remove all the currently assigned users, and assign the card(s) to the selected user
-* **Set due date**: set, or update, the deadline date on the selected card(s)
-* **Remove due date**: remove the deadline date on the selected card(s)
-* **Set/Update milestone**: set, or update, the milestone on the selected card(s)
-* **Remove milestone**: remove the selected card(s) from their current milestone, and set them back in the Unassigned milestone
-* **Add label**: set a common label on the selected card(s); the input fields depend on the label type
-* **Remove label**: remove the selected label from the selected card(s)
-* **Move to archive**: archive the selected card(s)
-* **Move to backlog**: move the selected card(s) to the board backlog
-* **Move to trash**: move the selected card(s) to the board trash bin
+### Operations
 
-When configuring an action, the **Cancel** button will bring the menu back to the **Do** state.
-
+* <span class="icon icon-bulk-move"></span> **Handle Move**: Move the selected cards to Archive, Backlog, or Trash
+* <span class="icon icon-bulk-assign"></span> **Handle assigned users**: Assign, Reassign, or remove an assigned user from the selected cards
+* <span class="icon icon-calendar"></span> **Handle due date**: Set or remove the due date of the selected cards
+* <span class="icon icon-bulk-milestone"></span> **Handle milestone**: Set, update, or remove the milestone of the selected cards
+* <span class="icon icon-bulk-label"></span> **Handle labels**: Add or remove a label from the selected cards

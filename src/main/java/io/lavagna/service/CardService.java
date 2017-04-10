@@ -84,6 +84,10 @@ public class CardService {
         return res;
     }
 
+    List<CardFull> findFullBy(Collection<Integer> ids) {
+        return cardRepository.findFullBy(ids);
+    }
+
 
 
     List<CardFullWithCounts> fetchCardFull(List<CardFull> cards) {
@@ -124,8 +128,8 @@ public class CardService {
     }
 
     @Transactional(readOnly = false)
-    public Event updateCard(int cardId, String name, User user, Date date) {
-        Card card = cardRepository.updateCard(cardId, name, user);
+    public Event updateCardName(int cardId, String name, User user, Date date) {
+        Card card = cardRepository.updateCard(cardId, name);
         return eventRepository.insertCardEvent(cardId, card.getColumnId(), user.getId(), EventType.CARD_UPDATE, date,
             name);
     }

@@ -15,3 +15,11 @@ button.lvg-small-icon-button md-icon, a.lvg-small-icon-button md-icon {
     min-width: 18px;
     min-height: 18px;
 }
+
+.md-button.lvg-button--no-link {
+    color: rgba(0,0,0,.87);
+}
+
+.md-button:not([disabled]).md-icon-button.lvg-icon-button__hover:hover {
+    background-color: rgba(158,158,158,0.2);
+}

@@ -10,6 +10,7 @@
 
     function AdminIntegrationsController($mdDialog, $translate, Notification, Integrations, Project) {
         var ctrl = this;
+        var integrationCtrl = this;
 
         ctrl.addNewIntegrationDialog = addNewIntegrationDialog;
         ctrl.deleteDialog = deleteDialog;
@@ -30,6 +31,47 @@
                 targetEvent: event,
                 templateUrl: 'app/components/admin/integrations/add-new-integration-dialog.html',
                 controller: function () {
+                    var ctrl = this;
+
+                    ctrl.addParameter = addParameter;
+                    ctrl.removeParameter = removeParameter;
+                    ctrl.create = create;
+                    ctrl.cancel = cancel;
+
+                    ctrl.customIntegration = {
+                        name: '',
+                        code: '',
+                        configuration: {},
+                        projects: [],
+                        metadata: {
+                            description: '',
+                            parameters: []
+                        }
+                    };
+
+                    function addParameter() {
+                        ctrl.customIntegration.metadata.parameters.push({'type': 'input', 'label': undefined, 'key': undefined});
+                    }
+
+                    function removeParameter(parameter) {
+                        ctrl.customIntegration.metadata.parameters.splice(ctrl.customIntegration.metadata.parameters.indexOf(parameter), 1);
+                    }
+
+                    function create() {
+                        angular.forEach(ctrl.customIntegration.metadata.parameters, function (v) {
+                            ctrl.customIntegration.configuration[v.key] = v.value;
+                            delete v.value;
+                        });
+                        Integrations.create(ctrl.customIntegration).then(function (integration) {
+                            loadAll();
+                            $mdDialog.cancel();
+                            integrationCtrl.editDialog(integration, null);
+                        });
+                    }
+
+                    function cancel() {
+                        $mdDialog.cancel();
+                    }
                 },
                 controllerAs: 'addNewIntegrationCtrl',
                 bindToController: true

@@ -126,15 +126,15 @@ public class CardController {
 
 	@ExpectPermission(Permission.UPDATE_CARD)
 	@RequestMapping(value = "/api/card/{cardId}", method = RequestMethod.POST)
-	public void updateCard(@PathVariable("cardId") int id, @RequestBody CardData updateCard, User user) {
+	public void updateCardName(@PathVariable("cardId") int id, @RequestBody CardData updateCard, User user) {
 
 		Card beforeUpdate = cardRepository.findBy(id);
 
-		cardService.updateCard(id, updateCard.name, user, new Date());
+		cardService.updateCardName(id, updateCard.name, user, new Date());
 
 		Card c = cardRepository.findBy(id);
 		ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(c.getColumnId());
-		eventEmitter.emitUpdateCard(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
+		eventEmitter.emitUpdateCardName(projectAndBoard.getProject().getShortName(), projectAndBoard.getBoard()
 				.getShortName(), c.getColumnId(), beforeUpdate, c, user);
 	}
 

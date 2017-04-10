@@ -14,7 +14,8 @@
             user: '<',
             totalPages: '<',
             countPerPage: '<',
-            currentPage: '<'
+            currentPage: '<',
+            requiredPermissions: '<'
         },
         controller: function (Project) {
             var ctrl = this;

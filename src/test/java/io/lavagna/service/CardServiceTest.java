@@ -116,7 +116,7 @@ public class CardServiceTest {
     @Test
     public void testUpdateCard() {
         Card c1 = cardService.createCardFromTop("1", col.getId(), new Date(), user);
-        cardService.updateCard(c1.getId(), "1-new", user, new Date());
+        cardService.updateCardName(c1.getId(), "1-new", user, new Date());
         Assert.assertEquals("1-new", cardRepository.findBy(c1.getId()).getName());
     }
 

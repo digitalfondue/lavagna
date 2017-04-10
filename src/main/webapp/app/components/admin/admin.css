@@ -2,11 +2,35 @@
 	- contains admin style
 */
 
-
 .lvg-admin-content__padding {
 	padding:12px;
 }
 
 .lvg-admin-content__margin-bottom {
 	margin-bottom:20px;
+}
+
+.lvg-admin__https-alerts {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 0 18px 18px 18px;
+    max-width: 100%;
+    min-height: 46px;
+    box-shadow: 0 0 12px #999999;
+    color: #ffffff;
+    word-wrap: break-word;
+    position: relative;
+    border-radius: 2px;
+    background: rgba(217, 83, 79, 1);
+}
+
+.lvg-admin__https-alert {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid white;
+}
+
+.lvg-admin__https-alert:first-of-type {
+    margin-top: 0;
 }

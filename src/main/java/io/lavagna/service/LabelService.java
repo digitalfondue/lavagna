@@ -16,12 +16,9 @@
  */
 package io.lavagna.service;
 
-import io.lavagna.model.CardLabel;
-import io.lavagna.model.CardLabelValue;
+import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.Event;
 import io.lavagna.model.Event.EventType;
-import io.lavagna.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,4 +72,12 @@ public class LabelService {
 		return eventService.insertLabelEvent(cl.getName(), cardLabelValue.getCardId(), user.getId(),
 				EventType.LABEL_DELETE, cardLabelValue.getValue(), cl.getType(), time);
 	}
+
+	public CardLabel findLabelById(int labelId) {
+	    return labelRepository.findLabelById(labelId);
+    }
+
+    public LabelListValue findLabelListValueById(int id) {
+	    return labelRepository.findSimpleListValueById(id);
+    }
 }

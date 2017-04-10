@@ -4,14 +4,6 @@
             <div class="lvg-project-boards__tasks-title flex" data-translate
                  data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards
             </div>
-            <div>
-                <md-button class="md-icon-button"
-                           ng-href="api/project/{{::$ctrl.project.shortName}}/export/"
-                           target="_blank" rel="nofollow me noopener noreferrer">
-                    <md-tooltip>{{'project.milestones.export-to-excel'|translate}}</md-tooltip>
-                    <md-icon md-svg-icon="file-excel"></md-icon>
-                </md-button>
-            </div>
             <div class="lvg-project-boards__tasks-switch">
                 <md-switch ng-model="$ctrl.showArchivedItems"
                            ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
@@ -23,7 +15,8 @@
         <lvg-stats-panel-board
             data-ng-repeat="board in $ctrl.boards | filter:($ctrl.showArchivedItems ? {} : {archived: false})"
             board="board"
-            project-short-name="$ctrl.project.shortName"></lvg-stats-panel-board>
+            project-short-name="$ctrl.project.shortName"
+            on-update="$ctrl.reloadBoards()"></lvg-stats-panel-board>
     </div>
 
     <div class="col-md-6 col-xs-12 first-xs"

@@ -1,4 +1,8 @@
-lvg-search-controls {		
- 	height:45px;		
+lvg-search-controls {
+ 	height:45px;
  	line-height:45px;
-} 
+}
+
+.lvg-search-controls__menu-bar {
+    padding: 0;
+}

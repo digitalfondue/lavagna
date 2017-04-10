@@ -44,7 +44,15 @@
                         }
                     }
                 });
+
+                ctrl.requiredPermissions = ['MANAGE_LABEL_VALUE', 'UPDATE_CARD'];
+                ctrl.isSearchControlEnabled = User.checkPermissionInstant(ctrl.user, 'MANAGE_LABEL_VALUE', ctrl.project.shortName) ||
+                    User.checkPermissionInstant(ctrl.user, 'UPDATE_CARD', ctrl.project.shortName);
+            } else {
+                ctrl.requiredPermissions = ['UPDATE_CARD'];
+                ctrl.isSearchControlEnabled = User.checkPermissionInstant(ctrl.user, 'UPDATE_CARD');
             }
+
             triggerSearch();
             refreshSearchSub = EventBus.on('refreshSearch', function () { ctrl.selected = {}; triggerSearch(); });
         };
