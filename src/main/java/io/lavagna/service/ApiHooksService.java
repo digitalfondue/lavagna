@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.common.Json;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.model.apihook.Column;
 import io.lavagna.model.apihook.From;
 import io.lavagna.model.apihook.Label;
 import io.lavagna.query.ApiHookQuery;
@@ -91,7 +92,25 @@ public class ApiHooksService {
         SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_PROJECT, Collections.<String, Object>emptyMap());
         SIMULATED_EVENTS.put(LavagnaEvent.CREATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
         SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
+        SIMULATED_EVENTS.put(LavagnaEvent.CREATE_COLUMN, map("board", "BOARD", "columnName", "COLUMN_NAME"));
+        SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_COLUMN, map("board", "BOARD",
+            "previous", new Column("COLUMN_NAME_OLD", BoardColumn.BoardColumnLocation.BOARD.toString(), ColumnDefinition.OPEN.toString(), 0),
+            "updated", new Column("COLUMN_NAME_NEW", BoardColumn.BoardColumnLocation.BOARD.toString(), ColumnDefinition.OPEN.toString(), 0)));
     }
+
+    private static Map<String, Object> map(String k1, Object v1, String k2, Object v2) {
+        Map<String, Object> m = new HashMap<>();
+        m.put(k1, v1);
+        m.put(k2, v2);
+        return m;
+    }
+
+    private static Map<String, Object> map(String k1, Object v1, String k2, Object v2, String k3, Object v3) {
+        Map<String, Object> m = map(k1, v1, k2, v2);
+        m.put(k3, v3);
+        return m;
+    }
+
 
     private static class EventToRun implements Runnable {
 
@@ -191,9 +210,13 @@ public class ApiHooksService {
     }
 
     private Map<String, Object> getBaseDataFor(int cardId) {
-        Map<String, Object> res = new HashMap<>();
         CardFull cf = cardService.findFullBy(cardId);
         String baseUrl = configurationRepository.getValue(Key.BASE_APPLICATION_URL);
+        return getBaseDataFor(cf, baseUrl);
+    }
+
+    private static Map<String, Object> getBaseDataFor(CardFull cf, String baseUrl) {
+        Map<String, Object> res = new HashMap<>();
         res.put("card", From.from(cf, baseUrl));
         res.put("board", cf.getBoardShortName());
         return res;
