@@ -147,13 +147,13 @@ public class EventEmitter {
 	public void emitMoveCardOutsideOfBoard(String boardShortName, BoardColumnLocation location) {
 		messagingTemplate.convertAndSend("/event/board/" + boardShortName + "/location/" + location + "/card",
 				event(LavagnaEvent.UPDATE_CARD_POSITION));
-		//TODO: check how to integrate
+        // apihook: this will be handled by emitCardHasMoved
 	}
 
 	public void emitMoveCardFromOutsideOfBoard(String boardShortName, BoardColumnLocation location) {
 		messagingTemplate.convertAndSend("/event/board/" + boardShortName + "/location/" + location + "/card",
 				event(LavagnaEvent.UPDATE_CARD_POSITION));
-		//TODO: check how to integrate
+        // apihook: this will be handled by emitCardHasMoved
 	}
 
 	public void emitCardHasMoved(String projectShortName, String boardShortName, Collection<Integer> affected, BoardColumn from, BoardColumn to, User user) {

@@ -40,6 +40,9 @@ public interface CardQuery {
 	@Query("SELECT CARD_ID FROM LA_CARD WHERE CARD_ID IN (:cardIds) AND CARD_BOARD_COLUMN_ID_FK = :columnId")
 	List<Integer> findCardIdsInColumnId(@Bind("cardIds") List<Integer> cardIds, @Bind("columnId") int columnId);
 
+    @Query("SELECT CARD_ID FROM LA_CARD WHERE CARD_BOARD_COLUMN_ID_FK = :columnId")
+    List<Integer> findCardIdsByColumnId(@Bind("columnId") int columnId);
+
 	@Query("SELECT * FROM LA_CARD_FULL WHERE BOARD_SHORT_NAME = :boardShortName")
 	List<CardFull> findAllByBoardShortName(@Bind("boardShortName") String boardShortName);
 
