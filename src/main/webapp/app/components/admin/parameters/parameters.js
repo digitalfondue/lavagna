@@ -23,7 +23,11 @@
             ctrl.configurable = {};
             angular.forEach(configurableKeys, function (v) {
                 Admin.findByKey(v).then(function (res) {
-                    ctrl.configurable[res.first] = res.second;
+                    if (res.first === 'USE_HTTPS') {
+                        ctrl.configurable[res.first] = res.second === 'true';
+                    } else {
+                        ctrl.configurable[res.first] = res.second;
+                    }
                 });
             });
 

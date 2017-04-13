@@ -9,13 +9,19 @@
             handle: 'handle'
         },
         templateUrl: 'app/components/card/action-list/card-action-list.html',
-        controller: ['Card', 'Notification', CardActionListController]
+        controller: ['Card', 'Notification', 'User', CardActionListController]
     });
 
     var dndActionListCtrl;
 
-    function CardActionListController(Card, Notification) {
+    function CardActionListController(Card, Notification, User) {
         var ctrl = this;
+
+        ctrl.$onInit = function () {
+            User.hasPermission('MANAGE_ACTION_LIST').then(function (res) {
+                ctrl.canModify = res;
+            });
+        };
 
         ctrl.addAction = function (action) {
             Card.addActionItem(ctrl.actionList.id, action.name).then(function () {

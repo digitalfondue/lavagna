@@ -41,6 +41,14 @@
     background-image: url(../svg/edit.svg);
 }
 
+.icon-info {
+    background-image: url(../svg/info.svg);
+}
+
+.icon-password {
+    background-image: url(../svg/password.svg);
+}
+
 .icon-delete {
     background-image: url(../svg/delete.svg);
 }

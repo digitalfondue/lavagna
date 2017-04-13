@@ -1,48 +1,50 @@
-<form data-ng-submit="saveOauthConfig(oauthNewProvider);" name="newOauthProviderForm">
-    <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title" translate>admin.login.oauth.configure-oauth-provider</h2>
+<md-dialog class="lvg-manage-dialog">
+    <form data-ng-submit="saveOauthConfig(oauthNewProvider);" name="newOauthProviderForm">
+        <md-dialog-content class="md-dialog-content">
+            <h2 class="md-title" translate>admin.login.oauth.configure-oauth-provider</h2>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.type</label>
-            <md-select ng-model="oauthNewProvider.type" required md-autofocus>
-                <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true, isConfigurableInstance:false}">{{::provider.name}}</md-option>
-            </md-select>
-        </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.type</label>
+                <md-select ng-model="oauthNewProvider.type" required md-autofocus>
+                    <md-option ng-value="provider" ng-repeat="provider in oauthProviders|filter: {hasConfigurableBaseUrl: true, isConfigurableInstance:false}">{{::provider.name}}</md-option>
+                </md-select>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.name</label>
-            <input type="text" ng-model="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
-        </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.name</label>
+                <input type="text" ng-model="oauthNewProvider.name" required pattern="[a-z]*" maxlength="10">
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.base-url</label>
-            <input type="text" ng-model="oauthNewProvider.baseUrl" required>
-        </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.base-url</label>
+                <input type="text" ng-model="oauthNewProvider.baseUrl" required>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.apiKey</label>
-            <input type="text" ng-model="oauthNewProvider.apiKey" required>
-        </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.apiKey</label>
+                <input type="text" ng-model="oauthNewProvider.apiKey" required>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.secret</label>
-            <input type="text" ng-model="oauthNewProvider.apiSecret" required>
-        </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.secret</label>
+                <input type="text" ng-model="oauthNewProvider.apiSecret" required>
+            </md-input-container>
 
-        <div>
-            <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
-        </div>
+            <div>
+                <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+            </div>
 
-        <md-input-container class="md-block">
-            <label translate>admin.login.oauth.callback</label>
-            <input type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type.name}}-{{oauthNewProvider.name}}/callback">
-        </md-input-container>
-	</md-dialog-content>
+            <md-input-container class="md-block">
+                <label translate>admin.login.oauth.callback</label>
+                <input type="text" disabled value="{{oauth.baseUrl}}login/oauth/{{oauthNewProvider.type.name}}-{{oauthNewProvider.name}}/callback">
+            </md-input-container>
+        </md-dialog-content>
 
-	<md-dialog-actions>
-		<md-button type="button" data-ng-click="close()"><span translate>button.cancel</span></md-button>
-        <md-button type="submit" ng-disabled="!newOauthProviderForm.$valid"><span translate>admin.login.oauth.add-new-provider</span></md-button>
-	</md-dialog-actions>
-</form>
+        <md-dialog-actions>
+            <md-button type="button" data-ng-click="close()"><span translate>button.cancel</span></md-button>
+            <md-button type="submit" ng-disabled="!newOauthProviderForm.$valid"><span translate>admin.login.oauth.add-new-provider</span></md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
 
 

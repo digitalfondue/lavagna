@@ -45,9 +45,9 @@
                 <div ng-if="!item.edit" class="row row-inherit start-xs top-xs">
                     <div class="lvg-card-action-list__item-handle lvg-icon-18 lvg-icon__drag-handle"
                          data-lvg-has-permission="MANAGE_ACTION_LIST"></div>
-                    <md-checkbox data-lvg-has-permission="MANAGE_ACTION_LIST"
-                                 class="lvg-card-action-list__item-checkbox"
+                    <md-checkbox class="lvg-card-action-list__item-checkbox"
                                  ng-model="item.type"
+                                 ng-disabled="!$ctrl.canModify"
                                  ng-change="$ctrl.toggleAction(item)"
                                  ng-true-value="'ACTION_CHECKED'"
                                  ng-false-value="'ACTION_UNCHECKED'">

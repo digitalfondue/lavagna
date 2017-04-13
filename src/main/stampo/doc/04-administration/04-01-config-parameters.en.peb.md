@@ -4,9 +4,11 @@ The configuration parameters section provides the list of the currently configur
 
 The following parameters can be configured in this page:
 
-* **EMAIL_NOTIFICATION_TIMESPAN**: In minutes. How often to check for new events and send email notifications. If not configured, the default value is 30
-* **MAX_UPLOAD_FILE_SIZE**: Size in bytes. Limit the dimensions of the uploaded files. If not configured, no limit will be considered
-* **TRELLO_API_KEY**: Trello api key to import boards, can be found at https://trello.com/app-key
-* **USE_HTTPS**: true or false. If true the [Strict Transport Security](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) header will be sent and the application will be accessible only over a https connection.
+* **Email notification interval**: In seconds. How often to check for new events and send email notifications. If not configured, the default value is 30
+* **Max upload file size**: Size in bytes. Limit the dimensions of the uploaded files. If not configured, no limit will be considered
+* **Trello API Key**: Trello api key to import boards, can be found at https://trello.com/app-key
+* **Enable http strict transport security header**: If true the [Strict Transport Security](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) header will be sent and the application will be accessible only over a https connection.
 
-To modify a parameter, enter the new value and click **Save**. To revert to the default value, click **Delete**.
+To modify a parameter, enter the new value and click **Save**. 
+
+To delete and revert to the default value, leave the field empty and click **Save**.
