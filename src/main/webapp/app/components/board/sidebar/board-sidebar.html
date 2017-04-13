@@ -4,6 +4,7 @@
     <div ng-if="$ctrl.dragFromBoard"
          class="lvg-board-sidebar__dropzone"
          lvg-dnd
+         lvg-dnd-permission="MOVE_CARD"
          lvg-dnd-drop="$ctrl.dropCard()"
          lvg-dnd-opts="{sort:false, group: 'card', animation: 150}"></div>
     <div class="lvg-board-sidebar__header">

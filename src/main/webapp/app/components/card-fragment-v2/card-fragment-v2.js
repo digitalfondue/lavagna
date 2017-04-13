@@ -73,11 +73,11 @@
         dataInfoCtrl.$postLink();
 
         if (!ctrl.listView && ctrl.isSelfWatching) {
-            container.className += ' lavagna-is-watching';
+            container.className += ' lvg-card-fragment-v2--watching';
         }
 
-        if (ctrl.boardView) {
-            container.className += ' lavagna-board-panel';
+        if (ctrl.boardView && !User.checkPermissionInstant(ctrl.user, 'MOVE_CARD', ctrl.projectShortName)) {
+            container.className += ' lvg-card-fragment-v2--not-draggable';
         }
 
         ctrl.$onDestroy = function () {

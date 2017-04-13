@@ -9,7 +9,7 @@
     var ngRepeatRegex = /^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/;
     //
 
-    directives.directive('lvgDnd', function ($parse, $log) {
+    directives.directive('lvgDnd', function ($parse, $log, User) {
         return {
             restrict: 'A',
             link: function ($scope, $element, attrs) {
@@ -19,6 +19,7 @@
                 var parsedDndDragstart = $parse(attrs.lvgDndDragstart);
                 var parsedDndDrop = $parse(attrs.lvgDndDrop);
                 var parsedDndEnd = $parse(attrs.lvgDndDragend);
+                var requiredPermission = attrs.lvgDndPermission;
 
                 opts.onStart = function onStart(event) {
                     if (opts.draggingClass) {
@@ -97,7 +98,19 @@
                     return $parse(listAndFilterExpression)($scope);
                 }
 
-                var sortableInstance = Sortable.create($element[0], opts);
+                var sortableInstance = {
+                    destroy: angular.noop
+                };
+
+                if (angular.isDefined(requiredPermission)) {
+                    User.hasPermission(requiredPermission).then(function (res) {
+                        if (res) {
+                            sortableInstance = Sortable.create($element[0], opts);
+                        }
+                    })
+                } else {
+                    sortableInstance = Sortable.create($element[0], opts);
+                }
 
                 $scope.$on('$destroy', function onDestroySortable() {
                     sortableInstance.destroy();

@@ -12,10 +12,31 @@ lvg-card-fragment-v2 {
     margin-bottom: 0 !important
 }
 
+lvg-card-fragment-v2[view=board] {
+    border: 1px solid #d0d0d0;
+    background-color: white;
+    box-shadow: none;
+    margin-bottom:8px;
+}
+
+lvg-card-fragment-v2[view=board]:hover {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+lvg-card-fragment-v2[view=board].lvg-card-fragment-v2--not-draggable:hover {
+    box-shadow: none;
+}
+
 lvg-card-fragment-v2[view=list],lvg-card-fragment-v2[view=search] {
 	background-color: white;
     margin-bottom: 20px;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+.lvg-card-fragment-v2--watching {
+    background-image: url('images/triangle.gif');
+    background-repeat: no-repeat;
+    background-position: top right;
 }
 
 .lvg-card-fragment-v2__card-head {
