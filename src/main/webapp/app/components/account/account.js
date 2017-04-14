@@ -68,8 +68,8 @@
         }
 
         function update(profile) {
+            User.invalidateCachedUser();
             User.updateProfile(profile)
-                .then(User.invalidateCachedUser)
                 .then(User.current).then(loadUser).then(function () {
                     Notification.addAutoAckNotification('success', {key: 'notification.user.update.success'}, false);
                 }, function () {
