@@ -45,10 +45,10 @@ public class From {
     }
 
     public static CardData from(io.lavagna.model.CardData data) {
-        return new CardData(data.getType().toString(), data.getContent());
+        return new CardData(data.getType().toString(), StringUtils.trimToEmpty(data.getContent()));
     }
 
     public static CardData from(CardType type, CardDataHistory data) {
-        return new CardData(type.toString(), data.getContent());
+        return new CardData(type.toString(), StringUtils.trimToEmpty(data.getContent()));
     }
 }

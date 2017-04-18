@@ -128,7 +128,7 @@ public class ApiHooksService {
                         Map<String, String> configuration = apiHook.getConfiguration() != null ? apiHook.getConfiguration() : Collections.<String, String>emptyMap();
                         apiHooksService.compiledScriptCache.put(apiHook.getName(), Triple.of(apiHook, configuration, cs));
                     } catch (ScriptException ex) {
-                        LOG.warn("Error while compiling script " + apiHook.getName());
+                        LOG.warn("Error while compiling script " + apiHook.getName(), ex);
                     }
                 }
             }
