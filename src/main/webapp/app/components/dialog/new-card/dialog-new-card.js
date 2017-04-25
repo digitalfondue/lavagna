@@ -19,8 +19,10 @@
         ctrl.cancel = cancel;
         ctrl.createCard = createCard;
 
+
         ctrl.$onInit = function init() {
             ctrl.columnId = ctrl.column.id;
+            ctrl.processing = false;
         };
 
         function cancel() {
@@ -28,11 +30,14 @@
         }
 
         function createCard(name, columnId) {
+            ctrl.processing = true;
             Board.createCardFromTop(ctrl.boardShortName, columnId, {name: name}).then(function () {
+                ctrl.processing = false;
                 ctrl.name = null;
                 ctrl.dialogNewCardForm.$setPristine();
                 ctrl.dialogNewCardForm.$setUntouched();// clear up error messages
             }).catch(function () {
+                ctrl.processing = false;
                 Notification.addAutoAckNotification('error', { key: 'notification.board.create-card.error'}, false);
             });
         }

@@ -18,16 +18,21 @@
         ctrl.cancel = cancel;
         ctrl.createColumn = createColumn;
 
+        ctrl.processing = false;
+
         function cancel() {
             $mdDialog.hide();
         }
 
         function createColumn(columnToCreate) {
+            ctrl.processing = true;
             Board.createColumn(ctrl.boardName, columnToCreate).then(function () {
+                ctrl.processing = false;
                 columnToCreate.name = null;
                 columnToCreate.definition = null;
                 $mdDialog.hide();
             }).catch(function () {
+                ctrl.processing = false;
                 Notification.addAutoAckNotification('error', { key: 'notification.board.create-column.error'}, false);
             });
         }
