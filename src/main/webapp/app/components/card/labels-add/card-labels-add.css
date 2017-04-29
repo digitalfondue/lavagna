@@ -5,7 +5,7 @@
 }
 
 .lvg-card-labels-add__label-add-panel {
-    display: inline-block;
+    display: block;
     padding: 10px 5px;
 }
 
