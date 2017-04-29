@@ -32,13 +32,13 @@
         function createCard(name, columnId) {
             ctrl.processing = true;
             Board.createCardFromTop(ctrl.boardShortName, columnId, {name: name}).then(function () {
-                ctrl.processing = false;
                 ctrl.name = null;
                 ctrl.dialogNewCardForm.$setPristine();
                 ctrl.dialogNewCardForm.$setUntouched();// clear up error messages
-            }).catch(function () {
-                ctrl.processing = false;
+            }, function () {
                 Notification.addAutoAckNotification('error', { key: 'notification.board.create-card.error'}, false);
+            }).finally(function () {
+                ctrl.processing = false;
             });
         }
     }
