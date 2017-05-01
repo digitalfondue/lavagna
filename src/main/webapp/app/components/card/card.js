@@ -11,10 +11,10 @@
             card: '<',
             user: '<'
         },
-        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Project', 'StompClient', 'Title', CardController]
+        controller: ['EventBus', 'CardCache', 'LabelCache', 'Project', 'StompClient', 'Title', CardController]
     });
 
-    function CardController(EventBus, CardCache, Card, LabelCache, Project, StompClient, Title) {
+    function CardController(EventBus, CardCache, LabelCache, Project, StompClient, Title) {
         var ctrl = this;
 
         var unbindCardCache = angular.noop;
