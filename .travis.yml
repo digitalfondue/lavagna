@@ -1,5 +1,7 @@
 language: java
 dist: trusty
+jdk:
+  - oraclejdk8
 before_script:
 - psql -c 'create database lavagna;' -U postgres
 - mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
