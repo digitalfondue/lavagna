@@ -6,29 +6,28 @@
     components.component('lvgCreateCard', {
         templateUrl: 'app/components/create-card/create-card.html',
         bindings: {
-            project: '<',
-            board: '<',
+            projectShortName: '<',
+            boardShortName: '<',
+            projectMetadata: '<',
+            columns: '<',
+            column: '<',
             user: '<'
         },
-        controller: ['EventBus', 'CardCache', 'Card', 'LabelCache', 'Project', 'StompClient', 'Title', CreateCardController]
+        controller: ['$mdDialog', 'Board', 'Card', 'LabelCache', 'Notification', 'Project', CreateCardController]
     });
 
-    function CreateCardController(EventBus, CardCache, Card, LabelCache, Project, StompClient, Title) {
+    function CreateCardController($mdDialog, Board, Card, LabelCache, Notification) {
         var ctrl = this;
-        var projectMetadataSubscription = angular.noop;
+
+        ctrl.createAnother = false;
 
         ctrl.$onInit = function () {
-            projectMetadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl.project);
-
             ctrl.card = initData();
+            ctrl.card.column = ctrl.column;
         };
 
-        ctrl.$onDestroy = function () {
-            projectMetadataSubscription();
-        };
-
-        ctrl.onUpdateDescription = function ($title, $description, $labels) {
-            ctrl.card.title = $title;
+        ctrl.onUpdateDescription = function ($name, $description, $labels) {
+            ctrl.card.name = $name;
             ctrl.card.description = $description;
             ctrl.card.labels = $labels;
         };
@@ -51,18 +50,36 @@
             ctrl.card.actionLists = $actionLists;
         };
 
+        ctrl.createCard = function () {
+            Board.createCard(ctrl.card.column.id, ctrl.card).then(function () {
+                if (ctrl.createAnother === true) {
+                    initData();
+                } else {
+                    close();
+                }
+            }, function () {
+                Notification.addAutoAckNotification('error', {key: 'notification.card.create.error'}, false);
+            });
+        };
+
+        ctrl.close = close;
+
         function initData() {
             return {
-                title: null,
+                name: null,
                 description: null,
                 labels: [],
                 files: [],
-                columnId: null,
+                column: null,
                 dueDate: null,
                 milestone: null,
                 assignedUsers: [],
                 actionLists: []
             };
+        }
+
+        function close() {
+            $mdDialog.hide();
         }
     }
 

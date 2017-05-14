@@ -1,25 +1,50 @@
-<div class="row row-inherit">
-    <div class="col-md-8 col-xs-12">
-        <lvg-create-card-description title="$ctrl.card.title"
-                                     description="$ctrl.card.description"
-                                     labels="$ctrl.card.labels"
-                                     user-labels="$ctrl.project.metadata.userLabels"
-                                     on-update="$ctrl.onUpdateDescription($title, $description, $labels)"></lvg-create-card-description>
-
-        <lvg-create-card-files files="$ctrl.card.files" on-uploaded="$ctrl.onUploaded($file)"></lvg-create-card-files>
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h2 translate>dialog-new-card.title</h2>
+        <span class="flex"></span>
+        <md-button class="md-icon-button" ng-click="$ctrl.close()">
+            <md-icon md-svg-icon="close"></md-icon>
+        </md-button>
     </div>
-    <div class="col-md-4 col-xs-12">
-        <lvg-create-card-metadata column-id="$ctrl.card.columnId"
-                                  due-date="$ctrl.card.dueDate"
-                                  milestone="$ctrl.card.milestone"
-                                  milestones="$ctrl.milestones"
-                                  columns="$ctrl.columns"
-                                  on-update="$ctrl.onUpdateMetadata($columnId, $dueDate, $milestone)"></lvg-create-card-metadata>
+</md-toolbar>
+<md-dialog-content class="flex-container lvg-card-modal__background">
+    <div class="row row-inherit">
+        <div class="col-md-8 col-xs-12">
+            <lvg-create-card-description project-short-name="$ctrl.projectShortName"
+                                         name="$ctrl.card.name"
+                                         description="$ctrl.card.description"
+                                         labels="$ctrl.card.labels"
+                                         user-labels="$ctrl.projectMetadata.userLabels"
+                                         on-update="$ctrl.onUpdateDescription($name, $description, $labels)"></lvg-create-card-description>
 
-        <lvg-create-card-people users="$ctrl.users"
-                                on-update="$ctrl.onUpdateUsers($users)"></lvg-create-card-people>
+            <lvg-create-card-files files="$ctrl.card.files" on-uploaded="$ctrl.onUploaded($file)"></lvg-create-card-files>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <lvg-create-card-metadata column-id="$ctrl.card.columnId"
+                                      due-date="$ctrl.card.dueDate"
+                                      milestone="$ctrl.card.milestone"
+                                      milestones="$ctrl.projectMetadata.milestones"
+                                      columns="$ctrl.columns"
+                                      on-update="$ctrl.onUpdateMetadata($columnId, $dueDate, $milestone)"></lvg-create-card-metadata>
 
-        <lvg-create-card-action-lists action-lists="$ctrl.actionLists"
-                                      on-update="$ctrl.onUpdateActionLists($actionLists)"></lvg-create-card-action-lists>
+            <lvg-create-card-people users="$ctrl.users"
+                                    on-update="$ctrl.onUpdateUsers($users)"></lvg-create-card-people>
+
+            <lvg-create-card-action-lists action-lists="$ctrl.actionLists"
+                                          on-update="$ctrl.onUpdateActionLists($actionLists)"></lvg-create-card-action-lists>
+        </div>
     </div>
-</div>
+    <div class="row row-inherit">
+        <div class="col-xs-12 middle-xs end-xs">
+            <md-checkbox ng-model="$ctrl.createAnother">
+                Create another card
+            </md-checkbox>
+            <md-button ng-click="$ctrl.close()">
+                <span translate>button.cancel</span>
+            </md-button>
+            <md-button class="md-primary" ng-click="$ctrl.createCard()">
+                <span translate>button.save</span>
+            </md-button>
+        </div>
+    </div>
+</md-dialog-content>

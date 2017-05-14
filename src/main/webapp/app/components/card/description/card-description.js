@@ -8,12 +8,13 @@
             labelValues: '<'
         },
         templateUrl: 'app/components/card/description/card-description.html',
-        controller: ['Card', 'StompClient', CardDescriptionController],
+        controller: ['BulkOperations', 'Card', 'Label', 'StompClient', CardDescriptionController],
     });
 
-    function CardDescriptionController(Card, StompClient) {
+    function CardDescriptionController(BulkOperations, Card, Label, StompClient) {
         var ctrl = this;
 
+        ctrl.addLabel = addLabel;
         ctrl.hideAddPanel = hideAddPanel;
         ctrl.updateCardName = updateCardName;
         ctrl.updateDescription = updateDescription;
@@ -49,6 +50,12 @@
             Card.updateDescription(ctrl.card.id, description);
         }
 
+        function addLabel($label) {
+            var labelValueToUpdate = Label.extractValue($label.label, $label.value);
+
+            BulkOperations.addLabel(currentCard(), $label.label, labelValueToUpdate);
+        }
+
         function hideAddPanel() {
             ctrl.addLabelPanel = false;
         }
@@ -71,6 +78,14 @@
             }
 
             return false;
+        }
+
+        function currentCard() {
+            var cardByProject = {};
+
+            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
+
+            return cardByProject;
         }
     }
 }());

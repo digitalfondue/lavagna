@@ -75,13 +75,11 @@
                 return $http.get('api/board/' + shortName + '/cards-in/' + location + '/' + page).then(extractData);
             },
 
-            // FIXME remove shortName parameter
-            createCard: function (shortName, columnId, createCard) {
+            createCard: function (columnId, createCard) {
                 return $http.post('api/column/' + columnId + '/card', createCard).then(extractData);
             },
 
-            // FIXME remove shortName parameter
-            createCardFromTop: function (shortName, columnId, createCard) {
+            createCardFromTop: function (columnId, createCard) {
                 return $http.post('api/column/' + columnId + '/card-top', createCard).then(extractData);
             },
 

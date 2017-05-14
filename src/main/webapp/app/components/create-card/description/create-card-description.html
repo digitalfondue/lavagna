@@ -1,0 +1,57 @@
+<md-card>
+    <md-card-content>
+        <div class="row row-inherit">
+            <div class="flex">
+                <md-input-container class="md-block">
+                    <label translate>label.name</label>
+                    <input required ng-model="$ctrl.name" ng-change="$ctrl.update()">
+                </md-input-container>
+            </div>
+        </div>
+        <!--<div>
+            <lvg-card-labels
+                card="$ctrl.card"
+                project="$ctrl.project"
+                label-values="$ctrl.labelValues"
+                ng-if="$ctrl.hasUserLabels()"></lvg-card-labels>
+            <span class="lvg-card-description__no-label" ng-if="!$ctrl.hasUserLabels()" translate>card.labels.no.labels</span>
+            <span class="lvg-card-description-labels-add" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.addLabelPanel">
+                <md-button data-ng-click="$ctrl.addLabelPanel = true"
+                           md-no-ink
+                           class="lvg-small-icon-button lvg-card-description__labels-add-button">
+                    <md-tooltip><span translate>card.labels.add.tooltip</span></md-tooltip>
+                    <md-icon md-menu-origin md-svg-icon="add"></md-icon>
+                </md-button>
+            </span>
+        </div>-->
+        <lvg-card-labels-add on-add="$ctrl.addLabel($label)"
+                             project-short-name="$ctrl.projectShortName"
+                             user-labels="$ctrl.userLabels"
+                             label-values="$ctrl.labels"></lvg-card-labels-add>
+        <md-divider class="lvg-card-description__divider"></md-divider>
+        <div>
+
+            <div ng-hide="$ctrl.editDescriptionPreviewMode">
+                <md-input-container class="md-block">
+                    <label translate>label.description</label>
+                    <textarea class="lvg-card-description__textarea"
+                              ng-model="$ctrl.description"
+                              ng-change="$ctrl.update()"
+                              rows="3"></textarea>
+                </md-input-container>
+            </div>
+            <div data-ng-show="$ctrl.editDescriptionPreviewMode"
+                 data-ng-bind-html="$ctrl.descriptionToEditPreview | markdown"></div>
+            <div>
+                <md-button data-ng-hide="$ctrl.editDescriptionPreviewMode"
+                           data-ng-click="$ctrl.descriptionToEditPreview = $ctrl.descriptionToEdit; $ctrl.editDescriptionPreviewMode = true" type="button">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button data-ng-show="$ctrl.editDescriptionPreviewMode"
+                           data-ng-click="$ctrl.editDescriptionPreviewMode = false" type="button">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
