@@ -51,9 +51,11 @@
         };
 
         ctrl.createCard = function () {
-            Board.createCard(ctrl.card.column.id, ctrl.card).then(function () {
+            Board.createCard(ctrl.card.column.id, ctrl.card).then(function (card) {
                 if (ctrl.createAnother === true) {
-                    initData();
+                    Notification.addAutoAckNotification('success', {key: 'notification.card.create.success'}, false);
+
+                    ctrl.card = initData();
                 } else {
                     close();
                 }

@@ -8,25 +8,17 @@
                 </md-input-container>
             </div>
         </div>
-        <!--<div>
+        <div>
             <lvg-card-labels
                 card="$ctrl.card"
                 project="$ctrl.project"
                 label-values="$ctrl.labelValues"
-                ng-if="$ctrl.hasUserLabels()"></lvg-card-labels>
-            <span class="lvg-card-description__no-label" ng-if="!$ctrl.hasUserLabels()" translate>card.labels.no.labels</span>
-            <span class="lvg-card-description-labels-add" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.addLabelPanel">
-                <md-button data-ng-click="$ctrl.addLabelPanel = true"
-                           md-no-ink
-                           class="lvg-small-icon-button lvg-card-description__labels-add-button">
-                    <md-tooltip><span translate>card.labels.add.tooltip</span></md-tooltip>
-                    <md-icon md-menu-origin md-svg-icon="add"></md-icon>
-                </md-button>
-            </span>
-        </div>-->
+                ng-if="$ctrl.labels.length > 0"></lvg-card-labels>
+            <span class="lvg-card-description__no-label" ng-if="$ctrl.labels.length === 0" translate>card.labels.no.labels</span>
+        </div>
         <lvg-card-labels-add on-add="$ctrl.addLabel($label)"
                              project-short-name="$ctrl.projectShortName"
-                             user-labels="$ctrl.userLabels"
+                             user-labels="$ctrl.metadata.userLabels"
                              label-values="$ctrl.labels"></lvg-card-labels-add>
         <md-divider class="lvg-card-description__divider"></md-divider>
         <div>

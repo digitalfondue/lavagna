@@ -14,7 +14,7 @@
                                          name="$ctrl.card.name"
                                          description="$ctrl.card.description"
                                          labels="$ctrl.card.labels"
-                                         user-labels="$ctrl.projectMetadata.userLabels"
+                                         metadata="$ctrl.projectMetadata"
                                          on-update="$ctrl.onUpdateDescription($name, $description, $labels)"></lvg-create-card-description>
 
             <lvg-create-card-files files="$ctrl.card.files" on-uploaded="$ctrl.onUploaded($file)"></lvg-create-card-files>

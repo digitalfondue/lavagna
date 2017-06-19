@@ -47,7 +47,11 @@ public class CardControllerTest {
 	@Mock
 	private CardDataRepository cardDataRepository;
 	@Mock
+    private CardDataService cardDataService;
+	@Mock
 	private BoardRepository boardRepository;
+	@Mock
+    private BulkOperationService bulkOperationService;
 	@Mock
 	private ProjectService projectService;
 	@Mock
@@ -71,8 +75,8 @@ public class CardControllerTest {
 
 	@Before
 	public void prepare() {
-		cardController = new CardController(cardRepository, cardService, boardRepository,
-				projectService, boardColumnRepository, searchService, eventEmitter);
+		cardController = new CardController(cardRepository, cardService, cardDataService, boardRepository,
+				bulkOperationService, projectService, boardColumnRepository, searchService, eventEmitter);
 
 		ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
 				project.getDescription(), project.getArchived(), board.getId(), board.getShortName(), board.getName(),
