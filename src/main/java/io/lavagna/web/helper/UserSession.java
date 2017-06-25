@@ -94,7 +94,7 @@ public final class UserSession {
             return null;
         }
 		try {
-			String[] splitted = cookieVal.split(",");
+			String[] splitted = cookieVal.split("/");
 			if (splitted.length == 2) {
 				int userId = Integer.valueOf(splitted[0], 10);
 				String token = splitted[1];
@@ -150,7 +150,7 @@ public final class UserSession {
 
 		String token = userRepository.createRememberMeToken(userId);
 		//
-		Cookie c = new Cookie(CookieNames.getRememberMeCookieName(), userId + "," + token);
+		Cookie c = new Cookie(CookieNames.getRememberMeCookieName(), userId + "/" + token);
 		c.setPath(req.getContextPath() + "/");
 		c.setHttpOnly(true);
 		c.setMaxAge(60 * 60 * 24 * 365); // 1 year
