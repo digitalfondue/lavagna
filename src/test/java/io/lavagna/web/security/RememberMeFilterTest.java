@@ -83,7 +83,7 @@ public class RememberMeFilterTest {
 		RememberMeFilter rmf = new RememberMeFilter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.getSession().setAttribute(AUTH_KEY, false);
-		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2,056a8421-7448-4753-a932-13dc7e4cd510");
+		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2/056a8421-7448-4753-a932-13dc7e4cd510");
 		request.setCookies(cookie);
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
@@ -110,7 +110,7 @@ public class RememberMeFilterTest {
 		RememberMeFilter rmf = new RememberMeFilter();
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.getSession().setAttribute(AUTH_KEY, false);
-		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2,056a8421-7448-4753-a932-13dc7e4cd510");
+		Cookie cookie = new Cookie(CookieNames.getRememberMeCookieName(), "2/056a8421-7448-4753-a932-13dc7e4cd510");
 		request.setCookies(cookie);
 		Map<Key, String> conf = new EnumMap<>(Key.class);
 		conf.put(Key.SETUP_COMPLETE, "true");
