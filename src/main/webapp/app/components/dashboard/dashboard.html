@@ -2,7 +2,7 @@
 	<div class="col-md-6 col-xs-12 first-md">
         <div class="lvg-dashboard__tasks row row-inherit start-xs top-xs">
             <div class="lvg-dashboard__tasks-title flex" data-translate>dashboard.my.projects</div>
-            <div class="lvg-dashboard__tasks-switch">
+            <div class="lvg-dashboard__tasks-switch" lvg-has-permission="UPDATE_PROFILE">
                 <md-switch ng-model="$ctrl.showArchivedItems" ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
                 <md-tooltip>{{($ctrl.showArchivedItems ? 'dashboard.projects.hide.archived' : 'dashboard.projects.show.archived') | translate}}</md-tooltip>
             </div>

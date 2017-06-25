@@ -18,10 +18,7 @@ package io.lavagna.web.api;
 
 import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
+import io.lavagna.service.*;
 import io.lavagna.web.helper.ExpectPermission;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -39,13 +36,18 @@ public class BoardColumnController {
 	private final BoardRepository boardRepository;
 	private final ProjectService projectService;
 	private final EventEmitter eventEmitter;
+	private final CardRepository cardRepository;
 
 
-	public BoardColumnController(BoardColumnRepository boardColumnRepository, BoardRepository boardRepository,
-			ProjectService projectService, EventEmitter eventEmitter) {
+	public BoardColumnController(BoardColumnRepository boardColumnRepository,
+                                 BoardRepository boardRepository,
+                                 CardRepository cardRepository,
+                                 ProjectService projectService,
+                                 EventEmitter eventEmitter) {
 		this.boardColumnRepository = boardColumnRepository;
 		this.boardRepository = boardRepository;
 		this.projectService = projectService;
+		this.cardRepository = cardRepository;
 		this.eventEmitter = eventEmitter;
 	}
 
@@ -143,10 +145,17 @@ public class BoardColumnController {
 
 		boardColumnRepository.moveToLocation(col.getId(), location, user);
 
+        BoardColumn destination = boardColumnRepository.findById(columnId);
+
+        List<Integer> cardIds = cardRepository.findCardIdsByColumnId(columnId);
+
 		String boardShortName = boardRepository.findBoardById(col.getBoardId()).getShortName();
 		eventEmitter.emitUpdateColumnPosition(boardShortName, BoardColumnLocation.BOARD);
 		eventEmitter.emitMoveCardOutsideOfBoard(boardShortName, location);
-		// FIXME we should fetch the affected card ids and send a a card moved event
+
+        eventEmitter.emitCardHasMoved(projectService.findRelatedProjectShortNameByBoardShortname(boardShortName),
+            boardShortName, cardIds, col, destination, user);
+
 	}
 
 	public static class BoardColumnToCreate {

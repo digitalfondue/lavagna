@@ -95,55 +95,73 @@
 
             <p><span translate>admin.login.oauth.preconfigured-online-providers</span>:</p>
             <div ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:false}">
-                <div>
-                    <md-checkbox ng-model="$ctrl.oauth[provider.name].present"><span data-ng-bind="provider.name"></span></md-checkbox>
-                </div>
-
-                <div ng-show="$ctrl.oauth[provider.name].present">
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.apiKey</label>
-                        <input type="text" ng-model="oauth[provider.name].apiKey">
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.apiKey</label>
-                        <input type="text" ng-model="$ctrl.oauth[provider.name].apiSecret">
-                    </md-input-container>
-                    <div>
-                        <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                <div class="row row-inherit">
+                    <div class="no-grow"><md-checkbox ng-model="$ctrl.oauth[provider.name].present"></md-checkbox></div>
+                    <div class="flex">
+                        <div class="lvg-checkbox__label">
+                            <span class="lvg-cursor-pointer lvg-cursor-pointer--no-focus"
+                                  ng-click="$ctrl.oauth[provider.name].present = !$ctrl.oauth[provider.name].present"
+                                  data-ng-bind="provider.name"></span>
+                        </div>
+                        <div ng-show="$ctrl.oauth[provider.name].present">
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.base-url</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].baseUrl">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.apiKey</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiKey">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.secret</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
+                            </md-input-container>
+                            <div>
+                                <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                            </div>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.callback</label>
+                                <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
+                            </md-input-container>
+                        </div>
                     </div>
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.callback</label>
-                        <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
-                    </md-input-container>
                 </div>
             </div>
 
             <p><span translate>admin.login.oauth.configurable-oauth-providers</span>:</p>
             <div ng-repeat="provider in $ctrl.oauthProviders | filter: {isConfigurableInstance:true}">
-                <div>
-                    <md-checkbox ng-model="$ctrl.oauth[provider.name].present"><span data-ng-bind="provider.name"></span></md-checkbox>
-                </div>
-
-                <div ng-show="$ctrl.oauth[provider.name].present">
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.base-url</label>
-                        <input type="text" data-ng-model="$ctrl.oauth[provider.name].baseUrl">
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.apiKey</label>
-                        <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiKey">
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.secret</label>
-                        <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
-                    </md-input-container>
-                    <div>
-                        <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                <div class="row row-inherit">
+                    <div class="no-grow">
+                        <md-checkbox ng-model="$ctrl.oauth[provider.name].present"></md-checkbox>
                     </div>
-                    <md-input-container class="md-block">
-                        <label translate>admin.login.oauth.callback</label>
-                        <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
-                    </md-input-container>
+                    <div class="flex">
+                        <div class="lvg-checkbox__label">
+                            <span class="lvg-cursor-pointer lvg-cursor-pointer--no-focus"
+                                  ng-click="$ctrl.oauth[provider.name].present = !$ctrl.oauth[provider.name].present"
+                                  data-ng-bind="provider.name"></span>
+                        </div>
+                        <div ng-show="$ctrl.oauth[provider.name].present">
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.base-url</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].baseUrl">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.apiKey</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiKey">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.secret</label>
+                                <input type="text" data-ng-model="$ctrl.oauth[provider.name].apiSecret">
+                            </md-input-container>
+                            <div>
+                                <md-checkbox ng-model="$ctrl.oauth[provider.name].autoCreateMissingAccount"><span translate>admin.login.enableAutoCreateAccount</span></md-checkbox>
+                            </div>
+                            <md-input-container class="md-block">
+                                <label translate>admin.login.oauth.callback</label>
+                                <input type="text" disabled value="{{$ctrl.oauth.baseUrl}}login/oauth/{{provider.name}}/callback">
+                            </md-input-container>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div ng-if="($ctrl.oauthProviders | filter: {isConfigurableInstance:true}).length === 0"><p data-translate>admin.login.oauth.no-providers</p></div>

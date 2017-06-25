@@ -21,10 +21,7 @@ import io.lavagna.model.BoardColumn;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.model.ColumnDefinition;
 import io.lavagna.model.User;
-import io.lavagna.service.BoardColumnRepository;
-import io.lavagna.service.BoardRepository;
-import io.lavagna.service.EventEmitter;
-import io.lavagna.service.ProjectService;
+import io.lavagna.service.*;
 import io.lavagna.web.api.BoardColumnController.BoardColumnToCreate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,6 +51,8 @@ public class BoardColumnControllerTest {
 	private BoardColumnController boardColumnController;
 	@Mock
 	private ProjectService projectService;
+	@Mock
+    private CardRepository cardRepository;
 
 	@Mock
 	private User user;
@@ -65,7 +64,7 @@ public class BoardColumnControllerTest {
 
 	@Before
 	public void prepare() {
-		boardColumnController = new BoardColumnController(boardColumnRepository, boardRepository, projectService,
+		boardColumnController = new BoardColumnController(boardColumnRepository, boardRepository, cardRepository, projectService,
 				eventEmitter);
 	}
 

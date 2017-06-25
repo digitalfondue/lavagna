@@ -4,7 +4,7 @@
             <div class="lvg-project-boards__tasks-title flex" data-translate
                  data-translate-value-name="{{::$ctrl.project.name}}">project.boards.my.boards
             </div>
-            <div class="lvg-project-boards__tasks-switch">
+            <div class="lvg-project-boards__tasks-switch" lvg-has-permission="UPDATE_PROFILE">
                 <md-switch ng-model="$ctrl.showArchivedItems"
                            ng-change="$ctrl.updateShowArchivedItems($ctrl.showArchivedItems)"></md-switch>
                 <md-tooltip>{{($ctrl.showArchivedItems ? 'projects.boards.hide.archived' :

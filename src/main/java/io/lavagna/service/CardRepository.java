@@ -321,4 +321,8 @@ public class CardRepository {
 	public int updateCardOrder(int cardId, int order) {
 		return queries.updateCardOrder(cardId, order);
 	}
+
+    public List<Integer> findCardIdsByColumnId(int columnId) {
+	    return queries.findCardIdsByColumnId(columnId);
+    }
 }

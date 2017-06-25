@@ -122,8 +122,6 @@ a:hover {
     box-sizing: border-box;
 }
 
-
-
 @media (min-width: 768px) {
     .lvg-manage-dialog {
         -webkit-box-flex: 1;
@@ -144,11 +142,16 @@ a:hover {
         max-height: 100%;
         box-sizing: border-box;
     }
-    .lvg-content {width: 950px;}
+
+    .lvg-content {
+        width: 950px;
+    }
 }
 
 @media (min-width: 1200px) {
-    .lvg-content {width: 1170px;}
+    .lvg-content {
+        width: 1170px;
+    }
 }
 
 /*

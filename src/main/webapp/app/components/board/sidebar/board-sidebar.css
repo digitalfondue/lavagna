@@ -40,15 +40,6 @@ lvg-board-sidebar {
     padding: 0;
 }
 
-.lvg-board-sidebar__dropzone .lavagna-card-placeholder {
-	background-color: rgba(0, 0, 0, 0.4);
-	width: 290px;
-	min-height: 100%;
-	position: absolute;
-	margin: 0;
-	padding: 0;
-}
-
 .lvg-board-sidebar__footer {
     flex: 0 0 auto;
 }
@@ -63,12 +54,4 @@ lvg-board-sidebar {
 
 .lvg-board-sidebar__content .lvg-card-fragment-v2__menu {
 	display: none!important;
-}
-
-.lavagna-sidebar-cards {
-    position: relative;
-}
-
-.lavagna-sidebar-cards > li {
-    position: relative;
 }

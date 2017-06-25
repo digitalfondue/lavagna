@@ -5,18 +5,16 @@
             {{$ctrl.board.shortName}} - {{$ctrl.board.name}}
         </a>
         <div class="flex"></div>
-        <div class="flex no-grow">
+        <div class="flex no-grow" lvg-has-permission="PROJECT_ADMINISTRATION">
             <md-menu>
                 <md-button class="lvg-small-icon-button" ng-click="$mdOpenMenu($event)">
                     <md-icon md-svg-icon="menu_ellipsis"></md-icon>
                 </md-button>
                 <md-menu-content>
-                    <md-menu-item ng-if="!$ctrl.board.archived"
-                                  data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                    <md-menu-item ng-if="!$ctrl.board.archived">
                         <md-button ng-click="$ctrl.archive()">{{::('common.archive' | translate)}}</md-button>
                     </md-menu-item>
-                    <md-menu-item ng-if="$ctrl.board.archived"
-                                  data-lvg-has-permission="PROJECT_ADMINISTRATION">
+                    <md-menu-item ng-if="$ctrl.board.archived">
                         <md-button ng-click="$ctrl.unarchive()">{{::('common.unarchive' | translate)}}</md-button>
                     </md-menu-item>
                 </md-menu-content>

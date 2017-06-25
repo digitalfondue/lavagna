@@ -19,6 +19,7 @@ package io.lavagna.service;
 import io.lavagna.common.Json;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
+import io.lavagna.model.apihook.Column;
 import io.lavagna.model.apihook.From;
 import io.lavagna.model.apihook.Label;
 import io.lavagna.query.ApiHookQuery;
@@ -85,14 +86,6 @@ public class ApiHooksService {
         return apiHookQuery.findByNames(Collections.singletonList(name)).get(0);
     }
 
-    private static EnumMap<LavagnaEvent, Map<String, Object>> SIMULATED_EVENTS = new EnumMap<LavagnaEvent, Map<String, Object>>(LavagnaEvent.class);
-    static {
-        SIMULATED_EVENTS.put(LavagnaEvent.CREATE_PROJECT, Collections.<String, Object>emptyMap());
-        SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_PROJECT, Collections.<String, Object>emptyMap());
-        SIMULATED_EVENTS.put(LavagnaEvent.CREATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
-        SIMULATED_EVENTS.put(LavagnaEvent.UPDATE_BOARD, Collections.<String, Object>singletonMap("board", "BOARD"));
-    }
-
     private static class EventToRun implements Runnable {
 
         private final ApiHooksService apiHooksService;
@@ -135,7 +128,7 @@ public class ApiHooksService {
                         Map<String, String> configuration = apiHook.getConfiguration() != null ? apiHook.getConfiguration() : Collections.<String, String>emptyMap();
                         apiHooksService.compiledScriptCache.put(apiHook.getName(), Triple.of(apiHook, configuration, cs));
                     } catch (ScriptException ex) {
-                        LOG.warn("Error while compiling script " + apiHook.getName());
+                        LOG.warn("Error while compiling script " + apiHook.getName(), ex);
                     }
                 }
             }
@@ -191,9 +184,13 @@ public class ApiHooksService {
     }
 
     private Map<String, Object> getBaseDataFor(int cardId) {
-        Map<String, Object> res = new HashMap<>();
         CardFull cf = cardService.findFullBy(cardId);
         String baseUrl = configurationRepository.getValue(Key.BASE_APPLICATION_URL);
+        return getBaseDataFor(cf, baseUrl);
+    }
+
+    private static Map<String, Object> getBaseDataFor(CardFull cf, String baseUrl) {
+        Map<String, Object> res = new HashMap<>();
         res.put("card", From.from(cf, baseUrl));
         res.put("board", cf.getBoardShortName());
         return res;
