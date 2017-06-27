@@ -4,7 +4,7 @@
             <lvg-label-v2
                 value-ref="val"
                 project-metadata-ref="$ctrl.project.metadata">
-                <md-icon class="lvg-card-metadata-labels__label-remove lvg-cursor-pointer" md-svg-icon="close" data-ng-click="$ctrl.removeLabelValue(l, val)" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
+                <md-icon class="lvg-card-metadata-labels__label-remove lvg-cursor-pointer" md-svg-icon="close" data-ng-click="$ctrl.onRemove({$label: l, $labelValue: val})" data-lvg-has-permission="MANAGE_LABEL_VALUE"></md-icon>
             </lvg-label-v2>
         </span>
     </span>

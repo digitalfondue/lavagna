@@ -7,8 +7,8 @@
                                md-container-class="lvg-card-metadata__md-select"
                                md-selected-text="$ctrl.column | translateColumnName"
                                ng-model="$ctrl.column"
-                               ng-change="$ctrl.moveCard($ctrl.column);"
-                               ng-disabled="!$ctrl.userPermissions['MOVE_CARD']"
+                               ng-change="$ctrl.onUpdate({$column: $ctrl.column, $dueDate: $ctrl.dueDate, $milestone: $ctrl.milestone});"
+                               ng-disabled="false"
                                data-ng-style="$ctrl.column.color|labelBackground"
                                data-ng-class="$ctrl.column.color|labelBackgroundClass">
                         <md-optgroup label="{{::('label.special' | translate)}}">
@@ -32,59 +32,32 @@
 
             <div class="lvg-card-metadata__item flex column">
                 <div class="flex">
-                    <span class="lvg-card-metadata__item-name" data-translate>card.metadata.created</span>
-                </div>
-                <div class="lvg-card-metadata__item-text row row-inherit start-xs middle-xs">
-                    <span>
-                        <span>{{::$ctrl.card.createTime | date: 'medium' }}</span>
-                        <span data-translate>common.by</span>
-                        <lvg-user-link user-id="$ctrl.card.userId"></lvg-user-link>
-                    </span>
-                </div>
-            </div>
-
-            <div class="lvg-card-metadata__item flex column" data-ng-if="$ctrl.card.createTime != $ctrl.card.lastUpdateTime">
-                <div class="flex">
-                    <span class="lvg-card-metadata__item-name" data-translate>card.metadata.lastUpdated</span>
-                </div>
-                <div class="lvg-card-metadata__item-text row row-inherit start-xs middle-xs">
-                    <span>
-                        <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span>
-                        <span data-translate>common.by</span>
-                        <lvg-user-link user-id="$ctrl.card.userId"></lvg-user-link>
-                    </span>
-                </div>
-            </div>
-
-            <div class="lvg-card-metadata__item flex column">
-                <div class="flex">
                     <span class="lvg-card-metadata__item-name" data-translate>card.metadata.due.by</span>
                 </div>
                 <div class="row row-inherit start-xs middle-xs">
                     <div class="flex no-grow">
-                        <span data-ng-if="!$ctrl.dueDates[0]">
+                        <span data-ng-if="!$ctrl.dueDate">
                             <i data-translate>common.not-set</i>
                         </span>
-                        <span data-ng-if="$ctrl.dueDates[0]">
-                            <span>{{$ctrl.dueDates[0].value.valueTimestamp | date: 'MMM d, y'}}</span>
+                        <span data-ng-if="$ctrl.dueDate">
+                            <span>{{$ctrl.dueDate.valueTimestamp | date: 'MMM d, y'}}</span>
                         </span>
                     </div>
-                    <div class="flex no-grow" data-lvg-has-permission="UPDATE_CARD">
-                        <md-button data-ng-if="$ctrl.dueDates[0]"
+                    <div class="flex no-grow">
+                        <md-button data-ng-if="$ctrl.dueDate"
                                    class="lvg-small-icon-button"
-                                   data-ng-click="$ctrl.removeDueDate(); dueDate = null"
-                                   data-lvg-has-permission="UPDATE_CARD">
+                                   data-ng-click="$ctrl.onUpdate({$column: $ctrl.column, $dueDate: null, $milestone: $ctrl.milestone});">
                             <md-tooltip><span translate>card.metadata.due.by.remove.tooltip</span></md-tooltip>
                             <md-icon md-svg-icon="close"></md-icon>
                         </md-button>
                     </div>
-                    <div class="flex no-grow" data-lvg-has-permission="UPDATE_CARD">
+                    <div class="flex no-grow">
                         <span class="lvg-datepicker__icon-only">
                             <md-tooltip><span translate>card.metadata.due.by.edit.tooltip</span></md-tooltip>
                             <md-datepicker
                                 class="lvg-datepicker"
                                 ng-model="dueDate"
-                                ng-change="$ctrl.setDueDate(dueDate)">
+                                ng-change="$ctrl.setDueDate(dueDate);">
                             </md-datepicker>
                         </span>
                     </div>
@@ -97,28 +70,25 @@
                 </div>
                 <div class="row row-inherit start-xs middle-xs">
                     <div class="flex no-grow">
-                        <div data-ng-if="!$ctrl.milestones[0]">
+                        <div data-ng-if="!$ctrl.milestone">
                             <i data-translate>common.not-set</i>
                         </div>
-                        <div data-ng-if="$ctrl.milestones[0]">
-                            <a data-ui-sref="project.milestones.milestone({projectName: $ctrl.project.shortName, id: $ctrl.project.metadata.labelListValues[$ctrl.milestones[0].labelValueList].id})">
-                                <lvg-rebuild-if-change to-watch="$ctrl.project.metadata.hash + $ctrl.milestones[0].labelValueList">
-                                    <lvg-label-val-v2 value-ref="$ctrl.milestones[0]" project-metadata-ref="$ctrl.project.metadata"></lvg-label-val-v2>
-                                </lvg-rebuild-if-change>
-                            </a>
+                        <div data-ng-if="$ctrl.milestone">
+                            <lvg-rebuild-if-change to-watch="$ctrl.projectMetadata.hash + $ctrl.milestone.labelValueList">
+                                <lvg-label-val-v2 value-ref="$ctrl.milestone" project-metadata-ref="$ctrl.projectMetadata"></lvg-label-val-v2>
+                            </lvg-rebuild-if-change>
                         </div>
                     </div>
-                    <div class="flex no-grow" data-lvg-hash-permission="UPDATE_CARD">
-                        <div ng-if="$ctrl.milestones[0]">
-                            <md-button data-lvg-has-permission="UPDATE_CARD"
-                                ng-click="$ctrl.removeMilestone();"
-                                class="lvg-small-icon-button">
+                    <div class="flex no-grow">
+                        <div ng-if="$ctrl.milestone">
+                            <md-button ng-click="$ctrl.onUpdate({$column: $ctrl.column, $dueDate: $ctrl.dueDate, $milestone: null});"
+                                       class="lvg-small-icon-button">
                                 <md-tooltip><span translate>card.metadata.milestone.remove.tooltip</span></md-tooltip>
                                 <md-icon md-svg-icon="close"></md-icon>
                             </md-button>
                         </div>
                     </div>
-                    <div class="flex no-grow" data-lvg-has-permission="UPDATE_CARD">
+                    <div class="flex no-grow">
                         <md-menu>
                             <md-button ng-click="milestoneFilter = ''; $mdOpenMenu($event)" class="lvg-small-icon-button">
                                 <md-tooltip><span translate>card.metadata.milestone.edit.tooltip</span></md-tooltip>
@@ -135,8 +105,8 @@
                                 </md-menu-item>
                                 <md-menu-divider></md-menu-divider>
                                 <md-menu-item
-                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: '!CLOSED'} | filter: {name: milestoneFilter}">
-                                    <md-button ng-click="$ctrl.setMilestone(milestone)">
+                                    ng-repeat="milestone in $ctrl.projectMetadata.milestones | orderBy:'order' | filter: {status: '!CLOSED'} | filter: {name: milestoneFilter}">
+                                    <md-button ng-click="$ctrl.setMilestone(milestone);">
                                   <span class="lvg-card-metadata__milestone-title">
                                     <span>{{::milestone.name}}</span>
                                   </span>
@@ -144,8 +114,8 @@
                                 </md-menu-item>
                                 <md-menu-divider data-ng-show="$ctrl.hasClosedMilestones()"></md-menu-divider>
                                 <md-menu-item
-                                    ng-repeat="milestone in $ctrl.project.metadata.milestones | orderBy:'order' | filter: {status: 'CLOSED'} | filter: {name: milestoneFilter}">
-                                    <md-button ng-click="$ctrl.setMilestone(milestone)">
+                                    ng-repeat="milestone in $ctrl.projectMetadata.milestones | orderBy:'order' | filter: {status: 'CLOSED'} | filter: {name: milestoneFilter}">
+                                    <md-button ng-click="$ctrl.setMilestone(milestone);">
                                   <span class="lvg-card-metadata__milestone-title lvg-card-metadata__milestone-closed">
                                     <span>{{::milestone.name}}</span>
                                   </span>

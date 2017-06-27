@@ -9,53 +9,57 @@
             projectShortName: '<',
             boardShortName: '<',
             projectMetadata: '<',
-            columns: '<',
             column: '<',
             user: '<'
         },
-        controller: ['$mdDialog', 'Board', 'Card', 'LabelCache', 'Notification', 'Project', CreateCardController]
+        controller: ['$mdDialog', 'Board', 'Notification', CreateCardController]
     });
 
-    function CreateCardController($mdDialog, Board, Card, LabelCache, Notification) {
+    function CreateCardController($mdDialog, Board, Notification) {
         var ctrl = this;
 
         ctrl.createAnother = false;
 
         ctrl.$onInit = function () {
-            ctrl.card = initData();
-            ctrl.card.column = ctrl.column;
+            initData();
         };
 
         ctrl.onUpdateDescription = function ($name, $description, $labels) {
-            ctrl.card.name = $name;
-            ctrl.card.description = $description;
-            ctrl.card.labels = $labels;
+            ctrl.name = $name;
+            ctrl.description = $description;
+            ctrl.labels = $labels;
         };
 
         ctrl.onUploaded = function ($file) {
-            ctrl.card.files.push($file);
+            ctrl.files.push($file);
         };
 
-        ctrl.onUpdateMetadata = function ($columnId, $dueDate, $milestone) {
-            ctrl.card.columnId = $columnId;
-            ctrl.card.dueDate = $dueDate;
-            ctrl.card.milestone = $milestone;
+        ctrl.onUpdateMetadata = function ($column, $dueDate, $milestone) {
+            ctrl.column = $column;
+            ctrl.dueDate = $dueDate;
+            ctrl.milestone = $milestone;
         };
 
         ctrl.onUpdateUsers = function ($users) {
-            ctrl.card.users = $users;
-        };
-
-        ctrl.onUpdateActionLists = function ($actionLists) {
-            ctrl.card.actionLists = $actionLists;
+            ctrl.assignedUsers = $users;
         };
 
         ctrl.createCard = function () {
-            Board.createCard(ctrl.card.column.id, ctrl.card).then(function (card) {
+            var cardToCreate = {
+                name: ctrl.name,
+                description: ctrl.description,
+                labels: ctrl.labels,
+                files: ctrl.files,
+                dueDate: ctrl.dueDate === null ? ctrl.dueDate : {value: ctrl.dueDate, cardIds: []},
+                milestone: ctrl.milestone === null ? ctrl.milestone : {value: ctrl.milestone, cardIds: []},
+                assignedUsers: ctrl.assignedUsers
+            };
+
+            Board.createCard(ctrl.column.id, cardToCreate).then(function (card) {
                 if (ctrl.createAnother === true) {
                     Notification.addAutoAckNotification('success', {key: 'notification.card.create.success'}, false);
 
-                    ctrl.card = initData();
+                    initData();
                 } else {
                     close();
                 }
@@ -67,17 +71,13 @@
         ctrl.close = close;
 
         function initData() {
-            return {
-                name: null,
-                description: null,
-                labels: [],
-                files: [],
-                column: null,
-                dueDate: null,
-                milestone: null,
-                assignedUsers: [],
-                actionLists: []
-            };
+            ctrl.name = null;
+            ctrl.description = null;
+            ctrl.labels = [];
+            ctrl.files = [];
+            ctrl.dueDate = null;
+            ctrl.milestone = null;
+            ctrl.assignedUsers = [];
         }
 
         function close() {

@@ -11,27 +11,24 @@
     <div class="row row-inherit">
         <div class="col-md-8 col-xs-12">
             <lvg-create-card-description project-short-name="$ctrl.projectShortName"
-                                         name="$ctrl.card.name"
-                                         description="$ctrl.card.description"
-                                         labels="$ctrl.card.labels"
+                                         name="$ctrl.name"
+                                         description="$ctrl.description"
+                                         labels="$ctrl.labels"
                                          metadata="$ctrl.projectMetadata"
                                          on-update="$ctrl.onUpdateDescription($name, $description, $labels)"></lvg-create-card-description>
 
             <lvg-create-card-files files="$ctrl.card.files" on-uploaded="$ctrl.onUploaded($file)"></lvg-create-card-files>
         </div>
         <div class="col-md-4 col-xs-12">
-            <lvg-create-card-metadata column-id="$ctrl.card.columnId"
-                                      due-date="$ctrl.card.dueDate"
-                                      milestone="$ctrl.card.milestone"
-                                      milestones="$ctrl.projectMetadata.milestones"
-                                      columns="$ctrl.columns"
-                                      on-update="$ctrl.onUpdateMetadata($columnId, $dueDate, $milestone)"></lvg-create-card-metadata>
+            <lvg-create-card-metadata column="$ctrl.column"
+                                      due-date="$ctrl.dueDate"
+                                      milestone="$ctrl.milestone"
+                                      project-metadata="$ctrl.projectMetadata"
+                                      board-short-name="$ctrl.boardShortName"
+                                      on-update="$ctrl.onUpdateMetadata($column, $dueDate, $milestone)"></lvg-create-card-metadata>
 
-            <lvg-create-card-people users="$ctrl.users"
+            <lvg-create-card-people users="$ctrl.assignedUsers"
                                     on-update="$ctrl.onUpdateUsers($users)"></lvg-create-card-people>
-
-            <lvg-create-card-action-lists action-lists="$ctrl.actionLists"
-                                          on-update="$ctrl.onUpdateActionLists($actionLists)"></lvg-create-card-action-lists>
         </div>
     </div>
     <div class="row row-inherit">

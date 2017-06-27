@@ -49,6 +49,27 @@
             ctrl.update();
         };
 
+        ctrl.removeLabel = function ($label, $labelValue) {
+            var indexToRemove = -1;
+            var labelValueToRemove = angular.copy($labelValue);
+
+            delete labelValueToRemove.labelId;
+
+            angular.forEach(ctrl.labels, function (label, idx) {
+                if (label.labelId === $label.id && angular.equals(label.value, labelValueToRemove)) {
+                    indexToRemove = idx;
+                }
+            });
+
+            if (indexToRemove !== -1) {
+                ctrl.labels.splice(indexToRemove, 1);
+            }
+
+            setUpLabels();
+
+            ctrl.update();
+        };
+
         function setUpProject() {
             ctrl.project = {
                 metadata: ctrl.metadata
@@ -63,7 +84,10 @@
                     labelValues[label.labelId] = [];
                 }
 
-                labelValues[label.labelId].push(label);
+                var labelValue = angular.copy(label.value);
+                labelValue.labelId = label.labelId;
+
+                labelValues[label.labelId].push(labelValue);
             });
 
             ctrl.labelValues = labelValues;

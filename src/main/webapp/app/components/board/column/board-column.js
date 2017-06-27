@@ -11,6 +11,7 @@
             column: '=',
             selectedCards: '=',
             searchFilterRef: '&',
+            createNewCardAdvanced: '&',
             userRef: '&'
         },
         templateUrl: 'app/components/board/column/board-column.html',
@@ -28,7 +29,6 @@
         ctrl.selectAllInColumn = selectAllInColumn;
         ctrl.unSelectAllInColumn = unSelectAllInColumn;
         ctrl.newCard = newCard;
-        ctrl.newCardAdvanced = newCardAdvanced;
         ctrl.assignToCurrentUser = assignToCurrentUser;
         ctrl.removeAssignForCurrentUser = removeAssignForCurrentUser;
         ctrl.watchCard = watchCard;
@@ -196,31 +196,6 @@
                     this.columns = columns;
                 },
                 controllerAs: 'vm'
-            });
-        }
-
-        function newCardAdvanced() {
-            $mdDialog.show({
-                autoWrap: false,
-                template: '<md-dialog class="lvg-card-modal__dialog"><lvg-create-card project-short-name="vm.projectShortName" board-short-name="vm.boardShortName" column="vm.column" columns="vm.columns" project-metadata="vm.metadata" user="vm.user"></lvg-create-card></md-dialog>',
-                locals: {
-                    projectShortName: ctrl.projectShortName,
-                    boardShortName: ctrl.boardShortName,
-                    user: ctrl.user,
-                    metadata: ctrl.metadata,
-                    column: ctrl.column
-                },
-                bindToController: true,
-                resolve: {
-                    columns: function () {
-                        return Board.columnsByLocation(ctrl.boardShortName, 'BOARD');
-                    }
-                },
-                controller: function (columns) {
-                    this.columns = columns;
-                },
-                controllerAs: 'vm',
-                fullscreen: true
             });
         }
 

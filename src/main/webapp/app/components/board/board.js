@@ -10,11 +10,11 @@
             userReference: '&'
         },
         templateUrl: 'app/components/board/board.html',
-        controller: ['EventBus', '$location', '$filter', '$log', '$timeout',
+        controller: ['EventBus', '$location', '$filter', '$log', '$mdDialog', '$timeout',
             'Board', 'Card', 'Project', 'LabelCache', 'Search', 'StompClient', 'User', 'Notification', BoardController],
     });
 
-    function BoardController(EventBus, $location, $filter, $log, $timeout,
+    function BoardController(EventBus, $location, $filter, $log, $mdDialog, $timeout,
         Board, Card, Project, LabelCache, Search, StompClient, User, Notification) {
         var ctrl = this;
         //
@@ -28,6 +28,7 @@
         ctrl.formatBulkRequest = formatBulkRequest;
         ctrl.selectedVisibleCardsIdByColumnId = selectedVisibleCardsIdByColumnId;
         ctrl.selectedVisibleCount = selectedVisibleCount;
+        ctrl.newCardAdvanced = newCardAdvanced;
         //
 
         var metadataSubscription = angular.noop;
@@ -86,7 +87,7 @@
 
         function backFromLocation() {
             ctrl.locationOpened = false;
-            ctrl.sideBarLocation = undefined;
+            ctrl.sidebarLocation = undefined;
         }
 
         function dropColumn(index, oldIndex) {
@@ -175,8 +176,31 @@
 
         // some sidebar controls
 
-        function toggleSidebar() {
-            ctrl.toggledSidebar = !ctrl.toggledSidebar;
+        function toggleSidebar($location) {
+            if ($location === ctrl.sidebarLocation) {
+                ctrl.toggledSidebar = !ctrl.toggledSidebar;
+            } else {
+                ctrl.sidebarLocation = $location;
+                ctrl.toggledSidebar = true;
+            }
+        }
+
+        function newCardAdvanced(column) {
+            $mdDialog.show({
+                autoWrap: false,
+                template: '<md-dialog class="lvg-card-modal__dialog"><lvg-create-card project-short-name="vm.projectShortName" board-short-name="vm.boardShortName" column="vm.column" project-metadata="vm.metadata" user="vm.user"></lvg-create-card></md-dialog>',
+                locals: {
+                    projectShortName: ctrl.project.shortName,
+                    boardShortName: ctrl.board.shortName,
+                    user: ctrl.user,
+                    metadata: ctrl.metadata,
+                    column: column
+                },
+                bindToController: true,
+                controller: function () {},
+                controllerAs: 'vm',
+                fullscreen: true
+            });
         }
     }
 }());
