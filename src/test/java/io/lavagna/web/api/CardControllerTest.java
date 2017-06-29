@@ -71,7 +71,7 @@ public class CardControllerTest {
 
 	private CardController cardController;
 	@Mock
-	private User user;
+	private UserWithPermission user;
 
 	@Before
 	public void prepare() {

@@ -92,7 +92,7 @@ public class CardController {
 	// TODO: check that columnId is effectively inside the board named shortName
 	@ExpectPermission(Permission.CREATE_CARD)
 	@RequestMapping(value = "/api/column/{columnId}/card", method = RequestMethod.POST)
-	public void create(@PathVariable("columnId") int columnId, @RequestBody CardData card, User user) {
+	public Card create(@PathVariable("columnId") int columnId, @RequestBody CardData card, UserWithPermission user) {
 		Card createdCard = cardService.createCard(card.getName(), columnId, new Date(), user);
 
         ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(columnId);
@@ -101,8 +101,8 @@ public class CardController {
 		    cardDataService.updateDescription(createdCard.getId(), card.getDescription(), new Date(), user.getId());
         }
 
-        if(card.getLabels().size() > 0) {
-		    for(BulkOperation op: card.labels) {
+        if(user.getBasePermissions().containsKey(Permission.MANAGE_LABEL_VALUE) && card.getLabels().size() > 0) {
+		    for(BulkOperation op: card.getLabels()) {
 		        bulkOperationService.addUserLabel(projectAndBoard.getProject().getShortName(),
                     op.getLabelId(),
                     op.getValue(),
@@ -125,7 +125,18 @@ public class CardController {
                 user);
         }
 
+        if(card.getAssignedUsers().size() > 0) {
+		    for(BulkOperation op: card.getAssignedUsers()) {
+                bulkOperationService.assign(projectAndBoard.getProject().getShortName(),
+                    Collections.singletonList(createdCard.getId()),
+                    op.getValue(),
+                    user);
+            }
+        }
+
 		emitCreateCard(columnId, createdCard, user);
+
+		return createdCard;
 	}
 
     @ExpectPermission(Permission.CREATE_CARD)

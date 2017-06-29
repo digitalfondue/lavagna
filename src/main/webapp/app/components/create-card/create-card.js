@@ -12,10 +12,10 @@
             column: '<',
             user: '<'
         },
-        controller: ['$mdDialog', 'Board', 'Notification', CreateCardController]
+        controller: ['$mdDialog', 'Board', 'Label', 'Notification', CreateCardController]
     });
 
-    function CreateCardController($mdDialog, Board, Notification) {
+    function CreateCardController($mdDialog, Board, Label, Notification) {
         var ctrl = this;
 
         ctrl.createAnother = false;
@@ -40,11 +40,30 @@
             ctrl.milestone = $milestone;
         };
 
-        ctrl.onUpdateUsers = function ($users) {
-            ctrl.assignedUsers = $users;
+        ctrl.onAddUser = function ($userId) {
+            if (ctrl.assignedUsers.indexOf($userId) === -1) {
+                ctrl.assignedUsers.push($userId);
+            }
+        };
+
+        ctrl.onRemoveUser = function ($userId) {
+            var removeIdx = ctrl.assignedUsers.indexOf($userId);
+
+            if (removeIdx !== -1) {
+                ctrl.assignedUsers.splice(removeIdx, 1);
+            }
         };
 
         ctrl.createCard = function () {
+            var assignedUsers = [];
+
+            angular.forEach(ctrl.assignedUsers, function (userId) {
+                assignedUsers.push({
+                    value: Label.userVal(userId),
+                    cardIds: []
+                });
+            });
+
             var cardToCreate = {
                 name: ctrl.name,
                 description: ctrl.description,
@@ -52,12 +71,12 @@
                 files: ctrl.files,
                 dueDate: ctrl.dueDate === null ? ctrl.dueDate : {value: ctrl.dueDate, cardIds: []},
                 milestone: ctrl.milestone === null ? ctrl.milestone : {value: ctrl.milestone, cardIds: []},
-                assignedUsers: ctrl.assignedUsers
+                assignedUsers: assignedUsers
             };
 
             Board.createCard(ctrl.column.id, cardToCreate).then(function (card) {
                 if (ctrl.createAnother === true) {
-                    Notification.addAutoAckNotification('success', {key: 'notification.card.create.success'}, false);
+                    Notification.addAutoAckNotification('success', {key: 'notification.card.create.success', parameters: {shortName: ctrl.boardShortName, sequence: card.sequence}}, false);
 
                     initData();
                 } else {

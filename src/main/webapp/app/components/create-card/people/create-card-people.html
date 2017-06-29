@@ -1,0 +1,54 @@
+<md-card>
+    <md-card-title>
+        <md-card-title-text>
+            <div class="row row-inherit">
+                <div class="lvg-headline"><span data-translate>card.people</span></div>
+                <span class="flex"></span>
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="!$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.onAddUser({$userId: $ctrl.user.id})">
+                    <md-tooltip><span translate>card.people.take</span></md-tooltip>
+                    <md-icon md-svg-icon="take"></md-icon>
+                </md-button>
+                <md-button data-lvg-has-permission="UPDATE_CARD" ng-if="$ctrl.isAssigned()" class="lvg-small-icon-button" ng-click="$ctrl.onRemoveUser({$userId: $ctrl.user.id})">
+                    <md-tooltip><span translate>card.people.surrender</span></md-tooltip>
+                    <md-icon md-svg-icon="surrender"></md-icon>
+                </md-button>
+            </div>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="lvg-card-people__assigned">
+            <div ng-repeat="user in $ctrl.users"
+                 class="row row-inherit start-xs middle-xs lvg-card-people__user">
+                <lvg-card-people-user user-id="user" class="flex"></lvg-card-people-user>
+                <md-button class="lvg-small-icon-button flex no-grow" ng-click="$ctrl.onRemoveUser({$userId: user});">
+                    <md-tooltip><span translate>card.people.unassign</span></md-tooltip>
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
+            <div ng-if="$ctrl.users.length === 0"><i class="lvg-card-people__no-user" data-translate>card.people.assignedToNone</i></div>
+        </div>
+    </md-card-content>
+    <md-card-actions class="lvg-card-people__actions">
+        <form data-ng-submit="$ctrl.onAddUser({$userId: user.id}); user = null;">
+            <div class="row margin-8 start-xs bottom-xs">
+                <div class="flex">
+                    <md-autocomplete
+                        md-no-cache="true"
+                        md-selected-item="user"
+                        md-search-text="userSearchText"
+                        md-item-text="user.label"
+                        md-items="user in $ctrl.searchUser(userSearchText)"
+                        md-floating-label="User"
+                        class="lvg-autocomplete__inline flex">
+                        <md-item-template>{{user.label}}</md-item-template>
+                    </md-autocomplete>
+                </div>
+                <div class="flex no-grow">
+                    <md-button class="md-primary" type="submit" ng-disabled="!user">
+                        <span data-translate>button.assign</span>
+                    </md-button>
+                </div>
+            </div>
+        </form>
+    </md-card-actions>
+</md-card>

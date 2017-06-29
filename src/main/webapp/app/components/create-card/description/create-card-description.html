@@ -8,7 +8,7 @@
                 </md-input-container>
             </div>
         </div>
-        <div>
+        <div lvg-has-permission="MANAGE_LABEL_VALUE">
             <lvg-card-labels
                 card="$ctrl.card"
                 project="$ctrl.project"
@@ -17,7 +17,8 @@
                 ng-if="$ctrl.labels.length > 0"></lvg-card-labels>
             <span class="lvg-card-description__no-label lvg-create-card-description__no-label" ng-if="$ctrl.labels.length === 0" translate>card.labels.no.labels</span>
         </div>
-        <lvg-card-labels-add on-add="$ctrl.addLabel($label)"
+        <lvg-card-labels-add lvg-has-permission="MANAGE_LABEL_VALUE"
+                             on-add="$ctrl.addLabel($label)"
                              project-short-name="$ctrl.projectShortName"
                              user-labels="$ctrl.metadata.userLabels"
                              label-values="$ctrl.labels"></lvg-card-labels-add>

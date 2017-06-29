@@ -28,7 +28,9 @@
                                       on-update="$ctrl.onUpdateMetadata($column, $dueDate, $milestone)"></lvg-create-card-metadata>
 
             <lvg-create-card-people users="$ctrl.assignedUsers"
-                                    on-update="$ctrl.onUpdateUsers($users)"></lvg-create-card-people>
+                                    user="$ctrl.user"
+                                    on-add-user="$ctrl.onAddUser($userId)"
+                                    on-remove-user="$ctrl.onRemoveUser($userId)"></lvg-create-card-people>
         </div>
     </div>
     <div class="row row-inherit">

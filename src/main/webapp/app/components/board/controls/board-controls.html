@@ -42,7 +42,7 @@
         </md-button>
     </div>
 
-    <div class="flex no-grow" ng-if="!$ctrl.hasNoColumns" lvg-has-all-permissions="CREATE_CARD,UPDATE_CARD,MANAGE_LABEL_VALUE,MOVE_CARD">
+    <div class="flex no-grow" ng-if="!$ctrl.hasNoColumns" lvg-has-permission="CREATE_CARD">
         <md-button ng-click="$ctrl.newCardAdvanced()" class="flex no-grow md-icon-button">
             <md-tooltip md-autohide md-direction="right">
                 {{::('board.controls.new.card'|translate)}}

@@ -17,6 +17,8 @@
     function CreateCardMetadataController($filter, Board, Label, StompClient) {
         var ctrl = this;
 
+        ctrl.locations = [];
+        ctrl.columns = [];
         ctrl.hasClosedMilestones = hasClosedMilestones;
         ctrl.setDueDate = setDueDate;
         ctrl.setMilestone = setMileStone;
@@ -47,13 +49,13 @@
                         locations.push(col);
                     }
 
-                    if (col.id === ctrl.column.id) {
+                    if (angular.isDefined(ctrl.column) && ctrl.column !== null && col.id === ctrl.column.id) {
                         column = col;
                     }
                 }
 
                 if (column === null) {
-                    ctrl.column = columns[0];
+                    column = columns[0];
                 }
 
                 ctrl.locations = locations;
