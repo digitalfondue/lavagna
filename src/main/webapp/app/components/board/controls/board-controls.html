@@ -29,7 +29,7 @@
         </md-button>
     </div>
 
-    <div class="flex no-grow lvg-board-controls__container-divider" lvg-has-at-least-one-permission="CREATE_COLUMN,CREATE_CARD,UPDATE_CARD,MANAGE_LABEL_VALUE,MOVE_CARD"></div>
+    <div class="flex no-grow lvg-board-controls__container-divider" lvg-has-permission="CREATE_COLUMN"></div>
 
     <div class="flex no-grow" lvg-has-permission="CREATE_COLUMN">
         <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button"
@@ -39,15 +39,6 @@
                 {{::('board.controls.new.column'|translate)}}
             </md-tooltip>
             <md-icon md-svg-icon="add_column"></md-icon>
-        </md-button>
-    </div>
-
-    <div class="flex no-grow" ng-if="!$ctrl.hasNoColumns" lvg-has-permission="CREATE_CARD">
-        <md-button ng-click="$ctrl.newCardAdvanced()" class="flex no-grow md-icon-button">
-            <md-tooltip md-autohide md-direction="right">
-                {{::('board.controls.new.card'|translate)}}
-            </md-tooltip>
-            <md-icon md-svg-icon="add-to-list"></md-icon>
         </md-button>
     </div>
 

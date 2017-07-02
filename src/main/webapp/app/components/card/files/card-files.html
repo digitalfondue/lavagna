@@ -3,7 +3,8 @@
         <md-card-content>
             <div class="lvg-card-files__file-table">
                 <lvg-card-file file="file"
-                           ng-repeat="file in $ctrl.files track by file.digest" class="lvg-card-file"></lvg-card-file>
+                               on-delete="$ctrl.delete($file)"
+                               ng-repeat="file in $ctrl.files track by file.digest" class="lvg-card-file"></lvg-card-file>
                 <div ng-repeat="item in $ctrl.uploader.queue track by $index" class="lvg-card-file">
                     <div class="lvg-card-file__metadata lvg-card-file__metadata-name">{{ item.file.name }}</div>
                     <div class="lvg-card-file__metadata lvg-card-file__metadata-size">{{ item.file.size | fileBytes }}</div>

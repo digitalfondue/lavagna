@@ -17,7 +17,9 @@
                                          metadata="$ctrl.projectMetadata"
                                          on-update="$ctrl.onUpdateDescription($name, $description, $labels)"></lvg-create-card-description>
 
-            <lvg-create-card-files files="$ctrl.card.files" on-uploaded="$ctrl.onUploaded($file)"></lvg-create-card-files>
+            <lvg-create-card-files files="$ctrl.files"
+                                   user="$ctrl.user"
+                                   on-update="$ctrl.onUpdateFiles($files)"></lvg-create-card-files>
         </div>
         <div class="col-md-4 col-xs-12">
             <lvg-create-card-metadata column="$ctrl.column"
@@ -36,12 +38,12 @@
     <div class="row row-inherit">
         <div class="col-xs-12 middle-xs end-xs">
             <md-checkbox ng-model="$ctrl.createAnother">
-                Create another card
+                <span translate>dialog-new-card.create.another</span>
             </md-checkbox>
             <md-button ng-click="$ctrl.close()">
                 <span translate>button.cancel</span>
             </md-button>
-            <md-button class="md-primary" ng-click="$ctrl.createCard()">
+            <md-button class="md-primary" ng-disabled="!$ctrl.name" ng-click="$ctrl.createCard()">
                 <span translate>button.save</span>
             </md-button>
         </div>

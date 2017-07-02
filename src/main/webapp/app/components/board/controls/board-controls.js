@@ -15,7 +15,6 @@
             selectedVisibleCount: '&',
             formatBulkRequest: '&',
             selectedVisibleCardsIdByColumnId: '&',
-            newCardAdvanced: '&',
             toggleSidebar: '&'
         },
         templateUrl: 'app/components/board/controls/board-controls.html',

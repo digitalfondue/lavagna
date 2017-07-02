@@ -115,11 +115,31 @@ public class CardDataService {
     }
 
     @Transactional(readOnly = false)
+    public void createFile(final String digest,
+                           final long fileSize,
+                           final InputStream content,
+                           final String contentType) {
+        if (!cardDataRepository.fileExists(digest)) {
+            cardDataRepository.addUploadContent(digest, fileSize, content, contentType);
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public ImmutablePair<Boolean, CardData> assignFileToCard(String name, String digest, int cardId, User user, Date time) {
+        return assignFile(name, digest, cardId, user, time);
+    }
+
+    @Transactional(readOnly = false)
     public ImmutablePair<Boolean, CardData> createFile(String name, String digest, long fileSize, int cardId,
         InputStream content, String contentType, User user, Date time) {
         if (!cardDataRepository.fileExists(digest)) {
             cardDataRepository.addUploadContent(digest, fileSize, content, contentType);
         }
+
+        return assignFile(name, digest, cardId, user, time);
+    }
+
+    private ImmutablePair<Boolean, CardData> assignFile(String name, String digest, int cardId, User user, Date time) {
         if (!cardDataRepository.isFileAvailableByCard(digest, cardId)) {
             CardData file = cardDataRepository.createData(cardId, CardType.FILE, digest);
             cardDataRepository.createUploadInfo(digest, name, name, file.getId());

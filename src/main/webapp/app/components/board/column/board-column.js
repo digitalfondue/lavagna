@@ -15,10 +15,10 @@
             userRef: '&'
         },
         templateUrl: 'app/components/board/column/board-column.html',
-        controller: ['$filter', '$mdDialog', '$translate', 'Project', 'Board', 'Card', 'Label', 'Notification', 'StompClient', 'BulkOperations', 'SharedBoardDataService', 'EventBus', BoardColumnController],
+        controller: ['$filter', '$mdDialog', '$translate', 'Board', 'Card', 'Notification', 'StompClient', 'BulkOperations', 'SharedBoardDataService', 'EventBus', BoardColumnController],
     });
 
-    function BoardColumnController($filter, $mdDialog, $translate, Project, Board, Card, Label, Notification, StompClient, BulkOperations, SharedBoardDataService, EventBus) {
+    function BoardColumnController($filter, $mdDialog, $translate, Board, Card, Notification, StompClient, BulkOperations, SharedBoardDataService, EventBus) {
         var ctrl = this;
 
         //
@@ -28,7 +28,6 @@
         ctrl.dropCard = dropCard ;
         ctrl.selectAllInColumn = selectAllInColumn;
         ctrl.unSelectAllInColumn = unSelectAllInColumn;
-        ctrl.newCard = newCard;
         ctrl.assignToCurrentUser = assignToCurrentUser;
         ctrl.removeAssignForCurrentUser = removeAssignForCurrentUser;
         ctrl.watchCard = watchCard;
@@ -177,26 +176,6 @@
                 delete ctrl.selectedCards[ctrl.column.id];
             });
             EventBus.emit('updatecheckbox');
-        }
-
-        function newCard() {
-            $mdDialog.show({
-                template: '<lvg-dialog-new-card board-short-name="vm.boardShortName" columns="vm.columns" column="vm.column"></lvg-dialog-new-card>',
-                locals: {
-                    column: ctrl.column,
-                    boardShortName: ctrl.boardShortName
-                },
-                bindToController: true,
-                resolve: {
-                    columns: function () {
-                        return Board.columnsByLocation(ctrl.boardShortName, 'BOARD');
-                    }
-                },
-                controller: function (columns) {
-                    this.columns = columns;
-                },
-                controllerAs: 'vm'
-            });
         }
 
         function assignToCurrentUser(cardId, currentUserId) {

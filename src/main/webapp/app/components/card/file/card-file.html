@@ -1,7 +1,9 @@
 <div class="lvg-card-file__metadata lvg-card-file__metadata-name">
-    <a data-ng-href="api/card-data/file/{{::$ctrl.file.cardDataId}}/{{$ctrl.file.name}}"
+    <a ng-if="$ctrl.file.cardDataId !== undefined"
+       data-ng-href="api/card-data/file/{{::$ctrl.file.cardDataId}}/{{$ctrl.file.name}}"
        target="_blank"
        rel="nofollow me noopener noreferrer">{{$ctrl.file.name}}</a>
+    <span ng-if="$ctrl.file.cardDataId === undefined">{{$ctrl.file.name}}</span>
 </div>
 <div class="lvg-card-file__metadata lvg-card-file__metadata-size">
     <span>{{::($ctrl.file.size | fileBytes)}}</span>
@@ -13,7 +15,7 @@
     <lvg-user-link user-id="$ctrl.file.userId"></lvg-user-link>
 </div>
 <div class="lvg-card-file__metadata lvg-card-file__action">
-    <md-button class="lvg-small-icon-button" ng-click="$ctrl.delete()" data-lvg-has-permission="DELETE_FILE">
+    <md-button class="lvg-small-icon-button" ng-click="$ctrl.onDelete({$file: $ctrl.file})" data-lvg-has-permission="DELETE_FILE">
         <md-tooltip><span translate>card.files.tooltip.delete</span></md-tooltip>
         <md-icon md-svg-icon="delete"></md-icon>
     </md-button>

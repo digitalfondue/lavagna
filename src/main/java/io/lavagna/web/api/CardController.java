@@ -134,6 +134,12 @@ public class CardController {
             }
         }
 
+        if(user.getBasePermissions().containsKey(Permission.CREATE_FILE) && card.getFiles().size() > 0) {
+		    for(NewCardFile file : card.getFiles()) {
+		        cardDataService.assignFileToCard(file.getName(), file.getDigest(), createdCard.getId(), user, new Date());
+            }
+        }
+
 		emitCreateCard(columnId, createdCard, user);
 
 		return createdCard;
@@ -299,6 +305,7 @@ public class CardController {
 		private BulkOperation milestone;
 		private List<BulkOperation> labels = new ArrayList<>();
 		private List<BulkOperation> assignedUsers = new ArrayList<>();
+		private List<NewCardFile> files = new ArrayList<>();
 
         public String getName() {
             return this.name;
@@ -347,6 +354,14 @@ public class CardController {
         public void setAssignedUsers(List<BulkOperation> assignedUsers) {
             this.assignedUsers = assignedUsers;
         }
+
+        public List<NewCardFile> getFiles() {
+            return files;
+        }
+
+        public void setFiles(List<NewCardFile> files) {
+            this.files = files;
+        }
     }
 
 	public static class ColumnOrders {
@@ -370,6 +385,27 @@ public class CardController {
 
         public void setCardIds(List<Integer> cardIds) {
             this.cardIds = cardIds;
+        }
+    }
+
+    public static class NewCardFile {
+	    private String digest;
+	    private String name;
+
+        public String getDigest() {
+            return digest;
+        }
+
+        public void setDigest(String digest) {
+            this.digest = digest;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

@@ -30,8 +30,8 @@
             ctrl.labels = $labels;
         };
 
-        ctrl.onUploaded = function ($file) {
-            ctrl.files.push($file);
+        ctrl.onUpdateFiles = function ($files) {
+            ctrl.files = $files;
         };
 
         ctrl.onUpdateMetadata = function ($column, $dueDate, $milestone) {

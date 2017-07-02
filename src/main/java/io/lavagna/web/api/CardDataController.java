@@ -322,6 +322,41 @@ public class CardDataController {
     }
 
     @ExpectPermission(Permission.CREATE_FILE)
+    @RequestMapping(value = "/api/card/file", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> uploadNewCardFiles(@RequestParam("files") List<MultipartFile> files,
+                                               User user,
+                                               HttpServletResponse resp) throws IOException {
+        LOG.debug("Files uploaded: {}", files.size());
+
+        if (!ensureFileSize(files)) {
+            resp.setStatus(422);
+            return Collections.emptyList();
+        }
+
+        List<String> digests = new ArrayList<>(files.size());
+        for (MultipartFile file : files) {
+            Path p = Files.createTempFile("lavagna", "upload");
+            try (InputStream fileIs = file.getInputStream()) {
+                Files.copy(fileIs, p, StandardCopyOption.REPLACE_EXISTING);
+                String digest = DigestUtils.sha256Hex(Files.newInputStream(p));
+                String contentType = file.getContentType() != null ? file.getContentType() : "application/octet-stream";
+
+                cardDataService.createFile(digest, files.size(), fileIs, contentType);
+
+                LOG.debug("file uploaded! size: {}, original name: {}, body-type: {}, by user: {}", file.getSize(),
+                    file.getOriginalFilename(), file.getContentType(), user.getId());
+                digests.add(digest);
+            } finally {
+                Files.delete(p);
+                LOG.debug("deleted temp file {}", p);
+            }
+        }
+
+        return digests;
+    }
+
+    @ExpectPermission(Permission.CREATE_FILE)
     @RequestMapping(value = "/api/card/{cardId}/file", method = RequestMethod.POST)
     @ResponseBody
     public List<String> uploadFiles(@PathVariable("cardId") int cardId,
