@@ -1,0 +1,50 @@
+<md-card>
+    <md-card-content>
+        <div class="row row-inherit">
+            <div class="flex">
+                <md-input-container class="md-block">
+                    <label translate>label.name</label>
+                    <input required ng-model="$ctrl.name" ng-change="$ctrl.update()">
+                </md-input-container>
+            </div>
+        </div>
+        <div lvg-has-permission="MANAGE_LABEL_VALUE">
+            <lvg-card-labels
+                card="$ctrl.card"
+                project="$ctrl.project"
+                label-values="$ctrl.labelValues"
+                on-remove="$ctrl.removeLabel($label, $labelValue)"
+                ng-if="$ctrl.labels.length > 0"></lvg-card-labels>
+            <span class="lvg-card-description__no-label lvg-create-card-description__no-label" ng-if="$ctrl.labels.length === 0" translate>card.labels.no.labels</span>
+        </div>
+        <lvg-card-labels-add lvg-has-permission="MANAGE_LABEL_VALUE"
+                             on-add="$ctrl.addLabel($label)"
+                             project-short-name="$ctrl.projectShortName"
+                             user-labels="$ctrl.metadata.userLabels"
+                             label-values="$ctrl.labels"></lvg-card-labels-add>
+        <div>
+
+            <div ng-hide="$ctrl.editDescriptionPreviewMode">
+                <md-input-container class="md-block">
+                    <label translate>label.description</label>
+                    <textarea class="lvg-card-description__textarea"
+                              ng-model="$ctrl.description"
+                              ng-change="$ctrl.update()"
+                              rows="3"></textarea>
+                </md-input-container>
+            </div>
+            <div data-ng-show="$ctrl.editDescriptionPreviewMode"
+                 data-ng-bind-html="$ctrl.descriptionToEditPreview | markdown"></div>
+            <div>
+                <md-button data-ng-hide="$ctrl.editDescriptionPreviewMode"
+                           data-ng-click="$ctrl.descriptionToEditPreview = $ctrl.descriptionToEdit; $ctrl.editDescriptionPreviewMode = true" type="button">
+                    <span data-translate>button.preview</span>
+                </md-button>
+                <md-button data-ng-show="$ctrl.editDescriptionPreviewMode"
+                           data-ng-click="$ctrl.editDescriptionPreviewMode = false" type="button">
+                    <span data-translate>button.closePreview</span>
+                </md-button>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>

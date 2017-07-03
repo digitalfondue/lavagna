@@ -5,30 +5,29 @@
 
     components.component('lvgBoardControls', {
         bindings: {
-            toggledSidebar: '=',
-            sideBarLocation: '=',
-            unSelectAll: '=',
-            selectAll: '=',
-            selectedVisibleCount: '=',
-            formatBulkRequest: '=',
-            selectedVisibleCardsIdByColumnId: '=',
             board: '<',
             project: '<',
-            columns: '<'
+            columns: '<',
+            toggledSidebar: '<',
+            sideBarLocation: '<',
+            unSelectAll: '&',
+            selectAll: '&',
+            selectedVisibleCount: '&',
+            formatBulkRequest: '&',
+            selectedVisibleCardsIdByColumnId: '&',
+            toggleSidebar: '&'
         },
         templateUrl: 'app/components/board/controls/board-controls.html',
         controller: function (BulkOperationModal, BulkOperations, Project, $mdDialog) {
             var ctrl = this;
 
             ctrl.$onChanges = function (change) {
-                if (change.columns.currentValue) {
-                    ctrl.createColumnTooltipVisibility = change.columns.currentValue.length === 0;
+                if (change.columns && change.columns.currentValue) {
+                    ctrl.hasNoColumns = change.columns.currentValue.length === 0;
                 }
             };
 
             ctrl.bulkOperationModal = BulkOperationModal;
-            ctrl.sideBarLocation = null;
-            ctrl.toggledSidebar = false;
 
             var projectMetadataSubscription = Project.loadMetadataAndSubscribe(ctrl.project.shortName, ctrl.project);
 
@@ -50,15 +49,6 @@
 
             ctrl.setMilestone = function (milestone) {
                 BulkOperations.setMilestone(ctrl.formatBulkRequest(), milestone);
-            };
-
-            ctrl.toggleSidebar = function (location) {
-                if (location === ctrl.sideBarLocation) {
-                    ctrl.toggledSidebar = !ctrl.toggledSidebar;
-                } else {
-                    ctrl.sideBarLocation = location;
-                    ctrl.toggledSidebar = true;
-                }
             };
 
             ctrl.newColumn = function () {

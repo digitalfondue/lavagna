@@ -6,10 +6,10 @@
             card: '&',
         },
         templateUrl: 'app/components/card/files/card-files.html',
-        controller: ['StompClient', 'Card', CardFilesController],
+        controller: ['StompClient', 'Card', 'Notification', CardFilesController],
     });
 
-    function CardFilesController(StompClient, Card) {
+    function CardFilesController(StompClient, Card, Notification) {
         var ctrl = this;
 
         var card = ctrl.card();
@@ -39,6 +39,16 @@
                 if (type.match(/FILE$/g)) {
                     loadFiles();
                 }
+            });
+        };
+
+        ctrl.delete = function ($file) {
+            Card.deleteFile($file.cardDataId).then(function (event) {
+                Notification.addNotification('success', {key: 'notification.card.FILE_DELETE.success'}, true, true, function (notification) {
+                    Card.undoDeleteFile(event.id).then(notification.acknowledge);
+                });
+            }, function () {
+                Notification.addAutoAckNotification('error', {key: 'notification.card.FILE_DELETE.error'}, false);
             });
         };
 

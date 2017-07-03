@@ -20,6 +20,7 @@ import io.lavagna.model.*;
 import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.service.*;
 import io.lavagna.service.SearchFilter.SearchFilterValue;
+import io.lavagna.web.api.model.BulkOperation;
 import io.lavagna.web.helper.ExpectPermission;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,9 @@ public class CardController {
 
 	private final CardRepository cardRepository;
 	private final CardService cardService;
+	private final CardDataService cardDataService;
 	private final BoardRepository boardRepository;
+	private final BulkOperationService bulkOperationService;
 	private final ProjectService projectService;
 	private final BoardColumnRepository boardColumnRepository;
 	private final SearchService searchService;
@@ -42,12 +45,15 @@ public class CardController {
 
 
 	public CardController(CardRepository cardRepository, CardService cardService,
-			BoardRepository boardRepository, ProjectService projectService,
-			BoardColumnRepository boardColumnRepository,
-			SearchService searchService, EventEmitter eventEmitter) {
+                          CardDataService cardDataService, BoardRepository boardRepository,
+                          BulkOperationService bulkOperationService, ProjectService projectService,
+                          BoardColumnRepository boardColumnRepository,
+                          SearchService searchService, EventEmitter eventEmitter) {
 		this.cardRepository = cardRepository;
 		this.cardService = cardService;
+		this.cardDataService = cardDataService;
 		this.boardRepository = boardRepository;
+		this.bulkOperationService = bulkOperationService;
 		this.projectService = projectService;
 		this.boardColumnRepository = boardColumnRepository;
 		this.searchService = searchService;
@@ -86,9 +92,57 @@ public class CardController {
 	// TODO: check that columnId is effectively inside the board named shortName
 	@ExpectPermission(Permission.CREATE_CARD)
 	@RequestMapping(value = "/api/column/{columnId}/card", method = RequestMethod.POST)
-	public void create(@PathVariable("columnId") int columnId, @RequestBody CardData card, User user) {
-		Card createdCard = cardService.createCard(card.name, columnId, new Date(), user);
+	public Card create(@PathVariable("columnId") int columnId, @RequestBody CardData card, UserWithPermission user) {
+		Card createdCard = cardService.createCard(card.getName(), columnId, new Date(), user);
+
+        ProjectAndBoard projectAndBoard = boardRepository.findProjectAndBoardByColumnId(columnId);
+
+		if(card.getDescription() != null) {
+		    cardDataService.updateDescription(createdCard.getId(), card.getDescription(), new Date(), user.getId());
+        }
+
+        if(user.getBasePermissions().containsKey(Permission.MANAGE_LABEL_VALUE) && card.getLabels().size() > 0) {
+		    for(BulkOperation op: card.getLabels()) {
+		        bulkOperationService.addUserLabel(projectAndBoard.getProject().getShortName(),
+                    op.getLabelId(),
+                    op.getValue(),
+                    Collections.singletonList(createdCard.getId()),
+                    user);
+            }
+        }
+
+        if(card.getDueDate() != null) {
+            bulkOperationService.setDueDate(projectAndBoard.getProject().getShortName(),
+                Collections.singletonList(createdCard.getId()),
+                card.getDueDate().getValue(),
+                user);
+        }
+
+        if(card.getMilestone() != null) {
+            bulkOperationService.setMilestone(projectAndBoard.getProject().getShortName(),
+                Collections.singletonList(createdCard.getId()),
+                card.getMilestone().getValue(),
+                user);
+        }
+
+        if(card.getAssignedUsers().size() > 0) {
+		    for(BulkOperation op: card.getAssignedUsers()) {
+                bulkOperationService.assign(projectAndBoard.getProject().getShortName(),
+                    Collections.singletonList(createdCard.getId()),
+                    op.getValue(),
+                    user);
+            }
+        }
+
+        if(user.getBasePermissions().containsKey(Permission.CREATE_FILE) && card.getFiles().size() > 0) {
+		    for(NewCardFile file : card.getFiles()) {
+		        cardDataService.assignFileToCard(file.getName(), file.getDigest(), createdCard.getId(), user, new Date());
+            }
+        }
+
 		emitCreateCard(columnId, createdCard, user);
+
+		return createdCard;
 	}
 
     @ExpectPermission(Permission.CREATE_CARD)
@@ -246,6 +300,12 @@ public class CardController {
 
 	public static class CardData {
 		private String name;
+		private String description;
+		private BulkOperation dueDate;
+		private BulkOperation milestone;
+		private List<BulkOperation> labels = new ArrayList<>();
+		private List<BulkOperation> assignedUsers = new ArrayList<>();
+		private List<NewCardFile> files = new ArrayList<>();
 
         public String getName() {
             return this.name;
@@ -253,6 +313,54 @@ public class CardController {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public BulkOperation getDueDate() {
+            return dueDate;
+        }
+
+        public void setDueDate(BulkOperation dueDate) {
+            this.dueDate = dueDate;
+        }
+
+        public BulkOperation getMilestone() {
+            return milestone;
+        }
+
+        public void setMilestone(BulkOperation milestone) {
+            this.milestone = milestone;
+        }
+
+        public List<BulkOperation> getLabels() {
+            return labels;
+        }
+
+        public void setLabels(List<BulkOperation> labels) {
+            this.labels = labels;
+        }
+
+        public List<BulkOperation> getAssignedUsers() {
+            return assignedUsers;
+        }
+
+        public void setAssignedUsers(List<BulkOperation> assignedUsers) {
+            this.assignedUsers = assignedUsers;
+        }
+
+        public List<NewCardFile> getFiles() {
+            return files;
+        }
+
+        public void setFiles(List<NewCardFile> files) {
+            this.files = files;
         }
     }
 
@@ -277,6 +385,27 @@ public class CardController {
 
         public void setCardIds(List<Integer> cardIds) {
             this.cardIds = cardIds;
+        }
+    }
+
+    public static class NewCardFile {
+	    private String digest;
+	    private String name;
+
+        public String getDigest() {
+            return digest;
+        }
+
+        public void setDigest(String digest) {
+            this.digest = digest;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

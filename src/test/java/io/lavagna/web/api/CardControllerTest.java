@@ -21,19 +21,22 @@ import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.service.*;
 import io.lavagna.web.api.CardController.CardData;
 import io.lavagna.web.api.CardController.ColumnOrders;
+import io.lavagna.web.api.model.BulkOperation;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 //TODO complete with verify
 @RunWith(MockitoJUnitRunner.class)
@@ -47,7 +50,11 @@ public class CardControllerTest {
 	@Mock
 	private CardDataRepository cardDataRepository;
 	@Mock
+    private CardDataService cardDataService;
+	@Mock
 	private BoardRepository boardRepository;
+	@Mock
+    private BulkOperationService bulkOperationService;
 	@Mock
 	private ProjectService projectService;
 	@Mock
@@ -67,17 +74,28 @@ public class CardControllerTest {
 
 	private CardController cardController;
 	@Mock
-	private User user;
+	private UserWithPermission user;
+
+	private ProjectAndBoard pab;
+    private int userId;
+    private int cardId;
+    private String projectShortName;
+    private List<Integer> cardIds;
 
 	@Before
 	public void prepare() {
-		cardController = new CardController(cardRepository, cardService, boardRepository,
-				projectService, boardColumnRepository, searchService, eventEmitter);
+		cardController = new CardController(cardRepository, cardService, cardDataService, boardRepository,
+				bulkOperationService, projectService, boardColumnRepository, searchService, eventEmitter);
 
-		ProjectAndBoard pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
+		pab = new ProjectAndBoard(project.getId(), project.getShortName(), project.getName(),
 				project.getDescription(), project.getArchived(), board.getId(), board.getShortName(), board.getName(),
 				board.getDescription(), board.getArchived());
 		when(boardRepository.findProjectAndBoardByColumnId(boardColumn.getId())).thenReturn(pab);
+
+		userId = user.getId();
+		cardId = card.getId();
+		projectShortName = project.getShortName();
+        cardIds = Collections.singletonList(card.getId());
 	}
 
 	@Test
@@ -92,8 +110,462 @@ public class CardControllerTest {
 		verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
 		verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
 				card, user);
-
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
 	}
+
+	@Test
+    public void createWithDescription() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+        cardData.setDescription("description");
+
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(cardDataService.updateDescription(anyInt(), anyString(), any(Date.class), anyInt())).thenReturn(1);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(cardDataService).updateDescription(eq(cardId), eq("description"), any(Date.class), eq(userId));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithLabels() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        List<BulkOperation> labels = new ArrayList<>();
+        BulkOperation op1 = new BulkOperation(1, new CardLabelValue.LabelValue("test"), Collections.<Integer>emptyList());
+        BulkOperation op2 = new BulkOperation(2, new CardLabelValue.LabelValue("test2"), Collections.<Integer>emptyList());
+
+        labels.add(op1);
+        labels.add(op2);
+
+        cardData.setLabels(labels);
+
+        Map<Permission, Permission> permissions = new HashMap<>();
+        permissions.put(Permission.MANAGE_LABEL_VALUE, Permission.MANAGE_LABEL_VALUE);
+
+        when(user.getBasePermissions()).thenReturn(permissions);
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(bulkOperationService.addUserLabel(eq(projectShortName),
+            any(Integer.class),
+            any(CardLabelValue.LabelValue.class),
+            eq(cardIds),
+            eq(user))).thenReturn(cardIds);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(bulkOperationService).addUserLabel(eq(projectShortName),
+            eq(1),
+            any(CardLabelValue.LabelValue.class),
+            eq(cardIds),
+            eq(user));
+        verify(bulkOperationService).addUserLabel(eq(projectShortName),
+            eq(2),
+            any(CardLabelValue.LabelValue.class),
+            eq(cardIds),
+            eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithDueDate() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        BulkOperation dueDate = new BulkOperation(1, new CardLabelValue.LabelValue(new Date()), Collections.<Integer>emptyList());
+
+        cardData.setDueDate(dueDate);
+
+        ImmutablePair<List<Integer>, List<Integer>> result = new ImmutablePair<>(cardIds, cardIds);
+
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(bulkOperationService.setDueDate(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user))).thenReturn(result);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+        verify(bulkOperationService).setDueDate(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithMilestone() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        BulkOperation milestone = new BulkOperation(1, new CardLabelValue.LabelValue(1), Collections.<Integer>emptyList());
+
+        cardData.setMilestone(milestone);
+
+        ImmutablePair<List<Integer>, List<Integer>> result = new ImmutablePair<>(cardIds, cardIds);
+
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(bulkOperationService.setMilestone(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user))).thenReturn(result);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+        verify(bulkOperationService).setMilestone(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithAssignedUsers() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        List<BulkOperation> users = new ArrayList<>();
+        BulkOperation op1 = new BulkOperation(1, new CardLabelValue.LabelValue(1), Collections.<Integer>emptyList());
+        BulkOperation op2 = new BulkOperation(1, new CardLabelValue.LabelValue(2), Collections.<Integer>emptyList());
+
+        users.add(op1);
+        users.add(op2);
+
+        cardData.setAssignedUsers(users);
+
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(bulkOperationService.assign(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user))).thenReturn(cardIds);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+        verify(bulkOperationService, times(2)).assign(eq(projectShortName),
+            eq(cardIds),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithFiles() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        List<CardController.NewCardFile> files = new ArrayList<>();
+
+        CardController.NewCardFile file1 = new CardController.NewCardFile();
+        file1.setName("file.txt");
+        file1.setDigest("1234");
+
+        files.add(file1);
+
+        cardData.setFiles(files);
+
+        ImmutablePair<Boolean, io.lavagna.model.CardData> result = new ImmutablePair<>(true,
+            new io.lavagna.model.CardData(1, cardId, null, CardType.FILE, null, 0));
+
+        Map<Permission, Permission> permissions = new HashMap<>();
+        permissions.put(Permission.CREATE_FILE, Permission.CREATE_FILE);
+
+        when(user.getBasePermissions()).thenReturn(permissions);
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+        when(cardDataService.assignFileToCard(eq("file.txt"),
+            eq("1234"),
+            eq(cardId),
+            eq(user),
+            any(Date.class))).thenReturn(result);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+        verify(cardDataService).assignFileToCard(eq("file.txt"),
+            eq("1234"),
+            eq(cardId),
+            eq(user),
+            any(Date.class));
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+    }
+
+    @Test
+    public void createWithoutLabelsPermission() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        List<BulkOperation> labels = new ArrayList<>();
+        BulkOperation op1 = new BulkOperation(1, new CardLabelValue.LabelValue("test"), Collections.<Integer>emptyList());
+        BulkOperation op2 = new BulkOperation(2, new CardLabelValue.LabelValue("test2"), Collections.<Integer>emptyList());
+
+        labels.add(op1);
+        labels.add(op2);
+
+        cardData.setLabels(labels);
+
+        Map<Permission, Permission> permissions = new HashMap<>();
+
+        when(user.getBasePermissions()).thenReturn(permissions);
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
+
+    @Test
+    public void createWithoutFilesPermission() {
+        CardData cardData = new CardData();
+        cardData.setName("name");
+
+        List<CardController.NewCardFile> files = new ArrayList<>();
+
+        CardController.NewCardFile file1 = new CardController.NewCardFile();
+        file1.setName("file.txt");
+        file1.setDigest("1234");
+
+        files.add(file1);
+
+        cardData.setFiles(files);
+
+        Map<Permission, Permission> permissions = new HashMap<>();
+
+        when(user.getBasePermissions()).thenReturn(permissions);
+        when(cardService.createCard(eq("name"), eq(columnId), any(Date.class), eq(user))).thenReturn(card);
+
+        cardController.create(columnId, cardData, user);
+
+        verify(cardService).createCard(eq("name"), eq(columnId), any(Date.class), eq(user));
+        verify(eventEmitter).emitCreateCard(project.getShortName(), board.getShortName(), boardColumn.getId(),
+            card, user);
+
+        verify(cardDataService, never()).updateDescription(eq(cardId),
+            anyString(),
+            any(Date.class),
+            eq(userId));
+        verify(bulkOperationService, never()).addUserLabel(eq(projectShortName),
+            anyInt(),
+            any(CardLabelValue.LabelValue.class),
+            ArgumentMatchers.<Integer>anyList(),
+            eq(user));
+        verify(bulkOperationService, never()).setDueDate(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).setMilestone(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(bulkOperationService, never()).assign(eq(projectShortName),
+            ArgumentMatchers.<Integer>anyList(),
+            any(CardLabelValue.LabelValue.class),
+            eq(user));
+        verify(cardDataService, never()).assignFileToCard(anyString(),
+            anyString(),
+            anyInt(),
+            eq(user),
+            any(Date.class));
+    }
 
 	@Test
 	public void createFromTop() {

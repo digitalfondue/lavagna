@@ -11,11 +11,12 @@
             project="$ctrl.project"
             toggled-sidebar="$ctrl.toggledSidebar"
             side-bar-location="$ctrl.sidebarLocation"
-            un-select-all="$ctrl.unSelectAll"
-            select-all="$ctrl.selectAll"
-            selected-visible-count="$ctrl.selectedVisibleCount"
-            format-bulk-request="$ctrl.formatBulkRequest"
-            selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId">
+            un-select-all="$ctrl.unSelectAll()"
+            select-all="$ctrl.selectAll()"
+            selected-visible-count="$ctrl.selectedVisibleCount()"
+            format-bulk-request="$ctrl.formatBulkRequest()"
+            toggle-sidebar="$ctrl.toggleSidebar($location)"
+            selected-visible-cards-id-by-column-id="$ctrl.selectedVisibleCardsIdByColumnId()">
         </lvg-board-controls>
         <div class="lvg-board__sidebar-wrapper"
              data-ng-class="{'lvg-board__sidebar-open': $ctrl.toggledSidebar}">
@@ -42,6 +43,7 @@
                     column="column"
                     selected-cards="$ctrl.selectedCards"
                     search-filter-ref="$ctrl.searchFilter"
+                    create-new-card-advanced="$ctrl.newCardAdvanced($column)"
                     user-ref="$ctrl.user"></lvg-board-column>
 
             </lvg-rebuild-if-change>

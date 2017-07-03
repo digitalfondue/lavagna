@@ -173,6 +173,14 @@
                     headers: { 'x-csrf-token': $window.csrfToken }
                 });
             },
+            getNewCardFileUploader: function () {
+                return new FileUploader({
+                    url: 'api/card/file',
+                    alias: 'files',
+                    autoUpload: true,
+                    headers: { 'x-csrf-token': $window.csrfToken }
+                });
+            },
             deleteFile: function (cardDataId) {
                 return $http['delete']('api/card-data/file/' + cardDataId, null).then(extractData);
             },

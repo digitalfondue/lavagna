@@ -10,7 +10,7 @@
                 <span ng-if="$ctrl.cardsInColumn.length > 0" ng-bind="'('+$ctrl.cardsInColumn.length+')'"></span>
             </div>
             <div class="lvg-board-column__header-add-card flex no-grow" data-lvg-has-permission="CREATE_CARD">
-                <md-button class="md-icon-button lvg-board-column__add-card-button lvg-icon__add-card" ng-click="$ctrl.newCard()">
+                <md-button class="md-icon-button lvg-board-column__add-card-button lvg-icon__add-card" ng-click="$ctrl.createNewCardAdvanced({$column: $ctrl.column})">
                     <md-tooltip>{{::('board.column.tooltip.addCard' | translate)}}</md-tooltip>
                 </md-button>
             </div>

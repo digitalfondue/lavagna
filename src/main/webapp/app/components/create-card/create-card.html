@@ -1,0 +1,51 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <h2 translate>dialog-new-card.title</h2>
+        <span class="flex"></span>
+        <md-button class="md-icon-button" ng-click="$ctrl.close()">
+            <md-icon md-svg-icon="close"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<md-dialog-content class="flex-container lvg-card-modal__background">
+    <div class="row row-inherit">
+        <div class="col-md-8 col-xs-12">
+            <lvg-create-card-description project-short-name="$ctrl.projectShortName"
+                                         name="$ctrl.name"
+                                         description="$ctrl.description"
+                                         labels="$ctrl.labels"
+                                         metadata="$ctrl.projectMetadata"
+                                         on-update="$ctrl.onUpdateDescription($name, $description, $labels)"></lvg-create-card-description>
+
+            <lvg-create-card-files files="$ctrl.files"
+                                   user="$ctrl.user"
+                                   on-update="$ctrl.onUpdateFiles($files)"></lvg-create-card-files>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <lvg-create-card-metadata column="$ctrl.column"
+                                      due-date="$ctrl.dueDate"
+                                      milestone="$ctrl.milestone"
+                                      project-metadata="$ctrl.projectMetadata"
+                                      board-short-name="$ctrl.boardShortName"
+                                      on-update="$ctrl.onUpdateMetadata($column, $dueDate, $milestone)"></lvg-create-card-metadata>
+
+            <lvg-create-card-people users="$ctrl.assignedUsers"
+                                    user="$ctrl.user"
+                                    on-add-user="$ctrl.onAddUser($userId)"
+                                    on-remove-user="$ctrl.onRemoveUser($userId)"></lvg-create-card-people>
+        </div>
+    </div>
+    <div class="row row-inherit">
+        <div class="col-xs-12 middle-xs end-xs">
+            <md-checkbox ng-model="$ctrl.createAnother">
+                <span translate>dialog-new-card.create.another</span>
+            </md-checkbox>
+            <md-button ng-click="$ctrl.close()">
+                <span translate>button.cancel</span>
+            </md-button>
+            <md-button class="md-primary" ng-disabled="!$ctrl.name" ng-click="$ctrl.createCard()">
+                <span translate>button.save</span>
+            </md-button>
+        </div>
+    </div>
+</md-dialog-content>

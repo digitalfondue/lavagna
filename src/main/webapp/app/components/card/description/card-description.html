@@ -33,8 +33,9 @@
                 card="$ctrl.card"
                 project="$ctrl.project"
                 label-values="$ctrl.labelValues"
+                on-remove="$ctrl.removeLabelValue($label, $labelValue)"
                 ng-if="$ctrl.hasUserLabels()"></lvg-card-labels>
-            <span class="lvg-card-description__no-label" ng-if="!$ctrl.hasUserLabels()" translate>card.labels.no.labels</span>
+            <span class="lvg-card-description__no-label" ng-if="!$ctrl.hasUserLabels()" data-ng-hide="$ctrl.addLabelPanel" translate>card.labels.no.labels</span>
             <span class="lvg-card-description-labels-add" data-lvg-has-permission="MANAGE_LABEL_VALUE" data-ng-hide="$ctrl.addLabelPanel">
                 <md-button data-ng-click="$ctrl.addLabelPanel = true"
                            md-no-ink
@@ -46,8 +47,9 @@
         </div>
         <lvg-card-labels-add data-ng-show="$ctrl.addLabelPanel"
                              on-cancel-add="$ctrl.hideAddPanel()"
-                             card="$ctrl.card"
-                             project="$ctrl.project"
+                             on-add="$ctrl.addLabel($label)"
+                             project-short-name="$ctrl.project.shortName"
+                             user-labels="$ctrl.project.metadata.userLabels"
                              label-values="$ctrl.labelValues"></lvg-card-labels-add>
         <md-divider class="lvg-card-description__divider"></md-divider>
         <div data-ng-if="$ctrl.editDescription">

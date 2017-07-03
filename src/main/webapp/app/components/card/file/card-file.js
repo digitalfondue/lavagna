@@ -3,23 +3,10 @@
 
     angular.module('lavagna.components').component('lvgCardFile', {
         bindings: {
-            file: '<'
+            file: '<',
+            onDelete: '&'
         },
-        controller: CardFileController,
+        controller: angular.noop,
         templateUrl: 'app/components/card/file/card-file.html'
     });
-
-    function CardFileController(Card, Notification) {
-        var ctrl = this;
-
-        ctrl.delete = function () {
-            Card.deleteFile(ctrl.file.cardDataId).then(function (event) {
-                Notification.addNotification('success', {key: 'notification.card.FILE_DELETE.success'}, true, true, function (notification) {
-                    Card.undoDeleteFile(event.id).then(notification.acknowledge);
-                });
-            }, function () {
-                Notification.addAutoAckNotification('error', {key: 'notification.card.FILE_DELETE.error'}, false);
-            });
-        };
-    }
 }());

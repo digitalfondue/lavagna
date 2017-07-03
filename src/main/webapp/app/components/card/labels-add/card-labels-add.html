@@ -2,10 +2,11 @@
     <form data-ng-role="form" data-ng-submit="$ctrl.addNewLabel(labelToAdd); labelToAdd = null;">
         <div class="row row-inherit start-xs middle-xs">
             <div class="flex no-grow">
-                <md-input-container>
+                <md-input-container md-no-float>
                     <md-select
                                class="lvg-card-metadata__item-status-select"
                                md-container-class="lvg-card-labels-add__label-add-md-select"
+                               placeholder="{{::('card.labels.add.tooltip' | translate)}}"
                                ng-model="labelToAdd.label"
                                ng-change="labelToAdd.value = undefined">
                         <md-option ng-value="l"
@@ -18,8 +19,7 @@
             <lvg-label-picker class="flex"
                               data-label="labelToAdd.label"
                               data-ng-model="labelToAdd.value"
-                              data-board="$ctrl.board.shortName"
-                              project-name="$ctrl.project.shortName"></lvg-label-picker>
+                              project-name="$ctrl.projectShortName"></lvg-label-picker>
             <div class="flex no-grow">
                 <md-button class="lvg-small-icon-button" type="submit" data-ng-disabled="labelToAdd.label == NULL">
                     <md-icon md-svg-icon="ok"></md-icon>

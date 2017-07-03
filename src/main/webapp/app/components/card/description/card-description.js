@@ -8,12 +8,14 @@
             labelValues: '<'
         },
         templateUrl: 'app/components/card/description/card-description.html',
-        controller: ['Card', 'StompClient', CardDescriptionController],
+        controller: ['BulkOperations', 'Card', 'Label', 'StompClient', CardDescriptionController],
     });
 
-    function CardDescriptionController(Card, StompClient) {
+    function CardDescriptionController(BulkOperations, Card, Label, StompClient) {
         var ctrl = this;
 
+        ctrl.addLabel = addLabel;
+        ctrl.removeLabelValue = removeLabelValue;
         ctrl.hideAddPanel = hideAddPanel;
         ctrl.updateCardName = updateCardName;
         ctrl.updateDescription = updateDescription;
@@ -49,6 +51,28 @@
             Card.updateDescription(ctrl.card.id, description);
         }
 
+        function addLabel($label) {
+            var labelValueToUpdate = Label.extractValue($label.label, $label.value);
+
+            BulkOperations.addLabel(currentCard(), $label.label, labelValueToUpdate);
+        }
+
+        function removeLabelValue($label, $labelValue) {
+            BulkOperations.removeLabel(currentCard(), {id: $labelValue.labelId}, $labelValue.value).then(function () {
+                Notification.addAutoAckNotification('success', {
+                    key: 'notification.card.LABEL_DELETE.success',
+                    parameters: {
+                        labelName: $label.name }
+                }, false);
+            }, function () {
+                Notification.addAutoAckNotification('error', {
+                    key: 'notification.card.LABEL_DELETE.error',
+                    parameters: {
+                        labelName: $label.name }
+                }, false);
+            });
+        }
+
         function hideAddPanel() {
             ctrl.addLabelPanel = false;
         }
@@ -71,6 +95,14 @@
             }
 
             return false;
+        }
+
+        function currentCard() {
+            var cardByProject = {};
+
+            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
+
+            return cardByProject;
         }
     }
 }());

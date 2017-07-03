@@ -1,7 +1,7 @@
 <div class="flex column no-grow lvg-board-controls__container">
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'BACKLOG'}">
-        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('BACKLOG')">
+        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar({$location: 'BACKLOG'})">
             <md-tooltip md-autohide md-direction="right">{{ 'board.controls.backlog.tooltip.' + ($ctrl.toggledSidebar &&
                 $ctrl.sideBarLocation == 'BACKLOG' ? 'close' : 'open') | translate}}
             </md-tooltip>
@@ -11,7 +11,7 @@
 
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'ARCHIVE'}">
-        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('ARCHIVE')">
+        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar({$location: 'ARCHIVE'})">
             <md-tooltip md-autohide md-direction="right">{{ 'board.controls.archive.tooltip.' + ($ctrl.toggledSidebar &&
                 $ctrl.sideBarLocation == 'ARCHIVE' ? 'close' : 'open') | translate}}
             </md-tooltip>
@@ -21,7 +21,7 @@
 
     <div class="flex no-grow"
          ng-class="{'lvg-board-controls__location-active' : $ctrl.toggledSidebar && $ctrl.sideBarLocation == 'TRASH'}">
-        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar('TRASH')">
+        <md-button class="md-icon-button" ng-click="$ctrl.toggleSidebar({$location: 'TRASH'})">
             <md-tooltip md-autohide md-direction="right">{{ 'board.controls.trash.tooltip.' + ($ctrl.toggledSidebar &&
                 $ctrl.sideBarLocation == 'TRASH' ? 'close' : 'open') | translate}}
             </md-tooltip>
@@ -35,8 +35,8 @@
         <md-button ng-click="$ctrl.newColumn()" class="flex no-grow md-icon-button"
                    ng-mouseenter="$ctrl.createColumnTooltipVisibility = true"
                    ng-mouseleave="$ctrl.createColumnTooltipVisibility = false || $ctrl.columns.length === 0">
-            <md-tooltip md-autohide md-direction="right" md-visible="$ctrl.createColumnTooltipVisibility">
-                {{::('board-controls.createNewColumn'|translate)}}
+            <md-tooltip md-autohide md-direction="right" md-visible="$ctrl.hasNoColumns || $ctrl.createColumnTooltipVisibility">
+                {{::('board.controls.new.column'|translate)}}
             </md-tooltip>
             <md-icon md-svg-icon="add_column"></md-icon>
         </md-button>

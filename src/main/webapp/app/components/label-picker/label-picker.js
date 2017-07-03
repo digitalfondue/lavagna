@@ -6,7 +6,6 @@
         bindings: {
             model: '=ngModel',
             label: '=',
-            board: '=',
             projectName: '<'
         },
         controller: function (LabelCache, User, Search, $scope) {

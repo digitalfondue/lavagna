@@ -3,32 +3,21 @@
 
     angular.module('lavagna.components').component('lvgCardLabelsAdd', {
         bindings: {
-            card: '<',
-            project: '<',
+            projectShortName: '<',
+            userLabels: '<',
             labelValues: '<',
+            onAdd: '&',
             onCancelAdd: '&'
         },
         controller: CardLabelsAddController,
         templateUrl: 'app/components/card/labels-add/card-labels-add.html'
     });
 
-    function CardLabelsAddController(BulkOperations, Label) {
+    function CardLabelsAddController() {
         var ctrl = this;
 
-        ctrl.userLabels = ctrl.project.metadata.userLabels;
-
-        var currentCard = function () {
-            var cardByProject = {};
-
-            cardByProject[ctrl.project.shortName] = [ctrl.card.id];
-
-            return cardByProject;
-        };
-
         ctrl.addNewLabel = function (labelToAdd) {
-            var labelValueToUpdate = Label.extractValue(labelToAdd.label, labelToAdd.value);
-
-            BulkOperations.addLabel(currentCard(), labelToAdd.label, labelValueToUpdate);
+            ctrl.onAdd({$label: angular.copy(labelToAdd)});
         };
 
         ctrl.cancel = function () {
