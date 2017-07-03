@@ -22,6 +22,7 @@ import io.lavagna.model.BoardColumn.BoardColumnLocation;
 import io.lavagna.service.config.TestServiceConfig;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -674,5 +675,71 @@ public class CardDataServiceTest {
     public void testCheckEnsureReferenceIdConstraints() {
         CardData list = cardDataService.createActionList(card1.getId(), "name", user.getId(), new Date());
         cardDataRepo.createDataWithReferenceOrder(card1.getId(), list.getId(), CardType.COMMENT, "body");
+    }
+
+    @Test
+    public void createFileWithoutCard() throws IOException {
+        String testData = "derp";
+        String fileDigest = DigestUtils.sha256Hex(from(testData));
+
+        cardDataService.createFile(fileDigest, 4, from(testData), "text");
+
+        assertTrue(cardDataRepo.fileExists(fileDigest));
+    }
+
+    @Test
+    public void assignFileToCard() throws IOException {
+        String testData = "derp";
+        String fileDigest = DigestUtils.sha256Hex(from(testData));
+
+        cardDataService.createFile(fileDigest, 4, from(testData), "text");
+
+        assertTrue(cardDataRepo.fileExists(fileDigest));
+
+        ImmutablePair<Boolean, CardData> result = cardDataService.assignFileToCard("test.txt", fileDigest, card1.getId(), user, new Date());
+
+        assertTrue(result.getLeft());
+
+        List<FileDataLight> files = cardDataRepo.findAllFilesByCardId(card1.getId());
+        assertEquals(1, files.size());
+        FileDataLight file = files.get(0);
+        assertEquals(fileDigest, file.getDigest());
+        assertEquals("test.txt", file.getName());
+        assertEquals("text", file.getContentType());
+        Assert.assertNull(file.getReferenceId());
+    }
+
+    @Test
+    public void assignSameFileToCard() throws IOException {
+        String testData = "derp";
+        String fileDigest = DigestUtils.sha256Hex(from(testData));
+
+        cardDataService.createFile(fileDigest, 4, from(testData), "text");
+
+        assertTrue(cardDataRepo.fileExists(fileDigest));
+
+        ImmutablePair<Boolean, CardData> result = cardDataService.assignFileToCard("test.txt", fileDigest, card1.getId(), user, new Date());
+
+        assertTrue(result.getLeft());
+
+        List<FileDataLight> files = cardDataRepo.findAllFilesByCardId(card1.getId());
+        assertEquals(1, files.size());
+        FileDataLight file = files.get(0);
+        assertEquals(fileDigest, file.getDigest());
+        assertEquals("test.txt", file.getName());
+        assertEquals("text", file.getContentType());
+        Assert.assertNull(file.getReferenceId());
+
+        ImmutablePair<Boolean, CardData> result2 = cardDataService.assignFileToCard("test.txt", fileDigest, card1.getId(), user, new Date());
+
+        assertEquals(false, result2.getLeft());
+
+        List<FileDataLight> files2 = cardDataRepo.findAllFilesByCardId(card1.getId());
+        assertEquals(1, files2.size());
+        FileDataLight file2 = files.get(0);
+        assertEquals(fileDigest, file2.getDigest());
+        assertEquals("test.txt", file2.getName());
+        assertEquals("text", file2.getContentType());
+        Assert.assertNull(file2.getReferenceId());
     }
 }
