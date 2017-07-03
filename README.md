@@ -10,8 +10,8 @@ Lavagna
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
-# Latest stable release is 1.0.7.3 (2017-03-06) #
-# Latest pre-release is 1.1-M5 (2017-04-05) #
+# Latest stable release is 1.0.7.4 (2017-07-03) #
+# Latest pre-release is 1.1-M6 (2017-07-03) #
 
 ## About ##
 
@@ -42,9 +42,17 @@ See the documentation at http://help.lavagna.io
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0.7.3/lavagna-1.0.7.3-distribution.zip
-unzip lavagna-1.0.7.3-distribution.zip
-./lavagna-1.0.7.3/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.0.7.4/lavagna-1.0.7.4-distribution.zip
+unzip lavagna-1.0.7.4-distribution.zip
+./lavagna-1.0.7.4/bin/lavagna.sh
+```
+
+or the milestone release:
+
+```
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1-M6/lavagna-1.1-M6-distribution.zip
+unzip lavagna-1.1-M6-distribution.zip
+./lavagna-1.1-M6/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1-M6 (2017-07-03)
+
+ - Fixes, updated dependencies, add a more complete "create new card" functionality
+ 
+## 1.0.7.4 (2017-07-03)
+
+ - Updated dependencies, fix for tomcat
+
 ## 1.1-M5 (2017-04-05)
 
  - Fixes, improvements in the "email to card" feature.
