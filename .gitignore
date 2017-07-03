@@ -2,6 +2,7 @@
 .project
 .settings
 target
+node_modules
 
 # Intellij
 .idea/
