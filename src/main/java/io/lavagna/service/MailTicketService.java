@@ -39,6 +39,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -141,12 +144,16 @@ public class MailTicketService {
 
                 for (int i = 0; i < messages.length; i++) {
                     MimeMessage message = (MimeMessage) messages[i];
-                    if (!message.getReceivedDate().after(entry.getLastChecked())) {
+                    Date receivedDate = resolveReceivedDate(message);
+                    if(receivedDate == null) {
+                        LOG.error("for ticket mail config id {}: was not able to fetch the \"receive date\" for email sent by {}", entry.getId(), getFrom(message));
+                        continue;
+                    }
+
+                    if (!receivedDate.after(entry.getLastChecked())) {
                         continue;
                     } else {
-                        updateLastChecked = message.getReceivedDate().after(updateLastChecked) ?
-                            message.getReceivedDate() :
-                            updateLastChecked;
+                        updateLastChecked = receivedDate.after(updateLastChecked) ? receivedDate : updateLastChecked;
                     }
 
                     String deliveredTo = getDeliveredTo(message);
@@ -177,6 +184,49 @@ public class MailTicketService {
             }
         }
     }
+
+
+    private static final String RECEIVED_HEADER_DATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
+    private static final String RECEIVED_HEADER_REGEXP = "^[^;]+;(.+)$";
+
+    //imported from https://stackoverflow.com/a/28626302 and modified
+    //will return null if no date is present
+    private static Date resolveReceivedDate(MimeMessage message) throws MessagingException {
+        if (message.getReceivedDate() != null) {
+            return message.getReceivedDate();
+        }
+
+        String[] receivedHeaders = message.getHeader("Received");
+        if (receivedHeaders == null) {
+            return null;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat(RECEIVED_HEADER_DATE_FORMAT);
+        Date finalDate = Calendar.getInstance().getTime();
+        finalDate.setTime(0L);
+        boolean found = false;
+        for (String receivedHeader : receivedHeaders) {
+            Pattern pattern = Pattern.compile(RECEIVED_HEADER_REGEXP);
+            Matcher matcher = pattern.matcher(receivedHeader);
+            if (matcher.matches()) {
+                String regexpMatch = matcher.group(1);
+                if (regexpMatch != null) {
+                    regexpMatch = regexpMatch.trim();
+                    try {
+                        Date parsedDate = sdf.parse(regexpMatch);
+                        if (parsedDate.after(finalDate)) {
+                            //finding the first date mentioned in received header
+                            finalDate = parsedDate;
+                            found = true;
+                        }
+                    } catch (ParseException e) {
+                    }
+                }
+            }
+        }
+        return found ? finalDate : null;
+    }
+    //
 
     @Transactional(readOnly = true)
     private ImmutablePair<Card, User> createCard(String name, String description, String username, int columnId) {
