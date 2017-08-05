@@ -181,6 +181,7 @@ public class MailTicketService {
                 mailTicketRepository.updateLastChecked(entry.getId(), updateLastChecked);
             } catch (MessagingException e) {
                 LOG.error("could not retrieve messages for ticket mail config id: {}", entry.getId());
+                LOG.error("exception is ", e);
             }
         }
     }
