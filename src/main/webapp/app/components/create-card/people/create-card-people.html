@@ -38,7 +38,7 @@
                         md-search-text="userSearchText"
                         md-item-text="user.label"
                         md-items="user in $ctrl.searchUser(userSearchText)"
-                        md-floating-label="User"
+                        md-floating-label="{{'label.user'|translate}}"
                         class="lvg-autocomplete__inline flex">
                         <md-item-template>{{user.label}}</md-item-template>
                     </md-autocomplete>
