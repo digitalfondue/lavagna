@@ -96,6 +96,16 @@ public class BoardColumnRepository {
 	}
 
 	@Transactional(readOnly = false)
+    public BoardColumn addColumnToBoardPosition(String name, int definitionId, BoardColumnLocation location, int order, int boardId) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(location);
+
+        queries.addColumnToBoard(trimToNull(name), boardId, location.toString(), order, definitionId);
+
+        return queries.findLastCreatedColumn();
+    }
+
+	@Transactional(readOnly = false)
 	public int renameColumn(int columnId, String newName, int boardId) {
 		return queries.renameColumn(trimToNull(newName), columnId, boardId);
 	}

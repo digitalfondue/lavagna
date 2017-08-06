@@ -67,12 +67,12 @@ public class BoardRepository {
 		BoardColumnDefinition backlogDefinition = findColumnDefinitionByProjectIdAndType(ColumnDefinition.BACKLOG,
 				projectId);
 		// Add the ARCHIVE and BACKLOG columns
-		boardColumnRepository.addColumnToBoard(BoardColumnLocation.ARCHIVE.toString(), closedDefinition.getId(),
-				BoardColumnLocation.ARCHIVE, board.getId());
-		boardColumnRepository.addColumnToBoard(BoardColumnLocation.BACKLOG.toString(), backlogDefinition.getId(),
-				BoardColumnLocation.BACKLOG, board.getId());
-		boardColumnRepository.addColumnToBoard(BoardColumnLocation.TRASH.toString(), closedDefinition.getId(),
-				BoardColumnLocation.TRASH, board.getId());
+		boardColumnRepository.addColumnToBoardPosition(BoardColumnLocation.ARCHIVE.toString(), closedDefinition.getId(),
+				BoardColumnLocation.ARCHIVE, 0, board.getId());
+		boardColumnRepository.addColumnToBoardPosition(BoardColumnLocation.BACKLOG.toString(), backlogDefinition.getId(),
+				BoardColumnLocation.BACKLOG, 0, board.getId());
+		boardColumnRepository.addColumnToBoardPosition(BoardColumnLocation.TRASH.toString(), closedDefinition.getId(),
+				BoardColumnLocation.TRASH, 0, board.getId());
 		return board;
 	}
 

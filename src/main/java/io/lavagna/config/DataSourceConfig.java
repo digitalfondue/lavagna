@@ -33,7 +33,7 @@ import java.net.URISyntaxException;
 
 public class DataSourceConfig {
 
-	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("23");
+	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("24");
 
 	@Bean
     public LavagnaEnvironment getEnvironment(ConfigurableEnvironment environment) {

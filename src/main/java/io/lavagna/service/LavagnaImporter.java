@@ -354,6 +354,25 @@ class LavagnaImporter {
 			idMapping.getColumns().put(bc.getId(), added.getId());
 		}
 
+		// Update default column order for side locations
+        BoardColumn archiveDefaultColumn = boardColumnRepository.findDefaultColumnFor(createdBoard.getId(), BoardColumn.BoardColumnLocation.ARCHIVE);
+
+		if(archiveDefaultColumn.getOrder() != 0) {
+            boardColumnRepository.updateOrder(archiveDefaultColumn.getId(), 0);
+        }
+
+        BoardColumn backlogDefaultColumn = boardColumnRepository.findDefaultColumnFor(createdBoard.getId(), BoardColumn.BoardColumnLocation.BACKLOG);
+
+        if(archiveDefaultColumn.getOrder() != 0) {
+            boardColumnRepository.updateOrder(backlogDefaultColumn.getId(), 0);
+        }
+
+        BoardColumn trashDefaultColumn = boardColumnRepository.findDefaultColumnFor(createdBoard.getId(), BoardColumn.BoardColumnLocation.TRASH);
+
+        if(archiveDefaultColumn.getOrder() != 0) {
+            boardColumnRepository.updateOrder(trashDefaultColumn.getId(), 0);
+        }
+
 		List<StatisticForExport> stats = readObject("boards/" + boardInfo.getShortName() + "/statistics.json",
 				tempFile, new TypeToken<List<StatisticForExport>>() {
 				});

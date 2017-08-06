@@ -44,6 +44,11 @@ public interface BoardColumnQuery {
 	int addColumnToBoard(@Bind("name") String name, @Bind("boardId") int boardId, @Bind("location") String location,
 			@Bind("definitionId") int definitionId);
 
+    @Query("INSERT INTO LA_BOARD_COLUMN(BOARD_COLUMN_NAME, BOARD_COLUMN_ORDER, BOARD_COLUMN_BOARD_ID_FK, BOARD_COLUMN_LOCATION, BOARD_COLUMN_DEFINITION_ID_FK) VALUES "
+        + "(:name, :order, :boardId, :location, :definitionId)")
+    int addColumnToBoard(@Bind("name") String name, @Bind("boardId") int boardId, @Bind("location") String location,
+                         @Bind("order") int order, @Bind("definitionId") int definitionId);
+
 	@Query("SELECT BOARD_COLUMN_ID, BOARD_COLUMN_NAME, BOARD_COLUMN_ORDER, BOARD_COLUMN_LOCATION, BOARD_COLUMN_BOARD_ID_FK, BOARD_COLUMN_DEFINITION_ID, BOARD_COLUMN_DEFINITION_VALUE,"
 			+ " BOARD_COLUMN_DEFINITION_COLOR FROM LA_BOARD_COLUMN_FULL WHERE BOARD_COLUMN_BOARD_ID_FK = :boardId AND BOARD_COLUMN_LOCATION = :location "
 			+ "ORDER BY BOARD_COLUMN_ORDER ASC, BOARD_COLUMN_NAME ASC")
