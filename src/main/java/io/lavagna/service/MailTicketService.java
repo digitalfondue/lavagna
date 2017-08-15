@@ -31,20 +31,14 @@ import org.springframework.integration.mail.Pop3MailReceiver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.Address;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -156,10 +150,10 @@ public class MailTicketService {
                         updateLastChecked = receivedDate.after(updateLastChecked) ? receivedDate : updateLastChecked;
                     }
 
-                    String deliveredTo = getDeliveredTo(message);
-
+                    boolean hasMatched = false;
                     for (ProjectMailTicket ticketConfig : entry.getEntries()) {
-                        if (ticketConfig.getEnabled() && ticketConfig.getAlias().equals(deliveredTo)) {
+                        if (ticketConfig.getEnabled() && isAliasPresentInMessageHeaders(ticketConfig.getAlias(), message)) {
+                            hasMatched = true || hasMatched;
                             String from = getFrom(message);
                             String name = getName(message);
                             Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
@@ -176,6 +170,10 @@ public class MailTicketService {
                             }
                         }
                     }
+
+                    if(!hasMatched) {
+                        printEmailHeaders(message);
+                    }
                 }
 
                 mailTicketRepository.updateLastChecked(entry.getId(), updateLastChecked);
@@ -184,6 +182,27 @@ public class MailTicketService {
                 LOG.error("exception is ", e);
             }
         }
+    }
+
+    private void printEmailHeaders(MimeMessage message) throws MessagingException {
+        LOG.warn("was not able to find a matching alias for email sent by: {}", getFrom(message));
+        LOG.warn("headers are: ");
+        Enumeration<?> headers = message.getAllHeaders();
+        while (headers.hasMoreElements()) {
+            Header header = (Header) headers.nextElement();
+            LOG.warn("{} : {}", header.getName(), header.getValue());
+        }
+    }
+
+    private boolean isAliasPresentInMessageHeaders(String alias, MimeMessage message) throws MessagingException {
+        Enumeration<?> headers = message.getAllHeaders();
+        while (headers.hasMoreElements()) {
+            Header header = (Header) headers.nextElement();
+            if(header.getValue() != null && header.getValue().indexOf(alias) >= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -341,10 +360,6 @@ public class MailTicketService {
     private String getName(MimeMessage message) throws MessagingException {
         Address[] froms = message.getFrom();
         return froms == null ? null : ((InternetAddress) froms[0]).getPersonal();
-    }
-
-    private String getDeliveredTo(MimeMessage message) throws MessagingException {
-        return message.getHeader("Delivered-To", "");
     }
 
     private void notify(Card createdCard, ProjectMailTicketConfig config, ProjectMailTicket ticketConfig, User user, String to, String name) {
