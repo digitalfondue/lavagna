@@ -11,7 +11,7 @@ Lavagna
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
 # Latest stable release is 1.0.7.4 (2017-07-03) #
-# Latest pre-release is 1.1-M6 (2017-07-03) #
+# Latest pre-release is 1.1-M7 (2017-08-16) #
 
 ## About ##
 
@@ -50,9 +50,9 @@ unzip lavagna-1.0.7.4-distribution.zip
 or the milestone release:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1-M6/lavagna-1.1-M6-distribution.zip
-unzip lavagna-1.1-M6-distribution.zip
-./lavagna-1.1-M6/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1-M7/lavagna-1.1-M7-distribution.zip
+unzip lavagna-1.1-M7-distribution.zip
+./lavagna-1.1-M7/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1-M7 (2017-08-16)
+
+ - Fix the "email to card" feature, updated dependencies.
+
 ## 1.1-M6 (2017-07-03)
 
  - Fixes, updated dependencies, add a more complete "create new card" functionality
