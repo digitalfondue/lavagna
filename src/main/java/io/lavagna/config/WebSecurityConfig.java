@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                 .request("/resource-login/**").permitAll()
                 .request("/setup/**").denyAll()
                 .request("/api/calendar/**").permitAll()
+                .request("/api/api-hook/**").permitAll()
                 .request("/api/**").requireAuthenticated(false)
                 .request("/**").requireAuthenticated()
                 .login("/login/**", "/login", loginPageGenerator())

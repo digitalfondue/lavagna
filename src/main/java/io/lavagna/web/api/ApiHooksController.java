@@ -68,13 +68,13 @@ public class ApiHooksController {
     }
 
     @ExpectPermission(Permission.GLOBAL_HOOK_API_ACCESS)
-    @RequestMapping(value = "/api/plugin/{name}/hook", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/api/api-hook/hook/{name}", method = {RequestMethod.GET, RequestMethod.POST})
     public void handleHook(@PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
         //FIXME:call hook and pass request, response
     }
 
     @ExpectPermission(Permission.PROJECT_HOOK_API_ACCESS)
-    @RequestMapping(value = "/api/project/{projectShortName}/plugin/{name}/hook", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/api/api-hook/project/{projectShortName}/hook/{name}", method = {RequestMethod.GET, RequestMethod.POST})
     public void handleHook(@PathVariable("projectShortName") String projectShortName, @PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
         // FIXME:call hook and pass request, response
     }
