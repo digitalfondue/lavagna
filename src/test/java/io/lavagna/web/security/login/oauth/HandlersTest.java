@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.Api;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -48,7 +47,7 @@ import static org.mockito.Mockito.when;
 public class HandlersTest {
 
 	@Mock
-	private ServiceBuilder sBuilder;
+	private OAuthServiceBuilder sBuilder;
 	@Mock
 	private SessionHandler sessionHandler;
 	@Mock
@@ -90,12 +89,8 @@ public class HandlersTest {
 	@Before
 	public void prepare() {
 
-		when(sBuilder.provider(any(Api.class))).thenReturn(sBuilder);
-		when(sBuilder.apiKey(any(String.class))).thenReturn(sBuilder);
-		when(sBuilder.apiSecret(any(String.class))).thenReturn(sBuilder);
-		when(sBuilder.callback(any(String.class))).thenReturn(sBuilder);
-		when(sBuilder.scope(any(String.class))).thenReturn(sBuilder);
-		when(sBuilder.build()).thenReturn(oauthService);
+		when(sBuilder.build(any(Api.class), any(String.class), any(String.class), any(String.class))).thenReturn(oauthService);
+        when(sBuilder.build(any(Api.class), any(String.class), any(String.class), any(String.class), any(String.class))).thenReturn(oauthService);
 
 		session = new MockHttpSession();
 

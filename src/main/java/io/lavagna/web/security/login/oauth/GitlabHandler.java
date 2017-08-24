@@ -24,7 +24,7 @@ import org.scribe.builder.ServiceBuilder;
 
 public class GitlabHandler extends OAuthResultHandlerAdapter {
 
-    private GitlabHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, OAuthProvider provider, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
+    private GitlabHandler(OAuthServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, OAuthProvider provider, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 
         super("oauth." + provider.getProvider(),//
                 getProfileUrl(provider),//
@@ -34,11 +34,10 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
                 sessionHandler,//
                 errorPage,//
                 serviceBuilder
-                    .provider(new Gitlab20Api(provider.baseUrlOrDefault("https://gitlab.com")))
-                    .apiKey(provider.getApiKey())
-                    .apiSecret(provider.getApiSecret())
-                    .callback(callback)
-                    .build(),
+                    .build(new Gitlab20Api(provider.baseUrlOrDefault("https://gitlab.com")),
+                        provider.getApiKey(),
+                        provider.getApiSecret(),
+                        callback),
                 reqBuilder);
     }
 
@@ -68,7 +67,7 @@ public class GitlabHandler extends OAuthResultHandlerAdapter {
     public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
 
         @Override
-        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+        public OAuthResultHandler build(OAuthServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {

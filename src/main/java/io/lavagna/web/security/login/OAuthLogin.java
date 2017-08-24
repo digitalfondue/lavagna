@@ -21,7 +21,6 @@ import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.*;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
-import org.scribe.builder.ServiceBuilder;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,10 +46,10 @@ public class OAuthLogin extends AbstractLoginHandler {
 
 	private final OauthConfigurationFetcher oauthConfigurationFetcher;
 	private final String errorPage;
-	private final ServiceBuilder serviceBuilder;
+	private final OAuthServiceBuilder serviceBuilder;
 	private final OAuthRequestBuilder reqBuilder = new OAuthRequestBuilder();
 
-	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, ServiceBuilder serviceBuilder, String errorPage) {
+	public OAuthLogin(Users users, SessionHandler sessionHandler, OauthConfigurationFetcher oauthConfigurationFetcher, OAuthServiceBuilder serviceBuilder, String errorPage) {
 		super(users, sessionHandler);
 		this.oauthConfigurationFetcher = oauthConfigurationFetcher;
 		this.serviceBuilder = serviceBuilder;
@@ -199,7 +198,7 @@ public class OAuthLogin extends AbstractLoginHandler {
 	    }
 
         @Override
-        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+        public OAuthResultHandler build(OAuthServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider oauthProvider,
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {

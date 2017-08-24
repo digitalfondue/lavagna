@@ -24,7 +24,7 @@ import org.scribe.builder.ServiceBuilder;
 
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 
-    private GoogleHandler(ServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
+    private GoogleHandler(OAuthServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.google",//
 				"https://www.googleapis.com/plus/v1/people/me/openIdConnect",//
@@ -32,8 +32,7 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
 				users,//
 				sessionHandler,//
 				errorPage,//
-				serviceBuilder.provider(new Google20Api()).apiKey(apiKey).apiSecret(apiSecret).callback(callback)
-						.scope("openid email").build(), reqBuilder);
+				serviceBuilder.build(new Google20Api(), apiKey, apiSecret, callback, "openid email"), reqBuilder);
 	}
 
 	static class UserInfo implements RemoteUserProfile {
@@ -73,7 +72,7 @@ public class GoogleHandler extends OAuthResultHandlerAdapter {
     public static final OAuthResultHandlerFactory FACTORY = new OAuthResultHandlerFactory.Adapter() {
 
         @Override
-        public OAuthResultHandler build(ServiceBuilder serviceBuilder,
+        public OAuthResultHandler build(OAuthServiceBuilder serviceBuilder,
                 OAuthRequestBuilder reqBuilder, OAuthProvider provider,
                 String callback, Users users, SessionHandler sessionHandler,
                 String errorPage) {

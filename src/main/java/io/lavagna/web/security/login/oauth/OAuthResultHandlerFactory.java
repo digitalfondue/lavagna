@@ -19,11 +19,10 @@ package io.lavagna.web.security.login.oauth;
 import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
 import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthRequestBuilder;
-import org.scribe.builder.ServiceBuilder;
 
 public interface OAuthResultHandlerFactory {
 
-    OAuthResultHandler build(ServiceBuilder serviceBuilder,
+    OAuthResultHandler build(OAuthServiceBuilder serviceBuilder,
             OAuthRequestBuilder reqBuilder,
             OAuthProvider oauthProvider,
             String callback,

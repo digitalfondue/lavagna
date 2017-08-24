@@ -21,14 +21,13 @@ import io.lavagna.web.security.SecurityConfiguration.Users;
 import io.lavagna.web.security.login.OAuthLogin.OAuthConfiguration;
 import io.lavagna.web.security.login.OAuthLogin.OauthConfigurationFetcher;
 import io.lavagna.web.security.login.oauth.OAuthProvider;
-import io.lavagna.web.security.login.oauth.OAuthResultHandler;
+import io.lavagna.web.security.login.oauth.OAuthServiceBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.Api;
 import org.scribe.oauth.OAuthService;
 
@@ -54,9 +53,7 @@ public class OauthLoginTest {
 	@Mock
 	private OauthConfigurationFetcher configurationFetcher;
 	@Mock
-	private OAuthResultHandler authResultHandler;
-	@Mock
-	private ServiceBuilder serviceBuilder;
+	private OAuthServiceBuilder serviceBuilder;
 	@Mock
 	private HttpServletResponse resp;
 	@Mock
@@ -79,12 +76,7 @@ public class OauthLoginTest {
 
 		oAuthLogin = new OAuthLogin(users, sessionHandler, configurationFetcher, serviceBuilder, errorPage);
 		when(configurationFetcher.fetch()).thenReturn(configuration);
-		when(serviceBuilder.provider(any(Api.class))).thenReturn(serviceBuilder);
-		when(serviceBuilder.apiKey(any(String.class))).thenReturn(serviceBuilder);
-		when(serviceBuilder.apiSecret(any(String.class))).thenReturn(serviceBuilder);
-		when(serviceBuilder.callback(any(String.class))).thenReturn(serviceBuilder);
-		when(serviceBuilder.scope(any(String.class))).thenReturn(serviceBuilder);
-		when(serviceBuilder.build()).thenReturn(mock(OAuthService.class));
+        when(serviceBuilder.build(any(Api.class), any(String.class), any(String.class), any(String.class), any(String.class))).thenReturn(mock(OAuthService.class));
 		when(req.getSession()).thenReturn(session);
 	}
 
