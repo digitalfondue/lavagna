@@ -30,6 +30,9 @@ public interface ApiHookQuery {
 	@Query("select API_HOOK_NAME, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_ENABLED = true and API_HOOK_TYPE = :type")
 	List<ApiHookNameAndVersion> findAllEnabled(@Bind("type") ApiHook.Type type);
 
+    @Query("select API_HOOK_NAME, API_HOOK_VERSION from LA_API_HOOK where API_HOOK_NAME = :name and API_HOOK_ENABLED = true and API_HOOK_TYPE = :type")
+    List<ApiHookNameAndVersion> findEnabledByNameAndType(@Bind("name") String name, @Bind("type") ApiHook.Type type);
+
 	@Query("select API_HOOK_ENABLED from LA_API_HOOK where API_HOOK_NAME = :name")
 	boolean findStatusByName(@Bind("name") String name);
 

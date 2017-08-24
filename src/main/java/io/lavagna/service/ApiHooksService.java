@@ -19,7 +19,6 @@ package io.lavagna.service;
 import io.lavagna.common.Json;
 import io.lavagna.model.*;
 import io.lavagna.model.CardLabelValue.LabelValue;
-import io.lavagna.model.apihook.Column;
 import io.lavagna.model.apihook.From;
 import io.lavagna.model.apihook.Label;
 import io.lavagna.query.ApiHookQuery;
@@ -32,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.script.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
@@ -232,6 +234,37 @@ public class ApiHooksService {
 
     private Map<String, Object> payloadFor(int cardId, String name, Collection<?> value) {
         return payloadForObj(cardId, name, value);
+    }
+
+    public void handleHook(String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        handleHook(null, name, request, response);
+    }
+
+    public void handleHook(String projectShortName, String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<ApiHookNameAndVersion> apiHooks = apiHookQuery.findEnabledByNameAndType(name, ApiHook.Type.WEB_HOOK);
+        if(apiHooks.size() == 1) {
+            ApiHook apiHook = apiHookQuery.findByNames(Collections.singletonList(name)).get(0);
+
+            // check project access if necessary
+            if (projectShortName != null && (apiHook.getProjects() == null || !apiHook.getProjects().contains(projectShortName))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            String metadataKey = (String) apiHook.getMetadata().get("key");
+            String paramKey = request.getParameter("key");
+
+            // check access
+            if (!(metadataKey != null && paramKey !=null && metadataKey.equals(paramKey))) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            // TODO implement script execution
+
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     public void createdProject(String projectShortName, User user, LavagnaEvent event) {

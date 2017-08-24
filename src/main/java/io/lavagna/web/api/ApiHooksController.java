@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -69,13 +70,13 @@ public class ApiHooksController {
 
     @ExpectPermission(Permission.GLOBAL_HOOK_API_ACCESS)
     @RequestMapping(value = "/api/api-hook/hook/{name}", method = {RequestMethod.GET, RequestMethod.POST})
-    public void handleHook(@PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
-        //FIXME:call hook and pass request, response
+    public void handleHook(@PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        apiHooksService.handleHook(name, request, response);
     }
 
     @ExpectPermission(Permission.PROJECT_HOOK_API_ACCESS)
     @RequestMapping(value = "/api/api-hook/project/{projectShortName}/hook/{name}", method = {RequestMethod.GET, RequestMethod.POST})
-    public void handleHook(@PathVariable("projectShortName") String projectShortName, @PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) {
-        // FIXME:call hook and pass request, response
+    public void handleHook(@PathVariable("projectShortName") String projectShortName, @PathVariable("name") String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        apiHooksService.handleHook(projectShortName, name, request, response);
     }
 }
