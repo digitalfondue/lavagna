@@ -47,6 +47,7 @@ public class ApiHooksService {
     private final Compilable engine;
     private final Executor executor;
     private final Map<String, Triple<ApiHook, Map<String, String>, CompiledScript>> compiledScriptCache = new ConcurrentHashMap<>();
+    private final Map<String, Triple<ApiHook, Map<String, String>, CompiledScript>> compiledScriptCacheWebHook = new ConcurrentHashMap<>();
     private final ProjectService projectService;
     private final CardService cardService;
     private final ApiHookQuery apiHookQuery;
@@ -70,7 +71,7 @@ public class ApiHooksService {
         executor = Executors.newFixedThreadPool(4);
     }
 
-    private static void executeScript(String name, CompiledScript script, Map<String, Object> scope) {
+    private static boolean executeScript(String name, CompiledScript script, Map<String, Object> scope) {
         try {
             ScriptContext newContext = new SimpleScriptContext();
             Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
@@ -79,8 +80,10 @@ public class ApiHooksService {
             engineScope.put("GSON", Json.GSON);
             engineScope.put("restTemplate", new RestTemplate());
             script.eval(newContext);
+            return true;
         } catch (ScriptException ex) {
             LOG.warn("Error while executing script " + name, ex);
+            return false;
         }
     }
 
@@ -260,8 +263,30 @@ public class ApiHooksService {
                 return;
             }
 
-            // TODO implement script execution
+            if(!compiledScriptCacheWebHook.containsKey(name) || (compiledScriptCacheWebHook.containsKey(name) && compiledScriptCacheWebHook.get(name).getLeft().getVersion() < apiHook.getVersion())) {
+                try {
+                    CompiledScript script = engine.compile(apiHook.getScript());
+                    Map<String, String> configuration = apiHook.getConfiguration() != null ? apiHook.getConfiguration() : Collections.<String, String>emptyMap();
+                    compiledScriptCacheWebHook.put(apiHook.getName(), Triple.of(apiHook, configuration, script));
+                } catch (ScriptException se) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    return;
+                }
+            }
 
+            Triple<ApiHook, Map<String, String>, CompiledScript> compiledScript = compiledScriptCacheWebHook.get(name);
+
+            Map<String, Object> scope = new HashMap<>();
+
+            scope.put("project", projectShortName);
+            scope.put("configuration", compiledScript.getMiddle());
+            scope.put("request", request);
+            scope.put("response", response);
+
+            boolean res = executeScript(name, compiledScript.getRight(), new HashMap<String, Object>());
+            if(!res) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
