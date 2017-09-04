@@ -18,10 +18,15 @@
 package io.lavagna.service;
 
 import io.lavagna.model.*;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,12 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import static io.lavagna.common.Constants.*;
-import static io.lavagna.service.SearchFilter.filter;
+import static io.lavagna.service.SearchFilter.*;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 @Service
@@ -77,6 +78,14 @@ public class ExcelExportService {
         return listValues.size() > 0 ? listValues.get(0) : null;
     }
 
+    private String getUserDescription(Map<Integer, String> userCache, Integer userId) {
+        if (!userCache.containsKey(userId)) {
+            User user = userRepository.findById(userId);
+            userCache.put(userId, firstNonNull(user.getDisplayName(), user.getUsername()));
+        }
+        return userCache.get(userId);
+    }
+
     private void fillLabelValues(Row row, int colPos, List<CardLabel> labels, Map<CardLabel,
         List<CardLabelValue>> lValues, Map<Integer, String> userCache, Map<Integer, String> cardCache,
         Map<Integer, String> listValueCache) {
@@ -108,12 +117,7 @@ public class ExcelExportService {
                         sb.append(cardCache.get(lv.getValueCard()));
                         break;
                     case USER:
-                        if (!userCache.containsKey(lv.getValueUser())) {
-                            User user = userRepository.findById(lv.getValueUser());
-                            userCache.put(lv.getValueUser(),
-                                firstNonNull(user.getDisplayName(), user.getUsername()));
-                        }
-                        sb.append(userCache.get(lv.getValueUser()));
+                        sb.append(getUserDescription(userCache, lv.getValueUser()));
                         break;
                     case LIST:
                         if (!listValueCache.containsKey(lv.getValueList())) {
@@ -175,6 +179,8 @@ public class ExcelExportService {
         header.createCell(headerColPos++).setCellValue("Column");
         header.createCell(headerColPos++).setCellValue("Status");
         header.createCell(headerColPos++).setCellValue("Description");
+        header.createCell(headerColPos++).setCellValue("Created");
+        header.createCell(headerColPos++).setCellValue("Created by");
         for (CardLabel cl : labels) {
             header.createCell(headerColPos++).setCellValue(WordUtils.capitalizeFully(cl.getName().replace("_", " ")));
         }
@@ -206,12 +212,25 @@ public class ExcelExportService {
             // Description
             CardDataHistory desc = cardDataService.findLatestDescriptionByCardId(card.getId());
             row.createCell(colPos++).setCellValue(desc != null ? desc.getContent() : "");
+            // Creation date
+            row.createCell(colPos++).setCellValue(new SimpleDateFormat("yyyy.MM.dd").format(card.getCreationDate()));
+            // Created by
+            row.createCell(colPos++).setCellValue(getUserDescription(userCache, card.getCreationUser()));
             // Labels
             fillLabelValues(row, colPos, labels, cardLabelRepository.findCardLabelValuesByCardId(card.getId()),
                 userCache, cardCache, listValueCache);
         }
 
         sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, headerColPos - 1));
+
+        // Auto size the columns except for the description
+        for (int i = 0; i < headerColPos; i++) {
+            if (!header.getCell(i).getStringCellValue().equals("Description")) {
+                sheet.autoSizeColumn(i);
+            } else {
+                sheet.setColumnWidth(i, 30 * 256);
+            }
+        }
 
         return wb;
     }
