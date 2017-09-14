@@ -340,7 +340,7 @@
 
     <!-- -->
     <properties>
-        <org.apache.logging.log4j.version>2.9.0</org.apache.logging.log4j.version>
+        <org.apache.logging.log4j.version>2.8.2</org.apache.logging.log4j.version>
         <org.springframework.version>4.3.10.RELEASE</org.springframework.version>
         <org.eclipse.jetty.version>9.2.22.v20170606</org.eclipse.jetty.version>
         <com.fasterxml.jackson.version>2.9.1</com.fasterxml.jackson.version>
