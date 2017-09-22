@@ -1,0 +1,27 @@
+<div class="flex-container">
+    <md-input-container class="flex">
+        <label translate>label.label</label>
+        <input ng-model="$ctrl.parameter.label">
+    </md-input-container>
+    <md-input-container class="flex">
+        <label translate>label.key</label>
+        <input ng-model="$ctrl.parameter.key">
+    </md-input-container>
+    <md-select class="no-grow" ng-model="$ctrl.parameter.type">
+        <md-option ng-value="'input'">input</md-option>
+        <md-option ng-value="'textarea'">textarea</md-option>
+    </md-select>
+</div>
+<div class="flex-container" ng-switch="$ctrl.parameter.type">
+    <md-input-container class="flex" ng-switch-when="textarea">
+        <label translate>label.value</label>
+        <textarea ng-model="$ctrl.parameter.value"></textarea>
+    </md-input-container>
+    <md-input-container class="flex" ng-switch-when="input">
+        <label translate>label.value</label>
+        <input ng-model="$ctrl.parameter.value">
+    </md-input-container>
+    <md-button class="no-grow" ng-click="$ctrl.onRemove({$param: $ctrl.parameter})">
+        <span translate>button.remove</span>
+    </md-button>
+</div>

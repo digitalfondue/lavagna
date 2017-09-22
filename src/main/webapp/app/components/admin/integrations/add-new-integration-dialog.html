@@ -1,60 +1,44 @@
-<form role="form" ng-submit="" name="addNewIntegrationForm">
-    <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title" translate>admin.integrations.add</h2>
-
-
-        <md-input-container class="md-block">
-            <label>Select an integration:</label>
-            <md-select ng-model="addNewIntegrationCtrl.selectedIntegration"></md-select>
-        </md-input-container>
-
-
-        Or create a new one:
-
-        <md-input-container class="md-block">
-            <label>Name</label>
-            <input ng-model="addNewIntegrationCtrl.customIntegration.name">
-        </md-input-container>
-
-        <md-input-container class="md-block">
-            <label>Description</label>
-            <textarea ng-model="addNewIntegrationCtrl.customIntegration.metadata.description"></textarea>
-        </md-input-container>
-
-        <h3>Parameters</h3>
-        <div ng-repeat="param in addNewIntegrationCtrl.customIntegration.metadata.parameters" ng-switch="param.type">
-            <md-select ng-model="param.type">
-                <md-option ng-value="'input'">input</md-option>
-                <md-option ng-value="'textarea'">textarea</md-option>
-            </md-select>
-            <md-input-container>
-                <label>Parameter label</label>
-                <input ng-model="param.label">
-            </md-input-container>
-            <md-input-container>
-                <label>Parameter key</label>
-                <input ng-model="param.key">
-            </md-input-container>
-            <md-input-container ng-switch-when="textarea">
-                <label>Parameter value</label>
-                <textarea ng-model="param.value"></textarea>
-            </md-input-container>
-            <md-input-container ng-switch-when="input">
-                <label>Parameter value</label>
-                <input ng-model="param.value">
-            </md-input-container>
-            <md-button ng-click="addNewIntegrationCtrl.removeParameter(param)">Remove</md-button>
+<md-dialog class="lvg-integration--dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span translate>admin.integrations.add</span></h2>
         </div>
+    </md-toolbar>
+    <form role="form" ng-submit="addNewIntegrationCtrl.create()" name="addNewIntegrationForm">
+        <md-dialog-content class="md-dialog-content">
+            <md-input-container class="md-block">
+                <label translate>label.name</label>
+                <input ng-required="true" ng-model="addNewIntegrationCtrl.customIntegration.name">
+            </md-input-container>
 
-        <md-button ng-click="addNewIntegrationCtrl.addParameter()">Add new parameter</md-button>
+            <md-input-container class="md-block">
+                <label translate>label.description</label>
+                <textarea ng-model="addNewIntegrationCtrl.customIntegration.metadata.description"></textarea>
+            </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Script</label>
-            <textarea ng-model="addNewIntegrationCtrl.customIntegration.code"></textarea>
-        </md-input-container>
+            <h3 translate>admin.integrations.configuration-parameters</h3>
+            <div ng-repeat="param in addNewIntegrationCtrl.customIntegration.metadata.parameters">
+                <h4 translate>admin.integrations.admin.integrations.configuration-parameters.new.title</h4>
+                <integrations-add-parameter parameter="param"
+                                            on-remove="addNewIntegrationCtrl.removeParameter($param)"></integrations-add-parameter>
+            </div>
 
-        <md-button ng-click="addNewIntegrationCtrl.cancel()">Cancel</md-button>
-        <md-button ng-click="addNewIntegrationCtrl.create()">Create</md-button>
+            <md-button ng-click="addNewIntegrationCtrl.addParameter()">
+                <span translate>admin.integrations.configuration-parameters.add</span>
+            </md-button>
 
-    </md-dialog-content>
-</form>
+            <md-input-container class="md-block">
+                <label>Script</label>
+                <textarea ng-model="addNewIntegrationCtrl.customIntegration.code"></textarea>
+            </md-input-container>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="addNewIntegrationCtrl.cancel()">
+                <span translate>button.cancel</span>
+            </md-button>
+            <md-button type="submit" class="md-primary">
+                <span translate>button.create</span>
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
