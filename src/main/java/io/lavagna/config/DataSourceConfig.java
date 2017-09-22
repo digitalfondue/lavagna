@@ -54,6 +54,7 @@ public class DataSourceConfig {
 		}
 
 		if (System.getProperty("startDBManager") != null) {
+		    System.setProperty("java.awt.headless", "false");
 			DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:lavagna", "--noexit" });
 		}
 
