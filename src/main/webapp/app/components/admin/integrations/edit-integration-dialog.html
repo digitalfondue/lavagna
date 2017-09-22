@@ -1,7 +1,7 @@
 <md-dialog class="lvg-integration--dialog">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2><span translate>admin.integrations.edit</span> {{editIntegrationCtrl.integration.name}}</h2>
+            <h2><span translate translate-values="{'name': editIntegrationCtrl.integration.name}">admin.integrations.edit</span></h2>
             <span class="flex"></span>
             <md-button class="md-icon-button" ng-click="editIntegrationCtrl.cancel()">
                 <md-icon md-svg-icon="close"></md-icon>
@@ -15,23 +15,41 @@
             <div ng-if="editIntegrationCtrl.integration.metadata.parameters.length > 0">
                 <h3 translate>admin.integrations.configuration-parameters</h3>
 
-                <div ng-repeat="param in editIntegrationCtrl.integration.metadata.parameters" ng-switch="param.type">
-                    <md-input-container ng-switch-when="textarea" class="md-block">
+                <div ng-repeat="param in editIntegrationCtrl.integration.metadata.parameters"
+                     ng-switch="param.type"
+                     class="flex-container">
+                    <md-input-container ng-switch-when="textarea" class="flex">
                         <label>{{param.label}}</label>
                         <textarea rows="5" ng-model="editIntegrationCtrl.configuration[param.key]"></textarea>
                     </md-input-container>
-                    <md-input-container ng-switch-default class="md-block">
+                    <md-input-container ng-switch-default class="flex">
                         <label>{{param.label}}</label>
                         <input class="form-control" type="{{param.type}}" ng-model="editIntegrationCtrl.configuration[param.key]">
                     </md-input-container>
+                    <md-button class="lvg-small-icon-button no-grow" ng-click="editIntegrationCtrl.removeParameter(param)">
+                        <md-tooltip><span translate translate-values="{'name': param.label}">admin.integrations.configuration-parameters.remove</span></md-tooltip>
+                        <md-icon md-svg-icon="delete"></md-icon>
+                    </md-button>
                 </div>
+
+                <div ng-repeat="param in editIntegrationCtrl.newParameters">
+                    <h4 translate>admin.integrations.admin.integrations.configuration-parameters.new.title</h4>
+                    <integrations-add-parameter parameter="param"
+                                                on-remove="editIntegrationCtrl.removeNewParameter($param)"></integrations-add-parameter>
+                </div>
+
+                <md-button ng-click="editIntegrationCtrl.addNewParameter()">
+                    <span translate>admin.integrations.configuration-parameters.add</span>
+                </md-button>
             </div>
 
             <div>
                 <h3 translate>admin.integrations.enable-for-projects</h3>
-                <md-checkbox ng-model="editIntegrationCtrl.enableForAllProjects">Enable for all projects</md-checkbox>
+                <md-checkbox ng-model="editIntegrationCtrl.enableForAllProjects">
+                    <span translate>admin.integrations.enable-for-projects.all</span>
+                </md-checkbox>
                 <div ng-if="!editIntegrationCtrl.enableForAllProjects">
-                    <h4>Projects</h4>
+                    <h4 translate>admin.integrations.projects</h4>
                     <p ng-repeat="project in editIntegrationCtrl.allProjects">
                         <md-checkbox ng-checked="editIntegrationCtrl.exists(project)" ng-click="editIntegrationCtrl.toggle(project)">
                             {{ project.shortName }}
@@ -43,7 +61,7 @@
             <div>
                 <h3 translate>admin.integrations.script</h3>
                 <md-input-container class="md-block">
-                    <textarea rows="5" ng-model="editIntegrationCtrl.script"></textarea>
+                    <textarea rows="5" ng-model="editIntegrationCtrl.integration.script"></textarea>
                 </md-input-container>
             </div>
         </md-dialog-content>

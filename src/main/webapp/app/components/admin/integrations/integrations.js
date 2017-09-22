@@ -74,7 +74,8 @@
                     }
                 },
                 controllerAs: 'addNewIntegrationCtrl',
-                bindToController: true
+                bindToController: true,
+                fullscreen: true
             });
         }
 
@@ -116,21 +117,66 @@
                 templateUrl: 'app/components/admin/integrations/edit-integration-dialog.html',
                 controller: function () {
                     var ctrl = this;
+                    ctrl.newParameters = [];
 
                     ctrl.integration = integration;
-                    ctrl.configuration = angular.copy(integration.configuration);
                     ctrl.script = integration.script;
-
+                    ctrl.configuration = angular.copy(integration.configuration);
                     ctrl.enableForAllProjects = integration.projects === null;
                     ctrl.projects = angular.copy(integration.projects) || [];
                     ctrl.allProjects = mainCtrl.projects;
 
-                    ctrl.cancel = function () {
-                        $mdDialog.cancel(false);
-                    };
+                    ctrl.addNewParameter = addNewParameter;
+                    ctrl.removeNewParameter = removeNewParameter;
+                    ctrl.removeParameter = removeParameter;
+                    ctrl.cancel = cancel;
+                    ctrl.save = save;
+                    ctrl.togge = toggle;
+                    ctrl.exists = exists;
 
-                    ctrl.save = function () {
-                        Integrations.update(integration.name, ctrl.script, ctrl.configuration, ctrl.enableForAllProjects ? null : ctrl.projects).then(function () {
+                    function cancel() {
+                        $mdDialog.cancel(false);
+                    }
+
+                    function save() {
+                        var metadata = {
+                            description: integration.metadata.description,
+                            parameters: angular.isArray(integration.metadata.parameters) ? integration.metadata.parameters : []
+                        };
+
+                        // merge new properties
+                        angular.forEach(ctrl.newParameters, function (v) {
+                            ctrl.configuration[v.key] = v.value;
+
+                            metadata.parameters.push({
+                                key: v.key,
+                                label: v.label,
+                                type: v.type
+                            });
+                        });
+
+                        // remove old properties
+                        var configToRemove = [];
+
+                        for (var key in ctrl.configuration) {
+                            if (ctrl.configuration.hasOwnProperty(key)) {
+                                var toRemove = true;
+
+                                angular.forEach(metadata.parameters, function (param) {
+                                    toRemove = toRemove && param.key !== key;
+                                });
+
+                                if (toRemove) {
+                                    configToRemove.push(key);
+                                }
+                            }
+                        }
+
+                        angular.forEach(configToRemove, function (key) {
+                            delete ctrl.configuration[key];
+                        });
+
+                        Integrations.update(integration.name, ctrl.script, ctrl.configuration, ctrl.enableForAllProjects ? null : ctrl.projects, metadata).then(function () {
                             ctrl.cancel();
                             Notification.addAutoAckNotification('success', {key: 'notification.admin-integrations.update.success', parameters: translationKeys}, false);
                             loadAll();
@@ -139,9 +185,9 @@
                                 Notification.addAutoAckNotification('error', {key: 'notification.admin-integrations.update.error', parameters: translationKeys}, false);
                             }
                         });
-                    };
+                    }
 
-                    ctrl.toggle = function (project) {
+                    function toggle(project) {
                         var idx = ctrl.projects.indexOf(project.shortName);
 
                         if (idx > -1) {
@@ -149,11 +195,23 @@
                         } else {
                             ctrl.projects.push(project.shortName);
                         }
-                    };
+                    }
 
-                    ctrl.exists = function (project) {
+                    function exists(project) {
                         return ctrl.projects.indexOf(project.shortName) > -1;
-                    };
+                    }
+
+                    function removeParameter(parameter) {
+                        ctrl.integration.metadata.parameters.splice(ctrl.integration.metadata.parameters.indexOf(parameter), 1);
+                    }
+
+                    function addNewParameter() {
+                        ctrl.newParameters.push({'type': 'input', 'label': undefined, 'key': undefined});
+                    }
+
+                    function removeNewParameter(parameter) {
+                        ctrl.newParameters.splice(ctrl.newParameters.indexOf(parameter), 1);
+                    }
                 },
                 fullscreen: true,
                 autoWrap: false,

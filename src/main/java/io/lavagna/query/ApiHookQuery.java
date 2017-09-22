@@ -50,11 +50,11 @@ public interface ApiHookQuery {
 	int insert(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration,
 			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects, @Bind("metadata") String metadata);
 
-	@Query("update LA_API_HOOK set API_HOOK_SCRIPT = :script, API_HOOK_CONFIGURATION = :configuration, "
+	@Query("update LA_API_HOOK set API_HOOK_SCRIPT = :script, API_HOOK_CONFIGURATION = :configuration, API_HOOK_METADATA = :metadata, "
 			+ " API_HOOK_ENABLED = :enabled , API_HOOK_TYPE = :type, API_HOOK_PROJECTS = :projects, API_HOOK_VERSION = API_HOOK_VERSION+1 "
 			+ " where API_HOOK_NAME = :name")
 	int update(@Bind("name") String name, @Bind("script") String script, @Bind("configuration") String configuration,
-			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects);
+			@Bind("enabled") boolean enabled, @Bind("type") ApiHook.Type type, @Bind("projects") String projects, @Bind("metadata") String metadata);
 
 	@Query("update LA_API_HOOK set API_HOOK_ENABLED = :enabled, API_HOOK_VERSION = API_HOOK_VERSION+1 where API_HOOK_NAME = :name")
 	int enable(@Bind("name") String name, @Bind("enabled") boolean enabled);

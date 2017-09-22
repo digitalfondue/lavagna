@@ -16,8 +16,8 @@
             remove: function (name) {
                 return $http['delete']('/api/plugin/' + name).then(extractData);
             },
-            update: function (name, code, properties, projects) {
-                return $http.post('/api/plugin/' + name, {name: name, code: code, properties: properties, projects: projects}).then(extractData);
+            update: function (name, code, properties, projects, metadata) {
+                return $http.post('/api/plugin/' + name, {name: name, code: code, properties: properties, metadata: metadata, projects: projects}).then(extractData);
             },
             enable: function (name, status) {
                 return $http.post('/api/plugin/' + name + '/enable/' + status).then(extractData);

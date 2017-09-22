@@ -182,10 +182,11 @@ public class ApiHooksService {
     }
 
     @Transactional
-    public void updateApiHook(String name, String code, Map<String, String> properties, List<String> projects) {
+    public void updateApiHook(String name, String code, Map<String, String> properties, List<String> projects, Map<String, Object> metadata) {
         String propAsJson = properties == null ? null : Json.GSON.toJson(properties, Map.class);
         String projectsAsJson = projects == null ? null : Json.GSON.toJson(projects, List.class);
-        apiHookQuery.update(name, code, propAsJson, apiHookQuery.findStatusByName(name), ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson);
+        String metadataAsJson = metadata == null ? null : Json.GSON.toJson(metadata, Map.class);
+        apiHookQuery.update(name, code, propAsJson, apiHookQuery.findStatusByName(name), ApiHook.Type.EVENT_EMITTER_HOOK, projectsAsJson, metadataAsJson);
     }
 
     private Map<String, Object> getBaseDataFor(int cardId) {
