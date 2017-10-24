@@ -63,7 +63,6 @@ public class Ldap {
 		String ldapManagerPwd = requireNonNull(conf.get(Key.LDAP_MANAGER_PASSWORD));
 		String base = requireNonNull(conf.get(Key.LDAP_USER_SEARCH_BASE));
 		String filter = requireNonNull(conf.get(Key.LDAP_USER_SEARCH_FILTER));
-		//
 
 		return authenticateWithParams(providerUrl, ldapManagerDn, ldapManagerPwd, base, filter, username, password)
 				.getFirst();
@@ -121,6 +120,57 @@ public class Ldap {
 		}
 	}
 
+    public boolean checkUserAvailability(String username){
+
+        try (InitialDirContextCloseable dctx = getLdapContext()) {
+            SearchControls sc = new SearchControls();
+            sc.setReturningAttributes(null);
+            sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+            List<SearchResult> srs = Ldap.search(dctx, getLdapBase(),
+                new MessageFormat(getLdapFilter()).format(new Object[] { Ldap.escapeLDAPSearchFilter(username) }), sc);
+            if (srs.size() != 1) {
+                String msg = format("error for username \"%s\" we have %d results instead of 1 [error]", username, srs.size());
+                LOG.info(msg, username, srs.size());
+                return false;
+            }
+
+            return true;
+
+        } catch (Throwable e) {
+            String errMsg = format(
+                "error while opening the connection with message: %s [error], check the logs for a more complete trace",
+                e.getMessage());
+            LOG.error(errMsg, e);
+            return false;
+        }
+    }
+
+    private InitialDirContextCloseable getLdapContext() throws NamingException {
+        Map<Key, String> conf = configurationRepository
+            .findConfigurationFor(of(Key.LDAP_SERVER_URL, Key.LDAP_MANAGER_DN, Key.LDAP_MANAGER_PASSWORD,
+                Key.LDAP_USER_SEARCH_BASE, Key.LDAP_USER_SEARCH_FILTER));
+
+        String providerUrl = requireNonNull(conf.get(Key.LDAP_SERVER_URL));
+        String ldapManagerDn = requireNonNull(conf.get(Key.LDAP_MANAGER_DN));
+        String ldapManagerPwd = requireNonNull(conf.get(Key.LDAP_MANAGER_PASSWORD));
+        return ldapConnection.context(providerUrl, ldapManagerDn, ldapManagerPwd);
+    }
+
+    private String getLdapBase(){
+        Map<Key, String> conf = configurationRepository
+            .findConfigurationFor(of(Key.LDAP_SERVER_URL, Key.LDAP_MANAGER_DN, Key.LDAP_MANAGER_PASSWORD,
+                Key.LDAP_USER_SEARCH_BASE, Key.LDAP_USER_SEARCH_FILTER));
+        return requireNonNull(conf.get(Key.LDAP_USER_SEARCH_BASE));
+    }
+
+    private String getLdapFilter(){
+        Map<Key, String> conf = configurationRepository
+            .findConfigurationFor(of(Key.LDAP_SERVER_URL, Key.LDAP_MANAGER_DN, Key.LDAP_MANAGER_PASSWORD,
+                Key.LDAP_USER_SEARCH_BASE, Key.LDAP_USER_SEARCH_FILTER));
+        return requireNonNull(conf.get(Key.LDAP_USER_SEARCH_FILTER));
+    }
+
 	private static List<SearchResult> search(DirContext dctx, String base, String filter, SearchControls sc)
 			throws NamingException {
 		List<SearchResult> res = new ArrayList<>();
@@ -130,6 +180,7 @@ public class Ldap {
 		}
 		return res;
 	}
+
 
 	// imported from
 	// https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java .

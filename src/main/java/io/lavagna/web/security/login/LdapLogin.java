@@ -69,7 +69,7 @@ public class LdapLogin extends AbstractLoginHandler {
 	}
 
 	private boolean authenticate(String username, String password) {
-		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || !users.userExistsAndEnabled(USER_PROVIDER, username)) {
+		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || !ldap.checkUserAvailability(username) || !users.userExistsAndEnabled(USER_PROVIDER, username)) {
 			return false;
 		}
 
@@ -85,6 +85,7 @@ public class LdapLogin extends AbstractLoginHandler {
 
 	public interface LdapAuthenticator {
 	    boolean authenticate(String username, String password);
+	    boolean checkUserAvailability(String username);
 	}
 
     @Override
