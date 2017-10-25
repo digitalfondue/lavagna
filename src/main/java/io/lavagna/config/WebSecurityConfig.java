@@ -204,6 +204,7 @@ public class WebSecurityConfig {
         }
 
         public void createIfConfiguredAndMissing(String provider, String name) {
+
             if (canLdap(provider, name) || canOauth(provider, name)) {
                 createDefaultUser(provider, name);
             }
@@ -303,6 +304,10 @@ public class WebSecurityConfig {
             @Override
             public boolean authenticate(String username, String password) {
                 return ldap.authenticate(username, password);
+            }
+            @Override
+            public boolean checkUserAvailability(String username) {
+                return ldap.checkUserAvailability(username);
             }
         };
 
