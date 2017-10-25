@@ -108,6 +108,7 @@ public class LdapLoginTest {
 	public void ldapReturnFalse() throws IOException {
 		prepareForLdapSearch();
 		when(ldap.authenticate("user", "password")).thenReturn(false);
+        when(ldap.checkUserAvailability("user")).thenReturn(true);
 		when(req.getContextPath()).thenReturn("");
 		Assert.assertTrue(ldapLogin.doAction(req, resp));
 		verify(resp).sendRedirect("/errorPage");
@@ -118,6 +119,7 @@ public class LdapLoginTest {
 		prepareForLdapSearch();
 
 		when(ldap.authenticate("user", "password")).thenReturn(true);
+		when(ldap.checkUserAvailability("user")).thenReturn(true);
 		when(users.findUserByName(LdapLogin.USER_PROVIDER, "user")).thenReturn(new User() {
 
             public boolean isAnonymous() {
