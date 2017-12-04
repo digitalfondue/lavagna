@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter title="Additional" id="AdditionalLibs">
+    <table>
+        <tr>
+            <td>Project</td>
+            <td>Version</td>
+            <td>License</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/kohsuke/winsw">winsw: Windows service wrapper in less restrictive license</a>
+            </td>
+            <td>2.1.2</td>
+            <td>
+                <a href="https://tldrlegal.com/license/mit-license">MIT License</a>
+            </td>
+        </tr>
+    </table>
+</chapter>

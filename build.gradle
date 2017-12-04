@@ -1,0 +1,188 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.0'
+    id 'ch.digitalfondue.stampo' version '0.0.3'
+    id 'com.github.kt3k.coveralls' version '2.8.1'
+    id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.github.hierynomus.license' version '0.11.0'
+    id 'net.researchgate.release' version '2.6.0'
+    id 'com.github.jk1.dependency-license-report'
+}
+
+apply plugin: 'war'
+
+group = 'io.lavagna'
+version = '1.1-M8-SNAPSHOT'
+
+description = 'lavagna'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+configurations.all {
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-websocket', version:'4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-messaging', version:'4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version:'4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context-support', version:'4.3.10.RELEASE'
+    compile group: 'org.springframework.integration', name: 'spring-integration-mail', version:'4.3.11.RELEASE'
+    compile group: 'ch.digitalfondue.npjt-extra', name: 'npjt-extra', version:'1.1.4'
+    compile group: 'org.apache.commons', name: 'commons-text', version:'1.1'
+    compile group: 'commons-codec', name: 'commons-codec', version:'1.10'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.8.0'
+    compile group: 'org.flywaydb', name: 'flyway-core', version:'4.2.0'
+    compile group: 'org.scribe', name: 'scribe', version:'1.3.7'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.9.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.9.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version:'2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version:'2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version:'2.8.2'
+    compile(group: 'com.julienvey.trello', name: 'trello-java-wrapper', version:'0.3.2') {
+        exclude(module: 'logback-core')
+        exclude(module: 'logback-classic')
+    }
+    compile group: 'com.samskivert', name: 'jmustache', version:'1.13'
+    compile group: 'org.jsoup', name: 'jsoup', version:'1.10.3'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.9.0'
+    compile group: 'com.lambdaworks', name: 'scrypt', version:'1.4.0'
+    compile group: 'org.hsqldb', name: 'hsqldb', version:'2.4.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version:'5.1.41'
+    compile group: 'org.postgresql', name: 'postgresql', version:'42.1.4.jre7'
+    compile group: 'com.zaxxer', name: 'HikariCP-java7', version:'2.4.13'
+    compile group: 'org.tuckey', name: 'urlrewritefilter', version:'4.0.4'
+    compile group: 'javax.mail', name: 'mail', version:'1.4.6'
+    compile(group: 'org.mnode.ical4j', name: 'ical4j', version:'2.0.4') {
+        exclude(module: 'groovy-all')
+        exclude(module: 'bndlib')
+    }
+    compile group: 'org.apache.poi', name: 'poi', version:'3.16'
+    compile group: 'org.apache.commons', name: 'commons-collections4', version:'4.1'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:'1.1.4-3'
+    testCompile group: 'org.springframework', name: 'spring-test', version:'4.3.10.RELEASE'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version:'2.9.0'
+    testCompile group: 'org.kubek2k', name: 'springockito', version:'1.0.9'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version:'1.1.4-3'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version:'9.2.22.v20170606'
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-annotations', version:'9.2.22.v20170606'
+    providedCompile group: 'org.eclipse.jetty.websocket', name: 'websocket-server', version:'9.2.22.v20170606'
+    providedCompile group: 'net.sf.jopt-simple', name: 'jopt-simple', version:'5.0.3'
+}
+
+def profile = project.hasProperty('profile') ? project.profile : 'dev'
+
+ext {
+    // default settings
+    jettyPort = 8080
+    jettyHost = '0.0.0.0'
+    datasourceDialect = 'HSQLDB'
+    datasourceDriver = 'org.hsqldb.jdbcDriver'
+    datasourceUrl = 'jdbc:hsqldb:mem:lavagna'
+    datasourceUsername = 'sa'
+    datasourcePassword = ''
+    datasourceValidationQuery = 'SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS'
+
+    switch (profile) {
+        case 'dev-pgsql':
+            datasourceDialect = 'PGSQL'
+            datasourceDriver = 'org.postgresql.Driver'
+            datasourceUrl = 'jdbc:postgresql://localhost:5432/lavagna'
+            datasourceUsername = 'postgres'
+            datasourcePassword = 'password'
+            datasourceValidationQuery = 'SELECT 1'
+            break
+        case 'dev-mysql':
+            datasourceDialect = 'MYSQL'
+            datasourceDriver = 'com.mysql.jdbc.Driver'
+            datasourceUrl = 'jdbc:mysql://localhost:3306/lavagna'
+            datasourceUsername = 'root'
+            datasourcePassword = ''
+            datasourceValidationQuery = 'SELECT 1'
+            break
+    }
+}
+
+war {
+    dependsOn stampoBuild
+    dependsOn generateLicenseReport
+
+    from ("${buildDir}/stampo") {
+        into "help"
+    }
+    from ("${projectDir}/src/main/webapp")
+
+    from ("{$projectDir}") {
+        into "about"
+        include "LICENSE-GPLv3.txt"
+    }
+
+    from ("${buildDir}/licenses/") {
+        into "about"
+        include "THIRD-PARTY.txt"
+    }
+
+    destinationDir = file("${buildDir}/war")
+}
+
+license {
+    header = rootProject.file('config/HEADER')
+    strictCheck = true
+    ignoreFailures = false
+    mapping {
+        java = 'JAVADOC_STYLE'
+        sql = 'DOUBLEDASHES_STYLE'
+    }
+    ext.year = '2012-'+java.time.Year.now().toString()
+    include '**/*.java'
+    include '**/*.sql'
+}
+
+import com.github.jk1.license.importer.XmlReportImporter
+
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$buildDir/licenses"
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderer = new LavagnaLicenseRenderer('THIRD-PARTY.txt')
+
+    // Set importers to import any external dependency information, i.e. from npm.
+    // Custom importer should implement DependencyDataImporter interface.
+    importers = [
+        new XmlReportImporter('Frontend dependencies', file('config/frontend-licenses.xml')),
+        new XmlReportImporter('Additional dependencies', file('config/thirdparty-licenses.xml'))
+    ]
+}
+
+jacoco {
+    toolVersion = '0.7.9'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}

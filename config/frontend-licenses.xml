@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter title="Front End" id="FrontEndLibs">
+    <table>
+        <tr>
+            <td>Project</td>
+            <td>Version</td>
+            <td>License</td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://angularjs.org">AngularJS</a>
+            </td>
+            <td>1.6.6</td>
+            <td>
+                <a href="https://github.com/angular/angular.js/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/angular/material">Angular Material Design</a>
+            </td>
+            <td>1.1.3</td>
+            <td>
+                <a href="https://github.com/angular/material/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/angular-ui/ui-router">Angular ui.router</a>
+            </td>
+            <td>0.4.1</td>
+            <td>
+                <a href="https://github.com/angular-ui/ui-router/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/angular-translate/angular-translate">Angular Translate</a>
+            </td>
+            <td>2.14</td>
+            <td>
+                <a href="https://github.com/angular-translate/angular-translate/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/danialfarid/ng-file-upload">angular-file-upload</a>
+            </td>
+            <td>2.3.4</td>
+            <td>
+                <a href="https://github.com/danialfarid/ng-file-upload/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="http://chartjs.org">Chart.js</a>
+            </td>
+            <td>1.1.1</td>
+            <td>
+                <a href="https://github.com/nnnick/Chart.js/blob/master/LICENSE.md">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://highlightjs.org/">Highlight</a>
+            </td>
+            <td>9.12.0</td>
+            <td>
+                <a href="https://github.com/isagalaev/highlight.js/blob/master/LICENSE">BSD-3-Clause</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://jquery.org/">jQuery</a>
+            </td>
+            <td>3.1.0</td>
+            <td>
+                <a href="https://jquery.org/license">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/chjj/marked">marked</a>
+            </td>
+            <td>0.3.6</td>
+            <td>
+                <a href="https://github.com/chjj/marked/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="http://momentjs.com/">moment.js</a>
+            </td>
+            <td>2.10.6</td>
+            <td>
+                <a href="https://github.com/moment/moment/blob/develop/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="http://sockjs.org">SockJS client</a>
+            </td>
+            <td>1.0.3</td>
+            <td>
+                <a href="https://github.com/sockjs/sockjs-client/blob/master/LICENSE">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/RubaXa/Sortable">Sortable</a>
+            </td>
+            <td>1.4.0</td>
+            <td>
+                <a href="https://opensource.org/licenses/MIT">MIT License</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://github.com/jmesnil/stomp-websocket">Stomp</a>
+            </td>
+            <td>1.7.1</td>
+            <td>
+                <a href="https://github.com/jmesnil/stomp-websocket/blob/master/LICENSE.txt">The Apache Software License, Version 2.0</a>
+            </td>
+        </tr>
+    </table>
+</chapter>
