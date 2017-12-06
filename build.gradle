@@ -10,7 +10,6 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
-    id 'distribution'
     id 'org.jetbrains.kotlin.jvm' version '1.2.0'
     id 'ch.digitalfondue.stampo' version '0.0.3'
     id 'com.github.kt3k.coveralls' version '2.8.1'
@@ -201,39 +200,46 @@ bootRepackage {
     classifier = 'jetty-console'
 }
 
-distributions {
-    documentation {
-        contents {
-            from { "${buildDir}/stampo" }
-        }
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task documentationZip(type: Zip, dependsOn: stampoBuild) {
+    classifier = 'documentation'
+    from "${buildDir}/stampo"
+}
+
+task distributionZip(type: Zip) {
+    classifier = 'distribution'
+    from ("${buildDir}/war") {
+        into 'lavagna'
+        include '*.war'
     }
 
-    distribution {
-        contents {
-            from ("${buildDir}/war") {
-                into 'lavagna'
-                include '*.war'
-            }
-
-            from ('src/assembly') {
-                into 'bin'
-                include 'lavagna.bat'
-                include 'lavagna.sh'
-                fileMode 0755
-            }
-
-            from ('LICENSE-GPLv3.txt') {
-                rename ('LICENSE-GPLv3.txt', 'LICENSE.txt')
-            }
-
-            from ("${buildDir}/licenses/THIRD-PARTY.txt") {
-                rename ('THIRD-PARTY.txt','NOTICE.txt')
-            }
-
-            from ('src/assembly/windows-service') {
-                into 'bin/windows-service'
-                fileMode 0755
-            }
-        }
+    from ('src/assembly') {
+        into 'bin'
+        include 'lavagna.bat'
+        include 'lavagna.sh'
+        fileMode 0755
     }
+
+    from ('LICENSE-GPLv3.txt') {
+        rename ('LICENSE-GPLv3.txt', 'LICENSE.txt')
+    }
+
+    from ("${buildDir}/licenses/THIRD-PARTY.txt") {
+        rename ('THIRD-PARTY.txt','NOTICE.txt')
+    }
+
+    from ('src/assembly/windows-service') {
+        into 'bin/windows-service'
+        fileMode 0755
+    }
+}
+
+artifacts {
+    archives sourcesJar
+    archives documentationZip
+    archives distributionZip
 }
