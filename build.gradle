@@ -1,9 +1,14 @@
 buildscript {
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M7")
     }
     repositories {
+        mavenCentral()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven { url 'https://repo.spring.io/libs-snapshot' }
     }
 }
 
@@ -32,9 +37,6 @@ targetCompatibility = 1.7
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
-}
-
-configurations.all {
 }
 
 repositories {
@@ -131,6 +133,16 @@ ext {
     }
 }
 
+javadoc {
+    failOnError = false
+}
+
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
 war {
     dependsOn stampoBuild
     dependsOn generateLicenseReport
@@ -196,7 +208,7 @@ jacocoTestReport {
     }
 }
 
-bootRepackage {
+bootWar {
     classifier = 'jetty-console'
 }
 
@@ -205,12 +217,17 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 task documentationZip(type: Zip, dependsOn: stampoBuild) {
     classifier = 'documentation'
     from "${buildDir}/stampo"
 }
 
-task distributionZip(type: Zip) {
+task distributionZip(type: Zip, dependsOn: bootWar) {
     classifier = 'distribution'
     from ("${buildDir}/war") {
         into 'lavagna'
@@ -240,6 +257,7 @@ task distributionZip(type: Zip) {
 
 artifacts {
     archives sourcesJar
+    archives javadocJar
     archives documentationZip
     archives distributionZip
 }
