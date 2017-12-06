@@ -243,3 +243,10 @@ artifacts {
     archives documentationZip
     archives distributionZip
 }
+
+release {
+    git {
+        requireBranch = ''
+        pushToRemote = 'origin'
+    }
+}
