@@ -86,7 +86,7 @@ dependencies {
     }
     compile group: 'org.apache.poi', name: 'poi', version:'3.16'
     compile group: 'org.apache.commons', name: 'commons-collections4', version:'4.1'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:'1.1.4-3'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:'1.2.0'
     testCompile group: 'org.springframework', name: 'spring-test', version:'4.3.10.RELEASE'
     testCompile group: 'junit', name: 'junit', version:'4.12'
     testCompile group: 'org.mockito', name: 'mockito-core', version:'2.9.0'
