@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M7")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE")
     }
     repositories {
         mavenCentral()
@@ -8,7 +8,6 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-        maven { url 'https://repo.spring.io/libs-snapshot' }
     }
 }
 
@@ -208,7 +207,7 @@ jacocoTestReport {
     }
 }
 
-bootWar {
+bootRepackage {
     classifier = 'jetty-console'
 }
 
@@ -227,7 +226,7 @@ task documentationZip(type: Zip, dependsOn: stampoBuild) {
     from "${buildDir}/stampo"
 }
 
-task distributionZip(type: Zip, dependsOn: bootWar) {
+task distributionZip(type: Zip) {
     classifier = 'distribution'
     from ("${buildDir}/war") {
         into 'lavagna'
@@ -253,13 +252,6 @@ task distributionZip(type: Zip, dependsOn: bootWar) {
         into 'bin/windows-service'
         fileMode 0755
     }
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-    archives documentationZip
-    archives distributionZip
 }
 
 release {
