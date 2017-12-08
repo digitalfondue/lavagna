@@ -132,6 +132,10 @@ ext {
     }
 }
 
+configurations {
+    distribution
+}
+
 javadoc {
     failOnError = false
 }
@@ -162,6 +166,10 @@ war {
     }
 
     destinationDir = file("${buildDir}/war")
+
+    doLast {
+        bootRepackage.execute()
+    }
 }
 
 license {
@@ -213,24 +221,31 @@ bootRepackage {
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
+
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
+
     from javadoc.destinationDir
 }
 
 task documentationZip(type: Zip, dependsOn: stampoBuild) {
     classifier = 'documentation'
-    from "${buildDir}/stampo"
+
+    from stampoBuild.outputDir
 }
 
 task distributionZip(type: Zip) {
     classifier = 'distribution'
-    from ("${buildDir}/war") {
+
+    from (war.outputs.files) {
         into 'lavagna'
-        include '*.war'
+    }
+    from ("${buildDir}/war") {
+        include '*-jetty-console.war'
+        into 'lavagna'
     }
 
     from ('src/assembly') {
@@ -259,4 +274,12 @@ release {
         requireBranch = ''
         pushToRemote = 'origin'
     }
+}
+
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+    archives documentationZip
+    archives distributionZip
 }
