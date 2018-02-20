@@ -57,8 +57,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 		}
 		//
 
-		//definition order = execution order, the first executed filter is HSTSFilter
-		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");
+		//definition order = execution order, the first executed filter is CSFRFilter
 
 		addFilter(servletContext, "CSFRFilter", CSFRFilter.class, "/*");
 

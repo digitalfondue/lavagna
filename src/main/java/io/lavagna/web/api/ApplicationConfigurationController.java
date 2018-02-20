@@ -23,14 +23,9 @@ import io.lavagna.web.api.model.Conf;
 import io.lavagna.web.helper.ExpectPermission;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.String.format;
-import static java.util.EnumSet.of;
 
 @RestController
 @ExpectPermission(Permission.ADMINISTRATION)
@@ -43,30 +38,6 @@ public class ApplicationConfigurationController {
 	public ApplicationConfigurationController(ConfigurationRepository configurationRepository, Ldap ldap) {
 		this.configurationRepository = configurationRepository;
 		this.ldap = ldap;
-	}
-
-	@RequestMapping(value = "/api/check-https-config", method = RequestMethod.GET)
-	public List<String> checkHttpsConfiguration(HttpServletRequest req) {
-
-		List<String> status = new ArrayList<>(2);
-
-		Map<Key, String> configuration = configurationRepository.findConfigurationFor(of(Key.USE_HTTPS,
-				Key.BASE_APPLICATION_URL));
-
-		final boolean useHttps = "true".equals(configuration.get(Key.USE_HTTPS));
-		if (req.getServletContext().getSessionCookieConfig().isSecure() != useHttps) {
-			status.add("SessionCookieConfig is not aligned with settings. The application must be restarted.");
-		}
-
-		final String baseApplicationUrl = configuration.get(Key.BASE_APPLICATION_URL);
-
-		if (useHttps && !baseApplicationUrl.startsWith("https://")) {
-			status.add(format(
-					"The base application url %s does not begin with https:// . It's a mandatory requirement if you want to enable full https mode.",
-					baseApplicationUrl));
-		}
-
-		return status;
 	}
 
 	@RequestMapping(value = "/api/application-configuration/", method = RequestMethod.GET)
