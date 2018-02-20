@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1-M8 (2018-02-20)
+
+ - Remove the HSTS filter (see https://github.com/digitalfondue/lavagna/issues/97#issuecomment-366937891), updated dependencies.
+
 ## 1.1-M7 (2017-08-16)
 
  - Fix the "email to card" feature, updated dependencies.

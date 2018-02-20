@@ -11,13 +11,13 @@ Lavagna
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
 # Latest stable release is 1.0.7.4 (2017-07-03) #
-# Latest pre-release is 1.1-M7 (2017-08-16) #
+# Latest pre-release is 1.1-M8 (2018-02-20) #
 
 ## About ##
 
 [Lavagna](http://lavagna.io) is a small and easy to use issue/project tracking software.
 
-It requires Java 7 or better and optionally a database: MySQL, MariaDB or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
+It requires Java 8 or better and optionally a database: MySQL, MariaDB or PostgreSQL. It can be deployed in a Java servlet container or as a self contained war.
 
 See:
 
@@ -50,9 +50,9 @@ unzip lavagna-1.0.7.4-distribution.zip
 or the milestone release:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1-M7/lavagna-1.1-M7-distribution.zip
-unzip lavagna-1.1-M7-distribution.zip
-./lavagna-1.1-M7/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1-M8/lavagna-1.1-M8-distribution.zip
+unzip lavagna-1.1-M8-distribution.zip
+./lavagna-1.1-M8/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
