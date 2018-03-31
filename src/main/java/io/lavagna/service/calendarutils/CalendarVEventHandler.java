@@ -103,7 +103,7 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         DateTime dueDate = new DateTime(date.getTime());
         dueDate.setUtc(true);
         final VEvent event = new VEvent(dueDate, name);
-        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
+        event.getProperties().<Property>getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
 
         event.getProperties().add(new Description(descBuilder.toString()));
 
@@ -137,7 +137,7 @@ public class CalendarVEventHandler implements CalendarEventHandler {
         DateTime dueDate = new DateTime(lav.getLabelValueTimestamp());
         dueDate.setUtc(true);
         final VEvent event = new VEvent(dueDate, name);
-        event.getProperties().getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
+        event.getProperties().<Property>getProperty(Property.DTSTART).getParameters().add(Value.DATE_TIME);
 
         event.getProperties().add(new Created(new DateTime(card.getCreationDate())));
         event.getProperties().add(new LastModified(new DateTime(card.getLastUpdateTime())));
