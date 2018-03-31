@@ -33,7 +33,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -41,9 +40,6 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ErrorHandler;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -51,11 +47,9 @@ import java.sql.SQLException;
 /**
  * Datasource configuration.
  */
-@EnableWebSocketMessageBroker
 @EnableTransactionManagement
 @ComponentScan(basePackages = { "io.lavagna.service", "io.lavagna.config.dbmanager" })
-public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerConfigurer implements
-		SchedulingConfigurer {
+public class PersistenceAndServiceConfig implements SchedulingConfigurer {
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -124,15 +118,5 @@ public class PersistenceAndServiceConfig extends AbstractWebSocketMessageBrokerC
 		});
 		scheduler.initialize();
 		return scheduler;
-	}
-
-	@Override
-	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/api/socket").withSockJS().setClientLibraryUrl("../../js/sockjs.min.js");
-	}
-
-	@Override
-	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker("/event");
 	}
 }

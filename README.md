@@ -75,7 +75,7 @@ See the guide at http://lavagna.io/help/openshift/
 
 ### Java and Kotlin ###
 
-Lavagna runs on a Java 7 jvm, but requires Java 8 to build. (due to our documentation library).
+Lavagna runs on a Java 8 jvm.
 Some parts of Lavagna are made with Kotlin.
 
 ### IDE Configuration ###

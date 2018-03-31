@@ -31,7 +31,8 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { DataSourceConfig.class,//
+		return new Class<?>[] { EnableWebSocketMessageBrocker.class,
+                DataSourceConfig.class,//
 				PersistenceAndServiceConfig.class,//
 				SchedulingServiceConfig.class,//
 				WebSecurityConfig.class};

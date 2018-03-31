@@ -19,7 +19,9 @@ package io.lavagna.service.config;
 import io.lavagna.common.LavagnaEnvironment;
 import io.lavagna.config.DataSourceConfig;
 import io.lavagna.service.DatabaseMigrator;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.mock.env.MockEnvironment;
 
 import javax.sql.DataSource;
@@ -49,6 +51,11 @@ public class TestServiceConfig {
 		}
 		return new LavagnaEnvironment(m);
 	}
+
+	@Bean
+    public SimpMessageSendingOperations emitter() {
+	    return Mockito.mock(SimpMessageSendingOperations.class);
+    }
 
 	private static Map<String, Map<String, String>> datasourceConf() {
 		Map<String, Map<String, String>> r = new HashMap<>();
