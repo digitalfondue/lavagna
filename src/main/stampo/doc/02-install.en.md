@@ -4,5 +4,5 @@ This section is divided in 3 steps: first preparing the database, second configu
 
 For installing lavagna, the requirements are:
 
- - a jre (java runtime) >= 7
+ - a jre (java runtime) >= 8
  - utf-8 environment (especially for the database)
