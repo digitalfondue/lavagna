@@ -73,9 +73,18 @@ The script receive the following global variables:
  - MOVE_ACTION_ITEM
  - UNDO_DELETE_ACTION_ITEM
  - UNDO_DELETE_ACTION_LIST
- - CREATE_FILE
- - DELETE_FILE
- - UNDO_DELETE_FILE
+ - CREATE_FILE, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `files`: the list of uploaded files (list of string)
+ - DELETE_FILE, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `file`: the deleted file (string)
+ - UNDO_DELETE_FILE, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `file`: the undeleted file (string)
  - REMOVE_LABEL_VALUE
  - ADD_LABEL_VALUE_TO_CARD
 
