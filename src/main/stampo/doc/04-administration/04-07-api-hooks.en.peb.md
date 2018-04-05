@@ -41,6 +41,11 @@ The script receive the following global variables:
     - `card`: the card (io.lavagna.model.apihook.Card)
     - `previous`: previous name (string)
     - `updated`: current name (string)
+ - UPDATE_CARD_POSITION, additional global variables:
+    - `board`: short name of the board (string)
+    - `affectedCards`: the cards that are moved (list of io.lavagna.model.apihook.Card)
+    - `from`: the source column (io.lavagna.model.apihook.Column)
+    - `to`: the destination column (io.lavagna.model.apihook.Column)
  - UPDATE_DESCRIPTION, additional global variables:
     - `board`: short name of the board (string)
     - `card`: the card (io.lavagna.model.apihook.Card)
@@ -63,16 +68,56 @@ The script receive the following global variables:
     - `board`: short name of the board (string)
     - `card`: the card (io.lavagna.model.apihook.Card)
     - `comment`: the undeleted comment (io.lavagna.model.apihook.CardData)
- - CREATE_ACTION_LIST
- - DELETE_ACTION_LIST
- - UPDATE_ACTION_LIST
- - CREATE_ACTION_ITEM
- - DELETE_ACTION_ITEM
- - TOGGLE_ACTION_ITEM
- - UPDATE_ACTION_ITEM
- - MOVE_ACTION_ITEM
- - UNDO_DELETE_ACTION_ITEM
- - UNDO_DELETE_ACTION_LIST
+ - CREATE_ACTION_LIST, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+ - DELETE_ACTION_LIST, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+ - UNDO_DELETE_ACTION_LIST, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+ - UPDATE_ACTION_LIST, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `previous`: previous name of the list (string)
+    - `updated`: current name of the list (string)
+ - CREATE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+    - `actionItem`: the text of the item (string)
+ - DELETE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+    - `actionItem`: the text of the item (string)
+ - UNDO_DELETE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+    - `actionItem`: the text of the item (string)
+ - TOGGLE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+    - `actionItem`: the text of the item (string)
+    - `toggled`: the state of the action item (boolean) 
+ - UPDATE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionList`: the name of the action list (string)
+    - `previous`: previous text (string)
+    - `updated`: current text (string)
+ - MOVE_ACTION_ITEM, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `actionItem`: the text of the item (string)
+    - `from`: the name of the action list (string)
+    - `to`:  the name of the action list (string)
  - CREATE_FILE, additional global variables:
     - `board`: short name of the board (string)
     - `card`: the card (io.lavagna.model.apihook.Card)
