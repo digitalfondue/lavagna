@@ -85,8 +85,18 @@ The script receive the following global variables:
     - `board`: short name of the board (string)
     - `card`: the card (io.lavagna.model.apihook.Card)
     - `file`: the undeleted file (string)
- - REMOVE_LABEL_VALUE
- - ADD_LABEL_VALUE_TO_CARD
+ - ADD_LABEL_VALUE_TO_CARD, additional global variables:
+    - `board`: short name of the board (string)
+    - `label`: the label (io.lavagna.model.apihook.Label)
+    - `affectedCards`: the cards (list of io.lavagna.model.apihook.Card)
+ - UPDATE_LABEL_VALUE, additional global variables:
+    - `board`: short name of the board (string)
+    - `label`: the label (io.lavagna.model.apihook.Label)
+    - `affectedCards`: the cards (list of io.lavagna.model.apihook.Card)
+ - REMOVE_LABEL_VALUE, additional global variables:
+    - `board`: short name of the board (string)
+    - `label`: the label (io.lavagna.model.apihook.Label)
+    - `affectedCards`: the cards (list of io.lavagna.model.apihook.Card)
 
 ### Script example
 
