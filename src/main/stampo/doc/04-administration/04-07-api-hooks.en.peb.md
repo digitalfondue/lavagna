@@ -46,10 +46,23 @@ The script receive the following global variables:
     - `card`: the card (io.lavagna.model.apihook.Card)
     - `previous`: previous card data (io.lavagna.model.apihook.Card)
     - `updated`: current card data (io.lavagna.model.apihook.Card) 
- - CREATE_COMMENT
- - UPDATE_COMMENT
- - DELETE_COMMENT
- - UNDO_DELETE_COMMENT
+ - CREATE_COMMENT, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `comment`: the comment (io.lavagna.model.apihook.CardData)
+ - UPDATE_COMMENT, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `previous`: previous comment (io.lavagna.model.apihook.CardData)
+    - `updated`: current comment (io.lavagna.model.apihook.CardData)
+ - DELETE_COMMENT, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `comment`: the deleted comment (io.lavagna.model.apihook.CardData)
+ - UNDO_DELETE_COMMENT, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `comment`: the undeleted comment (io.lavagna.model.apihook.CardData)
  - CREATE_ACTION_LIST
  - DELETE_ACTION_LIST
  - UPDATE_ACTION_LIST
