@@ -33,9 +33,19 @@ The script receive the following global variables:
     - `board`: short name of the board (string)
     - `previous`: previous column (io.lavagna.model.apihook.Column)
     - `updated`: current column (io.lavagna.model.apihook.Column)
- - CREATE_CARD
- - UPDATE_CARD
- - UPDATE_DESCRIPTION
+ - CREATE_CARD, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: newly created card (io.lavagna.model.apihook.Card)
+ - UPDATE_CARD, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `previous`: previous name (string)
+    - `updated`: current name (string)
+ - UPDATE_DESCRIPTION, additional global variables:
+    - `board`: short name of the board (string)
+    - `card`: the card (io.lavagna.model.apihook.Card)
+    - `previous`: previous card data (io.lavagna.model.apihook.Card)
+    - `updated`: current card data (io.lavagna.model.apihook.Card) 
  - CREATE_COMMENT
  - UPDATE_COMMENT
  - DELETE_COMMENT
