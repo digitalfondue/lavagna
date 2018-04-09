@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1 (2018-04-09)
+
+ - Cleanup documentation. Stable release.
+
 ## 1.1-M8 (2018-02-20)
 
  - Remove the HSTS filter (see https://github.com/digitalfondue/lavagna/issues/97#issuecomment-366937891), updated dependencies.
