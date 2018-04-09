@@ -58,10 +58,6 @@ Lavagna is also available as a Docker image so you can try it on the fly:
 https://registry.hub.docker.com/u/digitalfondue/lavagna/
 ```
 
-### On openshift ###
-
-See the guide at http://lavagna.io/help/openshift/
-
 ## Develop ##
 
 ### Java and Kotlin ###
