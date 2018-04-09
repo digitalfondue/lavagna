@@ -7,6 +7,12 @@ It can be useful for example to notify an external system, like a slack channel.
 
 ### Script creation
 
+To create a new integration, press the plus button. It will open the following modal window:
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/integration-create.png" alt="create new integration modal window">
+
+Insert the name, a description, configuration parameters (will be available in the global `configuration` variable) and the script.
+
 The script receive the following global variables:
 
  - `log`: an instance of a Logger
@@ -197,3 +203,15 @@ if(supportedEvents[eventName]) {
 
 We check if the event is handled by our script by using a map of string, functions. 
 If the event is present in the map, we execute the function.
+
+
+### Manage the integration
+
+All the integrations will be listed as shown below.
+
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/integration-manage.png" alt="manage integrations">
+
+Clicking on the <span class="icon icon-disable-sync"></span> button, will disable the script, for re-enable it, click on <span class="icon icon-enable-sync"></span>.
+
+You can edit (<span class="icon icon-edit"></span>) and delete (<span class="icon icon-delete"></span>) the integration too.

@@ -88,3 +88,12 @@
 .icon-bulk-label {
     background-image: url(../svg/bulk-label.svg);
 }
+
+
+.icon-enable-sync {
+    background-image: url(../svg/ic_sync_black_48px.svg);
+}
+
+.icon-disable-sync {
+    background-image: url(../svg/ic_sync_disabled_black_48px.svg);
+}
