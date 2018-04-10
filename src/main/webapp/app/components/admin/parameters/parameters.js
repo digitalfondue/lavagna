@@ -11,7 +11,7 @@
     function AdminParametersController(Admin, Notification, $q) {
         var ctrl = this;
 
-        var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'USE_HTTPS', 'EMAIL_NOTIFICATION_TIMESPAN'];
+        var configurableKeys = ['TRELLO_API_KEY', 'MAX_UPLOAD_FILE_SIZE', 'EMAIL_NOTIFICATION_TIMESPAN'];
 
         ctrl.updateAllChangedConfiguration = updateAllChangedConfiguration;
 
@@ -23,11 +23,7 @@
             ctrl.configurable = {};
             angular.forEach(configurableKeys, function (v) {
                 Admin.findByKey(v).then(function (res) {
-                    if (res.first === 'USE_HTTPS') {
-                        ctrl.configurable[res.first] = res.second === 'true';
-                    } else {
-                        ctrl.configurable[res.first] = res.second;
-                    }
+                    ctrl.configurable[res.first] = res.second;
                 });
             });
 

@@ -15,9 +15,16 @@ The following page will be shown:
 
 Lavagna does **not** store the user credentials by design: an external provider must be chosen. There are 3 possible choice:
 
+ - password
  - demo (use for test purpose only)
  - ldap
  - oauth
+ 
+#### Password provider
+
+If you want to manage your accounts inside lavagna.
+
+<img class="pure-img" src="{{relativeRootPath}}/images/en/c02_install_step_2_password.png" alt="Password provider">
  
 #### Demo provider
 

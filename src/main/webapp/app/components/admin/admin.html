@@ -2,14 +2,6 @@
     <lvg-navbar-admin></lvg-navbar-admin>
 </md-toolbar>
 
-<div class="lvg-content lvg-content__row-item" ng-if="$ctrl.httpsConfigurationCheck.length > 0">
-    <div class="row row-inherit lvg-admin__https-alerts">
-        <h3 translate>admin.httpsRelatedProblems</h3>
-        <div ng-repeat="desc in $ctrl.httpsConfigurationCheck"
-             class="lvg-admin__https-alert">{{::desc}}</div>
-    </div>
-</div>
-
 <div class="row lvg-content">
     <div class="col-xs-12" ui-view data-autoscroll="false"></div>
 </div>

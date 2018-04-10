@@ -7,7 +7,6 @@ The following parameters can be configured in this page:
 * **Email notification interval**: In seconds. How often to check for new events and send email notifications. If not configured, the default value is 30
 * **Max upload file size**: Size in bytes. Limit the dimensions of the uploaded files. If not configured, no limit will be considered
 * **Trello API Key**: Trello api key to import boards, can be found at https://trello.com/app-key
-* **Enable http strict transport security header**: If true the [Strict Transport Security](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) header will be sent and the application will be accessible only over a https connection.
 
 To modify a parameter, enter the new value and click **Save**. 
 

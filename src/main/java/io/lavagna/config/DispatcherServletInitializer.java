@@ -31,7 +31,8 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { DataSourceConfig.class,//
+		return new Class<?>[] { EnableWebSocketMessageBrocker.class,
+                DataSourceConfig.class,//
 				PersistenceAndServiceConfig.class,//
 				SchedulingServiceConfig.class,//
 				WebSecurityConfig.class};
@@ -57,8 +58,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 		}
 		//
 
-		//definition order = execution order, the first executed filter is HSTSFilter
-		addFilter(servletContext, "HSTSFilter", HSTSFilter.class, "/*");
+		//definition order = execution order, the first executed filter is CSFRFilter
 
 		addFilter(servletContext, "CSFRFilter", CSFRFilter.class, "/*");
 

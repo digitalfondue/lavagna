@@ -34,6 +34,7 @@ enum class Key {
     //
     OAUTH_CONFIGURATION,
     //
+    @Deprecated("") // kept for retrocompatibility
     USE_HTTPS,
     //
     ENABLE_ANON_USER,

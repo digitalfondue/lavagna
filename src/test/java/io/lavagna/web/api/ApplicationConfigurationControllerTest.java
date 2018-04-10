@@ -29,8 +29,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.servlet.ServletContext;
-import javax.servlet.SessionCookieConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
@@ -107,16 +105,5 @@ public class ApplicationConfigurationControllerTest {
 		MailConfig mc = mock(MailConfig.class);
 		applConfCtrl.checkSmtp(mc, "test@test.test");
 		verify(mc).send(any(String.class), any(String.class), any(String.class));
-	}
-
-	@Test
-	public void checkHttps() {
-		ServletContext sc = mock(ServletContext.class);
-		when(req.getServletContext()).thenReturn(sc);
-
-		SessionCookieConfig scc = mock(SessionCookieConfig.class);
-		when(sc.getSessionCookieConfig()).thenReturn(scc);
-
-		applConfCtrl.checkHttpsConfiguration(req);
 	}
 }

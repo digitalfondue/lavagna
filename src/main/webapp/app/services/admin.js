@@ -29,10 +29,6 @@
             deleteKeyConfiguration: function (key) {
                 return $http['delete']('api/application-configuration/' + key).then(extractData);
             },
-            checkHttpsConfiguration: function () {
-                return $http.get('api/check-https-config').then(extractData);
-            },
-
             checkLdap: function (ldap, usernameAndPwd) {
                 return $http.post('api/check-ldap/', angular.extend({}, ldap, usernameAndPwd)).then(extractData);
             },

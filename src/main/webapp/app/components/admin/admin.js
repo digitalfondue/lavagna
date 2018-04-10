@@ -5,16 +5,9 @@
 
     components.component('lvgAdmin', {
         templateUrl: 'app/components/admin/admin.html',
-        controller: ['Admin', AdminController],
+        controller: [AdminController],
     });
 
-    function AdminController(Admin) {
-        var ctrl = this;
-
-        ctrl.$onInit = function () {
-            Admin.checkHttpsConfiguration().then(function (res) {
-                ctrl.httpsConfigurationCheck = res;
-            });
-        };
+    function AdminController() {
     }
 }());
