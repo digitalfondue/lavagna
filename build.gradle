@@ -14,7 +14,7 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.31'
     id 'ch.digitalfondue.stampo' version '0.0.3'
     id 'com.github.kt3k.coveralls' version '2.8.1'
     id 'com.github.ben-manes.versions' version '0.15.0'
@@ -31,11 +31,11 @@ version = '1.1-M8-SNAPSHOT'
 
 description = 'lavagna'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
+    options.encoding = 'UTF-8'
 }
 
 repositories {
@@ -46,62 +46,15 @@ repositories {
     }
 }
 
-dependencies {
-    compile group: 'org.springframework', name: 'spring-webmvc', version:'4.3.10.RELEASE'
-    compile group: 'org.springframework', name: 'spring-websocket', version:'4.3.10.RELEASE'
-    compile group: 'org.springframework', name: 'spring-messaging', version:'4.3.10.RELEASE'
-    compile group: 'org.springframework', name: 'spring-jdbc', version:'4.3.10.RELEASE'
-    compile group: 'org.springframework', name: 'spring-context-support', version:'4.3.10.RELEASE'
-    compile group: 'org.springframework.integration', name: 'spring-integration-mail', version:'4.3.11.RELEASE'
-    compile group: 'ch.digitalfondue.npjt-extra', name: 'npjt-extra', version:'1.1.4'
-    compile group: 'org.apache.commons', name: 'commons-text', version:'1.1'
-    compile group: 'commons-codec', name: 'commons-codec', version:'1.10'
-    compile group: 'com.google.code.gson', name: 'gson', version:'2.8.0'
-    compile group: 'org.flywaydb', name: 'flyway-core', version:'4.2.0'
-    compile group: 'org.scribe', name: 'scribe', version:'1.3.7'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.9.1'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.1'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.9.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version:'2.8.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.8.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version:'2.8.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version:'2.8.2'
-    compile(group: 'com.julienvey.trello', name: 'trello-java-wrapper', version:'0.3.2') {
-        exclude(module: 'logback-core')
-        exclude(module: 'logback-classic')
-    }
-    compile group: 'com.samskivert', name: 'jmustache', version:'1.13'
-    compile group: 'org.jsoup', name: 'jsoup', version:'1.10.3'
-    compile group: 'com.atlassian.commonmark', name: 'commonmark', version:'0.9.0'
-    compile group: 'com.lambdaworks', name: 'scrypt', version:'1.4.0'
-    compile group: 'org.hsqldb', name: 'hsqldb', version:'2.4.0'
-    compile group: 'mysql', name: 'mysql-connector-java', version:'5.1.41'
-    compile group: 'org.postgresql', name: 'postgresql', version:'42.1.4.jre7'
-    compile group: 'com.zaxxer', name: 'HikariCP-java7', version:'2.4.13'
-    compile group: 'org.tuckey', name: 'urlrewritefilter', version:'4.0.4'
-    compile group: 'javax.mail', name: 'mail', version:'1.4.6'
-    compile(group: 'org.mnode.ical4j', name: 'ical4j', version:'2.0.4') {
-        exclude(module: 'groovy-all')
-        exclude(module: 'bndlib')
-    }
-    compile group: 'org.apache.poi', name: 'poi', version:'3.16'
-    compile group: 'org.apache.commons', name: 'commons-collections4', version:'4.1'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version:'1.2.0'
-    testCompile group: 'org.springframework', name: 'spring-test', version:'4.3.10.RELEASE'
-    testCompile group: 'junit', name: 'junit', version:'4.12'
-    testCompile group: 'org.mockito', name: 'mockito-core', version:'2.9.0'
-    testCompile group: 'org.kubek2k', name: 'springockito', version:'1.0.9'
-    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version:'1.1.4-3'
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
-    providedCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version:'9.2.22.v20170606'
-    providedCompile group: 'org.eclipse.jetty', name: 'jetty-annotations', version:'9.2.22.v20170606'
-    providedCompile group: 'org.eclipse.jetty.websocket', name: 'websocket-server', version:'9.2.22.v20170606'
-    providedCompile group: 'net.sf.jopt-simple', name: 'jopt-simple', version:'5.0.3'
-}
-
 def profile = project.hasProperty('profile') ? project.profile : 'dev'
 
 ext {
+    // versions
+    springFrameworkVersion = '5.0.4.RELEASE'
+    jettyVersion = '9.4.9.v20180320'
+    fasterXmlJacksonVersion = '2.9.5'
+    log4jVersion = '2.11.0'
+
     // default settings
     jettyPort = 8080
     jettyHost = '0.0.0.0'
@@ -132,6 +85,61 @@ ext {
     }
 }
 
+
+dependencies {
+    compileOnly 'org.leandreck.endpoints:annotations:0.4.0'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: springFrameworkVersion
+    compile group: 'org.springframework', name: 'spring-websocket', version: springFrameworkVersion
+    compile group: 'org.springframework', name: 'spring-messaging', version: springFrameworkVersion
+    compile group: 'org.springframework', name: 'spring-jdbc', version: springFrameworkVersion
+    compile group: 'org.springframework', name: 'spring-context-support', version: springFrameworkVersion
+    compile group: 'org.springframework.integration', name: 'spring-integration-mail', version: springFrameworkVersion
+    compile group: 'ch.digitalfondue.npjt-extra', name: 'npjt-extra', version: '1.1.4'
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.1'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '4.2.0'
+    compile group: 'org.scribe', name: 'scribe', version: '1.3.7'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: fasterXmlJacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: fasterXmlJacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: fasterXmlJacksonVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion
+    compile(group: 'com.julienvey.trello', name: 'trello-java-wrapper', version: '0.3.2') {
+        exclude(module: 'logback-core')
+        exclude(module: 'logback-classic')
+    }
+    compile group: 'com.samskivert', name: 'jmustache', version: '1.13'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.9.0'
+    compile group: 'com.lambdaworks', name: 'scrypt', version: '1.4.0'
+    compile group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.41'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4.jre7'
+    compile group: 'com.zaxxer', name: 'HikariCP-java7', version: '2.4.13'
+    compile group: 'org.tuckey', name: 'urlrewritefilter', version: '4.0.4'
+    compile group: 'javax.mail', name: 'mail', version: '1.4.6'
+    compile(group: 'org.mnode.ical4j', name: 'ical4j', version: '2.0.4') {
+        exclude(module: 'groovy-all')
+        exclude(module: 'bndlib')
+    }
+    compile group: 'org.apache.poi', name: 'poi', version: '3.16'
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.2.0'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.10.RELEASE'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.9.0'
+    testCompile group: 'org.kubek2k', name: 'springockito', version: '1.0.9'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.4-3'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jettyVersion
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-annotations', version: jettyVersion
+    providedCompile group: 'org.eclipse.jetty.websocket', name: 'websocket-server', version: jettyVersion
+    providedCompile group: 'net.sf.jopt-simple', name: 'jopt-simple', version: '5.0.3'
+}
+
 configurations {
     distribution
 }
@@ -150,17 +158,17 @@ war {
     dependsOn stampoBuild
     dependsOn generateLicenseReport
 
-    from ("${buildDir}/stampo") {
+    from("${buildDir}/stampo") {
         into 'help'
     }
-    from ("${projectDir}/src/main/webapp")
+    from("${projectDir}/src/main/webapp")
 
-    from ("{$projectDir}") {
+    from("{$projectDir}") {
         into 'about'
         include 'LICENSE-GPLv3.txt'
     }
 
-    from ("${buildDir}/licenses/") {
+    from("${buildDir}/licenses/") {
         into 'about'
         include 'THIRD-PARTY.txt'
     }
@@ -240,30 +248,30 @@ task documentationZip(type: Zip, dependsOn: stampoBuild) {
 task distributionZip(type: Zip) {
     classifier = 'distribution'
 
-    from (war.outputs.files) {
+    from(war.outputs.files) {
         into 'lavagna'
     }
-    from ("${buildDir}/war") {
+    from("${buildDir}/war") {
         include '*-jetty-console.war'
         into 'lavagna'
     }
 
-    from ('src/assembly') {
+    from('src/assembly') {
         into 'bin'
         include 'lavagna.bat'
         include 'lavagna.sh'
         fileMode 0755
     }
 
-    from ('LICENSE-GPLv3.txt') {
-        rename ('LICENSE-GPLv3.txt', 'LICENSE.txt')
+    from('LICENSE-GPLv3.txt') {
+        rename('LICENSE-GPLv3.txt', 'LICENSE.txt')
     }
 
-    from ("${buildDir}/licenses/THIRD-PARTY.txt") {
-        rename ('THIRD-PARTY.txt','NOTICE.txt')
+    from("${buildDir}/licenses/THIRD-PARTY.txt") {
+        rename('THIRD-PARTY.txt', 'NOTICE.txt')
     }
 
-    from ('src/assembly/windows-service') {
+    from('src/assembly/windows-service') {
         into 'bin/windows-service'
         fileMode 0755
     }
