@@ -17,6 +17,9 @@
 package io.lavagna.service;
 
 import io.lavagna.model.*;
+import io.lavagna.service.mailreceiver.ImapMailReceiver;
+import io.lavagna.service.mailreceiver.MailReceiver;
+import io.lavagna.service.mailreceiver.Pop3MailReceiver;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,9 +28,6 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.commonmark.renderer.text.TextContentRenderer;
 import org.jsoup.Jsoup;
-import org.springframework.integration.mail.ImapMailReceiver;
-import org.springframework.integration.mail.MailReceiver;
-import org.springframework.integration.mail.Pop3MailReceiver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -131,52 +132,57 @@ public class MailTicketService {
                 getImapMailReceiver(entry.getConfig());
 
             try {
-                Date updateLastChecked = entry.getLastChecked();
+                AtomicReference<Date> updateLastChecked = new AtomicReference<>(entry.getLastChecked());
 
-                Object[] messages = receiver.receive();
-                LOG.debug("found {} messages", messages.length);
+                receiver.receive(messages -> {
+                    LOG.debug("found {} messages", messages.length);
+                    for (int i = 0; i < messages.length; i++) {
+                        try {
+                            MimeMessage message = messages[i];
+                            Date receivedDate = resolveReceivedDate(message);
+                            if(receivedDate == null) {
+                                LOG.error("for ticket mail config id {}: was not able to fetch the \"receive date\" for email sent by {}", entry.getId(), getFrom(message));
+                                continue;
+                            }
 
-                for (int i = 0; i < messages.length; i++) {
-                    MimeMessage message = (MimeMessage) messages[i];
-                    Date receivedDate = resolveReceivedDate(message);
-                    if(receivedDate == null) {
-                        LOG.error("for ticket mail config id {}: was not able to fetch the \"receive date\" for email sent by {}", entry.getId(), getFrom(message));
-                        continue;
-                    }
+                            if (!receivedDate.after(entry.getLastChecked())) {
+                                continue;
+                            } else {
+                                updateLastChecked.set(receivedDate.after(updateLastChecked.get()) ? receivedDate : updateLastChecked.get());
+                            }
 
-                    if (!receivedDate.after(entry.getLastChecked())) {
-                        continue;
-                    } else {
-                        updateLastChecked = receivedDate.after(updateLastChecked) ? receivedDate : updateLastChecked;
-                    }
+                            boolean hasMatched = false;
+                            for (ProjectMailTicket ticketConfig : entry.getEntries()) {
+                                if (ticketConfig.getEnabled() && isAliasPresentInMessageHeaders(ticketConfig.getAlias(), message)) {
+                                    hasMatched = true || hasMatched;
+                                    String from = getFrom(message);
+                                    String name = getName(message);
+                                    Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
 
-                    boolean hasMatched = false;
-                    for (ProjectMailTicket ticketConfig : entry.getEntries()) {
-                        if (ticketConfig.getEnabled() && isAliasPresentInMessageHeaders(ticketConfig.getAlias(), message)) {
-                            hasMatched = true || hasMatched;
-                            String from = getFrom(message);
-                            String name = getName(message);
-                            Matcher m = CARD_SHORT_NAME.matcher(message.getSubject());
+                                    if (!m.find() ||
+                                        (m.find() && !cardService.existCardWith(m.group("shortname"), Integer.parseInt(m.group("sequence"))))) {
+                                        try {
+                                            ImmutablePair<Card, User> cardAndUser = createCard(message.getSubject(), getTextFromMessage(message), from, ticketConfig.getColumnId());
 
-                            if (!m.find() ||
-                                (m.find() && !cardService.existCardWith(m.group("shortname"), Integer.parseInt(m.group("sequence"))))) {
-                                try {
-                                    ImmutablePair<Card, User> cardAndUser = createCard(message.getSubject(), getTextFromMessage(message), from, ticketConfig.getColumnId());
-
-                                    notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from, name);
-                                } catch (IOException | MessagingException e) {
-                                    LOG.error("failed to parse message body", e);
+                                            notify(cardAndUser.getLeft(), entry, ticketConfig, cardAndUser.getRight(), from, name);
+                                        } catch (IOException | MessagingException e) {
+                                            LOG.error("failed to parse message body", e);
+                                        }
+                                    }
                                 }
                             }
+
+                            if(!hasMatched) {
+                                printEmailHeaders(message);
+                            }
+                        } catch (MessagingException e) {
+                            LOG.error("could not retrieve messages for ticket mail config id: {}", entry.getId());
+                            LOG.error("exception is ", e);
                         }
                     }
+                });
 
-                    if(!hasMatched) {
-                        printEmailHeaders(message);
-                    }
-                }
-
-                mailTicketRepository.updateLastChecked(entry.getId(), updateLastChecked);
+                mailTicketRepository.updateLastChecked(entry.getId(), updateLastChecked.get());
             } catch (MessagingException e) {
                 LOG.error("could not retrieve messages for ticket mail config id: {}", entry.getId());
                 LOG.error("exception is ", e);

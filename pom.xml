@@ -645,6 +645,9 @@
                         <include>**/*.java</include>
                         <include>**/*.sql</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/mailreceiver/*.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
