@@ -18,7 +18,7 @@
         var ctrl = this;
 
         ctrl.$onInit = function () {
-            User.hasPermission('MANAGE_ACTION_LIST').then(function (res) {
+            User.hasPermission('MANAGE_ACTION_LIST', undefined, true).then(function (res) {
                 ctrl.canModify = res;
             });
         };

@@ -189,7 +189,11 @@
                 });
             },
 
-            hasPermission: function (permissionToCheck, projectName) {
+            hasPermission: function (permissionToCheck, projectName, useCurrentProject) {
+                if(useCurrentProject === true) {
+                    projectName = $stateParams.projectName;
+                }
+
                 return this.hasAllPermissions([permissionToCheck], projectName);
             },
 

@@ -103,7 +103,7 @@
                 };
 
                 if (angular.isDefined(requiredPermission)) {
-                    User.hasPermission(requiredPermission).then(function (res) {
+                    User.hasPermission(requiredPermission, undefined, true).then(function (res) {
                         if (res) {
                             sortableInstance = Sortable.create($element[0], opts);
                         }
