@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 (2018-06-17)
+
+ - Update dependencies
+ - Fix html email issue (see https://github.com/digitalfondue/lavagna/issues/103)
+ - Fix card d&d with the role only defined at the project level (see https://github.com/digitalfondue/lavagna/issues/105)
+
 ## 1.1 (2018-04-09)
 
  - Cleanup documentation. Stable release.
