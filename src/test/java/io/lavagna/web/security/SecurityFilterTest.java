@@ -70,7 +70,7 @@ public class SecurityFilterTest {
 
 		//
 		Map<String, SecurityConfiguration> paths = new LinkedHashMap<>();
-		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, userRepository, sessionHandler, webApplicationContext));
+		paths.put("configuredAppPathConf", webSecurityConfig.configuredApp(configurationRepository, sessionHandler, webApplicationContext));
 		paths.put("unconfiguredAppPathConf", webSecurityConfig.unconfiguredApp(configurationRepository));
 		//
 

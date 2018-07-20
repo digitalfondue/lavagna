@@ -39,7 +39,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.util.ErrorHandler;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -110,12 +109,7 @@ public class PersistenceAndServiceConfig implements SchedulingConfigurer {
 	@Bean(destroyMethod = "shutdown")
 	public TaskScheduler taskScheduler() {
 		ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-		scheduler.setErrorHandler(new ErrorHandler() {
-			@Override
-			public void handleError(Throwable t) {
-				LogManager.getLogger().error("error while handling job", t);
-			}
-		});
+		scheduler.setErrorHandler(t -> LogManager.getLogger().error("error while handling job", t));
 		scheduler.initialize();
 		return scheduler;
 	}

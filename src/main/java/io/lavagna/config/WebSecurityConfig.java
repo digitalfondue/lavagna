@@ -47,7 +47,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -60,7 +59,7 @@ import static java.util.Arrays.asList;
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityConfiguration configuredApp(ConfigurationRepository configurationRepository, UserRepository userRepository, SessionHandler sessionHandler, ApplicationContext context) {
+    public SecurityConfiguration configuredApp(ConfigurationRepository configurationRepository, SessionHandler sessionHandler, ApplicationContext context) {
 
         return new SecurityConfiguration().requestMatcher(onlyWhenSetupComplete(configurationRepository))
                 .loginHandlerFinder(loginHandlerFinder(configurationRepository, context))
@@ -95,22 +94,18 @@ public class WebSecurityConfig {
     }
 
     private LoginPageGenerator loginPageGenerator() {
-        return new LoginPageGenerator() {
-
-            @Override
-            public void generate(HttpServletRequest req, HttpServletResponse resp, Map<String, LoginHandler> handlers) throws IOException {
-                Map<String, Object> model = new HashMap<>();
-                model.put("version", Version.version());
-                for (LoginHandler lh : handlers.values()) {
-                    model.putAll(lh.modelForLoginPage(req));
-                }
-                resp.setStatus(HttpServletResponse.SC_OK);
-                resp.setContentType("text/html");
-                resp.setCharacterEncoding("UTF-8");
-                model.put("json", Json.GSON.toJson(model));
-                try (InputStream is = req.getServletContext().getResourceAsStream("/WEB-INF/views/login.html")) {
-                    Mustache.compiler().escapeHTML(false).defaultValue("").compile(new InputStreamReader(is, StandardCharsets.UTF_8)).execute(model, resp.getWriter());
-                }
+        return (req, resp, handlers) -> {
+            Map<String, Object> model = new HashMap<>();
+            model.put("version", Version.version());
+            for (LoginHandler lh : handlers.values()) {
+                model.putAll(lh.modelForLoginPage(req));
+            }
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType("text/html");
+            resp.setCharacterEncoding("UTF-8");
+            model.put("json", Json.GSON.toJson(model));
+            try (InputStream is = req.getServletContext().getResourceAsStream("/WEB-INF/views/login.html")) {
+                Mustache.compiler().escapeHTML(false).defaultValue("").compile(new InputStreamReader(is, StandardCharsets.UTF_8)).execute(model, resp.getWriter());
             }
         };
     }
@@ -261,21 +256,11 @@ public class WebSecurityConfig {
 
 
     private static SecurityConfiguration.RequestMatcher onlyWhenSetupComplete(final ConfigurationRepository configurationRepository) {
-        return new SecurityConfiguration.RequestMatcher() {
-            @Override
-            public boolean match(HttpServletRequest request) {
-                return "true".equals(configurationRepository.getValueOrNull(Key.SETUP_COMPLETE));
-            }
-        };
+        return request -> "true".equals(configurationRepository.getValueOrNull(Key.SETUP_COMPLETE));
     }
 
     private static SecurityConfiguration.RequestMatcher onlyWhenSetupIsNotComplete(final ConfigurationRepository configurationRepository) {
-        return new SecurityConfiguration.RequestMatcher() {
-            @Override
-            public boolean match(HttpServletRequest request) {
-                return !"true".equals(configurationRepository.getValueOrNull(Key.SETUP_COMPLETE));
-            }
-        };
+        return request -> !"true".equals(configurationRepository.getValueOrNull(Key.SETUP_COMPLETE));
     }
 
     @Lazy
@@ -287,12 +272,7 @@ public class WebSecurityConfig {
     @Lazy
     @Bean
     public OAuthLogin oauthLogin(Users users, SessionHandler sessionHandler, final ConfigurationRepository configurationRepository) {
-        OauthConfigurationFetcher configurationFetcher = new OauthConfigurationFetcher() {
-            @Override
-            public OAuthConfiguration fetch() {
-                return Json.GSON.fromJson(configurationRepository.getValueOrNull(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
-            }
-        };
+        OauthConfigurationFetcher configurationFetcher = () -> Json.GSON.fromJson(configurationRepository.getValueOrNull(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
         return new OAuthLogin(users, sessionHandler, configurationFetcher, new OAuthServiceBuilder(), "/login?error-oauth");
     }
 
