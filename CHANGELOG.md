@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2 (2018-07-20)
+
+ - Fix download export for Firefox (see https://github.com/digitalfondue/lavagna/issues/107)
+ - Add the possibility to configure lavagna from properties/file (see https://github.com/digitalfondue/lavagna/issues/108)
+
 ## 1.1.1 (2018-06-17)
 
  - Update dependencies
