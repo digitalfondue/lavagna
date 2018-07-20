@@ -716,7 +716,38 @@
                         <systemProperty>
                             <name>spring.profiles.active</name>
                             <value>${spring.profiles.active}</value>
+                            <value>prod</value>
                         </systemProperty>
+                        <!-- if you want to test the fromData configuration feature
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>prod</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.fromData</name>
+                            <value>true</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.AUTHENTICATION_METHOD</name>
+                            <value>PASSWORD</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.BASE_APPLICATION_URL</name>
+                            <value>http://localhost:8080/</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.admin.user.provider</name>
+                            <value>password</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.admin.user.name</name>
+                            <value>user</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>setup.admin.user.password</name>
+                            <value>user</value>
+                        </systemProperty>
+                        -->
                         <systemProperty>
                             <name>datasource.dialect</name>
                             <value>${datasource.dialect}</value>
