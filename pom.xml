@@ -88,7 +88,7 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-mail</artifactId>
-            <version>5.0.7.RELEASE</version>
+            <version>5.0.9.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ch.digitalfondue.npjt-extra</groupId>
@@ -253,7 +253,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.4.jre7</version>
+            <version>42.2.5.jre7</version>
         </dependency>
 
         <dependency>
@@ -341,8 +341,8 @@
     <!-- -->
     <properties>
         <org.apache.logging.log4j.version>2.11.1</org.apache.logging.log4j.version>
-        <org.springframework.version>5.0.8.RELEASE</org.springframework.version>
-        <org.eclipse.jetty.version>9.4.11.v20180605</org.eclipse.jetty.version>
+        <org.springframework.version>5.0.10.RELEASE</org.springframework.version>
+        <org.eclipse.jetty.version>9.4.12.v20180830</org.eclipse.jetty.version>
         <com.fasterxml.jackson.version>2.9.6</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
