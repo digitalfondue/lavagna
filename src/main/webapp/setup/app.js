@@ -3,6 +3,37 @@
 
     var module = angular.module('lavagna-setup', ['ui.router', 'ngSanitize', 'ngMessages', 'ngMaterial']);
 
+
+    module.factory('lavagnaHttpInterceptor', ['$q', '$window', function ($q, $window) {
+            //
+        return {
+            'request': function (config) {
+                if (angular.isDefined($window.csrfToken) && $window.csrfToken !== null) {
+                    config.headers['x-csrf-token'] = $window.csrfToken;
+                }
+
+                return config;
+            },
+            'response': function (response) {
+                var headers = response.headers();
+
+                if (headers['x-csrf-token']) {
+                    $window.csrfToken = headers['x-csrf-token'];
+                }
+
+                return response;
+            },
+            'responseError': function (rejection) {
+                // if the session has been lost, trigger a reload
+                if (rejection.status === 401) {
+                    $window.location.reload();
+                }
+
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+
     module.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
         $stateProvider.state('first-step', {
             url: '/',
@@ -20,27 +51,7 @@
 
         $urlRouterProvider.otherwise('/');
 
-        $httpProvider.interceptors.push(function () {
-            var csrfToken = null;
-
-            return {
-                'request': function (config) {
-                    if (csrfToken) {
-                        config.headers['x-csrf-token'] = csrfToken;
-                    }
-
-                    return config;
-                },
-                'response': function (response) {
-                    if (response.headers()['x-csrf-token']) {
-                        csrfToken = response.headers()['x-csrf-token'];
-                        window.csrfToken = csrfToken;
-                    }
-
-                    return response;
-                }
-            };
-        });
+        $httpProvider.interceptors.push('lavagnaHttpInterceptor');
     }]);
 
     module.service('Configuration', function () {
