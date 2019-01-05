@@ -349,7 +349,7 @@
         <org.apache.logging.log4j.version>2.11.1</org.apache.logging.log4j.version>
         <org.springframework.version>5.1.2.RELEASE</org.springframework.version>
         <org.eclipse.jetty.version>9.4.12.v20180830</org.eclipse.jetty.version>
-        <com.fasterxml.jackson.version>2.9.7</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.9.8</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
         <kotlin.version>1.3.10</kotlin.version>
