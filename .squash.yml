@@ -1,0 +1,4 @@
+deployments:
+  default:
+    dockerimage: digitalfondue/lavagna:latest
+    port_forwarding: 80:8080
