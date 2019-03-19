@@ -248,3 +248,7 @@ mvn versions:display-dependency-updates
 ```
 mvn versions:display-plugin-updates
 ```
+
+## Supported by ##
+
+[![Alt text](misc/jetbrains.png)](https://www.jetbrains.com/?from=Lavagna)
