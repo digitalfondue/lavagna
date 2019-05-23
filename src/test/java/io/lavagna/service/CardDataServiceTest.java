@@ -483,7 +483,7 @@ public class CardDataServiceTest {
         assertEquals(3, actionList2Items.size());
 
         // move middle item of list 2 to the beginning of list 1
-        int indexToMove = Math.round(numberOfActionItems / 2);
+        int indexToMove = numberOfActionItems / 2;
 
         CardData itemToMove = actionList2Items.get(indexToMove);
 

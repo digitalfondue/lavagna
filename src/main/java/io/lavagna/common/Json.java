@@ -35,6 +35,7 @@ public final class Json {
         }
     }
 
+    @SuppressWarnings("InvalidTimeZoneID")
     public static String formatDate(Date date) {
         return DateFormatUtils.format(date, Constants.DATE_FORMAT, TimeZone.getTimeZone("Z"));
     }
