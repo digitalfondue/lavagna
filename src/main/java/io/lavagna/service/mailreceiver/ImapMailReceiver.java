@@ -135,7 +135,7 @@ public class ImapMailReceiver extends AbstractMailReceiver {
     }
 
     @Override
-    protected void onInit() throws Exception {
+    protected void onInit() {
         super.onInit();
         this.scheduler = getTaskScheduler();
         if (this.scheduler == null) {
