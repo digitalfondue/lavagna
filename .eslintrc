@@ -90,7 +90,7 @@
         "no-iterator": 2,                   // disallow usage of __iterator__ property
         "no-labels": 2,                     // disallow use of labeled statements
         "no-lone-blocks": 2,                // disallow unnecessary nested blocks
-        "no-loop-func": 2,                  // disallow creation of functions within loops
+        "no-loop-func": 0,                  // disallow creation of functions within loops
         "no-multi-spaces": 2,               // disallow use of multiple spaces
         "no-multi-str": 2,                  // disallow use of multiline strings
         "no-new-func": 2,                   // disallow use of new operator for Function object
@@ -121,7 +121,7 @@
         "no-with": 2,                       // disallow use of the with statement
         "radix": 0,                         // require use of the second argument for parseInt() (off by default)
         "vars-on-top": 0,                   // requires to declare all vars on top of their containing scope (off by default)
-        "wrap-iife": 2,                     // require immediate function invocation to be wrapped in parentheses (off by default)
+        "wrap-iife": 0,                     // require immediate function invocation to be wrapped in parentheses (off by default)
         "yoda": 1,                          // require or disallow Yoda conditions
 
 

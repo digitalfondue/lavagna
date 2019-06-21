@@ -17,8 +17,8 @@
         }
     ],
     "scripts": {
-        "lint": "./node_modules/.bin/eslint src/main/webapp/app/** src/main/webapp/app-login/*.js src/main/webapp/setup/**",
-        "lint-fix": "./node_modules/.bin/eslint src/main/webapp/app/** src/main/webapp/app-login/*.js src/main/webapp/setup/** --fix"
+        "lint": "./node_modules/.bin/eslint src/main/webapp/app src/main/webapp/app-login/ src/main/webapp/setup/",
+        "lint-fix": "./node_modules/.bin/eslint src/main/webapp/app src/main/webapp/app-login/ src/main/webapp/setup/ --fix"
     },
     "repository": {
         "type": "git",
@@ -36,9 +36,9 @@
         "bugtracker"
     ],
     "devDependencies": {
-        "eslint": "3.19.0",
-        "eslint-plugin-angular": "2.2.1",
-        "eslint-plugin-html": "2.0.1"
+        "eslint": "5.16.0",
+        "eslint-plugin-angular": "4.0.1",
+        "eslint-plugin-html": "5.0.5"
     },
     "preferGlobal": true,
     "license": "MIT"
