@@ -37,6 +37,7 @@
     ],
     "devDependencies": {
         "eslint": "5.16.0",
+        "eslint-utils": ">=1.4.1",
         "eslint-plugin-angular": "4.0.1",
         "eslint-plugin-html": "5.0.5"
     },
