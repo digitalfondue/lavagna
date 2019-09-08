@@ -54,10 +54,6 @@
         </developer>
     </developers>
 
-    <prerequisites>
-        <maven>3.2.1</maven>
-    </prerequisites>
-
 
     <dependencies>
         <dependency>
