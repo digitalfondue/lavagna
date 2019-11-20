@@ -16,18 +16,17 @@
  */
 package io.lavagna.web.security.login.oauth;
 
+import io.lavagna.web.security.SecurityConfiguration.*;
+import io.lavagna.web.security.login.oauth.OAuthResultHandler.*;
+
 import com.google.gson.annotations.SerializedName;
-import io.lavagna.web.security.SecurityConfiguration.SessionHandler;
-import io.lavagna.web.security.SecurityConfiguration.Users;
-import io.lavagna.web.security.login.oauth.OAuthResultHandler.OAuthResultHandlerAdapter;
-import org.scribe.builder.ServiceBuilder;
 
 public class GoogleHandler extends OAuthResultHandlerAdapter {
 
     private GoogleHandler(OAuthServiceBuilder serviceBuilder, OAuthRequestBuilder reqBuilder, String apiKey,
 			String apiSecret, String callback, Users users, SessionHandler sessionHandler, String errorPage) {
 		super("oauth.google",//
-				"https://www.googleapis.com/plus/v1/people/me/openIdConnect",//
+				"https://www.googleapis.com/oauth2/v3/userinfo/",//
 				UserInfo.class, "code",//
 				users,//
 				sessionHandler,//
