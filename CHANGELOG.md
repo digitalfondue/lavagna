@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 (2019-11-22)
+
+ - Update login with google (see https://github.com/digitalfondue/lavagna/commit/eae861ce972c89f6f74189d14440066a99a28264)
+ - Update dependencies
+
 ## 1.1.2 (2018-07-20)
 
  - Fix download export for Firefox (see https://github.com/digitalfondue/lavagna/issues/107)
