@@ -43,7 +43,7 @@ public class TestServiceConfig {
 	}
 
 	@Bean
-	public LavagnaEnvironment env() {
+	public LavagnaEnvironment lavagnaEnvironment() {
 		MockEnvironment m = new MockEnvironment();
 		String dialect = System.getProperty("datasource.dialect", "HSQLDB");
 		for (Entry<String, String> kv : datasourceConf().get(dialect).entrySet()) {

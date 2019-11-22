@@ -10,7 +10,7 @@ matrix:
   include:
   - env: PROFILE="-Ddatasource.dialect=HSQLDB"
     dist: precise
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       apt:
         packages:
@@ -19,7 +19,7 @@ matrix:
         - mysql-client
   - env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.1"
     dist: precise
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       postgresql: '9.1'
       apt:
@@ -29,7 +29,7 @@ matrix:
         - mysql-client
   - env: PROFILE="-Ddatasource.dialect=PGSQL-TRAVIS -Dpgsql9.4"
     dist: precise
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       postgresql: '9.4'
       apt:
@@ -39,7 +39,7 @@ matrix:
         - mysql-client
   - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.5"
     dist: precise
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       apt:
         packages:
@@ -47,7 +47,7 @@ matrix:
         - mysql-client-core-5.5
         - mysql-client
   - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmysql5.6"
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       apt:
         packages:
@@ -55,7 +55,7 @@ matrix:
         - mysql-client-core-5.6
         - mysql-client-5.6
   - env: PROFILE="-Ddatasource.dialect=MYSQL -Dmariadb10.1"
-    jdk: oraclejdk8
+    jdk: openjdk8
     addons:
       mariadb: 10.1
 script: mvn test jacoco:report $PROFILE
