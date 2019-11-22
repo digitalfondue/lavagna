@@ -1,8 +1,6 @@
 Lavagna
 ======
 
-[![Join the chat at https://gitter.im/digitalfondue/lavagna](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/digitalfondue/lavagna?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 [![Build Status](https://travis-ci.org/digitalfondue/lavagna.svg?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
 [![Coverage Status](https://coveralls.io/repos/digitalfondue/lavagna/badge.svg?branch=master)](https://coveralls.io/r/digitalfondue/lavagna?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/io.lavagna/lavagna.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22lavagna%22)
@@ -10,7 +8,7 @@ Lavagna
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
-# Latest stable release is 1.1.2 (2018-07-20) #
+# Latest stable release is 1.1.3 (2019-11-22) #
 
 ## About ##
 
@@ -41,9 +39,9 @@ See the documentation at http://help.lavagna.io
 If you want to test it locally, you can download the self contained war and run:
 
 ```
-wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1.2/lavagna-1.1.2-distribution.zip
-unzip lavagna-1.1.2-distribution.zip
-./lavagna-1.1.2/bin/lavagna.sh
+wget https://repo1.maven.org/maven2/io/lavagna/lavagna/1.1.3/lavagna-1.1.3-distribution.zip
+unzip lavagna-1.1.3-distribution.zip
+./lavagna-1.1.3/bin/lavagna.sh
 ```
 
 Go to http://localhost:8080 and login with "user" (password "user").
