@@ -17,8 +17,7 @@
 package io.lavagna.config;
 
 
-import ch.digitalfondue.npjt.QueryFactory;
-import ch.digitalfondue.npjt.QueryRepositoryScanner;
+import ch.digitalfondue.npjt.EnableNpjt;
 import io.lavagna.common.LavagnaEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.context.MessageSource;
@@ -47,6 +46,7 @@ import java.sql.SQLException;
  * Datasource configuration.
  */
 @EnableTransactionManagement
+@EnableNpjt(basePackages = "io.lavagna.query", activeDB = "#{lavagnaEnvironment.getRequiredProperty('datasource.dialect')}")
 @ComponentScan(basePackages = { "io.lavagna.service", "io.lavagna.config.dbmanager" })
 public class PersistenceAndServiceConfig implements SchedulingConfigurer {
 
@@ -80,16 +80,6 @@ public class PersistenceAndServiceConfig implements SchedulingConfigurer {
 			jdbcTemplate.setExceptionTranslator(tr);
 		}
 		return new NamedParameterJdbcTemplate(jdbcTemplate);
-	}
-
-	@Bean
-	public QueryRepositoryScanner queryRepoScanner(QueryFactory queryFactory) {
-		return new QueryRepositoryScanner(queryFactory, "io.lavagna.query");
-	}
-
-	@Bean
-	public QueryFactory queryFactory(LavagnaEnvironment env, NamedParameterJdbcTemplate jdbc) {
-		return new QueryFactory(env.getProperty("datasource.dialect"), jdbc);
 	}
 
 	@Bean

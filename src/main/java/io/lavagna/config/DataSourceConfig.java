@@ -36,7 +36,7 @@ public class DataSourceConfig {
 	public static final MigrationVersion LATEST_STABLE_VERSION = MigrationVersion.fromVersion("24");
 
 	@Bean
-    public LavagnaEnvironment getEnvironment(ConfigurableEnvironment environment) {
+    public LavagnaEnvironment lavagnaEnvironment(ConfigurableEnvironment environment) {
 	    return new LavagnaEnvironment(environment);
     }
 
