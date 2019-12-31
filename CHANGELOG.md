@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+ - Update dependencies (see https://github.com/digitalfondue/lavagna/pull/126, thank you @ejouvin)
+
 ## 1.1.3 (2019-11-22)
 
  - Update login with google (see https://github.com/digitalfondue/lavagna/commit/eae861ce972c89f6f74189d14440066a99a28264)
