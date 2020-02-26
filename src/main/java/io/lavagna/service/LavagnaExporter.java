@@ -92,6 +92,7 @@ class LavagnaExporter {
 			//
 			writeEntry("card-data-types-order.json", cardDataRepository.findAllByTypes(EnumSet.of(CardType.ACTION_LIST,
 					CardType.ACTION_CHECKED, CardType.ACTION_UNCHECKED)), zf, osw);
+			os.flush();
 		}
 	}
 

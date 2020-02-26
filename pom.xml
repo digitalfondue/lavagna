@@ -227,7 +227,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
+            <version>1.12.2</version>
         </dependency>
 
         <dependency>
@@ -255,7 +255,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.9</version>
+            <version>42.2.10</version>
         </dependency>
 
         <dependency>
@@ -343,7 +343,7 @@
     <!-- -->
     <properties>
         <org.apache.logging.log4j.version>2.13.0</org.apache.logging.log4j.version>
-        <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
+        <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
         <org.eclipse.jetty.version>9.4.26.v20200117</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
         <com.fasterxml.jackson.version>2.10.2</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

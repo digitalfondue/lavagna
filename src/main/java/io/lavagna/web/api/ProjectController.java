@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -304,7 +305,10 @@ public class ProjectController {
         HSSFWorkbook wb = excelExportService.exportProjectToExcel(projectShortName, user);
 
         resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + ".xls");
-        wb.write(resp.getOutputStream());
+        try (OutputStream os = resp.getOutputStream()) {
+            wb.write(os);
+            os.flush();
+        }
     }
 
     /**

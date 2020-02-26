@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 
@@ -81,7 +82,11 @@ public class CalendarController {
         Calendar calendar = calendarService.getCalDavCalendar(userToken);
         response.setContentType("text/calendar");
         CalendarOutputter output = new CalendarOutputter(false); // <- no validation on the output
-        output.output(calendar, response.getOutputStream());
+        try (OutputStream os = response.getOutputStream()) {
+            output.output(calendar, os);
+            os.flush();
+        }
+
     }
 
     static class DisableCalendarRequest {

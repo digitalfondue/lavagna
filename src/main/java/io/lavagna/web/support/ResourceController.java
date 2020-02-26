@@ -210,6 +210,7 @@ public class ResourceController {
 
             StreamUtils.copy(indexTopTemplate.get().execute(info).getBytes(StandardCharsets.UTF_8), os);
             StreamUtils.copy(indexCache.get(), os);
+            os.flush();
         }
     }
 
@@ -237,6 +238,7 @@ public class ResourceController {
         try (OutputStream os = response.getOutputStream()) {
             response.setContentType("text/javascript");
             StreamUtils.copy(jsLoginCache.get(), os);
+            os.flush();
         }
     }
 
@@ -299,6 +301,7 @@ public class ResourceController {
         try (OutputStream os = response.getOutputStream()) {
             response.setContentType("text/javascript");
             StreamUtils.copy(jsCache.get(), os);
+            os.flush();
         }
     }
 
@@ -354,6 +357,7 @@ public class ResourceController {
         try (OutputStream os = response.getOutputStream()) {
             response.setContentType("text/css");
             StreamUtils.copy(cssCache.get(), os);
+            os.flush();
         }
     }
 

@@ -145,6 +145,7 @@ public class MilestoneController {
         resp.setHeader("Content-disposition", "attachment; filename=" + projectShortName + "-" + milestone + ".xls");
         try (OutputStream os = resp.getOutputStream()) {
             wb.write(os);
+            os.flush();
         }
     }
 }
