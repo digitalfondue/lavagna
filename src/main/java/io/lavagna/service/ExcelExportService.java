@@ -27,6 +27,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,6 +44,8 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 @Service
 @Transactional(readOnly = true)
 public class ExcelExportService {
+
+    private static final Logger LOG = LogManager.getLogger();
 
     private final CardRepository cardRepository;
     private final CardDataService cardDataService;
@@ -143,27 +147,20 @@ public class ExcelExportService {
         UserWithPermission user) {
 
         List<CardLabel> labels = cardLabelRepository.findLabelsByProject(projectId);
-        CollectionUtils.filter(labels, new Predicate<CardLabel>() {
-            @Override
-            public boolean evaluate(CardLabel cl) {
-                if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
-                    if (cl.getName().equals(SYSTEM_LABEL_ASSIGNED) ||
-                        cl.getName().equals(SYSTEM_LABEL_DUE_DATE) ||
-                        cl.getName().equals(SYSTEM_LABEL_MILESTONE)) {
-                        return true;
-                    }
-                    return false;
+        CollectionUtils.filter(labels, cl -> {
+            if (cl.getDomain().equals(CardLabel.LabelDomain.SYSTEM)) {
+                if (cl.getName().equals(SYSTEM_LABEL_ASSIGNED) ||
+                    cl.getName().equals(SYSTEM_LABEL_DUE_DATE) ||
+                    cl.getName().equals(SYSTEM_LABEL_MILESTONE)) {
+                    return true;
                 }
-                return true;
+                return false;
             }
+            return true;
         });
-        Collections.sort(labels, new Comparator<CardLabel>() {
-            public int compare(CardLabel l1, CardLabel l2) {
-                return new CompareToBuilder().append(l1.getDomain(), l2.getDomain())
-                    .append(l1.getName(), l2.getName())
-                    .toComparison();
-            }
-        });
+        Collections.sort(labels, (l1, l2) -> new CompareToBuilder().append(l1.getDomain(), l2.getDomain())
+            .append(l1.getName(), l2.getName())
+            .toComparison());
 
         SearchResults cards = searchService.find(filters, projectId, null, user);
 
@@ -226,7 +223,11 @@ public class ExcelExportService {
         // Auto size the columns except for the description
         for (int i = 0; i < headerColPos; i++) {
             if (!header.getCell(i).getStringCellValue().equals("Description")) {
-                sheet.autoSizeColumn(i);
+                try {
+                    sheet.autoSizeColumn(i);
+                } catch (NullPointerException e) {
+                    LOG.warn("No fontconfig installed, the columns in the excel will not be autosized");
+                }
             } else {
                 sheet.setColumnWidth(i, 30 * 256);
             }
@@ -235,8 +236,7 @@ public class ExcelExportService {
         return wb;
     }
 
-    public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user)
-        throws IOException {
+    public HSSFWorkbook exportMilestoneToExcel(String projectShortName, String milestone, UserWithPermission user) {
 
         int projectId = projectService.findIdByShortName(projectShortName);
         LabelListValueWithMetadata ms = getMilestone(projectId, milestone);
@@ -251,8 +251,7 @@ public class ExcelExportService {
 
     }
 
-    public HSSFWorkbook exportProjectToExcel(String projectShortName, UserWithPermission user)
-        throws IOException {
+    public HSSFWorkbook exportProjectToExcel(String projectShortName, UserWithPermission user) {
 
         Project project = projectService.findByShortName(projectShortName);
 
