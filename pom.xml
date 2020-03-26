@@ -465,6 +465,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.0.0</version>
+
+                <!-- https://github.com/spring-projects/spring-framework/issues/21528 -->
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Dependencies>jdk.unsupported</Dependencies>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+
                 <!--  <configuration>
 					 <webResources>
 						 <resource>
