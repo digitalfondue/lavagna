@@ -84,12 +84,12 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-mail</artifactId>
-            <version>5.2.3.RELEASE</version>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ch.digitalfondue.npjt-extra</groupId>
             <artifactId>npjt-extra</artifactId>
-            <version>2.0.2</version>
+            <version>2.0.3</version>
         </dependency>
         <!-- -->
         <dependency>
@@ -102,12 +102,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.3</version>
+            <version>1.8</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.13</version>
+            <version>1.14</version>
         </dependency>
 
         <dependency>
@@ -227,13 +227,13 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.12.2</version>
+            <version>1.13.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>
-            <version>0.13.1</version>
+            <version>0.14.0</version>
         </dependency>
 
         <dependency>
@@ -255,7 +255,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.10</version>
+            <version>42.2.11</version>
         </dependency>
 
         <dependency>
@@ -342,10 +342,10 @@
 
     <!-- -->
     <properties>
-        <org.apache.logging.log4j.version>2.13.0</org.apache.logging.log4j.version>
-        <org.springframework.version>5.2.4.RELEASE</org.springframework.version>
-        <org.eclipse.jetty.version>9.4.26.v20200117</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
-        <com.fasterxml.jackson.version>2.10.2</com.fasterxml.jackson.version>
+        <org.apache.logging.log4j.version>2.13.1</org.apache.logging.log4j.version>
+        <org.springframework.version>5.2.5.RELEASE</org.springframework.version>
+        <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
+        <com.fasterxml.jackson.version>2.10.3</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
         <kotlin.version>1.3.61</kotlin.version>
@@ -503,7 +503,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.2.4.RELEASE</version>
+                <version>2.2.6.RELEASE</version>
                 <configuration>
                     <classifier>jetty-console</classifier>
                 </configuration>
