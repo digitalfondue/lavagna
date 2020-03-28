@@ -8,7 +8,7 @@ Lavagna
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
 [![Docker Layers](https://images.microbadger.com/badges/image/digitalfondue/lavagna.svg)](https://microbadger.com/images/digitalfondue/lavagna)
 
-# Latest stable release is 1.1.4 (2019-12-31) #
+# Latest stable release is 1.1.5 (2020-03-28) #
 
 ## About ##
 
