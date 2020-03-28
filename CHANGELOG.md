@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.5
+ - Update dependencies
+ - Fix issue when fontconfig is not installed (see https://github.com/digitalfondue/lavagna/commit/4a6788bd414a6d30a47b0bf3233018d9d3ef403b)
+ - Fix issue when deploying the .war on wildfly (see https://github.com/digitalfondue/lavagna/commit/e83be04376f2ff33d860e436aa22d422c8f69025)
+
 ## 1.1.4
 
  - Update dependencies (see https://github.com/digitalfondue/lavagna/pull/126, thank you @ejouvin)
