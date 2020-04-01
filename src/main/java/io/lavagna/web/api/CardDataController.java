@@ -342,7 +342,7 @@ public class CardDataController {
                 String digest = DigestUtils.sha256Hex(Files.newInputStream(p));
                 String contentType = file.getContentType() != null ? file.getContentType() : "application/octet-stream";
 
-                cardDataService.createFile(digest, files.size(), fileIs, contentType);
+                cardDataService.createFile(digest, Files.size(p), Files.newInputStream(p), contentType);
 
                 LOG.debug("file uploaded! size: {}, original name: {}, body-type: {}, by user: {}", file.getSize(),
                     file.getOriginalFilename(), file.getContentType(), user.getId());

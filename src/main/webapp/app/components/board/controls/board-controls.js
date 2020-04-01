@@ -20,6 +20,7 @@
         templateUrl: 'app/components/board/controls/board-controls.html',
         controller: function (BulkOperationModal, BulkOperations, Project, $mdDialog) {
             var ctrl = this;
+            ctrl.createColumnTooltipVisibility = false;
 
             ctrl.$onChanges = function (change) {
                 if (change.columns && change.columns.currentValue) {
