@@ -68,6 +68,9 @@ public class ApiHooksService {
         this.userService = userService;
         this.configurationRepository = configurationRepository;
         engine = (Compilable) new ScriptEngineManager().getEngineByName("javascript");
+        if (engine == null) {
+            LOG.warn("Nashorn is required to execute javascript, check your jre distribution.");
+        }
         executor = Executors.newFixedThreadPool(4);
     }
 
@@ -109,6 +112,11 @@ public class ApiHooksService {
 
         @Override
         public void run() {
+
+            if (apiHooksService.engine == null) {
+                LOG.warn("Nashorn is required to execute javascript, check your jre distribution.");
+                return;
+            }
 
             List<ApiHookNameAndVersion> nameAndVersions = apiHooksService.apiHookQuery.findAllEnabled(ApiHook.Type.EVENT_EMITTER_HOOK);
             List<String> names = new ArrayList<>(nameAndVersions.size());
@@ -245,6 +253,12 @@ public class ApiHooksService {
     }
 
     public void handleHook(String projectShortName, String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        if (engine == null) {
+            LOG.warn("Nashorn is required to execute javascript, check your jre distribution.");
+            return;
+        }
+
         List<ApiHookNameAndVersion> apiHooks = apiHookQuery.findEnabledByNameAndType(name, ApiHook.Type.WEB_HOOK);
         if(apiHooks.size() == 1) {
             ApiHook apiHook = apiHookQuery.findByNames(Collections.singletonList(name)).get(0);
