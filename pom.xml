@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-mail</artifactId>
-            <version>5.2.5.RELEASE</version>
+            <version>5.3.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ch.digitalfondue.npjt-extra</groupId>
@@ -250,12 +250,12 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.19</version>
+            <version>8.0.20</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.11</version>
+            <version>42.2.12</version>
         </dependency>
 
         <dependency>
@@ -342,10 +342,10 @@
 
     <!-- -->
     <properties>
-        <org.apache.logging.log4j.version>2.13.1</org.apache.logging.log4j.version>
-        <org.springframework.version>5.2.5.RELEASE</org.springframework.version>
+        <org.apache.logging.log4j.version>2.13.3</org.apache.logging.log4j.version>
+        <org.springframework.version>5.2.6.RELEASE</org.springframework.version>
         <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
-        <com.fasterxml.jackson.version>2.10.3</com.fasterxml.jackson.version>
+        <com.fasterxml.jackson.version>2.11.0</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
         <kotlin.version>1.3.61</kotlin.version>
@@ -513,7 +513,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.2.6.RELEASE</version>
+                <version>2.2.7.RELEASE</version>
                 <configuration>
                     <classifier>jetty-console</classifier>
                 </configuration>
@@ -725,11 +725,11 @@
                         <host>${jetty.host}</host>
                     </httpConnector>
                     <systemProperties>
-                        <systemProperty>
+                        <!--<systemProperty>
                             <name>spring.profiles.active</name>
                             <value>${spring.profiles.active}</value>
                             <value>prod</value>
-                        </systemProperty>
+                        </systemProperty>-->
                         <!-- if you want to test the fromData configuration feature
                         <systemProperty>
                             <name>spring.profiles.active</name>
