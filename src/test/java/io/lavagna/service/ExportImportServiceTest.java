@@ -18,6 +18,8 @@ package io.lavagna.service;
 
 import io.lavagna.config.PersistenceAndServiceConfig;
 import io.lavagna.service.config.TestServiceConfig;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +43,28 @@ public class ExportImportServiceTest {
 	@Autowired
 	private ExportImportService exportImportService;
 
+	private Path tmp;
+	private InputStream is;
+
+    @Before
+    public void setup() throws IOException {
+        tmp = Files.createTempFile(null, null);
+        is = new ClassPathResource("io/lavagna/export2.zip").getInputStream();
+        Files.copy(is, tmp, StandardCopyOption.REPLACE_EXISTING);
+    }
+
 	@Test
 	public void testImportAndExport() throws IOException {
-		Path tmp = Files.createTempFile(null, null);
-		try (InputStream is = new ClassPathResource("io/lavagna/export2.zip").getInputStream()) {
-			Files.copy(is, tmp, StandardCopyOption.REPLACE_EXISTING);
-			exportImportService.importData(false, tmp);
-
-			// TODO additional checks
-
-			exportImportService.exportData(new ByteArrayOutputStream());
-		} finally {
-			if (tmp != null) {
-				Files.deleteIfExists(tmp);
-			}
-		}
-
+		exportImportService.importData(false, tmp);
+		// TODO additional checks
+		exportImportService.exportData(new ByteArrayOutputStream());
 	}
+
+	@After
+    public void teardown() throws IOException {
+        if (tmp != null) {
+            Files.deleteIfExists(tmp);
+        }
+    }
 
 }
