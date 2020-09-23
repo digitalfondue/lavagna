@@ -49,9 +49,9 @@
                 </div>
                 <div class="lvg-card-metadata__item-text row row-inherit start-xs middle-xs">
                     <span>
-                        <span>{{::$ctrl.card.lastUpdateTime | date: 'medium' }}</span>
+                        <span>{{$ctrl.card.lastUpdateTime | date: 'medium' }}</span>
                         <span data-translate>common.by</span>
-                        <lvg-user-link user-id="$ctrl.card.userId"></lvg-user-link>
+                        <lvg-user-link user-id="$ctrl.card.lastUpdateUserId"></lvg-user-link>
                     </span>
                 </div>
             </div>
