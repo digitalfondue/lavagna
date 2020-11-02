@@ -16,7 +16,7 @@
 --
 
 --
-create extension unaccent;
+create extension if not exists unaccent;
 --
 
 
