@@ -34,7 +34,7 @@ public class DatabaseMigrator {
 		String sqlDialect = env.getRequiredProperty("datasource.dialect");
 		Flyway migration = new Flyway();
 		migration.setDataSource(dataSource);
-		// FIXME remove the validation = false when the schemas will be stable
+		//
 		migration.setValidateOnMigrate(false);
 		//
 
