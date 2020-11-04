@@ -344,7 +344,7 @@
     <properties>
         <org.apache.logging.log4j.version>2.13.3</org.apache.logging.log4j.version>
         <org.springframework.version>5.2.6.RELEASE</org.springframework.version>
-        <org.eclipse.jetty.version>9.4.27.v20200227</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
+        <org.eclipse.jetty.version>9.4.34.v20201102</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
         <com.fasterxml.jackson.version>2.11.0</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
