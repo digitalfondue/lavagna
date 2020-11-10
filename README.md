@@ -1,7 +1,7 @@
 Lavagna
 ======
 
-![Java CI with Maven](https://github.com/digitalfondue/lavagna/workflows/Java%20CI%20with%20Maven/badge.svg)
+[![Java CI with Maven](https://github.com/digitalfondue/lavagna/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/digitalfondue/jfiveparse/actions?query=workflow%3A%22Java+CI+with+Maven%22)
 [![Maven Central](https://img.shields.io/maven-central/v/io.lavagna/lavagna.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22lavagna%22)
 [![Github All Releases](https://img.shields.io/github/downloads/digitalfondue/lavagna/total.svg)](https://github.com/digitalfondue/lavagna/releases)
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
