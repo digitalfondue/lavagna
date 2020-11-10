@@ -82,6 +82,6 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Create db
-      run: docker exec mysql mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
+      run: mysql --host=127.0.0.1 -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
     - name: Build with Maven
       run: mvn -Ddatasource.dialect=MYSQL -B package --file pom.xml
