@@ -1,8 +1,7 @@
 Lavagna
 ======
 
-[![Build Status](https://travis-ci.org/digitalfondue/lavagna.svg?branch=master)](https://travis-ci.org/digitalfondue/lavagna)
-[![Coverage Status](https://coveralls.io/repos/digitalfondue/lavagna/badge.svg?branch=master)](https://coveralls.io/r/digitalfondue/lavagna?branch=master)
+![Java CI with Maven](https://github.com/digitalfondue/lavagna/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Maven Central](https://img.shields.io/maven-central/v/io.lavagna/lavagna.svg)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22lavagna%22)
 [![Github All Releases](https://img.shields.io/github/downloads/digitalfondue/lavagna/total.svg)](https://github.com/digitalfondue/lavagna/releases)
 [![Docker Status](https://img.shields.io/docker/pulls/digitalfondue/lavagna.svg)](https://registry.hub.docker.com/u/digitalfondue/lavagna/)
