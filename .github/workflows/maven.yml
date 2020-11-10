@@ -60,7 +60,7 @@ jobs:
   build-MYSQL-5_5:
     runs-on: ubuntu-latest
     services:
-      postgres:
+      mysql:
         image: mysql:5.5
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
