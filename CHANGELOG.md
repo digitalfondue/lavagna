@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.7 (2020-11-17)
+
+ - Fix issues #142 and #147 
+ - Update dependencies
+
 ## 1.1.6 (2020-04-01)
 
  - Fix issue when uploading files on card creation, see #136 , thanks @majugurci for providing the good hint (see https://github.com/digitalfondue/lavagna/commit/a96d70a21865fcbd73d8cbf8ec348cd1c618cead)
