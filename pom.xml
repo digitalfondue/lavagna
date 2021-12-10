@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-mail</artifactId>
-            <version>5.3.4.RELEASE</version>
+            <version>5.3.9.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>ch.digitalfondue.npjt-extra</groupId>
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.8</version>
+            <version>1.9</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -325,7 +325,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
+            <version>4.4</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -343,7 +343,7 @@
     <!-- -->
     <properties>
         <org.apache.logging.log4j.version>2.15.0</org.apache.logging.log4j.version>
-        <org.springframework.version>5.2.11.RELEASE</org.springframework.version>
+        <org.springframework.version>5.3.13</org.springframework.version>
         <org.eclipse.jetty.version>9.4.44.v20210927</org.eclipse.jetty.version> <!-- 9.4.18.v20190429 -->
         <com.fasterxml.jackson.version>2.13.0</com.fasterxml.jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -513,7 +513,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.6.RELEASE</version>
+                <version>2.6.1</version>
                 <configuration>
                     <classifier>jetty-console</classifier>
                 </configuration>
