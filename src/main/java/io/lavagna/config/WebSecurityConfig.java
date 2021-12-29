@@ -191,7 +191,8 @@ public class WebSecurityConfig {
 
         private boolean canCreateUserForOauthProvider(String provider) {
             OAuthConfiguration conf = Json.GSON.fromJson(configurationRepository.getValueOrNull(Key.OAUTH_CONFIGURATION), OAuthConfiguration.class);
-            return conf != null && conf.hasProvider(provider) && conf.getProviderWithName(provider).getAutoCreateMissingAccount();
+            String name = provider.substring("oauth.".length());
+            return conf != null && conf.hasProvider(name) && conf.getProviderWithName(name).getAutoCreateMissingAccount();
         }
 
         private boolean canOauth(String provider, String name) {
