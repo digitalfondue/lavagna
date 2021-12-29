@@ -71,8 +71,8 @@ Select the oauth provider of the first account and provide the api key and secre
 
 See the documentation for:
 
- - [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/OAuth+on+Bitbucket)
- - [gitlab](http://doc.gitlab.com/ce/integration/oauth_provider.html). Registration page is https://gitlab.com/profile/applications
+ - [bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/)
+ - [gitlab](http://doc.gitlab.com/ce/integration/oauth_provider.html). Registration page is https://gitlab.com/-/profile/applications
  - [github](https://developer.github.com/v3/oauth/). Registration page is https://github.com/settings/applications/new
  - [google](https://developers.google.com/identity/protocols/OAuth2WebServer): the "Google+ API" must be enabled
  - [twitter](https://dev.twitter.com/web/sign-in/implementing)
