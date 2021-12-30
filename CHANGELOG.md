@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.9 (2020-12-30)
+ - Update dependencies (log4j2 security issue)
+ - Fix Github OAuth (see https://github.com/digitalfondue/lavagna/issues/162)
+
+## 1.1.8 (2020-12-10)
+ - Update dependencies (log4j2 security issue)
+
 ## 1.1.7 (2020-11-17)
 
  - Fix issues #142 and #147 
